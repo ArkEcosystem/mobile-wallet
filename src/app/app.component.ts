@@ -3,19 +3,51 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { HomePage } from '../pages/home/home';
+import { AuthProvider } from '@providers/auth/auth';
+
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = HomePage;
+  rootPage = null;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(
+    public platform: Platform,
+    public statusBar: StatusBar,
+    public splashScreen: SplashScreen,
+    public authProvider: AuthProvider,
+    public translateService: TranslateService,
+  ) {
     platform.ready().then(() => {
+      translateService.setDefaultLang('en');
+      // TODO: Get language from settings provider
+      translateService.use('en');
+
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
-      splashScreen.hide();
+
+      this.authProvider.introHasSeen().subscribe((hasSeenIntro) => {
+        splashScreen.hide();
+
+        if (hasSeenIntro) {
+          const hasSetMasterPassword = authProvider.masterPasswordHasSet();
+          const activeProfile = authProvider.activeProfileGet();
+
+          if (!hasSetMasterPassword && activeProfile) {
+            this.rootPage = 'ProfileDashboardPage';
+          } else {
+            this.rootPage = 'LoginPage';
+          }
+          
+          return;
+        }
+
+        this.rootPage = 'IntroPage';
+      });
+
     });
   }
 }

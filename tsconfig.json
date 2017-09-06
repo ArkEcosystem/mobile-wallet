@@ -4,6 +4,11 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "baseUrl": "./",
+    "paths": {
+      "@providers/*": ["src/providers/*"],
+      "@models/*": ["src/models/*"]
+    },
     "lib": [
       "dom",
       "es2015"
