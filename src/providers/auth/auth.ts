@@ -22,10 +22,13 @@ export class AuthProvider {
   private SECURESTORAGE_PASSPHRASES = 'passphrases';
 
   public loggedIn: boolean = false;
+  public activeProfileId: string;
 
-  constructor(private storage: StorageProvider) { }
+  constructor(private storage: StorageProvider) {
+    this.activeProfileGet().subscribe((id) => this.activeProfileId = id);
+  }
 
-  login(profileId: string, password?: string) {
+  login(profileId: string, password?: string): Observable<boolean> {
     return Observable.create((observer) => {
       this.masterPasswordHasSet().subscribe((result) => {
         if (!result) {
@@ -41,7 +44,8 @@ export class AuthProvider {
             observer.error('Invalid masterpassword');
           }
         }
-
+        
+        observer.next(this.loggedIn);
         observer.complete();
       });
     });
@@ -56,6 +60,7 @@ export class AuthProvider {
   }
 
   activeProfileSet(id?: string): void {
+    this.activeProfileId = id;
     this.storage.set(this.STORAGE_ACTIVE_PROFILE, id);
   }
 

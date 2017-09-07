@@ -19,7 +19,7 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item-sliding *ngFor="let id of profilesIds">
+    <ion-item-sliding *ngFor="let id of profilesIds" (click)="signin(id)">
       <button ion-item>
         <div class="circle-letter" [ngClass]="(isMainnet(id)) ? 'mainnet' : ''" item-start>
           {{ getNetworkName(id)?.charAt(0) }}

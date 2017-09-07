@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { LocalDataProvider } from '@providers/local-data/local-data';
+import { AuthProvider } from '@providers/auth/auth';
+
 import { TranslateService } from '@ngx-translate/core';
 
 import lodash from 'lodash';
@@ -24,6 +26,7 @@ export class ProfileSigninPage {
     public navParams: NavParams,
     public localDataProvider: LocalDataProvider,
     public translateService: TranslateService,
+    public authProvider: AuthProvider,
     public alertCtrl: AlertController,
   ) { }
 
@@ -67,6 +70,32 @@ export class ProfileSigninPage {
     if (this.profiles[profileId]) {
       return this.networks[this.profiles[profileId].networkId].name;
     }
+  }
+
+  // getPinCode(): Promise<string> {
+  //   // TODO: Get pin code from component
+  // }
+
+  signin(profileId: string) {
+    this.authProvider.masterPasswordHasSet().subscribe((hasSeetMasterPassword) => {
+      if (hasSeetMasterPassword) {
+        // this.getPinCode();
+      } else {
+        this.authProvider.login(profileId).subscribe((status) => {
+          if (status) {
+            var wallets = Object.keys(this.localDataProvider.profileActive().wallets || {});
+
+            if (wallets.length === 0) {
+              this.navCtrl.setRoot('WalletEmptyPage');
+            } else {
+              this.navCtrl.setRoot('ProfileDashboardPage');
+            }
+          } else {
+            // TODO: Show toast error
+          }
+        });
+      }
+    });
   }
 
   load() {

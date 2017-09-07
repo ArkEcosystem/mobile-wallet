@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
+import { AuthProvider } from '@providers/auth/auth';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -19,7 +20,7 @@ export class LocalDataProvider {
   public profiles = {};
   public networks = {};
 
-  constructor(public storage: StorageProvider) {
+  constructor(public storage: StorageProvider, public authProvider: AuthProvider) {
     this.profilesLoad().subscribe((profiles) => this.profiles = profiles);
     this.networksLoad().subscribe((networks) => this.networks = networks);
   }
@@ -77,6 +78,16 @@ export class LocalDataProvider {
         observer.complete();
       });
     });
+  }
+
+  profileActive(): Profile {
+    let activeId = this.authProvider.activeProfileId;
+
+    if (activeId && this.profiles[activeId]) {
+      return this.profiles[activeId];
+    }
+
+    return null;
   }
 
   profileAdd(profile: Profile) {
