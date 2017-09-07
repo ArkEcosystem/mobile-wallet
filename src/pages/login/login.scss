@@ -1,38 +1,31 @@
 page-login {
-    
-    ion-content {
-        background: url('../assets/img/login/blocks-bg.png') no-repeat;
-        background-size: contain;
-
-        scroll-content {
-            display: flex;
-            flex-direction: column;
-        }
-     
-        ion-grid {
-            padding: 0;
-            height: 100%;
-        }
-
-        .grid {
-            padding: 3em 1em;
-        }
-     
-        ion-row {
-            flex: 1;
-        }
-
-        img {
-            margin: 0 auto;
-            width: 13em;
-            height: 13em;
-        }
-
-        .button {
-            margin: 0 auto;
-            display: block;
-            margin-top: 1em;
-            padding: 1.7em 2em;
-        }
+  ion-content {
+    background: url('../assets/img/login/blocks-bg.png') no-repeat;
+    background-size: contain;
+    scroll-content {
+      display: flex;
+      flex-direction: column;
     }
+    ion-grid {
+      padding: 0;
+      height: 100%;
+    }
+    .grid {
+      padding: 3em 1em;
+    }
+    ion-row {
+      flex: 1;
+    }
+    img {
+      margin: 0 auto;
+      width: 13em;
+      height: 13em;
+    }
+    .button {
+      margin: 0 auto;
+      display: block;
+      margin-top: 1em;
+      padding: 1.7em 2em;
+    }
+  }
 }

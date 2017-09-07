@@ -1,3 +1,11 @@
 page-profile-create {
-
+  .network-types {
+    margin-top: 1em;
+    p {
+      margin-top: .3em;
+    }
+    button {
+      text-transform: capitalize;
+    }
+  }
 }
