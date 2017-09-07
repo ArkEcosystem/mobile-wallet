@@ -10,12 +10,6 @@ import lodash from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { Network } from 'ark-ts/model';
 
-/*
-  Generated class for the LocalDataProvider provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
 @Injectable()
 export class LocalDataProvider {
 
@@ -23,9 +17,9 @@ export class LocalDataProvider {
   private STORAGE_CONTACTS = 'contacts';
   private STORAGE_NETWORKS = 'networks';
   
-  private profiles = {};
-  private networks = {};
-  private contacts = {};
+  public profiles = {};
+  public networks = {};
+  public contacts = {};
 
   constructor(public storage: StorageProvider) {
     this.profilesLoad().subscribe((profiles) => this.profiles = profiles);
@@ -74,12 +68,12 @@ export class LocalDataProvider {
 
     return Observable.create((observer) => {
       this.storage.getObject(this.STORAGE_NETWORKS).subscribe((networks) => {
-        if (!networks) {
+        if (!networks || lodash.isEmpty(networks)) {
           const uniqueDefaults = {};
 
-          defaults.forEach((n) => {
-            uniqueDefaults[this.generateUniqueId()] = n;
-          });
+          for (var i = 0; i < defaults.length; i++) {
+            uniqueDefaults[this.generateUniqueId()] = defaults[i];
+          }
 
           this.storage.set(this.STORAGE_NETWORKS, uniqueDefaults);
           observer.next(uniqueDefaults);

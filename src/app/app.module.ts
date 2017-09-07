@@ -1,5 +1,3 @@
-import { MyApp } from './app.component';
-
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, Http } from '@angular/http';
@@ -16,6 +14,8 @@ import { LocalDataProvider } from '@providers/local-data/local-data';
 // Ionic native
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+
+import { MyApp } from './app.component';
 
 export function httpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -49,7 +49,8 @@ export function httpLoaderFactory(http: Http) {
     SplashScreen,
     // Custom providers
     {provide: StorageProvider, useClass: StorageProvider, deps: [Storage]},
-    {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]}
+    {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},
+    LocalDataProvider
   ]
 })
 export class AppModule {}

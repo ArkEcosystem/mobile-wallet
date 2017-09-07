@@ -4,6 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AuthProvider } from '@providers/auth/auth';
+import { LocalDataProvider } from '@providers/local-data/local-data';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -19,6 +20,7 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public authProvider: AuthProvider,
     public translateService: TranslateService,
+    public localDataProvider: LocalDataProvider,
   ) {
     platform.ready().then(() => {
       translateService.setDefaultLang('en');

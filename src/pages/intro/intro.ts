@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { AuthProvider } from '@providers/auth/auth';
+
 @IonicPage()
 @Component({
   selector: 'page-intro',
@@ -10,10 +12,15 @@ export class IntroPage {
 
   public showSkip: boolean = true;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public authProvider: AuthProvider,
+  ) { }
 
   startApp() {
+    this.authProvider.introSetSeen();
+
     this.navCtrl.setRoot('LoginPage', {}, {
       animate: true,
       direction: 'forward'

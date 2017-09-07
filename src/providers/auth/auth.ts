@@ -66,7 +66,7 @@ export class AuthProvider {
   introHasSeen(): Observable<boolean> {
     return Observable.create((observer) => {
       this.storage.get(this.STORAGE_INTROSEEN).subscribe((introSeen) => {
-        observer.next(introSeen === true);
+        observer.next(introSeen == 'true');
         observer.complete();
       });
     });
