@@ -41,7 +41,7 @@ export class MyApp {
           if (!hasSetMasterPassword && activeProfile) {
             this.rootPage = 'ProfileDashboardPage';
           } else {
-            this.rootPage = 'LoginPage';
+            this.rootPage = 'WalletEmptyPage';
           }
           
           return;

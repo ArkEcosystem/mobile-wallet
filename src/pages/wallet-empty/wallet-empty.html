@@ -1,0 +1,25 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'My Wallet' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center>
+        <img src="./assets/img/hand-add-button.png">
+        <h5>To import or create wallet click on the button bellow.</h5>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col align-self-end>
+        <button ion-fab icon-only (click)="presentActionSheet()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

@@ -1,0 +1,27 @@
+page-wallet-empty {
+  ion-content {
+    scroll-content {
+      display: flex;
+      flex-direction: column;
+    }
+    ion-grid {
+      padding: 0;
+      height: 100%;
+    }
+    .grid {
+      padding: 3em 2em 1em 2em;
+    }
+    ion-row {
+      flex: 1;
+    }
+    img {
+      display: block;
+      margin: 4em auto;
+      width: 19em;
+      height: 12em;
+    }
+    button {
+      float: right;
+    }
+  }
+}
