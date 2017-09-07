@@ -20,21 +20,21 @@ export class WalletEmptyPage {
 
   presentActionSheet() {
     this.translateService.get([
-      'Generate new wallet',
-      'Import wallet',
+      'Generate',
+      'Import',
       'Cancel',
     ]).subscribe((translation) => {
       let actionSheet = this.actionSheetCtrl.create({
         buttons: [
           {
-            text: translation['Generate new wallet'],
+            text: translation['Generate'],
             role: 'generate',
             icon: !this.platform.is('ios') ? 'card' : null,
             handler: () => {
               this.openWalletGenerate();
             }
           }, {
-            text: translation['Import wallet'],
+            text: translation['Import'],
             role: 'import',
             icon: !this.platform.is('ios') ? 'sync' : null,
             handler: () => {

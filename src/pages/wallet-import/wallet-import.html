@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'Impot wallet' | translate }}</ion-title>
+    <ion-title>{{ 'Import wallet' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -17,7 +17,7 @@
     <ion-row>
       <ion-col text-center align-self-end>
         <button ion-button color="primary" (click)="scanQRcode()">{{ 'Scan QR code' }}</button>
-        <p>or type <a href="#" (click)="openWalletImportPassphrase()">Secret Passphrase</a></p>
+        <p>or type <a (click)="openWalletImportPassphrase()">Secret Passphrase</a></p>
       </ion-col>
     </ion-row>
   </ion-grid>

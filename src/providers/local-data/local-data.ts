@@ -5,7 +5,7 @@ import { AuthProvider } from '@providers/auth/auth';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { Contact, Profile } from '@models/model';
+import { Contact, Profile, Wallet } from '@models/model';
 
 import lodash from 'lodash';
 import { v4 as uuid } from 'uuid';
@@ -84,7 +84,7 @@ export class LocalDataProvider {
     let activeId = this.authProvider.activeProfileId;
 
     if (activeId && this.profiles[activeId]) {
-      return this.profiles[activeId];
+      return new Profile().deserialize(this.profiles[activeId]);
     }
 
     return null;
@@ -97,7 +97,7 @@ export class LocalDataProvider {
   }
 
   profileGet(profileId: string) {
-    return this.profiles[profileId];
+    return new Profile().deserialize(this.profiles[profileId]);
   }
 
   profileRemove(profileId: string) {
@@ -112,6 +112,20 @@ export class LocalDataProvider {
 
   profilesSave(profiles = this.profiles) {
     return this.storage.set(this.STORAGE_PROFILES, profiles);
+  }
+
+  walletAdd(wallet: Wallet, profileId?: string) {
+    if (!profileId) profileId = this.authProvider.activeProfileId;
+
+    let profile = this.profileGet(profileId);
+
+    if (!profile.wallets[wallet.address]) {
+      profile.wallets[wallet.address] = wallet;
+    }
+
+    this.profiles[profileId] = profile;
+
+    return this.profilesSave();
   }
 
   private generateUniqueId(): string {
