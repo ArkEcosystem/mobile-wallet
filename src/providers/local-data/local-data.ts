@@ -14,37 +14,30 @@ import { Network } from 'ark-ts/model';
 export class LocalDataProvider {
 
   private STORAGE_PROFILES = 'profiles';
-  private STORAGE_CONTACTS = 'contacts';
   private STORAGE_NETWORKS = 'networks';
   
   public profiles = {};
   public networks = {};
-  public contacts = {};
 
   constructor(public storage: StorageProvider) {
     this.profilesLoad().subscribe((profiles) => this.profiles = profiles);
     this.networksLoad().subscribe((networks) => this.networks = networks);
-    this.contactsLoad().subscribe((contacts) => this.contacts = contacts);
   }
 
-  contactAdd(contact: Contact) {
-    this.contacts[this.generateUniqueId()] = contact;
+  contactAdd(profileId: string, contact: Contact) {
+    this.profiles[profileId].contacts[this.generateUniqueId()] = contact;
 
-    return this.storage.set(this.STORAGE_CONTACTS, this.contacts);
+    return this.profilesSave();
   }
 
-  contactGet(contactId: string) {
-    return this.contacts[contactId];
+  contactGet(profileId: string, contactId: string) {
+    return this.profiles[profileId].contacts[contactId];
   }
 
-  contactRemove(contactId: string) {
-    delete this.contacts[contactId];
+  contactRemove(profileId: string, contactId: string) {
+    delete this.profiles[profileId].contacts[contactId];
 
-    return this.storage.set(this.STORAGE_CONTACTS, this.contacts);
-  }
-
-  contactsLoad() {
-    return this.storage.getObject(this.STORAGE_CONTACTS);
+    return this.profilesSave();
   }
 
   networkAdd(network: Network) {
@@ -89,7 +82,7 @@ export class LocalDataProvider {
   profileAdd(profile: Profile) {
     this.profiles[this.generateUniqueId()] = profile;
 
-    return this.storage.set(this.STORAGE_PROFILES, this.profiles);
+    return this.profilesSave();
   }
 
   profileGet(profileId: string) {
@@ -99,11 +92,15 @@ export class LocalDataProvider {
   profileRemove(profileId: string) {
     delete this.profiles[profileId];
 
-    return this.storage.set(this.STORAGE_PROFILES, this.profiles);
+    return this.profilesSave();
   }
 
   profilesLoad() {
     return this.storage.getObject(this.STORAGE_PROFILES);
+  }
+
+  profilesSave(profiles = this.profiles) {
+    return this.storage.set(this.STORAGE_PROFILES, profiles);
   }
 
   private generateUniqueId(): string {
