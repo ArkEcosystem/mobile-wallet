@@ -18,18 +18,18 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list inset>
+  <ion-list>
     <ion-item-sliding *ngFor="let id of profilesIds">
-      <ion-item>
-        <ion-avatar>
-          M
-        </ion-avatar>
-        <h2>{{ profiles[id].name }}</h2>
-        <p>{{ networks[profiles[id].networkId].name }}</p>
-      </ion-item>
+      <button ion-item>
+        <div class="circle-letter" [ngClass]="(isMainnet(id)) ? 'mainnet' : ''" item-start>
+          {{ getNetworkName(id)?.charAt(0) }}
+        </div>
+        <h2>{{ profiles[id]?.name }}</h2>
+        <p>{{ getNetworkName(id) }}</p>
+      </button>
 
-      <ion-item-options side="left">
-        <button ion-button color="danger" (click)="delete(id)">
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="showDeleteConfirm(id)">
           <ion-icon name="trash"></ion-icon>
           {{ 'Delete' | translate }}
         </button>
