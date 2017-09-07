@@ -31,7 +31,7 @@
     "@types/uuid": "^3.4.1",
     "ark-ts": "^0.2.3",
     "cordova-plugin-secure-storage": "^2.6.8",
-    "ionic-angular": "3.6.0",
+    "ionic-angular": "^3.6.0-201709062053",
     "ionicons": "3.0.0",
     "json-typescript-mapper": "github:luciorubeens/json-typescript-mapper#master",
     "rxjs": "5.4.0",
