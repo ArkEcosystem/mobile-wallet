@@ -1,0 +1,1 @@
+export const WALLET_UNIT_TO_SATOSHI = 100000000;
