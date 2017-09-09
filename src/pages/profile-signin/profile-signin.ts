@@ -88,7 +88,7 @@ export class ProfileSigninPage {
             if (wallets.length === 0) {
               this.navCtrl.setRoot('WalletEmptyPage');
             } else {
-              this.navCtrl.setRoot('ProfileDashboardPage');
+              this.navCtrl.setRoot('WalletDashboardPage');
             }
           } else {
             // TODO: Show toast error

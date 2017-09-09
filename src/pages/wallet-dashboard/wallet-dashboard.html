@@ -1,0 +1,47 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons>
+      <button ion-button icon-only menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ 'My Wallet' | translate }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentWalletActionSheet()">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-fab right bottom>
+    <button ion-fab color="primary" (click)="presentAddActionSheet()"><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+
+  <ion-grid class="main-grid">
+    <ion-row class="account-balance">
+      <ion-col text-center>
+        <p>{{ 'Balance' | translate }}</p>
+        <h2>{{ network?.symbol }} {{ wallet?.getBalance().toFixed(2) }}</h2>
+        <h5>...</h5>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-grid class="transactions-list">
+          <ion-row *ngFor="let transaction of wallet?.transactions">
+            <ion-col>
+              {{ transaction?.senderId }}
+            </ion-col>
+            <ion-col>
+              {{ transaction?.amount }}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

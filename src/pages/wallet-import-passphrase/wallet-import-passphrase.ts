@@ -26,7 +26,7 @@ export class WalletImportPassphrasePage {
 
   load() {
     this.currentProfile = this.localDataProvider.profileActive();
-    
+
     let networkData = this.localDataProvider.networkGet(this.currentProfile.networkId);
     Object.assign(this.currentNetwork, networkData);
   }
@@ -52,8 +52,7 @@ export class WalletImportPassphrasePage {
       }
 
       this.localDataProvider.walletAdd(newWallet).subscribe((result) => {
-        console.log(result);
-        // TODO: Set as active wallet and redirect to dashboard
+        this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
       });
     }, () => {
       // TODO: Show error in toast

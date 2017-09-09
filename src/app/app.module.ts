@@ -16,6 +16,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
+import { ArkApiProvider } from '../providers/ark-api/ark-api';
 
 export function httpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -50,7 +51,8 @@ export function httpLoaderFactory(http: Http) {
     // Custom providers
     {provide: StorageProvider, useClass: StorageProvider, deps: [Storage]},
     {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},
-    LocalDataProvider
+    LocalDataProvider,
+    ArkApiProvider
   ]
 })
 export class AppModule {}

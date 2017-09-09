@@ -16,7 +16,7 @@ export class LocalDataProvider {
 
   private STORAGE_PROFILES = 'profiles';
   private STORAGE_NETWORKS = 'networks';
-  
+
   public profiles = {};
   public networks = {};
 
@@ -41,9 +41,18 @@ export class LocalDataProvider {
     return this.profilesSave();
   }
 
+  networkActive() {
+    let profile = this.profileActive();
+    let network = new Network();
+
+    Object.assign(network, this.networks[profile.networkId]);
+
+    return network;
+  }
+
   networkAdd(network: Network) {
     this.networks[this.generateUniqueId()] = network;
-    
+
     return this.storage.set(this.STORAGE_NETWORKS, this.networks);
   }
 
@@ -120,8 +129,31 @@ export class LocalDataProvider {
     let profile = this.profileGet(profileId);
 
     if (!profile.wallets[wallet.address]) {
-      profile.wallets[wallet.address] = wallet;
+      return this.walletSave(wallet, profileId);
     }
+
+    return this.profilesSave();
+  }
+
+  walletGet(address: string, profileId?: string): Wallet {
+    if (!profileId) profileId = this.authProvider.activeProfileId;
+
+    let profile = this.profileGet(profileId);
+    let wallet = new Wallet();
+
+    if (profile.wallets[address]) {
+      wallet = wallet.deserialize(profile.wallets[address]);
+      return wallet;
+    }
+
+    return null;
+  }
+
+  walletSave(wallet: Wallet, profileId?: string) {
+    if (!profileId) profileId = this.authProvider.activeProfileId;
+
+    let profile = this.profileGet(profileId);
+    profile.wallets[wallet.address] = wallet;
 
     this.profiles[profileId] = profile;
 

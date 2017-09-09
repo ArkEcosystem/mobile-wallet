@@ -6,12 +6,7 @@ import 'rxjs/add/observable/frompromise';
 import 'rxjs/add/operator/map';
 
 import lodash from 'lodash';
-/*
-  Generated class for the StorageProvider provider.
 
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
 @Injectable()
 export class StorageProvider {
 

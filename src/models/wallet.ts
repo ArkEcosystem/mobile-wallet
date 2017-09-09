@@ -1,18 +1,17 @@
-import { Transaction } from 'ark-ts/model';
-import { Account } from 'ark-ts/model';
+import { Transaction, Account } from 'ark-ts/model';
+import * as constants from '@app/app.constants';
 
 export class Wallet extends Account {
   label?: string;
   transactions?: Transaction[];
-  lastTransactionDate?: Date;
-  lastUpdate?: Date;
+  lastUpdate?: number;
 
   constructor() {
     super();
+    this.reset();
   }
 
   deserialize(input: any): Wallet {
-    this.reset();
     let self: any = this;
 
     for (let prop in input) {
@@ -23,8 +22,12 @@ export class Wallet extends Account {
 
   reset() {
     this.label = null;
+    this.balance = "0";
     this.transactions = [];
-    this.lastTransactionDate = null;
     this.lastUpdate = null;
+  }
+
+  getBalance() {
+    return Number(this.balance) / constants.WALLET_UNIT_TO_SATOSHI;
   }
 }

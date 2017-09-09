@@ -1,0 +1,19 @@
+page-wallet-dashboard {
+  scroll-content {
+    display: flex;
+    flex-direction: column;
+  }
+  .grid {
+    padding: 0;
+  }
+  .account-balance {
+    background: url('../assets/img/wallet/balance-wallet-bg.png') #080e20 repeat;
+    background-size: cover;
+    padding: 2em 1em;
+    color: white;
+  }
+  ion-fab {
+    bottom: 20px!important;
+    right: 20px!important;
+  }
+}
