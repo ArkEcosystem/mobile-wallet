@@ -77,7 +77,10 @@ export class WalletDashboardPage {
           {
             text: translation['Receive'],
             role: 'receive',
-            icon: !this.platform.is('ios') ? 'arrow-round-down' : ''
+            icon: !this.platform.is('ios') ? 'arrow-round-down' : '',
+            handler: () => {
+              return this.openWalletReceive();
+            }
           }, {
             text: translation['Send'],
             role: 'send',
@@ -116,7 +119,16 @@ export class WalletDashboardPage {
     });
   }
 
+  openWalletReceive() {
+    this.navCtrl.push('WalletReceivePage', {
+      address: this.address,
+      token: this.network.token,
+    });
+  }
+
   load() {
+    // TODO: LoadingController
+
     this.profile = this.localDataProvider.profileActive();
     this.network = this.localDataProvider.networkActive();
     this.wallet = this.localDataProvider.walletGet(this.address);

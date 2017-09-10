@@ -83,12 +83,15 @@ export class ProfileSigninPage {
       } else {
         this.authProvider.login(profileId).subscribe((status) => {
           if (status) {
-            var wallets = Object.keys(this.localDataProvider.profileActive().wallets || {});
+            var wallets = this.localDataProvider.profileActive().wallets;
+            var addresses = lodash.keys(wallets) || [];
 
-            if (wallets.length === 0) {
+            if (addresses.length === 0) {
               this.navCtrl.setRoot('WalletEmptyPage');
             } else {
-              this.navCtrl.setRoot('WalletDashboardPage');
+              this.navCtrl.setRoot('WalletDashboardPage', {
+                address: wallets[addresses[0]].address,
+              });
             }
           } else {
             // TODO: Show toast error

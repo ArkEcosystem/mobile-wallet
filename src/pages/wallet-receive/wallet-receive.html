@@ -1,0 +1,32 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'Receive' | translate }} {{ token }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="share()">
+        <ion-icon name="share"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row justify-content-center align-items-end>
+      <ion-col text-center>
+        <h6>{{ 'Tap on address to copy it to clipboard or click on icon to share QR code.' | translate }}</h6>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center>
+        <qr-code [value]="'address'" [size]="180"></qr-code>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center>
+        <button ion-button clear small color="primary" (click)="copyAddress()"><strong>{{ address }}</strong></button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
