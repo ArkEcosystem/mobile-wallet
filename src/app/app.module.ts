@@ -17,6 +17,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { ArkApiProvider } from '../providers/ark-api/ark-api';
+import { MarketDataProvider } from '../providers/market-data/market-data';
 
 export function httpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -52,7 +53,8 @@ export function httpLoaderFactory(http: Http) {
     {provide: StorageProvider, useClass: StorageProvider, deps: [Storage]},
     {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},
     LocalDataProvider,
-    ArkApiProvider
+    ArkApiProvider,
+    MarketDataProvider
   ]
 })
 export class AppModule {}
