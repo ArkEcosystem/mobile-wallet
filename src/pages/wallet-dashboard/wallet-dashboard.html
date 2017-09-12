@@ -13,7 +13,17 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row class="account-balance">
+        <ion-col text-center>
+          <p>{{ 'Balance' | translate }}</p>
+          <h2>{{ network?.symbol }} {{ wallet?.getBalance().toFixed(2) }}</h2>
+          <h5>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) }}</h5>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
@@ -22,13 +32,6 @@
   </ion-fab>
 
   <ion-grid class="main-grid">
-    <ion-row class="account-balance">
-      <ion-col text-center>
-        <p>{{ 'Balance' | translate }}</p>
-        <h2>{{ network?.symbol }} {{ wallet?.getBalance().toFixed(2) }}</h2>
-        <h5>...</h5>
-      </ion-col>
-    </ion-row>
     <ion-row>
       <ion-col>
         <ion-grid class="transactions-list">

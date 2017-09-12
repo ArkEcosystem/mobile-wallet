@@ -1,14 +1,17 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ActionSheetController } from 'ionic-angular';
 
-import { Profile, Wallet } from '@models/model';
+import { Profile, Wallet, MarketTicker, MarketCurrency } from '@models/model';
 import { LocalDataProvider } from '@providers/local-data/local-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
+import { MarketDataProvider } from '@providers/market-data/market-data';
 
 import lodash from 'lodash';
-import { Http, AccountApi, TransactionApi, Network } from 'ark-ts';
+import { Network } from 'ark-ts';
 
 import { TranslateService } from '@ngx-translate/core';
+
+import * as constants from '@app/app.constants';
 
 @IonicPage()
 @Component({
@@ -22,9 +25,8 @@ export class WalletDashboardPage {
   public wallet: Wallet;
 
   public address: string;
-
-  private accountApi: AccountApi;
-  private transactionApi: TransactionApi;
+  public ticker: MarketTicker;
+  public marketCurrency: MarketCurrency;
 
   constructor(
     public platform: Platform,
@@ -34,8 +36,13 @@ export class WalletDashboardPage {
     public arkApiProvider: ArkApiProvider,
     public actionSheetCtrl: ActionSheetController,
     public translateService: TranslateService,
+    public marketDataProvider: MarketDataProvider,
   ) {
     this.address = this.navParams.get('address');
+    this.marketDataProvider.tickerObserver.subscribe((ticker) => {
+      this.ticker = ticker;
+      if (ticker) this.marketCurrency = ticker.getCurrency({ code: 'usd' });
+    });
   }
 
   presentWalletActionSheet() {
@@ -97,7 +104,7 @@ export class WalletDashboardPage {
     });
   }
 
-  refreshTransactions() {
+  refreshTransactions(save: boolean = true) {
     this.arkApiProvider.api().transaction.list({
       recipientId: this.address,
       senderId: this.address,
@@ -105,18 +112,27 @@ export class WalletDashboardPage {
       if (response && response.success) {
         this.wallet.transactions = response.transactions;
         this.wallet.lastUpdate = new Date().getTime();
-        this.localDataProvider.walletSave(this.wallet);
+
+        if (save) this.saveWallet();
       }
     });
   }
 
-  refreshAccount() {
+  refreshPrice() {
+    this.marketDataProvider.refreshPrice();
+  }
+
+  refreshAccount(save: boolean = true) {
     this.arkApiProvider.api().account.get({ address: this.address }).subscribe((response) => {
       if (response.success) {
         this.wallet.deserialize(response.account);
-        this.localDataProvider.walletSave(this.wallet);
+        if (save) this.saveWallet();
       }
     });
+  }
+
+  saveWallet() {
+    this.localDataProvider.walletSave(this.wallet);
   }
 
   openWalletReceive() {
@@ -133,8 +149,14 @@ export class WalletDashboardPage {
     this.network = this.localDataProvider.networkActive();
     this.wallet = this.localDataProvider.walletGet(this.address);
 
-    this.refreshAccount();
-    this.refreshTransactions();
+    setInterval(() => {
+      this.refreshAccount(false);
+      this.refreshTransactions(false);
+    }, constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
+
+    setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
+
+    this.saveWallet();
   }
 
   ionViewDidLoad() {

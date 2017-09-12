@@ -1,9 +1,9 @@
 import lodash from 'lodash';
 
 export interface Currency {
-  code: string;
-  name: string;
-  symbol: string;
+  code?: string;
+  name?: string;
+  symbol?: string;
 }
 
 export const CURRENCIES_LIST: Currency[] = [
@@ -50,6 +50,10 @@ export class MarketTicker {
   change24h: number;
   info: MarketInfo;
   market: MarketCurrency[];
+
+  getCurrency(query: Currency) {
+    return lodash.find(this.market, query);
+  }
 
   deserialize(input: any): MarketTicker {
     let self: any = this;

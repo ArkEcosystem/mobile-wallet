@@ -20,7 +20,7 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public authProvider: AuthProvider,
     public translateService: TranslateService,
-    public localDataProvider: LocalDataProvider,
+    public localDataProvider: LocalDataProvider
   ) {
     platform.ready().then(() => {
       translateService.setDefaultLang('en');
@@ -35,16 +35,17 @@ export class MyApp {
         splashScreen.hide();
 
         if (hasSeenIntro) {
-          const hasSetMasterPassword = authProvider.masterPasswordHasSet();
-          const activeProfile = authProvider.activeProfileGet();
+          authProvider.masterPasswordHasSet().subscribe((hasSetMasterPassword) => {
+            const activeProfile = authProvider.activeProfileGet();
 
-          if (!hasSetMasterPassword && activeProfile) {
-            this.rootPage = 'ProfileDashboardPage';
-          } else {
-            this.rootPage = 'LoginPage';
-          }
-          
-          return;
+            if (!hasSetMasterPassword && activeProfile) {
+              this.rootPage = 'ProfileSigninPage';
+            } else {
+              this.rootPage = 'LoginPage';
+            }
+
+            return;
+          });
         }
 
         this.rootPage = 'IntroPage';
@@ -52,5 +53,6 @@ export class MyApp {
 
     });
   }
+
 }
 
