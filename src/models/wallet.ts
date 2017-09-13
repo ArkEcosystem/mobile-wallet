@@ -1,6 +1,9 @@
-import { Transaction, Account } from 'ark-ts/model';
-import * as constants from '@app/app.constants';
+import { Account } from 'ark-ts/model';
+
 import { MarketCurrency } from '@models/market';
+import { Transaction } from '@models/transaction';
+
+import * as constants from '@app/app.constants';
 
 export class Wallet extends Account {
   label?: string;
@@ -28,6 +31,19 @@ export class Wallet extends Account {
     this.lastUpdate = null;
   }
 
+  loadTransactions(transactions: any) {
+    if (!Array.isArray(transactions)) return;
+
+    this.transactions = [];
+
+    for (let tx of transactions) {
+      let transaction = new Transaction();
+      transaction.deserialize(tx);
+
+      this.transactions.push(transaction);
+    }
+  }
+
   getBalance() {
     return Number(this.balance) / constants.WALLET_UNIT_TO_SATOSHI;
   }
@@ -37,7 +53,7 @@ export class Wallet extends Account {
     let price = currency ? currency.price : 0;
     let totalAmount = balance * price;
 
-    return totalAmount.toFixed(2);
+    return totalAmount;
   }
 
 }

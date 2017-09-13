@@ -110,7 +110,8 @@ export class WalletDashboardPage {
       senderId: this.address,
     }).subscribe((response) => {
       if (response && response.success) {
-        this.wallet.transactions = response.transactions;
+        this.wallet.loadTransactions(response.transactions);
+        console.log(this.wallet.transactions);
         this.wallet.lastUpdate = new Date().getTime();
 
         if (save) this.saveWallet();
@@ -152,11 +153,11 @@ export class WalletDashboardPage {
     setInterval(() => {
       this.refreshAccount(false);
       this.refreshTransactions(false);
+      this.saveWallet();
     }, constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
 
     setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
 
-    this.saveWallet();
   }
 
   ionViewDidLoad() {
