@@ -6,6 +6,7 @@ webpackConfig.resolve = {
   alias: {
     '@providers': path.resolve('./src/providers/'),
     '@models': path.resolve('./src/models/'),
+    '@pipes': path.resolve('./src/pipes/'),
     '@app': path.resolve('./src/app/'),
   }
 }
