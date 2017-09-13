@@ -53,7 +53,7 @@ export class WalletEmptyPage {
   }
 
   openWalletGenerate() {
-    this.navCtrl.push('WalletGeneratePage');
+    this.navCtrl.push('WalletGenerateEntropyPage');
   }
 
   openWalletImport() {

@@ -10,14 +10,14 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
 import { LocalDataProvider } from '@providers/local-data/local-data';
+import { ArkApiProvider } from '../providers/ark-api/ark-api';
+import { MarketDataProvider } from '../providers/market-data/market-data';
 
 // Ionic native
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { ArkApiProvider } from '../providers/ark-api/ark-api';
-import { MarketDataProvider } from '../providers/market-data/market-data';
 
 export function httpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

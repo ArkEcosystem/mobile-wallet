@@ -4,6 +4,7 @@ const path = require('path');
 webpackConfig.resolve = {
   extensions: ['.ts', '.js'],
   alias: {
+    '@components': path.resolve('./src/components/'),
     '@providers': path.resolve('./src/providers/'),
     '@models': path.resolve('./src/models/'),
     '@pipes': path.resolve('./src/pipes/'),

@@ -32,6 +32,7 @@
         "@types/uuid": "^3.4.1",
         "angular2-qrcode": "^2.0.1",
         "ark-ts": "^0.2.3",
+        "bip39": "^2.4.0",
         "cordova-clipboard": "^1.0.0",
         "cordova-plugin-secure-storage": "^2.6.8",
         "ionic-angular": "^3.6.0-201709062053",

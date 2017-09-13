@@ -41,7 +41,8 @@
             <p class="timestamp">{{ tx?.date | date: 'MMM dd, h:mm a' }} | {{ tx?.confirmations }}</p>
             <div text-right item-end>
               <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi | number: '1.0-2' }}</h3>
-              <p class="amount-equivalent">{{ marketCurrency?.symbol }}{{ tx?.getAmountEquivalent(marketHistory, marketCurrency) | unitsSatoshi | number: '1.1-2' }}</p>
+              <p class="amount-equivalent">{{ marketCurrency?.symbol }}{{ tx?.getAmountEquivalent(marketHistory, marketCurrency) | unitsSatoshi | number:
+                '1.1-2' }}</p>
             </div>
             <ion-icon *ngIf="tx?.isSender()" item-end name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
             <ion-icon *ngIf="!tx?.isSender()" item-end name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>

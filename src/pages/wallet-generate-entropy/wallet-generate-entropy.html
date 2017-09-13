@@ -1,0 +1,19 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'Generate Entropy' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-grid (pan)="panEvent($event)">
+    <ion-row>
+      <ion-col text-center>
+        <img src="./assets/img/wallet/hand-swipe.png">
+        <h5>{{ 'Swipe to generate random bytes' | translate }}.</h5>
+        <progress-bar [progress]="progress"></progress-bar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

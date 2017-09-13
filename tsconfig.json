@@ -6,6 +6,7 @@
     "experimentalDecorators": true,
     "baseUrl": "./",
     "paths": {
+      "@components/*": ["src/components/*"],
       "@providers/*": ["src/providers/*"],
       "@models/*": ["src/models/*"],
       "@pipes/*": ["src/pipes/*"],

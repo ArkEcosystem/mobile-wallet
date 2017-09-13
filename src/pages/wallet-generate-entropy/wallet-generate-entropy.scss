@@ -1,0 +1,28 @@
+page-wallet-generate-entropy {
+  ion-content {
+    scroll-content {
+      display: flex;
+      flex-direction: column;
+    }
+    ion-grid {
+      padding: 0;
+      height: 100%;
+    }
+    .grid {
+      padding: 3em 1em;
+    }
+    ion-row {
+      flex: 1;
+    }
+    img {
+      pointer-events: none;
+      display: block;
+      margin: 4em auto;
+      width: 18em;
+      height: 14em;
+    }
+    h5 {
+      margin: 2em auto;
+    }
+  }
+}
