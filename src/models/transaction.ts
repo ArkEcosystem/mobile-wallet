@@ -1,4 +1,7 @@
 import { Transaction as TransactionModel, TransactionType } from 'ark-ts/model';
+import arkConfig from 'ark-ts/config';
+
+import { MarketCurrency, MarketHistory, MarketTicker } from '@models/market';
 
 const TX_TYPES = {
   0: 'Send Ark',
@@ -10,7 +13,10 @@ const TX_TYPES = {
 
 export class Transaction extends TransactionModel {
 
-  constructor() {
+  public date: Date;
+  public totalAmount: number;
+
+  constructor(public address: string) {
     super();
   }
 
@@ -21,19 +27,54 @@ export class Transaction extends TransactionModel {
       self[prop] = input[prop];
     }
 
+    this.date = new Date(this.getTimestamp() * 1000);
+
     return self;
   }
 
-  getTypeLabel() {
+  getAmount() {
+    let amount = this.amount;
+
+    if (this.isSender()) amount = this.amount + this.fee;
+
+    return amount;
+  }
+
+  getAmountEquivalent(history: MarketHistory, marketCurrency: MarketCurrency): number {
+    if (!history) return 0;
+
+    let ticker = history.findDate(this.date);
+    let currency = ticker ? ticker.getCurrency({ code: marketCurrency.code }) : null;
+    let price = currency ? currency.price : 0;
+
+    return this.getAmount() * price;
+  }
+
+  getTimestamp() {
+    var blockchainDate = arkConfig.blockchain.date;
+    var blockchainTime = blockchainDate.getTime() / 1000;
+
+    return this.timestamp + blockchainTime;
+  }
+
+  getTypeLabel(): string {
     return TX_TYPES[this.type];
   }
 
-  isTransfer() {
+  isTransfer(): boolean {
     return this.type == TransactionType.SendArk;
   }
 
-  isSameAddress() {
+  isSameAddress(): boolean {
     return this.senderId == this.recipientId;
+  }
+
+  isSender(): boolean {
+    return this.senderId == this.address;
+  }
+
+  isReceiver(address: string): boolean {
+    return this.recipientId == this.address;
   }
 
 }

@@ -51,12 +51,25 @@ export class MarketTicker {
   info: MarketInfo;
   market: MarketCurrency[];
 
+  constructor(data?: any) {
+    if (!data) return;
+
+    let self: any = this;
+
+    for (let prop in data) {
+      self[prop] = data[prop];
+    }
+
+    return self;
+  }
+
   getCurrency(query: Currency) {
     return lodash.find(this.market, query);
   }
 
   deserialize(input: any): MarketTicker {
     let self: any = this;
+    if (!input || !lodash.isObject(input)) return;
 
     let inputMarket = input.markets ? input.markets[0] : input;
 
@@ -94,17 +107,29 @@ export class MarketTicker {
 }
 
 export class MarketHistory {
-  history: MarketTicker[];
+  history: any;
 
   deserialize(input: any): MarketHistory {
     let self: any = this;
     if (!Array.isArray(input)) return;
 
-    self.history = [];
+    let history = {};
+
     for (let ticker of input) {
-      self.history.push(new MarketTicker().deserialize(ticker));
+      let obj = new MarketTicker().deserialize(ticker);
+      let date = obj.date.setHours(0, 0, 0, 0);
+
+      history[date] = obj;
     }
 
+    self.history = history;
+
     return self;
+  }
+
+  findDate(date: Date): MarketTicker {
+    let timestampDate = date.setHours(0, 0, 0, 0);
+
+    return new MarketTicker(this.history[timestampDate]);
   }
 }

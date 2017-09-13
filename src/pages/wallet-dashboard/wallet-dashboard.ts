@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ActionSheetController } from 'ionic-angular';
 
-import { Profile, Wallet, MarketTicker, MarketCurrency } from '@models/model';
+import { Profile, Wallet, MarketTicker, MarketCurrency, MarketHistory } from '@models/model';
 import { LocalDataProvider } from '@providers/local-data/local-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { MarketDataProvider } from '@providers/market-data/market-data';
@@ -25,7 +25,9 @@ export class WalletDashboardPage {
   public wallet: Wallet;
 
   public address: string;
+
   public ticker: MarketTicker;
+  public marketHistory: MarketHistory;
   public marketCurrency: MarketCurrency;
 
   constructor(
@@ -39,8 +41,11 @@ export class WalletDashboardPage {
     public marketDataProvider: MarketDataProvider,
   ) {
     this.address = this.navParams.get('address');
+
+    this.marketDataProvider.historyObserver.subscribe((history) => this.marketHistory = history);
     this.marketDataProvider.tickerObserver.subscribe((ticker) => {
       this.ticker = ticker;
+      // TODO: Get currency from settings
       if (ticker) this.marketCurrency = ticker.getCurrency({ code: 'usd' });
     });
   }
@@ -111,7 +116,6 @@ export class WalletDashboardPage {
     }).subscribe((response) => {
       if (response && response.success) {
         this.wallet.loadTransactions(response.transactions);
-        console.log(this.wallet.transactions);
         this.wallet.lastUpdate = new Date().getTime();
 
         if (save) this.saveWallet();
@@ -132,6 +136,12 @@ export class WalletDashboardPage {
     });
   }
 
+  refreshData() {
+    this.refreshAccount(false);
+    this.refreshTransactions(false);
+    this.saveWallet();
+  }
+
   saveWallet() {
     this.localDataProvider.walletSave(this.wallet);
   }
@@ -145,19 +155,23 @@ export class WalletDashboardPage {
 
   load() {
     // TODO: LoadingController
+    setInterval(() => {
+      this.refreshData();
+    }, constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
 
+    setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
+  }
+
+  ngOnInit() {
     this.profile = this.localDataProvider.profileActive();
     this.network = this.localDataProvider.networkActive();
     this.wallet = this.localDataProvider.walletGet(this.address);
 
-    setInterval(() => {
-      this.refreshAccount(false);
-      this.refreshTransactions(false);
-      this.saveWallet();
-    }, constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
+    let transactions = this.wallet.transactions;
+    if (transactions) this.wallet.loadTransactions(transactions);
 
-    setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
-
+    this.refreshData();
+    this.refreshPrice();
   }
 
   ionViewDidLoad() {

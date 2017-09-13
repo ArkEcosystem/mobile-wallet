@@ -37,7 +37,7 @@ export class Wallet extends Account {
     this.transactions = [];
 
     for (let tx of transactions) {
-      let transaction = new Transaction();
+      let transaction = new Transaction(this.address);
       transaction.deserialize(tx);
 
       this.transactions.push(transaction);

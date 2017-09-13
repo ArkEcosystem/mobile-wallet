@@ -12,16 +12,12 @@ import * as constants from '@app/app.constants';
 @Injectable()
 export class MarketDataProvider {
 
-  private history: model.MarketHistory;
+  public historyObserver: BehaviorSubject<model.MarketHistory> = new BehaviorSubject(null);
   public tickerObserver: BehaviorSubject<model.MarketTicker> = new BehaviorSubject(null);
 
   constructor(private http: Http, private storageProvider: StorageProvider) {
     this.refreshPrice();
-    this.getApiHistory().subscribe((history) => this.history = history);
-  }
-
-  getHistory(): model.MarketHistory {
-    return this.history;
+    this.getApiHistory().subscribe((history) => this.historyObserver.next(history));
   }
 
   refreshPrice(): void {

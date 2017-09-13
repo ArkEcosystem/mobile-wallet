@@ -34,16 +34,17 @@
   <ion-grid class="main-grid">
     <ion-row>
       <ion-col>
-        <ion-card *ngFor="let transaction of wallet?.transactions?.reverse()" class="tx">
+        <ion-card *ngFor="let tx of wallet?.transactions?.reverse()" class="tx">
           <ion-item>
-            <h3 class="address">{{ transaction.senderId | truncateMiddle: 12 }}</h3>
-            <p class="timestamp">{{ transaction?.timestamp * 1000 | date: 'MMM dd, h:mm a' }} | {{ transaction?.confirmations }}</p>
+            <h3 class="address" *ngIf="tx?.isTransfer()">{{ tx?.recipientId | truncateMiddle: 12 }}</h3>
+            <h3 class="address" *ngIf="!tx?.isTransfer()">{{ tx?.getTypeLabel() | translate }}</h3>
+            <p class="timestamp">{{ tx?.date | date: 'MMM dd, h:mm a' }} | {{ tx?.confirmations }}</p>
             <div text-right item-end>
-              <h3 class="amount">{{ network?.symbol }}{{ transaction?.amount | unitsSatoshi | number: '1.0-2' }}</h3>
-              <p class="amount-equivalent">{{ 'Fee'| translate }}: {{ transaction?.fee | unitsSatoshi | number: '1.1-3' }}</p>
+              <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi | number: '1.0-2' }}</h3>
+              <p class="amount-equivalent">{{ marketCurrency?.symbol }}{{ tx?.getAmountEquivalent(marketHistory, marketCurrency) | unitsSatoshi | number: '1.1-2' }}</p>
             </div>
-            <ion-icon item-end name="ios-arrow-round-up" class="icon-rotate-right" style="color: red">
-            </ion-icon>
+            <ion-icon *ngIf="tx?.isSender()" item-end name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
+            <ion-icon *ngIf="!tx?.isSender()" item-end name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>
           </ion-item>
         </ion-card>
       </ion-col>

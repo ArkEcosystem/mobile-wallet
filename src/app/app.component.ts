@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { AuthProvider } from '@providers/auth/auth';
 import { LocalDataProvider } from '@providers/local-data/local-data';
+import { MarketDataProvider } from '@providers/market-data/market-data';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -20,7 +21,8 @@ export class MyApp {
     public splashScreen: SplashScreen,
     public authProvider: AuthProvider,
     public translateService: TranslateService,
-    public localDataProvider: LocalDataProvider
+    public localDataProvider: LocalDataProvider,
+    public marketlDataProvider: MarketDataProvider,
   ) {
     platform.ready().then(() => {
       translateService.setDefaultLang('en');
