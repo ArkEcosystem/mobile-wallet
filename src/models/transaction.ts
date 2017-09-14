@@ -1,10 +1,10 @@
 import { Transaction as TransactionModel, TransactionType } from 'ark-ts/model';
 import arkConfig from 'ark-ts/config';
 
-import { MarketCurrency, MarketHistory, MarketTicker } from '@models/market';
+import { MarketCurrency, MarketHistory } from '@models/market';
 
 const TX_TYPES = {
-  0: 'Send Ark',
+  0: 'Send',
   1: 'Second Signature Creation',
   2: 'Delegate Registration',
   3: 'Vote',
@@ -41,7 +41,7 @@ export class Transaction extends TransactionModel {
   }
 
   getAmountEquivalent(history: MarketHistory, marketCurrency: MarketCurrency): number {
-    if (!history) return 0;
+    if (!history || !marketCurrency) return 0;
 
     let ticker = history.findDate(this.date);
     let currency = ticker ? ticker.getCurrency({ code: marketCurrency.code }) : null;
@@ -58,7 +58,11 @@ export class Transaction extends TransactionModel {
   }
 
   getTypeLabel(): string {
-    return TX_TYPES[this.type];
+    let type = TX_TYPES[this.type];
+
+    if (this.isTransfer() && !this.isSender()) type = 'Receive';
+
+    return type;
   }
 
   isTransfer(): boolean {

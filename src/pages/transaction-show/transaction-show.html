@@ -1,0 +1,76 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'Transaction' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center>
+        <span>{{ transaction?.getTypeLabel() | translate }}</span>
+        <h2 ion-text [color]="transaction.isSender() ? 'danger' : 'secondary'">
+          {{ transaction?.isSender() ? '-' : '+' }} {{ networkSymbol }}{{ transaction?.getAmount() | unitsSatoshi | number: '1.0-2'
+          }}
+        </h2>
+        <h4>{{ equivalentSymbol }}{{ equivalentAmount | unitsSatoshi | number: '1.2-2' }}</h4>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-left>
+        <ion-list>
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p ion-text>{{ 'ID' | translate }}</p>
+              <h4 item-content class="content">
+                {{ transaction?.id }}
+              </h4>
+            </ion-label>
+          </ion-item>
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p ion-text>{{ 'Confirmations' | translate }}</p>
+              <h4 item-content class="content">
+                {{ transaction?.confirmations }}
+              </h4>
+            </ion-label>
+          </ion-item>
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p ion-text>{{ 'Date' | translate}}</p>
+              <h4 item-content class="content">
+                {{ transaction?.getTimestamp() | date: 'dd.MM.yy | hh:mm a' }}
+              </h4>
+            </ion-label>
+          </ion-item>
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p ion-text>{{ 'From' | translate }}</p>
+              <h4 item-content class="content">
+                {{ transaction?.senderId }}
+              </h4>
+            </ion-label>
+          </ion-item>
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p ion-text>{{ 'To' | translate }}</p>
+              <h4 item-content class="content">
+                {{ transaction?.recipientId }}
+              </h4>
+            </ion-label>
+          </ion-item>
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p ion-text>{{ 'Smart Bridge' | translate }}</p>
+              <h4 item-content class="content">
+                {{ transaction?.vendorField }}
+              </h4>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

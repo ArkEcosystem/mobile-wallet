@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ActionSheetController } from 'ionic-angular';
 
-import { Profile, Wallet, MarketTicker, MarketCurrency, MarketHistory } from '@models/model';
+import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory } from '@models/model';
 import { LocalDataProvider } from '@providers/local-data/local-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { MarketDataProvider } from '@providers/market-data/market-data';
@@ -144,6 +144,15 @@ export class WalletDashboardPage {
 
   saveWallet() {
     this.localDataProvider.walletSave(this.wallet);
+  }
+
+  openTransactionShow(tx: Transaction) {
+    this.navCtrl.push('TransactionShowPage', {
+      transaction: tx,
+      symbol: this.network.symbol,
+      equivalentAmount: tx.getAmountEquivalent(this.marketHistory, this.marketCurrency),
+      equivalentSymbol: this.marketCurrency.symbol,
+    });
   }
 
   openTransactionReceive() {
