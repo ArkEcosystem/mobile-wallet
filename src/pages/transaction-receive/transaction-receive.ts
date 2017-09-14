@@ -4,11 +4,11 @@ import { Clipboard } from '@ionic-native/clipboard';
 
 @IonicPage()
 @Component({
-  selector: 'page-wallet-receive',
-  templateUrl: 'wallet-receive.html',
+  selector: 'page-transaction-receive',
+  templateUrl: 'transaction-receive.html',
   providers: [Clipboard],
 })
-export class WalletReceivePage {
+export class TransactionReceivePage {
 
   public address;
   public token;

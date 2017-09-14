@@ -91,7 +91,7 @@ export class WalletDashboardPage {
             role: 'receive',
             icon: !this.platform.is('ios') ? 'arrow-round-down' : '',
             handler: () => {
-              return this.openWalletReceive();
+              return this.openTransactionReceive();
             }
           }, {
             text: translation['Send'],
@@ -146,8 +146,8 @@ export class WalletDashboardPage {
     this.localDataProvider.walletSave(this.wallet);
   }
 
-  openWalletReceive() {
-    this.navCtrl.push('WalletReceivePage', {
+  openTransactionReceive() {
+    this.navCtrl.push('TransactionReceivePage', {
       address: this.address,
       token: this.network.token,
     });
