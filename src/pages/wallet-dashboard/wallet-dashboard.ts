@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController } from 'ionic-angular';
 
 import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory } from '@models/model';
 import { LocalDataProvider } from '@providers/local-data/local-data';
@@ -39,6 +39,7 @@ export class WalletDashboardPage {
     public actionSheetCtrl: ActionSheetController,
     public translateService: TranslateService,
     public marketDataProvider: MarketDataProvider,
+    public modalCtrl: ModalController,
   ) {
     this.address = this.navParams.get('address');
 
@@ -58,6 +59,9 @@ export class WalletDashboardPage {
             text: translation['Label'],
             role: 'label',
             icon: !this.platform.is('ios') ? 'pricetag' : '',
+            handler: () => {
+              this.openLabelModal();
+            }
           }, {
             text: translation['Register delegate'],
             role: 'delegate',
@@ -160,6 +164,19 @@ export class WalletDashboardPage {
       address: this.address,
       token: this.network.token,
     });
+  }
+
+  openLabelModal() {
+    let modal = this.modalCtrl.create('WalletLabelModalPage', {'label': this.wallet.label });
+
+    modal.onDidDismiss((data) => {
+      if (lodash.isEmpty(data)) return;
+
+      this.wallet.label = data;
+      this.saveWallet();
+    });
+
+    modal.present();
   }
 
   load() {

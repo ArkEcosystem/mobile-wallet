@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { Wallet } from '@models/wallet';
 import { LocalDataProvider } from '@providers/local-data/local-data';
 
-import bip39 from 'bip39';
 import { PrivateKey, Network } from 'ark-ts';
+import bip39 from 'bip39';
 
 @IonicPage()
 @Component({
@@ -15,12 +16,15 @@ export class WalletCreatePage {
 
   public account: any = {
     address: '',
+    qraddress: '{a: ""}',
     entropy: '',
     mnemonic: '',
+    qrpassphrase: '',
     publicKey: '',
     seed: '',
     wif: '',
   }
+  public keySegment: string = 'public';
 
   private currentNetwork: Network;
 
@@ -30,27 +34,38 @@ export class WalletCreatePage {
     public localDataProvider: LocalDataProvider,
   ) {
     this.account.entropy = this.navParams.get('entropy');
-
-    if (!this.account.entropy) this.navCtrl.pop();
+    if (!this.account.entropy) this.navCtrl.popToRoot();
   }
 
   load() {
     this.currentNetwork = this.localDataProvider.networkActive();
 
     this.account.mnemonic = bip39.entropyToMnemonic(this.account.entropy);
+    this.account.qrpassphrase = `{"passphrase": "${this.account.mnemonic}"}`;
 
     let privateKey = PrivateKey.fromSeed(this.account.mnemonic, this.currentNetwork);
     let publicKey = privateKey.getPublicKey();
 
     this.account.publicKey = publicKey.toHex();
     this.account.address = publicKey.getAddress();
+    this.account.qraddress = `{"a": "${this.account.address}"}`;
+
     this.account.wif = privateKey.toWIF();
     this.account.seed = bip39.mnemonicToSeedHex(this.account.mnemonic);
   }
 
+  storeWallet() {
+    let wallet = new Wallet();
+    wallet.address = this.account.address;
+    wallet.publicKey = this.account.publicKey;
+
+    this.localDataProvider.walletAdd(wallet).subscribe((response) => {
+      this.navCtrl.setRoot('ProfileSigninPage');
+    });
+  }
+
   ionViewDidLoad() {
     this.load();
-    console.log(this.account);
   }
 
 }

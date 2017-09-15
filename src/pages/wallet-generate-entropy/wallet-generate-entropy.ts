@@ -10,22 +10,28 @@ import { Crypto } from 'ark-ts/utils';
 })
 export class WalletGenerateEntropyPage {
 
-  public pan: number = 0;
-  public progress: number = 0;
+  public pan: number;
+  public progress: number;
 
-  private bytes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-  private entropy = this.bytes;
+  private bytes;
+  private entropy;
 
-  private turns: number = 20 + parseInt(Number(Math.random() * 10).toString());
-  private count: number = 0;
-  private total: number = this.turns * this.bytes.length;
+  private turns: number;
+  private count: number;
+  private total: number;
 
   private finished: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) { }
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+  ) {
+    this.reset();
+  }
 
   panEvent(e) {
     this.pan++;
+    if (this.finished) return;
 
     if (e.isFinal || e.isFirst) return;
 
@@ -51,11 +57,10 @@ export class WalletGenerateEntropyPage {
       this.bytes[pos] = 1;
 
       this.entropy[pos] = Crypto.randomSeed(1)[0];
+
       this.progress = parseInt(Number(this.count / this.total * 100).toString());
 
       if (this.count > this.total) {
-        if (this.finished) return;
-
         let hex = this.entropy.map(v => this.lpad(v.toString(16), '0', 2)).join('');
         this.navCtrl.push('WalletCreatePage', { entropy: hex });
 
@@ -65,9 +70,24 @@ export class WalletGenerateEntropyPage {
 
   }
 
+  reset() {
+    this.pan = 0;
+    this.progress = 0;
+    this.bytes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this.entropy = this.bytes;
+    this.turns = 20 + parseInt(Number(Math.random() * 10).toString());
+    this.count = 0;
+    this.total = this.turns * this.bytes.length;
+    this.finished = false;
+  }
+
   lpad(str, pad, length) {
     while (str.length < length) str = pad + str
     return str
+  }
+
+  ionViewDidLeave() {
+    this.reset();
   }
 
   ionViewDidLoad() {

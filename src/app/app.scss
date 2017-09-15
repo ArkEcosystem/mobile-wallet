@@ -1,17 +1,3 @@
-// http://ionicframework.com/docs/theming/
-// App Global Sass
-// --------------------------------------------------
-// Put style rules here that you want to apply globally. These
-// styles are for the entire app and not just one component.
-// Additionally, this file can be also used as an entry point
-// to import other Sass files to be included in the output CSS.
-//
-// Shared Sass variables, which can be used to adjust Ionic's
-// default Sass variables, belong in "theme/variables.scss".
-//
-// To declare rules for a specific mode, create a child rule
-// for the .md, .ios, or .wp mode classes. The mode class is
-// automatically applied to the <body> element in the app.
 .button-group {
   .col {
     &:first-child:not(:last-child) {
@@ -38,10 +24,62 @@
   }
 }
 
+.button-continue {
+  margin: 0 auto;
+  display: block;
+  margin-top: 1em;
+  padding: 1.7em 2em;
+}
+
 .icon-rotate-right {
   transform: rotate(30deg);
 }
 
 .icon-rotate-left {
   transform: rotate(-30deg);
+}
+
+.dark-navbar {
+  &>.toolbar-background {
+    background: #101022;
+  }
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.text-selectable {
+  user-select: auto!important;
+}
+
+.list-selectable {
+  .item-block {
+    border-top: none!important;
+  }
+
+  .item {
+    padding: .5em 0;
+    user-select: auto!important;
+    border-bottom: 1px solid #eee!important;
+    p {
+      color: #495b71;
+      font-weight: 600;
+    }
+    .content {
+      margin-top: 5px;
+    }
+  }
+}
+
+.note-message {
+  display: block;
+  text-align: center;
+  padding: 1.2em 1em;
+  margin: 1.5em auto;
+  background: #ffeaa5;
 }

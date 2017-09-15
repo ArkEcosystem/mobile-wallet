@@ -14,18 +14,5 @@ page-transaction-show {
     ion-row {
       padding: 1em 0;
     }
-    .item {
-      user-select: auto !important;
-      padding: .5em 0;
-      border-bottom: 1px solid #eee!important;
-
-      p {
-        color: #495b71;
-        font-weight: 600;
-      }
-      .content {
-        margin-top: 5px;
-      }
-    }
   }
 }

@@ -3,11 +3,6 @@ page-wallet-dashboard {
     display: flex;
     flex-direction: column;
   }
-  .main-navbar {
-    .toolbar-background {
-      background: #101022;
-    }
-  }
   .toolbar {
     padding: 0;
   }
@@ -32,11 +27,9 @@ page-wallet-dashboard {
     margin: .7em auto;
     box-shadow: none;
     border-bottom: 1px solid #edf2f5;
-
     .icon-bg {
       margin: 0;
       padding: 0;
-
       img {
         width: 60px;
         height: 60px;

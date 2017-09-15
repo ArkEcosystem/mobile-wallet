@@ -1,11 +1,79 @@
 <ion-header>
 
-  <ion-navbar no-border-bottom color="primary" class="main-navbar">
+  <ion-navbar no-border-bottom color="dark" class="dark-navbar">
     <ion-title>{{ 'Create Wallet' | translate }}</ion-title>
   </ion-navbar>
 
+  <ion-toolbar no-border-bottom no-border-top class="dark-navbar" color="dark" mode="md">
+    <ion-segment mode="md" color="danger" [(ngModel)]="keySegment">
+      <ion-segment-button value="public">
+        {{ 'Public Address' | translate }}
+      </ion-segment-button>
+      <ion-segment-button value="secret">
+        {{ 'Secret Passphrase' | translate }}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
 </ion-header>
 
-<ion-content padding>
-
+<ion-content>
+  <ion-grid class="no-padding">
+    <ion-row>
+      <ion-col class="no-padding">
+        <ion-toolbar no-border-top class="dark-navbar account-keys" color="dark" mode="md" [ngSwitch]="keySegment">
+          <div *ngSwitchCase="'public'">
+            <div class="qrcode-box">
+              <qr-code [value]="account.qraddress" size="80"></qr-code>
+            </div>
+            <p>{{ 'Public Address (SHARE)' | translate }}</p>
+            <h6>{{ account.address }}</h6>
+          </div>
+          <div *ngSwitchCase="'secret'">
+            <div class="qrcode-box">
+              <qr-code [value]="account.qrpassphrase" size="80"></qr-code>
+            </div>
+            <p>{{ 'Secret Passphrase (KEEP SAFE)' | translate }}</p>
+            <h6>{{ account.mnemonic }}</h6>
+          </div>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-left>
+        <ion-list class="list-selectable">
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p>{{ 'Entropy' | translate }}</p>
+              <h6 ion-content>{{ account.entropy }}</h6>
+            </ion-label>
+          </ion-item>
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p>{{ 'Seed' | translate }}</p>
+              <h6 ion-content>{{ account.seed }}</h6>
+            </ion-label>
+          </ion-item>
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p>{{ 'Public Key' | translate }}</p>
+              <h6 ion-content>{{ account.publicKey }}</h6>
+            </ion-label>
+          </ion-item>
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p>{{ 'WIF' | translate }}</p>
+              <h6 ion-content>{{ account.wif }}</h6>
+            </ion-label>
+          </ion-item>
+          <div class="note-message">
+            Before you continue make sure you have them backed up safely!
+          </div>
+          <button class="button-continue" color="primary" (click)="storeWallet()" ion-button>
+            {{ 'Continue' | translate }}
+          </button>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

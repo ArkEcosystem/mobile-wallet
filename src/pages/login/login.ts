@@ -22,7 +22,7 @@ export class LoginPage {
   }
 
   openProfileCreate() {
-    this.navCtrl.setRoot('ProfileCreatePage');
+    this.navCtrl.push('ProfileCreatePage');
   }
 
 }

@@ -1,7 +1,26 @@
 page-wallet-create {
-  .main-navbar {
-    .toolbar-background {
-      background: #101022;
+  .segment-button {
+    color: white!important;
+  }
+  ion-content {
+    .account-keys {
+      background: url('../assets/img/wallet/balance-wallet-bg.png') #080e20 repeat;
+      background-size: cover;
+      padding: 2em;
+      color: white;
+
+      h6 {
+        min-height: 70px;
+      }
+    }
+    .qrcode-box {
+      display: inline-block;
+      padding: .7em;
+      background: white;
+      border-radius: 5px;
+    }
+    .list-selectable {
+      padding: .5em 2em;
     }
   }
 }
