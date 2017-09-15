@@ -25,6 +25,10 @@ export class MyApp {
     public marketlDataProvider: MarketDataProvider,
   ) {
     platform.ready().then(() => {
+      this.authProvider.logoutObserver.subscribe((status) => {
+        this.rootPage = 'ProfileSigninPage';
+      });
+
       translateService.setDefaultLang('en');
       // TODO: Get language from settings provider
       translateService.use('en');

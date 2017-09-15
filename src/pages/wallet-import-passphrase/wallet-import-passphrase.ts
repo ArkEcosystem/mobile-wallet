@@ -25,7 +25,7 @@ export class WalletImportPassphrasePage {
   ) { }
 
   load() {
-    this.currentProfile = this.localDataProvider.profileActive();
+    this.currentProfile = this.localDataProvider.profileActive;
 
     let networkData = this.localDataProvider.networkGet(this.currentProfile.networkId);
     Object.assign(this.currentNetwork, networkData);

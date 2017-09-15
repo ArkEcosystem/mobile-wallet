@@ -1,15 +1,9 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable, BehaviorSubject } from 'rxjs';
 import 'rxjs/add/operator/map';
 
-/*
-  Generated class for the AuthProvider provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
 @Injectable()
 export class AuthProvider {
 
@@ -22,10 +16,16 @@ export class AuthProvider {
   private SECURESTORAGE_PASSPHRASES = 'passphrases';
 
   public loggedIn: boolean = false;
+  public logoutObserver: BehaviorSubject<boolean> = new BehaviorSubject(true);
+
   public activeProfileId: string;
+  public activeProfileObserver: BehaviorSubject<string> = new BehaviorSubject(null);
 
   constructor(private storage: StorageProvider) {
-    this.activeProfileGet().subscribe((id) => this.activeProfileId = id);
+    this.activeProfileGet().subscribe((id) => {
+      this.activeProfileId = id;
+      this.activeProfileObserver.next(id);
+    });
   }
 
   login(profileId: string, password?: string): Observable<boolean> {
@@ -44,11 +44,18 @@ export class AuthProvider {
             observer.error('Invalid masterpassword');
           }
         }
-        
+
         observer.next(this.loggedIn);
         observer.complete();
       });
     });
+  }
+
+  logout() {
+    this.loggedIn = false;
+    this.activeProfileSet();
+
+    this.logoutObserver.next(true);
   }
 
   activeWalletSet(address?: string): void {
@@ -61,6 +68,8 @@ export class AuthProvider {
 
   activeProfileSet(id?: string): void {
     this.activeProfileId = id;
+    this.activeProfileObserver.next(id);
+
     this.storage.set(this.STORAGE_ACTIVE_PROFILE, id);
   }
 

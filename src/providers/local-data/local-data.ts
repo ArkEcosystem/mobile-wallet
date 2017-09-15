@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable, BehaviorSubject } from 'rxjs';
 import 'rxjs/add/operator/map';
 
 import { Contact, Profile, Wallet } from '@models/model';
@@ -20,9 +20,25 @@ export class LocalDataProvider {
   public profiles = {};
   public networks = {};
 
+  public profileActive: Profile;
+  public profileActiveObserver: BehaviorSubject<Profile> = new BehaviorSubject(null);
+
+  public networkActive: Network;
+  public networkActiveObserver: BehaviorSubject<Network> = new BehaviorSubject(null);
+
   constructor(public storage: StorageProvider, public authProvider: AuthProvider) {
     this.profilesLoad().subscribe((profiles) => this.profiles = profiles);
     this.networksLoad().subscribe((networks) => this.networks = networks);
+
+    this.authProvider.activeProfileObserver.subscribe((id) => {
+      if (lodash.isEmpty(id)) {
+        this.profileActiveObserver.next(null);
+        this.networkActiveObserver.next(null);
+      } else {
+        this._setProfileActive();
+        this._setNetworkActive();
+      }
+    });
   }
 
   contactAdd(profileId: string, contact: Contact) {
@@ -41,13 +57,15 @@ export class LocalDataProvider {
     return this.profilesSave();
   }
 
-  networkActive() {
-    let profile = this.profileActive();
+  private _setNetworkActive(): void {
+    if (!this.profileActive) return;
+
     let network = new Network();
 
-    Object.assign(network, this.networks[profile.networkId]);
+    Object.assign(network, this.networks[this.profileActive.networkId]);
+    this.networkActiveObserver.next(network);
 
-    return network;
+    this.networkActive = network;
   }
 
   networkAdd(network: Network) {
@@ -89,14 +107,14 @@ export class LocalDataProvider {
     });
   }
 
-  profileActive(): Profile {
+  private _setProfileActive(): void {
     let activeId = this.authProvider.activeProfileId;
 
     if (activeId && this.profiles[activeId]) {
-      return new Profile().deserialize(this.profiles[activeId]);
+      let profile = new Profile().deserialize(this.profiles[activeId]);
+      this.profileActive = profile;
+      this.profileActiveObserver.next(profile);
     }
-
-    return null;
   }
 
   profileAdd(profile: Profile) {

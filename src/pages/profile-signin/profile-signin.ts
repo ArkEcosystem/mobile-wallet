@@ -83,7 +83,7 @@ export class ProfileSigninPage {
       } else {
         this.authProvider.login(profileId).subscribe((status) => {
           if (status) {
-            var wallets = this.localDataProvider.profileActive().wallets;
+            var wallets = this.localDataProvider.profileActive.wallets;
             var addresses = lodash.keys(wallets) || [];
 
             if (addresses.length === 0) {

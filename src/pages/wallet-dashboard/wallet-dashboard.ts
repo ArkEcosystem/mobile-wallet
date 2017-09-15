@@ -7,7 +7,7 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 
 import lodash from 'lodash';
-import { Network } from 'ark-ts';
+import { Network, Fees } from 'ark-ts';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -22,6 +22,7 @@ export class WalletDashboardPage {
 
   public profile: Profile;
   public network: Network;
+  public fees: Fees;
   public wallet: Wallet;
 
   public address: string;
@@ -61,11 +62,14 @@ export class WalletDashboardPage {
             icon: !this.platform.is('ios') ? 'pricetag' : '',
             handler: () => {
               this.openLabelModal();
-            }
+            },
           }, {
             text: translation['Register delegate'],
             role: 'delegate',
             icon: !this.platform.is('ios') ? 'contact' : '',
+            handler: () => {
+              this.openRegisterDelegateModal();
+            },
           }, {
             text: translation['2nd passphrase'],
             role: '2ndpassphrase',
@@ -114,7 +118,7 @@ export class WalletDashboardPage {
   }
 
   refreshTransactions(save: boolean = true) {
-    this.arkApiProvider.api().transaction.list({
+    this.arkApiProvider.api.transaction.list({
       recipientId: this.address,
       senderId: this.address,
     }).subscribe((response) => {
@@ -132,7 +136,7 @@ export class WalletDashboardPage {
   }
 
   refreshAccount(save: boolean = true) {
-    this.arkApiProvider.api().account.get({ address: this.address }).subscribe((response) => {
+    this.arkApiProvider.api.account.get({ address: this.address }).subscribe((response) => {
       if (response.success) {
         this.wallet.deserialize(response.account);
         if (save) this.saveWallet();
@@ -179,6 +183,24 @@ export class WalletDashboardPage {
     modal.present();
   }
 
+  openRegisterDelegateModal() {
+    this.fees = this.arkApiProvider.fees;
+
+    let modal = this.modalCtrl.create('WalletRegisterDelegateModalPage', {
+      fee: this.fees.delegate,
+      symbol: this.network.symbol,
+    });
+
+    modal.onDidDismiss((name) => {
+      if (lodash.isEmpty(name)) return;
+
+      // TODO: Get pin code
+      // this.arkApiProvider.api.transaction.createDelegate();
+    });
+
+    modal.present();
+  }
+
   load() {
     // TODO: LoadingController
     setInterval(() => {
@@ -189,8 +211,9 @@ export class WalletDashboardPage {
   }
 
   ngOnInit() {
-    this.profile = this.localDataProvider.profileActive();
-    this.network = this.localDataProvider.networkActive();
+    this.profile = this.localDataProvider.profileActive;
+    this.network = this.localDataProvider.networkActive;
+    this.fees = this.arkApiProvider.fees;
     this.wallet = this.localDataProvider.walletGet(this.address);
 
     let transactions = this.wallet.transactions;

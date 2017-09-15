@@ -38,7 +38,7 @@ export class WalletCreatePage {
   }
 
   load() {
-    this.currentNetwork = this.localDataProvider.networkActive();
+    this.currentNetwork = this.localDataProvider.networkActive;
 
     this.account.mnemonic = bip39.entropyToMnemonic(this.account.entropy);
     this.account.qrpassphrase = `{"passphrase": "${this.account.mnemonic}"}`;
