@@ -6,7 +6,8 @@
         <ion-icon name="menu"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>{{ 'My Wallet' | translate }}</ion-title>
+    <ion-title *ngIf="wallet?.label">{{ wallet?.label }}</ion-title>
+    <ion-title *ngIf="!wallet?.label">{{ 'My Wallet' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="presentWalletActionSheet()">
         <ion-icon name="md-more"></ion-icon>
