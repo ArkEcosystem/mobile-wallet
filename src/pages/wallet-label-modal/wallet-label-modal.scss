@@ -1,0 +1,31 @@
+page-wallet-label-modal {
+  ion-content {
+    scroll-content {
+      display: flex;
+      flex-direction: column;
+    }
+    ion-grid {
+      padding: 0;
+      height: 100%;
+    }
+    .grid {
+      padding: 2em 1em;
+    }
+  }
+}
+
+@media not all and (min-height: 600px) and (min-width: 768px) {
+  ion-modal ion-backdrop {
+    visibility: visible;
+  }
+}
+.modal-wrapper {
+  position: absolute;
+  width: 80%;
+  height: 45%;
+  top: 30%;
+  left:0;
+  right:0;
+  margin-left:auto;
+  margin-right:auto;
+}
