@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
 @IonicPage()
@@ -14,6 +14,7 @@ export class WalletLabelModalPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewController: ViewController,
+    public ele: ElementRef,
   ) {
     this.label = this.navParams.get('label') || '';
   }
@@ -24,6 +25,12 @@ export class WalletLabelModalPage {
 
   submitForm() {
     this.viewController.dismiss(this.label);
+  }
+
+  ngAfterViewInit() {
+    // Change modal size
+    let claz = this.ele.nativeElement.parentElement.getAttribute('class') + ' modal-label';
+    this.ele.nativeElement.parentElement.setAttribute('class', claz);
   }
 
   ionViewDidLoad() {

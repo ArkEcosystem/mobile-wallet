@@ -54,3 +54,9 @@ page-wallet-dashboard {
     }
   }
 }
+
+@media not all and (min-height: 600px) and (min-width: 768px) {
+  ion-modal ion-backdrop {
+    visibility: visible;
+  }
+}

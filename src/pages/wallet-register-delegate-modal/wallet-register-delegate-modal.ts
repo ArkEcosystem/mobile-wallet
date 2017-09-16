@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
 @IonicPage()
@@ -16,6 +16,7 @@ export class WalletRegisterDelegateModalPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
+    public ele: ElementRef,
   ) {
     this.fee = this.navParams.get('fee');
     this.symbol = this.navParams.get('symbol');
@@ -27,6 +28,12 @@ export class WalletRegisterDelegateModalPage {
 
   submitForm() {
     this.viewCtrl.dismiss(this.name);
+  }
+
+  ngAfterViewInit() {
+    // Change modal size
+    let claz = this.ele.nativeElement.parentElement.getAttribute('class') + ' modal-register-delegate';
+    this.ele.nativeElement.parentElement.setAttribute('class', claz);
   }
 
   ionViewDidLoad() {

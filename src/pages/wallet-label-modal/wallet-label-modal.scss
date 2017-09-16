@@ -14,12 +14,7 @@ page-wallet-label-modal {
   }
 }
 
-@media not all and (min-height: 600px) and (min-width: 768px) {
-  ion-modal ion-backdrop {
-    visibility: visible;
-  }
-}
-.modal-wrapper {
+.modal-label {
   position: absolute;
   width: 80%;
   height: 45%;

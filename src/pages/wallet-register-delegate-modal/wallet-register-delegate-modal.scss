@@ -17,16 +17,10 @@ page-wallet-register-delegate-modal {
   }
 }
 
-@media not all and (min-height: 600px) and (min-width: 768px) {
-  ion-modal ion-backdrop {
-    visibility: visible;
-  }
-}
-
-.modal-wrapper {
+.modal-register-delegate {
   position: absolute;
   width: 85%;
-  height: 55%;
+  height: 60%;
   top: 20%;
   left: 0;
   right: 0;
