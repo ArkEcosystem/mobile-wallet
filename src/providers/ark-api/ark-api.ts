@@ -11,10 +11,10 @@ import lodash from 'lodash';
 @Injectable()
 export class ArkApiProvider {
 
-  private network: arkts.Network;
   private http: arkts.Http;
   private client: arkts.Client;
 
+  public network: arkts.Network;
   public fees: arkts.Fees;
   public api: arkts.Client;
 
