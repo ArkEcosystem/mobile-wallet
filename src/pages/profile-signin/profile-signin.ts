@@ -24,7 +24,7 @@ export class ProfileSigninPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public localDataProvider: UserDataProvider,
+    public userDataProvider: UserDataProvider,
     public translateService: TranslateService,
     public authProvider: AuthProvider,
     public alertCtrl: AlertController,
@@ -55,14 +55,17 @@ export class ProfileSigninPage {
   }
 
   delete(profileId: string) {
-    return this.localDataProvider.profileRemove(profileId).subscribe((result) => {
+    return this.userDataProvider.profileRemove(profileId).subscribe((result) => {
       this.load();
     });
   }
 
   isMainnet(profileId: string) {
-    if (this.profiles[profileId]) {
-      return this.networks[this.profiles[profileId].networkId].type === NetworkType.Mainnet;
+    let profile = this.userDataProvider.profileGet(profileId);
+
+    if (profile) {
+      let network = this.userDataProvider.networkGet(profile.networkId);
+      return network.type === NetworkType.Mainnet;
     }
   }
 
@@ -83,7 +86,7 @@ export class ProfileSigninPage {
       } else {
         this.authProvider.login(profileId).subscribe((status) => {
           if (status) {
-            var wallets = this.localDataProvider.profileActive.wallets;
+            var wallets = this.userDataProvider.profileActive.wallets;
             var addresses = lodash.keys(wallets) || [];
 
             if (addresses.length === 0) {
@@ -102,10 +105,10 @@ export class ProfileSigninPage {
   }
 
   load() {
-    this.profiles = this.localDataProvider.profiles;
+    this.profiles = this.userDataProvider.profiles;
     this.profilesIds = lodash.keys(this.profiles);
 
-    this.networks = this.localDataProvider.networks;
+    this.networks = this.userDataProvider.networks;
   }
 
   isEmpty() {

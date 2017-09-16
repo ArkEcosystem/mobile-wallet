@@ -38,8 +38,8 @@ export class ArkApiProvider {
     this.api.peer.findGoodPeer().subscribe((response) => {
       if (response) {
         this.network.activePeer = response;
-        this._setFees();
       }
+      this._setFees();
     });
   }
 

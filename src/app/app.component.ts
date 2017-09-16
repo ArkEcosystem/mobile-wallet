@@ -6,6 +6,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { MarketDataProvider } from '@providers/market-data/market-data';
+import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -23,6 +24,7 @@ export class MyApp {
     public translateService: TranslateService,
     public localDataProvider: UserDataProvider,
     public marketlDataProvider: MarketDataProvider,
+    public settingsDataProvider: SettingsDataProvider,
   ) {
     platform.ready().then(() => {
       this.authProvider.logoutObserver.subscribe((status) => {

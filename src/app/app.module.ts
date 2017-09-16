@@ -12,6 +12,7 @@ import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ArkApiProvider } from '../providers/ark-api/ark-api';
 import { MarketDataProvider } from '../providers/market-data/market-data';
+import { SettingsDataProvider } from '../providers/settings-data/settings-data';
 
 // Ionic native
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -54,7 +55,8 @@ export function httpLoaderFactory(http: Http) {
     {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},
     UserDataProvider,
     ArkApiProvider,
-    MarketDataProvider
+    MarketDataProvider,
+    SettingsDataProvider,
   ]
 })
 export class AppModule {}

@@ -27,7 +27,9 @@ export class UserDataProvider {
 
   constructor(public storage: StorageProvider, public authProvider: AuthProvider) {
     this.profilesLoad().subscribe((profiles) => this.profiles = profiles);
-    this.networksLoad().subscribe((networks) => this.networks = networks);
+    this.networksLoad().subscribe((networks) => {
+      this.networks = networks;
+    });
 
     this.authProvider.activeProfileObserver.subscribe((id) => {
       if (lodash.isEmpty(id)) {
