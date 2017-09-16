@@ -6,6 +6,8 @@ import { Transaction } from '@models/transaction';
 import * as constants from '@app/app.constants';
 
 export class Wallet extends Account {
+  username: string;
+  isDelegate: boolean;
   label?: string;
   transactions?: Transaction[];
   lastUpdate?: number;
@@ -27,6 +29,8 @@ export class Wallet extends Account {
   reset() {
     this.label = null;
     this.balance = "0";
+    this.isDelegate =  false;
+    this.username = null;
     this.transactions = [];
     this.lastUpdate = null;
   }
