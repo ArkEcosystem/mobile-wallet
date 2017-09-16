@@ -11,11 +11,10 @@ import lodash from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { Network } from 'ark-ts/model';
 
-@Injectable()
-export class LocalDataProvider {
+import * as constants from '@app/app.constants';
 
-  private STORAGE_PROFILES = 'profiles';
-  private STORAGE_NETWORKS = 'networks';
+@Injectable()
+export class UserDataProvider {
 
   public profiles = {};
   public networks = {};
@@ -42,7 +41,7 @@ export class LocalDataProvider {
   }
 
   contactAdd(profileId: string, contact: Contact) {
-    this.profiles[profileId].contacts[this.generateUniqueId()] = contact;
+    this.profiles[profileId].contacts[this._generateUniqueId()] = contact;
 
     return this.profilesSave();
   }
@@ -69,9 +68,9 @@ export class LocalDataProvider {
   }
 
   networkAdd(network: Network) {
-    this.networks[this.generateUniqueId()] = network;
+    this.networks[this._generateUniqueId()] = network;
 
-    return this.storage.set(this.STORAGE_NETWORKS, this.networks);
+    return this.storage.set(constants.STORAGE_NETWORKS, this.networks);
   }
 
   networkGet(networkId: string) {
@@ -88,15 +87,15 @@ export class LocalDataProvider {
     const defaults = Network.getAll();
 
     return Observable.create((observer) => {
-      this.storage.getObject(this.STORAGE_NETWORKS).subscribe((networks) => {
+      this.storage.getObject(constants.STORAGE_NETWORKS).subscribe((networks) => {
         if (!networks || lodash.isEmpty(networks)) {
           const uniqueDefaults = {};
 
           for (var i = 0; i < defaults.length; i++) {
-            uniqueDefaults[this.generateUniqueId()] = defaults[i];
+            uniqueDefaults[this._generateUniqueId()] = defaults[i];
           }
 
-          this.storage.set(this.STORAGE_NETWORKS, uniqueDefaults);
+          this.storage.set(constants.STORAGE_NETWORKS, uniqueDefaults);
           observer.next(uniqueDefaults);
         } else {
           observer.next(networks);
@@ -118,7 +117,7 @@ export class LocalDataProvider {
   }
 
   profileAdd(profile: Profile) {
-    this.profiles[this.generateUniqueId()] = profile;
+    this.profiles[this._generateUniqueId()] = profile;
 
     return this.profilesSave();
   }
@@ -134,11 +133,11 @@ export class LocalDataProvider {
   }
 
   profilesLoad() {
-    return this.storage.getObject(this.STORAGE_PROFILES);
+    return this.storage.getObject(constants.STORAGE_PROFILES);
   }
 
   profilesSave(profiles = this.profiles) {
-    return this.storage.set(this.STORAGE_PROFILES, profiles);
+    return this.storage.set(constants.STORAGE_PROFILES, profiles);
   }
 
   walletAdd(wallet: Wallet, profileId?: string) {
@@ -178,7 +177,7 @@ export class LocalDataProvider {
     return this.profilesSave();
   }
 
-  private generateUniqueId(): string {
+  private _generateUniqueId(): string {
     return uuid();
   }
 

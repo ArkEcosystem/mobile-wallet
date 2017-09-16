@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController } from 'ionic-angular';
 
 import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory } from '@models/model';
-import { LocalDataProvider } from '@providers/local-data/local-data';
+import { UserDataProvider } from '@providers/user-data/user-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 
@@ -35,7 +35,7 @@ export class WalletDashboardPage {
     public platform: Platform,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public localDataProvider: LocalDataProvider,
+    public localDataProvider: UserDataProvider,
     public arkApiProvider: ArkApiProvider,
     public actionSheetCtrl: ActionSheetController,
     public translateService: TranslateService,

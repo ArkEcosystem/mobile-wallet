@@ -33,8 +33,4 @@ export class WalletLabelModalPage {
     this.ele.nativeElement.parentElement.setAttribute('class', claz);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletLabelModalPage');
-  }
-
 }

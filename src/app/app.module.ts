@@ -9,7 +9,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 // Custom providers
 import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
-import { LocalDataProvider } from '@providers/local-data/local-data';
+import { UserDataProvider } from '@providers/user-data/user-data';
 import { ArkApiProvider } from '../providers/ark-api/ark-api';
 import { MarketDataProvider } from '../providers/market-data/market-data';
 
@@ -52,7 +52,7 @@ export function httpLoaderFactory(http: Http) {
     // Custom providers
     {provide: StorageProvider, useClass: StorageProvider, deps: [Storage]},
     {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},
-    LocalDataProvider,
+    UserDataProvider,
     ArkApiProvider,
     MarketDataProvider
   ]

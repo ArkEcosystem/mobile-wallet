@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
-import { LocalDataProvider } from '@providers/local-data/local-data';
+import { UserDataProvider } from '@providers/user-data/user-data';
 import { AuthProvider } from '@providers/auth/auth';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -24,7 +24,7 @@ export class ProfileSigninPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public localDataProvider: LocalDataProvider,
+    public localDataProvider: UserDataProvider,
     public translateService: TranslateService,
     public authProvider: AuthProvider,
     public alertCtrl: AlertController,
@@ -35,15 +35,15 @@ export class ProfileSigninPage {
   }
 
   showDeleteConfirm(profileId: string) {
-    this.translateService.get(['Are you sure?', 'Confirm', 'Cancel']).subscribe((data) => {
+    this.translateService.get(['Are you sure?', 'Confirm', 'Cancel']).subscribe((translation) => {
       let confirm = this.alertCtrl.create({
-        title: data['Are you sure?'],
+        title: translation['Are you sure?'],
         buttons: [
           {
-            text: data['Cancel']
+            text: translation['Cancel']
           },
           {
-            text: data['Confirm'],
+            text: translation['Confirm'],
             handler: () => {
               this.delete(profileId);
             }
@@ -103,7 +103,7 @@ export class ProfileSigninPage {
 
   load() {
     this.profiles = this.localDataProvider.profiles;
-    this.profilesIds = Object.keys(this.profiles);
+    this.profilesIds = lodash.keys(this.profiles);
 
     this.networks = this.localDataProvider.networks;
   }

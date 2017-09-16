@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Wallet } from '@models/wallet';
-import { LocalDataProvider } from '@providers/local-data/local-data';
+import { UserDataProvider } from '@providers/user-data/user-data';
 
 import { PrivateKey, Network } from 'ark-ts';
 import bip39 from 'bip39';
@@ -31,7 +31,7 @@ export class WalletCreatePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public localDataProvider: LocalDataProvider,
+    public localDataProvider: UserDataProvider,
   ) {
     this.account.entropy = this.navParams.get('entropy');
     if (!this.account.entropy) this.navCtrl.popToRoot();

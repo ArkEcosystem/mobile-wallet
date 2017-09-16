@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
 import bip39 from 'bip39';
@@ -18,6 +18,7 @@ export class WalletRegisterSecondPassphrasePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
+    public ele: ElementRef,
   ) {
     this.fee = this.navParams.get('fee');
     this.passphrase = bip39.generateMnemonic();
@@ -32,8 +33,10 @@ export class WalletRegisterSecondPassphrasePage {
     this.viewCtrl.dismiss(this.passphrase);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletRegisterSecondPassphrasePage');
+  ngAfterViewInit() {
+    // Change modal size
+    let claz = this.ele.nativeElement.parentElement.getAttribute('class') + ' modal-register-second-passphrase';
+    this.ele.nativeElement.parentElement.setAttribute('class', claz);
   }
 
 }

@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Profile } from '@models/profile';
-import { LocalDataProvider } from '@providers/local-data/local-data';
+import { UserDataProvider } from '@providers/user-data/user-data';
+
+import lodash from 'lodash';
 
 @IonicPage()
 @Component({
@@ -19,7 +21,7 @@ export class ProfileCreatePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public localDataProvider: LocalDataProvider,
+    public userDataProvider: UserDataProvider,
   ) { }
 
   onSelectNetwork(networkId: string) {
@@ -31,14 +33,14 @@ export class ProfileCreatePage {
     profile.name = this.newProfile.name;
     profile.networkId = this.newProfile.networkId;
 
-    this.localDataProvider.profileAdd(profile).subscribe((result) => {
+    this.userDataProvider.profileAdd(profile).subscribe((result) => {
       this.navCtrl.setRoot('ProfileSigninPage');
     });
   }
 
   load() {
-    this.networks = this.localDataProvider.networks;
-    this.networksIds = Object.keys(this.networks);
+    this.networks = this.userDataProvider.networks;
+    this.networksIds = lodash.keys(this.networks);
     this.newProfile.networkId = this.networksIds[0];
   }
 

@@ -4,16 +4,10 @@ import { StorageProvider } from '@providers/storage/storage';
 import { Observable, BehaviorSubject } from 'rxjs';
 import 'rxjs/add/operator/map';
 
+import * as constants from '@app/app.constants';
+
 @Injectable()
 export class AuthProvider {
-
-  private STORAGE_ACTIVE_PROFILE = 'active_profile';
-  private STORAGE_ACTIVE_WALLET = 'active_wallet';
-  private STORAGE_INTROSEEN = 'intro';
-
-  private STORAGE_MASTERPASSWORD = 'masterpassword';
-  private STORAGE_MASTERPASSWORD_VALIDATE = 'ark';
-  private SECURESTORAGE_PASSPHRASES = 'passphrases';
 
   public loggedIn: boolean = false;
   public logoutObserver: BehaviorSubject<boolean> = new BehaviorSubject(true);
@@ -58,28 +52,20 @@ export class AuthProvider {
     this.logoutObserver.next(true);
   }
 
-  activeWalletSet(address?: string): void {
-    this.storage.set(this.STORAGE_ACTIVE_WALLET, address);
-  }
-
-  activeWalletGet() {
-    return this.storage.get(this.STORAGE_ACTIVE_WALLET);
-  }
-
   activeProfileSet(id?: string): void {
     this.activeProfileId = id;
     this.activeProfileObserver.next(id);
 
-    this.storage.set(this.STORAGE_ACTIVE_PROFILE, id);
+    this.storage.set(constants.STORAGE_ACTIVE_PROFILE, id);
   }
 
   activeProfileGet(): Observable<string> {
-    return this.storage.get(this.STORAGE_ACTIVE_PROFILE);
+    return this.storage.get(constants.STORAGE_ACTIVE_PROFILE);
   }
 
   introHasSeen(): Observable<boolean> {
     return Observable.create((observer) => {
-      this.storage.get(this.STORAGE_INTROSEEN).subscribe((introSeen) => {
+      this.storage.get(constants.STORAGE_INTROSEEN).subscribe((introSeen) => {
         observer.next(introSeen == 'true');
         observer.complete();
       });
@@ -87,25 +73,25 @@ export class AuthProvider {
   }
 
   introSetSeen() {
-    this.storage.set(this.STORAGE_INTROSEEN, true);
+    this.storage.set(constants.STORAGE_INTROSEEN, true);
   }
 
   masterPasswordHasSet() {
-    return this.storage.get(this.STORAGE_MASTERPASSWORD);
+    return this.storage.get(constants.STORAGE_MASTERPASSWORD);
   }
 
   masterPasswordSet(password: string) {
     // TODO:
-    const encrypt = this.STORAGE_MASTERPASSWORD_VALIDATE;
+    const encrypt = constants.STORAGE_MASTERPASSWORD_VALIDATE;
 
-    this.storage.set(this.STORAGE_MASTERPASSWORD, encrypt);
+    this.storage.set(constants.STORAGE_MASTERPASSWORD, encrypt);
   }
 
   masterPasswordValidate(password: string) {
     return Observable.create((observer) => {
-      this.storage.get(this.STORAGE_MASTERPASSWORD).subscribe((master) => {
+      this.storage.get(constants.STORAGE_MASTERPASSWORD).subscribe((master) => {
         // TODO:
-        const decrypt = this.STORAGE_MASTERPASSWORD_VALIDATE;
+        const decrypt = constants.STORAGE_MASTERPASSWORD_VALIDATE;
         observer.next(decrypt);
         observer.complete();
       });

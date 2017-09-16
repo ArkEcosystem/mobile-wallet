@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-import { LocalDataProvider } from '@providers/local-data/local-data';
+import { UserDataProvider } from '@providers/user-data/user-data';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
@@ -18,8 +18,8 @@ export class ArkApiProvider {
   public fees: arkts.Fees;
   public api: arkts.Client;
 
-  constructor(public localDataProvider: LocalDataProvider) {
-    this.localDataProvider.networkActiveObserver.subscribe((network) => {
+  constructor(public userDataProvider: UserDataProvider) {
+    this.userDataProvider.networkActiveObserver.subscribe((network) => {
       this.network = network;
 
       if (lodash.isEmpty(network)) {
