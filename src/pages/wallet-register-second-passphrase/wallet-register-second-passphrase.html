@@ -1,0 +1,34 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ '2nd passphrase' | translatee }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <form #registerSecondPassphrase="ngForm">
+          <ion-item>
+            <ion-label>{{ 'Additional password' }}</ion-label>
+            <ion-textarea [(ngModel)]="passphrase" name="passphrase" required></ion-textarea>
+          </ion-item>
+          <button ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid" (click)="submitForm()">{{ 'Next' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="note-toolbar">
+  <ion-toolbar text-center>
+    <h6>{{ 'Please backup securely the second passphrase, this client does NOT store it and thus cannot recover your it.' | translate }}</h6>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,18 @@
+page-wallet-register-second-passphrase {
+  ion-content {
+    scroll-content {
+      display: flex;
+      flex-direction: column;
+    }
+    ion-grid {
+      padding: 0;
+      height: 100%;
+    }
+    .grid {
+      padding: 2em 1em;
+    }
+    .button {
+      margin-top: 2em;
+    }
+  }
+}
