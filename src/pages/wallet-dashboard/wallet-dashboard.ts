@@ -54,37 +54,44 @@ export class WalletDashboardPage {
 
   presentWalletActionSheet() {
     this.translateService.get(['Label', 'Register delegate', '2nd passphrase', 'Delete wallet', 'Cancel']).subscribe((translation) => {
-      let action = this.actionSheetCtrl.create({
-        buttons: [
-          {
-            text: translation['Label'],
-            role: 'label',
-            icon: !this.platform.is('ios') ? 'pricetag' : '',
-            handler: () => {
-              this.openLabelModal();
-            },
-          }, {
-            text: translation['Register delegate'],
-            role: 'delegate',
-            icon: !this.platform.is('ios') ? 'contact' : '',
-            handler: () => {
-              this.openRegisterDelegateModal();
-            },
-          }, {
-            text: translation['2nd passphrase'],
-            role: '2ndpassphrase',
-            icon: !this.platform.is('ios') ? 'lock' : '',
-          }, {
-            text: translation['Delete wallet'],
-            role: 'delete',
-            icon: !this.platform.is('ios') ? 'trash' : '',
-          }, {
-            text: translation['Cancel'],
-            role: 'cancel',
-            icon: !this.platform.is('ios') ? 'close' : ''
-          }
-        ]
-      });
+      let delegateItem =  {
+        text: translation['Register delegate'],
+        role: 'delegate',
+        icon: !this.platform.is('ios') ? 'contact' : '',
+        handler: () => {
+          this.openRegisterDelegateModal();
+        },
+      };
+
+      let secondPassphraseItem = {
+        text: translation['2nd passphrase'],
+        role: '2ndpassphrase',
+        icon: !this.platform.is('ios') ? 'lock' : '',
+      };
+
+      let buttons = [
+        {
+          text: translation['Label'],
+          role: 'label',
+          icon: !this.platform.is('ios') ? 'pricetag' : '',
+          handler: () => {
+            this.openLabelModal();
+          },
+        }, {
+          text: translation['Delete wallet'],
+          role: 'delete',
+          icon: !this.platform.is('ios') ? 'trash' : '',
+        }, {
+          text: translation['Cancel'],
+          role: 'cancel',
+          icon: !this.platform.is('ios') ? 'close' : ''
+        }
+      ];
+
+      // TODO: Delegate item
+      if (!this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
+
+      let action = this.actionSheetCtrl.create({buttons});
 
       action.present();
     });
@@ -193,6 +200,24 @@ export class WalletDashboardPage {
 
     modal.onDidDismiss((name) => {
       if (lodash.isEmpty(name)) return;
+
+      // TODO: Get pin code
+      // this.arkApiProvider.api.transaction.createDelegate();
+    });
+
+    modal.present();
+  }
+
+  openRegisterSecondPassphrase() {
+    this.fees = this.arkApiProvider.fees;
+
+    let modal = this.modalCtrl.create('WalletRegisterSecondPassphrase', {
+      fee: this.fees.secondsignature,
+      symbol: this.network.symbol,
+    });
+
+    modal.onDidDismiss((passphrase) => {
+      if (lodash.isEmpty(passphrase)) return;
 
       // TODO: Get pin code
       // this.arkApiProvider.api.transaction.createDelegate();
