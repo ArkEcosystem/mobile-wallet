@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ '2nd passphrase' | translatee }}</ion-title>
+    <ion-title>{{ '2nd passphrase' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="closeModal()">
         <ion-icon name="close"></ion-icon>
@@ -17,10 +17,10 @@
       <ion-col>
         <form #registerSecondPassphrase="ngForm">
           <ion-item>
-            <ion-label>{{ 'Additional password' }}</ion-label>
+            <ion-label stacked>{{ 'Additional password' }}</ion-label>
             <ion-textarea [(ngModel)]="passphrase" name="passphrase" required></ion-textarea>
           </ion-item>
-          <button ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid" (click)="submitForm()">{{ 'Next' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+          <button ion-button class="button-continue" color="primary" [disabled]="!registerSecondPassphrase.form.valid" (click)="submitForm()">{{ 'Next' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
         </form>
       </ion-col>
     </ion-row>

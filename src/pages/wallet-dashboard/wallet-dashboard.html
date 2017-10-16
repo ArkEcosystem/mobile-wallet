@@ -35,7 +35,7 @@
   <ion-grid class="main-grid">
     <ion-row>
       <ion-col>
-        <ion-card *ngFor="let tx of wallet?.transactions?.reverse()" class="tx" (click)="openTransactionShow(tx)">
+        <ion-card *ngFor="let tx of wallet?.transactions" class="tx" (click)="openTransactionShow(tx)">
           <ion-item>
             <h3 class="address" *ngIf="tx?.isTransfer()">{{ tx?.recipientId | truncateMiddle: 12 }}</h3>
             <h3 class="address" *ngIf="!tx?.isTransfer()">{{ tx?.getTypeLabel() | translate }}</h3>

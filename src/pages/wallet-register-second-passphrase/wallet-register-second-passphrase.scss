@@ -14,13 +14,20 @@ page-wallet-register-second-passphrase {
     .button {
       margin-top: 2em;
     }
+    ion-textarea {
+      display: block;
+
+      textarea {
+        min-height: 80px;
+      }
+    }
   }
 }
 
-.modal-register-delegate {
+.modal-register-second-passphrase {
   position: absolute;
   width: 90%;
-  height: 70%;
+  height: 65%;
   top: 20%;
   left: 0;
   right: 0;

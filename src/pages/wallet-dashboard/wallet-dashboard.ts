@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController, AlertController } from 'ionic-angular';
 
 import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory } from '@models/model';
 import { UserDataProvider } from '@providers/user-data/user-data';
@@ -35,12 +35,13 @@ export class WalletDashboardPage {
     public platform: Platform,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public localDataProvider: UserDataProvider,
+    public userDataProvider: UserDataProvider,
     public arkApiProvider: ArkApiProvider,
     public actionSheetCtrl: ActionSheetController,
     public translateService: TranslateService,
     public marketDataProvider: MarketDataProvider,
     public modalCtrl: ModalController,
+    public alertCtrl: AlertController,
   ) {
     this.address = this.navParams.get('address');
 
@@ -67,6 +68,9 @@ export class WalletDashboardPage {
         text: translation['2nd passphrase'],
         role: '2ndpassphrase',
         icon: !this.platform.is('ios') ? 'lock' : '',
+        handler: () => {
+          this.openRegisterSecondPassphrase();
+        },
       };
 
       let buttons = [
@@ -81,6 +85,9 @@ export class WalletDashboardPage {
           text: translation['Delete wallet'],
           role: 'delete',
           icon: !this.platform.is('ios') ? 'trash' : '',
+          handler: () => {
+            this.showDeleteConfirm();
+          }
         }, {
           text: translation['Cancel'],
           role: 'cancel',
@@ -128,6 +135,7 @@ export class WalletDashboardPage {
     this.arkApiProvider.api.transaction.list({
       recipientId: this.address,
       senderId: this.address,
+      orderBy: 'timestamp:desc',
     }).subscribe((response) => {
       if (response && response.success) {
         this.wallet.loadTransactions(response.transactions);
@@ -158,7 +166,7 @@ export class WalletDashboardPage {
   }
 
   saveWallet() {
-    this.localDataProvider.walletSave(this.wallet);
+    this.userDataProvider.walletSave(this.wallet);
   }
 
   openTransactionShow(tx: Transaction) {
@@ -211,7 +219,7 @@ export class WalletDashboardPage {
   openRegisterSecondPassphrase() {
     this.fees = this.arkApiProvider.fees;
 
-    let modal = this.modalCtrl.create('WalletRegisterSecondPassphrase', {
+    let modal = this.modalCtrl.create('WalletRegisterSecondPassphrasePage', {
       fee: this.fees.secondsignature,
       symbol: this.network.symbol,
     });
@@ -226,6 +234,31 @@ export class WalletDashboardPage {
     modal.present();
   }
 
+  showDeleteConfirm() {
+    this.translateService.get(['Are you sure?', 'Confirm', 'Cancel']).subscribe((translation) => {
+      let confirm = this.alertCtrl.create({
+        title: translation['Are you sure?'],
+        buttons: [
+          {
+            text: translation['Cancel']
+          },
+          {
+            text: translation['Confirm'],
+            handler: () => {
+              this.delete();
+            }
+          }
+        ]
+      });
+      confirm.present();
+    });
+  }
+
+  delete() {
+    // TODO:
+    console.log('delete');
+  }
+
   load() {
     // TODO: LoadingController
     setInterval(() => {
@@ -236,10 +269,10 @@ export class WalletDashboardPage {
   }
 
   ngOnInit() {
-    this.profile = this.localDataProvider.profileActive;
-    this.network = this.localDataProvider.networkActive;
+    this.profile = this.userDataProvider.profileActive;
+    this.network = this.userDataProvider.networkActive;
     this.fees = this.arkApiProvider.fees;
-    this.wallet = this.localDataProvider.walletGet(this.address);
+    this.wallet = this.userDataProvider.walletGet(this.address);
 
     let transactions = this.wallet.transactions;
     if (transactions) this.wallet.loadTransactions(transactions);

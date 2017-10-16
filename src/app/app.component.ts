@@ -7,6 +7,7 @@ import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
+import { ArkApiProvider } from '@providers/ark-api/ark-api';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -23,8 +24,9 @@ export class MyApp {
     public authProvider: AuthProvider,
     public translateService: TranslateService,
     public localDataProvider: UserDataProvider,
-    public marketlDataProvider: MarketDataProvider,
+    public marketDataProvider: MarketDataProvider,
     public settingsDataProvider: SettingsDataProvider,
+    public arkApiProvider: ArkApiProvider,
   ) {
     platform.ready().then(() => {
       this.authProvider.logoutObserver.subscribe((status) => {

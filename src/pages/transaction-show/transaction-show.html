@@ -49,7 +49,7 @@
             <ion-label stacked>
               <p ion-text>{{ 'From' | translate }}</p>
               <h4 item-content class="content">
-                {{ transaction?.senderId }}
+                {{ senderLabel || transaction?.senderId }}
               </h4>
             </ion-label>
           </ion-item>
@@ -57,7 +57,7 @@
             <ion-label stacked>
               <p ion-text>{{ 'To' | translate }}</p>
               <h4 item-content class="content">
-                {{ transaction?.recipientId }}
+                {{ recipientLabel || transaction?.recipientId }}
               </h4>
             </ion-label>
           </ion-item>
@@ -65,7 +65,7 @@
             <ion-label stacked>
               <p ion-text>{{ 'Smart Bridge' | translate }}</p>
               <h4 item-content class="content">
-                {{ transaction?.vendorField }}
+                {{ transaction?.vendorField || 'N/A' }}
               </h4>
             </ion-label>
           </ion-item>

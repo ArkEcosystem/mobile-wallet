@@ -11,9 +11,6 @@ import lodash from 'lodash';
 @Injectable()
 export class ArkApiProvider {
 
-  private http: arkts.Http;
-  private client: arkts.Client;
-
   public network: arkts.Network;
   public fees: arkts.Fees;
   public api: arkts.Client;
@@ -21,23 +18,21 @@ export class ArkApiProvider {
   constructor(public userDataProvider: UserDataProvider) {
     this.userDataProvider.networkActiveObserver.subscribe((network) => {
       this.network = network;
-
       if (lodash.isEmpty(network)) {
         this.api = null;
       } else {
-        this.http = new arkts.Http(network);
-        this.client = new arkts.Client(network);
-
-        this.api = this.client;
+        this.api = new arkts.Client(this.network);
         this._setPeer();
       }
     });
   }
 
   private _setPeer(): void {
-    this.api.peer.findGoodPeer().subscribe((response) => {
+    this.api.peer.list().subscribe((response) => {
       if (response) {
-        this.network.activePeer = response;
+        let sortHeight = lodash(response.peers).filter({'status': 'OK', 'port': this.network.activePeer.port}).orderBy(['height','delay'], ['desc','asc']);
+        this.network.setPeer(sortHeight.value()[0]);
+        this.api = new arkts.Client(this.network);
       }
       this._setFees();
     });

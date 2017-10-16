@@ -3,8 +3,9 @@ import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-an
 
 import { Profile, Wallet } from '@models/model';
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { ArkApiProvider } from '@providers/ark-api/ark-api';
 
-import { PublicKey, PrivateKey, Network, Http, AccountApi } from 'ark-ts';
+import { PublicKey, PrivateKey, Network } from 'ark-ts';
 
 @IonicPage()
 @Component({
@@ -14,7 +15,7 @@ import { PublicKey, PrivateKey, Network, Http, AccountApi } from 'ark-ts';
 export class WalletImportPassphrasePage {
 
   public currentProfile: Profile;
-  public currentNetwork: Network = new Network();
+  public currentNetwork: Network;
   public passphrase: string = '';
 
   constructor(
@@ -22,13 +23,12 @@ export class WalletImportPassphrasePage {
     public navParams: NavParams,
     public userDataProvider: UserDataProvider,
     public loadingCtrl: LoadingController,
+    public arkApiProvider: ArkApiProvider,
   ) { }
 
   load() {
     this.currentProfile = this.userDataProvider.profileActive;
-
-    let networkData = this.userDataProvider.networkGet(this.currentProfile.networkId);
-    Object.assign(this.currentNetwork, networkData);
+    this.currentNetwork = this.userDataProvider.networkActive;
   }
 
   submitForm() {
@@ -36,12 +36,9 @@ export class WalletImportPassphrasePage {
     let publicKey = privateKey.getPublicKey();
     let address = publicKey.getAddress();
 
-    let http = new Http(this.currentNetwork);
-    let api = new AccountApi(http);
-
     let newWallet = new Wallet();
 
-    api.get({ address }).subscribe((response) => {
+    this.arkApiProvider.api.account.get({ address }).subscribe((response) => {
       if (response && response.success) {
         let account = response.account;
 
