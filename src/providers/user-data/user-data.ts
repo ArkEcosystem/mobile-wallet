@@ -75,6 +75,12 @@ export class UserDataProvider {
     return this.storage.set(constants.STORAGE_NETWORKS, this.networks);
   }
 
+  networkUpdate(networkId: string, network: Network) {
+    this.networks[networkId] = network;
+
+    return this.storage.set(constants.STORAGE_NETWORKS, this.networks);
+  }
+
   networkGet(networkId: string) {
     return this.networks[networkId];
   }
@@ -82,6 +88,7 @@ export class UserDataProvider {
   networkRemove(networkId: string) {
     delete this.networks[networkId];
 
+    this.storage.set(constants.STORAGE_NETWORKS, this.networks);
     return this.networks;
   }
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/repeat';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 
@@ -27,15 +28,57 @@ export class ArkApiProvider {
     });
   }
 
+  public getAllDelegates() {
+    if (!this.api) return;
+
+    const limit = 51;
+
+    let totalCount = limit;
+    let offset, currentPage;
+    offset = currentPage = 0;
+
+    let totalPages = totalCount / limit;
+
+    let delegates = [];
+
+    this.api.delegate.list({ limit, offset }).expand((project) => {
+      let req = this.api.delegate.list({ limit, offset });
+      return currentPage < totalPages ? req : Observable.empty();
+    }).do((response) => {
+      offset += limit;
+      if (response.success) totalCount = response.totalCount;
+      totalPages = Math.ceil(totalCount / limit);
+
+      currentPage++;
+    }).finally(() => {
+      // TODO:
+    }).subscribe((data) => {
+      if (data.success) delegates = [...delegates, ...data.delegates];
+    });
+  }
+
   private _setPeer(): void {
+    // Get list from active peer
     this.api.peer.list().subscribe((response) => {
       if (response) {
-        let sortHeight = lodash(response.peers).filter({'status': 'OK', 'port': this.network.activePeer.port}).orderBy(['height','delay'], ['desc','asc']);
-        this.network.setPeer(sortHeight.value()[0]);
-        this.api = new arkts.Client(this.network);
+        let port = this.network.activePeer.port;
+        let sortHeight = lodash.orderBy(lodash.filter(response.peers, {'status': 'OK', 'port': port}), ['height','delay'], ['desc','asc']);
+
+        this.network.setPeer(sortHeight[0]);
       }
-      this._setFees();
-    });
+    },
+    // Get list from file
+    () => {
+      return arkts.PeerApi.findGoodPeer(this.network).first().subscribe((peer) => this._updateNetwork(peer));
+    }, () => this._updateNetwork());
+  }
+
+  private _updateNetwork(peer?: arkts.Peer) {
+    if (peer) this.network.setPeer(peer);
+    // Save in localStorage
+    this.userDataProvider.networkUpdate(this.userDataProvider.profileActive.networkId, this.network);
+    this.api = new arkts.Client(this.network);
+    this._setFees();
   }
 
   private _setFees(): void {
