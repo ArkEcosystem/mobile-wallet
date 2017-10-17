@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+
 import { Wallet } from '@models/wallet';
 import { UserDataProvider } from '@providers/user-data/user-data';
 
@@ -26,24 +29,25 @@ export class WalletCreatePage {
   }
   public keySegment: string = 'public';
 
-  private currentNetwork: Network;
+  private _currentNetwork: Network;
+  private _unsubscriber: Subject<void> = new Subject<void>();
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public localDataProvider: UserDataProvider,
+    private _navCtrl: NavController,
+    private _navParams: NavParams,
+    private _userDataProvider: UserDataProvider,
   ) {
-    this.account.entropy = this.navParams.get('entropy');
-    if (!this.account.entropy) this.navCtrl.popToRoot();
+    this.account.entropy = this._navParams.get('entropy');
+    if (!this.account.entropy) this._navCtrl.popToRoot();
   }
 
   load() {
-    this.currentNetwork = this.localDataProvider.networkActive;
+    this._currentNetwork = this._userDataProvider.networkActive;
 
     this.account.mnemonic = bip39.entropyToMnemonic(this.account.entropy);
     this.account.qrpassphrase = `{"passphrase": "${this.account.mnemonic}"}`;
 
-    let privateKey = PrivateKey.fromSeed(this.account.mnemonic, this.currentNetwork);
+    let privateKey = PrivateKey.fromSeed(this.account.mnemonic, this._currentNetwork);
     let publicKey = privateKey.getPublicKey();
 
     this.account.publicKey = publicKey.toHex();
@@ -59,13 +63,18 @@ export class WalletCreatePage {
     wallet.address = this.account.address;
     wallet.publicKey = this.account.publicKey;
 
-    this.localDataProvider.walletAdd(wallet).subscribe((response) => {
-      this.navCtrl.setRoot('ProfileSigninPage');
+    this._userDataProvider.walletAdd(wallet).takeUntil(this._unsubscriber).subscribe((response) => {
+      this._navCtrl.setRoot('ProfileSigninPage');
     });
   }
 
   ionViewDidLoad() {
     this.load();
+  }
+
+  ngOnDestroy() {
+    this._unsubscriber.next();
+    this._unsubscriber.complete();
   }
 
 }

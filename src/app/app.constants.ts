@@ -7,6 +7,7 @@ export const WALLET_REFRESH_TRANSACTIONS_MILLISECONDS = 10 * 1000;
 export const STORAGE_MARKET_TICKER = 'market_ticker';
 export const STORAGE_MARKET_HISTORY = 'market_history';
 
+export const STORAGE_LOGIN = 'login';
 export const STORAGE_PROFILES = 'profiles';
 export const STORAGE_NETWORKS = 'network';
 export const STORAGE_SETTINGS = 'settings';

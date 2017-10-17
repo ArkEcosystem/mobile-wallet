@@ -13,27 +13,27 @@ export class WalletRegisterDelegateModalPage {
   public name: string;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public viewCtrl: ViewController,
-    public ele: ElementRef,
+    private _navCtrl: NavController,
+    private _navParams: NavParams,
+    private _viewCtrl: ViewController,
+    private _ele: ElementRef,
   ) {
-    this.fee = this.navParams.get('fee');
-    this.symbol = this.navParams.get('symbol');
+    this.fee = this._navParams.get('fee');
+    this.symbol = this._navParams.get('symbol');
   }
 
   closeModal() {
-    this.viewCtrl.dismiss();
+    this._viewCtrl.dismiss();
   }
 
   submitForm() {
-    this.viewCtrl.dismiss(this.name);
+    this._viewCtrl.dismiss(this.name);
   }
 
   ngAfterViewInit() {
     // Change modal size
-    let claz = this.ele.nativeElement.parentElement.getAttribute('class') + ' modal-register-delegate';
-    this.ele.nativeElement.parentElement.setAttribute('class', claz);
+    let claz = this._ele.nativeElement.parentElement.getAttribute('class') + ' modal-register-delegate';
+    this._ele.nativeElement.parentElement.setAttribute('class', claz);
   }
 
   ionViewDidLoad() {

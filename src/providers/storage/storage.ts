@@ -10,14 +10,14 @@ import lodash from 'lodash';
 @Injectable()
 export class StorageProvider {
 
-  constructor(public storage: Storage) { }
+  constructor(private _storage: Storage) { }
 
   public get(key) {
-    return Observable.fromPromise(this.storage.get(key));
+    return Observable.fromPromise(this._storage.get(key));
   }
 
   public getObject(key) {
-    return Observable.fromPromise(this.storage.get(key)).map((result) => JSON.parse(result || "{}"));
+    return Observable.fromPromise(this._storage.get(key)).map((result) => JSON.parse(result || "{}"));
   }
 
   public set(key, value) {
@@ -29,7 +29,7 @@ export class StorageProvider {
       value = lodash(value).toString();
     }
 
-    return Observable.fromPromise(this.storage.set(key, value));
+    return Observable.fromPromise(this._storage.set(key, value));
   }
 
 }

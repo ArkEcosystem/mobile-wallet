@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/takeUntil';
 
 import { StorageProvider } from '@providers/storage/storage';
 
@@ -15,32 +16,39 @@ export class MarketDataProvider {
   public historyObserver: BehaviorSubject<model.MarketHistory> = new BehaviorSubject(null);
   public tickerObserver: BehaviorSubject<model.MarketTicker> = new BehaviorSubject(null);
 
-  constructor(private http: Http, private storageProvider: StorageProvider) {
+  private _unsubscriber$: Subject<void> = new Subject<void>();
+
+  constructor(private _http: Http, private _storageProvider: StorageProvider) {
     this.refreshPrice();
-    this.getApiHistory().subscribe((history) => this.historyObserver.next(history));
+    this._fetchHistory().takeUntil(this._unsubscriber$).subscribe((history) => this.historyObserver.next(history));
   }
 
-  refreshPrice(): void {
-    this.getApiTicker().subscribe((ticker) => {
+  public refreshPrice(): void {
+    this._fetchTicker().takeUntil(this._unsubscriber$).subscribe((ticker) => {
       this.tickerObserver.next(ticker);
     });
   }
 
-  private getApiTicker(): Observable<model.MarketTicker> {
+  private _fetchTicker(): Observable<model.MarketTicker> {
     const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_TICKER_ENDPOINT}`;
 
-    return this.http.get(url).map((response) => {
+    return this._http.get(url).map((response) => {
       let json = response.json();
       return new model.MarketTicker().deserialize(json);
     });
   }
 
-  private getApiHistory() {
+  private _fetchHistory() {
     const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
-    return this.http.get(url).map((response) => {
+    return this._http.get(url).map((response) => {
       let json = response.json();
       return new model.MarketHistory().deserialize(json.history);
     });
+  }
+
+  ngOnDestroy() {
+    this._unsubscriber$.next();
+    this._unsubscriber$.complete();
   }
 
 }

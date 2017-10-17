@@ -11,26 +11,26 @@ export class WalletLabelModalPage {
   public label: string;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public viewController: ViewController,
-    public ele: ElementRef,
+    private navCtrl: NavController,
+    private _navParams: NavParams,
+    private _viewController: ViewController,
+    private _ele: ElementRef,
   ) {
-    this.label = this.navParams.get('label') || '';
+    this.label = this._navParams.get('label') || '';
   }
 
   closeModal() {
-    this.viewController.dismiss();
+    this._viewController.dismiss();
   }
 
   submitForm() {
-    this.viewController.dismiss(this.label);
+    this._viewController.dismiss(this.label);
   }
 
   ngAfterViewInit() {
     // Change modal size
-    let claz = this.ele.nativeElement.parentElement.getAttribute('class') + ' modal-label';
-    this.ele.nativeElement.parentElement.setAttribute('class', claz);
+    let claz = this._ele.nativeElement.parentElement.getAttribute('class') + ' modal-label';
+    this._ele.nativeElement.parentElement.setAttribute('class', claz);
   }
 
 }

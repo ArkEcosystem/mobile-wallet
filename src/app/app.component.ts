@@ -29,33 +29,21 @@ export class MyApp {
     public arkApiProvider: ArkApiProvider,
   ) {
     platform.ready().then(() => {
-      this.authProvider.logoutObserver.subscribe((status) => {
-        this.rootPage = 'ProfileSigninPage';
+      this.authProvider.isLoginSubject$.subscribe((status) => {
+        if (!status) this.rootPage = 'ProfileSigninPage';
       });
 
       translateService.setDefaultLang('en');
       // TODO: Get language from settings provider
       translateService.use('en');
-
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
 
-      this.authProvider.introHasSeen().subscribe((hasSeenIntro) => {
+      this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
         splashScreen.hide();
 
         if (hasSeenIntro) {
-          authProvider.masterPasswordHasSet().subscribe((hasSetMasterPassword) => {
-            const activeProfile = authProvider.activeProfileGet();
-
-            if (!hasSetMasterPassword && activeProfile) {
-              this.rootPage = 'ProfileSigninPage';
-            } else {
-              this.rootPage = 'LoginPage';
-            }
-
-            return;
-          });
+          this.rootPage = 'LoginPage';
+          return;
         }
 
         this.rootPage = 'IntroPage';

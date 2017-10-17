@@ -9,16 +9,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class LoginPage {
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
+    private _navCtrl: NavController,
+    private _navParams: NavParams,
   ) { }
 
   openProfileSignin() {
-    this.navCtrl.setRoot('ProfileSigninPage');
+    this._navCtrl.setRoot('ProfileSigninPage');
   }
 
   openProfileCreate() {
-    this.navCtrl.push('ProfileCreatePage');
+    this._navCtrl.push('ProfileCreatePage');
   }
 
 }

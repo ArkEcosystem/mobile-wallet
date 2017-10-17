@@ -13,25 +13,25 @@ export class WalletGenerateEntropyPage {
   public pan: number;
   public progress: number;
 
-  private bytes;
-  private entropy;
+  private _bytes;
+  private _entropy;
 
-  private turns: number;
-  private count: number;
-  private total: number;
+  private _turns: number;
+  private _count: number;
+  private _total: number;
 
-  private finished: boolean = false;
+  private _finished: boolean = false;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
+    private _navCtrl: NavController,
+    private _navParams: NavParams,
   ) {
     this.reset();
   }
 
   panEvent(e) {
     this.pan++;
-    if (this.finished) return;
+    if (this._finished) return;
 
     if (e.isFinal || e.isFirst) return;
 
@@ -39,32 +39,32 @@ export class WalletGenerateEntropyPage {
       let pos;
       let available = [];
 
-      for (let i in this.bytes) {
-        if (!this.bytes[i]) {
+      for (let i in this._bytes) {
+        if (!this._bytes[i]) {
           available.push(i);
         }
       }
 
       if (!available.length) {
-        this.bytes = this.bytes.map(v => 0);
-        pos = parseInt(Math.random().toString()) * this.bytes.length;
+        this._bytes = this._bytes.map(v => 0);
+        pos = parseInt(Math.random().toString()) * this._bytes.length;
       } else {
         pos = available[parseInt(Math.random().toString()) * available.length];
       }
 
-      this.count++;
+      this._count++;
 
-      this.bytes[pos] = 1;
+      this._bytes[pos] = 1;
 
-      this.entropy[pos] = Crypto.randomSeed(1)[0];
+      this._entropy[pos] = Crypto.randomSeed(1)[0];
 
-      this.progress = parseInt(Number(this.count / this.total * 100).toString());
+      this.progress = parseInt(Number(this._count / this._total * 100).toString());
 
-      if (this.count > this.total) {
-        let hex = this.entropy.map(v => this.lpad(v.toString(16), '0', 2)).join('');
-        this.navCtrl.push('WalletCreatePage', { entropy: hex });
+      if (this._count > this._total) {
+        let hex = this._entropy.map(v => this.lpad(v.toString(16), '0', 2)).join('');
+        this._navCtrl.push('WalletCreatePage', { entropy: hex });
 
-        this.finished = true;
+        this._finished = true;
       }
     }
 
@@ -73,12 +73,12 @@ export class WalletGenerateEntropyPage {
   reset() {
     this.pan = 0;
     this.progress = 0;
-    this.bytes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-    this.entropy = this.bytes;
-    this.turns = 20 + parseInt(Number(Math.random() * 10).toString());
-    this.count = 0;
-    this.total = this.turns * this.bytes.length;
-    this.finished = false;
+    this._bytes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    this._entropy = this._bytes;
+    this._turns = 20 + parseInt(Number(Math.random() * 10).toString());
+    this._count = 0;
+    this._total = this._turns * this._bytes.length;
+    this._finished = false;
   }
 
   lpad(str, pad, length) {
@@ -88,10 +88,6 @@ export class WalletGenerateEntropyPage {
 
   ionViewDidLeave() {
     this.reset();
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletGenerateEntropyPage');
   }
 
 }

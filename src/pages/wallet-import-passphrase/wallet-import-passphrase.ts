@@ -19,16 +19,16 @@ export class WalletImportPassphrasePage {
   public passphrase: string = '';
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public userDataProvider: UserDataProvider,
-    public loadingCtrl: LoadingController,
-    public arkApiProvider: ArkApiProvider,
+    private _navCtrl: NavController,
+    private _navParams: NavParams,
+    private _userDataProvider: UserDataProvider,
+    private _loadingCtrl: LoadingController,
+    private _arkApiProvider: ArkApiProvider,
   ) { }
 
   load() {
-    this.currentProfile = this.userDataProvider.profileActive;
-    this.currentNetwork = this.userDataProvider.networkActive;
+    this.currentProfile = this._userDataProvider.profileActive;
+    this.currentNetwork = this._userDataProvider.networkActive;
   }
 
   submitForm() {
@@ -38,7 +38,7 @@ export class WalletImportPassphrasePage {
 
     let newWallet = new Wallet();
 
-    this.arkApiProvider.api.account.get({ address }).subscribe((response) => {
+    this._arkApiProvider.api.account.get({ address }).subscribe((response) => {
       if (response && response.success) {
         let account = response.account;
 
@@ -48,8 +48,8 @@ export class WalletImportPassphrasePage {
         newWallet.publicKey = publicKey.toHex();
       }
 
-      this.userDataProvider.walletAdd(newWallet).subscribe((result) => {
-        this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
+      this._userDataProvider.walletAdd(newWallet).subscribe((result) => {
+        this._navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
       });
     }, () => {
       // TODO: Show error in toast

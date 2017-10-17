@@ -19,9 +19,9 @@ export class ProfileCreatePage {
   public newProfile = { name: '', networkId: '' };
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public userDataProvider: UserDataProvider,
+    private _navCtrl: NavController,
+    private _navParams: NavParams,
+    private _userDataProvider: UserDataProvider,
   ) { }
 
   onSelectNetwork(networkId: string) {
@@ -33,13 +33,15 @@ export class ProfileCreatePage {
     profile.name = this.newProfile.name;
     profile.networkId = this.newProfile.networkId;
 
-    this.userDataProvider.profileAdd(profile).subscribe((result) => {
-      this.navCtrl.setRoot('ProfileSigninPage');
+    this._userDataProvider.profileAdd(profile).subscribe((result) => {
+      this._navCtrl.setRoot('ProfileSigninPage');
+    }, () => {
+      // TODO: Toast error
     });
   }
 
   load() {
-    this.networks = this.userDataProvider.networks;
+    this.networks = this._userDataProvider.networks;
     this.networksIds = lodash.keys(this.networks);
     this.newProfile.networkId = this.networksIds[0];
   }

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { AuthProvider } from '@providers/auth/auth';
 
@@ -21,22 +24,24 @@ export class ProfileSigninPage {
 
   public networks;
 
+  private _unsubscriber: Subject<void> = new Subject<void>();
+
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public userDataProvider: UserDataProvider,
-    public translateService: TranslateService,
-    public authProvider: AuthProvider,
-    public alertCtrl: AlertController,
+    private _navCtrl: NavController,
+    private _navParams: NavParams,
+    private _userDataProvider: UserDataProvider,
+    private _translateService: TranslateService,
+    private _authProvider: AuthProvider,
+    private _alertCtrl: AlertController,
   ) { }
 
   openProfileCreate() {
-    this.navCtrl.push('ProfileCreatePage');
+    this._navCtrl.push('ProfileCreatePage');
   }
 
   showDeleteConfirm(profileId: string) {
-    this.translateService.get(['Are you sure?', 'Confirm', 'Cancel']).subscribe((translation) => {
-      let confirm = this.alertCtrl.create({
+    this._translateService.get(['Are you sure?', 'Confirm', 'Cancel']).takeUntil(this._unsubscriber).subscribe((translation) => {
+      let confirm = this._alertCtrl.create({
         title: translation['Are you sure?'],
         buttons: [
           {
@@ -55,16 +60,19 @@ export class ProfileSigninPage {
   }
 
   delete(profileId: string) {
-    return this.userDataProvider.profileRemove(profileId).subscribe((result) => {
+    return this._userDataProvider.profileRemove(profileId).takeUntil(this._unsubscriber).subscribe((result) => {
       this.load();
     });
   }
 
   isMainnet(profileId: string) {
-    let profile = this.userDataProvider.profileGet(profileId);
+    let profile = this._userDataProvider.profileGet(profileId);
 
     if (profile) {
-      let network = this.userDataProvider.networkGet(profile.networkId);
+      let network = this._userDataProvider.networkGet(profile.networkId);
+
+      if (!network) return;
+
       return network.type === NetworkType.Mainnet;
     }
   }
@@ -80,19 +88,19 @@ export class ProfileSigninPage {
   // }
 
   signin(profileId: string) {
-    this.authProvider.masterPasswordHasSet().subscribe((hasSeetMasterPassword) => {
-      if (hasSeetMasterPassword) {
+    this._authProvider.getMasterPassword().takeUntil(this._unsubscriber).subscribe((masterpassword) => {
+      if (masterpassword) {
         // this.getPinCode();
       } else {
-        this.authProvider.login(profileId).subscribe((status) => {
+        this._authProvider.login(profileId).takeUntil(this._unsubscriber).subscribe((status) => {
           if (status) {
-            var wallets = this.userDataProvider.profileActive.wallets;
+            var wallets = this._userDataProvider.profileActive.wallets;
             var addresses = lodash.keys(wallets) || [];
 
             if (addresses.length === 0) {
-              this.navCtrl.setRoot('WalletEmptyPage');
+              this._navCtrl.setRoot('WalletEmptyPage');
             } else {
-              this.navCtrl.setRoot('WalletDashboardPage', {
+              this._navCtrl.setRoot('WalletDashboardPage', {
                 address: wallets[addresses[0]].address,
               });
             }
@@ -105,10 +113,10 @@ export class ProfileSigninPage {
   }
 
   load() {
-    this.profiles = this.userDataProvider.profiles;
+    this.profiles = this._userDataProvider.profiles;
     this.profilesIds = lodash.keys(this.profiles);
 
-    this.networks = this.userDataProvider.networks;
+    this.networks = this._userDataProvider.networks;
   }
 
   isEmpty() {
@@ -117,6 +125,11 @@ export class ProfileSigninPage {
 
   ionViewDidLoad() {
     this.load();
+  }
+
+  ngOnDestroy() {
+    this._unsubscriber.next();
+    this._unsubscriber.complete();
   }
 
 }

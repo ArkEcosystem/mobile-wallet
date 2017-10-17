@@ -7,14 +7,14 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'wallet-import.html',
 })
 export class WalletImportPage {
-  
+
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams
+    private _navCtrl: NavController,
+    private _navParams: NavParams
   ) { }
 
   openWalletImportPassphrase() {
-    this.navCtrl.push('WalletImportPassphrasePage');
+    this._navCtrl.push('WalletImportPassphrasePage');
   }
 
 }

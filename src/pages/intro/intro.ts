@@ -13,15 +13,15 @@ export class IntroPage {
   public showSkip: boolean = true;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public authProvider: AuthProvider,
+    private _navCtrl: NavController,
+    private _navParams: NavParams,
+    private _authProvider: AuthProvider,
   ) { }
 
   startApp() {
-    this.authProvider.introSetSeen();
+    this._authProvider.saveIntro();
 
-    this.navCtrl.setRoot('LoginPage', {}, {
+    this._navCtrl.setRoot('LoginPage', {}, {
       animate: true,
       direction: 'forward'
     });
@@ -29,10 +29,6 @@ export class IntroPage {
 
   onSlideChangeStart(slider) {
     this.showSkip = !slider.isEnd();
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad IntroPage');
   }
 
 }

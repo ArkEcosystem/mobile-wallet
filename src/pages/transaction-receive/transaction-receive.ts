@@ -16,21 +16,17 @@ export class TransactionReceivePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private clipboard: Clipboard,
+    private _clipboard: Clipboard,
   ) {
     this.address = this.navParams.get('address');
     this.token = this.navParams.get('token');
   }
 
   copyAddress() {
-    this.clipboard.copy(this.address);
+    this._clipboard.copy(this.address);
     // TODO: Toast message
   }
 
   // TODO: Share
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletReceivePage');
-  }
 
 }

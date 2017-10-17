@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController, AlertController, LoadingController, Loading } from 'ionic-angular';
+
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
 
 import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory } from '@models/model';
 import { UserDataProvider } from '@providers/user-data/user-data';
@@ -31,22 +34,25 @@ export class WalletDashboardPage {
   public marketHistory: MarketHistory;
   public marketCurrency: MarketCurrency;
 
-  constructor(
-    public platform: Platform,
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public userDataProvider: UserDataProvider,
-    public arkApiProvider: ArkApiProvider,
-    public actionSheetCtrl: ActionSheetController,
-    public translateService: TranslateService,
-    public marketDataProvider: MarketDataProvider,
-    public modalCtrl: ModalController,
-    public alertCtrl: AlertController,
-  ) {
-    this.address = this.navParams.get('address');
+  private _unsubscriber: Subject<void> = new Subject<void>();
 
-    this.marketDataProvider.historyObserver.subscribe((history) => this.marketHistory = history);
-    this.marketDataProvider.tickerObserver.subscribe((ticker) => {
+  constructor(
+    private _platform: Platform,
+    private _navCtrl: NavController,
+    private _navParams: NavParams,
+    private _userDataProvider: UserDataProvider,
+    private _arkApiProvider: ArkApiProvider,
+    private _actionSheetCtrl: ActionSheetController,
+    private _translateService: TranslateService,
+    private _marketDataProvider: MarketDataProvider,
+    private _modalCtrl: ModalController,
+    private _alertCtrl: AlertController,
+    private _loadingCtrl: LoadingController,
+  ) {
+    this.address = this._navParams.get('address');
+
+    this._marketDataProvider.historyObserver.takeUntil(this._unsubscriber).subscribe((history) => this.marketHistory = history);
+    this._marketDataProvider.tickerObserver.takeUntil(this._unsubscriber).subscribe((ticker) => {
       this.ticker = ticker;
       // TODO: Get currency from settings
       if (ticker) this.marketCurrency = ticker.getCurrency({ code: 'usd' });
@@ -54,11 +60,11 @@ export class WalletDashboardPage {
   }
 
   presentWalletActionSheet() {
-    this.translateService.get(['Label', 'Register delegate', '2nd passphrase', 'Delete wallet', 'Cancel']).subscribe((translation) => {
+    this._translateService.get(['Label', 'Register delegate', '2nd passphrase', 'Delete wallet', 'Cancel']).takeUntil(this._unsubscriber).subscribe((translation) => {
       let delegateItem =  {
         text: translation['Register delegate'],
         role: 'delegate',
-        icon: !this.platform.is('ios') ? 'contact' : '',
+        icon: !this._platform.is('ios') ? 'contact' : '',
         handler: () => {
           this.openRegisterDelegateModal();
         },
@@ -67,7 +73,7 @@ export class WalletDashboardPage {
       let secondPassphraseItem = {
         text: translation['2nd passphrase'],
         role: '2ndpassphrase',
-        icon: !this.platform.is('ios') ? 'lock' : '',
+        icon: !this._platform.is('ios') ? 'lock' : '',
         handler: () => {
           this.openRegisterSecondPassphrase();
         },
@@ -77,66 +83,71 @@ export class WalletDashboardPage {
         {
           text: translation['Label'],
           role: 'label',
-          icon: !this.platform.is('ios') ? 'pricetag' : '',
+          icon: !this._platform.is('ios') ? 'pricetag' : '',
           handler: () => {
             this.openLabelModal();
           },
         }, {
           text: translation['Delete wallet'],
           role: 'delete',
-          icon: !this.platform.is('ios') ? 'trash' : '',
+          icon: !this._platform.is('ios') ? 'trash' : '',
           handler: () => {
             this.showDeleteConfirm();
           }
         }, {
           text: translation['Cancel'],
           role: 'cancel',
-          icon: !this.platform.is('ios') ? 'close' : ''
+          icon: !this._platform.is('ios') ? 'close' : ''
         }
       ];
 
       // TODO: Delegate item
       if (!this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
 
-      let action = this.actionSheetCtrl.create({buttons});
+      let action = this._actionSheetCtrl.create({buttons});
 
       action.present();
-    });
+    }).unsubscribe();
   }
 
   presentAddActionSheet() {
-    this.translateService.get(['Send', 'Receive', 'Cancel']).subscribe((translation) => {
-      let action = this.actionSheetCtrl.create({
+    this._translateService.get(['Send', 'Receive', 'Cancel']).takeUntil(this._unsubscriber).subscribe((translation) => {
+      let action = this._actionSheetCtrl.create({
         buttons: [
           {
             text: translation['Receive'],
             role: 'receive',
-            icon: !this.platform.is('ios') ? 'arrow-round-down' : '',
+            icon: !this._platform.is('ios') ? 'arrow-round-down' : '',
             handler: () => {
               return this.openTransactionReceive();
             }
           }, {
             text: translation['Send'],
             role: 'send',
-            icon: !this.platform.is('ios') ? 'arrow-round-up' : ''
+            icon: !this._platform.is('ios') ? 'arrow-round-up' : ''
           }, {
             text: translation['Cancel'],
             role: 'cancel',
-            icon: !this.platform.is('ios') ? 'close' : ''
+            icon: !this._platform.is('ios') ? 'close' : ''
           }
         ]
       });
 
       action.present();
-    });
+    }).unsubscribe();
   }
 
-  refreshTransactions(save: boolean = true) {
-    this.arkApiProvider.api.transaction.list({
+  refreshTransactions(save: boolean = true, loader?: Loading) {
+    this._arkApiProvider.api.transaction.list({
       recipientId: this.address,
       senderId: this.address,
       orderBy: 'timestamp:desc',
-    }).subscribe((response) => {
+    })
+    .finally(() => {
+      if (loader) loader.dismiss();
+    })
+    .takeUntil(this._unsubscriber)
+    .subscribe((response) => {
       if (response && response.success) {
         this.wallet.loadTransactions(response.transactions);
         this.wallet.lastUpdate = new Date().getTime();
@@ -147,11 +158,11 @@ export class WalletDashboardPage {
   }
 
   refreshPrice() {
-    this.marketDataProvider.refreshPrice();
+    this._marketDataProvider.refreshPrice();
   }
 
   refreshAccount(save: boolean = true) {
-    this.arkApiProvider.api.account.get({ address: this.address }).subscribe((response) => {
+    this._arkApiProvider.api.account.get({ address: this.address }).takeUntil(this._unsubscriber).subscribe((response) => {
       if (response.success) {
         this.wallet.deserialize(response.account);
         if (save) this.saveWallet();
@@ -166,11 +177,11 @@ export class WalletDashboardPage {
   }
 
   saveWallet() {
-    this.userDataProvider.walletSave(this.wallet);
+    this._userDataProvider.walletSave(this.wallet);
   }
 
   openTransactionShow(tx: Transaction) {
-    this.navCtrl.push('TransactionShowPage', {
+    this._navCtrl.push('TransactionShowPage', {
       transaction: tx,
       symbol: this.network.symbol,
       equivalentAmount: tx.getAmountEquivalent(this.marketHistory, this.marketCurrency),
@@ -179,14 +190,14 @@ export class WalletDashboardPage {
   }
 
   openTransactionReceive() {
-    this.navCtrl.push('TransactionReceivePage', {
+    this._navCtrl.push('TransactionReceivePage', {
       address: this.address,
       token: this.network.token,
     });
   }
 
   openLabelModal() {
-    let modal = this.modalCtrl.create('WalletLabelModalPage', {'label': this.wallet.label });
+    let modal = this._modalCtrl.create('WalletLabelModalPage', {'label': this.wallet.label });
 
     modal.onDidDismiss((data) => {
       if (lodash.isEmpty(data)) return;
@@ -199,9 +210,9 @@ export class WalletDashboardPage {
   }
 
   openRegisterDelegateModal() {
-    this.fees = this.arkApiProvider.fees;
+    this.fees = this._arkApiProvider.fees;
 
-    let modal = this.modalCtrl.create('WalletRegisterDelegateModalPage', {
+    let modal = this._modalCtrl.create('WalletRegisterDelegateModalPage', {
       fee: this.fees.delegate,
       symbol: this.network.symbol,
     });
@@ -217,9 +228,9 @@ export class WalletDashboardPage {
   }
 
   openRegisterSecondPassphrase() {
-    this.fees = this.arkApiProvider.fees;
+    this.fees = this._arkApiProvider.fees;
 
-    let modal = this.modalCtrl.create('WalletRegisterSecondPassphrasePage', {
+    let modal = this._modalCtrl.create('WalletRegisterSecondPassphrasePage', {
       fee: this.fees.secondsignature,
       symbol: this.network.symbol,
     });
@@ -235,8 +246,8 @@ export class WalletDashboardPage {
   }
 
   showDeleteConfirm() {
-    this.translateService.get(['Are you sure?', 'Confirm', 'Cancel']).subscribe((translation) => {
-      let confirm = this.alertCtrl.create({
+    this._translateService.get(['Are you sure?', 'Confirm', 'Cancel']).takeUntil(this._unsubscriber).subscribe((translation) => {
+      let confirm = this._alertCtrl.create({
         title: translation['Are you sure?'],
         buttons: [
           {
@@ -251,7 +262,7 @@ export class WalletDashboardPage {
         ]
       });
       confirm.present();
-    });
+    }).unsubscribe();
   }
 
   delete() {
@@ -269,13 +280,30 @@ export class WalletDashboardPage {
   }
 
   ngOnInit() {
-    this.profile = this.userDataProvider.profileActive;
-    this.network = this.userDataProvider.networkActive;
-    this.fees = this.arkApiProvider.fees;
-    this.wallet = this.userDataProvider.walletGet(this.address);
+    this.profile = this._userDataProvider.profileActive;
+    this.network = this._userDataProvider.networkActive;
+    this.fees = this._arkApiProvider.fees;
+    this.wallet = this._userDataProvider.walletGet(this.address);
+
+    if (lodash.isEmpty(this.wallet)) {
+      this._navCtrl.popToRoot();
+    }
 
     let transactions = this.wallet.transactions;
-    if (transactions) this.wallet.loadTransactions(transactions);
+
+    if (!lodash.isEmpty(transactions)) {
+      this.wallet.loadTransactions(transactions);
+    } else {
+      this._translateService.get('Fetching transactions..').takeUntil(this._unsubscriber).subscribe((translation) => {
+        let loader = this._loadingCtrl.create({
+          content: translation,
+        });
+
+        loader.present();
+
+        this.refreshTransactions(true, loader);
+      });
+    }
 
     this.refreshData();
     this.refreshPrice();
@@ -283,6 +311,11 @@ export class WalletDashboardPage {
 
   ionViewDidLoad() {
     this.load();
+  }
+
+  ngOnDestroy() {
+    this._unsubscriber.next();
+    this._unsubscriber.complete();
   }
 
 }

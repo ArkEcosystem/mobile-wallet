@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/repeat';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { StorageProvider } from '@providers/storage/storage';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
@@ -12,25 +13,45 @@ import lodash from 'lodash';
 @Injectable()
 export class ArkApiProvider {
 
-  public network: arkts.Network;
-  public fees: arkts.Fees;
-  public api: arkts.Client;
+  private _network: arkts.Network;
+  private _api: arkts.Client;
 
-  constructor(public userDataProvider: UserDataProvider) {
-    this.userDataProvider.networkActiveObserver.subscribe((network) => {
-      this.network = network;
+  private _fees: arkts.Fees;
+  private _delegates: arkts.Delegate[];
+
+  constructor(private _userDataProvider: UserDataProvider, private _storageProvider: StorageProvider) {
+    this._userDataProvider.networkActiveObserver.subscribe((network) => {
+      console.log(network);
+      this._network = network;
       if (lodash.isEmpty(network)) {
-        this.api = null;
+        this._api = null;
       } else {
-        this.api = new arkts.Client(this.network);
+        this._api = new arkts.Client(this._network);
         this._setPeer();
       }
     });
   }
 
-  public getAllDelegates() {
-    if (!this.api) return;
+  public get network() {
+    return this._network;
+  }
 
+  public get api() {
+    return this._api;
+  }
+
+  public get fees() {
+    return this._fees;
+  }
+
+  public get delegates(): Observable<arkts.Delegate[]> {
+    if (!lodash.isEmpty(this._delegates)) return Observable.of(this._delegates);
+
+    return this._fetchAllDelegates();
+  }
+
+  private _fetchAllDelegates(): Observable<arkts.Delegate[]> {
+    if (!this._api) return;
     const limit = 51;
 
     let totalCount = limit;
@@ -39,52 +60,63 @@ export class ArkApiProvider {
 
     let totalPages = totalCount / limit;
 
-    let delegates = [];
+    let delegates: arkts.Delegate[] = [];
 
-    this.api.delegate.list({ limit, offset }).expand((project) => {
-      let req = this.api.delegate.list({ limit, offset });
-      return currentPage < totalPages ? req : Observable.empty();
-    }).do((response) => {
-      offset += limit;
-      if (response.success) totalCount = response.totalCount;
-      totalPages = Math.ceil(totalCount / limit);
+    return Observable.create((observer) => {
 
-      currentPage++;
-    }).finally(() => {
-      // TODO:
-    }).subscribe((data) => {
-      if (data.success) delegates = [...delegates, ...data.delegates];
+      this._api.delegate.list({ limit, offset }).expand((project) => {
+        let req = this._api.delegate.list({ limit, offset });
+        return currentPage < totalPages ? req : Observable.empty();
+      }).do((response) => {
+        offset += limit;
+        if (response.success) totalCount = response.totalCount;
+        totalPages = Math.ceil(totalCount / limit);
+
+        currentPage++;
+      }).finally(() => {
+        observer.next(delegates);
+        observer.complete();
+      }).subscribe((data) => {
+        if (data.success) delegates = [...delegates, ...data.delegates];
+      });
     });
+
   }
 
   private _setPeer(): void {
     // Get list from active peer
-    this.api.peer.list().subscribe((response) => {
+    this._api.peer.list().subscribe((response) => {
       if (response) {
-        let port = this.network.activePeer.port;
+        let port = this._network.activePeer.port;
         let sortHeight = lodash.orderBy(lodash.filter(response.peers, {'status': 'OK', 'port': port}), ['height','delay'], ['desc','asc']);
 
-        this.network.setPeer(sortHeight[0]);
+        this._network.setPeer(sortHeight[0]);
       }
     },
     // Get list from file
     () => {
-      return arkts.PeerApi.findGoodPeer(this.network).first().subscribe((peer) => this._updateNetwork(peer));
-    }, () => this._updateNetwork());
+      return arkts.PeerApi.findGoodPeer(this._network).first().subscribe((peer) => this._updateNetwork(peer));
+    },
+    () => this._updateNetwork());
   }
 
-  private _updateNetwork(peer?: arkts.Peer) {
-    if (peer) this.network.setPeer(peer);
+  private _updateNetwork(peer?: arkts.Peer): void {
+    if (peer) this._network.setPeer(peer);
     // Save in localStorage
-    this.userDataProvider.networkUpdate(this.userDataProvider.profileActive.networkId, this.network);
-    this.api = new arkts.Client(this.network);
+    this._userDataProvider.networkUpdate(this._userDataProvider.profileActive.networkId, this._network);
+    this._api = new arkts.Client(this._network);
+
+    this._fetchAllDelegates().first().subscribe((data) => {
+      this._delegates = data;
+    });
+
     this._setFees();
   }
 
   private _setFees(): void {
-    arkts.BlockApi.networkFees(this.network).subscribe((response) => {
+    arkts.BlockApi.networkFees(this._network).first().subscribe((response) => {
       if (response && response.success) {
-        this.fees = response.fees;
+        this._fees = response.fees;
       }
     });
   }

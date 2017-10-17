@@ -15,28 +15,28 @@ export class WalletRegisterSecondPassphrasePage {
   public symbol: string;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public viewCtrl: ViewController,
-    public ele: ElementRef,
+    private _navCtrl: NavController,
+    private _navParams: NavParams,
+    private _viewCtrl: ViewController,
+    private _ele: ElementRef,
   ) {
-    this.fee = this.navParams.get('fee');
+    this.fee = this._navParams.get('fee');
     this.passphrase = bip39.generateMnemonic();
-    this.symbol = this.navParams.get('symbol');
+    this.symbol = this._navParams.get('symbol');
   }
 
   closeModal() {
-    this.viewCtrl.dismiss();
+    this._viewCtrl.dismiss();
   }
 
   submitForm() {
-    this.viewCtrl.dismiss(this.passphrase);
+    this._viewCtrl.dismiss(this.passphrase);
   }
 
   ngAfterViewInit() {
     // Change modal size
-    let claz = this.ele.nativeElement.parentElement.getAttribute('class') + ' modal-register-second-passphrase';
-    this.ele.nativeElement.parentElement.setAttribute('class', claz);
+    let claz = this._ele.nativeElement.parentElement.getAttribute('class') + ' modal-register-second-passphrase';
+    this._ele.nativeElement.parentElement.setAttribute('class', claz);
   }
 
 }

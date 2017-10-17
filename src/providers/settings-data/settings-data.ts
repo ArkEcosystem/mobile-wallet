@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/takeUntil';
 
 import lodash from 'lodash';
 import * as constants from '@app/app.constants';
@@ -11,17 +12,19 @@ import * as constants from '@app/app.constants';
 export class SettingsDataProvider {
 
   public settings: any;
-  public settingsObserver: BehaviorSubject<any> = new BehaviorSubject(this.settings);
+  public onUpdated$: BehaviorSubject<any>;
+
+  private _unsubscriber$: Subject<void> = new Subject<void>();
 
   private DEFAULT_OPTIONS = {
     currency: "usd",
     language: "en",
   };
 
-  constructor(private storageProvider: StorageProvider) {
-    this._load().subscribe((data) => {
+  constructor(private _storageProvider: StorageProvider) {
+    this._load().takeUntil(this._unsubscriber$).subscribe((data) => {
       this.settings = data;
-      this.settingsObserver.next(data);
+      this.onUpdated$ = new BehaviorSubject(data);
     });
   }
 
@@ -31,7 +34,7 @@ export class SettingsDataProvider {
 
   private _load() {
     return Observable.create((observer) => {
-      this.storageProvider.getObject(constants.STORAGE_SETTINGS).subscribe((response) => {
+      this._storageProvider.getObject(constants.STORAGE_SETTINGS).takeUntil(this._unsubscriber$).subscribe((response) => {
         let data = response;
 
         if (lodash.isEmpty(data)) data = this.DEFAULT_OPTIONS;
@@ -39,6 +42,11 @@ export class SettingsDataProvider {
         observer.next(data);
       });
     });
+  }
+
+  ngOnDestroy() {
+    this._unsubscriber$.next();
+    this._unsubscriber$.complete();
   }
 
 }
