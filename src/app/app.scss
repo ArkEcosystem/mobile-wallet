@@ -112,3 +112,21 @@
   margin: 1.5em auto;
   background: #ffeaa5;
 }
+
+.md ion-list > .item:first-child,
+.md ion-list > .item-wrapper:first-child .item,
+.wp ion-list > .item:first-child,
+.wp ion-list > .item-wrapper:first-child .item,
+.ios ion-list > .item:first-child,
+.ios ion-list > .item-wrapper:first-child .item {
+  border-top: none;
+}
+
+.md ion-list > .item:last-child,
+.md ion-list > .item-wrapper:last-child .item,
+.wp ion-list > .item:last-child,
+.wp ion-list > .item-wrapper:last-child .item,
+.ios ion-list > .item:last-child,
+.ios ion-list > .item-wrapper:last-child .item {
+  border-bottom: none;
+}

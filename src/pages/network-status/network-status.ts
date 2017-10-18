@@ -19,10 +19,13 @@ import * as constants from '@app/app.constants';
 export class NetworkStatusPage {
 
   public currentNetwork: Network;
-  public currentPeer: Peer;
+  public currentPeer: Peer = new Peer();
+  public peerUrl: string;
 
   private _subscriber: Observable<PeerResponse>;
   private _unsubscriber: Subject<void> = new Subject<void>();
+
+  private _refreshIntervalListener;
 
   constructor(
     private _navCtrl: NavController,
@@ -31,6 +34,10 @@ export class NetworkStatusPage {
     private _loadingCtrl: LoadingController,
     private _translateService: TranslateService,
   ) { }
+
+  getPeerUrl() {
+    return `http://${this.currentPeer.ip}:${this.currentPeer.port}`;
+  }
 
   load() {
     this.currentNetwork = this._arkApiProvider.network;
@@ -41,6 +48,7 @@ export class NetworkStatusPage {
       .do((response) => {
         if (response && response.success) {
           this.currentPeer = response.peer;
+          this.peerUrl = this.currentNetwork.getPeerUrl();
         }
       });
 
@@ -61,7 +69,7 @@ export class NetworkStatusPage {
   }
 
   refreshStatus() {
-    setInterval(() => {
+    this._refreshIntervalListener = setInterval(() => {
       this._subscriber.subscribe();
     }, constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
   }
@@ -71,6 +79,7 @@ export class NetworkStatusPage {
   }
 
   ngOnDestroy() {
+    clearInterval(this._refreshIntervalListener);
     this._unsubscriber.next();
     this._unsubscriber.complete();
   }

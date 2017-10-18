@@ -1,11 +1,31 @@
 <ion-header>
 
   <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>{{ 'Network Status' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
-
+  <ion-list>
+    <ion-item inset>
+      <ion-label stacked>{{ 'Peer' | translate}}</ion-label>
+      <ion-input type="text" name="peer" [(ngModel)]="peerUrl" readonly></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'Delay' | translate }}</ion-label>
+      <ion-input type="text" name="delay" [(ngModel)]="currentPeer.delay" readonly></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'Height' | translate }}</ion-label>
+      <ion-input type="text" name="height" [(ngModel)]="currentPeer.height" readonly></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>{{ 'Status' | translate }}</ion-label>
+      <ion-input type="text" name="status" [(ngModel)]="currentPeer.status" readonly></ion-input>
+    </ion-item>
+  </ion-list>
 </ion-content>
