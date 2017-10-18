@@ -36,6 +36,9 @@ export class WalletDashboardPage {
 
   private _unsubscriber: Subject<void> = new Subject<void>();
 
+  private refreshDataIntervalListener;
+  private refreshTickerIntervalListener;
+
   constructor(
     private _platform: Platform,
     private _navCtrl: NavController,
@@ -272,11 +275,11 @@ export class WalletDashboardPage {
 
   load() {
     // TODO: LoadingController
-    setInterval(() => {
+    this.refreshDataIntervalListener = setInterval(() => {
       this.refreshData();
     }, constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
 
-    setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
+    this.refreshTickerIntervalListener = setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
   }
 
   ngOnInit() {
@@ -314,6 +317,8 @@ export class WalletDashboardPage {
   }
 
   ngOnDestroy() {
+    clearInterval(this.refreshDataIntervalListener);
+    clearInterval(this.refreshTickerIntervalListener);
     this._unsubscriber.next();
     this._unsubscriber.complete();
   }

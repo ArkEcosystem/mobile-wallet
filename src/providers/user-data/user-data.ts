@@ -147,8 +147,8 @@ export class UserDataProvider {
     return this._storageProvider.set(constants.STORAGE_PROFILES, profiles);
   }
 
-  walletAdd(wallet: Wallet, profileId?: string) {
-    if (!profileId) profileId = this._authProvider.loggedProfileId;
+  walletAdd(wallet: Wallet, profileId: string = this._authProvider.loggedProfileId) {
+    if (lodash.isUndefined(profileId)) return;
 
     let profile = this.profileGet(profileId);
 
@@ -159,8 +159,8 @@ export class UserDataProvider {
     return this.profilesSave();
   }
 
-  walletGet(address: string, profileId?: string): Wallet {
-    if (!profileId) profileId = this._authProvider.loggedProfileId;
+  walletGet(address: string, profileId: string = this._authProvider.loggedProfileId): Wallet {
+    if (lodash.isUndefined(profileId)) return;
 
     let profile = this.profileGet(profileId);
     let wallet = new Wallet();
@@ -173,9 +173,9 @@ export class UserDataProvider {
     return null;
   }
 
-  walletSave(wallet: Wallet, profileId?: string) {
-    if (!profileId) profileId = this._authProvider.loggedProfileId;
-
+  walletSave(wallet: Wallet, profileId: string = this._authProvider.loggedProfileId) {
+    if (lodash.isUndefined(profileId)) return;
+    console.log(profileId, wallet);
     let profile = this.profileGet(profileId);
     profile.wallets[wallet.address] = wallet;
 

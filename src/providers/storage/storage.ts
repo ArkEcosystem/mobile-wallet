@@ -10,7 +10,7 @@ import lodash from 'lodash';
 @Injectable()
 export class StorageProvider {
 
-  constructor(private _storage: Storage) { }
+  constructor(private _storage: Storage) { this._storage.clear(); }
 
   public get(key) {
     return Observable.fromPromise(this._storage.get(key));

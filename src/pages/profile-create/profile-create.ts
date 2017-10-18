@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
+
 import { Profile } from '@models/profile';
 import { UserDataProvider } from '@providers/user-data/user-data';
 
@@ -18,6 +21,8 @@ export class ProfileCreatePage {
 
   public newProfile = { name: '', networkId: '' };
 
+  private _unsubscriber$: Subject<void> = new Subject<void>();
+
   constructor(
     private _navCtrl: NavController,
     private _navParams: NavParams,
@@ -33,7 +38,7 @@ export class ProfileCreatePage {
     profile.name = this.newProfile.name;
     profile.networkId = this.newProfile.networkId;
 
-    this._userDataProvider.profileAdd(profile).subscribe((result) => {
+    this._userDataProvider.profileAdd(profile).takeUntil(this._unsubscriber$).subscribe((result) => {
       this._navCtrl.setRoot('ProfileSigninPage');
     }, () => {
       // TODO: Toast error
@@ -48,6 +53,11 @@ export class ProfileCreatePage {
 
   ionViewDidLoad() {
     this.load();
+  }
+
+  ngOnDestroy() {
+    this._unsubscriber$.next();
+    this._unsubscriber$.complete();
   }
 
 }
