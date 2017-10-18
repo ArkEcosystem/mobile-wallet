@@ -1,15 +1,44 @@
 <ion-menu [content]="content" id="sidebarMenu">
 
+  <ion-header padding>
+    <img src="./assets/img/logo-no-shadow.png" width="70" height="70">
+    <h4>{{ profile?.name }}</h4>
+    <p>{{ network?.name }}</p>
+  </ion-header>
+
   <ion-content>
-    <ion-list>
+    <ion-list inset no-lines>
       <button menuClose ion-item (click)="openPage('ContactsListPage')">
+        <ion-icon name="contacts" item-start></ion-icon>
         {{ 'Contacts' | translate }}
       </button>
-      <button menuClose ion-item (click)="logout()">
-        {{ 'Exit' | translate }}
+      <button menuClose ion-item (click)="openPage('ProfileWalletsPage')">
+        <ion-icon name="card" item-start></ion-icon>
+        {{ 'Wallet' | translate }}
+      </button>
+      <button menuClose ion-item (click)="openPage('DelegatesPage')">
+        <ion-icon name="contact" item-start></ion-icon>
+        {{ 'Delegates' | translate }}
+      </button>
+      <button menuClose ion-item (click)="openPage('NetworkStatusPage')">
+        <ion-icon name="wifi" item-start></ion-icon>
+        {{ 'Network Status' | translate }}
+      </button>
+      <button menuClose ion-item (click)="openPage('SettingsPage')">
+        <ion-icon name="settings" item-start></ion-icon>
+        {{ 'Settings' | translate }}
       </button>
     </ion-list>
   </ion-content>
+
+  <ion-footer>
+    <ion-list inset no-lines>
+      <button menuClose ion-item (click)="logout()">
+        <ion-icon name="exit" item-start></ion-icon>
+        {{ 'Exit' | translate }}
+      </button>
+    </ion-list>
+  </ion-footer>
 
 </ion-menu>
 

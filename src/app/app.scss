@@ -1,3 +1,23 @@
+#sidebarMenu {
+  ion-header {
+    padding: 40px 20px 20px 30px;
+
+    p {
+      margin-top: 0;
+      color: #666;
+      text-transform: capitalize;
+    }
+  }
+  ion-list > .item {
+    .icon {
+      color: rgb(0, 80, 232);
+    }
+    .label {
+      font-weight: 500;
+    }
+  }
+}
+
 .button-group {
   .col {
     &:first-child:not(:last-child) {

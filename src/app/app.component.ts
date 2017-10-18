@@ -15,7 +15,9 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage = null;
+  public rootPage = null;
+  public profile = null;
+  public network = null;
 
   @ViewChild(Nav) nav: Nav;
 
@@ -38,6 +40,8 @@ export class MyApp {
           this.menuCtrl.enable(false, 'sidebarMenu');
           this.openPage('ProfileSigninPage');
         } else {
+          this.profile = this.localDataProvider.profileActive;
+          this.network = this.localDataProvider.networkActive;
           this.menuCtrl.enable(true, 'sidebarMenu');
         }
       });

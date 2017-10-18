@@ -78,8 +78,10 @@ export class ProfileSigninPage {
   }
 
   getNetworkName(profileId: string) {
-    if (this.profiles[profileId]) {
-      return this.networks[this.profiles[profileId].networkId].name;
+    let profile = this._userDataProvider.profileGet(profileId);
+    if (profile && profile.networkId) {
+      let network = this._userDataProvider.networkGet(profile.networkId)
+      return network.name;
     }
   }
 
