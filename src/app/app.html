@@ -1,1 +1,16 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content" id="sidebarMenu">
+
+  <ion-content>
+    <ion-list>
+      <button menuClose ion-item (click)="openPage('ContactsListPage')">
+        {{ 'Contacts' | translate }}
+      </button>
+      <button menuClose ion-item (click)="logout()">
+        {{ 'Exit' | translate }}
+      </button>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
+
+<ion-nav [root]="rootPage" #content></ion-nav>

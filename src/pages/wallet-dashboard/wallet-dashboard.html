@@ -1,11 +1,9 @@
 <ion-header>
 
   <ion-navbar no-border-bottom color="primary" class="dark-navbar">
-    <ion-buttons>
-      <button ion-button icon-only menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title *ngIf="wallet?.label">{{ wallet?.label }}</ion-title>
     <ion-title *ngIf="!wallet?.label">{{ 'My Wallet' | translate }}</ion-title>
     <ion-buttons end>

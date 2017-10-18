@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Platform, Config, Nav, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -17,39 +17,65 @@ import { TranslateService } from '@ngx-translate/core';
 export class MyApp {
   rootPage = null;
 
+  @ViewChild(Nav) nav: Nav;
+
   constructor(
-    public platform: Platform,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen,
-    public authProvider: AuthProvider,
-    public translateService: TranslateService,
-    public localDataProvider: UserDataProvider,
-    public marketDataProvider: MarketDataProvider,
-    public settingsDataProvider: SettingsDataProvider,
-    public arkApiProvider: ArkApiProvider,
+    private platform: Platform,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private authProvider: AuthProvider,
+    private translateService: TranslateService,
+    private localDataProvider: UserDataProvider,
+    private marketDataProvider: MarketDataProvider,
+    private settingsDataProvider: SettingsDataProvider,
+    private arkApiProvider: ArkApiProvider,
+    private menuCtrl: MenuController,
+    private config: Config,
   ) {
     platform.ready().then(() => {
       this.authProvider.isLoginSubject$.subscribe((status) => {
-        if (!status) this.rootPage = 'ProfileSigninPage';
+        if (!status) {
+          this.menuCtrl.enable(false, 'sidebarMenu');
+          this.openPage('ProfileSigninPage');
+        } else {
+          this.menuCtrl.enable(true, 'sidebarMenu');
+        }
       });
 
-      translateService.setDefaultLang('en');
-      // TODO: Get language from settings provider
-      translateService.use('en');
       statusBar.styleDefault();
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
         splashScreen.hide();
 
         if (hasSeenIntro) {
-          this.rootPage = 'LoginPage';
+          this.openPage('LoginPage');
           return;
         }
 
-        this.rootPage = 'IntroPage';
+        this.openPage('IntroPage');
       });
 
     });
+
+    this.initTranslate();
+  }
+
+  initTranslate() {
+    // Set the default language for translation strings, and the current language.
+    this.translateService.setDefaultLang('en');
+    this.translateService.use('en'); // Set your language here
+
+    this.translateService.get('BACK_BUTTON_TEXT').subscribe(translate => {
+      this.config.set('ios', 'backButtonText', translate);
+    });
+  }
+
+  openPage(p) {
+    this.nav.setRoot(p);
+  }
+
+  logout() {
+    this.authProvider.logout();
   }
 
 }
