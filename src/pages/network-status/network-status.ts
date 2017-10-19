@@ -42,6 +42,7 @@ export class NetworkStatusPage {
   load() {
     this.currentNetwork = this._arkApiProvider.network;
     this.currentPeer = this._arkApiProvider.network.activePeer;
+    console.log(this.currentPeer);
 
     this._subscriber = this._arkApiProvider.api.peer.get(this.currentPeer.ip, this.currentPeer.port)
       .takeUntil(this._unsubscriber)
@@ -74,8 +75,22 @@ export class NetworkStatusPage {
     }, constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
   }
 
+  changePeer() {
+    this._arkApiProvider.findGoodPeer();
+  }
+
   ionViewDidLoad() {
     this.load();
+  }
+
+  ngOnInit() {
+    this._arkApiProvider.onUpdatePeer$
+      .takeUntil(this._unsubscriber)
+      .do((peer) => this.currentPeer = peer)
+      .subscribe(() => {
+        console.log('aqui');
+        // TODO: Toast message
+      });
   }
 
   ngOnDestroy() {

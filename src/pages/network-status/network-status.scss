@@ -1,3 +1,17 @@
 page-network-status {
-
+  ion-label {
+    font-size: 1.7rem!important;
+    font-weight: 500;
+  }
+  scroll-content {
+    display: flex;
+    flex-direction: column;
+  }
+  ion-grid {
+    padding: 0;
+    height: 100%;
+  }
+  ion-row {
+    flex: 1;
+  }
 }
