@@ -42,7 +42,6 @@ export class NetworkStatusPage {
   load() {
     this.currentNetwork = this._arkApiProvider.network;
     this.currentPeer = this._arkApiProvider.network.activePeer;
-    console.log(this.currentPeer);
 
     this._subscriber = this._arkApiProvider.api.peer.get(this.currentPeer.ip, this.currentPeer.port)
       .takeUntil(this._unsubscriber)
@@ -88,7 +87,6 @@ export class NetworkStatusPage {
       .takeUntil(this._unsubscriber)
       .do((peer) => this.currentPeer = peer)
       .subscribe(() => {
-        console.log('aqui');
         // TODO: Toast message
       });
   }

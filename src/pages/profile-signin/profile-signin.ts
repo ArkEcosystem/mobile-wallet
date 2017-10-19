@@ -117,7 +117,7 @@ export class ProfileSigninPage {
   load() {
     this.profiles = lodash.omitBy(this._userDataProvider.profiles, lodash.isEmpty);
     this.profilesIds = lodash.keys(this.profiles);
-    console.log(this.profiles);
+
     this.networks = this._userDataProvider.networks;
   }
 

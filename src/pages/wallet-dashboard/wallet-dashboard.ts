@@ -36,8 +36,8 @@ export class WalletDashboardPage {
 
   private _unsubscriber: Subject<void> = new Subject<void>();
 
-  private refreshDataIntervalListener;
-  private refreshTickerIntervalListener;
+  private _refreshDataIntervalListener;
+  private _refreshTickerIntervalListener;
 
   constructor(
     private _platform: Platform,
@@ -106,11 +106,12 @@ export class WalletDashboardPage {
 
       // TODO: Delegate item
       if (!this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
+      if (!this.wallet.isDelegate) buttons.unshift(delegateItem);
 
       let action = this._actionSheetCtrl.create({buttons});
 
       action.present();
-    }).unsubscribe();
+    });
   }
 
   presentAddActionSheet() {
@@ -137,7 +138,7 @@ export class WalletDashboardPage {
       });
 
       action.present();
-    }).unsubscribe();
+    });
   }
 
   refreshTransactions(save: boolean = true, loader?: Loading) {
@@ -265,7 +266,7 @@ export class WalletDashboardPage {
         ]
       });
       confirm.present();
-    }).unsubscribe();
+    });
   }
 
   delete() {
@@ -273,16 +274,16 @@ export class WalletDashboardPage {
     console.log('delete');
   }
 
-  load() {
-    // TODO: LoadingController
-    this.refreshDataIntervalListener = setInterval(() => {
-      this.refreshData();
-    }, constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
-
-    this.refreshTickerIntervalListener = setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
+  private _onUpdateWalletSubscriber() {
+    this._userDataProvider.onUpdateWallet$
+      .takeUntil(this._unsubscriber)
+      .debounceTime(500)
+      .subscribe((wallet) => {
+        if (!lodash.isEmpty(wallet) && this.wallet.address == wallet.address) this.wallet = wallet;
+      });
   }
 
-  ngOnInit() {
+  load() {
     this.profile = this._userDataProvider.profileActive;
     this.network = this._userDataProvider.networkActive;
     this.fees = this._arkApiProvider.fees;
@@ -290,6 +291,7 @@ export class WalletDashboardPage {
 
     if (lodash.isEmpty(this.wallet)) {
       this._navCtrl.popToRoot();
+      return;
     }
 
     let transactions = this.wallet.transactions;
@@ -307,18 +309,26 @@ export class WalletDashboardPage {
         this.refreshTransactions(true, loader);
       });
     }
+  }
+
+  ngOnInit() {
+    this._refreshDataIntervalListener = setInterval(() => this.refreshData(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
+    this._refreshTickerIntervalListener = setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
+
+    this._onUpdateWalletSubscriber();
+  }
+
+  ionViewDidLoad() {
+    this.load();
 
     this.refreshData();
     this.refreshPrice();
   }
 
-  ionViewDidLoad() {
-    this.load();
-  }
-
   ngOnDestroy() {
-    clearInterval(this.refreshDataIntervalListener);
-    clearInterval(this.refreshTickerIntervalListener);
+    clearInterval(this._refreshDataIntervalListener);
+    clearInterval(this._refreshTickerIntervalListener);
+
     this._unsubscriber.next();
     this._unsubscriber.complete();
   }

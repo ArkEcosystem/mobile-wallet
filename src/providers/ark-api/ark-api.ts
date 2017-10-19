@@ -12,6 +12,7 @@ import lodash from 'lodash';
 export class ArkApiProvider {
 
   public onUpdatePeer$: BehaviorSubject<arkts.Peer> = new BehaviorSubject(undefined);
+  public onUpdateDelegates$: BehaviorSubject<arkts.Delegate[]> = new BehaviorSubject(undefined);
 
   private _network: arkts.Network;
   private _api: arkts.Client;
@@ -92,6 +93,8 @@ export class ArkApiProvider {
 
         currentPage++;
       }).finally(() => {
+        this.onUpdateDelegates$.next(delegates);
+
         observer.next(delegates);
         observer.complete();
       }).subscribe((data) => {

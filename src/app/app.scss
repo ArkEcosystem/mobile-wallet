@@ -130,3 +130,7 @@
 .ios ion-list > .item-wrapper:last-child .item {
   border-bottom: none;
 }
+
+.no-valiadte .item-input.ng-valid.input-has-value::after{
+  border-bottom-color: transparent;
+}

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
 
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
 
 import { Contact, Profile, Wallet } from '@models/model';
@@ -20,10 +20,13 @@ export class UserDataProvider {
   public networks = {};
 
   public profileActive: Profile;
-  public profileActiveObserver: BehaviorSubject<Profile> = new BehaviorSubject(null);
+  public profileActiveObserver: BehaviorSubject<Profile> = new BehaviorSubject(undefined);
 
   public networkActive: Network;
-  public networkActiveObserver: BehaviorSubject<Network> = new BehaviorSubject(null);
+  public networkActiveObserver: BehaviorSubject<Network> = new BehaviorSubject(undefined);
+
+  public onCreateWallet$: Subject<Wallet> = new Subject();
+  public onUpdateWallet$: Subject<Wallet> = new Subject();
 
   constructor(private _storageProvider: StorageProvider, private _authProvider: AuthProvider) {
     this.profilesLoad().subscribe((profiles) => this.profiles = profiles);
@@ -153,8 +156,10 @@ export class UserDataProvider {
     let profile = this.profileGet(profileId);
 
     if (!profile.wallets[wallet.address]) {
+      this.onCreateWallet$.next(wallet);
       return this.walletSave(wallet, profileId);
     }
+
 
     return this.profilesSave();
   }
@@ -173,13 +178,15 @@ export class UserDataProvider {
     return null;
   }
 
-  walletSave(wallet: Wallet, profileId: string = this._authProvider.loggedProfileId) {
+  walletSave(wallet: Wallet, profileId: string = this._authProvider.loggedProfileId, notificate: boolean = false) {
     if (lodash.isUndefined(profileId)) return;
-    console.log(profileId, wallet);
+
     let profile = this.profileGet(profileId);
     profile.wallets[wallet.address] = wallet;
 
     this.profiles[profileId] = profile;
+
+    if (notificate) this.onUpdateWallet$.next(wallet);
 
     return this.profilesSave();
   }
