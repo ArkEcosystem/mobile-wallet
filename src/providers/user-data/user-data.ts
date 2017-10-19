@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
 
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
 
 import { Contact, Profile, Wallet } from '@models/model';
@@ -20,13 +20,12 @@ export class UserDataProvider {
   public networks = {};
 
   public profileActive: Profile;
-  public profileActiveObserver: BehaviorSubject<Profile> = new BehaviorSubject(undefined);
-
   public networkActive: Network;
-  public networkActiveObserver: BehaviorSubject<Network> = new BehaviorSubject(undefined);
 
+  public onActivateNetwork$: Subject<Network> = new Subject();
   public onCreateWallet$: Subject<Wallet> = new Subject();
   public onUpdateWallet$: Subject<Wallet> = new Subject();
+  public onSelectProfile$: Subject<Profile> = new Subject();
 
   constructor(private _storageProvider: StorageProvider, private _authProvider: AuthProvider) {
     this.profilesLoad().subscribe((profiles) => this.profiles = profiles);
@@ -36,8 +35,8 @@ export class UserDataProvider {
 
     this._authProvider.onSigninSubject$.subscribe((id) => {
       if (lodash.isEmpty(id)) {
-        this.profileActiveObserver.next(null);
-        this.networkActiveObserver.next(null);
+        this.onSelectProfile$.next(null);
+        this.onActivateNetwork$.next(null);
       } else {
         this._setProfileActive(id);
         this._setNetworkActive();
@@ -67,7 +66,7 @@ export class UserDataProvider {
     let network = new Network();
 
     Object.assign(network, this.networks[this.profileActive.networkId]);
-    this.networkActiveObserver.next(network);
+    this.onActivateNetwork$.next(network);
 
     this.networkActive = network;
   }
@@ -122,7 +121,7 @@ export class UserDataProvider {
     if (profileId && this.profiles[profileId]) {
       let profile = new Profile().deserialize(this.profiles[profileId]);
       this.profileActive = profile;
-      this.profileActiveObserver.next(profile);
+      this.onSelectProfile$.next(profile);
     }
   }
 

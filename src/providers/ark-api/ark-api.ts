@@ -23,7 +23,7 @@ export class ArkApiProvider {
   private _unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(private _userDataProvider: UserDataProvider, private _storageProvider: StorageProvider) {
-    this._userDataProvider.networkActiveObserver.subscribe((network) => {
+    this._userDataProvider.onActivateNetwork$.subscribe((network) => {
       this._network = network;
       if (lodash.isEmpty(network)) {
         this._api = null;
