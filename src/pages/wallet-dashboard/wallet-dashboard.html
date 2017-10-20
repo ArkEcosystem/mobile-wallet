@@ -1,23 +1,22 @@
 <ion-header>
 
-  <ion-navbar no-border-bottom color="primary" class="dark-navbar">
+  <ion-navbar no-border-bottom no-shadow color="primary" class="dark-navbar">
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title *ngIf="wallet?.label">{{ wallet?.label }}</ion-title>
-    <ion-title *ngIf="!wallet?.label">{{ 'My Wallet' | translate }}</ion-title>
+    <ion-title>{{ wallet?.label || 'My Wallet' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="presentWalletActionSheet()">
         <ion-icon name="md-more"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-toolbar>
+  <ion-toolbar no-border-top>
     <ion-grid>
       <ion-row class="account-balance">
         <ion-col text-center>
           <p>{{ 'Balance' | translate }}</p>
-          <h1>{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-2' }}</h1>
+          <h1>{{ wallet?.getBalance() | number: '1.0-2' }} {{ network?.symbol }}</h1>
           <h4>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | number: '1.0-2' }}</h4>
         </ion-col>
       </ion-row>
@@ -30,21 +29,26 @@
     <button ion-fab color="primary" (click)="presentAddActionSheet()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 
-  <ion-grid class="main-grid">
-    <ion-row>
+  <ion-grid class="main-grid full-height">
+    <ion-row justify-content-center align-items-center class="full-height" *ngIf="emptyTransactions">
+      <ion-col text-center>
+        <h5>{{ 'No transactions available' | translate }}</h5>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="!emptyTransactions">
       <ion-col>
         <ion-card *ngFor="let tx of wallet?.transactions" class="tx" (click)="openTransactionShow(tx)">
           <ion-item>
-            <h3 class="address" *ngIf="tx?.isTransfer()">{{ tx?.recipientId | truncateMiddle: 12 }}</h3>
-            <h3 class="address" *ngIf="!tx?.isTransfer()">{{ tx?.getTypeLabel() | translate }}</h3>
-            <p class="timestamp">{{ tx?.date | date: 'MMM dd, h:mm a' }} | {{ tx?.confirmations }}</p>
+            <ion-icon *ngIf="tx?.isSender()" item-start name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
+            <ion-icon *ngIf="!tx?.isSender()" item-start name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>
+            <h3 *ngIf="tx.isTransfer()" class="type">{{ tx?.getTypeLabel() | translate }}</h3>
+            <h3 class="address">{{ (tx?.isTransfer()) && (tx?.recipientId | truncateMiddle: 12) || (tx?.getTypeLabel() | translate) }}</h3>
+
             <div text-right item-end>
-              <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi | number: '1.0-2' }}</h3>
-              <p class="amount-equivalent">{{ marketCurrency?.symbol }}{{ tx?.getAmountEquivalent(marketHistory, marketCurrency) | unitsSatoshi | number:
-                '1.1-2' }}</p>
+              <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi | number: '1.0-2' }} {{ network?.symbol }}</h3>
+              <p class="timestamp">{{ tx?.date | date: 'MMM dd, hh:mm a' }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
             </div>
-            <ion-icon *ngIf="tx?.isSender()" item-end name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
-            <ion-icon *ngIf="!tx?.isSender()" item-end name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>
           </ion-item>
         </ion-card>
       </ion-col>

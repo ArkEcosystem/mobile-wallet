@@ -4,7 +4,7 @@ import arkConfig from 'ark-ts/config';
 import { MarketCurrency, MarketHistory } from '@models/market';
 
 const TX_TYPES = {
-  0: 'Send',
+  0: 'Sent',
   1: 'Second Signature Creation',
   2: 'Delegate Registration',
   3: 'Vote',
@@ -60,7 +60,7 @@ export class Transaction extends TransactionModel {
   getTypeLabel(): string {
     let type = TX_TYPES[this.type];
 
-    if (this.isTransfer() && !this.isSender()) type = 'Receive';
+    if (this.isTransfer() && !this.isSender()) type = 'Received';
 
     return type;
   }

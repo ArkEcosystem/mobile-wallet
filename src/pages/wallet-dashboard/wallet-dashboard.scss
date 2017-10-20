@@ -8,6 +8,10 @@ page-wallet-dashboard {
   }
   .main-grid {
     padding: 0 .2em!important;
+
+    ion-row {
+      flex: 1;
+    }
   }
   .grid {
     padding: 0;
@@ -15,7 +19,7 @@ page-wallet-dashboard {
   .account-balance {
     background: url('../assets/img/wallet/balance-wallet-bg.png') #080e20 repeat;
     background-size: cover;
-    padding: 2em;
+    padding: .5em 0 2em 0;
     color: white;
   }
   ion-fab {
@@ -41,15 +45,13 @@ page-wallet-dashboard {
     .label {
       margin: 0;
     }
-    .address {
-      font-weight: 400;
-    }
     .timestamp,
-    .amount-equivalent {
+    .type {
       margin-top: .4em;
       font-size: 1.2rem;
     }
-    .amount {
+    .amount,
+    .type {
       font-weight: 500;
     }
   }

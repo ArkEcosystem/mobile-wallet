@@ -13,7 +13,7 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-list *ngIf="currentPeer" class="no-validate">
+        <ion-list *ngIf="currentPeer" class="no-validate list-readonly-form">
           <ion-item inset>
             <ion-label stacked>{{ 'Peer' | translate}}</ion-label>
             <ion-input type="text" name="peer" [(ngModel)]="peerUrl" readonly></ion-input>

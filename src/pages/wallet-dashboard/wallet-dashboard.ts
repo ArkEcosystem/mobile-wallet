@@ -34,6 +34,9 @@ export class WalletDashboardPage {
   public marketHistory: MarketHistory;
   public marketCurrency: MarketCurrency;
 
+  public emptyTransactions: boolean = false;
+  public minConfirmations = constants.WALLET_MIN_NUMBER_CONFIRMATIONS;
+
   private _unsubscriber: Subject<void> = new Subject<void>();
 
   private _refreshDataIntervalListener;
@@ -63,9 +66,9 @@ export class WalletDashboardPage {
   }
 
   presentWalletActionSheet() {
-    this._translateService.get(['Label', 'Register delegate', '2nd passphrase', 'Delete wallet', 'Cancel']).takeUntil(this._unsubscriber).subscribe((translation) => {
+    this._translateService.get(['Label', 'Register Delegate', 'Second Passphrase', 'Remove Wallet', 'Cancel']).takeUntil(this._unsubscriber).subscribe((translation) => {
       let delegateItem =  {
-        text: translation['Register delegate'],
+        text: translation['Register Delegate'],
         role: 'delegate',
         icon: !this._platform.is('ios') ? 'contact' : '',
         handler: () => {
@@ -74,7 +77,7 @@ export class WalletDashboardPage {
       };
 
       let secondPassphraseItem = {
-        text: translation['2nd passphrase'],
+        text: translation['Second Passphrase'],
         role: '2ndpassphrase',
         icon: !this._platform.is('ios') ? 'lock' : '',
         handler: () => {
@@ -91,7 +94,7 @@ export class WalletDashboardPage {
             this.openLabelModal();
           },
         }, {
-          text: translation['Delete wallet'],
+          text: translation['Remove Wallet'],
           role: 'delete',
           icon: !this._platform.is('ios') ? 'trash' : '',
           handler: () => {
@@ -149,13 +152,13 @@ export class WalletDashboardPage {
     })
     .finally(() => {
       if (loader) loader.dismiss();
+      this.emptyTransactions = lodash.isEmpty(this.wallet.transactions);
     })
     .takeUntil(this._unsubscriber)
     .subscribe((response) => {
       if (response && response.success) {
         this.wallet.loadTransactions(response.transactions);
         this.wallet.lastUpdate = new Date().getTime();
-
         if (save) this.saveWallet();
       }
     });
