@@ -32,4 +32,8 @@ export class StorageProvider {
     return Observable.fromPromise(this._storage.set(key, value));
   }
 
+  public clear() {
+    return Observable.fromPromise(this._storage.clear());
+  }
+
 }

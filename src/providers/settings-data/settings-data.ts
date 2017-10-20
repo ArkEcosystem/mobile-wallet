@@ -6,38 +6,72 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 
 import lodash from 'lodash';
+import { UserSettings } from '@models/settings';
 import * as constants from '@app/app.constants';
 
 @Injectable()
 export class SettingsDataProvider {
 
-  public settings: any;
-  public onUpdated$: BehaviorSubject<any>;
+  public onUpdate$: Subject<UserSettings>;
 
+  private _settings: UserSettings;
   private _unsubscriber$: Subject<void> = new Subject<void>();
 
-  private DEFAULT_OPTIONS = {
-    currency: "usd",
-    language: "en",
-  };
+  public AVALIABLE_OPTIONS = {
+    languages: {
+      "en": "English",
+      "pt-br": "Portuguese - Brazil",
+    },
+    currencies: {
+      "usd": "Dolar",
+      "btc": "Bitcoin",
+      "brl": "Real",
+    },
+  }
 
   constructor(private _storageProvider: StorageProvider) {
     this._load().takeUntil(this._unsubscriber$).subscribe((data) => {
-      this.settings = data;
-      this.onUpdated$ = new BehaviorSubject(data);
+      this._settings = data;
+      this.save();
+
+      this.onUpdate$ = new BehaviorSubject(data);
     });
   }
 
-  getDefaults() {
-    return this.DEFAULT_OPTIONS;
+  public get settings() {
+    if (lodash.isEmpty(this._settings)) {
+      return this._load();
+    } else {
+      return Observable.of(this._settings);
+    }
   }
 
-  private _load() {
+  public getDefaults(): UserSettings {
+    return UserSettings.defaults();
+  }
+
+  public save(options: UserSettings = this._settings): Observable<any> {
+    if (!lodash.isObject(options)) return;
+
+    for (let prop in options) {
+      this._settings[prop] = options[prop];
+    }
+
+    return this._storageProvider.set(constants.STORAGE_SETTINGS, this._settings);
+  }
+
+  public clearData() {
+    return this._storageProvider.clear();
+  }
+
+  private _load(): Observable<any> {
     return Observable.create((observer) => {
       this._storageProvider.getObject(constants.STORAGE_SETTINGS).takeUntil(this._unsubscriber$).subscribe((response) => {
         let data = response;
 
-        if (lodash.isEmpty(data)) data = this.DEFAULT_OPTIONS;
+        if (lodash.isEmpty(data)) {
+          data = this.getDefaults();
+        }
 
         observer.next(data);
       });

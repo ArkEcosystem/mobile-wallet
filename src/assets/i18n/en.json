@@ -1,9 +1,14 @@
 {
+  "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
+  "CANCEL": "Cancel",
+  "CONFIRM": "Confirm",
+  "CONFIRMATIONS": "Confirmations",
   "CREATE_PROFILE_BUTTON": "Create an profile",
   "CREATE_PROFILE_TITLE": "Create Profile",
   "DELETE": "Delete",
   "SIGN_IN": "Sign in",
   "SKIP": "Skip",
-  "GET_STARTED": "Get started"
+  "GET_STARTED": "Get started",
+  "CLEAR_DATA_CONFIRMATION_TEXT": "All your data, including created profiles, wallets and contacts will be removed from the app and reset to default."
 }
