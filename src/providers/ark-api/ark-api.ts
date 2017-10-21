@@ -20,8 +20,6 @@ export class ArkApiProvider {
   private _fees: arkts.Fees;
   private _delegates: arkts.Delegate[];
 
-  private _unsubscriber$: Subject<void> = new Subject<void>();
-
   constructor(private _userDataProvider: UserDataProvider, private _storageProvider: StorageProvider) {
     this._userDataProvider.onActivateNetwork$.subscribe((network) => {
       this._network = network;
@@ -54,7 +52,7 @@ export class ArkApiProvider {
 
   public findGoodPeer(): void {
     // Get list from active peer
-    this._api.peer.list().takeUntil(this._unsubscriber$).subscribe((response) => {
+    this._api.peer.list().subscribe((response) => {
       if (response) {
         let port = this._network.activePeer.port;
         let sortHeight = lodash.orderBy(lodash.filter(response.peers, {'status': 'OK', 'port': port}), ['height','delay'], ['desc','asc']);
@@ -83,7 +81,7 @@ export class ArkApiProvider {
 
     return Observable.create((observer) => {
 
-      this._api.delegate.list({ limit, offset }).takeUntil(this._unsubscriber$).expand((project) => {
+      this._api.delegate.list({ limit, offset }).expand((project) => {
         let req = this._api.delegate.list({ limit, offset });
         return currentPage < totalPages ? req : Observable.empty();
       }).do((response) => {
@@ -113,7 +111,7 @@ export class ArkApiProvider {
     this._userDataProvider.networkUpdate(this._userDataProvider.profileActive.networkId, this._network);
     this._api = new arkts.Client(this._network);
 
-    this._fetchAllDelegates().takeUntil(this._unsubscriber$).subscribe((data) => {
+    this._fetchAllDelegates().subscribe((data) => {
       this._delegates = data;
     });
 
@@ -121,16 +119,11 @@ export class ArkApiProvider {
   }
 
   private _setFees(): void {
-    arkts.BlockApi.networkFees(this._network).takeUntil(this._unsubscriber$).subscribe((response) => {
+    arkts.BlockApi.networkFees(this._network).subscribe((response) => {
       if (response && response.success) {
         this._fees = response.fees;
       }
     });
-  }
-
-  ngOnDestroy() {
-    this._unsubscriber$.next();
-    this._unsubscriber$.complete();
   }
 
 }

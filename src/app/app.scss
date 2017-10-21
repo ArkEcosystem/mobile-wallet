@@ -147,3 +147,38 @@
 .no-valiadte .item.ng-valid.input-has-value::after {
   border-bottom-color: transparent;
 }
+
+ion-content.column-mode {
+  scroll-content {
+    display: flex;
+    flex-direction: column;
+  }
+  ion-grid {
+    padding: 0;
+    height: 100%;
+  }
+  ion-row {
+    flex: 1;
+  }
+}
+
+ion-fab.pull-footer {
+  bottom: 20px!important;
+  right: 20px!important;
+}
+
+.circle-letter {
+  display: inline-block;
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  color: white;
+  background: #b6c4cc;
+  &.mainnet {
+    background: #ed2a2d;
+  }
+}

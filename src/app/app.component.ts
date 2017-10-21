@@ -83,17 +83,20 @@ export class MyApp {
   }
 
   // Redirect user when login or logout
-  private _onLogin() {
-    this.authProvider.isLoginSubject$.takeUntil(this._unsubscriber$).subscribe((status) => {
-      if (!status) {
-        this.menuCtrl.enable(false, 'sidebarMenu');
-        this.openPage('ProfileSigninPage');
-      } else {
-        this.profile = this.localDataProvider.profileActive;
-        this.network = this.localDataProvider.networkActive;
-        this.menuCtrl.enable(true, 'sidebarMenu');
-      }
+  private _onUserLogin(): void {
+    this.authProvider.onLogin$.takeUntil(this._unsubscriber$).subscribe(() => {
+      this.profile = this.localDataProvider.profileActive;
+      this.network = this.localDataProvider.networkActive;
+
+      return this.menuCtrl.enable(true, 'sidebarMenu');
     });
+  }
+
+  private _onUserLogout(): void {
+    this.authProvider.onLogout$.takeUntil(this._unsubscriber$).subscribe(() => {
+      this.menuCtrl.enable(false, 'sidebarMenu');
+      return this.openPage('ProfileSigninPage');
+    })
   }
 
   // Verify if any account registered is a delegate
@@ -133,7 +136,9 @@ export class MyApp {
 
   ngOnInit() {
     this._initialVerify();
-    this._onLogin();
+    this._onUserLogin();
+    this._onUserLogout();
+
     this._onCreateWallet();
     this.arkApiProvider.onUpdateDelegates$
       .do((delegates) => this._onUpdateDelegates(delegates))

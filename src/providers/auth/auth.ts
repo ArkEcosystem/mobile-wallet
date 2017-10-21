@@ -10,29 +10,23 @@ import * as constants from '@app/app.constants';
 @Injectable()
 export class AuthProvider {
 
-  public isLoginSubject$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public onLogin$: Subject<string> = new Subject();
+  public onLogout$: Subject<boolean> = new Subject();
 
   public loggedProfileId: string;
-  public onSigninSubject$: BehaviorSubject<string> = new BehaviorSubject(this.loggedProfileId);
-
-  private _unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(private _storage: StorageProvider) {
     this._checkLogin();
-  }
-
-  isLoggedIn(): Observable<boolean> {
-    return this.isLoginSubject$.asObservable().share();
   }
 
   login(profileId: string, password?: string): Observable<boolean> {
     return Observable.create((observer) => {
       this.loggedProfileId = profileId;
       this._storage.set(constants.STORAGE_ACTIVE_PROFILE, profileId);
-      this.onSigninSubject$.next(profileId);
 
       this._storage.set(constants.STORAGE_LOGIN, true);
-      this.isLoginSubject$.next(true);
+
+      this.onLogin$.next(profileId);
       observer.next(true);
     });
   }
@@ -42,12 +36,12 @@ export class AuthProvider {
     this._storage.set(constants.STORAGE_ACTIVE_PROFILE, undefined);
     this.loggedProfileId = undefined;
 
-    this.isLoginSubject$.next(false);
+    this.onLogout$.next(false);
   }
 
   hasSeenIntro(): Observable<boolean> {
     return Observable.create((observer) => {
-      this._storage.getObject(constants.STORAGE_INTROSEEN).takeUntil(this._unsubscriber$).subscribe((introSeen) => {
+      this._storage.getObject(constants.STORAGE_INTROSEEN).subscribe((introSeen) => {
         observer.next(introSeen);
         observer.complete();
       });
@@ -71,7 +65,7 @@ export class AuthProvider {
 
   validateMasterPassword(password: string): Observable<any> {
     return Observable.create((observer) => {
-      this._storage.get(constants.STORAGE_MASTERPASSWORD).takeUntil(this._unsubscriber$).subscribe((master) => {
+      this._storage.get(constants.STORAGE_MASTERPASSWORD).subscribe((master) => {
         // TODO:
         const decrypt = constants.STORAGE_MASTERPASSWORD_VALIDATE;
         observer.next(decrypt);
@@ -82,17 +76,12 @@ export class AuthProvider {
 
   private _checkLogin(): void {
     this._storage.getObject(constants.STORAGE_LOGIN)
-      .takeUntil(this._unsubscriber$)
       .flatMap(() => this._storage.get(constants.STORAGE_ACTIVE_PROFILE))
       .subscribe((result) => {
-        console.log(result);
+        // TODO:
         // this.isLoginSubject$.next(result);
       });
   }
 
-  ngOnDestroy() {
-    this._unsubscriber$.next();
-    this._unsubscriber$.complete();
-  }
 
 }

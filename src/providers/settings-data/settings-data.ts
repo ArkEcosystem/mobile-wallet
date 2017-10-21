@@ -15,7 +15,6 @@ export class SettingsDataProvider {
   public onUpdate$: Subject<UserSettings> = new Subject();
 
   private _settings: UserSettings;
-  private _unsubscriber$: Subject<void> = new Subject<void>();
 
   public AVALIABLE_OPTIONS = {
     languages: {
@@ -30,7 +29,7 @@ export class SettingsDataProvider {
   }
 
   constructor(private _storageProvider: StorageProvider) {
-    this._load().takeUntil(this._unsubscriber$).subscribe((data) => {
+    this._load().subscribe((data) => {
       this._settings = data;
       this.save();
     });
@@ -64,7 +63,7 @@ export class SettingsDataProvider {
 
   private _load(): Observable<any> {
     return Observable.create((observer) => {
-      this._storageProvider.getObject(constants.STORAGE_SETTINGS).takeUntil(this._unsubscriber$).subscribe((response) => {
+      this._storageProvider.getObject(constants.STORAGE_SETTINGS).subscribe((response) => {
         let data = response;
 
         if (lodash.isEmpty(data)) {
@@ -74,11 +73,6 @@ export class SettingsDataProvider {
         observer.next(data);
       });
     });
-  }
-
-  ngOnDestroy() {
-    this._unsubscriber$.next();
-    this._unsubscriber$.complete();
   }
 
 }

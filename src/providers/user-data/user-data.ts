@@ -28,53 +28,53 @@ export class UserDataProvider {
   public onUpdateWallet$: Subject<Wallet> = new Subject();
   public onSelectProfile$: Subject<Profile> = new Subject();
 
-  private _unsubscriber$: Subject<void> = new Subject<void>();
-
   constructor(
     private _storageProvider: StorageProvider,
     private _authProvider: AuthProvider
   ) {
-    this.profilesLoad().subscribe((profiles) => this.profiles = profiles);
-    this.networksLoad().subscribe((networks) => {
-      this.networks = networks;
-    });
+    this._loadAllData();
 
-    this._authProvider.onSigninSubject$.subscribe((id) => {
-      if (lodash.isEmpty(id)) {
-        this.onSelectProfile$.next(null);
-        this.onActivateNetwork$.next(null);
-      } else {
-        this._setProfileActive(id);
-        this._setNetworkActive();
+    this._onLogin();
+    this._onClearStorage();
+  }
+
+  addContact(address: string, contact: Contact, profileId: string = this._authProvider.loggedProfileId) {
+    if (!this.profiles[profileId]) return;
+
+    this.profiles[profileId].contacts[address] = contact;
+
+    return this.profilesSave();
+  }
+
+  editContact(address: string, contact: Contact) {
+    if (lodash.isNil(this.profiles)) return;
+
+    lodash.forEach(this.profiles, (item, id) => {
+      if (item['contacts'][address]) {
+        this.profiles[id]['contacts'][address] = contact;
       }
     });
-  }
-
-  contactAdd(profileId: string, contact: Contact) {
-    this.profiles[profileId].contacts[this._generateUniqueId()] = contact;
 
     return this.profilesSave();
   }
 
-  contactGet(profileId: string, contactId: string) {
-    return this.profiles[profileId].contacts[contactId];
+  getContact(address: string): Contact {
+    if (lodash.isNil(this.profiles)) return;
+    let contacts = lodash.flatMap(this.profiles, (item) => item['contacts']);
+
+    if (lodash.isNil(contacts)) return;
+
+    return <Contact>contacts[address];
   }
 
-  contactRemove(profileId: string, contactId: string) {
-    delete this.profiles[profileId].contacts[contactId];
+  removeContact(address: string) {
+    if (lodash.isNil(this.profiles)) return;
+
+    lodash.forEach(this.profiles, (item, id) => {
+      this.profiles[id]['contacts'] = lodash.omit(item['contacts'], [address]);
+    });
 
     return this.profilesSave();
-  }
-
-  private _setNetworkActive(): void {
-    if (!this.profileActive) return;
-
-    let network = new Network();
-
-    Object.assign(network, this.networks[this.profileActive.networkId]);
-    this.onActivateNetwork$.next(network);
-
-    this.networkActive = network;
   }
 
   networkAdd(network: Network) {
@@ -100,37 +100,6 @@ export class UserDataProvider {
     return this.networks;
   }
 
-  networksLoad() {
-    const defaults = Network.getAll();
-
-    return Observable.create((observer) => {
-      this._storageProvider.getObject(constants.STORAGE_NETWORKS).subscribe((networks) => {
-        if (!networks || lodash.isEmpty(networks)) {
-          const uniqueDefaults = {};
-
-          for (var i = 0; i < defaults.length; i++) {
-            uniqueDefaults[this._generateUniqueId()] = defaults[i];
-          }
-
-          this._storageProvider.set(constants.STORAGE_NETWORKS, uniqueDefaults);
-          observer.next(uniqueDefaults);
-        } else {
-          observer.next(networks);
-        }
-
-        observer.complete();
-      });
-    });
-  }
-
-  private _setProfileActive(profileId: string): void {
-    if (profileId && this.profiles[profileId]) {
-      let profile = new Profile().deserialize(this.profiles[profileId]);
-      this.profileActive = profile;
-      this.onSelectProfile$.next(profile);
-    }
-  }
-
   profileAdd(profile: Profile) {
     this.profiles[this._generateUniqueId()] = profile;
 
@@ -145,10 +114,6 @@ export class UserDataProvider {
     delete this.profiles[profileId];
 
     return this.profilesSave();
-  }
-
-  profilesLoad() {
-    return this._storageProvider.getObject(constants.STORAGE_PROFILES);
   }
 
   profilesSave(profiles = this.profiles) {
@@ -196,29 +161,77 @@ export class UserDataProvider {
     return this.profilesSave();
   }
 
-  private _load() {
-
+  public loadProfiles() {
+    return this._storageProvider.getObject(constants.STORAGE_PROFILES);
   }
 
-  ngOnInit() {
-    console.log('teste');
+  public loadNetworks() {
+    const defaults = Network.getAll();
+
+    return Observable.create((observer) => {
+      // Return defaults networks from arkts
+      this._storageProvider.getObject(constants.STORAGE_NETWORKS).subscribe((networks) => {
+        if (!networks || lodash.isEmpty(networks)) {
+          const uniqueDefaults = {};
+
+          for (var i = 0; i < defaults.length; i++) {
+            uniqueDefaults[this._generateUniqueId()] = defaults[i];
+          }
+
+          this._storageProvider.set(constants.STORAGE_NETWORKS, uniqueDefaults);
+          observer.next(uniqueDefaults);
+        } else {
+          observer.next(networks);
+        }
+
+        observer.complete();
+      });
+    });
   }
 
-  // private _onClearStorage() {
-  //   this._settingsDataProvider.onClear$
-  //     .takeUntil(this._unsubscriber$)
-  //     .debounceTime(100)
-  //     .do(() => this._load())
-  //     .subscribe();
-  // }
+  private _setNetworkActive(): void {
+    if (!this.profileActive) return;
+
+    let network = new Network();
+
+    Object.assign(network, this.networks[this.profileActive.networkId]);
+    this.onActivateNetwork$.next(network);
+
+    this.networkActive = network;
+  }
+
+  private _setProfileActive(profileId: string): void {
+    if (profileId && this.profiles[profileId]) {
+      let profile = new Profile().deserialize(this.profiles[profileId]);
+      this.profileActive = profile;
+      this.onSelectProfile$.next(profile);
+    }
+  }
+
+  private _loadAllData() {
+    this.loadProfiles().subscribe((data) => this.profiles = data);
+    this.loadNetworks().subscribe((data) => this.networks = data);
+  }
+
+  private _onLogin() {
+    return this._authProvider.onLogin$.subscribe((id) => {
+      this._setProfileActive(id);
+      this._setNetworkActive();
+    });
+  }
+
+  private _onClearStorage() {
+    this._storageProvider.onClear$
+      .debounceTime(100)
+      .do(() => {
+        this._loadAllData();
+        this._setProfileActive(null);
+      })
+      .subscribe();
+  }
 
   private _generateUniqueId(): string {
     return uuid();
-  }
-
-  ngOnDestroy() {
-    this._unsubscriber$.next();
-    this._unsubscriber$.complete();
   }
 
 }
