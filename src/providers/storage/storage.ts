@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+
 import 'rxjs/add/observable/frompromise';
 import 'rxjs/add/operator/map';
 
@@ -9,6 +11,8 @@ import lodash from 'lodash';
 
 @Injectable()
 export class StorageProvider {
+
+  public onClear$: Subject<void> = new Subject<void>();
 
   constructor(private _storage: Storage) { }
 
@@ -33,7 +37,8 @@ export class StorageProvider {
   }
 
   public clear() {
-    return Observable.fromPromise(this._storage.clear());
+    Observable.fromPromise(this._storage.clear());
+    return this.onClear$.next();
   }
 
 }

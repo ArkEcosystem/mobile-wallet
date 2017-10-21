@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
+import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 
 import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
@@ -27,7 +28,12 @@ export class UserDataProvider {
   public onUpdateWallet$: Subject<Wallet> = new Subject();
   public onSelectProfile$: Subject<Profile> = new Subject();
 
-  constructor(private _storageProvider: StorageProvider, private _authProvider: AuthProvider) {
+  private _unsubscriber$: Subject<void> = new Subject<void>();
+
+  constructor(
+    private _storageProvider: StorageProvider,
+    private _authProvider: AuthProvider
+  ) {
     this.profilesLoad().subscribe((profiles) => this.profiles = profiles);
     this.networksLoad().subscribe((networks) => {
       this.networks = networks;
@@ -190,8 +196,29 @@ export class UserDataProvider {
     return this.profilesSave();
   }
 
+  private _load() {
+
+  }
+
+  ngOnInit() {
+    console.log('teste');
+  }
+
+  // private _onClearStorage() {
+  //   this._settingsDataProvider.onClear$
+  //     .takeUntil(this._unsubscriber$)
+  //     .debounceTime(100)
+  //     .do(() => this._load())
+  //     .subscribe();
+  // }
+
   private _generateUniqueId(): string {
     return uuid();
+  }
+
+  ngOnDestroy() {
+    this._unsubscriber$.next();
+    this._unsubscriber$.complete();
   }
 
 }

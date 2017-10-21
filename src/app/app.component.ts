@@ -39,8 +39,8 @@ export class MyApp {
     private translateService: TranslateService,
     private localDataProvider: UserDataProvider,
     private marketDataProvider: MarketDataProvider,
-    private settingsDataProvider: SettingsDataProvider,
     private arkApiProvider: ArkApiProvider,
+    private settingsDataProvider: SettingsDataProvider,
     private menuCtrl: MenuController,
     private config: Config,
   ) {

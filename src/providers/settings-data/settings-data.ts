@@ -12,7 +12,7 @@ import * as constants from '@app/app.constants';
 @Injectable()
 export class SettingsDataProvider {
 
-  public onUpdate$: Subject<UserSettings>;
+  public onUpdate$: Subject<UserSettings> = new Subject();
 
   private _settings: UserSettings;
   private _unsubscriber$: Subject<void> = new Subject<void>();
@@ -33,8 +33,6 @@ export class SettingsDataProvider {
     this._load().takeUntil(this._unsubscriber$).subscribe((data) => {
       this._settings = data;
       this.save();
-
-      this.onUpdate$ = new BehaviorSubject(data);
     });
   }
 
@@ -60,8 +58,8 @@ export class SettingsDataProvider {
     return this._storageProvider.set(constants.STORAGE_SETTINGS, this._settings);
   }
 
-  public clearData() {
-    return this._storageProvider.clear();
+  public clearData(): void {
+    this._storageProvider.clear();
   }
 
   private _load(): Observable<any> {
