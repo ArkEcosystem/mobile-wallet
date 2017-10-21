@@ -1,5 +1,9 @@
 page-profile-signin {
   ion-list {
+    .item {
+      padding: .5em 0;
+    }
+
     p {
       text-transform: capitalize;
     }

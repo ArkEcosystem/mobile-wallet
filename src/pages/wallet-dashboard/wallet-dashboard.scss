@@ -40,7 +40,7 @@ page-wallet-dashboard {
       }
     }
     .item {
-      padding: .5em 0 .5em 1rem;
+      padding: .5em 0 .5em .5em;
     }
     .label {
       margin: 0;
@@ -53,6 +53,9 @@ page-wallet-dashboard {
     .amount,
     .type {
       font-weight: 500;
+    }
+    ion-icon {
+      padding-left: .2em;
     }
   }
 }

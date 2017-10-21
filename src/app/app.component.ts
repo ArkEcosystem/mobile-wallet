@@ -45,6 +45,7 @@ export class MyApp {
     private config: Config,
   ) {
     platform.ready().then(() => {
+      this.menuCtrl.enable(false, 'sidebarMenu');
       statusBar.styleDefault();
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
@@ -125,9 +126,8 @@ export class MyApp {
   }
 
   private _initialVerify() {
-    if (lodash.isEmpty(this.localDataProvider.profiles)) {
-      this.openPage('LoginPage');
-      return;
+    if (lodash.isNil(this.localDataProvider.profiles)) {
+      return this.openPage('LoginPage');
     }
   }
 

@@ -26,7 +26,7 @@
 
 <ion-content>
   <ion-fab top right edge>
-    <button ion-fab color="primary" (click)="presentAddActionSheet()"><ion-icon name="add"></ion-icon></button>
+    <button ion-fab color="primary" (click)="presentAddActionSheet()"><ion-icon name="md-add"></ion-icon></button>
   </ion-fab>
 
   <ion-grid class="main-grid full-height">
@@ -40,8 +40,6 @@
       <ion-col>
         <ion-card *ngFor="let tx of wallet?.transactions" class="tx" (click)="openTransactionShow(tx)">
           <ion-item>
-            <ion-icon *ngIf="tx?.isSender()" item-start name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
-            <ion-icon *ngIf="!tx?.isSender()" item-start name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>
             <h3 *ngIf="tx.isTransfer()" class="type">{{ tx?.getTypeLabel() | translate }}</h3>
             <h3 class="address">{{ (tx?.isTransfer()) && (tx?.recipientId | truncateMiddle: 12) || (tx?.getTypeLabel() | translate) }}</h3>
 
@@ -49,6 +47,8 @@
               <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi | number: '1.0-2' }} {{ network?.symbol }}</h3>
               <p class="timestamp">{{ tx?.date | date: 'MMM dd, hh:mm a' }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
             </div>
+            <ion-icon *ngIf="tx?.isSender()" item-end name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
+            <ion-icon *ngIf="!tx?.isSender()" item-end name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>
           </ion-item>
         </ion-card>
       </ion-col>

@@ -71,6 +71,7 @@ export class SettingsPage {
 
   private _clearData() {
     this._settingsDataProvider.clearData();
+    this._navCtrl.setRoot('LoginPage');
   }
 
   onUpdate() {

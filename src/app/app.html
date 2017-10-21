@@ -8,10 +8,6 @@
 
   <ion-content>
     <ion-list inset no-lines>
-      <button menuClose ion-item (click)="openPage('ContactsListPage')">
-        <ion-icon name="contacts" item-start></ion-icon>
-        {{ 'Contacts' | translate }}
-      </button>
       <button menuClose ion-item (click)="openPage('ProfileWalletsPage')">
         <ion-icon name="card" item-start></ion-icon>
         {{ 'Wallet' | translate }}
@@ -27,6 +23,10 @@
       <button menuClose ion-item (click)="openPage('SettingsPage')">
         <ion-icon name="settings" item-start></ion-icon>
         {{ 'Settings' | translate }}
+      </button>
+      <button menuClose ion-item (click)="openPage('ContactsListPage')">
+        <ion-icon name="contacts" item-start></ion-icon>
+        {{ 'Contacts' | translate }}
       </button>
     </ion-list>
   </ion-content>

@@ -4,7 +4,7 @@
     <ion-title>{{ 'Sign In' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="openProfileCreate()">
-        <ion-icon name="add"></ion-icon>
+        <ion-icon name="md-add"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
+  <ion-list no-lines padding>
     <ion-item-sliding *ngFor="let id of profilesIds">
       <button ion-item (click)="signin(id)">
         <div class="circle-letter" [ngClass]="(isMainnet(id)) ? 'mainnet' : ''" item-start>

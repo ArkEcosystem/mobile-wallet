@@ -13,22 +13,36 @@
   <ion-grid>
     <ion-row>
       <ion-col>
-        <ion-list *ngIf="currentPeer" class="no-validate list-readonly-form">
-          <ion-item inset>
-            <ion-label stacked>{{ 'Peer' | translate}}</ion-label>
-            <ion-input type="text" name="peer" [(ngModel)]="peerUrl" readonly></ion-input>
-          </ion-item>
+        <ion-list no-lines *ngIf="currentPeer" class="list-selectable">
+
           <ion-item>
-            <ion-label stacked>{{ 'Delay' | translate }}</ion-label>
-            <ion-input type="text" name="delay" [(ngModel)]="currentPeer.delay" readonly></ion-input>
+            <ion-label stacked>
+              <p ion-text>{{ 'Peer' | translate }}</p>
+              <h4 item-content class="content">
+                {{ peerUrl }}
+              </h4>
+            </ion-label>
           </ion-item>
+
           <ion-item>
-            <ion-label stacked>{{ 'Height' | translate }}</ion-label>
-            <ion-input type="text" name="height" [(ngModel)]="currentPeer.height" readonly></ion-input>
+            <ion-label stacked>
+              <p ion-text>{{ 'Delay' | translate }}</p>
+              <h4 item-content class="content">{{ currentPeer?.delay }}</h4>
+            </ion-label>
           </ion-item>
+
           <ion-item>
-            <ion-label stacked>{{ 'Status' | translate }}</ion-label>
-            <ion-input type="text" name="status" [(ngModel)]="currentPeer.status" readonly></ion-input>
+            <ion-label stacked>
+              <p ion-text>{{ 'Height' | translate }}</p>
+              <h4 item-content>{{ currentPeer?.height }}</h4>
+            </ion-label>
+          </ion-item>
+
+          <ion-item>
+            <ion-label stacked>
+              <p ion-text>{{ 'Status' | translate }}</p>
+              <h4 item-content>{{ currentPeer?.status }}</h4>
+            </ion-label>
           </ion-item>
         </ion-list>
       </ion-col>

@@ -143,6 +143,7 @@
   border-bottom: none;
 }
 
-.no-valiadte .item-input.ng-valid.input-has-value::after{
+.no-valiadte .item-input.ng-valid.input-has-value::after,
+.no-valiadte .item.ng-valid.input-has-value::after {
   border-bottom-color: transparent;
 }
