@@ -22,7 +22,13 @@ export class ArkApiProvider {
 
   constructor(private _userDataProvider: UserDataProvider, private _storageProvider: StorageProvider) {
     this._userDataProvider.onActivateNetwork$.subscribe((network) => {
+      // set default peer
+      if (network && !network.activePeer) {
+        network.activePeer = arkts.Network.getDefault(network.type).activePeer;
+      }
+
       this._network = network;
+
       if (lodash.isEmpty(network)) {
         this._api = null;
       } else {
