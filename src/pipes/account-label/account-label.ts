@@ -17,10 +17,9 @@ export class AccountLabelPipe implements PipeTransform {
     if (contact) return contact.name;
 
     let wallet = this.userDataProvider.walletGet(value);
-
     if (wallet) {
-      let label = wallet.username || wallet.label || wallet.address;
-      return label;
+      let label = wallet.username || wallet.label;
+      if (label) return label;
     }
 
     if (defaultText) return defaultText;

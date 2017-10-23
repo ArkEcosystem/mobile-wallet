@@ -63,11 +63,13 @@ export class UserDataProvider {
 
   getContact(address: string): Contact {
     if (lodash.isNil(this.profiles)) return;
-    let contacts = lodash.flatMap(this.profiles, (item) => item['contacts']);
 
-    if (lodash.isNil(contacts)) return;
+    let contacts = lodash.map(this.profiles, (p) => p['contacts']);
+    let merged = Object.assign({}, ...contacts);
 
-    return <Contact>contacts[address];
+    if (lodash.isNil(merged)) return;
+
+    return <Contact>merged[address];
   }
 
   removeContact(address: string) {
