@@ -4,7 +4,7 @@
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ wallet?.label || 'My Wallet' | translate }}</ion-title>
+    <ion-title>{{ wallet?.address | accountLabel: 'My Wallet' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="presentWalletActionSheet()">
         <ion-icon name="md-more"></ion-icon>
@@ -41,7 +41,7 @@
         <ion-card *ngFor="let tx of wallet?.transactions" class="tx" (click)="openTransactionShow(tx)">
           <ion-item>
             <h3 *ngIf="tx.isTransfer()" class="type">{{ tx?.getTypeLabel() | translate }}</h3>
-            <h3 class="address">{{ (tx?.isTransfer()) && (tx?.recipientId | truncateMiddle: 12) || (tx?.getTypeLabel() | translate) }}</h3>
+            <h3 class="address">{{ (tx?.isTransfer()) && (tx?.recipientId | accountLabel | truncateMiddle: 12 : tx?.recipientId) || (tx?.getTypeLabel() | translate) }}</h3>
 
             <div text-right item-end>
               <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi | number: '1.0-2' }} {{ network?.symbol }}</h3>
