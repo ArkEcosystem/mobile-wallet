@@ -11,17 +11,14 @@
 
 <ion-content padding>
   <ion-grid>
+    <ion-fab bottom right class="pull-footer">
+      <button ion-fab color="primary" (click)="presentActionSheet()"><ion-icon name="md-add"></ion-icon></button>
+    </ion-fab>
+
     <ion-row>
       <ion-col text-center>
         <img src="./assets/img/wallet/hand-add-button.png">
         <h5>To import or create wallet click on the button bellow</h5>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col align-self-end>
-        <button ion-fab icon-only (click)="presentActionSheet()">
-          <ion-icon name="md-add"></ion-icon>
-        </button>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -5,6 +5,8 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 
 import { TranslateService } from '@ngx-translate/core';
 
+import lodash from 'lodash';
+
 @IonicPage()
 @Component({
   selector: 'page-contact-list',
@@ -23,9 +25,7 @@ export class ContactListPage {
     private _userDataProvider: UserDataProvider,
     private _translateService: TranslateService,
     private _alertCtrl: AlertController,
-  ) {
-    this._load();
-  }
+  ) { }
 
   openSendPage(address) {
     this._navCtrl.push('TransactionSendPage', { address });
@@ -56,13 +56,18 @@ export class ContactListPage {
     })
   }
 
+  isEmpty() {
+    return lodash.isEmpty(this.contacts);
+  }
+
   delete(address) {
     this._userDataProvider.removeContact(address);
     this._load();
   }
 
   openEditPage(address) {
-    return this._navCtrl.push('ContactCreatePage', { address });
+    let contact = this.contacts[address];
+    return this._navCtrl.push('ContactCreatePage', { address, contact });
   }
 
   openCreatePage() {
@@ -75,5 +80,9 @@ export class ContactListPage {
 
     this.contacts = this.profile.contacts;
     this.addresses = Object.keys(this.contacts);
+  }
+
+  ionViewDidLoad() {
+    this._load();
   }
 }

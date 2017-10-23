@@ -2,36 +2,45 @@
 
   <ion-navbar>
     <ion-title>{{ 'Sign In' | translate }}</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="openProfileCreate()">
-        <ion-icon name="md-add"></ion-icon>
-      </button>
-    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
-<ion-content>
-  <ion-list padding>
-    <ion-item-sliding *ngFor="let id of profilesIds">
-      <button ion-item (click)="signin(id)">
-        <div class="circle-letter" [ngClass]="(isMainnet(id)) ? 'mainnet' : ''" item-start>
-          {{ getNetworkName(id)?.charAt(0) }}
-        </div>
-        <h2>{{ profiles[id]?.name }}</h2>
-        <p>{{ getNetworkName(id) }}</p>
-      </button>
+<ion-content class="column-mode">
+  <ion-grid>
+    <ion-fab bottom right class="pull-footer">
+      <button ion-fab color="primary" (click)="openProfileCreate()"><ion-icon name="md-add"></ion-icon></button>
+    </ion-fab>
 
-      <ion-item-options side="right">
-        <button ion-button color="danger" (click)="showDeleteConfirm(id)">
-          <ion-icon name="trash"></ion-icon>
-          {{ 'Delete' | translate }}
-        </button>
-      </ion-item-options>
-    </ion-item-sliding>
+    <ion-row padding justify-content-center align-items-center class="full-height" *ngIf="isEmpty()">
+      <ion-col text-center>
+        <h5>{{ 'Click on the button below to add a profile' | translate }}</h5>
+      </ion-col>
+    </ion-row>
 
-    <button ion-item clear *ngIf="isEmpty()" (click)="openProfileCreate()">
-      {{ 'Create an profile' | translate }}
-    </button>
-  </ion-list>
+    <ion-row *ngIf="!isEmpty()">
+      <ion-col>
+        <ion-list>
+          <ion-item-sliding *ngFor="let id of profilesIds">
+            <button ion-item (click)="signin(id)">
+              <div class="circle-letter" [ngClass]="(isMainnet(id)) ? 'mainnet' : ''" item-start>
+                {{ getNetworkName(id)?.charAt(0) }}
+              </div>
+              <h2>{{ profiles[id]?.name }}</h2>
+              <p>{{ getNetworkName(id) }}</p>
+            </button>
+
+            <ion-item-options side="right">
+              <button ion-button color="danger" (click)="showDeleteConfirm(id)">
+                <ion-icon name="trash"></ion-icon>
+                {{ 'Delete' | translate }}
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>
+
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
 </ion-content>

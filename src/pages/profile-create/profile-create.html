@@ -26,9 +26,10 @@
 
     </ion-item>
   </form>
-  <ion-footer>
-    <ion-toolbar>
-      <button ion-button block full large clear [disabled]="!createProfileForm.form.valid" (click)="submitForm()">{{ 'Next' | translate }}</button>
-    </ion-toolbar>
-  </ion-footer>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button block full large clear [disabled]="!createProfileForm.form.valid" (click)="submitForm()">{{ 'Next' | translate }}</button>
+  </ion-toolbar>
+</ion-footer>

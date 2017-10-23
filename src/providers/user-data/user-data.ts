@@ -41,7 +41,10 @@ export class UserDataProvider {
   addContact(address: string, contact: Contact, profileId: string = this._authProvider.loggedProfileId) {
     if (!this.profiles[profileId]) return;
 
-    this.profiles[profileId].contacts[address] = contact;
+    let contacts = this.profiles[profileId].contacts || {};
+    contacts[address] = contact;
+
+    this.profiles[profileId]['contacts'] = contacts;
 
     return this.profilesSave();
   }
@@ -117,6 +120,9 @@ export class UserDataProvider {
   }
 
   profilesSave(profiles = this.profiles) {
+    let currentProfile = this._authProvider.loggedProfileId;
+
+    if (currentProfile) this._setProfileActive(currentProfile, false);
     return this._storageProvider.set(constants.STORAGE_PROFILES, profiles);
   }
 
@@ -129,7 +135,6 @@ export class UserDataProvider {
       this.onCreateWallet$.next(wallet);
       return this.walletSave(wallet, profileId);
     }
-
 
     return this.profilesSave();
   }
@@ -200,11 +205,11 @@ export class UserDataProvider {
     this.networkActive = network;
   }
 
-  private _setProfileActive(profileId: string): void {
+  private _setProfileActive(profileId: string, broadcast: boolean = true): void {
     if (profileId && this.profiles[profileId]) {
       let profile = new Profile().deserialize(this.profiles[profileId]);
       this.profileActive = profile;
-      this.onSelectProfile$.next(profile);
+      if (broadcast) this.onSelectProfile$.next(profile);
     }
   }
 

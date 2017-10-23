@@ -10,27 +10,27 @@
 </ion-header>
 
 <ion-content class="column-mode">
-  <ion-grid *ngIf="profile">
-    <ion-fab bottom right class="pull-footer">
-      <button ion-fab color="primary" (click)="openCreatePage()"><ion-icon name="md-add"></ion-icon></button>
-    </ion-fab>
+  <ion-fab bottom right class="pull-footer">
+    <button ion-fab color="primary" (click)="openCreatePage()"><ion-icon name="md-add"></ion-icon></button>
+  </ion-fab>
 
-    <ion-row padding justify-content-center align-items-center class="full-height" *ngIf="contacts?.length == 0">
+  <ion-grid *ngIf="profile">
+    <ion-row padding justify-content-center align-items-center class="full-height" *ngIf="isEmpty()">
       <ion-col text-center>
         <h5>{{ 'Click on the button below to add a contact' | translate }}</h5>
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="contacts?.length > 0">
+    <ion-row *ngIf="!isEmpty()">
       <ion-col>
         <ion-list>
           <ion-item-sliding *ngFor="let address of addresses">
             <button ion-item (click)="openEditPage(address)">
               <div class="circle-letter" item-start>
-                {{ addresses[address]?.name?.charAt(0) }}
+                {{ contacts[address]?.name?.charAt(0) }}
               </div>
-              <h2>{{ addresses[address]?.name }}</h2>
-              <p>{{ addresses[address]?.description }}</p>
+              <h2>{{ contacts[address]?.name }}</h2>
+              <p>{{ contacts[address]?.description }}</p>
             </button>
 
             <ion-item-options side="right">
