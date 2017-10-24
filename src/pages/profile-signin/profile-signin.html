@@ -8,15 +8,7 @@
 
 <ion-content class="column-mode">
   <ion-grid>
-    <ion-fab bottom right class="pull-footer">
-      <button ion-fab color="primary" (click)="openProfileCreate()"><ion-icon name="md-add"></ion-icon></button>
-    </ion-fab>
-
-    <ion-row padding justify-content-center align-items-center class="full-height" *ngIf="isEmpty()">
-      <ion-col text-center>
-        <h5>{{ 'Click on the button below to add a profile' | translate }}</h5>
-      </ion-col>
-    </ion-row>
+    <empty-list message="Click on the button below to create a profile" (onClickButton)="openProfileCreate()" *ngIf="isEmpty()"></empty-list>
 
     <ion-row *ngIf="!isEmpty()">
       <ion-col>
