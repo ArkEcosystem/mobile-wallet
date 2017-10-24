@@ -22,6 +22,7 @@
         "@angular/platform-browser-dynamic": "4.1.3",
         "@ionic-native/clipboard": "^4.3.1",
         "@ionic-native/core": "3.12.1",
+        "@ionic-native/qr-scanner": "^4.3.2",
         "@ionic-native/secure-storage": "^4.3.1",
         "@ionic-native/splash-screen": "3.12.1",
         "@ionic-native/status-bar": "3.12.1",
@@ -37,9 +38,11 @@
         "cordova-ios": "^4.4.0",
         "cordova-plugin-console": "^1.0.5",
         "cordova-plugin-device": "^1.1.4",
+        "cordova-plugin-qrscanner": "^2.5.0",
         "cordova-plugin-secure-storage": "^2.6.8",
         "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-statusbar": "^2.2.2",
+        "cordova-plugin-swift-support": "^3.1.1",
         "cordova-plugin-whitelist": "^1.3.1",
         "ionic-angular": "^3.7.1",
         "ionic-plugin-keyboard": "^2.2.1",
@@ -65,7 +68,8 @@
             "cordova-plugin-splashscreen": {},
             "cordova-plugin-statusbar": {},
             "cordova-plugin-whitelist": {},
-            "ionic-plugin-keyboard": {}
+            "ionic-plugin-keyboard": {},
+            "cordova-plugin-qrscanner": {}
         },
         "platforms": [
             "ios"

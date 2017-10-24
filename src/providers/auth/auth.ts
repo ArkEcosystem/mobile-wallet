@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 
 import * as constants from '@app/app.constants';
+import lodash from 'lodash';
 
 @Injectable()
 export class AuthProvider {
@@ -41,8 +42,8 @@ export class AuthProvider {
 
   hasSeenIntro(): Observable<boolean> {
     return Observable.create((observer) => {
-      this._storage.getObject(constants.STORAGE_INTROSEEN).subscribe((introSeen) => {
-        observer.next(introSeen);
+      this._storage.get(constants.STORAGE_INTROSEEN).subscribe((introSeen) => {
+        observer.next(introSeen === 'true');
         observer.complete();
       });
     });

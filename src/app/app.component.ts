@@ -23,7 +23,7 @@ import * as arkts from 'ark-ts';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  public rootPage = null;
+  public rootPage = 'IntroPage';
   public profile = null;
   public network = null;
 
@@ -49,6 +49,7 @@ export class MyApp {
       statusBar.styleDefault();
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
+        console.log(hasSeenIntro);
         splashScreen.hide();
 
         if (hasSeenIntro) {
@@ -129,9 +130,9 @@ export class MyApp {
   }
 
   private _initialVerify() {
-    if (lodash.isNil(this.localDataProvider.profiles)) {
-      return this.openPage('LoginPage');
-    }
+    // if (lodash.isNil(this.localDataProvider.profiles)) {
+    //   return this.openPage('LoginPage');
+    // }
   }
 
   ngOnInit() {

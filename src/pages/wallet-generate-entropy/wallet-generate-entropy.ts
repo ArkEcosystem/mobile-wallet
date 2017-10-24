@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, MenuController } from 'ionic-angular';
 
 import { Crypto } from 'ark-ts/utils';
 
@@ -25,8 +25,10 @@ export class WalletGenerateEntropyPage {
   constructor(
     private _navCtrl: NavController,
     private _navParams: NavParams,
+    private _menuCtrl: MenuController,
   ) {
     this.reset();
+    this._menuCtrl.swipeEnable(false, 'sidebarMenu');
   }
 
   panEvent(e) {
