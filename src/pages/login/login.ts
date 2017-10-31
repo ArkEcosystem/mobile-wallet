@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -9,16 +9,33 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class LoginPage {
 
   constructor(
-    private _navCtrl: NavController,
-    private _navParams: NavParams,
-  ) { }
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public modalCtrl: ModalController,
+  ) {
+  }
 
   openProfileSignin() {
-    this._navCtrl.setRoot('ProfileSigninPage');
+    this.navCtrl.setRoot('ProfileSigninPage');
   }
 
   openProfileCreate() {
-    this._navCtrl.push('ProfileCreatePage');
+    this.navCtrl.push('ProfileCreatePage');
+  }
+
+  ionViewDidLeave() {
+    // TODO: if user not created yet
+    let modal = this.modalCtrl.create('PinCodePage', {
+      title: 'Create a PIN Code',
+      message: 'Type your password',
+      outputPassword: true,
+    });
+
+    modal.onDidDismiss((password) => {
+      // TODO: storage
+    });
+
+    modal.present();
   }
 
 }
