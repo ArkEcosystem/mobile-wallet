@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { WalletLabelModalPage } from './wallet-label-modal';
+import { SetLabelPage } from './set-label';
 
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
-    WalletLabelModalPage,
+    SetLabelPage,
   ],
   imports: [
-    IonicPageModule.forChild(WalletLabelModalPage),
+    IonicPageModule.forChild(SetLabelPage),
     TranslateModule,
   ],
 })
-export class WalletLabelModalPageModule {}
+export class SetLabelPageModule {}

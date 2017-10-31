@@ -1,0 +1,60 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'SECOND_PASSPHRASE' | translate }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content no-bounce class="column-mode">
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngIf="!isBip39">
+        <form padding #registerSecondPassphraseForm="ngForm">
+          <ion-item>
+            <ion-label stacked>{{ 'Type your passphrase' | translate }}:</ion-label>
+            <ion-input type="text" name="passphrase" [(ngModel)]="passphrase" (input)="validatePassphrase()" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>{{ 'Validate passphrase' | translate }}:</ion-label>
+            <ion-input type="text" name="repassphrase" [disabled]="isInvalidPassphrase" [(ngModel)]="repassphrase" (input)="validateRepassphrase()" required></ion-input>
+          </ion-item>
+        </form>
+      </ion-col>
+      <ion-col text-center *ngIf="isBip39">
+        <p>{{ 'Your passphrase' | translate }}:</p>
+        <h4 class="box-passphrase">{{ passphrase }}</h4>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center align-self-end>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <button ion-button block outline *ngIf="!isBip39" (click)="generate()">{{ 'GENERATE' | translate }}</button>
+              <button ion-button block outline *ngIf="isBip39" (click)="copyPassphrase()">{{ 'COPY' | translate }}</button>
+            </ion-col>
+            <ion-col>
+              <button ion-button block color="primary" [disabled]="isInvalidForm" (click)="submitForm()">{{ 'NEXT' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="note-toolbar">
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col text-center no-padding>
+        <h6>{{ 'Please backup securely the second passphrase, this client does NOT store it and thus cannot recover your it.' | translate }}</h6>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

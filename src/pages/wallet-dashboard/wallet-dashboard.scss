@@ -1,21 +1,35 @@
 page-wallet-dashboard {
-  scroll-content {
-    display: flex;
-    flex-direction: column;
+  ion-modal,
+  .show-page {
+    // transparent black background overlay
+    background-color: rgba(0, 0, 0, .5) !important;
+    padding: 50px !important;
   }
+  ion-modal.modal-wrapper {
+    transform: translateY(30%) !important;
+  }
+  ion-page.modal {
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .modal-backdrop-bg {
+    background-color: #000;
+    opacity: 0;
+  }
+  .active .modal-backdrop-bg {
+    opacity: 0.5;
+  }
+
   .toolbar {
     padding: 0;
   }
   .main-grid {
     padding: 0 .2em!important;
-
-    ion-row {
-      flex: 1;
-    }
   }
   .grid {
     padding: 0;
   }
+
   .account-balance {
     background: url('../assets/img/wallet/balance-wallet-bg.png') #080e20 repeat;
     background-size: cover;
@@ -60,8 +74,16 @@ page-wallet-dashboard {
   }
 }
 
-@media not all and (min-height: 600px) and (min-width: 768px) {
-  ion-modal ion-backdrop {
-    visibility: visible;
-  }
+ion-modal.inset-modal {
+  // transparent black background overlay
+  background-color: rgba(0, 0, 0, .5) !important;
+  transition: opacity .25s ease-in-out;
+  padding: 20vh 10vw;
+}
+
+ion-modal.inset-modal-large {
+  // transparent black background overlay
+  background-color: rgba(0, 0, 0, .5) !important;
+  transition: opacity .25s ease-in-out;
+  padding: 10vh 5vw;
 }

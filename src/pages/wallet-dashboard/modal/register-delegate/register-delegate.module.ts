@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { WalletRegisterSecondPassphrasePage } from './wallet-register-second-passphrase';
+import { RegisterDelegatePage } from './register-delegate';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
 
 @NgModule({
   declarations: [
-    WalletRegisterSecondPassphrasePage,
+    RegisterDelegatePage,
   ],
   imports: [
-    IonicPageModule.forChild(WalletRegisterSecondPassphrasePage),
+    IonicPageModule.forChild(RegisterDelegatePage),
     TranslateModule,
     PipesModule,
   ],
 })
-export class WalletRegisterSecondPassphrasePageModule {}
+export class RegisterDelegatePageModule {}

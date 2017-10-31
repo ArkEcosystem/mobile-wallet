@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'Label' | translate }}</ion-title>
+    <ion-title>{{ 'LABEL' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="closeModal()">
         <ion-icon name="close"></ion-icon>
@@ -11,10 +11,10 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content padding class="column-mode">
   <ion-grid>
     <ion-row>
-      <ion-col>
+      <ion-col text-center align-self-center>
         <form #labelForm="ngForm">
           <ion-item>
             <ion-label stacked>{{ 'New wallet name' | translate }}</ion-label>
@@ -23,11 +23,10 @@
         </form>
       </ion-col>
     </ion-row>
+    <ion-row>
+      <ion-col text-center align-self-end>
+        <button ion-button block class="button-continue" color="primary" [disabled]="!labelForm.form.valid" (click)="submitForm()">{{ 'RENAME' | translate }}</button>
+      </ion-col>
+    </ion-row>
   </ion-grid>
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <button ion-button block full clear [disabled]="!labelForm.form.valid" (click)="submitForm()">{{ 'Rename' | translate }}</button>
-  </ion-toolbar>
-</ion-footer>

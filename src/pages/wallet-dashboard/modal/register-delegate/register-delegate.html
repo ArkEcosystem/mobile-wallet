@@ -1,0 +1,44 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'REGISTER_DELEGATE' | translate }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="column-mode">
+  <ion-grid>
+    <ion-row>
+      <ion-col align-self-center>
+        <form #registerDelegateForm="ngForm">
+          <ion-item>
+            <ion-label stacked>{{ 'Delegate name' | translate }}</ion-label>
+            <ion-input type="text" name="name" [(ngModel)]="name" required></ion-input>
+          </ion-item>
+        </form>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center align-self-center>
+        <button ion-button class="button-continue " color="primary" [disabled]="!registerDelegateForm.form.valid" (click)="submitForm()">{{ 'Create' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="note-toolbar">
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col no-padding>
+        <ion-toolbar text-center>
+          <h6>{{ 'Note that the cost of registering the delegate is' | translate }} {{ symbol }}{{ fee | unitsSatoshi }}!</h6>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

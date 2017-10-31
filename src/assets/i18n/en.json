@@ -9,11 +9,19 @@
   "CANCEL": "Cancel",
   "CLEAR_DATA_CONFIRMATION_TEXT": "All your data, including created profiles, wallets and contacts will be removed from the app and reset to default.",
   "CONFIRM": "Confirm",
+  "COPY": "Copy",
   "CONFIRMATIONS": "Confirmations",
+  "CREATE": "Create",
   "CREATE_PROFILE_BUTTON": "Create an profile",
   "CREATE_PROFILE_TITLE": "Create Profile",
   "DELETE": "Delete",
+  "GENERATE": "Generate",
   "GET_STARTED": "Get started",
+  "NEXT": "Next",
   "SIGN_IN": "Sign in",
-  "SKIP": "Skip"
+  "SKIP": "Skip",
+  "SECOND_PASSPHRASE": "Second Passphrase",
+  "RENAME": "Rename",
+  "REGISTER_DELEGATE": "Register Delegate",
+  "LABEL": "Label"
 }

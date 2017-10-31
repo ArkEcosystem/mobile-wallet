@@ -112,11 +112,12 @@
 }
 
 .note-toolbar {
-  .toolbar-content {
-    padding: .2em 1em;
-  }
+  padding: 1em;
+  background: #ffeaa5;
+
   .toolbar-background {
-    background: #ffeaa5;
+    background: transparent;
+    border: none;
   }
 }
 
@@ -184,4 +185,13 @@ ion-fab.pull-footer {
   &.mainnet {
     background: #ed2a2d;
   }
+}
+
+.box-passphrase {
+  border: 2px solid rgba(0, 80, 232, 0.3);
+  color: rgba(0, 0, 0, 0.8);
+  text-align: justify;
+  padding: 1em;
+  margin: 1em;
+  line-height: 1.5em
 }

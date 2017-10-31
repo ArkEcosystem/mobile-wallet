@@ -204,7 +204,7 @@ export class WalletDashboardPage {
   }
 
   openLabelModal() {
-    let modal = this._modalCtrl.create('WalletLabelModalPage', {'label': this.wallet.label });
+    let modal = this._modalCtrl.create('SetLabelPage', {'label': this.wallet.label }, { cssClass: 'inset-modal' });
 
     modal.onDidDismiss((data) => {
       if (lodash.isEmpty(data)) return;
@@ -219,10 +219,10 @@ export class WalletDashboardPage {
   openRegisterDelegateModal() {
     this.fees = this._arkApiProvider.fees;
 
-    let modal = this._modalCtrl.create('WalletRegisterDelegateModalPage', {
+    let modal = this._modalCtrl.create('RegisterDelegatePage', {
       fee: this.fees.delegate,
       symbol: this.network.symbol,
-    });
+    }, { cssClass: 'inset-modal' });
 
     modal.onDidDismiss((name) => {
       if (lodash.isEmpty(name)) return;
@@ -237,10 +237,10 @@ export class WalletDashboardPage {
   openRegisterSecondPassphrase() {
     this.fees = this._arkApiProvider.fees;
 
-    let modal = this._modalCtrl.create('WalletRegisterSecondPassphrasePage', {
+    let modal = this._modalCtrl.create('RegisterSecondPassphrasePage', {
       fee: this.fees.secondsignature,
       symbol: this.network.symbol,
-    });
+    }, { cssClass: 'inset-modal-large'});
 
     modal.onDidDismiss((passphrase) => {
       if (lodash.isEmpty(passphrase)) return;
