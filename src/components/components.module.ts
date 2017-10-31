@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { ProgressBarComponent } from './progress-bar/progress-bar';
-import { EmptyListComponent } from './empty-list/empty-list';
+import { EmptyListComponentModule } from './empty-list/empty-list.module';
+
 @NgModule({
-	declarations: [ProgressBarComponent,
-    EmptyListComponent],
+	declarations: [ProgressBarComponent],
 	imports: [],
-	exports: [ProgressBarComponent,
-    EmptyListComponent]
+	exports: [ProgressBarComponent, EmptyListComponentModule]
 })
 export class ComponentsModule {}

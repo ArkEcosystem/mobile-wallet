@@ -15,11 +15,7 @@
   </ion-fab>
 
   <ion-grid *ngIf="profile">
-    <ion-row padding justify-content-center align-items-center class="full-height" *ngIf="isEmpty()">
-      <ion-col text-center>
-        <h5>{{ 'Click on the button below to add a contact' | translate }}</h5>
-      </ion-col>
-    </ion-row>
+    <empty-list message="Click on the button below to add a contact" (onClickButton)="openCreatePage()" *ngIf="isEmpty()"></empty-list>
 
     <ion-row *ngIf="!isEmpty()">
       <ion-col>
