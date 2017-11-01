@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+
+import { AuthProvider } from '@providers/auth/auth';
 
 @IonicPage()
 @Component({
@@ -24,12 +26,16 @@ export class PinCodePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
+    private authProvider: AuthProvider,
+    private zone: NgZone,
   ) {
     this.password = '';
     this.message = this.navParams.get('message');
     this.expectedPassword = this.navParams.get('expectedPassword');
     this.outputPassword = this.navParams.get('outputPassword') || false;
     this.validatePassword = this.navParams.get('validatePassword') || false;
+
+    // chRef.detectChanges();
   }
 
   add(value: number) {
@@ -37,31 +43,44 @@ export class PinCodePage {
       this.password = this.password + value;
 
       if (this.password.length == 6) {
+
+        if (!this.expectedPassword && !this.validatePassword) {
+          return this.dismiss(true);
+        }
+
         // Confirm with the previous entered password
-        if (this.expectedPassword && this.expectedPassword !== this.password) {
-          this.setWrong();
-          return;
+        if (this.expectedPassword) {
+          if (this.expectedPassword !== this.password) {
+            this.setWrong();
+          } else {
+            this.dismiss(true);
+          }
         }
 
         if (this.validatePassword) {
-          // TODO: validate
-          this.setWrong();
-          return;
+          this.authProvider.validateMasterPassword(this.password).subscribe((result) => {
+            if (!result) {
+              this.setWrong();
+            } else {
+              this.dismiss(true);
+            }
+          });
         }
 
-        this.dismiss();
       }
     }
   }
 
   setWrong() {
-    this.isWrong = true;
-    this.password = '';
-    if (this.expectedPassword) this.message = 'PIN_CODE.WRONG';
+    this.zone.run(() => {
+      this.isWrong = true;
+      this.password = '';
+      this.message = 'PIN_CODE.WRONG';
 
-    setTimeout(() => {
-      this.isWrong = false;
-    }, 500);
+      setTimeout(() => {
+        this.isWrong = false;
+      }, 500);
+    });
   }
 
   delete() {
@@ -70,12 +89,12 @@ export class PinCodePage {
     }
   }
 
-  dismiss() {
+  dismiss(status: boolean = true) {
     if (this.outputPassword) {
       this.viewCtrl.dismiss(this.password);
       return;
     }
 
-    this.viewCtrl.dismiss(true);
+    this.viewCtrl.dismiss(status);
   }
 }

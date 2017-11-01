@@ -7,6 +7,7 @@ import 'rxjs/add/operator/takeUntil';
 
 import * as constants from '@app/app.constants';
 import lodash from 'lodash';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthProvider {
@@ -58,19 +59,21 @@ export class AuthProvider {
   }
 
   saveMasterPassword(password: string): void {
-    // TODO:
-    const encrypt = constants.STORAGE_MASTERPASSWORD_VALIDATE;
+    let hash = bcrypt.hashSync(password, 8);
+    console.log(hash);
 
-    this._storage.set(constants.STORAGE_MASTERPASSWORD, encrypt);
+    this._storage.set(constants.STORAGE_MASTERPASSWORD, hash);
   }
 
   validateMasterPassword(password: string): Observable<any> {
     return Observable.create((observer) => {
       this._storage.get(constants.STORAGE_MASTERPASSWORD).subscribe((master) => {
-        // TODO:
-        const decrypt = constants.STORAGE_MASTERPASSWORD_VALIDATE;
-        observer.next(decrypt);
-        observer.complete();
+        bcrypt.compare(password, master, (err, res) => {
+          if (err) observer.error(err);
+
+          observer.next(res);
+          observer.complete();
+        });
       });
     });
   }
