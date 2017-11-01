@@ -10,6 +10,9 @@
     "WRONG": "Please enter the correct PIN",
     "DEFAULT_MESSAGE": "Type your PIN"
   },
+  "REGISTER_DELEGATE": {
+    "NAME_ALREADY_EXISTS": "This name already exists"
+  },
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
   "CANCEL": "Cancel",

@@ -10,7 +10,7 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 
 import lodash from 'lodash';
-import { Network, Fees } from 'ark-ts';
+import { Network, Fees, TransactionDelegate } from 'ark-ts';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -227,8 +227,9 @@ export class WalletDashboardPage {
     modal.onDidDismiss((name) => {
       if (lodash.isEmpty(name)) return;
 
-      // TODO: Get pin code
-      // this.arkApiProvider.api.transaction.createDelegate();
+      this.getPassphrases().then(() => {
+        console.log('fim');
+      })
     });
 
     modal.present();
@@ -275,6 +276,26 @@ export class WalletDashboardPage {
   delete() {
     // TODO:
     console.log('delete');
+  }
+
+  private getPassphrases(message?: string) {
+    let modal = this._modalCtrl.create('PinCodePage', {
+      message,
+      validatePassword: true,
+    });
+
+    modal.present();
+
+    return new Promise((resolve, reject) => {
+      modal.onDidDismiss((status) => {
+        console.log(status);
+        if (!status) {
+          reject();
+        } else {
+          resolve();
+        }
+      });
+    });
   }
 
   private _onUpdateWalletSubscriber() {

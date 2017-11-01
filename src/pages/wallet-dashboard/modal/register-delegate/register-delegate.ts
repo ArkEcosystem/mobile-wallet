@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
+import { Subject } from 'rxjs/Subject';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import lodash from 'lodash';
 
@@ -15,6 +16,12 @@ export class RegisterDelegatePage {
   public symbol: string;
   public name: string;
 
+  public allowedDelegateNameChars = '[a-z0-9!@$&_.]+';
+  public isExists: boolean = false;
+
+  private delegates;
+  private unsubscriber$: Subject<void> = new Subject<void>();
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -23,18 +30,15 @@ export class RegisterDelegatePage {
   ) {
     this.fee = this.navParams.get('fee');
     this.symbol = this.navParams.get('symbol');
-  }
 
-  sanitizeName() {
-
+    this.arkApiProvider.delegates.takeUntil(this.unsubscriber$).subscribe((delegates) => this.delegates = delegates);
   }
 
   validateName() {
-    return this.arkApiProvider.delegates.subscribe((delegates) => {
-      let search = lodash.find(delegates, { username: this.name });
+    let find = lodash.find(this.delegates, { username: this.name.trim() });
 
-      return !search;
-    });
+    this.isExists = !lodash.isNil(find);
+    console.log(this.name, this.delegates, this.isExists);
   }
 
   closeModal() {
@@ -43,6 +47,11 @@ export class RegisterDelegatePage {
 
   submitForm() {
     this.viewCtrl.dismiss(this.name);
+  }
+
+  ngOnDestroy() {
+    this.unsubscriber$.next();
+    this.unsubscriber$.complete();
   }
 
 }

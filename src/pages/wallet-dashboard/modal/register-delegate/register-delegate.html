@@ -11,21 +11,24 @@
 
 </ion-header>
 
-<ion-content class="column-mode">
-  <ion-grid>
+<ion-content no-bounce class="column-mode">
+  <ion-grid fixed>
     <ion-row>
       <ion-col align-self-center>
         <form #registerDelegateForm="ngForm">
           <ion-item>
             <ion-label stacked>{{ 'Delegate name' | translate }}</ion-label>
-            <ion-input type="text" name="name" [(ngModel)]="name" required></ion-input>
+            <ion-input type="text" name="name" [(ngModel)]="name" maxlength="20" [pattern]="allowedDelegateNameChars" (input)="validateName()" required></ion-input>
+          </ion-item>
+          <ion-item class="no-border">
+            <p class="error-message" *ngIf="isExists">{{ 'REGISTER_DELEGATE.NAME_ALREADY_EXISTS' | translate }}</p>
           </ion-item>
         </form>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-center align-self-center>
-        <button ion-button class="button-continue " color="primary" [disabled]="!registerDelegateForm.form.valid" (click)="submitForm()">{{ 'Create' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+        <button ion-button class="button-continue " color="primary" [disabled]="!registerDelegateForm.form.valid || isExists" (click)="submitForm()">{{ 'Create' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
       </ion-col>
     </ion-row>
   </ion-grid>
