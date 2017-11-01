@@ -1,55 +1,35 @@
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>{{ title || 'PIN Code' | translate }}</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-<ion-content padding>
+<ion-content no-bounce padding>
   <ion-grid>
     <ion-row nowrap>
-      <ion-col text-center align-self-center>
-        <p>{{ message || 'Type your password' | translate }}:</p>
-        <ion-grid class="grid-password">
+      <ion-col padding text-center align-self-center>
+        <p>{{ message || 'PIN_CODE.DEFAULT_MESSAGE' | translate }}:</p>
+        <ion-grid padding fixed class="grid-password" [class.miss]="isWrong">
           <ion-row nowrap>
-            <ion-col>
-              <div class="password-char">
-                {{ password.substring(0, 1) }}
-              </div>
+            <ion-col class="password-char" [class.active]="password.length>0">
+              <span></span>
             </ion-col>
-            <ion-col>
-              <div class="password-char">
-                {{ password.substring(1, 2) }}
-              </div>
+            <ion-col class="password-char" [class.active]="password.length>1">
+              <span></span>
             </ion-col>
-            <ion-col>
-              <div class="password-char">
-                {{ password.substring(2, 3) }}
-              </div>
+            <ion-col class="password-char" [class.active]="password.length>2">
+              <span></span>
             </ion-col>
-            <ion-col>
-              <div class="password-char">
-                {{ password.substring(3, 4) }}
-              </div>
+            <ion-col class="password-char" [class.active]="password.length>3">
+              <span></span>
             </ion-col>
-            <ion-col>
-              <div class="password-char">
-                {{ password.substring(4, 5) }}
-              </div>
+            <ion-col class="password-char" [class.active]="password.length>4">
+              <span></span>
             </ion-col>
-            <ion-col>
-              <div class="password-char">
-                {{ password.substring(5, 6) }}
-              </div>
+            <ion-col class="password-char" [class.active]="password.length>5">
+              <span></span>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-col>
     </ion-row>
 
-    <ion-row nowrap>
-      <ion-col text-center align-self-end>
+    <ion-row nowrap class="full-height">
+      <ion-col text-center align-self-center>
         <ion-grid class="grid-keyboard">
           <ion-row>
             <ion-col col-4>
@@ -85,12 +65,11 @@
             </ion-col>
           </ion-row>
           <ion-row nowrap>
-            <ion-col>
-            </ion-col>
-            <ion-col>
+            <ion-col col-4></ion-col>
+            <ion-col col-4>
               <button ion-button round outline (click)="add(0)">0</button>
             </ion-col>
-            <ion-col>
+            <ion-col col-4>
               <button ion-button round clear (click)="delete()">
                 <ion-icon name="ios-backspace"></ion-icon>
               </button>

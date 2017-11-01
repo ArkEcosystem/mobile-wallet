@@ -16,26 +16,42 @@ export class LoginPage {
   }
 
   openProfileSignin() {
-    this.navCtrl.setRoot('ProfileSigninPage');
+    this.createPinCode('ProfileSigninPage');
   }
 
   openProfileCreate() {
-    this.navCtrl.push('ProfileCreatePage');
+    this.createPinCode('ProfileCreatePage');
   }
 
-  ionViewDidLeave() {
-    // TODO: if user not created yet
-    let modal = this.modalCtrl.create('PinCodePage', {
-      title: 'Create a PIN Code',
-      message: 'Type your password',
+  private createPinCode(nextPage: string) {
+    // TODO: verify if the pincode has set
+    let createModal = this.modalCtrl.create('PinCodePage', {
+      message: 'PIN_CODE.CREATE',
       outputPassword: true,
     });
 
-    modal.onDidDismiss((password) => {
-      // TODO: storage
+    createModal.onDidDismiss((password) => {
+      if (password) {
+        let validateModal = this.modalCtrl.create('PinCodePage', {
+          message: 'PIN_CODE.CONFIRM',
+          expectedPassword: password,
+        });
+
+        validateModal.onDidDismiss((status) => {
+          if (status) {
+            this.navCtrl.push(nextPage);
+          } else {
+            // TODO: fail
+          }
+        })
+
+        validateModal.present();
+      } else {
+        // TODO: fail
+      }
     });
 
-    modal.present();
+    createModal.present();
   }
 
 }

@@ -4,6 +4,12 @@
     "TEXT_2": "Successfully completed security audits by world-class researches",
     "TEXT_3": "PIN Code is a that makes you forget all your worries about passwords"
   },
+  "PIN_CODE": {
+    "CREATE": "Create your PIN",
+    "CONFIRM": "Confirm your PIN",
+    "WRONG": "Please enter the correct PIN",
+    "DEFAULT_MESSAGE": "Type your PIN"
+  },
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
   "CANCEL": "Cancel",
