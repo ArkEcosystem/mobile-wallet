@@ -13,6 +13,9 @@
   "REGISTER_DELEGATE": {
     "NAME_ALREADY_EXISTS": "This name already exists"
   },
+  "IMPORT_WALLET": {
+    "TYPE_PIN_MESSAGE": "Type your PIN to encrypt passphrase"
+  },
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
   "CANCEL": "Cancel",

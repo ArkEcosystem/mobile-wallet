@@ -40,7 +40,9 @@ export class PinCodePage {
 
   add(value: number) {
     if (this.password.length < 6) {
-      this.password = this.password + value;
+      this.zone.run(() => {
+        this.password = this.password + value;
+      });
 
       if (this.password.length == 6) {
 
@@ -85,7 +87,9 @@ export class PinCodePage {
 
   delete() {
     if (this.password.length > 0) {
-      this.password = this.password.substring(0, this.password.length - 1);
+      this.zone.run(() => {
+        this.password = this.password.substring(0, this.password.length - 1);
+      });
     }
   }
 

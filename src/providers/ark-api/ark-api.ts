@@ -114,7 +114,7 @@ export class ArkApiProvider {
       this.onUpdatePeer$.next(peer);
     }
     // Save in localStorage
-    this._userDataProvider.networkUpdate(this._userDataProvider.profileActive.networkId, this._network);
+    this._userDataProvider.updateNetwork(this._userDataProvider.currentProfile.networkId, this._network);
     this._api = new arkts.Client(this._network);
 
     this._fetchAllDelegates().subscribe((data) => {

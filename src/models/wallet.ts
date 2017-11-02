@@ -11,6 +11,8 @@ export class Wallet extends Account {
   label?: string;
   transactions?: Transaction[];
   lastUpdate?: number;
+  cipherPassphrase?: any;
+  cipherSecondPassphrase?: any;
 
   constructor() {
     super();
@@ -33,6 +35,8 @@ export class Wallet extends Account {
     this.username = null;
     this.transactions = [];
     this.lastUpdate = null;
+    this.cipherPassphrase = null;
+    this.cipherSecondPassphrase = null;
   }
 
   loadTransactions(transactions: any) {

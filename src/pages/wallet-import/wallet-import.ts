@@ -17,4 +17,8 @@ export class WalletImportPage {
     this._navCtrl.push('WalletImportPassphrasePage');
   }
 
+  scanQRCode() {
+
+  }
+
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -29,25 +29,26 @@ export class WalletCreatePage {
   }
   public keySegment: string = 'public';
 
-  private _currentNetwork: Network;
-  private _unsubscriber: Subject<void> = new Subject<void>();
+  private currentNetwork: Network;
+  private unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(
-    private _navCtrl: NavController,
-    private _navParams: NavParams,
-    private _userDataProvider: UserDataProvider,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private userDataProvider: UserDataProvider,
+    private modalCtrl: ModalController,
   ) {
-    this.account.entropy = this._navParams.get('entropy');
-    if (!this.account.entropy) this._navCtrl.popToRoot();
+    this.account.entropy = this.navParams.get('entropy');
+    if (!this.account.entropy) this.navCtrl.popToRoot();
   }
 
   load() {
-    this._currentNetwork = this._userDataProvider.networkActive;
+    this.currentNetwork = this.userDataProvider.currentNetwork;
 
     this.account.mnemonic = bip39.entropyToMnemonic(this.account.entropy);
     this.account.qrpassphrase = `{"passphrase": "${this.account.mnemonic}"}`;
 
-    let privateKey = PrivateKey.fromSeed(this.account.mnemonic, this._currentNetwork);
+    let privateKey = PrivateKey.fromSeed(this.account.mnemonic, this.currentNetwork);
     let publicKey = privateKey.getPublicKey();
 
     this.account.publicKey = publicKey.toHex();
@@ -63,9 +64,23 @@ export class WalletCreatePage {
     wallet.address = this.account.address;
     wallet.publicKey = this.account.publicKey;
 
-    this._userDataProvider.walletAdd(wallet).takeUntil(this._unsubscriber).subscribe((response) => {
-      this._navCtrl.setRoot('ProfileSigninPage');
+    let modal = this.modalCtrl.create('PinCodePage', {
+      message: 'IMPORT_WALLET.TYPE_PIN_MESSAGE',
+      outputPassword: true,
+      validatePassword: true
     });
+
+    modal.onDidDismiss((password) => {
+      if (password) {
+        this.userDataProvider.addWallet(wallet, this.account.mnemonic, password).takeUntil(this.unsubscriber$).subscribe((response) => {
+          this.navCtrl.setRoot('ProfileSigninPage');
+        });
+      } else {
+        // TODO: Toast error
+      }
+    })
+
+    modal.present();
   }
 
   ionViewDidLoad() {
@@ -73,8 +88,8 @@ export class WalletCreatePage {
   }
 
   ngOnDestroy() {
-    this._unsubscriber.next();
-    this._unsubscriber.complete();
+    this.unsubscriber$.next();
+    this.unsubscriber$.complete();
   }
 
 }

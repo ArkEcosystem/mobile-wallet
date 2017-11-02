@@ -19,6 +19,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
+import { ForgeProvider } from '../providers/forge/forge';
 
 export function httpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -57,6 +58,7 @@ export function httpLoaderFactory(http: Http) {
     ArkApiProvider,
     MarketDataProvider,
     SettingsDataProvider,
+    ForgeProvider,
   ]
 })
 export class AppModule {}

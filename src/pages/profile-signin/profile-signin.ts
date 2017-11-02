@@ -61,16 +61,16 @@ export class ProfileSigninPage {
   }
 
   delete(profileId: string) {
-    return this.userDataProvider.profileRemove(profileId).takeUntil(this._unsubscriber).subscribe((result) => {
+    return this.userDataProvider.removeProfileById(profileId).takeUntil(this._unsubscriber).subscribe((result) => {
       this.load();
     });
   }
 
   isMainnet(profileId: string) {
-    let profile = this.userDataProvider.profileGet(profileId);
+    let profile = this.userDataProvider.getProfileById(profileId);
 
     if (profile) {
-      let network = this.userDataProvider.networkGet(profile.networkId);
+      let network = this.userDataProvider.getNetworkById(profile.networkId);
 
       if (!network) return;
 
@@ -79,9 +79,9 @@ export class ProfileSigninPage {
   }
 
   getNetworkName(profileId: string) {
-    let profile = this.userDataProvider.profileGet(profileId);
+    let profile = this.userDataProvider.getProfileById(profileId);
     if (profile && profile.networkId) {
-      let network = this.userDataProvider.networkGet(profile.networkId)
+      let network = this.userDataProvider.getNetworkById(profile.networkId)
       return network.name;
     }
   }
@@ -95,7 +95,7 @@ export class ProfileSigninPage {
       if (status) {
         this.authProvider.login(profileId).takeUntil(this._unsubscriber).subscribe((status) => {
           if (status) {
-            var wallets = this.userDataProvider.profileActive.wallets;
+            var wallets = this.userDataProvider.currentProfile.wallets;
             var addresses = lodash.keys(wallets) || [];
 
             if (addresses.length === 0) {

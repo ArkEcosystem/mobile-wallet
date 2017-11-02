@@ -21,12 +21,12 @@ export class ProfileCreatePage {
 
   public newProfile = { name: '', networkId: '' };
 
-  private _unsubscriber$: Subject<void> = new Subject<void>();
+  private unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(
-    private _navCtrl: NavController,
-    private _navParams: NavParams,
-    private _userDataProvider: UserDataProvider,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private userDataProvider: UserDataProvider,
   ) { }
 
   onSelectNetwork(networkId: string) {
@@ -38,15 +38,15 @@ export class ProfileCreatePage {
     profile.name = this.newProfile.name;
     profile.networkId = this.newProfile.networkId;
 
-    this._userDataProvider.profileAdd(profile).takeUntil(this._unsubscriber$).subscribe((result) => {
-      this._navCtrl.setRoot('ProfileSigninPage');
+    this.userDataProvider.addProfile(profile).takeUntil(this.unsubscriber$).subscribe((result) => {
+      this.navCtrl.setRoot('ProfileSigninPage');
     }, () => {
       // TODO: Toast error
     });
   }
 
   load() {
-    this.networks = this._userDataProvider.networks;
+    this.networks = this.userDataProvider.networks;
     this.networksIds = lodash.keys(this.networks);
     this.newProfile.networkId = this.networksIds[0];
   }
@@ -56,8 +56,8 @@ export class ProfileCreatePage {
   }
 
   ngOnDestroy() {
-    this._unsubscriber$.next();
-    this._unsubscriber$.complete();
+    this.unsubscriber$.next();
+    this.unsubscriber$.complete();
   }
 
 }

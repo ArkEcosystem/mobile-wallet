@@ -184,7 +184,7 @@ export class WalletDashboardPage {
   }
 
   saveWallet() {
-    this._userDataProvider.walletSave(this.wallet);
+    this._userDataProvider.saveWallet(this.wallet);
   }
 
   openTransactionShow(tx: Transaction) {
@@ -308,10 +308,10 @@ export class WalletDashboardPage {
   }
 
   load() {
-    this.profile = this._userDataProvider.profileActive;
-    this.network = this._userDataProvider.networkActive;
+    this.profile = this._userDataProvider.currentProfile;
+    this.network = this._userDataProvider.currentNetwork;
     this.fees = this._arkApiProvider.fees;
-    this.wallet = this._userDataProvider.walletGet(this.address);
+    this.wallet = this._userDataProvider.getWalletByAddress(this.address);
 
     if (lodash.isEmpty(this.wallet)) {
       this._navCtrl.popToRoot();

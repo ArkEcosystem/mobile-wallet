@@ -27,7 +27,7 @@ export class MyApp {
   public profile = null;
   public network = null;
 
-  private _unsubscriber$: Subject<void> = new Subject<void>();
+  private unsubscriber$: Subject<void> = new Subject<void>();
 
   @ViewChild(Nav) nav: Nav;
 
@@ -37,7 +37,7 @@ export class MyApp {
     private splashScreen: SplashScreen,
     private authProvider: AuthProvider,
     private translateService: TranslateService,
-    private localDataProvider: UserDataProvider,
+    private userDataProvider: UserDataProvider,
     private marketDataProvider: MarketDataProvider,
     private arkApiProvider: ArkApiProvider,
     private settingsDataProvider: SettingsDataProvider,
@@ -49,7 +49,6 @@ export class MyApp {
       statusBar.styleDefault();
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
-        console.log(hasSeenIntro);
         splashScreen.hide();
 
         if (hasSeenIntro) {
@@ -85,16 +84,16 @@ export class MyApp {
 
   // Redirect user when login or logout
   private _onUserLogin(): void {
-    this.authProvider.onLogin$.takeUntil(this._unsubscriber$).subscribe(() => {
-      this.profile = this.localDataProvider.profileActive;
-      this.network = this.localDataProvider.networkActive;
+    this.authProvider.onLogin$.takeUntil(this.unsubscriber$).subscribe(() => {
+      this.profile = this.userDataProvider.currentProfile;
+      this.network = this.userDataProvider.currentNetwork;
 
       return this.menuCtrl.enable(true, 'sidebarMenu');
     });
   }
 
   private _onUserLogout(): void {
-    this.authProvider.onLogout$.takeUntil(this._unsubscriber$).subscribe(() => {
+    this.authProvider.onLogout$.takeUntil(this.unsubscriber$).subscribe(() => {
       this.menuCtrl.enable(false, 'sidebarMenu');
       return this.openPage('ProfileSigninPage');
     })
@@ -103,7 +102,7 @@ export class MyApp {
   // Verify if any account registered is a delegate
   private _onUpdateDelegates(delegates: arkts.Delegate[]) {
     lodash
-      .flatMap(this.localDataProvider.profiles, (item) => {
+      .flatMap(this.userDataProvider.profiles, (item) => {
         // Filter only non-delegates
         return lodash.filter(lodash.values(item['wallets']), { isDelegate: false });
       })
@@ -114,15 +113,15 @@ export class MyApp {
           wallet.isDelegate = true;
           wallet.username = find.username;
 
-          this.localDataProvider.walletSave(wallet, undefined, true);
+          this.userDataProvider.saveWallet(wallet, undefined, true);
         }
       });
   }
 
   // Verify if new wallet is a delegate
   private _onCreateWallet() {
-    return this.localDataProvider.onCreateWallet$
-      .takeUntil(this._unsubscriber$)
+    return this.userDataProvider.onCreateWallet$
+      .takeUntil(this.unsubscriber$)
       .debounceTime(500)
       .subscribe(() => {
         this.arkApiProvider.delegates.subscribe((delegates) => this._onUpdateDelegates(delegates))
@@ -143,14 +142,14 @@ export class MyApp {
     this._onCreateWallet();
     this.arkApiProvider.onUpdateDelegates$
       .do((delegates) => this._onUpdateDelegates(delegates))
-      .takeUntil(this._unsubscriber$)
+      .takeUntil(this.unsubscriber$)
       .subscribe();
 
   }
 
   ngOnDestroy() {
-    this._unsubscriber$.next();
-    this._unsubscriber$.complete();
+    this.unsubscriber$.next();
+    this.unsubscriber$.complete();
     this.authProvider.logout();
   }
 

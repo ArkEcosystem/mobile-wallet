@@ -61,7 +61,7 @@ export class ContactListPage {
   }
 
   delete(address) {
-    this._userDataProvider.removeContact(address);
+    this._userDataProvider.removeContactByAddress(address);
     this._load();
   }
 
@@ -75,8 +75,8 @@ export class ContactListPage {
   }
 
   private _load() {
-    this.profile = this._userDataProvider.profileActive;
-    this.network = this._userDataProvider.networkActive;
+    this.profile = this._userDataProvider.currentProfile;
+    this.network = this._userDataProvider.currentNetwork;
 
     this.contacts = this.profile.contacts;
     this.addresses = Object.keys(this.contacts);

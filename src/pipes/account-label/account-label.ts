@@ -13,10 +13,10 @@ export class AccountLabelPipe implements PipeTransform {
   }
 
   transform(value: string, defaultText: string, ...args) {
-    let contact = this.userDataProvider.getContact(value);
+    let contact = this.userDataProvider.getContactByAddress(value);
     if (contact) return contact.name;
 
-    let wallet = this.userDataProvider.walletGet(value);
+    let wallet = this.userDataProvider.getWalletByAddress(value);
     if (wallet) {
       let label = wallet.username || wallet.label;
       if (label) return label;

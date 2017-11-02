@@ -31,8 +31,8 @@ export class TransactionShowPage {
 
     if (!this.transaction || !this.networkSymbol) this._navCtrl.popToRoot();
 
-    let walletRecipient = this._userDataProvider.walletGet(this.transaction.recipientId);
-    let walletSender = this._userDataProvider.walletGet(this.transaction.senderId);
+    let walletRecipient = this._userDataProvider.getWalletByAddress(this.transaction.recipientId);
+    let walletSender = this._userDataProvider.getWalletByAddress(this.transaction.senderId);
 
     this.recipientLabel = walletRecipient ? walletRecipient.label : null;
     this.senderLabel = walletSender ? walletSender.label : null;

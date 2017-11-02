@@ -34,7 +34,7 @@ export class ContactCreatePage {
 
     this.isNew = lodash.isEmpty(param);
     this.contact = this.isNew ? new Contact() : param;
-    this._network = this._userDataProvider.networkActive;
+    this._network = this._userDataProvider.currentNetwork;
   }
 
   validateAddress() {

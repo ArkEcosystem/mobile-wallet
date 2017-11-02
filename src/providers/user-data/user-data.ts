@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
+import { ForgeProvider } from '@providers/forge/forge';
 
 import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
@@ -20,8 +21,8 @@ export class UserDataProvider {
   public profiles = {};
   public networks = {};
 
-  public profileActive: Profile;
-  public networkActive: Network;
+  public currentProfile: Profile;
+  public currentNetwork: Network;
 
   public onActivateNetwork$: Subject<Network> = new Subject();
   public onCreateWallet$: Subject<Wallet> = new Subject();
@@ -29,24 +30,25 @@ export class UserDataProvider {
   public onSelectProfile$: Subject<Profile> = new Subject();
 
   constructor(
-    private _storageProvider: StorageProvider,
-    private _authProvider: AuthProvider
+    private storageProvider: StorageProvider,
+    private authProvider: AuthProvider,
+    private forgeProvider: ForgeProvider,
   ) {
-    this._loadAllData();
+    this.loadAllData();
 
-    this._onLogin();
-    this._onClearStorage();
+    this.onLogin();
+    this.onClearStorage();
   }
 
-  addContact(address: string, contact: Contact, profileId: string = this._authProvider.loggedProfileId) {
-    if (!this.profiles[profileId]) return;
+  addContact(address: string, contact: Contact, profileId: string = this.authProvider.loggedProfileId) {
+    if (lodash.isNil(this.profiles)) return;
 
     let contacts = this.profiles[profileId].contacts || {};
     contacts[address] = contact;
 
     this.profiles[profileId]['contacts'] = contacts;
 
-    return this.profilesSave();
+    return this.saveProfiles();
   }
 
   editContact(address: string, contact: Contact) {
@@ -58,10 +60,10 @@ export class UserDataProvider {
       }
     });
 
-    return this.profilesSave();
+    return this.saveProfiles();
   }
 
-  getContact(address: string): Contact {
+  getContactByAddress(address: string): Contact {
     if (lodash.isNil(this.profiles)) return;
 
     let contacts = lodash.map(this.profiles, (p) => p['contacts']);
@@ -72,79 +74,84 @@ export class UserDataProvider {
     return <Contact>merged[address];
   }
 
-  removeContact(address: string) {
+  removeContactByAddress(address: string) {
     if (lodash.isNil(this.profiles)) return;
 
     lodash.forEach(this.profiles, (item, id) => {
       this.profiles[id]['contacts'] = lodash.omit(item['contacts'], [address]);
     });
 
-    return this.profilesSave();
+    return this.saveProfiles();
   }
 
-  networkAdd(network: Network) {
-    this.networks[this._generateUniqueId()] = network;
+  addNetwork(network: Network) {
+    this.networks[this.generateUniqueId()] = network;
 
-    return this._storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
+    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
   }
 
-  networkUpdate(networkId: string, network: Network) {
+  updateNetwork(networkId: string, network: Network) {
     this.networks[networkId] = network;
 
-    return this._storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
+    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
   }
 
-  networkGet(networkId: string) {
+  getNetworkById(networkId: string) {
     return this.networks[networkId];
   }
 
-  networkRemove(networkId: string) {
+  removeNetworkById(networkId: string) {
     delete this.networks[networkId];
 
-    this._storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
+    this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
     return this.networks;
   }
 
-  profileAdd(profile: Profile) {
-    this.profiles[this._generateUniqueId()] = profile;
+  addProfile(profile: Profile) {
+    profile.salt = this.forgeProvider.generateSalt();
+    profile.iv = this.forgeProvider.generateIv();
 
-    return this.profilesSave();
+    this.profiles[this.generateUniqueId()] = profile;
+
+    return this.saveProfiles();
   }
 
-  profileGet(profileId: string) {
+  getProfileById(profileId: string) {
     return new Profile().deserialize(this.profiles[profileId]);
   }
 
-  profileRemove(profileId: string) {
+  removeProfileById(profileId: string) {
     delete this.profiles[profileId];
 
-    return this.profilesSave();
+    return this.saveProfiles();
   }
 
-  profilesSave(profiles = this.profiles) {
-    let currentProfile = this._authProvider.loggedProfileId;
+  saveProfiles(profiles = this.profiles) {
+    let currentProfile = this.authProvider.loggedProfileId;
 
-    if (currentProfile) this._setProfileActive(currentProfile, false);
-    return this._storageProvider.set(constants.STORAGE_PROFILES, profiles);
+    if (currentProfile) this.setCurrentProfile(currentProfile, false);
+    return this.storageProvider.set(constants.STORAGE_PROFILES, profiles);
   }
 
-  walletAdd(wallet: Wallet, profileId: string = this._authProvider.loggedProfileId) {
+  addWallet(wallet: Wallet, passphrase: string, pinCode: string, profileId: string = this.authProvider.loggedProfileId) {
     if (lodash.isUndefined(profileId)) return;
 
-    let profile = this.profileGet(profileId);
+    let profile = this.getProfileById(profileId);
+    let cipherPassphrase = this.forgeProvider.encrypt(passphrase, pinCode, profile.salt, profile.iv);
+    wallet.cipherPassphrase = cipherPassphrase;
 
     if (!profile.wallets[wallet.address]) {
       this.onCreateWallet$.next(wallet);
-      return this.walletSave(wallet, profileId);
+      return this.saveWallet(wallet, profileId);
     }
 
-    return this.profilesSave();
+    return this.saveProfiles();
   }
 
-  walletGet(address: string, profileId: string = this._authProvider.loggedProfileId): Wallet {
+  getWalletByAddress(address: string, profileId: string = this.authProvider.loggedProfileId): Wallet {
     if (lodash.isUndefined(profileId)) return;
 
-    let profile = this.profileGet(profileId);
+    let profile = this.getProfileById(profileId);
     let wallet = new Wallet();
 
     if (profile.wallets[address]) {
@@ -155,37 +162,37 @@ export class UserDataProvider {
     return null;
   }
 
-  walletSave(wallet: Wallet, profileId: string = this._authProvider.loggedProfileId, notificate: boolean = false) {
+  saveWallet(wallet: Wallet, profileId: string = this.authProvider.loggedProfileId, notificate: boolean = false) {
     if (lodash.isUndefined(profileId)) return;
 
-    let profile = this.profileGet(profileId);
+    let profile = this.getProfileById(profileId);
     profile.wallets[wallet.address] = wallet;
 
     this.profiles[profileId] = profile;
 
     if (notificate) this.onUpdateWallet$.next(wallet);
 
-    return this.profilesSave();
+    return this.saveProfiles();
   }
 
-  public loadProfiles() {
-    return this._storageProvider.getObject(constants.STORAGE_PROFILES);
+  loadProfiles() {
+    return this.storageProvider.getObject(constants.STORAGE_PROFILES);
   }
 
-  public loadNetworks() {
+  loadNetworks() {
     const defaults = Network.getAll();
 
     return Observable.create((observer) => {
       // Return defaults networks from arkts
-      this._storageProvider.getObject(constants.STORAGE_NETWORKS).subscribe((networks) => {
+      this.storageProvider.getObject(constants.STORAGE_NETWORKS).subscribe((networks) => {
         if (!networks || lodash.isEmpty(networks)) {
           const uniqueDefaults = {};
 
           for (var i = 0; i < defaults.length; i++) {
-            uniqueDefaults[this._generateUniqueId()] = defaults[i];
+            uniqueDefaults[this.generateUniqueId()] = defaults[i];
           }
 
-          this._storageProvider.set(constants.STORAGE_NETWORKS, uniqueDefaults);
+          this.storageProvider.set(constants.STORAGE_NETWORKS, uniqueDefaults);
           observer.next(uniqueDefaults);
         } else {
           observer.next(networks);
@@ -196,48 +203,48 @@ export class UserDataProvider {
     });
   }
 
-  private _setNetworkActive(): void {
-    if (!this.profileActive) return;
+  private setCurrentNetwork(): void {
+    if (!this.currentProfile) return;
 
     let network = new Network();
 
-    Object.assign(network, this.networks[this.profileActive.networkId]);
+    Object.assign(network, this.networks[this.currentProfile.networkId]);
     this.onActivateNetwork$.next(network);
 
-    this.networkActive = network;
+    this.currentNetwork = network;
   }
 
-  private _setProfileActive(profileId: string, broadcast: boolean = true): void {
+  private setCurrentProfile(profileId: string, broadcast: boolean = true): void {
     if (profileId && this.profiles[profileId]) {
       let profile = new Profile().deserialize(this.profiles[profileId]);
-      this.profileActive = profile;
+      this.currentProfile = profile;
       if (broadcast) this.onSelectProfile$.next(profile);
     }
   }
 
-  private _loadAllData() {
+  private loadAllData() {
     this.loadProfiles().subscribe((data) => this.profiles = data);
     this.loadNetworks().subscribe((data) => this.networks = data);
   }
 
-  private _onLogin() {
-    return this._authProvider.onLogin$.subscribe((id) => {
-      this._setProfileActive(id);
-      this._setNetworkActive();
+  private onLogin() {
+    return this.authProvider.onLogin$.subscribe((id) => {
+      this.setCurrentProfile(id);
+      this.setCurrentNetwork();
     });
   }
 
-  private _onClearStorage() {
-    this._storageProvider.onClear$
+  private onClearStorage() {
+    this.storageProvider.onClear$
       .debounceTime(100)
       .do(() => {
-        this._loadAllData();
-        this._setProfileActive(null);
+        this.loadAllData();
+        this.setCurrentProfile(null);
       })
       .subscribe();
   }
 
-  private _generateUniqueId(): string {
+  private generateUniqueId(): string {
     return uuid();
   }
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ModalController } from 'ionic-angular';
 
 import { Profile, Wallet } from '@models/model';
 import { UserDataProvider } from '@providers/user-data/user-data';
@@ -19,16 +19,17 @@ export class WalletImportPassphrasePage {
   public passphrase: string = '';
 
   constructor(
-    private _navCtrl: NavController,
-    private _navParams: NavParams,
-    private _userDataProvider: UserDataProvider,
-    private _loadingCtrl: LoadingController,
-    private _arkApiProvider: ArkApiProvider,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private userDataProvider: UserDataProvider,
+    private loadingCtrl: LoadingController,
+    private arkApiProvider: ArkApiProvider,
+    private modalCtrl: ModalController,
   ) { }
 
   load() {
-    this.currentProfile = this._userDataProvider.profileActive;
-    this.currentNetwork = this._userDataProvider.networkActive;
+    this.currentProfile = this.userDataProvider.currentProfile;
+    this.currentNetwork = this.userDataProvider.currentNetwork;
   }
 
   submitForm() {
@@ -38,22 +39,41 @@ export class WalletImportPassphrasePage {
 
     let newWallet = new Wallet();
 
-    this._arkApiProvider.api.account.get({ address }).subscribe((response) => {
-      if (response && response.success) {
-        let account = response.account;
+    this.arkApiProvider.api.account
+      .get({ address })
+      .finally(() => {
+        let modal = this.modalCtrl.create('PinCodePage', {
+          message: 'IMPORT_WALLET.TYPE_PIN_MESSAGE',
+          outputPassword: true,
+          validatePassword: true,
+        });
 
-        newWallet = newWallet.deserialize(account);
-      } else {
+        modal.onDidDismiss((password) => {
+          if (password) {
+            this.userDataProvider.addWallet(newWallet, this.passphrase, password).subscribe((result) => {
+              this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
+            });
+          } else {
+            // TODO: Toast error
+          }
+
+        });
+
+        modal.present();
+      })
+      .subscribe((response) => {
+        if (response && response.success) {
+          let account = response.account;
+
+          newWallet = newWallet.deserialize(account);
+        } else {
+          newWallet.address = address;
+          newWallet.publicKey = publicKey.toHex();
+        }
+      }, () => {
         newWallet.address = address;
         newWallet.publicKey = publicKey.toHex();
-      }
-
-      this._userDataProvider.walletAdd(newWallet).subscribe((result) => {
-        this._navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
       });
-    }, () => {
-      // TODO: Show error in toast
-    });
   }
 
   ionViewDidLoad() {
