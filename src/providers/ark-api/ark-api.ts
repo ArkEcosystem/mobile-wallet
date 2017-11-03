@@ -53,7 +53,7 @@ export class ArkApiProvider {
   public get delegates(): Observable<arkts.Delegate[]> {
     if (!lodash.isEmpty(this._delegates)) return Observable.of(this._delegates);
 
-    return this._fetchAllDelegates();
+    return this.fetchAllDelegates();
   }
 
   public findGoodPeer(): void {
@@ -73,7 +73,7 @@ export class ArkApiProvider {
     () => this._updateNetwork());
   }
 
-  private _fetchAllDelegates(): Observable<arkts.Delegate[]> {
+  public fetchAllDelegates(): Observable<arkts.Delegate[]> {
     if (!this._api) return;
     const limit = 51;
 
@@ -117,7 +117,7 @@ export class ArkApiProvider {
     this._userDataProvider.updateNetwork(this._userDataProvider.currentProfile.networkId, this._network);
     this._api = new arkts.Client(this._network);
 
-    this._fetchAllDelegates().subscribe((data) => {
+    this.fetchAllDelegates().subscribe((data) => {
       this._delegates = data;
     });
 

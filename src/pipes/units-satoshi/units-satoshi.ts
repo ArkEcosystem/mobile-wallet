@@ -6,9 +6,13 @@ import { WALLET_UNIT_TO_SATOSHI } from '@app/app.constants';
 })
 export class UnitsSatoshiPipe implements PipeTransform {
 
-  transform(value: number | string, ...args) {
+  transform(value: number | string, parse: boolean = false, ...args) {
     if (typeof value === 'string') value = Number(value);
 
-    return value / WALLET_UNIT_TO_SATOSHI;
+    let result = value / WALLET_UNIT_TO_SATOSHI;
+
+    if (parse) result = Math.trunc(result);
+
+    return result;
   }
 }

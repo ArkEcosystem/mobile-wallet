@@ -1,4 +1,15 @@
 {
+  "DELEGATES_PAGE": {
+    "RANK": "Rank",
+    "TITLE": "Delegates",
+    "ACTIVE": "Active",
+    "STANDBY": "Standby",
+    "PRODUCTIVITY": "Productivity",
+    "APPROVAL": "Approval",
+    "UPDATING": "Updating",
+    "SUPPLY": "Supply",
+    "TOTAL_FORGED": "Total Forged"
+  },
   "INTRO": {
     "TEXT_1": "Simple 24/7 Mobile Access to your ARK tokens, Worldwide!",
     "TEXT_2": "Successfully completed security audits by world-class researches",
@@ -34,9 +45,11 @@
   "GET_STARTED": "Get started",
   "NEXT": "Next",
   "SIGN_IN": "Sign in",
+  "SEARCH": "Search",
   "SKIP": "Skip",
   "SECOND_PASSPHRASE": "Second Passphrase",
   "RENAME": "Rename",
   "REGISTER_DELEGATE": "Register Delegate",
-  "LABEL": "Label"
+  "LABEL": "Label",
+  "USERNAME": "Username"
 }
