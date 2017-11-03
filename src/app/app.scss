@@ -21,6 +21,10 @@
   }
 }
 
+ion-app.md .scroll-content {
+  padding-left: 0;
+}
+
 .button-group {
   .col {
     &:first-child:not(:last-child) {
