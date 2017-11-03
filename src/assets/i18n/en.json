@@ -10,13 +10,13 @@
     "WRONG": "Please enter the correct PIN",
     "DEFAULT_MESSAGE": "Type your PIN"
   },
-  "REGISTER_DELEGATE": {
+  "REGISTER_DELEGATE_PAGE": {
     "NAME_ALREADY_EXISTS": "This name already exists"
   },
   "IMPORT_WALLET": {
     "TYPE_PIN_MESSAGE": "Type your PIN to encrypt passphrase"
   },
-  "WALLET_DASHBOARD": {
+  "WALLET_DASHBOARD_PAGE": {
     "TYPE_PIN_SIGN_TRANSACTION_MESSAGE": "Type your PIN to sign transaction"
   },
   "ARE_YOU_SURE": "Are you sure?",

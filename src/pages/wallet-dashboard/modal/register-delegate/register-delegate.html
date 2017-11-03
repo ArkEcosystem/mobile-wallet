@@ -21,7 +21,7 @@
             <ion-input type="text" name="name" [(ngModel)]="name" maxlength="20" [pattern]="allowedDelegateNameChars" (input)="validateName()" required></ion-input>
           </ion-item>
           <ion-item class="no-border">
-            <p class="error-message" *ngIf="isExists">{{ 'REGISTER_DELEGATE.NAME_ALREADY_EXISTS' | translate }}</p>
+            <p class="error-message" *ngIf="isExists">{{ 'REGISTER_DELEGATE_PAGE.NAME_ALREADY_EXISTS' | translate }}</p>
           </ion-item>
         </form>
       </ion-col>

@@ -27,7 +27,7 @@ export class LoginPage {
   }
 
   private createPinCode(nextPage: string) {
-    this.authProvider.getMasterPassword().subscribe((master) => {
+    this.authProvider.getMasterPassword().do((master) => {
       if (!master) {
         let createModal = this.modalCtrl.create('PinCodePage', {
           message: 'PIN_CODE.CREATE',
@@ -60,7 +60,7 @@ export class LoginPage {
       } else {
         this.navCtrl.push(nextPage);
       }
-    });
+    }).subscribe();
   }
 
 }
