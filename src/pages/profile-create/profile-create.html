@@ -16,8 +16,8 @@
       <span>{{ 'Network Type' | translate }}</span>
       <p>{{ 'Choose one of the network types' | translate }}.</p>
 
-      <ion-grid class="button-group">
-        <ion-row>
+      <ion-grid fixed class="button-group">
+        <ion-row nowrap>
           <ion-col *ngFor="let id of networksIds">
             <button ion-button block round [outline]="newProfile.networkId !== id" (click)="onSelectNetwork(id)" [color]="primary">{{ networks[id].name }}</button>
           </ion-col>
