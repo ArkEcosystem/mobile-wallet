@@ -1,5 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Vibration } from '@ionic-native/vibration';
 
 import { AuthProvider } from '@providers/auth/auth';
 
@@ -7,6 +8,7 @@ import { AuthProvider } from '@providers/auth/auth';
 @Component({
   selector: 'page-pin-code',
   templateUrl: 'pin-code.html',
+  providers: [Vibration],
 })
 export class PinCodePage {
 
@@ -28,6 +30,7 @@ export class PinCodePage {
     public viewCtrl: ViewController,
     private authProvider: AuthProvider,
     private zone: NgZone,
+    private vibration: Vibration,
   ) {
     this.password = '';
     this.message = this.navParams.get('message');
@@ -39,6 +42,8 @@ export class PinCodePage {
   }
 
   add(value: number) {
+    this.vibration.vibrate(100);
+
     if (this.password.length < 6) {
       this.zone.run(() => {
         this.password = this.password + value;
@@ -74,6 +79,8 @@ export class PinCodePage {
   }
 
   setWrong() {
+    this.vibration.vibrate(500);
+
     this.zone.run(() => {
       this.isWrong = true;
       this.password = '';
@@ -86,6 +93,8 @@ export class PinCodePage {
   }
 
   delete() {
+    this.vibration.vibrate(100);
+
     if (this.password.length > 0) {
       this.zone.run(() => {
         this.password = this.password.substring(0, this.password.length - 1);
