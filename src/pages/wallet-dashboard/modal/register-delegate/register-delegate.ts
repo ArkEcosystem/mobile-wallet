@@ -38,7 +38,6 @@ export class RegisterDelegatePage {
     let find = lodash.find(this.delegates, { username: this.name.trim() });
 
     this.isExists = !lodash.isNil(find);
-    console.log(this.name, this.delegates, this.isExists);
   }
 
   closeModal() {

@@ -10,7 +10,7 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 
 import lodash from 'lodash';
-import { Network, Fees, TransactionDelegate } from 'ark-ts';
+import { Network, Fees, TransactionDelegate  } from 'ark-ts';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -234,10 +234,13 @@ export class WalletDashboardPage {
           username: name
         }
 
-        this._arkApiProvider.api.transaction.createDelegate(transaction).subscribe((data) => {
-          console.log(data);
-        });
+        this._arkApiProvider.api.transaction.createDelegate(transaction)
+          .takeUntil(this._unsubscriber)
+          .do((data) => this.confirmTransaction(data))
+          .subscribe();
 
+      }, () => {
+        // TODO: Toast error
       })
     });
 
@@ -252,11 +255,20 @@ export class WalletDashboardPage {
       symbol: this.network.symbol,
     }, { cssClass: 'inset-modal-large'});
 
-    modal.onDidDismiss((passphrase) => {
-      if (lodash.isEmpty(passphrase)) return;
+    modal.onDidDismiss((newSecondPassphrase) => {
+      if (lodash.isEmpty(newSecondPassphrase)) return;
 
       // TODO: Get pin code
-      // this.arkApiProvider.api.transaction.createDelegate();
+      this.getPassphrases().then((passphrases) => {
+        this._arkApiProvider.api.transaction
+          .createSignature(passphrases['passphrase'], newSecondPassphrase)
+          .takeUntil(this._unsubscriber)
+          .do((data) => this.confirmTransaction(data))
+          .subscribe();
+
+      }, () => {
+        // TODO: Toast error
+      })
     });
 
     modal.present();
@@ -273,7 +285,7 @@ export class WalletDashboardPage {
           {
             text: translation['Confirm'],
             handler: () => {
-              this.delete();
+              this.deleteWallet();
             }
           }
         ]
@@ -282,14 +294,20 @@ export class WalletDashboardPage {
     });
   }
 
-  delete() {
+  deleteWallet() {
     // TODO:
     console.log('delete');
   }
 
+  private confirmTransaction(transaction: Transaction) {
+    // TODO: Confirmation page
+    console.log(transaction);
+  }
+
   private getPassphrases(message?: string) {
+    let msg = message || 'WALLET_DASHBOARD.TYPE_PIN_SIGN_TRANSACTION';
     let modal = this._modalCtrl.create('PinCodePage', {
-      message,
+      message: msg,
       outputPassword: true,
       validatePassword: true,
     });
