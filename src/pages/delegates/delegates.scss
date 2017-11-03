@@ -1,5 +1,9 @@
 page-delegates {
   .delegate-list {
+    .delegate-item {
+      border-bottom: 1px solid rgb(249, 249, 249);
+      padding: .4em 0;
+    }
     .rate {
       color: #aaa;
       font-size: 9pt;

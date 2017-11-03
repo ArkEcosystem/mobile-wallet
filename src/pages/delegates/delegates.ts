@@ -15,10 +15,12 @@ import * as constants from '@app/app.constants';
 export class DelegatesPage {
 
   public isSearch: boolean = false;
-  public searchQuery: string;
+  public searchQuery: any = { username: ''};
   public delegates: Delegate[];
   public supply: number = 0;
   public preMinned: number = constants.BLOCKCHAIN_PREMINNED;
+
+  public rankStatus: string = 'active';
   public currentNetwork: Network;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
@@ -38,6 +40,7 @@ export class DelegatesPage {
   }
 
   toggleSearchBar() {
+    this.searchQuery.username = '';
     this.isSearch = !this.isSearch;
   }
 

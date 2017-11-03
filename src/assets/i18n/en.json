@@ -8,7 +8,8 @@
     "APPROVAL": "Approval",
     "UPDATING": "Updating",
     "SUPPLY": "Supply",
-    "TOTAL_FORGED": "Total Forged"
+    "TOTAL_FORGED": "Total Forged",
+    "NO_MATCHING_SEARCH": "No matching delegates"
   },
   "INTRO": {
     "TEXT_1": "Simple 24/7 Mobile Access to your ARK tokens, Worldwide!",
