@@ -203,6 +203,25 @@ export class UserDataProvider {
     });
   }
 
+  getPassphrasesByWallet(wallet: Wallet, password: string) {
+    if (!wallet.cipherPassphrase && !wallet.cipherSecondPassphrase) return;
+
+    let passphrases = {
+      passphrase: undefined,
+      secondPassphrase: undefined
+    };
+
+    if (wallet.cipherPassphrase) {
+      passphrases.passphrase = this.forgeProvider.decrypt(wallet.cipherPassphrase, password, this.currentProfile.salt, this.currentProfile.iv);
+    }
+
+    if (wallet.cipherSecondPassphrase) {
+      passphrases.secondPassphrase = this.forgeProvider.decrypt(wallet.cipherSecondPassphrase, password, this.currentProfile.salt, this.currentProfile.iv);
+    }
+
+    return passphrases;
+  }
+
   private setCurrentNetwork(): void {
     if (!this.currentProfile) return;
 

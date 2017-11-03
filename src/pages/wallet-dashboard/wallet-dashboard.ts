@@ -227,8 +227,17 @@ export class WalletDashboardPage {
     modal.onDidDismiss((name) => {
       if (lodash.isEmpty(name)) return;
 
-      this.getPassphrases().then(() => {
-        console.log('fim');
+      this.getPassphrases().then((passphrases) => {
+        let transaction = <TransactionDelegate>{
+          passphrase: passphrases['passphrase'],
+          secondPassphrase: passphrases['secondPassphrase'],
+          username: name
+        }
+
+        this._arkApiProvider.api.transaction.createDelegate(transaction).subscribe((data) => {
+          console.log(data);
+        });
+
       })
     });
 
@@ -281,18 +290,19 @@ export class WalletDashboardPage {
   private getPassphrases(message?: string) {
     let modal = this._modalCtrl.create('PinCodePage', {
       message,
+      outputPassword: true,
       validatePassword: true,
     });
 
     modal.present();
 
     return new Promise((resolve, reject) => {
-      modal.onDidDismiss((status) => {
-        console.log(status);
-        if (!status) {
+      modal.onDidDismiss((password) => {
+        if (!password) {
           reject();
         } else {
-          resolve();
+          let passphrases = this._userDataProvider.getPassphrasesByWallet(this.wallet, password);
+          resolve(passphrases);
         }
       });
     });
