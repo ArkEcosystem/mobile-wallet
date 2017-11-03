@@ -19,7 +19,7 @@ page-pin-code {
     span {
       height: 20px;
       width: 20px;
-      border: 2px solid #ddd;
+      border: 2px solid #d0d5d9;
       background-color: transparent;
       border-radius: 100%;
       position: relative;
@@ -40,10 +40,16 @@ page-pin-code {
     height: 80px;
     font-weight: 500;
     font-size: 22pt;
-    border-color: #ddd;
+    border-color: #e6eaee;
+    color: #0b1828;
 
-    &.help-text {
-      font-size: 11pt;
+    &.activated {
+      color: #0b1828;
+      background: #d4e4ef;
+    }
+
+    &.help-item {
+      color: #b3c1d3;
     }
   }
 
