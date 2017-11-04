@@ -63,14 +63,13 @@ export class ArkApiProvider {
         let port = this._network.activePeer.port;
         let sortHeight = lodash.orderBy(lodash.filter(response.peers, {'status': 'OK', 'port': port}), ['height','delay'], ['desc','asc']);
 
-        this._network.setPeer(sortHeight[0]);
+        this._updateNetwork(sortHeight[0]);
       }
     },
     // Get list from file
     () => {
       return arkts.PeerApi.findGoodPeer(this._network).first().subscribe((peer) => this._updateNetwork(peer));
-    },
-    () => this._updateNetwork());
+    });
   }
 
   public fetchAllDelegates(): Observable<arkts.Delegate[]> {
