@@ -1,24 +1,4 @@
 page-wallet-dashboard {
-  ion-modal,
-  .show-page {
-    // transparent black background overlay
-    background-color: rgba(0, 0, 0, .5) !important;
-    padding: 50px !important;
-  }
-  ion-modal.modal-wrapper {
-    transform: translateY(30%) !important;
-  }
-  ion-page.modal {
-    padding: 30px;
-    background: rgba(0, 0, 0, 0.5);
-  }
-  .modal-backdrop-bg {
-    background-color: #000;
-    opacity: 0;
-  }
-  .active .modal-backdrop-bg {
-    opacity: 0.5;
-  }
 
   .toolbar {
     padding: 0;
@@ -72,18 +52,4 @@ page-wallet-dashboard {
       padding-left: .2em;
     }
   }
-}
-
-ion-modal.inset-modal {
-  // transparent black background overlay
-  background-color: rgba(0, 0, 0, .5) !important;
-  transition: opacity .25s ease-in-out;
-  padding: 20vh 10vw;
-}
-
-ion-modal.inset-modal-large {
-  // transparent black background overlay
-  background-color: rgba(0, 0, 0, .5) !important;
-  transition: opacity .25s ease-in-out;
-  padding: 10vh 5vw;
 }

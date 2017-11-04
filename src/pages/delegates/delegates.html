@@ -5,7 +5,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-title *ngIf="!isSearch">{{ 'DELEGATES_PAGE.TITLE' | translate }}</ion-title>
+    <ion-title *ngIf="!isSearch">{{ 'DELEGATES' | translate }}</ion-title>
     <ion-searchbar *ngIf="isSearch" (ionInput)="onInputSearch($event)" [(ngModel)]="searchQuery.username" spellcheck="false" animated="true" placeholder="{{ 'SEARCH' | translate }}"></ion-searchbar>
 
     <ion-buttons end>
@@ -32,7 +32,7 @@
 <ion-content>
   <ion-grid padding fixed *ngIf="delegates" [ngSwitch]="rankStatus">
     <div *ngSwitchCase="'active'" class="delegate-list">
-      <ion-row nowrap text-left *ngFor="let delegate of delegates.slice(0, 51) | filterBy: searchQuery" class="delegate-item">
+      <ion-row (click)="openDetailModal(delegate)" nowrap text-left *ngFor="let delegate of delegates.slice(0, 51) | filterBy: searchQuery" class="delegate-item">
         <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
         <ion-col col-7>{{ delegate?.username }}</ion-col>
         <ion-col col-3><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
@@ -44,7 +44,7 @@
       </ion-row>
     </div>
     <div *ngSwitchCase="'standBy'" class="delegate-list">
-      <ion-row nowrap text-left *ngFor="let delegate of delegates.slice(51, delegates.length) | filterBy: searchQuery" class="delegate-item">
+      <ion-row (click)="openDetailModal(delegate)" nowrap text-left *ngFor="let delegate of delegates.slice(51, delegates.length) | filterBy: searchQuery" class="delegate-item">
         <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
         <ion-col col-7>{{ delegate?.username }}</ion-col>
         <ion-col col-3><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
@@ -63,7 +63,7 @@
     <ion-grid>
       <ion-row align-items-center>
         <ion-col text-left><strong>{{ 'DELEGATES_PAGE.TOTAL_FORGED' | translate }}:</strong> {{ currentNetwork?.symbol }}{{ getTotalForged() | unitsSatoshi: true | number: 0.0-0 }}</ion-col>
-        <ion-col text-right><strong>{{ 'DELEGATES_PAGE.TITLE' | translate }}:</strong> {{ delegates?.length || 0 }}</ion-col>
+        <ion-col text-right><strong>{{ 'DELEGATES' | translate }}:</strong> {{ delegates?.length || 0 }}</ion-col>
       </ion-row>
     </ion-grid>
   </ion-toolbar>

@@ -1,3 +1,5 @@
+@import "../assets/styles/modal";
+
 #sidebarMenu {
   ion-header {
     padding: 40px 20px 20px 30px;
@@ -21,8 +23,8 @@
   }
 }
 
-ion-app.md .scroll-content {
-  padding-left: 0;
+ion-app .scroll-content {
+  padding-left: 0!important;
 }
 
 .button-group {

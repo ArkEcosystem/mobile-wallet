@@ -1,15 +1,18 @@
 {
   "DELEGATES_PAGE": {
     "RANK": "Rank",
-    "TITLE": "Delegates",
     "ACTIVE": "Active",
     "STANDBY": "Standby",
     "PRODUCTIVITY": "Productivity",
     "APPROVAL": "Approval",
+    "UPTIME": "Uptime",
     "UPDATING": "Updating",
     "SUPPLY": "Supply",
     "TOTAL_FORGED": "Total Forged",
-    "NO_MATCHING_SEARCH": "No matching delegates"
+    "NO_MATCHING_SEARCH": "No matching delegates",
+    "VOTE": "Vote",
+    "PRODUCED_BLOCKS": "Produced Blocks",
+    "MISSED_BLOCKS": "Missed Blocks"
   },
   "INTRO": {
     "TEXT_1": "Simple 24/7 Mobile Access to your ARK tokens, Worldwide!",
@@ -20,17 +23,14 @@
     "CREATE": "Create your PIN",
     "CONFIRM": "Confirm your PIN",
     "WRONG": "Please enter the correct PIN",
-    "DEFAULT_MESSAGE": "Type your PIN"
+    "DEFAULT_MESSAGE": "Type your PIN",
+    "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type your PIN to encrypt passphrase",
+    "TYPE_PIN_SIGN_TRANSACTION": "Type your PIN to sign transaction"
   },
   "REGISTER_DELEGATE_PAGE": {
     "NAME_ALREADY_EXISTS": "This name already exists"
   },
-  "IMPORT_WALLET": {
-    "TYPE_PIN_MESSAGE": "Type your PIN to encrypt passphrase"
-  },
-  "WALLET_DASHBOARD_PAGE": {
-    "TYPE_PIN_SIGN_TRANSACTION_MESSAGE": "Type your PIN to sign transaction"
-  },
+  "ADDRESS": "Address",
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
   "CANCEL": "Cancel",
@@ -41,6 +41,8 @@
   "CREATE": "Create",
   "CREATE_PROFILE_BUTTON": "Create an profile",
   "CREATE_PROFILE_TITLE": "Create Profile",
+  "DELEGATES": "Delegates",
+  "DELEGATE": "Delegate",
   "DELETE": "Delete",
   "GENERATE": "Generate",
   "GET_STARTED": "Get started",
@@ -48,6 +50,7 @@
   "SIGN_IN": "Sign in",
   "SEARCH": "Search",
   "SKIP": "Skip",
+  "STATUS": "Status",
   "SECOND_PASSPHRASE": "Second Passphrase",
   "RENAME": "Rename",
   "REGISTER_DELEGATE": "Register Delegate",
