@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Clipboard } from '@ionic-native/clipboard';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -14,6 +15,7 @@ import bip39 from 'bip39';
 @Component({
   selector: 'page-wallet-create',
   templateUrl: 'wallet-create.html',
+  providers: [Clipboard],
 })
 export class WalletCreatePage {
 
@@ -27,7 +29,14 @@ export class WalletCreatePage {
     seed: '',
     wif: '',
   }
+
   public keySegment: string = 'public';
+
+  public disableShowDetails: boolean = false;
+  public showDetails: boolean = false;
+  public fee: number;
+  public message: string;
+  public title: string;
 
   private currentNetwork: Network;
   private unsubscriber$: Subject<void> = new Subject<void>();
@@ -36,15 +45,33 @@ export class WalletCreatePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private userDataProvider: UserDataProvider,
-    private modalCtrl: ModalController,
+    private viewCtrl: ViewController,
+    private clipboard: Clipboard,
   ) {
+    this.currentNetwork = this.userDataProvider.currentNetwork;
+
     this.account.entropy = this.navParams.get('entropy');
-    if (!this.account.entropy) this.navCtrl.popToRoot();
+    this.disableShowDetails = this.navParams.get('disableShowDetails') || false;
+    this.fee = this.navParams.get('fee');
+    this.message = this.navParams.get('message');
+    this.title = this.navParams.get('title');
+
+    if (!this.account.entropy) this.dismiss();
+  }
+
+  toggleShowDetails() {
+    this.showDetails = !this.showDetails;
+  }
+
+  copyPassphrase() {
+    this.clipboard.copy(this.account.mnemonic);
+  }
+
+  next() {
+    this.dismiss(this.account);
   }
 
   load() {
-    this.currentNetwork = this.userDataProvider.currentNetwork;
-
     this.account.mnemonic = bip39.entropyToMnemonic(this.account.entropy);
     this.account.qrpassphrase = `{"passphrase": "${this.account.mnemonic}"}`;
 
@@ -59,28 +86,8 @@ export class WalletCreatePage {
     this.account.seed = bip39.mnemonicToSeedHex(this.account.mnemonic);
   }
 
-  storeWallet() {
-    let wallet = new Wallet();
-    wallet.address = this.account.address;
-    wallet.publicKey = this.account.publicKey;
-
-    let modal = this.modalCtrl.create('PinCodePage', {
-      message: 'IMPORT_WALLET.TYPE_PIN_MESSAGE',
-      outputPassword: true,
-      validatePassword: true
-    });
-
-    modal.onDidDismiss((password) => {
-      if (password) {
-        this.userDataProvider.addWallet(wallet, this.account.mnemonic, password).takeUntil(this.unsubscriber$).subscribe((response) => {
-          this.navCtrl.setRoot('ProfileSigninPage');
-        });
-      } else {
-        // TODO: Toast error
-      }
-    })
-
-    modal.present();
+  dismiss(result?: any) {
+    this.viewCtrl.dismiss(result);
   }
 
   ionViewDidLoad() {

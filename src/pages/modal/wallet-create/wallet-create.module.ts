@@ -4,6 +4,7 @@ import { WalletCreatePage } from './wallet-create';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { QRCodeModule } from 'angular2-qrcode';
+import { PipesModule } from '@pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { QRCodeModule } from 'angular2-qrcode';
     IonicPageModule.forChild(WalletCreatePage),
     TranslateModule,
     QRCodeModule,
+    PipesModule,
   ],
 })
 export class WalletCreatePageModule {}

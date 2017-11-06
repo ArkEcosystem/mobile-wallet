@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { WalletGenerateEntropyPage } from './wallet-generate-entropy';
+import { GenerateEntropyPage } from './generate-entropy';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { ComponentsModule } from '@components/components.module';
 
 @NgModule({
   declarations: [
-    WalletGenerateEntropyPage,
+    GenerateEntropyPage,
   ],
   imports: [
-    IonicPageModule.forChild(WalletGenerateEntropyPage),
+    IonicPageModule.forChild(GenerateEntropyPage),
     TranslateModule,
     ComponentsModule,
   ],
 })
-export class WalletGenerateEntropyPageModule {}
+export class GenerateEntropyPageModule {}

@@ -305,7 +305,7 @@ export class WalletDashboardPage {
   }
 
   private getPassphrases(message?: string) {
-    let msg = message || 'WALLET_DASHBOARD_PAGE.TYPE_PIN_SIGN_TRANSACTION_MESSAGE';
+    let msg = message || 'PIN_CODE.TYPE_PIN_SIGN_TRANSACTION';
     let modal = this._modalCtrl.create('PinCodePage', {
       message: msg,
       outputPassword: true,

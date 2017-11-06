@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
 
 import { Clipboard } from '@ionic-native/clipboard';
 import bip39 from 'bip39';
@@ -23,7 +23,8 @@ export class RegisterSecondPassphrasePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public viewCtrl: ViewController,
+    private viewCtrl: ViewController,
+    private modalCtrl: ModalController,
     private clipboard: Clipboard,
   ) {
     this.fee = this.navParams.get('fee');
@@ -49,6 +50,33 @@ export class RegisterSecondPassphrasePage {
 
   validateRepassphrase() {
     this.isInvalidForm = this.passphrase !== this.repassphrase;
+  }
+
+  openGenerateEntropy() {
+    let modal = this.modalCtrl.create('GenerateEntropyPage');
+
+    modal.onDidDismiss((entropy) => {
+      if (!entropy) return;
+
+      let showModal = this.modalCtrl.create('WalletCreatePage', {
+        entropy,
+        disableShowDetails: true,
+        fee: this.fee,
+        message: 'WALLET_CREATE_PAGE.BACKUP_SECOND_PASSPHRASE',
+        title: 'SECOND_PASSPHRASE',
+      });
+
+      showModal.onDidDismiss((account) => {
+        if (!account) return;
+        this.isInvalidForm = false;
+        this.passphrase = account.mnemonic;
+        this.submitForm();
+      });
+
+      showModal.present();
+    });
+
+    modal.present();
   }
 
   generate() {

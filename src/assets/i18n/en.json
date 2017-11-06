@@ -30,6 +30,22 @@
   "REGISTER_DELEGATE_PAGE": {
     "NAME_ALREADY_EXISTS": "This name already exists"
   },
+  "GENERATE_ENTROPY_PAGE": {
+    "TITLE": "Generate Entropy",
+    "RANDOM_BYTES": "Swipe to generate random bytes"
+  },
+  "WALLET_CREATE_PAGE": {
+    "TITLE": "Create Wallet",
+    "BACKUP_PASSPHRASE": "Backup this passphrase securely, without these words we can not restore your wallet",
+    "BACKUP_SECOND_PASSPHRASE": "Backup this second passphrase securely, without these words we can not move your funds",
+    "PUBLIC_ADDRESS": "Public Address",
+    "SECRET_PASSPHRASE": "Secret Passphrase",
+    "PUBLIC_ADDRESS_SHARE": "Public Address (SHARE)",
+    "SECRET_PASSPHRASE_KEEP_SAFE": "Secret Passphrase (KEEP SAFE)",
+    "ENTROPY": "Entropy",
+    "SEED": "Seed",
+    "WIF": "WIF"
+  },
   "ADDRESS": "Address",
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
@@ -44,6 +60,7 @@
   "DELEGATES": "Delegates",
   "DELEGATE": "Delegate",
   "DELETE": "Delete",
+  "IMPORT": "Import",
   "GENERATE": "Generate",
   "GET_STARTED": "Get started",
   "NEXT": "Next",
@@ -55,5 +72,6 @@
   "RENAME": "Rename",
   "REGISTER_DELEGATE": "Register Delegate",
   "LABEL": "Label",
-  "USERNAME": "Username"
+  "USERNAME": "Username",
+  "PUBLIC_KEY": "Public Key"
 }

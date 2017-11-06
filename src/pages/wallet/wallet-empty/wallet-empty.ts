@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, Platform, ModalController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
+
+import { Wallet } from '@models/wallet';
+import { UserDataProvider } from '@providers/user-data/user-data';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -13,41 +16,43 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class WalletEmptyPage {
 
-  private _unsubscriber: Subject<void> = new Subject<void>();
+  private unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(
-    private _platform: Platform,
-    private _navCtrl: NavController,
-    private _navParams: NavParams,
-    private _actionSheetCtrl: ActionSheetController,
-    private _translateService: TranslateService,
+    public platform: Platform,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private actionSheetCtrl: ActionSheetController,
+    private translateService: TranslateService,
+    private modalCtrl: ModalController,
+    private userDataProvider: UserDataProvider,
   ) { }
 
   presentActionSheet() {
-    this._translateService.get([
-      'Generate',
-      'Import',
-      'Cancel',
-    ]).takeUntil(this._unsubscriber).subscribe((translation) => {
-      let actionSheet = this._actionSheetCtrl.create({
+    this.translateService.get([
+      'GENERATE',
+      'IMPORT',
+      'CANCEL',
+    ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
+      let actionSheet = this.actionSheetCtrl.create({
         buttons: [
           {
-            text: translation['Generate'],
+            text: translation.GENERATE,
             role: 'generate',
-            icon: !this._platform.is('ios') ? 'card' : null,
+            icon: !this.platform.is('ios') ? 'card' : null,
             handler: () => {
               this.openWalletGenerate();
             }
           }, {
-            text: translation['Import'],
+            text: translation.IMPORT,
             role: 'import',
-            icon: !this._platform.is('ios') ? 'sync' : null,
+            icon: !this.platform.is('ios') ? 'sync' : null,
             handler: () => {
               this.openWalletImport();
             }
           }, {
-            text: translation['Cancel'],
-            icon: !this._platform.is('ios') ? 'close' : null,
+            text: translation.CANCEL,
+            icon: !this.platform.is('ios') ? 'close' : null,
             role: 'cancel'
           }
         ]
@@ -58,20 +63,57 @@ export class WalletEmptyPage {
   }
 
   openWalletGenerate() {
-    this._navCtrl.push('WalletGenerateEntropyPage');
+    let modal = this.modalCtrl.create('GenerateEntropyPage');
+
+    modal.onDidDismiss((entropy) => {
+      if (!entropy) return;
+
+      let showModal = this.modalCtrl.create('WalletCreatePage', {
+        entropy,
+      });
+
+      showModal.onDidDismiss((account) => {
+        if (!account) return;
+
+        this.storeWallet(account);
+      });
+
+
+      showModal.present();
+    })
+
+    modal.present();
   }
 
   openWalletImport() {
-    this._navCtrl.push('WalletImportPage');
+    this.navCtrl.push('WalletImportPage');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad WalletEmptyPage');
+  private storeWallet(account) {
+    let wallet = new Wallet();
+    wallet.address = account.address;
+    wallet.publicKey = account.publicKey;
+
+    let modal = this.modalCtrl.create('PinCodePage', {
+      message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
+      outputPassword: true,
+      validatePassword: true
+    });
+
+    modal.onDidDismiss((password) => {
+      if (!password) return;
+
+      this.userDataProvider.addWallet(wallet, account.mnemonic, password).takeUntil(this.unsubscriber$).subscribe((response) => {
+        this.navCtrl.setRoot('ProfileSigninPage');
+      });
+    })
+
+    modal.present();
   }
 
   ngOnDestroy() {
-    this._unsubscriber.next();
-    this._unsubscriber.complete();
+    this.unsubscriber$.next();
+    this.unsubscriber$.complete();
   }
 
 }

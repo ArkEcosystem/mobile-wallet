@@ -2,6 +2,22 @@ page-wallet-create {
   .segment-button {
     color: white!important;
   }
+  .password-message {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .password-img {
+    max-width: 30%;
+    height: auto;
+    margin: 0 auto 1em auto;
+  }
+  .note-message-default {
+    h4 {
+      line-height: 1.5em;
+      padding: 0;
+      margin: 0;
+    }
+  }
   ion-content {
     .account-keys {
       background: url('../assets/img/wallet/balance-wallet-bg.png') #080e20 repeat;

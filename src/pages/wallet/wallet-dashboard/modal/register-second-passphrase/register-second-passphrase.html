@@ -36,7 +36,7 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <button ion-button block outline *ngIf="!isBip39" (click)="generate()">{{ 'GENERATE' | translate }}</button>
+              <button ion-button block outline *ngIf="!isBip39" (click)="openGenerateEntropy()">{{ 'GENERATE' | translate }}</button>
               <button ion-button block outline *ngIf="isBip39" (click)="copyPassphrase()">{{ 'COPY' | translate }}</button>
             </ion-col>
             <ion-col>
