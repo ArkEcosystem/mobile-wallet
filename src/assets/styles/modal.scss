@@ -3,6 +3,18 @@ ion-modal.inset-modal {
   background-color: rgba(0, 0, 0, .5) !important;
   transition: opacity .25s ease-in-out;
   padding: 20vh 10vw;
+
+  .show-page {
+    border-radius: 10px!important;
+    overflow: hidden!important;
+  }
+
+  ion-header {
+    border-top-left-radius: 10px!important;
+    border-top-right-radius: 10px!important;
+    overflow: hidden!important;
+  }
+
 }
 
 ion-modal.inset-modal-large {
@@ -10,4 +22,15 @@ ion-modal.inset-modal-large {
   background-color: rgba(0, 0, 0, .5) !important;
   transition: opacity .25s ease-in-out;
   padding: 10vh 5vw;
+
+  .show-page {
+    border-radius: 10px!important;
+    overflow: hidden!important;
+  }
+
+  ion-header {
+    border-top-left-radius: 10px!important;
+    border-top-right-radius: 10px!important;
+    overflow: hidden!important;
+  }
 }

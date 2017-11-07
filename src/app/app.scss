@@ -115,6 +115,11 @@ ion-app .scroll-content {
     padding: .5em 0;
     user-select: auto!important;
     border-bottom: 1px solid #eee!important;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
     p {
       color: #495b71;
       font-weight: 600;

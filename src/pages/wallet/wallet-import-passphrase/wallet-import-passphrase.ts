@@ -43,7 +43,7 @@ export class WalletImportPassphrasePage {
       .get({ address })
       .finally(() => {
         let modal = this.modalCtrl.create('PinCodePage', {
-          message: 'IMPORT_WALLET.TYPE_PIN_MESSAGE',
+          message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
           outputPassword: true,
           validatePassword: true,
         });
@@ -71,6 +71,7 @@ export class WalletImportPassphrasePage {
           newWallet.publicKey = publicKey.toHex();
         }
       }, () => {
+        // Empty wallet
         newWallet.address = address;
         newWallet.publicKey = publicKey.toHex();
       });

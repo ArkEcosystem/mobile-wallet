@@ -1,7 +1,7 @@
 import { Transaction as TransactionModel, TransactionType } from 'ark-ts/model';
 import arkConfig from 'ark-ts/config';
 
-import { MarketCurrency, MarketHistory } from '@models/market';
+import { MarketCurrency, MarketHistory, MarketTicker } from '@models/market';
 
 const TX_TYPES = {
   0: 'Sent',
@@ -40,10 +40,10 @@ export class Transaction extends TransactionModel {
     return amount;
   }
 
-  getAmountEquivalent(history: MarketHistory, marketCurrency: MarketCurrency): number {
-    if (!history || !marketCurrency) return 0;
+  getAmountEquivalent(marketCurrency: MarketCurrency, market: MarketTicker | MarketHistory): number {
+    if (!market || !marketCurrency) return 0;
 
-    let ticker = history.findDate(this.date);
+    let ticker = market instanceof MarketTicker ? market : market.findDate(this.date);
     let currency = ticker ? ticker.getCurrency({ code: marketCurrency.code }) : null;
     let price = currency ? currency.price : 0;
 

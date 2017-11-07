@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar no-border-bottom [color]="showDetails ? 'dark' : ''" [class.dark-navbar]="showDetails">
-    <ion-title>{{ title || 'WALLET_CREATE_PAGE.TITLE' | translate }}</ion-title>
+    <h6 text-center class="no-padding no-margin">{{ title || 'WALLET_CREATE_PAGE.TITLE' | translate }}</h6>
     <ion-buttons end>
       <button ion-button icon-only (click)="toggleShowDetails()" *ngIf="!disableShowDetails">
         <ion-icon [name]="showDetails ? 'eye-off' : 'eye'"></ion-icon>

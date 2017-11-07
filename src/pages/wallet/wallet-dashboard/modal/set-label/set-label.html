@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'LABEL' | translate }}</ion-title>
+    <h6 text-center class="no-padding no-margin">{{ 'LABEL' | translate }}</h6>
     <ion-buttons end>
       <button ion-button icon-only (click)="closeModal()">
         <ion-icon name="close"></ion-icon>
@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content padding class="column-mode">
-  <ion-grid>
+  <ion-grid class="full-height">
     <ion-row>
       <ion-col text-center align-self-center>
         <form #labelForm="ngForm">
@@ -23,10 +23,9 @@
         </form>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col text-center align-self-end>
-        <button ion-button block class="button-continue" color="primary" [disabled]="!labelForm.form.valid" (click)="submitForm()">{{ 'RENAME' | translate }}</button>
-      </ion-col>
-    </ion-row>
   </ion-grid>
 </ion-content>
+
+<ion-footer padding>
+  <button ion-button class="button-continue" color="primary" [disabled]="!labelForm.form.valid" (click)="submitForm()">{{ 'RENAME' | translate }}</button>
+</ion-footer>

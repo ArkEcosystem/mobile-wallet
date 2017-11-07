@@ -16,7 +16,7 @@ import lodash from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
-import { Wallet } from '@models/wallet';
+import { Wallet, Profile } from '@models/model';
 import * as arkts from 'ark-ts';
 
 @Component({
@@ -101,21 +101,27 @@ export class MyApp {
 
   // Verify if any account registered is a delegate
   private _onUpdateDelegates(delegates: arkts.Delegate[]) {
-    lodash
-      .flatMap(this.userDataProvider.profiles, (item) => {
-        // Filter only non-delegates
-        return lodash.filter(lodash.values(item['wallets']), { isDelegate: false });
-      })
-      .forEach((wallet: Wallet) => {
-        // Search for a non-delegate in the delegates list
-        let find = lodash.find(delegates, { address: wallet['address'] });
-        if (find) {
-          wallet.isDelegate = true;
-          wallet.username = find.username;
+    lodash.flatMap(this.userDataProvider.profiles, (profile: Profile) => {
+      let wallets = lodash.values(profile.wallets);
+      return lodash.filter(wallets, { isDelegate: false });
+    }).forEach((wallet: any) => {
+      console.log(wallet);
+    });
+    // let map = lodash
+    //   .flatMap(this.userDataProvider.profiles, (item: Profile) => {
+    //     // Filter only non-delegates
+    //     return lodash.filter(lodash.values(item['wallets']), { isDelegate: false });
+    //   });
 
-          this.userDataProvider.saveWallet(wallet, undefined, true);
-        }
-      });
+    // for (let wallet of map) {
+    //   let find = lodash.find(delegates, { address: wallet['address'] });
+    //   if (find) {
+    //     wallet['isDelegate'] = true;
+    //     wallet['username'] = find.username;
+
+    //     this.userDataProvider.saveWallet(wallet, undefined, true);
+    //   }
+    // }
   }
 
   // Verify if new wallet is a delegate

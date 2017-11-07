@@ -57,8 +57,8 @@ export class WalletDashboardPage {
   ) {
     this.address = this._navParams.get('address');
 
-    this._marketDataProvider.historyObserver.takeUntil(this._unsubscriber).subscribe((history) => this.marketHistory = history);
-    this._marketDataProvider.tickerObserver.takeUntil(this._unsubscriber).subscribe((ticker) => {
+    this._marketDataProvider.onUpdateHistory$.takeUntil(this._unsubscriber).subscribe((history) => this.marketHistory = history);
+    this._marketDataProvider.onUpdateTicker$.takeUntil(this._unsubscriber).subscribe((ticker) => {
       this.ticker = ticker;
       // TODO: Get currency from settings
       if (ticker) this.marketCurrency = ticker.getCurrency({ code: 'usd' });
@@ -191,7 +191,7 @@ export class WalletDashboardPage {
     this._navCtrl.push('TransactionShowPage', {
       transaction: tx,
       symbol: this.network.symbol,
-      equivalentAmount: tx.getAmountEquivalent(this.marketHistory, this.marketCurrency),
+      equivalentAmount: tx.getAmountEquivalent(this.marketCurrency, this.marketHistory),
       equivalentSymbol: this.marketCurrency.symbol,
     });
   }
@@ -231,13 +231,15 @@ export class WalletDashboardPage {
         let transaction = <TransactionDelegate>{
           passphrase: passphrases['passphrase'],
           secondPassphrase: passphrases['secondPassphrase'],
-          username: name
+          username: name,
+          publicKey: this.wallet.publicKey,
         }
 
         this._arkApiProvider.api.transaction.createDelegate(transaction)
           .takeUntil(this._unsubscriber)
-          .do((data) => this.confirmTransaction(data))
-          .subscribe();
+          .subscribe((data) => {
+            this.confirmTransaction(data, passphrases);
+          });
 
       }, () => {
         // TODO: Toast error
@@ -258,13 +260,13 @@ export class WalletDashboardPage {
     modal.onDidDismiss((newSecondPassphrase) => {
       if (lodash.isEmpty(newSecondPassphrase)) return;
 
-      // TODO: Get pin code
       this.getPassphrases().then((passphrases) => {
         this._arkApiProvider.api.transaction
           .createSignature(passphrases['passphrase'], newSecondPassphrase)
           .takeUntil(this._unsubscriber)
-          .do((data) => this.confirmTransaction(data))
-          .subscribe();
+          .subscribe((data) => {
+            this.confirmTransaction(data, passphrases);
+          });
 
       }, () => {
         // TODO: Toast error
@@ -299,9 +301,15 @@ export class WalletDashboardPage {
     console.log('delete');
   }
 
-  private confirmTransaction(transaction: Transaction) {
+  private confirmTransaction(transaction: Transaction, passphrases: any) {
     // TODO: Confirmation page
-    console.log(transaction);
+    let modal = this._modalCtrl.create('TransactionConfirmPage', {
+      transaction,
+      passphrases,
+      address: this.address,
+    }, { cssClass: 'inset-modal', enableBackdropDismiss: true });
+
+    modal.present();
   }
 
   private getPassphrases(message?: string) {

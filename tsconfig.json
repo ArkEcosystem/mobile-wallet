@@ -10,7 +10,8 @@
       "@providers/*": ["src/providers/*"],
       "@models/*": ["src/models/*"],
       "@pipes/*": ["src/pipes/*"],
-      "@app/*": ["src/app/*"]
+      "@app/*": ["src/app/*"],
+      "@root/*": ["./"]
     },
     "lib": [
       "dom",

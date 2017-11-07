@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 
@@ -13,42 +13,38 @@ import * as constants from '@app/app.constants';
 @Injectable()
 export class MarketDataProvider {
 
-  public historyObserver: BehaviorSubject<model.MarketHistory> = new BehaviorSubject(null);
-  public tickerObserver: BehaviorSubject<model.MarketTicker> = new BehaviorSubject(null);
+  public onUpdateHistory$: Subject<model.MarketHistory> = new Subject<model.MarketHistory>();
+  public onUpdateTicker$: Subject<model.MarketTicker> = new Subject<model.MarketTicker>();
 
-  private _unsubscriber$: Subject<void> = new Subject<void>();
-
-  constructor(private _http: Http, private _storageProvider: StorageProvider) {
+  constructor(
+    private http: Http,
+    private storageProvider: StorageProvider,
+  ) {
     this.refreshPrice();
-    this._fetchHistory().takeUntil(this._unsubscriber$).subscribe((history) => this.historyObserver.next(history));
+    this.fetchHistory().subscribe((history) => this.onUpdateHistory$.next(history));
   }
 
   public refreshPrice(): void {
-    this._fetchTicker().takeUntil(this._unsubscriber$).subscribe((ticker) => {
-      this.tickerObserver.next(ticker);
+    this.fetchTicker().subscribe((ticker) => {
+      this.onUpdateTicker$.next(ticker);
     });
   }
 
-  private _fetchTicker(): Observable<model.MarketTicker> {
+  private fetchTicker(): Observable<model.MarketTicker> {
     const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_TICKER_ENDPOINT}`;
 
-    return this._http.get(url).map((response) => {
+    return this.http.get(url).map((response) => {
       let json = response.json();
       return new model.MarketTicker().deserialize(json);
     });
   }
 
-  private _fetchHistory() {
+  private fetchHistory() {
     const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
-    return this._http.get(url).map((response) => {
+    return this.http.get(url).map((response) => {
       let json = response.json();
       return new model.MarketHistory().deserialize(json.history);
     });
-  }
-
-  ngOnDestroy() {
-    this._unsubscriber$.next();
-    this._unsubscriber$.complete();
   }
 
 }

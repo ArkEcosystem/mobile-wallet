@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'SECOND_PASSPHRASE' | translate }}</ion-title>
+    <h6 text-center class="no-padding no-margin">{{ 'SECOND_PASSPHRASE' | translate }}</h6>
     <ion-buttons end>
       <button ion-button icon-only (click)="closeModal()">
         <ion-icon name="close"></ion-icon>
@@ -53,7 +53,7 @@
   <ion-grid no-padding>
     <ion-row>
       <ion-col text-center no-padding>
-        <h6>{{ 'Please backup securely the second passphrase, this client does NOT store it and thus cannot recover your it.' | translate }}</h6>
+        <p>{{ 'WALLET_CREATE_PAGE.BACKUP_SECOND_PASSPHRASE' | translate }}</p>
       </ion-col>
     </ion-row>
   </ion-grid>

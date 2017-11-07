@@ -46,6 +46,13 @@
     "SEED": "Seed",
     "WIF": "WIF"
   },
+  "TRANSACTION": {
+    "AMOUNT": "Amount",
+    "FEE": "Fee",
+    "SMART_BRIDGE": "Smart Bridge",
+    "RECIPIENT": "Recipient",
+    "FROM": "From"
+  },
   "ADDRESS": "Address",
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
@@ -67,11 +74,13 @@
   "SIGN_IN": "Sign in",
   "SEARCH": "Search",
   "SKIP": "Skip",
+  "SEND": "Send",
   "STATUS": "Status",
   "SECOND_PASSPHRASE": "Second Passphrase",
   "RENAME": "Rename",
   "REGISTER_DELEGATE": "Register Delegate",
   "LABEL": "Label",
   "USERNAME": "Username",
-  "PUBLIC_KEY": "Public Key"
+  "PUBLIC_KEY": "Public Key",
+  "TYPE": "Type"
 }

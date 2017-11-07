@@ -1,0 +1,70 @@
+<ion-content>
+  <ion-grid class="no-padding">
+    <ion-row>
+      <ion-col text-center padding align-self-end class="header-toolbar">
+        <h3>{{ transaction?.getAmount() | unitsSatoshi | number: '1.0-2' }} {{ currentNetwork?.symbol }}</h3>
+        <p>{{ marketCurrency?.symbol }}{{ transaction?.getAmountEquivalent(marketCurrency, ticker) | unitsSatoshi | number: '1.0-2' }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col padding>
+        <ion-list class="list-selectable">
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p>{{ 'TRANSACTION.FROM' | translate }}</p>
+              <h6 ion-content>{{ address }}</h6>
+            </ion-label>
+          </ion-item>
+
+          <ion-item no-lines text-wrap *ngIf="transaction?.type == 0">
+            <ion-label stacked>
+              <p>{{ 'TRANSACTION.RECIPIENT' | translate }}</p>
+              <h6 ion-content>{{ transaction?.recipientId }}</h6>
+            </ion-label>
+          </ion-item>
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p>{{ 'TYPE' | translate }}</p>
+              <h6 ion-content>{{ transaction?.getTypeLabel() }}</h6>
+            </ion-label>
+          </ion-item>
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p>{{ 'TRANSACTION.AMOUNT' | translate }}</p>
+              <h6 ion-content>{{ transaction?.amount | unitsSatoshi }} {{ currentNetwork?.symbol }}</h6>
+            </ion-label>
+          </ion-item>
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p>{{ 'TRANSACTION.FEE' | translate }}</p>
+              <h6 ion-content>{{ transaction?.fee | unitsSatoshi }} {{ currentNetwork?.symbol }}</h6>
+            </ion-label>
+          </ion-item>
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>
+              <p>{{ 'TRANSACTION.SMART_BRIDGE' | translate }}</p>
+              <h6 ion-content>{{ transaction?.vendorField || 'N/A' }}</h6>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer text-center>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button block outline (click)="dismiss()">{{ 'CANCEL' | translate }}</button>
+      </ion-col>
+      <ion-col>
+        <button ion-button block color="primary" (click)="broadcast()">{{ 'SEND' | translate }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

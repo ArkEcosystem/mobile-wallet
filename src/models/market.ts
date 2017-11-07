@@ -17,6 +17,11 @@ export const CURRENCIES_LIST: Currency[] = [
     name: "Bitcoin",
     symbol: "Ƀ",
   },
+  {
+    code: "brl",
+    name: "Real",
+    symbol: "R$",
+  }
 ];
 
 export class MarketCurrency implements Currency {
@@ -63,7 +68,7 @@ export class MarketTicker {
     return self;
   }
 
-  getCurrency(query: Currency) {
+  getCurrency(query: any): MarketCurrency {
     return lodash.find(this.market, query);
   }
 

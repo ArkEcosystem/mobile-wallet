@@ -29,7 +29,7 @@ export class SettingsDataProvider {
   }
 
   constructor(private _storageProvider: StorageProvider) {
-    this._load().subscribe((data) => {
+    this.load().subscribe((data) => {
       this._settings = data;
       this.save();
     });
@@ -37,7 +37,7 @@ export class SettingsDataProvider {
 
   public get settings() {
     if (lodash.isEmpty(this._settings)) {
-      return this._load();
+      return this.load();
     } else {
       return Observable.of(this._settings);
     }
@@ -61,7 +61,7 @@ export class SettingsDataProvider {
     this._storageProvider.clear();
   }
 
-  private _load(): Observable<any> {
+  private load(): Observable<UserSettings> {
     return Observable.create((observer) => {
       this._storageProvider.getObject(constants.STORAGE_SETTINGS).subscribe((response) => {
         let data = response;
