@@ -1,14 +1,14 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'Sign In' | translate }}</ion-title>
+    <ion-title>{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content class="column-mode">
   <ion-grid>
-    <empty-list message="Click on the button below to create a profile" (onClickButton)="openProfileCreate()" *ngIf="isEmpty()"></empty-list>
+    <empty-list message="PROFILES_PAGE.ADD_PROFILE_TEXT" (onClickButton)="openProfileCreate()" *ngIf="isEmpty()"></empty-list>
 
     <ion-row *ngIf="!isEmpty()">
       <ion-col>
@@ -25,7 +25,7 @@
             <ion-item-options side="right">
               <button ion-button color="danger" (click)="showDeleteConfirm(id)">
                 <ion-icon name="trash"></ion-icon>
-                {{ 'Delete' | translate }}
+                {{ 'DELETE' | translate }}
               </button>
             </ion-item-options>
           </ion-item-sliding>

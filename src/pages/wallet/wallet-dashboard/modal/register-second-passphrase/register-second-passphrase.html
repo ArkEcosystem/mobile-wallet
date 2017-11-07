@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <h6 text-center class="no-padding no-margin">{{ 'SECOND_PASSPHRASE' | translate }}</h6>
+    <h6 text-center class="no-padding no-margin">{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</h6>
     <ion-buttons end>
       <button ion-button icon-only (click)="closeModal()">
         <ion-icon name="close"></ion-icon>
@@ -17,18 +17,14 @@
       <ion-col *ngIf="!isBip39">
         <form padding #registerSecondPassphraseForm="ngForm">
           <ion-item>
-            <ion-label stacked>{{ 'Type your passphrase' | translate }}:</ion-label>
+            <ion-label stacked>{{ 'WALLETS_PAGE.TYPE_YOUR_PASSPHRASE' | translate }}:</ion-label>
             <ion-input type="text" name="passphrase" [(ngModel)]="passphrase" (input)="validatePassphrase()" required></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label stacked>{{ 'Validate passphrase' | translate }}:</ion-label>
+            <ion-label stacked>{{ 'WALLETS_PAGE.VALIDATE_PASSPHRASE' | translate }}:</ion-label>
             <ion-input type="text" name="repassphrase" [disabled]="isInvalidPassphrase" [(ngModel)]="repassphrase" (input)="validateRepassphrase()" required></ion-input>
           </ion-item>
         </form>
-      </ion-col>
-      <ion-col text-center *ngIf="isBip39">
-        <p>{{ 'Your passphrase' | translate }}:</p>
-        <h4 class="box-passphrase">{{ passphrase }}</h4>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -53,7 +49,7 @@
   <ion-grid no-padding>
     <ion-row>
       <ion-col text-center no-padding>
-        <p>{{ 'WALLET_CREATE_PAGE.BACKUP_SECOND_PASSPHRASE' | translate }}</p>
+        <p>{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE' | translate }}</p>
       </ion-col>
     </ion-row>
   </ion-grid>

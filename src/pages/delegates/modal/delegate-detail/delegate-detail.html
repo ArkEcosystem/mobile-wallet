@@ -7,7 +7,7 @@
           <div class="qrcode-box">
             <qr-code [value]="qraddress" size="120"></qr-code>
           </div>
-          <p>{{ 'ADDRESS' | translate }}</p>
+          <p>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</p>
           <h5 class="address" (click)="copyAddress()">{{ delegate?.address | truncateMiddle: 20 }}</h5>
         </ion-toolbar>
       </ion-col>

@@ -4,7 +4,7 @@
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ 'Contacts' | translate }}</ion-title>
+    <ion-title>{{ 'CONTACTS_PAGE.CONTACTS' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,7 +15,7 @@
   </ion-fab>
 
   <ion-grid *ngIf="profile">
-    <empty-list message="Click on the button below to add a contact" (onClickButton)="openCreatePage()" *ngIf="isEmpty()"></empty-list>
+    <empty-list message="CONTACTS_PAGE.ADD_CONTACT_TEXT" (onClickButton)="openCreatePage()" *ngIf="isEmpty()"></empty-list>
 
     <ion-row *ngIf="!isEmpty()">
       <ion-col>
@@ -32,11 +32,11 @@
             <ion-item-options side="right">
               <button ion-button color="primary" (click)="openSendPage(address)">
                 <ion-icon name="send"></ion-icon>
-                {{ 'Send' | translate }} {{ network?.token }}
+                {{ 'TRANSACTIONS_PAGE.SEND' | translate }} {{ network?.token }}
               </button>
               <button ion-button color="danger" (click)="showDeleteConfirm(address)">
                 <ion-icon name="trash"></ion-icon>
-                {{ 'Delete' | translate }}
+                {{ 'DELETE' | translate }}
               </button>
             </ion-item-options>
           </ion-item-sliding>

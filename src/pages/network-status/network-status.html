@@ -17,7 +17,7 @@
 
           <ion-item>
             <ion-label stacked>
-              <p ion-text>{{ 'Peer' | translate }}</p>
+              <p ion-text>{{ 'NETWORKS_PAGE.PEER' | translate }}</p>
               <h4 item-content class="content">
                 {{ getPeerUrl() }}
               </h4>
@@ -26,21 +26,21 @@
 
           <ion-item>
             <ion-label stacked>
-              <p ion-text>{{ 'Delay' | translate }}</p>
+              <p ion-text>{{ 'NETWORKS_PAGE.DELAY' | translate }}</p>
               <h4 item-content class="content">{{ currentPeer?.delay }}</h4>
             </ion-label>
           </ion-item>
 
           <ion-item>
             <ion-label stacked>
-              <p ion-text>{{ 'Height' | translate }}</p>
+              <p ion-text>{{ 'NETWORKS_PAGE.HEIGHT' | translate }}</p>
               <h4 item-content>{{ currentPeer?.height }}</h4>
             </ion-label>
           </ion-item>
 
           <ion-item>
             <ion-label stacked>
-              <p ion-text>{{ 'Status' | translate }}</p>
+              <p ion-text>{{ 'STATUS' | translate }}</p>
               <h4 item-content>{{ currentPeer?.status }}</h4>
             </ion-label>
           </ion-item>
@@ -50,7 +50,7 @@
 
     <ion-row>
       <ion-col text-center align-self-end>
-        <button class="button-continue" ion-button (click)="changePeer()">{{ 'Change Peer' | translate }}</button>
+        <button class="button-continue" ion-button (click)="changePeer()">{{ 'NETWORKS_PAGE.CHANGE_PEER' | translate }}</button>
       </ion-col>
     </ion-row>
   </ion-grid>

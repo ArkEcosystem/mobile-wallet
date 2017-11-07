@@ -4,7 +4,7 @@
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ 'Settings' | translate }}</ion-title>
+    <ion-title>{{ 'SETTINGS_PAGE.SETTINGS' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -12,11 +12,11 @@
 <ion-content *ngIf="availableOptions && currentSettings">
 
   <ion-item-group>
-    <ion-item-divider color="light">{{ 'Internationalization' | translate }}</ion-item-divider>
+    <ion-item-divider color="light">{{ 'SETTINGS_PAGE.INTERNATIONALIZATION' | translate }}</ion-item-divider>
     <ion-item>
       <ion-icon name="globe" item-start></ion-icon>
-      <ion-label>{{ 'Language' | translate }}</ion-label>
-      <ion-select [(ngModel)]="currentSettings.language" (ngModelChange)="onUpdate()" cancelText="{{ 'Cancel' | translate }}">
+      <ion-label>{{ 'SETTINGS_PAGE.LANGUAGE' | translate }}</ion-label>
+      <ion-select [(ngModel)]="currentSettings.language" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
         <ion-option *ngFor="let item of objectKeys(availableOptions?.languages)" [value]="item">
           {{ availableOptions?.languages[item] }}
         </ion-option>
@@ -25,8 +25,8 @@
 
     <ion-item>
       <ion-icon name="cash" item-start></ion-icon>
-      <ion-label>{{ 'Currency' | translate }}</ion-label>
-      <ion-select [(ngModel)]="currentSettings.currency" (ngModelChange)="onUpdate()" cancelText="{{ 'Cancel' | translate }}">
+      <ion-label>{{ 'SETTINGS_PAGE.CURRENCY' | translate }}</ion-label>
+      <ion-select [(ngModel)]="currentSettings.currency" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
         <ion-option *ngFor="let item of objectKeys(availableOptions?.currencies)" [value]="item">
           {{ item | uppercase }}
         </ion-option>
@@ -35,31 +35,31 @@
   </ion-item-group>
 
   <ion-item-group>
-    <ion-item-divider color="light">{{ 'Security' | translate }}</ion-item-divider>
+    <ion-item-divider color="light">{{ 'SETTINGS_PAGE.SECURITY' | translate }}</ion-item-divider>
     <button ion-item (click)="openChangePinPage()">
       <ion-icon name="lock" item-start></ion-icon>
-      {{ 'Change PIN' | translate }}
+      {{ 'SETTINGS_PAGE.CHANGE_PIN' | translate }}
     </button>
     <button ion-item (click)="openWalletBackupPage()">
       <ion-icon name="briefcase" item-start></ion-icon>
-      {{ 'Wallet Backup' | translate }}
+      {{ 'SETTINGS_PAGE.WALLET_BACKUP' | translate }}
     </button>
   </ion-item-group>
 
   <ion-item-group>
-    <ion-item-divider color="light">{{ 'Appearance' | translate }}</ion-item-divider>
+    <ion-item-divider color="light">{{ 'SETTINGS_PAGE.APPEARANCE' | translate }}</ion-item-divider>
     <ion-item ion-item>
       <ion-icon name="moon" item-start></ion-icon>
-      <ion-label>{{ 'Dark Mode' | translate }}</ion-label>
+      <ion-label>{{ 'SETTINGS_PAGE.DARK_MODE' | translate }}</ion-label>
       <ion-toggle disabled checked="false"></ion-toggle>
     </ion-item>
   </ion-item-group>
 
   <ion-item-group>
-    <ion-item-divider color="light">{{ 'Application' | translate }}</ion-item-divider>
+    <ion-item-divider color="light">{{ 'SETTINGS_PAGE.APPLICATION' | translate }}</ion-item-divider>
     <button ion-item (click)="confirmClearData()">
       <ion-icon name="trash" item-start></ion-icon>
-      {{ 'Clear Data' | translate }}
+      {{ 'SETTINGS_PAGE.CLEAR_DATA' | translate }}
     </button>
   </ion-item-group>
 

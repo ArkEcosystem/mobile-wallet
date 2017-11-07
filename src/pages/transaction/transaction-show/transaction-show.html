@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'Transaction' | translate }}</ion-title>
+    <ion-title>{{ 'TRANSACTIONS_PAGE.TRANSACTION' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -23,7 +23,7 @@
         <ion-list class="list-selectable">
           <ion-item no-lines text-wrap>
             <ion-label stacked>
-              <p ion-text>{{ 'ID' | translate }}</p>
+              <p ion-text>{{ 'TRANSACTIONS_PAGE.ID' | translate }}</p>
               <h4 item-content class="content">
                 {{ transaction?.id }}
               </h4>
@@ -31,7 +31,7 @@
           </ion-item>
           <ion-item no-lines text-wrap>
             <ion-label stacked>
-              <p ion-text>{{ 'Confirmations' | translate }}</p>
+              <p ion-text>{{ 'TRANSACTIONS_PAGE.CONFIRMATIONS' | translate }}</p>
               <h4 item-content class="content">
                 {{ transaction?.confirmations }}
               </h4>
@@ -39,7 +39,7 @@
           </ion-item>
           <ion-item no-lines text-wrap>
             <ion-label stacked>
-              <p ion-text>{{ 'Date' | translate}}</p>
+              <p ion-text>{{ 'DATE' | translate}}</p>
               <h4 item-content class="content">
                 {{ transaction?.getTimestamp() | date: 'dd.MM.yy | hh:mm a' }}
               </h4>
@@ -47,7 +47,7 @@
           </ion-item>
           <ion-item no-lines text-wrap>
             <ion-label stacked>
-              <p ion-text>{{ 'From' | translate }}</p>
+              <p ion-text>{{ 'TRANSACTIONS_PAGE.FROM' | translate }}</p>
               <h4 item-content class="content">
                 {{ transaction?.senderId | accountLabel }}
               </h4>
@@ -55,7 +55,7 @@
           </ion-item>
           <ion-item *ngIf="transaction?.recipientId" no-lines text-wrap>
             <ion-label stacked>
-              <p ion-text>{{ 'To' | translate }}</p>
+              <p ion-text>{{ 'TRANSACTIONS_PAGE.TO' | translate }}</p>
               <h4 item-content class="content">
                 {{ transaction?.recipientId | accountLabel }}
               </h4>
@@ -63,7 +63,7 @@
           </ion-item>
           <ion-item no-lines text-wrap>
             <ion-label stacked>
-              <p ion-text>{{ 'Smart Bridge' | translate }}</p>
+              <p ion-text>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</p>
               <h4 item-content class="content">
                 {{ transaction?.vendorField || 'N/A' }}
               </h4>

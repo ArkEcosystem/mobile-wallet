@@ -41,15 +41,15 @@ export class ProfileSigninPage {
   }
 
   showDeleteConfirm(profileId: string) {
-    this.translateService.get(['Are you sure?', 'Confirm', 'Cancel']).takeUntil(this._unsubscriber).subscribe((translation) => {
+    this.translateService.get(['ARE_YOU_SURE', 'CONFIRM', 'CANCEL']).takeUntil(this._unsubscriber).subscribe((translation) => {
       let confirm = this.alertCtrl.create({
-        title: translation['Are you sure?'],
+        title: translation.ARE_YOU_SURE,
         buttons: [
           {
-            text: translation['Cancel']
+            text: translation.CANCEL
           },
           {
-            text: translation['Confirm'],
+            text: translation.CONFIRM,
             handler: () => {
               this.delete(profileId);
             }

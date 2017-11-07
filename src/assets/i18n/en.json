@@ -1,5 +1,12 @@
 {
+  "CONTACTS_PAGE": {
+    "CONTACT": "Contact",
+    "CONTACTS": "Contacts",
+    "ADD_CONTACT_TEXT": "Click on the button below to add a contact"
+  },
   "DELEGATES_PAGE": {
+    "DELEGATES": "Delegates",
+    "DELEGATE": "Delegate",
     "RANK": "Rank",
     "ACTIVE": "Active",
     "STANDBY": "Standby",
@@ -12,9 +19,18 @@
     "NO_MATCHING_SEARCH": "No matching delegates",
     "VOTE": "Vote",
     "PRODUCED_BLOCKS": "Produced Blocks",
-    "MISSED_BLOCKS": "Missed Blocks"
+    "MISSED_BLOCKS": "Missed Blocks",
+    "REGISTER_DELEGATE": "Register Delegate",
+    "DELEGATE_NAME": "Delegate name",
+    "USERNAME_ALREADY_EXISTS": "This username already exists",
+    "NOTE_COST_TEXT": "Note that the cost of registering the delegate is"
   },
-  "INTRO": {
+  "LOGIN_PAGE": {
+    "ARK_WALLET": "ARK Wallet",
+    "SLOGAN": "Your personal internet banking",
+    "CREATE_PROFILE": "Create an profile"
+  },
+  "INTRO_PAGE": {
     "TEXT_1": "Simple 24/7 Mobile Access to your ARK tokens, Worldwide!",
     "TEXT_2": "Successfully completed security audits by world-class researches",
     "TEXT_3": "PIN Code is a that makes you forget all your worries about passwords"
@@ -27,15 +43,9 @@
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type your PIN to encrypt passphrase",
     "TYPE_PIN_SIGN_TRANSACTION": "Type your PIN to sign transaction"
   },
-  "REGISTER_DELEGATE_PAGE": {
-    "NAME_ALREADY_EXISTS": "This name already exists"
-  },
-  "GENERATE_ENTROPY_PAGE": {
-    "TITLE": "Generate Entropy",
-    "RANDOM_BYTES": "Swipe to generate random bytes"
-  },
-  "WALLET_CREATE_PAGE": {
-    "TITLE": "Create Wallet",
+  "WALLETS_PAGE": {
+    "WALLETS": "Wallets",
+    "CREATE_WALLET": "Create Wallet",
     "BACKUP_PASSPHRASE": "Backup this passphrase securely, without these words we can not restore your wallet",
     "BACKUP_SECOND_PASSPHRASE": "Backup this second passphrase securely, without these words we can not move your funds",
     "PUBLIC_ADDRESS": "Public Address",
@@ -43,44 +53,88 @@
     "PUBLIC_ADDRESS_SHARE": "Public Address (SHARE)",
     "SECRET_PASSPHRASE_KEEP_SAFE": "Secret Passphrase (KEEP SAFE)",
     "ENTROPY": "Entropy",
+    "GENERATE_ENTROPY": "Generate Entropy",
+    "ENTROPY_RANDOM_BYTES": "Swipe to generate random bytes",
     "SEED": "Seed",
-    "WIF": "WIF"
+    "WIF": "WIF",
+    "NO_TRANSACTIONS": "No transactions available",
+    "ADDRESS": "Address",
+    "LABEL": "Label",
+    "USERNAME": "Username",
+    "PUBLIC_KEY": "Public Key",
+    "SECOND_PASSPHRASE": "Second Passphrase",
+    "MY_WALLET": "My Wallet",
+    "IMPORT_WALLET": "Import Wallet",
+    "SCAN_QRCODE_TEXT": "Open your wallet on your PC and scan the QR code with your camera",
+    "SCAN_QRCODE": "Scan QR Code",
+    "ADD_WALLET_TEXT": "To import or create wallet click on the button bellow",
+    "ENTER_SECRET_PASSPHRASE": "Enter secret passphrase",
+    "REMOVE_WALLET": "Remove Wallet",
+    "TYPE_YOUR_PASSPHRASE": "Type your passphrase",
+    "VALIDATE_PASSPHRASE": "Validate passphrase",
+    "NEW_WALLET_NAME": "New wallet name"
   },
-  "TRANSACTION": {
+  "TRANSACTIONS_PAGE": {
+    "TRANSACTION": "Transaction",
     "AMOUNT": "Amount",
     "FEE": "Fee",
     "SMART_BRIDGE": "Smart Bridge",
     "RECIPIENT": "Recipient",
-    "FROM": "From"
+    "FROM": "From",
+    "TO": "To",
+    "CONFIRMATIONS": "Confirmations",
+    "SEND": "Send",
+    "RECEIVE": "Receive",
+    "FETCHING_TRANSACTIONS": "Fetching transactions"
   },
-  "ADDRESS": "Address",
+  "PROFILES_PAGE": {
+    "SIGN_IN": "Sign in",
+    "CREATE_PROFILE": "Create Profile",
+    "GET_STARTED": "Get started",
+    "ADD_PROFILE_TEXT": "Click on the button below to create a profile"
+  },
+  "NETWORKS_PAGE": {
+    "NETWORK_STATUS": "Network Status",
+    "PEER": "Peer",
+    "DELAY": "Delay",
+    "HEIGHT": "Height",
+    "CHANGE_PEER": "Change Peer",
+    "NETWORK_TYPE": "Network Type",
+    "CHOOSE_ONE": "Choose one of the network types"
+  },
+  "SETTINGS_PAGE": {
+    "SETTINGS": "Settings",
+    "LANGUAGE": "Language",
+    "CURRENCY": "Currency",
+    "SECURITY": "Security",
+    "CHANGE_PIN": "Change PIN",
+    "WALLET_BACKUP": "Wallet Backup",
+    "APPEARANCE": "Appearance",
+    "INTERNATIONALIZATION": "Internationalization",
+    "DARK_MODE": "Dark Mode",
+    "APPLICATION": "Application",
+    "ABOUT": "About",
+    "VERSION": "Version",
+    "CLEAR_DATA": "Clear Data",
+    "CLEAR_DATA_TEXT": "All your data, including created profiles, wallets and contacts will be removed from the app and reset to default."
+  },
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
+  "DATE": "Date",
+  "NAME": "Name",
   "CANCEL": "Cancel",
-  "CLEAR_DATA_CONFIRMATION_TEXT": "All your data, including created profiles, wallets and contacts will be removed from the app and reset to default.",
   "CONFIRM": "Confirm",
   "COPY": "Copy",
-  "CONFIRMATIONS": "Confirmations",
   "CREATE": "Create",
-  "CREATE_PROFILE_BUTTON": "Create an profile",
-  "CREATE_PROFILE_TITLE": "Create Profile",
-  "DELEGATES": "Delegates",
-  "DELEGATE": "Delegate",
   "DELETE": "Delete",
   "IMPORT": "Import",
   "GENERATE": "Generate",
-  "GET_STARTED": "Get started",
   "NEXT": "Next",
-  "SIGN_IN": "Sign in",
   "SEARCH": "Search",
   "SKIP": "Skip",
-  "SEND": "Send",
+  "SAVE": "Save",
   "STATUS": "Status",
-  "SECOND_PASSPHRASE": "Second Passphrase",
   "RENAME": "Rename",
-  "REGISTER_DELEGATE": "Register Delegate",
-  "LABEL": "Label",
-  "USERNAME": "Username",
-  "PUBLIC_KEY": "Public Key",
-  "TYPE": "Type"
+  "TYPE": "Type",
+  "EXIT": "Exit"
 }

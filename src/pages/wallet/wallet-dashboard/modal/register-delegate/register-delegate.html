@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <h6 text-center class="no-padding no-margin">{{ 'REGISTER_DELEGATE' | translate }}</h6>
+    <h6 text-center class="no-padding no-margin">{{ 'DELEGATES_PAGE.REGISTER_DELEGATE' | translate }}</h6>
     <ion-buttons end>
       <button ion-button icon-only (click)="closeModal()">
         <ion-icon name="close"></ion-icon>
@@ -17,18 +17,18 @@
       <ion-col align-self-center>
         <form #registerDelegateForm="ngForm">
           <ion-item>
-            <ion-label stacked>{{ 'Delegate name' | translate }}</ion-label>
+            <ion-label stacked>{{ 'DELEGATES_PAGE.DELEGATE_NAME' | translate }}</ion-label>
             <ion-input type="text" name="name" [(ngModel)]="name" maxlength="20" [pattern]="allowedDelegateNameChars" (input)="validateName()" required></ion-input>
           </ion-item>
           <ion-item class="no-border">
-            <p class="error-message" *ngIf="isExists">{{ 'REGISTER_DELEGATE_PAGE.NAME_ALREADY_EXISTS' | translate }}</p>
+            <p class="error-message" *ngIf="isExists">{{ 'DELEGATES_PAGE.USERNAME_ALREADY_EXISTS' | translate }}</p>
           </ion-item>
         </form>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-center align-self-center>
-        <button ion-button class="button-continue " color="primary" [disabled]="!registerDelegateForm.form.valid || isExists" (click)="submitForm()">{{ 'Create' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+        <button ion-button class="button-continue " color="primary" [disabled]="!registerDelegateForm.form.valid || isExists" (click)="submitForm()">{{ 'CREATE' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -38,7 +38,7 @@
   <ion-grid no-padding>
     <ion-row>
       <ion-col text-center no-padding>
-        <p>{{ 'Note that the cost of registering the delegate is' | translate }} {{ symbol }}{{ fee | unitsSatoshi }}!</p>
+        <p>{{ 'DELEGATES_PAGE.NOTE_COST_TEXT' | translate }} {{ symbol }}{{ fee | unitsSatoshi }}!</p>
       </ion-col>
     </ion-row>
   </ion-grid>

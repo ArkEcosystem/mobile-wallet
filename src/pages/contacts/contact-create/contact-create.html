@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'Contact' | translate }}</ion-title>
+    <ion-title>{{ 'CONTACTS_PAGE.CONTACT' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -9,12 +9,12 @@
 <ion-content padding>
   <form #createContactForm="ngForm">
     <ion-item>
-      <ion-label floating>{{ 'Name' | translate }}</ion-label>
+      <ion-label floating>{{ 'NAME' | translate }}</ion-label>
       <ion-input type="text" name="name" [(ngModel)]="contact.name" required></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label floating>{{ 'Address' | translate }}</ion-label>
+      <ion-label floating>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
       <ion-input type="text" name="address" [(ngModel)]="address" [disabled]="!isNew" (keyup)="validateAddress()" required></ion-input>
     </ion-item>
   </form>
@@ -22,6 +22,6 @@
 
 <ion-footer>
   <ion-toolbar>
-    <button ion-button block full large clear [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'Save' | translate }}</button>
+    <button ion-button block full large clear [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'SAVE' | translate }}</button>
   </ion-toolbar>
 </ion-footer>

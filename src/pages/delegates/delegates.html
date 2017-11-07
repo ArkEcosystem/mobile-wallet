@@ -5,7 +5,7 @@
       <ion-icon name="menu"></ion-icon>
     </button>
 
-    <ion-title *ngIf="!isSearch">{{ 'DELEGATES' | translate }}</ion-title>
+    <ion-title *ngIf="!isSearch">{{ 'DELEGATES_PAGE.DELEGATES' | translate }}</ion-title>
     <ion-searchbar *ngIf="isSearch" (ionInput)="onInputSearch($event)" [(ngModel)]="searchQuery.username" spellcheck="false" animated="true" placeholder="{{ 'SEARCH' | translate }}"></ion-searchbar>
 
     <ion-buttons end>
@@ -63,7 +63,7 @@
     <ion-grid>
       <ion-row align-items-center>
         <ion-col text-left><strong>{{ 'DELEGATES_PAGE.TOTAL_FORGED' | translate }}:</strong> {{ currentNetwork?.symbol }}{{ getTotalForged() | unitsSatoshi: true | number: 0.0-0 }}</ion-col>
-        <ion-col text-right><strong>{{ 'DELEGATES' | translate }}:</strong> {{ delegates?.length || 0 }}</ion-col>
+        <ion-col text-right><strong>{{ 'DELEGATES_PAGE.DELEGATES' | translate }}:</strong> {{ delegates?.length || 0 }}</ion-col>
       </ion-row>
     </ion-grid>
   </ion-toolbar>

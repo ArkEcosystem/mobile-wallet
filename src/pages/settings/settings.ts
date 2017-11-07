@@ -47,11 +47,11 @@ export class SettingsPage {
       'CANCEL',
       'CONFIRM',
       'ARE_YOU_SURE',
-      'CLEAR_DATA_CONFIRMATION_TEXT',
+      'CLEAR_DATA_TEXT',
     ]).takeUntil(this._unsubscriber$).subscribe((translation) => {
       let confirm = this._alertCtrl.create({
         title: translation.ARE_YOU_SURE,
-        message: translation.CLEAR_DATA_CONFIRMATION_TEXT,
+        message: translation.CLEAR_DATA_TEXT,
         buttons: [
           {
             text: translation.CANCEL

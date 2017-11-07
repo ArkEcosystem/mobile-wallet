@@ -3,14 +3,14 @@
     <ion-row>
       <ion-col text-center>
         <img src="./assets/img/login/logo-block.png">
-        <h1>ARK WALLET</h1>
-        <p>{{ 'Your personal internet banking' | translate }}.</p>
+        <h1>{{ 'LOGIN_PAGE.ARK_WALLET' | translate | uppercase }}</h1>
+        <p>{{ 'LOGIN_PAGE.SLOGAN' | translate }}</p>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col class="actions-col" text-center align-self-end>
-        <button class="button-continue" (click)="openProfileSignin()" ion-button>{{ 'SIGN_IN' | translate }}</button>
-        <button class="button-continue" (click)="openProfileCreate()" ion-button clear>{{ 'CREATE_PROFILE_BUTTON' | translate }}</button>
+        <button class="button-continue" (click)="openProfileSignin()" ion-button>{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</button>
+        <button class="button-continue" (click)="openProfileCreate()" ion-button clear>{{ 'LOGIN_PAGE.CREATE_PROFILE' | translate }}</button>
       </ion-col>
     </ion-row>
   </ion-grid>

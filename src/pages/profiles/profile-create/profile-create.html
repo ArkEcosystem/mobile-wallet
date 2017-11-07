@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ 'CREATE_PROFILE_TITLE' | translate }}</ion-title>
+    <ion-title>{{ 'PROFILES_PAGE.CREATE_PROFILE' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -9,17 +9,17 @@
 <ion-content padding>
   <form #createProfileForm="ngForm">
     <ion-item>
-      <ion-label floating>{{ 'Name' | translate }}</ion-label>
+      <ion-label floating>{{ 'NAME' | translate }}</ion-label>
       <ion-input type="text" name="name" [(ngModel)]="newProfile.name" required></ion-input>
     </ion-item>
     <ion-item class="network-types" no-lines>
-      <span>{{ 'Network Type' | translate }}</span>
-      <p>{{ 'Choose one of the network types' | translate }}.</p>
+      <span>{{ 'NETWORKS_PAGE.NETWORK_TYPE' | translate }}</span>
+      <p>{{ 'NETWORKS_PAGE.CHOOSE_ONE' | translate }}.</p>
 
       <ion-grid fixed class="button-group">
         <ion-row nowrap>
           <ion-col *ngFor="let id of networksIds">
-            <button ion-button block round [outline]="newProfile.networkId !== id" (click)="onSelectNetwork(id)" [color]="primary">{{ networks[id].name }}</button>
+            <button ion-button block round [outline]="newProfile.networkId !== id" (click)="onSelectNetwork(id)" color="primary">{{ networks[id].name }}</button>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -30,6 +30,6 @@
 
 <ion-footer>
   <ion-toolbar>
-    <button ion-button block full large clear [disabled]="!createProfileForm.form.valid" (click)="submitForm()">{{ 'Next' | translate }}</button>
+    <button ion-button block full large clear [disabled]="!createProfileForm.form.valid" (click)="submitForm()">{{ 'NEXT' | translate }}</button>
   </ion-toolbar>
 </ion-footer>

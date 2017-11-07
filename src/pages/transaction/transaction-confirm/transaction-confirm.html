@@ -11,14 +11,14 @@
         <ion-list class="list-selectable">
           <ion-item no-lines text-wrap>
             <ion-label stacked>
-              <p>{{ 'TRANSACTION.FROM' | translate }}</p>
+              <p>{{ 'TRANSACTIONS_PAGE.FROM' | translate }}</p>
               <h6 ion-content>{{ address }}</h6>
             </ion-label>
           </ion-item>
 
           <ion-item no-lines text-wrap *ngIf="transaction?.type == 0">
             <ion-label stacked>
-              <p>{{ 'TRANSACTION.RECIPIENT' | translate }}</p>
+              <p>{{ 'TRANSACTIONS_PAGE.RECIPIENT' | translate }}</p>
               <h6 ion-content>{{ transaction?.recipientId }}</h6>
             </ion-label>
           </ion-item>
@@ -32,21 +32,21 @@
 
           <ion-item no-lines text-wrap>
             <ion-label stacked>
-              <p>{{ 'TRANSACTION.AMOUNT' | translate }}</p>
+              <p>{{ 'TRANSACTIONS_PAGE.AMOUNT' | translate }}</p>
               <h6 ion-content>{{ transaction?.amount | unitsSatoshi }} {{ currentNetwork?.symbol }}</h6>
             </ion-label>
           </ion-item>
 
           <ion-item no-lines text-wrap>
             <ion-label stacked>
-              <p>{{ 'TRANSACTION.FEE' | translate }}</p>
+              <p>{{ 'TRANSACTIONS_PAGE.FEE' | translate }}</p>
               <h6 ion-content>{{ transaction?.fee | unitsSatoshi }} {{ currentNetwork?.symbol }}</h6>
             </ion-label>
           </ion-item>
 
           <ion-item no-lines text-wrap>
             <ion-label stacked>
-              <p>{{ 'TRANSACTION.SMART_BRIDGE' | translate }}</p>
+              <p>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</p>
               <h6 ion-content>{{ transaction?.vendorField || 'N/A' }}</h6>
             </ion-label>
           </ion-item>
@@ -63,7 +63,7 @@
         <button ion-button block outline (click)="dismiss()">{{ 'CANCEL' | translate }}</button>
       </ion-col>
       <ion-col>
-        <button ion-button block color="primary" (click)="broadcast()">{{ 'SEND' | translate }}</button>
+        <button ion-button block color="primary" (click)="broadcast()">{{ 'TRANSACTIONS_PAGE.SEND' | translate }}</button>
       </ion-col>
     </ion-row>
   </ion-grid>

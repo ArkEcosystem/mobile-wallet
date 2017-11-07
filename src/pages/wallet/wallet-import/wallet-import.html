@@ -11,13 +11,13 @@
     <ion-row>
       <ion-col text-center>
         <img src="./assets/img/wallet/qr-code.png">
-        <h5>{{ 'Open your wallet on your PC and scan the QR code with your camera.' | translate }}</h5>
+        <h5>{{ 'WALLETS_PAGE.SCAN_QRCODE_TEXT' | translate }}</h5>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-center align-self-end>
-        <button ion-button color="primary" (click)="scanQRCode()">{{ 'Scan QR code' }}</button>
-        <p>or type <a (click)="openWalletImportPassphrase()">Secret Passphrase</a></p>
+        <button ion-button color="primary" (click)="scanQRCode()">{{ 'WALLETS_PAGE.SCAN_QRCODE' | translate }}</button>
+        <p>or type <a (click)="openWalletImportPassphrase()">{{ 'WALLETS_PAGE.SECRET_PASSPHRASE' | translate }}</a></p>
       </ion-col>
     </ion-row>
   </ion-grid>

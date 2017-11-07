@@ -67,9 +67,15 @@ export class WalletDashboardPage {
   }
 
   presentWalletActionSheet() {
-    this._translateService.get(['Label', 'Register Delegate', 'Second Passphrase', 'Remove Wallet', 'Cancel']).takeUntil(this._unsubscriber).subscribe((translation) => {
+    this._translateService.get([
+      'WALLETS_PAGE.LABEL',
+      'DELEGATES_PAGE.REGISTER_DELEGATE',
+      'WALLETS_PAGE.SECOND_PASSPHRASE',
+      'WALLETS_PAGE.REMOVE_WALLET',
+      'CANCEL'
+    ]).takeUntil(this._unsubscriber).subscribe((translation) => {
       let delegateItem =  {
-        text: translation['Register Delegate'],
+        text: translation['DELEGATES_PAGE.REGISTER_DELEGATE'],
         role: 'delegate',
         icon: !this._platform.is('ios') ? 'contact' : '',
         handler: () => {
@@ -78,7 +84,7 @@ export class WalletDashboardPage {
       };
 
       let secondPassphraseItem = {
-        text: translation['Second Passphrase'],
+        text: translation['WALLETS_PAGE.SECOND_PASSPHRASE'],
         role: '2ndpassphrase',
         icon: !this._platform.is('ios') ? 'lock' : '',
         handler: () => {
@@ -88,21 +94,21 @@ export class WalletDashboardPage {
 
       let buttons = [
         {
-          text: translation['Label'],
+          text: translation['WALLETS_PAGE.LABEL'],
           role: 'label',
           icon: !this._platform.is('ios') ? 'pricetag' : '',
           handler: () => {
             this.openLabelModal();
           },
         }, {
-          text: translation['Remove Wallet'],
+          text: translation['WALLETS_PAGE.REMOVE_WALLET'],
           role: 'delete',
           icon: !this._platform.is('ios') ? 'trash' : '',
           handler: () => {
             this.showDeleteConfirm();
           }
         }, {
-          text: translation['Cancel'],
+          text: translation['CANCEL'],
           role: 'cancel',
           icon: !this._platform.is('ios') ? 'close' : ''
         }
@@ -119,22 +125,22 @@ export class WalletDashboardPage {
   }
 
   presentAddActionSheet() {
-    this._translateService.get(['Send', 'Receive', 'Cancel']).takeUntil(this._unsubscriber).subscribe((translation) => {
+    this._translateService.get(['TRANSACTIONS_PAGE.SEND', 'TRANSACTIONS_PAGE.RECEIVE', 'CANCEL']).takeUntil(this._unsubscriber).subscribe((translation) => {
       let action = this._actionSheetCtrl.create({
         buttons: [
           {
-            text: translation['Receive'],
+            text: translation['TRANSACTIONS_PAGE.RECEIVE'],
             role: 'receive',
             icon: !this._platform.is('ios') ? 'arrow-round-down' : '',
             handler: () => {
               return this.openTransactionReceive();
             }
           }, {
-            text: translation['Send'],
+            text: translation['TRANSACTIONS_PAGE.SEND'],
             role: 'send',
             icon: !this._platform.is('ios') ? 'arrow-round-up' : ''
           }, {
-            text: translation['Cancel'],
+            text: translation.CANCEL,
             role: 'cancel',
             icon: !this._platform.is('ios') ? 'close' : ''
           }
@@ -278,15 +284,15 @@ export class WalletDashboardPage {
   }
 
   showDeleteConfirm() {
-    this._translateService.get(['Are you sure?', 'Confirm', 'Cancel']).takeUntil(this._unsubscriber).subscribe((translation) => {
+    this._translateService.get(['ARE_YOU_SURE', 'CONFIRM', 'CANCEL']).takeUntil(this._unsubscriber).subscribe((translation) => {
       let confirm = this._alertCtrl.create({
-        title: translation['Are you sure?'],
+        title: translation.ARE_YOU_SURE,
         buttons: [
           {
-            text: translation['Cancel']
+            text: translation.CANCEL
           },
           {
-            text: translation['Confirm'],
+            text: translation.CONFIRM,
             handler: () => {
               this.deleteWallet();
             }
@@ -360,9 +366,9 @@ export class WalletDashboardPage {
     if (!lodash.isEmpty(transactions)) {
       this.wallet.loadTransactions(transactions);
     } else {
-      this._translateService.get('Fetching transactions..').takeUntil(this._unsubscriber).subscribe((translation) => {
+      this._translateService.get('TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS').takeUntil(this._unsubscriber).subscribe((translation) => {
         let loader = this._loadingCtrl.create({
-          content: translation,
+          content: `${translation}...`,
         });
 
         loader.present();

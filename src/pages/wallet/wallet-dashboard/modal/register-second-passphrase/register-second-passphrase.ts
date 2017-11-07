@@ -62,8 +62,8 @@ export class RegisterSecondPassphrasePage {
         entropy,
         disableShowDetails: true,
         fee: this.fee,
-        message: 'WALLET_CREATE_PAGE.BACKUP_SECOND_PASSPHRASE',
-        title: 'SECOND_PASSPHRASE',
+        message: 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE',
+        title: 'WALLETS_PAGE.SECOND_PASSPHRASE',
       });
 
       showModal.onDidDismiss((account) => {
