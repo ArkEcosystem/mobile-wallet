@@ -15,8 +15,9 @@ import lodash from 'lodash';
 @Injectable()
 export class ArkApiProvider {
 
-  public onUpdatePeer$: BehaviorSubject<arkts.Peer> = new BehaviorSubject(undefined);
-  public onUpdateDelegates$: BehaviorSubject<arkts.Delegate[]> = new BehaviorSubject(undefined);
+  public onUpdatePeer$: Subject<arkts.Peer> = new Subject<arkts.Peer>();
+  public onUpdateDelegates$: Subject<arkts.Delegate[]> = new Subject<arkts.Delegate[]>();
+  public onSendTransaction$: Subject<arkts.Transaction> = new Subject<arkts.Transaction>();
 
   private _network: arkts.Network;
   private _api: arkts.Client;
@@ -167,6 +168,7 @@ export class ArkApiProvider {
       let data = JSON.stringify({ transactions: [transaction] });
       this.http.post(url, data, options).map((resp) => resp.json()).subscribe((data: arkts.TransactionPostResponse) => {
         if (data.success) {
+          this.onSendTransaction$.next(transaction);
           if (broadcast) {
             this.broadcastTransaction(transaction);
           }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController, AlertController, LoadingController, Loading } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -54,6 +54,7 @@ export class WalletDashboardPage {
     private _modalCtrl: ModalController,
     private _alertCtrl: AlertController,
     private _loadingCtrl: LoadingController,
+    private zone: NgZone,
   ) {
     this.address = this._navParams.get('address');
 
@@ -209,7 +210,7 @@ export class WalletDashboardPage {
     modal.onDidDismiss((data) => {
       if (lodash.isEmpty(data)) return;
 
-      this.wallet.label = data;
+      this.zone.run(() => this.wallet.label = data);
       this.saveWallet();
     });
 
@@ -334,7 +335,7 @@ export class WalletDashboardPage {
     });
   }
 
-  private _onUpdateWalletSubscriber() {
+  private onUpdateWallet() {
     this._userDataProvider.onUpdateWallet$
       .takeUntil(this._unsubscriber)
       .debounceTime(500)
@@ -375,7 +376,7 @@ export class WalletDashboardPage {
     this._refreshDataIntervalListener = setInterval(() => this.refreshData(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
     this._refreshTickerIntervalListener = setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
 
-    this._onUpdateWalletSubscriber();
+    this.onUpdateWallet();
   }
 
   ionViewDidLoad() {
