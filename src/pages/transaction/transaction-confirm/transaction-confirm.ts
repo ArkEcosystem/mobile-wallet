@@ -57,12 +57,15 @@ export class TransactionConfirmPage {
         this.dismiss(true);
       }, (error) => {
         // TODO: Toast message
-        this.dismiss(false);
+        this.dismiss(false, error);
       });
   }
 
-  dismiss(status?) {
-    this.viewCtrl.dismiss(status);
+  dismiss(status?: boolean, message?: string) {
+    if (!status && !message) return this.viewCtrl.dismiss();
+
+    let response = { status, message, transaction: this.transaction };
+    this.viewCtrl.dismiss(response);
   }
 
   private onUpdateTicker() {

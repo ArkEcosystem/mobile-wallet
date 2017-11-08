@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ transaction?.getTypeLabel() | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding class="column-mode">
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center align-self-center>
+        <img src="./assets/img/light/transfer-success.png">
+        <h5>{{ 'TRANSACTIONS_PAGE.SENT_SUCCESS' | translate }}</h5>
+        <button ion-button outline (click)="copyTxid()" class="copy-txid-btn">{{ 'TRANSACTIONS_PAGE.COPY_TXID' | translate }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer padding *ngIf="transaction && showKeepSecondPassphrase()">
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center>
+        <p>{{ 'TRANSACTIONS_PAGE.ENCRYPT_SAVE_SECOND_PASSPHRASE' | translate }}</p>
+        <button ion-button color="primary">{{ 'SAVE' | translate }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

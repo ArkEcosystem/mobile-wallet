@@ -316,6 +316,18 @@ export class WalletDashboardPage {
       address: this.address,
     }, { cssClass: 'inset-modal', enableBackdropDismiss: true });
 
+    modal.onDidDismiss((response) => {
+      if (!response || lodash.isUndefined(response.status)) return;
+
+      // if (response.status) {
+        this._navCtrl.push('TransactionResponsePage', {
+          response,
+          passphrases,
+          wallet: this.wallet,
+        });
+      // }
+    });
+
     modal.present();
   }
 

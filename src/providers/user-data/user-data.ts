@@ -133,6 +133,18 @@ export class UserDataProvider {
     return this.storageProvider.set(constants.STORAGE_PROFILES, profiles);
   }
 
+  encryptSecondPassphrase(wallet: Wallet, pinCode: string, secondPassphrase: string, profileId: string = this.authProvider.loggedProfileId) {
+    if (lodash.isUndefined(profileId)) return;
+
+    let profile = this.getProfileById(profileId);
+    if (wallet && !wallet.cipherSecondPassphrase) {
+      wallet.cipherSecondPassphrase = this.forgeProvider.encrypt(secondPassphrase, pinCode, profile.salt, profile.iv);
+      return this.saveWallet(wallet, profileId, true);
+    }
+
+    return this.saveProfiles();
+  }
+
   addWallet(wallet: Wallet, passphrase: string, pinCode: string, profileId: string = this.authProvider.loggedProfileId) {
     if (lodash.isUndefined(profileId)) return;
 

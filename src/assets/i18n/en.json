@@ -68,7 +68,7 @@
     "SCAN_QRCODE_TEXT": "Open your wallet on your PC and scan the QR code with your camera",
     "SCAN_QRCODE": "Scan QR Code",
     "ADD_WALLET_TEXT": "To import or create wallet click on the button bellow",
-    "ENTER_SECRET_PASSPHRASE": "Enter secret passphrase",
+    "ENTER_SECRET_PASSPHRASE": "Enter your secret passphrase",
     "REMOVE_WALLET": "Remove Wallet",
     "TYPE_YOUR_PASSPHRASE": "Type your passphrase",
     "VALIDATE_PASSPHRASE": "Validate passphrase",
@@ -85,7 +85,10 @@
     "CONFIRMATIONS": "Confirmations",
     "SEND": "Send",
     "RECEIVE": "Receive",
-    "FETCHING_TRANSACTIONS": "Fetching transactions"
+    "FETCHING_TRANSACTIONS": "Fetching transactions",
+    "SENT_SUCCESS": "Transaction sent with success!",
+    "COPY_TXID": "Copy TXID",
+    "ENCRYPT_SAVE_SECOND_PASSPHRASE": "Do you want to encrypt and save your second passphrase?"
   },
   "PROFILES_PAGE": {
     "SIGN_IN": "Sign in",
