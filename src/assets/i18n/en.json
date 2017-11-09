@@ -33,7 +33,8 @@
   "INTRO_PAGE": {
     "TEXT_1": "Simple 24/7 Mobile Access to your ARK tokens, Worldwide!",
     "TEXT_2": "Successfully completed security audits by world-class researches",
-    "TEXT_3": "PIN Code is a that makes you forget all your worries about passwords"
+    "TEXT_3": "PIN Code is a that makes you forget all your worries about passwords",
+    "GETTING_STARTED": "Getting Started"
   },
   "PIN_CODE": {
     "CREATE": "Create your PIN",
@@ -72,9 +73,11 @@
     "REMOVE_WALLET": "Remove Wallet",
     "TYPE_YOUR_PASSPHRASE": "Type your passphrase",
     "VALIDATE_PASSPHRASE": "Validate passphrase",
-    "NEW_WALLET_NAME": "New wallet name"
+    "NEW_WALLET_NAME": "New wallet name",
+    "ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE": "The second passphrase was successfully encrypted"
   },
   "TRANSACTIONS_PAGE": {
+    "ID": "Id",
     "TRANSACTION": "Transaction",
     "AMOUNT": "Amount",
     "FEE": "Fee",
@@ -139,5 +142,6 @@
   "STATUS": "Status",
   "RENAME": "Rename",
   "TYPE": "Type",
-  "EXIT": "Exit"
+  "EXIT": "Exit",
+  "FAILED": "Failed"
 }

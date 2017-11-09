@@ -1,3 +1,21 @@
+ion-modal.inset-modal-small {
+  // transparent black background overlay
+  background-color: rgba(0, 0, 0, .5) !important;
+  transition: opacity .25s ease-in-out;
+  padding: 25vh 15vw;
+
+  .show-page {
+    border-radius: 10px!important;
+    overflow: hidden!important;
+  }
+
+  ion-header {
+    border-top-left-radius: 10px!important;
+    border-top-right-radius: 10px!important;
+    overflow: hidden!important;
+  }
+}
+
 ion-modal.inset-modal {
   // transparent black background overlay
   background-color: rgba(0, 0, 0, .5) !important;

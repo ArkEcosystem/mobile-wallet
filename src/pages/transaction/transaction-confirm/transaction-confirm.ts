@@ -11,6 +11,8 @@ import { Transaction, MarketTicker, MarketCurrency } from '@models/model';
 
 import { Network } from 'ark-ts/model';
 
+import lodash from 'lodash';
+
 @IonicPage()
 @Component({
   selector: 'page-transaction-confirm',
@@ -35,18 +37,11 @@ export class TransactionConfirmPage {
     private marketDataProvidfer: MarketDataProvider,
     private settingsDataProvider: SettingsDataProvider,
   ) {
-    let transaction = this.navParams.get('transaction');
     let passphrases = this.navParams.get('passphrases');
+    this.transaction = this.navParams.get('transaction');
     this.address = this.navParams.get('address');
 
-    if (!transaction || !passphrases || !this.address) this.navCtrl.pop();
-
-    transaction = new Transaction(this.address).deserialize(transaction);
-    this.arkApiProvider.createTransaction(transaction, passphrases['passphrase'], passphrases['secondPassphrase']).subscribe((tx) => {
-      this.transaction = tx;
-    }, () => {
-      // TODO: Handle the error
-    });
+    if (!this.transaction || !passphrases || !this.address) this.navCtrl.pop();
 
     this.currentNetwork = this.arkApiProvider.network;
   }
@@ -56,15 +51,14 @@ export class TransactionConfirmPage {
       .subscribe((response) => {
         this.dismiss(true);
       }, (error) => {
-        // TODO: Toast message
-        this.dismiss(false, error);
+        this.dismiss(false, error.error);
       });
   }
 
   dismiss(status?: boolean, message?: string) {
-    if (!status && !message) return this.viewCtrl.dismiss();
+    if (lodash.isUndefined(status)) return this.viewCtrl.dismiss();
 
-    let response = { status, message, transaction: this.transaction };
+    let response = { status, message };
     this.viewCtrl.dismiss(response);
   }
 

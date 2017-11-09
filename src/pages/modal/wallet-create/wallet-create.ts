@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController, Content } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
 
 import { Subject } from 'rxjs/Subject';
@@ -18,6 +18,7 @@ import bip39 from 'bip39';
   providers: [Clipboard],
 })
 export class WalletCreatePage {
+  @ViewChild(Content) content: Content;
 
   public account: any = {
     address: '',
@@ -61,6 +62,7 @@ export class WalletCreatePage {
 
   toggleShowDetails() {
     this.showDetails = !this.showDetails;
+    this.content.resize();
   }
 
   copyPassphrase() {

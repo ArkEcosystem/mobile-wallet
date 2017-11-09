@@ -5,6 +5,8 @@ import { Transaction } from '@models/transaction';
 
 import * as constants from '@app/app.constants';
 
+import { PublicKey } from 'ark-ts';
+
 export class Wallet extends Account {
   username: string;
   isDelegate: boolean;

@@ -119,7 +119,6 @@ export class ArkApiProvider {
   }
 
   public createTransaction(transaction: Transaction, passphrase: string, secondPassphrase: string): Observable<Transaction> {
-    console.log(transaction);
     return Observable.create((observer) => {
       if (!arkts.PublicKey.validateAddress(transaction.address, this._network)) {
         observer.error(`The destination address ${transaction.address} is erroneous`);
@@ -127,9 +126,10 @@ export class ArkApiProvider {
       }
 
       let wallet = this.userDataProvider.getWalletByAddress(transaction.address);
+      transaction.senderId = transaction.address;
 
       if (transaction.getAmount() > Number(wallet.balance)) {
-        observer.error(`Not enough ${this._network.token} on your account ${wallet.address}`);
+        observer.error(`Not enough ${this._network.token} on your account`);
         return observer.complete();
       }
 
@@ -146,7 +146,6 @@ export class ArkApiProvider {
       }
 
       transaction.id = this.arkjs.crypto.getId(transaction);
-      transaction.senderId = transaction.address;
 
       observer.next(transaction);
       observer.complete();

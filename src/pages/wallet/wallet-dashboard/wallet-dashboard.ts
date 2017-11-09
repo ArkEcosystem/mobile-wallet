@@ -10,7 +10,7 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 
 import lodash from 'lodash';
-import { Network, Fees, TransactionDelegate  } from 'ark-ts';
+import { Network, Fees, TransactionDelegate, PrivateKey  } from 'ark-ts';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -79,7 +79,7 @@ export class WalletDashboardPage {
         role: 'delegate',
         icon: !this._platform.is('ios') ? 'contact' : '',
         handler: () => {
-          this.openRegisterDelegateModal();
+          this.presentRegisterDelegateModal();
         },
       };
 
@@ -88,7 +88,7 @@ export class WalletDashboardPage {
         role: '2ndpassphrase',
         icon: !this._platform.is('ios') ? 'lock' : '',
         handler: () => {
-          this.openRegisterSecondPassphrase();
+          this.presentRegisterSecondPassphraseModal();
         },
       };
 
@@ -98,14 +98,14 @@ export class WalletDashboardPage {
           role: 'label',
           icon: !this._platform.is('ios') ? 'pricetag' : '',
           handler: () => {
-            this.openLabelModal();
+            this.presentLabelModal();
           },
         }, {
           text: translation['WALLETS_PAGE.REMOVE_WALLET'],
           role: 'delete',
           icon: !this._platform.is('ios') ? 'trash' : '',
           handler: () => {
-            this.showDeleteConfirm();
+            this.presentDeleteWalletConfirm();
           }
         }, {
           text: translation['CANCEL'],
@@ -210,7 +210,7 @@ export class WalletDashboardPage {
     });
   }
 
-  openLabelModal() {
+  presentLabelModal() {
     let modal = this._modalCtrl.create('SetLabelPage', {'label': this.wallet.label }, { cssClass: 'inset-modal' });
 
     modal.onDidDismiss((data) => {
@@ -223,7 +223,7 @@ export class WalletDashboardPage {
     modal.present();
   }
 
-  openRegisterDelegateModal() {
+  presentRegisterDelegateModal() {
     this.fees = this._arkApiProvider.fees;
 
     let modal = this._modalCtrl.create('RegisterDelegatePage', {
@@ -234,12 +234,17 @@ export class WalletDashboardPage {
     modal.onDidDismiss((name) => {
       if (lodash.isEmpty(name)) return;
 
+
       this.getPassphrases().then((passphrases) => {
+        if (!passphrases) return;
+
+        let publicKey = this.wallet.publicKey || PrivateKey.fromSeed(passphrases['passphrase']).getPublicKey().toHex();
+
         let transaction = <TransactionDelegate>{
           passphrase: passphrases['passphrase'],
           secondPassphrase: passphrases['secondPassphrase'],
           username: name,
-          publicKey: this.wallet.publicKey,
+          publicKey
         }
 
         this._arkApiProvider.api.transaction.createDelegate(transaction)
@@ -256,7 +261,7 @@ export class WalletDashboardPage {
     modal.present();
   }
 
-  openRegisterSecondPassphrase() {
+  presentRegisterSecondPassphraseModal() {
     this.fees = this._arkApiProvider.fees;
 
     let modal = this._modalCtrl.create('RegisterSecondPassphrasePage', {
@@ -283,7 +288,7 @@ export class WalletDashboardPage {
     modal.present();
   }
 
-  showDeleteConfirm() {
+  presentDeleteWalletConfirm() {
     this._translateService.get(['ARE_YOU_SURE', 'CONFIRM', 'CANCEL']).takeUntil(this._unsubscriber).subscribe((translation) => {
       let confirm = this._alertCtrl.create({
         title: translation.ARE_YOU_SURE,
@@ -309,26 +314,54 @@ export class WalletDashboardPage {
   }
 
   private confirmTransaction(transaction: Transaction, passphrases: any) {
-    // TODO: Confirmation page
-    let modal = this._modalCtrl.create('TransactionConfirmPage', {
-      transaction,
-      passphrases,
-      address: this.address,
-    }, { cssClass: 'inset-modal', enableBackdropDismiss: true });
+    let response = { status: false, message: undefined };
+    transaction = new Transaction(this.wallet.address).deserialize(transaction);
 
-    modal.onDidDismiss((response) => {
-      if (!response || lodash.isUndefined(response.status)) return;
+    this._arkApiProvider.createTransaction(transaction, passphrases['passphrase'], passphrases['secondPassphrase'])
+      .finally(() => {
+        if (response.status) {
+          let confirmModal = this._modalCtrl.create('TransactionConfirmPage', {
+            transaction,
+            passphrases,
+            address: this.address,
+          }, { cssClass: 'inset-modal', enableBackdropDismiss: true });
 
-      // if (response.status) {
-        this._navCtrl.push('TransactionResponsePage', {
-          response,
-          passphrases,
-          wallet: this.wallet,
-        });
-      // }
-    });
+          confirmModal.onDidDismiss((result) => {
+            if (lodash.isUndefined(result)) return;
 
-    modal.present();
+            if (result.status) {
+              return this._navCtrl.push('TransactionResponsePage', {
+                transaction,
+                passphrases,
+                response: result,
+                wallet: this.wallet,
+              });
+            }
+
+            response = result;
+            this.presentTransactionResponseModal(response);
+          });
+
+          confirmModal.present();
+        } else {
+          this.presentTransactionResponseModal(response);
+        }
+      })
+      .subscribe((tx) => {
+        response.status = true;
+        transaction = tx;
+      }, (error) => {
+        response.status = false,
+        response.message = error;
+      });
+  }
+
+  private presentTransactionResponseModal(response: any) {
+    let responseModal = this._modalCtrl.create('TransactionResponsePage', {
+      response
+    }, { cssClass: 'inset-modal-small' });
+
+    responseModal.present();
   }
 
   private getPassphrases(message?: string) {

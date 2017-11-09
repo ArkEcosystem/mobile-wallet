@@ -105,23 +105,15 @@ export class MyApp {
       let wallets = lodash.values(profile.wallets);
       return lodash.filter(wallets, { isDelegate: false });
     }).forEach((wallet: any) => {
-      console.log(wallet);
+      let find = lodash.find(delegates, { address: wallet['address'] });
+
+      if (find) {
+        wallet['isDelegate'] = true;
+        wallet['username'] = find.username;
+
+        this.userDataProvider.saveWallet(wallet, undefined, true);
+      }
     });
-    // let map = lodash
-    //   .flatMap(this.userDataProvider.profiles, (item: Profile) => {
-    //     // Filter only non-delegates
-    //     return lodash.filter(lodash.values(item['wallets']), { isDelegate: false });
-    //   });
-
-    // for (let wallet of map) {
-    //   let find = lodash.find(delegates, { address: wallet['address'] });
-    //   if (find) {
-    //     wallet['isDelegate'] = true;
-    //     wallet['username'] = find.username;
-
-    //     this.userDataProvider.saveWallet(wallet, undefined, true);
-    //   }
-    // }
   }
 
   // Verify if new wallet is a delegate
