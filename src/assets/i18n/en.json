@@ -45,6 +45,7 @@
     "TYPE_PIN_SIGN_TRANSACTION": "Type your PIN to sign transaction"
   },
   "WALLETS_PAGE": {
+    "BALANCE": "Balance",
     "WALLETS": "Wallets",
     "CREATE_WALLET": "Create Wallet",
     "BACKUP_PASSPHRASE": "Backup this passphrase securely, without these words we can not restore your wallet",

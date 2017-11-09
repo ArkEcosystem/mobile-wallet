@@ -65,6 +65,9 @@
 }
 
 .dark-navbar {
+  &.delegate > .toolbar-background {
+    background: #394cf8;
+  }
   &>.toolbar-background {
     background: #101022;
     border: none;
