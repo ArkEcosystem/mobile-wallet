@@ -125,6 +125,12 @@
     "CLEAR_DATA": "Clear Data",
     "CLEAR_DATA_TEXT": "All your data, including created profiles, wallets and contacts will be removed from the app and reset to default."
   },
+  "MARKETS_PAGE": {
+    "MARKET_CAP": "Market Cap.",
+    "VOLUME": "Volume",
+    "PRICE": "Price",
+    "PERCENTAGE_CHANGE": "% Change"
+  },
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
   "DATE": "Date",

@@ -1,0 +1,41 @@
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ currentProfile?.name }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content no-padding>
+  <ion-fab bottom right class="pull-footer" *ngIf="wallets.length > 0">
+    <button ion-fab color="primary" (click)="presentActionSheet()"><ion-icon name="md-add"></ion-icon></button>
+  </ion-fab>
+  <ion-scroll scrollX="true">
+    <ion-card *ngFor="let wallet of wallets" [class.delegate]="wallet?.isDelegate" (click)="openWalletDashboard(wallet)">
+      <ion-item>
+        <h2 class="amount">{{ wallet?.getBalance() }} {{ currentNetwork?.symbol }}</h2>
+        <p class="address">{{ wallet?.label || wallet?.address | accountLabel | truncateMiddle: 15 }}</p>
+      </ion-item>
+    </ion-card>
+  </ion-scroll>
+  <ion-grid padding>
+    <h3 class="market-cap-title">{{ 'MARKETS_PAGE.MARKET_CAP' | translate }}</h3>
+    <ion-row nowrap>
+      <ion-col col-3 text-center>
+        <p>{{ 'MARKETS_PAGE.PRICE' | translate }}</p>
+        <h6>{{ fiatCurrency?.price | currency:fiatCurrency?.code:'symbol' }}</h6>
+      </ion-col>
+      <ion-col col-6 text-center>
+        <p>{{ 'MARKETS_PAGE.VOLUME' | translate }}</p>
+        <h6>{{ fiatCurrency?.volume | currency:fiatCurrency?.code:'symbol' }}</h6>
+      </ion-col>
+      <ion-col col-3 text-center>
+        <p>{{ 'MARKETS_PAGE.PERCENTAGE_CHANGE' | translate }}</p>
+        <h6>{{ marketTicker?.change1h }}%</h6>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

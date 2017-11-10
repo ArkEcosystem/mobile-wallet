@@ -1,0 +1,45 @@
+page-wallet-list {
+  .content {
+    background: #edf2f5;
+  }
+  ion-scroll {
+    white-space: nowrap;
+    height: 150px;
+    margin-top: 2em;
+
+    .scroll-content {
+      padding: 0 .3em!important;
+    }
+  }
+  ion-card{
+    border-radius: 5px!important;
+    width: 60vw!important;
+    padding: 1.5em .8em;
+    display: inline-block;
+
+    &.delegate {
+      background-image: url('../assets/img/light/delegate-block.png');
+      background-size: cover;
+
+      .item {
+        background: transparent;
+
+        .address,
+        .amount {
+          color: white;
+        }
+      }
+    }
+
+    .amount {
+      font-weight: 500;
+    }
+
+    .address {
+      margin-top: .5em;
+    }
+  }
+  .market-cap-title {
+    font-weight: 700;
+  }
+}

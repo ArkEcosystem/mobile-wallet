@@ -101,9 +101,7 @@ export class ProfileSigninPage {
             if (addresses.length === 0) {
               this.navCtrl.setRoot('WalletEmptyPage');
             } else {
-              this.navCtrl.setRoot('WalletDashboardPage', {
-                address: wallets[addresses[0]].address,
-              });
+              this.navCtrl.setRoot('WalletListPage');
             }
           } else {
             // TODO: Show toast error
