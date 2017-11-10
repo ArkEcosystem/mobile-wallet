@@ -38,7 +38,7 @@
         "bcryptjs": "^2.4.3",
         "bip39": "^2.4.0",
         "cordova-clipboard": "^1.1.0",
-        "cordova-ios": "^4.5.3",
+        "cordova-ios": "^4.4.0",
         "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-device": "^1.1.6",
         "cordova-plugin-qrscanner": "^2.5.0",

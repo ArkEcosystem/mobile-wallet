@@ -178,6 +178,7 @@ export class UserDataProvider {
     if (lodash.isUndefined(profileId)) return;
 
     let profile = this.getProfileById(profileId);
+    wallet.lastUpdate = new Date().getTime();
     profile.wallets[wallet.address] = wallet;
 
     this.profiles[profileId] = profile;

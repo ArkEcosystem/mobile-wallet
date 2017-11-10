@@ -130,7 +130,7 @@ export class WalletListPage {
       if (!password) return;
 
       this.userDataProvider.addWallet(wallet, account.mnemonic, password).takeUntil(this.unsubscriber$).subscribe((response) => {
-        this.navCtrl.setRoot('WalletListPage');
+        this.loadWallets();
       });
     })
 
@@ -140,10 +140,13 @@ export class WalletListPage {
   private loadWallets() {
     if (lodash.isEmpty(this.currentProfile.wallets)) return;
 
+    let list = [];
     for (let w of lodash.values(this.currentProfile.wallets)) {
       let wallet = new Wallet().deserialize(w);
-      this.wallets.push(wallet);
+      list.push(wallet);
     }
+
+    this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
   }
 
   private onUpdateWallet() {

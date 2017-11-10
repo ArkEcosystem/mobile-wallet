@@ -4,6 +4,7 @@ import { WalletListPage } from './wallet-list';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
+import { EmptyListComponentModule } from '@components/empty-list/empty-list.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { PipesModule } from '@pipes/pipes.module';
     IonicPageModule.forChild(WalletListPage),
     TranslateModule,
     PipesModule,
+    EmptyListComponentModule,
   ],
 })
 export class WalletListPageModule {}
