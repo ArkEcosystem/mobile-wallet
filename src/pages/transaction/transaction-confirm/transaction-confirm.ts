@@ -34,7 +34,7 @@ export class TransactionConfirmPage {
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private arkApiProvider: ArkApiProvider,
-    private marketDataProvidfer: MarketDataProvider,
+    private marketDataProvider: MarketDataProvider,
     private settingsDataProvider: SettingsDataProvider,
   ) {
     let passphrases = this.navParams.get('passphrases');
@@ -63,7 +63,7 @@ export class TransactionConfirmPage {
   }
 
   private onUpdateTicker() {
-    this.marketDataProvidfer.onUpdateTicker$.takeUntil(this.unsubscriber$).do((ticker) => {
+    this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).do((ticker) => {
       if (!ticker) return;
 
       this.ticker = ticker;
@@ -75,7 +75,7 @@ export class TransactionConfirmPage {
 
   ionViewDidLoad() {
     this.onUpdateTicker();
-    this.marketDataProvidfer.refreshPrice();
+    this.marketDataProvider.refreshPrice();
   }
 
   ngOnDestroy() {
