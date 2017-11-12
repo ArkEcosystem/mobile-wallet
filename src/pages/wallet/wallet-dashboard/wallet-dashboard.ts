@@ -383,7 +383,7 @@ export class WalletDashboardPage {
   }
 
   private onUpdateMarket() {
-    this.marketDataProvider.onUpdateHistory$.takeUntil(this.unsubscriber$).subscribe((history) => this.marketHistory = history);
+    this.marketDataProvider.history.subscribe((history) => this.marketHistory = history);
     this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).do((ticker) => {
       if (!ticker) return;
 

@@ -9,22 +9,30 @@ import { StorageProvider } from '@providers/storage/storage';
 
 import * as model from '@models/market';
 import * as constants from '@app/app.constants';
+import { MarketHistory } from '@models/model';
+import { observeOn } from 'rxjs/operators/observeOn';
 
 @Injectable()
 export class MarketDataProvider {
 
-  public onUpdateHistory$: Subject<model.MarketHistory> = new Subject<model.MarketHistory>();
   public onUpdateTicker$: Subject<model.MarketTicker> = new Subject<model.MarketTicker>();
+
+  private marketHistory: MarketHistory;
 
   constructor(
     private http: Http,
     private storageProvider: StorageProvider,
   ) {
     this.refreshPrice();
-    this.fetchHistory().subscribe((history) => this.onUpdateHistory$.next(history));
   }
 
-  public refreshPrice(): void {
+  get history(): Observable<MarketHistory> {
+    if (this.marketHistory) return Observable.of(this.marketHistory);
+
+    return this.fetchHistory();
+  }
+
+  refreshPrice(): void {
     this.fetchTicker().subscribe((ticker) => {
       this.onUpdateTicker$.next(ticker);
     });
@@ -39,11 +47,14 @@ export class MarketDataProvider {
     });
   }
 
-  private fetchHistory() {
+  private fetchHistory(): Observable<MarketHistory> {
     const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
+
     return this.http.get(url).map((response) => {
       let json = response.json();
-      return new model.MarketHistory().deserialize(json.history);
+      let history = new model.MarketHistory().deserialize(json.history);
+      this.marketHistory = history;
+      return history;
     });
   }
 

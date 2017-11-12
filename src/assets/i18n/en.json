@@ -131,6 +131,15 @@
     "PRICE": "Price",
     "PERCENTAGE_CHANGE": "% Change"
   },
+  "WEEK_DAY": {
+    "SUNDAY": "Sun",
+    "MONDAY": "Mon",
+    "TUESDAY": "Tue",
+    "WEDNESDAY": "Wed",
+    "THURSDAY": "Thu",
+    "FRIDAY": "Fri",
+    "SATURDAY": "Sat"
+  },
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
   "DATE": "Date",

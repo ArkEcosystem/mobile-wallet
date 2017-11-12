@@ -137,4 +137,13 @@ export class MarketHistory {
 
     return new MarketTicker(this.history[timestampDate]);
   }
+
+  getLastWeekPrice(currencyCode: string): any {
+    let tickers: MarketTicker[] = lodash(this.history).values().takeRight(7).value();
+
+    let dates = lodash.map(tickers, (t) => t.date);
+    let prices = lodash.map(tickers, (t) => t.getCurrency({ code: currencyCode }).price);
+
+    return { dates, prices };
+  }
 }

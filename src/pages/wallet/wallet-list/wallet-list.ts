@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform } from 'ionic-angular';
 
+import { Chart } from 'chart.js';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
@@ -21,13 +22,14 @@ import lodash from 'lodash';
   templateUrl: 'wallet-list.html',
 })
 export class WalletListPage {
+  @ViewChild('priceChart') priceChart: any;
 
   public currentProfile: Profile;
   public currentNetwork: Network;
   public wallets: Wallet[] = [];
 
-  public fiatCurrency: MarketCurrency;
   public btcCurrency: MarketCurrency;
+  public fiatCurrency: MarketCurrency;
   public marketHistory: MarketHistory;
   public marketTicker: MarketTicker;
 
@@ -156,13 +158,89 @@ export class WalletListPage {
   }
 
   private onUpdateMarket() {
-    this.marketDataProvider.onUpdateHistory$.takeUntil(this.unsubscriber$).subscribe((history) => this.marketHistory = history);
+    this.translateService.get([
+      'WEEK_DAY.SUNDAY',
+      'WEEK_DAY.MONDAY',
+      'WEEK_DAY.TUESDAY',
+      'WEEK_DAY.WEDNESDAY',
+      'WEEK_DAY.THURSDAY',
+      'WEEK_DAY.FRIDAY',
+      'WEEK_DAY.SATURDAY',
+    ]).subscribe((translation) => {
+      let days = lodash.values(translation);
+
+      this.settingsDataProvider.settings.subscribe((settings) => {
+        this.marketDataProvider.history.takeUntil(this.unsubscriber$).subscribe((history) => {
+          if (!history) return;
+
+          let fiatHistory = history.getLastWeekPrice(settings.currency);
+          let btcHistory = history.getLastWeekPrice('btc');
+
+          this.priceChart = new Chart(this.priceChart.nativeElement, {
+            type: 'line',
+            options: {
+              maintainAspectRatio: false,
+              response: true,
+              legend: {
+                display: false,
+              },
+              tooltips: {
+                enabled: false,
+              },
+              scales: {
+                xAxes: [{
+                  gridLines: {
+                    display: false,
+                  }
+                }],
+                yAxes: [{
+                  display: false,
+                  id: 'A',
+                  type: 'linear',
+                  position: 'left',
+                  ticks: {
+                    max: Number(lodash.max(fiatHistory.prices)) * 1.1,
+                    min: Number(lodash.min(fiatHistory.prices))
+                  }
+                }, {
+                  display: false,
+                  id: 'B',
+                  type: 'linear',
+                  position: 'right',
+                  ticks: {
+                    max: Number(lodash.max(btcHistory.prices)) * 1.1,
+                    min: Number(lodash.min(btcHistory.prices)),
+                  }
+                }]
+              }
+            },
+            data: {
+              labels: lodash.map(fiatHistory.dates, (d: Date) => days[d.getDay()]),
+              datasets: [{
+                yAxisID : "A",
+                fill: false,
+                borderColor: '#394cf8',
+                data: fiatHistory.prices,
+              }, {
+                yAxisID : "B",
+                fill: false,
+                borderColor: '#f3a447',
+                data: btcHistory.prices,
+              }],
+            }
+          });
+        });
+      });
+    });
+
     this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).subscribe((ticker) => {
       this.marketTicker = ticker;
       this.btcCurrency = ticker.getCurrency({ code: 'btc' });
 
       this.settingsDataProvider.settings.subscribe((settings) => {
-        this.fiatCurrency = ticker.getCurrency({ code: settings.currency });
+        let currency = settings.currency == 'btc' ? 'usd' : settings.currency;
+
+        this.fiatCurrency = ticker.getCurrency({ code: currency });
       });
     });
   }

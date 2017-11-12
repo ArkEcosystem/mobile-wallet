@@ -39,7 +39,17 @@ page-wallet-list {
       margin-top: .5em;
     }
   }
+  .fiat-bullet {
+    color: #394cf8
+  }
+  .btc-bullet {
+    color: #f3a447
+  }
   .market-cap-title {
     font-weight: 700;
+  }
+  .rowChart {
+    flex: 1;
+    margin-bottom: .5em;
   }
 }

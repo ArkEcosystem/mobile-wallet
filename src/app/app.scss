@@ -193,6 +193,13 @@ ion-content.column-mode {
   }
 }
 
+ion-content.column-mode-simple {
+  scroll-content {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
 ion-fab.pull-footer {
   bottom: 20px!important;
   right: 20px!important;
