@@ -17,6 +17,7 @@ import { SettingsDataProvider } from '../providers/settings-data/settings-data';
 // Ionic native
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Keyboard } from '@ionic-native/keyboard';
 
 import { MyApp } from './app.component';
 import { ForgeProvider } from '../providers/forge/forge';
@@ -32,7 +33,14 @@ export function httpLoaderFactory(http: Http) {
   imports: [
     BrowserModule,
     HttpModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      platforms: {
+        ios: {
+          scrollAssist: false,
+          autoFocusAssist: false,
+        }
+      }
+    }),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
@@ -51,6 +59,7 @@ export function httpLoaderFactory(http: Http) {
     // Ionic native
     StatusBar,
     SplashScreen,
+    Keyboard,
     // Custom providers
     {provide: StorageProvider, useClass: StorageProvider, deps: [Storage]},
     {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},

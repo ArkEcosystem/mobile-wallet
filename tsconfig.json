@@ -9,6 +9,7 @@
       "@components/*": ["src/components/*"],
       "@providers/*": ["src/providers/*"],
       "@models/*": ["src/models/*"],
+      "@directives/*": ["src/directives/*"],
       "@pipes/*": ["src/pipes/*"],
       "@app/*": ["src/app/*"],
       "@root/*": ["./"]

@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, Config, Nav, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Keyboard } from '@ionic-native/keyboard';
 
 import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
@@ -43,6 +44,7 @@ export class MyApp {
     private settingsDataProvider: SettingsDataProvider,
     private menuCtrl: MenuController,
     private config: Config,
+    private keyboard: Keyboard,
   ) {
     platform.ready().then(() => {
       this.menuCtrl.enable(false, 'sidebarMenu');
@@ -50,6 +52,10 @@ export class MyApp {
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
         splashScreen.hide();
+
+        if (this.platform.is('ios')) {
+          this.keyboard.disableScroll(true);
+        }
 
         if (hasSeenIntro) {
           this.openPage('LoginPage');

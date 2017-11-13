@@ -6,6 +6,7 @@ module.exports = function() {
     '@components': path.resolve('./src/components/'),
     '@providers': path.resolve('./src/providers/'),
     '@models': path.resolve('./src/models/'),
+    '@directives': path.resolve('./src/directives/'),
     '@pipes': path.resolve('./src/pipes/'),
     '@app': path.resolve('./src/app/'),
     '@root': path.resolve('./'),
