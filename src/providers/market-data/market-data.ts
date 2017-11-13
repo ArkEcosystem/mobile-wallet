@@ -52,6 +52,7 @@ export class MarketDataProvider {
 
     return this.http.get(url).map((response) => {
       let json = response.json();
+      this.marketTicker = json;
       this.storageProvider.set(constants.STORAGE_MARKET_TICKER, json);
 
       return new model.MarketTicker().deserialize(json);
