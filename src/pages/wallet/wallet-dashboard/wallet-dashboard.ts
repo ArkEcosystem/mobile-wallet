@@ -177,11 +177,10 @@ export class WalletDashboardPage {
   }
 
   presentRegisterDelegateModal() {
-    let modal = this.modalCtrl.create('RegisterDelegatePage', { cssClass: 'inset-modal' });
+    let modal = this.modalCtrl.create('RegisterDelegatePage', null, { cssClass: 'inset-modal' });
 
     modal.onDidDismiss((name) => {
       if (lodash.isEmpty(name)) return;
-
 
       this.getPassphrases().then((passphrases) => {
         if (!passphrases) return;
@@ -210,7 +209,7 @@ export class WalletDashboardPage {
   }
 
   presentRegisterSecondPassphraseModal() {
-    let modal = this.modalCtrl.create('RegisterSecondPassphrasePage', { cssClass: 'inset-modal-large'});
+    let modal = this.modalCtrl.create('RegisterSecondPassphrasePage', null, { cssClass: 'inset-modal-large'});
 
     modal.onDidDismiss((newSecondPassphrase) => {
       if (lodash.isEmpty(newSecondPassphrase)) return;
