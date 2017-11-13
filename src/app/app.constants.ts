@@ -18,9 +18,10 @@ export const STORAGE_SETTINGS = 'settings';
 export const STORAGE_ACTIVE_PROFILE = 'active_profile';
 export const STORAGE_INTROSEEN = 'intro';
 
+export const STORAGE_DELEGATES = 'delegates';
+export const STORAGE_FEES = 'fees';
+
 export const STORAGE_MASTERPASSWORD = 'masterpassword';
-export const STORAGE_MASTERPASSWORD_VALIDATE = 'ark';
-export const SECURESTORAGE_PASSPHRASES = 'secure_passphrases';
 
 // COIN MARKETCAP API
 export const API_MARKET_URL = "http://coinmarketcap.northpole.ro";

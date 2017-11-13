@@ -4,6 +4,8 @@ import { IonicPage, NavController, NavParams, ViewController, ModalController } 
 import { Clipboard } from '@ionic-native/clipboard';
 import bip39 from 'bip39';
 
+import { ArkApiProvider } from '@providers/ark-api/ark-api';
+
 @IonicPage()
 @Component({
   selector: 'page-register-second-passphrase',
@@ -26,9 +28,10 @@ export class RegisterSecondPassphrasePage {
     private viewCtrl: ViewController,
     private modalCtrl: ModalController,
     private clipboard: Clipboard,
+    private arkApiProvider: ArkApiProvider,
   ) {
-    this.fee = this.navParams.get('fee');
-    this.symbol = this.navParams.get('symbol');
+    this.arkApiProvider.fees.subscribe((fees) => this.fee = fees.delegate);
+    this.symbol = this.arkApiProvider.network.symbol;
   }
 
   copyPassphrase() {

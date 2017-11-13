@@ -177,12 +177,7 @@ export class WalletDashboardPage {
   }
 
   presentRegisterDelegateModal() {
-    this.fees = this.arkApiProvider.fees;
-
-    let modal = this.modalCtrl.create('RegisterDelegatePage', {
-      fee: this.fees.delegate,
-      symbol: this.network.symbol,
-    }, { cssClass: 'inset-modal' });
+    let modal = this.modalCtrl.create('RegisterDelegatePage', { cssClass: 'inset-modal' });
 
     modal.onDidDismiss((name) => {
       if (lodash.isEmpty(name)) return;
@@ -215,12 +210,7 @@ export class WalletDashboardPage {
   }
 
   presentRegisterSecondPassphraseModal() {
-    this.fees = this.arkApiProvider.fees;
-
-    let modal = this.modalCtrl.create('RegisterSecondPassphrasePage', {
-      fee: this.fees.secondsignature,
-      symbol: this.network.symbol,
-    }, { cssClass: 'inset-modal-large'});
+    let modal = this.modalCtrl.create('RegisterSecondPassphrasePage', { cssClass: 'inset-modal-large'});
 
     modal.onDidDismiss((newSecondPassphrase) => {
       if (lodash.isEmpty(newSecondPassphrase)) return;
@@ -383,15 +373,14 @@ export class WalletDashboardPage {
   }
 
   private onUpdateMarket() {
-    this.marketDataProvider.history.subscribe((history) => this.marketHistory = history);
-    this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).do((ticker) => {
-      if (!ticker) return;
+    this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).subscribe((ticker) => this.setTicker(ticker));
+  }
 
-      this.ticker = ticker;
-      this.settingsDataProvider.settings.subscribe((settings) => {
-        this.marketCurrency = this.ticker.getCurrency({ code: settings.currency });
-      });
-    }).subscribe();
+  private setTicker(ticker) {
+    this.ticker = ticker;
+    this.settingsDataProvider.settings.subscribe((settings) => {
+      this.marketCurrency = this.ticker.getCurrency({ code: settings.currency });
+    });
   }
 
   private onUpdateWallet() {
@@ -406,8 +395,10 @@ export class WalletDashboardPage {
   private load() {
     this.profile = this.userDataProvider.currentProfile;
     this.network = this.userDataProvider.currentNetwork;
-    this.fees = this.arkApiProvider.fees;
     this.wallet = this.userDataProvider.getWalletByAddress(this.address);
+    this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);
+    this.marketDataProvider.ticker.subscribe((ticker) => this.setTicker(ticker));
+    this.marketDataProvider.history.subscribe((history) => this.marketHistory = history);
 
     if (lodash.isEmpty(this.wallet)) {
       this.navCtrl.popToRoot();

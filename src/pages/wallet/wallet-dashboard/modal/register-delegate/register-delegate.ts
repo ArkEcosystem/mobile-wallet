@@ -12,7 +12,7 @@ import lodash from 'lodash';
 })
 export class RegisterDelegatePage {
 
-  public fee: string;
+  public fee: number;
   public symbol: string;
   public name: string;
 
@@ -28,8 +28,8 @@ export class RegisterDelegatePage {
     public viewCtrl: ViewController,
     private arkApiProvider: ArkApiProvider,
   ) {
-    this.fee = this.navParams.get('fee');
-    this.symbol = this.navParams.get('symbol');
+    this.arkApiProvider.fees.subscribe((fees) => this.fee = fees.delegate);
+    this.symbol = this.arkApiProvider.network.symbol;
 
     this.arkApiProvider.delegates.takeUntil(this.unsubscriber$).subscribe((delegates) => this.delegates = delegates);
   }

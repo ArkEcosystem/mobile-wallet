@@ -28,8 +28,8 @@ export class DelegateDetailPage {
   ) {
     this.delegate = this.navParams.get('delegate');
     this.qraddress = `'{a: "${this.delegate.address}"}'`;
-    this.fees = this.arkApiProvider.fees;
     this.currentNetwork = this.arkApiProvider.network;
+    this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);
 
     if (!this.delegate) this.navCtrl.pop();
   }

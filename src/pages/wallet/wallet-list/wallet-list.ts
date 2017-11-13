@@ -157,7 +157,7 @@ export class WalletListPage {
       .subscribe(() => this.loadWallets());
   }
 
-  private onUpdateMarket() {
+  private setMarketHistory() {
     this.translateService.get([
       'WEEK_DAY.SUNDAY',
       'WEEK_DAY.MONDAY',
@@ -232,25 +232,37 @@ export class WalletListPage {
         });
       });
     });
+  }
 
-    this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).subscribe((ticker) => {
-      this.marketTicker = ticker;
-      this.btcCurrency = ticker.getCurrency({ code: 'btc' });
+  private setTicker(ticker) {
+    this.marketTicker = ticker;
+    this.btcCurrency = ticker.getCurrency({ code: 'btc' });
 
-      this.settingsDataProvider.settings.subscribe((settings) => {
-        let currency = settings.currency == 'btc' ? 'usd' : settings.currency;
+    this.settingsDataProvider.settings.subscribe((settings) => {
+      let currency = settings.currency == 'btc' ? 'usd' : settings.currency;
 
-        this.fiatCurrency = ticker.getCurrency({ code: currency });
-      });
+      this.fiatCurrency = ticker.getCurrency({ code: currency });
     });
   }
 
   ionViewDidLoad() {
     this.loadWallets();
     this.onUpdateWallet();
-    this.onUpdateMarket();
+    this.setMarketHistory();
 
-    this.marketDataProvider.refreshPrice();
+    // Fetch from api or get from storage
+    this.marketDataProvider.ticker.subscribe((ticker) => this.setTicker(ticker));
+
+    // On refresh price
+    this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).subscribe((ticker) => this.setTicker(ticker));
+
+    // wait 5sec to refresh the price
+    setTimeout(() => this.marketDataProvider.refreshPrice(), 5000);
+
+    // Fetch from api or get from storage
+    this.marketDataProvider.fetchHistory().subscribe((history) => {
+      this.marketHistory = history
+    }, () => this.marketDataProvider.history.subscribe((history) => this.marketHistory = history));
   }
 
   ngOnDestroy() {

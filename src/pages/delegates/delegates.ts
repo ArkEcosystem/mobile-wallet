@@ -39,6 +39,8 @@ export class DelegatesPage {
     this.arkApiProvider.delegates.subscribe((data) => {
       this.zone.run(() => this.delegates = data);
     });
+    this.arkApiProvider.fetchAllDelegates().subscribe();
+
     this.getSupply();
   }
 

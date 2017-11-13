@@ -11,7 +11,7 @@
 
 <ion-content class="column-mode-simple" no-padding no-bounce>
   <ion-grid no-padding class="full-height">
-    <empty-list message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="openProfileCreate()" *ngIf="wallets?.length === 0"></empty-list>
+    <empty-list message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="presentActionSheet()" *ngIf="wallets?.length === 0"></empty-list>
 
     <ion-fab bottom right class="pull-footer" *ngIf="wallets?.length > 0">
       <button ion-fab color="primary" (click)="presentActionSheet()"><ion-icon name="md-add"></ion-icon></button>

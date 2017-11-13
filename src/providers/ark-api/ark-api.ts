@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { StorageProvider } from '@providers/storage/storage';
@@ -11,6 +11,7 @@ import { Transaction } from '@models/transaction';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
+import * as constants from '@app/app.constants';
 
 @Injectable()
 export class ArkApiProvider {
@@ -33,6 +34,8 @@ export class ArkApiProvider {
     private storageProvider: StorageProvider,
     private http: Http,
   ) {
+    this.loadData();
+
     this.userDataProvider.onActivateNetwork$.subscribe((network) => {
       if (lodash.isEmpty(network)) return;
 
@@ -58,7 +61,9 @@ export class ArkApiProvider {
   }
 
   public get fees() {
-    return this._fees;
+    if (!lodash.isUndefined(this._fees)) return Observable.of(this._fees);
+
+    return this.fetchFees();
   }
 
   public get delegates(): Observable<arkts.Delegate[]> {
@@ -107,6 +112,7 @@ export class ArkApiProvider {
 
         currentPage++;
       }).finally(() => {
+        this.storageProvider.set(constants.STORAGE_DELEGATES, delegates);
         this.onUpdateDelegates$.next(delegates);
 
         observer.next(delegates);
@@ -201,15 +207,26 @@ export class ArkApiProvider {
       this._delegates = data;
     });
 
-    this.setFees();
+    this.fetchFees().subscribe();
   }
 
-  private setFees(): void {
-    arkts.BlockApi.networkFees(this._network).subscribe((response) => {
-      if (response && response.success) {
-        this._fees = response.fees;
-      }
-    });
+  private fetchFees(): Observable<arkts.Fees> {
+    return Observable.create((observer) => {
+      arkts.BlockApi.networkFees(this._network).subscribe((response) => {
+        if (response && response.success) {
+          this._fees = response.fees;
+          this.storageProvider.set(constants.STORAGE_FEES, this._fees);
+
+          observer.next(this._fees);
+        }
+      }, () => {
+        observer.next(this.storageProvider.getObject(constants.STORAGE_FEES))
+      });
+    })
+  }
+
+  private loadData() {
+    this.storageProvider.getObject(constants.STORAGE_DELEGATES).subscribe((delegates) => this._delegates = delegates);
   }
 
 }
