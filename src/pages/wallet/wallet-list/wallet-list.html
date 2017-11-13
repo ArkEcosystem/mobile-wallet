@@ -35,12 +35,12 @@
         <ion-grid>
           <ion-row nowrap>
             <ion-col col-3 text-center>
-              <p>{{ fiatCurrency?.code | uppercase }}</p>
-              <h6>{{ fiatCurrency?.price | currency:fiatCurrency?.code:'symbol' }} <span class="fiat-bullet">•</span></h6>
+              <p>{{ fiatCurrency?.code | uppercase }} <span class="fiat-bullet">•</span></p>
+              <h6>{{ fiatCurrency?.price | currency:fiatCurrency?.code:'symbol' }}</h6>
             </ion-col>
             <ion-col col-6 text-center>
-              <p>{{ btcCurrency?.code | uppercase }}</p>
-              <h6>{{ btcCurrency?.price }} <span class="btc-bullet">•</span></h6>
+              <p>{{ btcCurrency?.code | uppercase }} <span class="btc-bullet">•</span></p>
+              <h6>{{ btcCurrency?.price }}</h6>
             </ion-col>
             <ion-col col-3 text-center>
               <p>{{ 'MARKETS_PAGE.PERCENTAGE_CHANGE' | translate }}</p>

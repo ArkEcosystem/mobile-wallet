@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform } from 'ionic-angular';
 
 import { Chart } from 'chart.js';
@@ -173,7 +173,9 @@ export class WalletListPage {
         this.marketDataProvider.history.takeUntil(this.unsubscriber$).subscribe((history) => {
           if (!history) return;
 
-          let fiatHistory = history.getLastWeekPrice(settings.currency);
+          let currency = settings.currency == 'btc' ? this.settingsDataProvider.getDefaults().currency : settings.currency;
+
+          let fiatHistory = history.getLastWeekPrice(currency);
           let btcHistory = history.getLastWeekPrice('btc');
 
           this.priceChart = new Chart(this.priceChart.nativeElement, {
@@ -239,7 +241,7 @@ export class WalletListPage {
     this.btcCurrency = ticker.getCurrency({ code: 'btc' });
 
     this.settingsDataProvider.settings.subscribe((settings) => {
-      let currency = settings.currency == 'btc' ? 'usd' : settings.currency;
+      let currency = settings.currency == 'btc' ? this.settingsDataProvider.getDefaults().currency : settings.currency;
 
       this.fiatCurrency = ticker.getCurrency({ code: currency });
     });

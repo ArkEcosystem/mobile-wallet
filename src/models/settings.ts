@@ -9,7 +9,7 @@ export class UserSettings {
   public static defaults(): UserSettings {
     let settings = new UserSettings();
     settings.language = 'en';
-    settings.currency = 'btc';
+    settings.currency = 'usd';
     settings.darkMode = false;
     settings.notification = false;
 
