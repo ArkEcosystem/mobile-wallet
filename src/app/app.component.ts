@@ -49,13 +49,10 @@ export class MyApp {
     platform.ready().then(() => {
       this.menuCtrl.enable(false, 'sidebarMenu');
       statusBar.styleDefault();
+      keyboard.disableScroll(false);
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
         splashScreen.hide();
-
-        if (this.platform.is('ios')) {
-          this.keyboard.disableScroll(true);
-        }
 
         if (hasSeenIntro) {
           this.openPage('LoginPage');
@@ -89,7 +86,7 @@ export class MyApp {
   }
 
   // Redirect user when login or logout
-  private _onUserLogin(): void {
+  private onUserLogin(): void {
     this.authProvider.onLogin$.takeUntil(this.unsubscriber$).subscribe(() => {
       this.profile = this.userDataProvider.currentProfile;
       this.network = this.userDataProvider.currentNetwork;
@@ -98,7 +95,7 @@ export class MyApp {
     });
   }
 
-  private _onUserLogout(): void {
+  private onUserLogout(): void {
     this.authProvider.onLogout$.takeUntil(this.unsubscriber$).subscribe(() => {
       this.menuCtrl.enable(false, 'sidebarMenu');
       return this.openPage('ProfileSigninPage');
@@ -106,7 +103,7 @@ export class MyApp {
   }
 
   // Verify if any account registered is a delegate
-  private _onUpdateDelegates(delegates: arkts.Delegate[]) {
+  private onUpdateDelegates(delegates: arkts.Delegate[]) {
     lodash.flatMap(this.userDataProvider.profiles, (profile: Profile) => {
       let wallets = lodash.values(profile.wallets);
       return lodash.filter(wallets, { isDelegate: false });
@@ -123,29 +120,29 @@ export class MyApp {
   }
 
   // Verify if new wallet is a delegate
-  private _onCreateWallet() {
+  private onCreateWallet() {
     return this.userDataProvider.onCreateWallet$
       .takeUntil(this.unsubscriber$)
       .debounceTime(500)
       .subscribe(() => {
-        this.arkApiProvider.delegates.subscribe((delegates) => this._onUpdateDelegates(delegates))
+        this.arkApiProvider.delegates.subscribe((delegates) => this.onUpdateDelegates(delegates))
       });
   }
 
-  private _initialVerify() {
+  private initialVerify() {
     // if (lodash.isNil(this.localDataProvider.profiles)) {
     //   return this.openPage('LoginPage');
     // }
   }
 
   ngOnInit() {
-    this._initialVerify();
-    this._onUserLogin();
-    this._onUserLogout();
+    this.initialVerify();
+    this.onUserLogin();
+    this.onUserLogout();
 
-    this._onCreateWallet();
+    this.onCreateWallet();
     this.arkApiProvider.onUpdateDelegates$
-      .do((delegates) => this._onUpdateDelegates(delegates))
+      .do((delegates) => this.onUpdateDelegates(delegates))
       .takeUntil(this.unsubscriber$)
       .subscribe();
 
