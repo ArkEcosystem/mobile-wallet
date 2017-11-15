@@ -57,11 +57,7 @@ export class WalletDashboardPage {
     private loadingCtrl: LoadingController,
     private settingsDataProvider: SettingsDataProvider,
     private zone: NgZone,
-  ) {
-    this.address = this.navParams.get('address');
-
-    if (!this.address) this.navCtrl.popToRoot();
-  }
+  ) { }
 
   presentWalletActionSheet() {
     this.translateService.get([
@@ -424,19 +420,21 @@ export class WalletDashboardPage {
     }
   }
 
-  ngOnInit() {
+  ionViewDidEnter() {
+    this.address = this.navParams.get('address');
+
+    if (!this.address) this.navCtrl.popToRoot();
+
+    this.load();
+
+    this.refreshAllData();
+    this.refreshPrice();
+
     this.refreshDataIntervalListener = setInterval(() => this.refreshAllData(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
     this.refreshTickerIntervalListener = setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
 
     this.onUpdateWallet();
     this.onUpdateMarket();
-  }
-
-  ionViewDidLoad() {
-    this.load();
-
-    this.refreshAllData();
-    this.refreshPrice();
   }
 
   ngOnDestroy() {

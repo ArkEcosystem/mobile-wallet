@@ -12,8 +12,7 @@
       <ion-col text-center>
         <span>{{ transaction?.getTypeLabel() | translate }}</span>
         <h2 ion-text [color]="transaction.isSender() ? 'danger' : 'secondary'">
-          {{ transaction?.isSender() ? '-' : '+' }} {{ networkSymbol }}{{ transaction?.getAmount() | unitsSatoshi | number: '1.0-2'
-          }}
+          {{ transaction?.isSender() ? '-' : '+' }} {{ transaction?.getAmount() | unitsSatoshi | number: '1.0-5' }} {{ currentNetwork?.token }}
         </h2>
         <h4>{{ equivalentSymbol }}{{ equivalentAmount | unitsSatoshi | number: '1.2-2' }}</h4>
       </ion-col>

@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Transaction } from '@models/transaction';
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { Network } from 'ark-ts/model';
 
 @IonicPage()
 @Component({
@@ -12,7 +13,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 export class TransactionShowPage {
 
   public transaction: Transaction;
-  public networkSymbol: string;
+  public currentNetwork: Network;
   public equivalentAmount: number = 0;
   public equivalentSymbol: string;
 
@@ -20,19 +21,19 @@ export class TransactionShowPage {
   public senderLabel: string;
 
   constructor(
-    private _navCtrl: NavController,
-    private _navParams: NavParams,
-    private _userDataProvider: UserDataProvider
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private userDataProvider: UserDataProvider
   ) {
-    this.transaction = this._navParams.get('transaction');
-    this.networkSymbol = this._navParams.get('symbol');
-    this.equivalentAmount = this._navParams.get('equivalentAmount');
-    this.equivalentSymbol = this._navParams.get('equivalentSymbol');
+    this.transaction = this.navParams.get('transaction');
+    this.currentNetwork = this.userDataProvider.currentNetwork;
+    this.equivalentAmount = this.navParams.get('equivalentAmount');
+    this.equivalentSymbol = this.navParams.get('equivalentSymbol');
 
-    if (!this.transaction || !this.networkSymbol) this._navCtrl.popToRoot();
+    if (!this.transaction) this.navCtrl.popToRoot();
 
-    let walletRecipient = this._userDataProvider.getWalletByAddress(this.transaction.recipientId);
-    let walletSender = this._userDataProvider.getWalletByAddress(this.transaction.senderId);
+    let walletRecipient = this.userDataProvider.getWalletByAddress(this.transaction.recipientId);
+    let walletSender = this.userDataProvider.getWalletByAddress(this.transaction.senderId);
 
     this.recipientLabel = walletRecipient ? walletRecipient.label : null;
     this.senderLabel = walletSender ? walletSender.label : null;
