@@ -395,6 +395,7 @@ export class WalletDashboardPage {
     this.profile = this.userDataProvider.currentProfile;
     this.network = this.userDataProvider.currentNetwork;
     this.wallet = this.userDataProvider.getWalletByAddress(this.address);
+
     this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);
     this.marketDataProvider.ticker.subscribe((ticker) => this.setTicker(ticker));
     this.marketDataProvider.history.subscribe((history) => this.marketHistory = history);
@@ -403,6 +404,8 @@ export class WalletDashboardPage {
       this.navCtrl.popToRoot();
       return;
     }
+
+    this.userDataProvider.setCurrentWallet(this.wallet);
 
     let transactions = this.wallet.transactions;
 

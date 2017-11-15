@@ -48,6 +48,8 @@ export class WalletListPage {
   ) {
     this.currentNetwork = this.userDataProvider.currentNetwork;
     this.currentProfile = this.userDataProvider.currentProfile;
+
+    this.userDataProvider.clearCurrentWallet();
   }
 
   openWalletDashboard(wallet: Wallet) {

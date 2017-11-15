@@ -18,12 +18,15 @@
     "TOTAL_FORGED": "Total Forged",
     "NO_MATCHING_SEARCH": "No matching delegates",
     "VOTE": "Vote",
+    "UNVOTE": "Unvote",
     "PRODUCED_BLOCKS": "Produced Blocks",
     "MISSED_BLOCKS": "Missed Blocks",
     "REGISTER_DELEGATE": "Register Delegate",
     "DELEGATE_NAME": "Delegate name",
     "USERNAME_ALREADY_EXISTS": "This username already exists",
-    "NOTE_COST_TEXT": "Note that the cost of registering the delegate is"
+    "NOTE_COST_TEXT": "Note that the cost of registering the delegate is",
+    "UNVOTE_CURRENT_DELEGATE": "You already have a delegate, do you want to unvote {{ delegate }} first?",
+    "WARNING_SELECT_WALLET_FIRST": "You need to select a wallet first to enable the voting process"
   },
   "LOGIN_PAGE": {
     "ARK_WALLET": "ARK Wallet",

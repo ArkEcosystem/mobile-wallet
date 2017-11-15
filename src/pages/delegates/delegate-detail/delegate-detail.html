@@ -67,14 +67,19 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer>
-  <ion-grid>
+<ion-footer class="no-padding">
+  <ion-grid class="no-padding">
     <ion-row>
       <ion-col>
         <button ion-button block outline (click)="dismiss()">{{ 'CANCEL' | translate }}</button>
       </ion-col>
       <ion-col>
-        <button ion-button block (click)="vote()" color="primary">{{ 'DELEGATES_PAGE.VOTE' | translate }} ({{ currentNetwork?.symbol }}{{ fees?.vote | unitsSatoshi }})</button>
+        <button ion-button block (click)="submit()" color="primary" [disabled]="!isWalletSelected()">{{ (isSameDelegate() ? 'DELEGATES_PAGE.UNVOTE' : 'DELEGATES_PAGE.VOTE') | translate }} ({{ currentNetwork?.symbol }}{{ fees?.vote | unitsSatoshi }})</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="!isWalletSelected()" class="note-toolbar">
+      <ion-col text-center>
+        {{ 'DELEGATES_PAGE.WARNING_SELECT_WALLET_FIRST' | translate }}
       </ion-col>
     </ion-row>
   </ion-grid>

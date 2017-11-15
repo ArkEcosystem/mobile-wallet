@@ -34,7 +34,10 @@
     <div *ngSwitchCase="'active'" class="delegate-list">
       <ion-row (click)="openDetailModal(delegate)" nowrap text-left *ngFor="let delegate of delegates.slice(0, 51) | filterBy: searchQuery" class="delegate-item">
         <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
-        <ion-col col-7>{{ delegate?.username }}</ion-col>
+        <ion-col col-7>
+          {{ delegate?.username }}
+          <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTE' | translate | lowercase }}</ion-badge>
+        </ion-col>
         <ion-col col-3><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
       </ion-row>
       <ion-row *ngIf="(delegates.slice(0, 51) | filterBy: searchQuery).length === 0">
@@ -46,7 +49,10 @@
     <div *ngSwitchCase="'standBy'" class="delegate-list">
       <ion-row (click)="openDetailModal(delegate)" nowrap text-left *ngFor="let delegate of delegates.slice(51, delegates.length) | filterBy: searchQuery" class="delegate-item">
         <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
-        <ion-col col-7>{{ delegate?.username }}</ion-col>
+        <ion-col col-7>
+          {{ delegate?.username }}
+          <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTE' | translate | lowercase }}</ion-badge>
+        </ion-col>
         <ion-col col-3><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
       </ion-row>
       <ion-row *ngIf="(delegates.slice(51, delegates.length) | filterBy: searchQuery).length === 0">

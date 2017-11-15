@@ -23,6 +23,7 @@ export class UserDataProvider {
 
   public currentProfile: Profile;
   public currentNetwork: Network;
+  public currentWallet: Wallet;
 
   public onActivateNetwork$: Subject<Network> = new Subject();
   public onCreateWallet$: Subject<Wallet> = new Subject();
@@ -186,6 +187,14 @@ export class UserDataProvider {
     if (notificate) this.onUpdateWallet$.next(wallet);
 
     return this.saveProfiles();
+  }
+
+  setCurrentWallet(wallet: Wallet) {
+    this.currentWallet = wallet;
+  }
+
+  clearCurrentWallet() {
+    this.currentWallet = undefined;
   }
 
   loadProfiles() {

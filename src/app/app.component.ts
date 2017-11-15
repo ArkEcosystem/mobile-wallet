@@ -97,8 +97,10 @@ export class MyApp {
 
   private onUserLogout(): void {
     this.authProvider.onLogout$.takeUntil(this.unsubscriber$).subscribe(() => {
+      this.userDataProvider.clearCurrentWallet();
+
       this.menuCtrl.enable(false, 'sidebarMenu');
-      return this.openPage('ProfileSigninPage');
+      return this.openPage('LoginPage');
     })
   }
 

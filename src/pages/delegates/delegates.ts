@@ -6,7 +6,10 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { Delegate, Network, VoteType } from 'ark-ts';
 
+import { Wallet, Transaction } from '@models/model';
+
 import * as constants from '@app/app.constants';
+import lodash from 'lodash';
 
 @IonicPage()
 @Component({
@@ -24,6 +27,9 @@ export class DelegatesPage {
   public rankStatus: string = 'active';
   public currentNetwork: Network;
 
+  private currentWallet: Wallet;
+  private walletVote: Delegate;
+
   private unsubscriber$: Subject<void> = new Subject<void>();
   private refreshListener;
 
@@ -34,33 +40,31 @@ export class DelegatesPage {
     private zone: NgZone,
     private modalCtrl: ModalController,
     private userDataProvider: UserDataProvider,
-  ) {
-    this.currentNetwork = this.arkApiProvider.network;
-    this.arkApiProvider.delegates.subscribe((data) => {
-      this.zone.run(() => this.delegates = data);
-    });
-    this.arkApiProvider.fetchAllDelegates().subscribe();
-
-    this.getSupply();
-  }
+  ) { }
 
   openDetailModal(delegate: Delegate) {
     let modal = this.modalCtrl.create('DelegateDetailPage', {
-      delegate
+      delegate,
+      vote: this.walletVote,
     }, { cssClass: 'inset-modal-large', enableBackdropDismiss: true });
 
-    modal.onDidDismiss((status) => {
-      if (!status) return;
+    modal.onDidDismiss((voter) => {
+      if (!voter) return;
 
       this.getPassphrases().then((passphrases) => {
         if (!passphrases) return;
 
-        // TODO: Vote type
+        let type = VoteType.Add;
+
+        if (this.walletVote && this.walletVote.publicKey === voter.publicKey) type = VoteType.Remove;
+
         this.arkApiProvider.api.transaction.createVote({
-          delegatePublicKey: delegate.publicKey,
+          delegatePublicKey: voter.publicKey,
           passphrase: passphrases['passphrase'],
           secondPassphrase: passphrases['secondPassphrase'],
-          type: VoteType.Add
+          type
+        }).subscribe((transaction) => {
+          this.confirmTransaction(transaction, passphrases);
         });
 
         // TODO: Confirm transaction
@@ -87,6 +91,81 @@ export class DelegatesPage {
     return forged;
   }
 
+  isSameDelegate(delegatePublicKey) {
+    if (this.currentWallet && this.walletVote && this.walletVote.publicKey === delegatePublicKey) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private confirmTransaction(transaction: Transaction, passphrases: any) {
+    let response = { status: false, message: undefined };
+    transaction = new Transaction(this.currentWallet.address).deserialize(transaction);
+
+    this.arkApiProvider.createTransaction(transaction, passphrases['passphrase'], passphrases['secondPassphrase'])
+      .finally(() => {
+        if (response.status) {
+          let confirmModal = this.modalCtrl.create('TransactionConfirmPage', {
+            transaction,
+            passphrases,
+            address: this.currentWallet.address,
+          }, { cssClass: 'inset-modal', enableBackdropDismiss: true });
+
+          confirmModal.onDidDismiss((result) => {
+            if (lodash.isUndefined(result)) return;
+
+            if (result.status) {
+              return this.navCtrl.push('TransactionResponsePage', {
+                transaction,
+                passphrases,
+                response: result,
+                wallet: this.currentWallet,
+              });
+            }
+
+            response = result;
+            this.presentTransactionResponseModal(response);
+          });
+
+          confirmModal.present();
+        } else {
+          this.presentTransactionResponseModal(response);
+        }
+      })
+      .subscribe((tx) => {
+        response.status = true;
+        transaction = tx;
+      }, (error) => {
+        response.status = false,
+        response.message = error;
+      });
+  }
+
+  private presentTransactionResponseModal(response: any) {
+    let responseModal = this.modalCtrl.create('TransactionResponsePage', {
+      response
+    }, { cssClass: 'inset-modal-small' });
+
+    responseModal.present();
+  }
+
+  private fetchCurrentVote() {
+    if (!this.currentWallet) return;
+
+    this.arkApiProvider.api.account
+      .votes({ address: this.currentWallet.address })
+      .takeUntil(this.unsubscriber$)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.success && data.delegates.length > 0) {
+          this.walletVote = data.delegates[0];
+        }
+      }, () => {
+        // TODO: Toast error
+      });
+  }
+
   private getPassphrases(message?: string) {
     let msg = message || 'PIN_CODE.TYPE_PIN_SIGN_TRANSACTION';
     let modal = this.modalCtrl.create('PinCodePage', {
@@ -101,9 +180,8 @@ export class DelegatesPage {
       modal.onDidDismiss((password) => {
         if (!password) return reject();
 
-        // TODO: Get current wallet
-        // let passphrases = this.userDataProvider.getPassphrasesByWallet(this.wallet, password);
-        // resolve(passphrases);
+        let passphrases = this.userDataProvider.getPassphrasesByWallet(this.currentWallet, password);
+        resolve(passphrases);
       });
     });
   }
@@ -125,11 +203,18 @@ export class DelegatesPage {
       .subscribe();
   }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
+    this.currentNetwork = this.arkApiProvider.network;
+    this.currentWallet = this.userDataProvider.currentWallet;
+
+    this.arkApiProvider.delegates.subscribe((data) => this.zone.run(() => this.delegates = data));
+
     this.onUpdateDelegates();
-    this.refreshListener = setInterval(() => {
-      this.getSupply();
-    }, constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
+    this.getSupply();
+    this.fetchCurrentVote();
+    this.arkApiProvider.fetchAllDelegates().subscribe();
+
+    this.refreshListener = setInterval(() => this.getSupply(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
   }
 
   ngOnDestroy() {
