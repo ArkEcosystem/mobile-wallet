@@ -2,24 +2,21 @@ page-login {
   ion-content {
     background: url('../assets/img/login/blocks-bg.png') repeat;
     background-size: contain;
-    scroll-content {
-      display: flex;
-      flex-direction: column;
+
+    .image-container {
+      overflow: hidden;
+      display: inline-block;
+      position: relative;
     }
-    ion-grid {
-      padding: 0;
-      height: 100%;
-    }
-    .grid {
-      padding: 3em 1em;
-    }
-    ion-row {
-      flex: 1;
-    }
-    img {
-      margin: 0 auto;
-      width: 13em;
-      height: 13em;
+
+    .image-logo {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      max-height: 100%;
+      max-width: 60%;
+      transform: translate(-50%, -50%);
     }
   }
 }

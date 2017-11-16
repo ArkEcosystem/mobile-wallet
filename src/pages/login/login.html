@@ -1,14 +1,18 @@
-<ion-content no-bounce padding>
+<ion-content class="column-mode" no-bounce padding>
   <ion-grid>
     <ion-row>
+      <ion-col text-center class="image-container">
+        <img src="./assets/img/login/logo-block.png" class="image-logo">
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col text-center>
-        <img src="./assets/img/login/logo-block.png">
         <h1>{{ 'LOGIN_PAGE.ARK_WALLET' | translate | uppercase }}</h1>
         <p>{{ 'LOGIN_PAGE.SLOGAN' | translate }}</p>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col class="actions-col" text-center align-self-end>
+      <ion-col text-center align-self-end>
         <button class="button-continue" (click)="openProfileSignin()" ion-button>{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</button>
         <button class="button-continue" (click)="openProfileCreate()" ion-button clear>{{ 'LOGIN_PAGE.CREATE_PROFILE' | translate }}</button>
       </ion-col>
