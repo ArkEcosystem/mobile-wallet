@@ -34,10 +34,13 @@
     "CREATE_PROFILE": "Create an profile"
   },
   "INTRO_PAGE": {
-    "TEXT_1": "Simple 24/7 Mobile Access to your ARK tokens, Worldwide!",
-    "TEXT_2": "Successfully completed security audits by world-class researches",
-    "TEXT_3": "PIN Code is a that makes you forget all your worries about passwords",
-    "GETTING_STARTED": "Getting Started"
+    "WELCOME": "Welcome Aboard",
+    "TEXT_1": "We provide all the tools you need to manage your Ark tokens, anytime, anywhere, worldwide!",
+    "SECURITY": "Security",
+    "TEXT_2": "All your sensitive data is securely stored using AES-256 encryption and protected by your PIN Code",
+    "FAST_EASY": "Fast and Easy",
+    "TEXT_3": "Swipe between profiles and wallets, check your balances, send and receive funds and much more",
+    "GET_STARTED": "Get Started"
   },
   "PIN_CODE": {
     "CREATE": "Create your PIN",
@@ -146,6 +149,7 @@
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
   "DATE": "Date",
+  "DONE": "Done",
   "NAME": "Name",
   "CANCEL": "Cancel",
   "CONFIRM": "Confirm",

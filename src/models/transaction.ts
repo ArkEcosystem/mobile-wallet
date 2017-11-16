@@ -54,8 +54,7 @@ export class Transaction extends TransactionModel {
     var blockchainDate = arkConfig.blockchain.date;
     var blockchainTime = blockchainDate.getTime() / 1000;
 
-    let currentTimestamp = new Date((this.timestamp + blockchainTime) * 1000);
-    console.log(currentTimestamp);
+    let currentTimestamp = this.timestamp + blockchainTime;
 
     return currentTimestamp;
   }

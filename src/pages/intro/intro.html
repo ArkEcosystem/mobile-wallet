@@ -1,34 +1,42 @@
-<ion-header no-shadow>
-
-  <ion-navbar>
-    <ion-buttons end *ngIf="showSkip">
-      <button ion-button (click)="startApp()" color="primary">{{ 'SKIP' | translate }}</button>
-    </ion-buttons>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding no-bounce>
-  <ion-slides padding pager="true" (ionSlideWillChange)="onSlideChangeStart($event)">
-    <ion-slide>
-      <div class="img-box">
-        <img src="assets/img/light/intro/24_7.png" alt="">
-      </div>
-      <p>{{ 'INTRO_PAGE.TEXT_1' | translate }}</p>
-    </ion-slide>
-    <ion-slide>
-      <div class="img-box">
-        <img src="assets/img/light/intro/security.png" alt="">
-      </div>
-      <p>{{ 'INTRO_PAGE.TEXT_2' | translate }}</p>
-    </ion-slide>
-    <ion-slide>
-      <div class="img-box">
-        <img src="assets/img/light/intro/pincode.png" alt="">
-      </div>
-      <p>{{ 'INTRO_PAGE.TEXT_3' | translate }}</p>
-      <button ion-button block color="primary" (click)="startApp()" *ngIf="!showSkip">{{ 'INTRO_PAGE.GETTING_STARTED' | translate }}</button>
+<ion-content class="column-mode" no-bounce>
+  <ion-slides #slider (ionSlideDidChange)="slideChanged()">
+    <ion-slide *ngFor="let slide of slides">
+      <ion-grid>
+        <ion-row hideWhen="landscape">
+          <ion-col align-self-center>
+            <img [src]="slide.image" class="slide-image">
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col align-self-center>
+            <h2 class="slide-title">{{ slide.title }}</h2>
+            <p>{{ slide.description }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-slide>
   </ion-slides>
 </ion-content>
+
+<ion-footer>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-3>
+        <button ion-button clear (click)="startApp()" [disabled]="!showSkip">{{ 'SKIP' | translate }}</button>
+      </ion-col>
+      <ion-col col-6>
+        <ion-grid fixed class="slide-pagination full-height" text-center>
+          <ion-row class="full-height" nowrap align-items-center justify-content-center>
+            <ion-col *ngFor="let page of slides; let i = index" [class.active]="activeIndex == i">
+              <span></span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button clear (click)="goNext()" *ngIf="showSkip">{{ 'NEXT' | translate }}</button>
+        <button ion-button clear (click)="startApp()" *ngIf="!showSkip">{{ 'DONE' | translate }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
