@@ -2,9 +2,15 @@
   <button ion-fab color="primary" (click)="submit()"><ion-icon name="md-add"></ion-icon></button>
 </ion-fab>
 
-<ion-row padding justify-content-center align-items-center class="full-height">
-  <ion-col text-center>
-    <img src="./assets/img/wallet/hand-add-button.png">
-    <h5>{{ message | translate }}</h5>
-  </ion-col>
-</ion-row>
+<ion-grid padding>
+  <ion-row class="image-row">
+    <ion-col text-center class="image-container">
+      <img src="./assets/img/wallet/hand-add-button.png" class="image">
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col text-center align-self-start>
+      <h5>{{ message | translate }}</h5>
+    </ion-col>
+  </ion-row>
+</ion-grid>

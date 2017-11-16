@@ -40,11 +40,13 @@
         "bcryptjs": "^2.4.3",
         "bip39": "^2.4.0",
         "chart.js": "^2.7.1",
+        "cordova-browser": "^4.1.0",
         "cordova-clipboard": "^1.1.0",
         "cordova-ios": "^4.4.0",
         "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-device": "^1.1.7",
         "cordova-plugin-qrscanner": "^2.5.0",
+        "cordova-plugin-screen-orientation": "^2.0.2",
         "cordova-plugin-splashscreen": "^4.1.0",
         "cordova-plugin-statusbar": "^2.3.0",
         "cordova-plugin-swift-support": "^3.1.1",
@@ -80,9 +82,11 @@
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
             "cordova-plugin-qrscanner": {},
-            "cordova-plugin-vibration": {}
+            "cordova-plugin-vibration": {},
+            "cordova-plugin-screen-orientation": {}
         },
         "platforms": [
+            "browser",
             "ios"
         ]
     }
