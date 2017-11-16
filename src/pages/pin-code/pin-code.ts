@@ -1,6 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Vibration } from '@ionic-native/vibration';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { AuthProvider } from '@providers/auth/auth';
 
@@ -8,7 +9,7 @@ import { AuthProvider } from '@providers/auth/auth';
 @Component({
   selector: 'page-pin-code',
   templateUrl: 'pin-code.html',
-  providers: [Vibration],
+  providers: [Vibration, ScreenOrientation],
 })
 export class PinCodePage {
 
@@ -31,6 +32,7 @@ export class PinCodePage {
     private authProvider: AuthProvider,
     private zone: NgZone,
     private vibration: Vibration,
+    private screenOrientation: ScreenOrientation,
   ) {
     this.password = '';
     this.message = this.navParams.get('message');
@@ -38,7 +40,7 @@ export class PinCodePage {
     this.outputPassword = this.navParams.get('outputPassword') || false;
     this.validatePassword = this.navParams.get('validatePassword') || false;
 
-    // chRef.detectChanges();
+    this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
   }
 
   add(value: number) {

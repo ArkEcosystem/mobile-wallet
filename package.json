@@ -24,6 +24,7 @@
         "@ionic-native/core": "^4.4.0",
         "@ionic-native/keyboard": "^4.4.0",
         "@ionic-native/qr-scanner": "^4.4.0",
+        "@ionic-native/screen-orientation": "^4.4.2",
         "@ionic-native/splash-screen": "^4.4.0",
         "@ionic-native/status-bar": "3.12.1",
         "@ionic-native/vibration": "^4.4.0",
