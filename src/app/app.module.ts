@@ -18,6 +18,7 @@ import { SettingsDataProvider } from '../providers/settings-data/settings-data';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Keyboard } from '@ionic-native/keyboard';
+import { QRScanner } from '@ionic-native/qr-scanner';
 
 import { MyApp } from './app.component';
 import { ForgeProvider } from '../providers/forge/forge';
@@ -57,6 +58,7 @@ export function httpLoaderFactory(http: Http) {
     StatusBar,
     SplashScreen,
     Keyboard,
+    QRScanner,
     // Custom providers
     {provide: StorageProvider, useClass: StorageProvider, deps: [Storage]},
     {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},
