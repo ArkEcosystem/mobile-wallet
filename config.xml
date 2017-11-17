@@ -95,4 +95,5 @@
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
     <plugin name="cordova-plugin-screen-orientation" spec="^2.0.2" />
     <engine name="browser" spec="~4.1.0" />
+    <plugin name="cordova-sqlite-storage" spec="^2.1.2" />
 </widget>
