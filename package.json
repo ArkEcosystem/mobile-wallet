@@ -40,9 +40,11 @@
         "bcryptjs": "^2.4.3",
         "bip39": "^2.4.0",
         "chart.js": "^2.7.1",
+        "cordova-android": "6.3.0",
         "cordova-browser": "^4.1.0",
         "cordova-clipboard": "^1.1.0",
         "cordova-ios": "^4.4.0",
+        "cordova-plugin-compat": "^1.2.0",
         "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-device": "^1.1.7",
         "cordova-plugin-qrscanner": "^2.5.0",
@@ -87,7 +89,8 @@
         },
         "platforms": [
             "browser",
-            "ios"
+            "ios",
+            "android"
         ]
     }
 }
