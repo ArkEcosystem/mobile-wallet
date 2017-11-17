@@ -98,7 +98,8 @@ export class WalletListPage {
     modal.onDidDismiss((entropy) => {
       if (!entropy) return;
 
-      let showModal = this.modalCtrl.create('WalletCreatePage', {
+      let showModal = this.modalCtrl.create('WalletBackupPage', {
+        title: 'WALLETS_PAGE.CREATE_WALLET',
         entropy,
       });
 
@@ -169,6 +170,8 @@ export class WalletListPage {
       'WEEK_DAY.FRIDAY',
       'WEEK_DAY.SATURDAY',
     ]).subscribe((translation) => {
+      if (lodash.isEmpty(this.wallets)) return;
+
       let days = lodash.values(translation);
 
       this.settingsDataProvider.settings.subscribe((settings) => {

@@ -95,14 +95,7 @@ export class ProfileSigninPage {
       if (status) {
         this.authProvider.login(profileId).takeUntil(this._unsubscriber).subscribe((status) => {
           if (status) {
-            var wallets = this.userDataProvider.currentProfile.wallets;
-            var addresses = lodash.keys(wallets) || [];
-
-            if (addresses.length === 0) {
-              this.navCtrl.setRoot('WalletEmptyPage');
-            } else {
-              this.navCtrl.setRoot('WalletListPage');
-            }
+            this.navCtrl.setRoot('WalletListPage');
           } else {
             // TODO: Show toast error
           }

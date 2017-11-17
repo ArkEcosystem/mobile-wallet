@@ -29,7 +29,7 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content tappable>
   <ion-grid padding fixed *ngIf="delegates" [ngSwitch]="rankStatus">
     <div *ngSwitchCase="'active'" class="delegate-list">
       <ion-row (click)="openDetailModal(delegate)" nowrap text-left *ngFor="let delegate of delegates.slice(0, 51) | filterBy: searchQuery" class="delegate-item">

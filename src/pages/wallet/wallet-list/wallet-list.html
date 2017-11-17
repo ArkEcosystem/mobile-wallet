@@ -17,7 +17,7 @@
       <button ion-fab color="primary" (click)="presentActionSheet()"><ion-icon name="md-add"></ion-icon></button>
     </ion-fab>
 
-    <ion-row no-padding>
+    <ion-row no-padding *ngIf="wallets?.length > 0">
       <ion-col no-padding>
         <ion-scroll scrollX="true">
           <ion-card *ngFor="let wallet of wallets" [class.delegate]="wallet?.isDelegate" (click)="openWalletDashboard(wallet)">
@@ -29,7 +29,7 @@
         </ion-scroll>
       </ion-col>
     </ion-row>
-    <ion-row padding>
+    <ion-row padding *ngIf="wallets?.length > 0">
       <ion-col>
         <h3 class="market-cap-title">{{ 'MARKETS_PAGE.MARKET_CAP' | translate }}</h3>
         <ion-grid>
@@ -50,7 +50,7 @@
         </ion-grid>
       </ion-col>
     </ion-row>
-    <ion-row class="rowChart">
+    <ion-row class="rowChart" [style.display]="wallets?.length > 0 ? 'block' : 'none'">
       <canvas #priceChart></canvas>
     </ion-row>
   </ion-grid>

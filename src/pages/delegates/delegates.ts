@@ -46,7 +46,7 @@ export class DelegatesPage {
     let modal = this.modalCtrl.create('DelegateDetailPage', {
       delegate,
       vote: this.walletVote,
-    }, { cssClass: 'inset-modal-large', enableBackdropDismiss: true });
+    }, { cssClass: 'inset-modal-large', showBackdrop: true, enableBackdropDismiss: true });
 
     modal.onDidDismiss((voter) => {
       if (!voter) return;

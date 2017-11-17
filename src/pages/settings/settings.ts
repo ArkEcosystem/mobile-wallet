@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { UserSettings } from '@models/settings';
+import { UserSettings, Wallet } from '@models/model';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
+import { UserDataProvider } from '@providers/user-data/user-data';
+
 import lodash from 'lodash';
 
 @IonicPage()
@@ -22,16 +24,20 @@ export class SettingsPage {
   public availableOptions;
   public currentSettings;
 
-  private _unsubscriber$: Subject<void> = new Subject<void>();
+  private unsubscriber$: Subject<void> = new Subject<void>();
+  private currentWallet: Wallet;
 
   constructor(
-    private _navCtrl: NavController,
-    private _navParams: NavParams,
-    private _settingsDataProvider: SettingsDataProvider,
-    private _alertCtrl: AlertController,
-    private _translateService: TranslateService,
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private settingsDataProvider: SettingsDataProvider,
+    private alertCtrl: AlertController,
+    private translateService: TranslateService,
+    private modalCtrl: ModalController,
+    private userDataProvider: UserDataProvider,
   ) {
-    this.availableOptions = this._settingsDataProvider.AVALIABLE_OPTIONS;
+    this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
+    this.currentWallet = this.userDataProvider.currentWallet;
   }
 
   openChangePinPage() {
@@ -39,17 +45,28 @@ export class SettingsPage {
   }
 
   openWalletBackupPage() {
-    // TODO:
+    if (!this.currentWallet) return this.presentSelectWallet();
+
+    this.getPassphrases().then((passphrases) => {
+      if (!passphrases) return;
+
+      let modal = this.modalCtrl.create('WalletBackupPage', {
+        title: 'SETTINGS_PAGE.WALLET_BACKUP',
+        passphrases,
+      });
+
+      modal.present();
+    });
   }
 
   confirmClearData() {
-    this._translateService.get([
+    this.translateService.get([
       'CANCEL',
       'CONFIRM',
       'ARE_YOU_SURE',
       'SETTINGS_PAGE.CLEAR_DATA_TEXT',
-    ]).takeUntil(this._unsubscriber$).subscribe((translation) => {
-      let confirm = this._alertCtrl.create({
+    ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
+      let confirm = this.alertCtrl.create({
         title: translation.ARE_YOU_SURE,
         message: translation['SETTINGS_PAGE.CLEAR_DATA_TEXT'],
         buttons: [
@@ -59,7 +76,7 @@ export class SettingsPage {
           {
             text: translation.CONFIRM,
             handler: () => {
-              this._clearData();
+              this.clearData();
             }
           }
         ]
@@ -69,32 +86,77 @@ export class SettingsPage {
     });
   }
 
-  private _clearData() {
-    this._settingsDataProvider.clearData();
-    this._navCtrl.setRoot('LoginPage');
+  private presentSelectWallet() {
+    this.translateService.get([
+      'SETTINGS_PAGE.SELECT_WALLET',
+      'SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT'
+    ]).subscribe((translation) => {
+      let alert = this.alertCtrl.create({
+        title: translation['SETTINGS_PAGE.SELECT_WALLET'],
+        message: translation['SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT'],
+        buttons: [{
+          text: 'Ok'
+        }]
+      })
+
+      alert.present();
+    });
+  }
+
+  private clearData() {
+    this.getPassphrases().then(() => {
+      this.settingsDataProvider.clearData();
+      this.navCtrl.setRoot('LoginPage');
+    });
+  }
+
+  private getPassphrases() {
+    let message = 'PIN_CODE.DEFAULT_MESSAGE';
+    let modal = this.modalCtrl.create('PinCodePage', {
+      message,
+      outputPassword: true,
+      validatePassword: true,
+    });
+
+    modal.present();
+
+    return new Promise((resolve, reject) => {
+      modal.onDidDismiss((password) => {
+        if (!password) {
+          reject();
+        } else {
+          if (this.currentWallet) {
+            let passphrases = this.userDataProvider.getPassphrasesByWallet(this.currentWallet, password);
+            resolve(passphrases);
+          }
+
+          resolve();
+        }
+      });
+    });
   }
 
   onUpdate() {
-    this._settingsDataProvider.save(this.currentSettings);
+    this.settingsDataProvider.save(this.currentSettings);
   }
 
   ionViewDidLoad() {
-    this._settingsDataProvider.settings
-      .takeUntil(this._unsubscriber$)
+    this.settingsDataProvider.settings
+      .takeUntil(this.unsubscriber$)
       .do((settings) => this.currentSettings = settings)
       .subscribe();
   }
 
   ngOnInit() {
-    this._settingsDataProvider.onUpdate$
-      .takeUntil(this._unsubscriber$)
+    this.settingsDataProvider.onUpdate$
+      .takeUntil(this.unsubscriber$)
       .do((settings) => this.currentSettings = settings)
       .subscribe();
   }
 
   ngOnDestroy() {
-    this._unsubscriber$.next();
-    this._unsubscriber$.complete();
+    this.unsubscriber$.next();
+    this.unsubscriber$.complete();
   }
 
 }

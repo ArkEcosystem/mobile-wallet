@@ -1,0 +1,55 @@
+page-wallet-backup {
+  ion-content {
+    background: #edf2f5!important;
+  }
+
+  .col {
+    padding: 1.5em!important;
+  }
+
+  .list {
+    margin: .5em 0 0 0;
+
+    .item {
+      background: transparent;
+      padding-left: 0;
+    }
+
+    .item-value {
+      line-height: 1.5;
+      margin-top: .3em;
+    }
+  }
+
+  .advanced-container {
+
+    .advanced-list {
+      .item-caption {
+        color: rgb(99, 99, 99);
+      }
+    }
+  }
+
+  .account-container {
+    background: url('../assets/img/wallet/balance-wallet-bg.png') #080e20 repeat;
+    background-size: cover;
+
+    .qrcode-container {
+      margin-top: .5em;
+      display: inline-block;
+      padding: .3em;
+      background: white;
+      border-radius: 5px;
+    }
+
+    .account-list {
+      .item-caption {
+        color: rgb(203, 203, 203);
+      }
+
+      .item-value {
+        color: white;
+      }
+    }
+  }
+}
