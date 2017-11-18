@@ -22,7 +22,8 @@ import { Wallet, Profile } from '@models/model';
 import * as arkts from 'ark-ts';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [ScreenOrientation],
 })
 export class MyApp {
   public rootPage = 'IntroPage';

@@ -1,19 +1,5 @@
 page-wallet-import-passphrase {
-  scroll-content {
-    display: flex;
-    flex-direction: column;
-  }
-  ion-grid {
-    padding: 0;
-    height: 100%;
-  }
-  .grid {
-    padding: 2em 1em;
-  }
-  ion-row {
-    flex: 1;
-  }
-  img {
+  .image {
     display: block;
     margin: 0 auto;
     width: 18em;

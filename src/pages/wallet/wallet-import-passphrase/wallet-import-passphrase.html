@@ -6,28 +6,26 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content class="column-mode" padding>
   <ion-grid>
     <ion-row>
       <ion-col text-center>
         <form #importWalletPassphrase="ngForm">
           <ion-item>
             <ion-label floating>{{ 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE' | translate }}</ion-label>
-            <ion-textarea name="passphrase" [(ngModel)]="passphrase" required></ion-textarea>
+            <ion-textarea name="passphrase" rows="3" [(ngModel)]="passphrase" required></ion-textarea>
           </ion-item>
         </form>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <img src="./assets/img/wallet/import-wallet.png">
+        <img src="./assets/img/wallet/import-wallet.png" class="image">
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-    <button ion-button block full large clear [disabled]="!importWalletPassphrase.form.valid" (click)="submitForm()">{{ 'IMPORT' | translate }}</button>
-  </ion-toolbar>
+<ion-footer padding text-center>
+  <button ion-button class="button-continue" [disabled]="!importWalletPassphrase.form.valid" (click)="submitForm()">{{ 'IMPORT' | translate }}</button>
 </ion-footer>
