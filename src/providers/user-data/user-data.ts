@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
-import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ForgeProvider } from '@providers/forge/forge';
 
 import { Observable, Subject } from 'rxjs';
@@ -159,6 +158,12 @@ export class UserDataProvider {
     }
 
     return this.saveProfiles();
+  }
+
+  removeWalletByAddress(address: string, profileId: string = this.authProvider.loggedProfileId): void {
+    delete this.profiles[profileId]['wallets'][address];
+
+    this.saveProfiles();
   }
 
   getWalletByAddress(address: string, profileId: string = this.authProvider.loggedProfileId): Wallet {

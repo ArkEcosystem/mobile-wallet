@@ -227,9 +227,10 @@ export class WalletDashboardPage {
   }
 
   presentDeleteWalletConfirm() {
-    this.translateService.get(['ARE_YOU_SURE', 'CONFIRM', 'CANCEL']).takeUntil(this.unsubscriber$).subscribe((translation) => {
+    this.translateService.get(['ARE_YOU_SURE', 'CONFIRM', 'CANCEL', 'WALLETS_PAGE.REMOVE_WALLET_TEXT']).takeUntil(this.unsubscriber$).subscribe((translation) => {
       let confirm = this.alertCtrl.create({
         title: translation.ARE_YOU_SURE,
+        message: translation['WALLETS_PAGE.REMOVE_WALLET_TEXT'],
         buttons: [
           {
             text: translation.CANCEL
@@ -251,8 +252,8 @@ export class WalletDashboardPage {
   }
 
   private deleteWallet() {
-    // TODO:
-    console.log('delete');
+    this.userDataProvider.removeWalletByAddress(this.wallet.address);
+    this.navCtrl.setRoot('WalletListPage');
   }
 
   private refreshTransactions(save: boolean = true, loader?: Loading) {

@@ -85,7 +85,8 @@
     "RE_ENTER_PASSPHRASE": "Re-enter your passphrase",
     "NEW_WALLET_NAME": "New wallet name",
     "ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE": "The second passphrase was successfully encrypted",
-    "PASSPHRASE_NOT_MATCH": "The passphrase entered does not match the one you just got."
+    "PASSPHRASE_NOT_MATCH": "The passphrase entered does not match the one you just got.",
+    "REMOVE_WALLET_TEXT": "Your account will be removed. Make sure you have backed up, you will need the original passphrase to restore."
   },
   "TRANSACTIONS_PAGE": {
     "ID": "Id",
