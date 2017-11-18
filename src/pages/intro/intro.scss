@@ -7,6 +7,12 @@ page-intro {
     flex: auto 1!important;
   }
 
+  .footer {
+    .button {
+      font-weight: 500
+    }
+  }
+
   .slide-pagination {
     max-width: 100px;
 
@@ -22,8 +28,8 @@ page-intro {
     }
 
     .col.active span {
-      border-color: #ed2a2d;
-      background-color: #ed2a2d;
+      border-color: #345ff2;
+      background-color: #345ff2;
     }
   }
 

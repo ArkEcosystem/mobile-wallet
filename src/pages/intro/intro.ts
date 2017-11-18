@@ -43,7 +43,7 @@ export class IntroPage {
         },
         {
           title: translation['INTRO_PAGE.FAST_EASY'],
-          image: 'assets/img/light/intro/security.png',
+          image: 'assets/img/light/intro/fast_easy.png',
           description: translation['INTRO_PAGE.TEXT_3'],
         },
       ];
