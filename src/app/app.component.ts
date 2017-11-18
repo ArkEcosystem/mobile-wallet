@@ -3,6 +3,7 @@ import { Platform, Config, Nav, MenuController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
@@ -45,11 +46,13 @@ export class MyApp {
     private menuCtrl: MenuController,
     private config: Config,
     private keyboard: Keyboard,
+    private screenOrientation: ScreenOrientation,
   ) {
     platform.ready().then(() => {
       this.menuCtrl.enable(false, 'sidebarMenu');
       statusBar.styleDefault();
       keyboard.disableScroll(false);
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
         splashScreen.hide();
