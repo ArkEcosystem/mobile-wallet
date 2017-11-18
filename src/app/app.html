@@ -1,6 +1,6 @@
 <ion-menu [content]="content" id="sidebarMenu">
 
-  <ion-header padding no-shadow>
+  <ion-header padding no-border no-shadow>
     <img src="./assets/img/logo-no-shadow.png" width="70" height="70">
     <h4>{{ profile?.name }}</h4>
     <p>{{ network?.name }}</p>
@@ -31,7 +31,7 @@
     </ion-list>
   </ion-content>
 
-  <ion-footer no-shadow>
+  <ion-footer no-border no-shadow>
     <ion-list inset no-lines>
       <button menuClose ion-item (click)="logout()">
         <ion-icon name="log-out" item-start></ion-icon>
