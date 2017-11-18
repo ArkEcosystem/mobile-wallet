@@ -3,7 +3,7 @@
   <ion-navbar>
     <h6 text-center class="no-padding no-margin">{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</h6>
     <ion-buttons end>
-      <button ion-button icon-only (click)="closeModal()">
+      <button ion-button icon-only (click)="dismiss()">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
@@ -11,32 +11,42 @@
 
 </ion-header>
 
-<ion-content no-bounce class="column-mode" #content>
-  <ion-grid>
+<ion-content padding>
+  <ion-grid class="full-height" *ngIf="step == 1">
     <ion-row>
-      <ion-col *ngIf="!isBip39">
-        <form padding #registerSecondPassphraseForm="ngForm">
-          <ion-item>
-            <ion-label stacked>{{ 'WALLETS_PAGE.TYPE_YOUR_PASSPHRASE' | translate }}:</ion-label>
-            <ion-input type="text" name="passphrase" [(ngModel)]="passphrase" (input)="validatePassphrase()" required></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label stacked>{{ 'WALLETS_PAGE.VALIDATE_PASSPHRASE' | translate }}:</ion-label>
-            <ion-input type="text" name="repassphrase" [disabled]="isInvalidPassphrase" [(ngModel)]="repassphrase" (input)="validateRepassphrase()" required></ion-input>
-          </ion-item>
-        </form>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>{{ 'WALLETS_PAGE.PASSPHRASE' | translate }}</ion-label>
+          <ion-textarea name="passphrase" [(ngModel)]="passphrase" rows="4"></ion-textarea>
+        </ion-item>
       </ion-col>
     </ion-row>
+    <ion-row class="controls-container">
+      <ion-col align-self-end text-center>
+        <button ion-button (click)="next()" class="button-continue">{{ 'NEXT' | translate }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="full-height" *ngIf="step == 2">
     <ion-row>
-      <ion-col text-center align-self-end>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>{{ 'WALLETS_PAGE.RE_ENTER_PASSPHRASE' | translate }}</ion-label>
+          <ion-textarea name="repassphrase" [(ngModel)]="repassphrase" rows="4"></ion-textarea>
+        </ion-item>
+        <p class="error" *ngIf="isWrong" ion-text color="danger">{{ 'WALLETS_PAGE.PASSPHRASE_NOT_MATCH' | translate }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="controls-container">
+      <ion-col align-self-end text-center>
         <ion-grid>
           <ion-row>
-            <ion-col>
-              <button ion-button block outline *ngIf="!isBip39" (click)="openGenerateEntropy()">{{ 'GENERATE' | translate }}</button>
-              <button ion-button block outline *ngIf="isBip39" (click)="copyPassphrase()">{{ 'COPY' | translate }}</button>
+            <ion-col text-right>
+              <button ion-button clear (click)="prev()">{{ 'BACK_BUTTON_TEXT' | translate }}</button>
             </ion-col>
             <ion-col>
-              <button ion-button block color="primary" [disabled]="isInvalidForm" (click)="submitForm()">{{ 'NEXT' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+              <button ion-button (click)="create()">{{ 'CREATE' | translate }} ({{ currentNetwork?.symbol }}{{ fees?.secondsignature | unitsSatoshi }})</button>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -46,11 +56,6 @@
 </ion-content>
 
 <ion-footer class="note-toolbar">
-  <ion-grid no-padding>
-    <ion-row>
-      <ion-col text-center no-padding>
-        <p>{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE' | translate }}</p>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <p *ngIf="step == 1">{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT' | translate }}</p>
+  <p *ngIf="step == 2">{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE' | translate }}</p>
 </ion-footer>

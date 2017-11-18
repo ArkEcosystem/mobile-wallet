@@ -54,9 +54,10 @@
     "BALANCE": "Balance",
     "WALLETS": "Wallets",
     "CREATE_WALLET": "Create Wallet",
-    "BACKUP_PASSPHRASE": "Backup this passphrase securely, without these words we can not restore your wallet",
-    "BACKUP_ACCOUNT": "Backup this account securely, without these data we can not restore your wallet or move your funds",
-    "BACKUP_SECOND_PASSPHRASE": "Backup this second passphrase securely, without these words we can not move your funds",
+    "BACKUP_PASSPHRASE": "Backup this passphrase securely, without these words we can not restore your wallet.",
+    "BACKUP_ACCOUNT": "Backup this account securely, without these data we can not restore your wallet or move your funds.",
+    "BACKUP_SECOND_PASSPHRASE": "Backup this second passphrase securely, without these words we can not move your funds.",
+    "BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT": "You can edit for a password of your choice. Remember to backup safely, you will need to re-type for validation.",
     "PUBLIC_ADDRESS": "Public Address",
     "SECRET_PASSPHRASE": "Secret Passphrase",
     "PUBLIC_ADDRESS_SHARE": "Public Address (SHARE)",
@@ -80,10 +81,11 @@
     "ADD_WALLET_TEXT": "To import or create wallet click on the button bellow",
     "ENTER_SECRET_PASSPHRASE": "Enter your secret passphrase",
     "REMOVE_WALLET": "Remove Wallet",
-    "TYPE_YOUR_PASSPHRASE": "Type your passphrase",
-    "VALIDATE_PASSPHRASE": "Validate passphrase",
+    "PASSPHRASE": "Passphrase",
+    "RE_ENTER_PASSPHRASE": "Re-enter your passphrase",
     "NEW_WALLET_NAME": "New wallet name",
-    "ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE": "The second passphrase was successfully encrypted"
+    "ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE": "The second passphrase was successfully encrypted",
+    "PASSPHRASE_NOT_MATCH": "The passphrase entered does not match the one you just got."
   },
   "TRANSACTIONS_PAGE": {
     "ID": "Id",

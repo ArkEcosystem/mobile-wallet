@@ -11,27 +11,27 @@ export class WalletImportPage {
   public showingQrScanner: boolean = false;
 
   constructor(
-    private _navCtrl: NavController,
-    private _navParams: NavParams,
-    private _qrScanner: QRScanner
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private qrScanner: QRScanner
   ) { }
 
   openWalletImportPassphrase() {
-    this._navCtrl.push('WalletImportPassphrasePage');
+    this.navCtrl.push('WalletImportPassphrasePage');
   }
 
   scanQRCode() {
-    this._qrScanner.prepare()
+    this.qrScanner.prepare()
     .then((status: QRScannerStatus) => {
        if (status.authorized) {
-         let scanSub = this._qrScanner.scan().subscribe((text: string) => {
-           this._qrScanner.hide(); // hide camera preview
+         let scanSub = this.qrScanner.scan().subscribe((text: string) => {
+           this.qrScanner.hide(); // hide camera preview
            this.showingQrScanner = false;
            scanSub.unsubscribe(); // stop scanning
          });
 
          // show camera preview
-         this._qrScanner.show();
+         this.qrScanner.show();
          this.showingQrScanner = true;
        } else if (status.denied) {
          // camera permission was permanently denied
