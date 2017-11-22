@@ -36,16 +36,13 @@ export class WalletImportPage {
       if (status.authorized) {
         let $this = this;
         let scanSub = this.qrScanner.scan().subscribe((qrCode: string) => {
-          console.log('qrCode raw', qrCode);
           qrCode = JSON.parse(qrCode);
-          console.log('qrCode', qrCode);
 
           if (qrCode['a'] || qrCode['passphrase']) {
             let privateKey = null;
             let publicKey = null;
             let address = qrCode['a'] || null;
             let passphrase = qrCode['passphrase'] || null;
-            console.log('address', address);
             if (address) {
               publicKey = PublicKey.fromAddress(address);
               publicKey.setNetwork($this.currentNetwork);
@@ -54,9 +51,6 @@ export class WalletImportPage {
               publicKey = privateKey.getPublicKey();
               address = publicKey.getAddress();
             }
-
-            console.log('watch only', !privateKey);
-            console.log('watch only 2', !passphrase);
 
             let newWallet = new Wallet(!privateKey);
             $this.arkApiProvider.api.account
