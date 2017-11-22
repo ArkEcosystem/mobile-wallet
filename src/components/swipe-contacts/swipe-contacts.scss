@@ -1,0 +1,53 @@
+swipe-contacts {
+  ion-scroll {
+    white-space: nowrap;
+    margin-top: 1em;
+
+    .scroll-content {
+      height: 150px;
+      padding: 0!important;
+    }
+  }
+
+  ion-card {
+    margin: .5em .5em .5em .2em!important;
+    border-radius: 5px!important;
+    width: 28vw!important;
+    height: 18vh;
+    padding: 1.5em .8em;
+    display: inline-block;
+    vertical-align: middle;
+    background: transparent!important;
+    border: 1px solid #aaa;
+    box-shadow: none!important;
+
+    .card-content {
+      padding: 0
+    }
+
+    .card-title {
+      margin-top: .7em;
+    }
+
+    &.active {
+      border-color:rgb(86, 139, 247);
+      background: rgb(86, 139, 247)!important;
+      color: white!important;
+
+      .circle-letter {
+        background-color:rgb(7, 94, 255)!important;
+      }
+    }
+  }
+
+  .add-item {
+
+    .circle-letter {
+      font-size: 14pt;
+    }
+
+    .card-title {
+      font-weight: 500;
+    }
+  }
+}
