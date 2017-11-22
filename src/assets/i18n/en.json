@@ -90,6 +90,8 @@
   },
   "TRANSACTIONS_PAGE": {
     "ID": "Id",
+    "SEND_TO": "Send to",
+    "SEND_ALL": "Send All",
     "TRANSACTION": "Transaction",
     "AMOUNT": "Amount",
     "FEE": "Fee",
@@ -97,13 +99,15 @@
     "RECIPIENT": "Recipient",
     "FROM": "From",
     "TO": "To",
+    "SEND_TRANSACTION": "Send Transaction",
     "CONFIRMATIONS": "Confirmations",
     "SEND": "Send",
     "RECEIVE": "Receive",
     "FETCHING_TRANSACTIONS": "Fetching transactions",
     "SENT_SUCCESS": "Transaction sent with success!",
     "COPY_TXID": "Copy TXID",
-    "ENCRYPT_SAVE_SECOND_PASSPHRASE": "Do you want to encrypt and save your second passphrase?"
+    "ENCRYPT_SAVE_SECOND_PASSPHRASE": "Do you want to encrypt and save your second passphrase?",
+    "RECIPIENT_NAME": "Recipient's name"
   },
   "PROFILES_PAGE": {
     "SIGN_IN": "Sign in",

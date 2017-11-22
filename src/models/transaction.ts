@@ -11,6 +11,14 @@ const TX_TYPES = {
   4: 'Multisignature Creation',
 };
 
+export interface SendTransactionForm {
+  amount?: number;
+  amountEquivalent?: number;
+  recipientAddress?: string;
+  recipientName?: string;
+  smartBridge?: string;
+}
+
 export class Transaction extends TransactionModel {
 
   public date: Date;
