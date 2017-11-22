@@ -173,5 +173,6 @@
   "RENAME": "Rename",
   "TYPE": "Type",
   "EXIT": "Exit",
-  "FAILED": "Failed"
+  "FAILED": "Failed",
+  "WATCH_ONLY": "Watch Only"
 }
