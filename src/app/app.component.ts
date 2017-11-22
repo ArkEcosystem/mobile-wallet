@@ -56,8 +56,6 @@ export class MyApp {
       this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
-        splashScreen.hide();
-
         if (!hasSeenIntro) {
           this.openPage('IntroPage');
           return;
