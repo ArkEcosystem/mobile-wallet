@@ -26,7 +26,7 @@ import * as arkts from 'ark-ts';
   providers: [ScreenOrientation],
 })
 export class MyApp {
-  public rootPage = 'IntroPage';
+  public rootPage = 'LoginPage';
   public profile = null;
   public network = null;
 
@@ -58,12 +58,12 @@ export class MyApp {
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
         splashScreen.hide();
 
-        if (hasSeenIntro) {
-          this.openPage('LoginPage');
+        if (!hasSeenIntro) {
+          this.openPage('IntroPage');
           return;
         }
 
-        this.openPage('IntroPage');
+        this.openPage('LoginPage');
       });
 
     });
