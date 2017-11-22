@@ -14,7 +14,7 @@
     <button ion-fab color="primary" (click)="openCreatePage()"><ion-icon name="md-add"></ion-icon></button>
   </ion-fab>
 
-  <ion-grid *ngIf="profile">
+  <ion-grid *ngIf="profile" no-padding>
     <empty-list message="CONTACTS_PAGE.ADD_CONTACT_TEXT" (onClickButton)="openCreatePage()" *ngIf="isEmpty()"></empty-list>
 
     <ion-row *ngIf="!isEmpty()">
