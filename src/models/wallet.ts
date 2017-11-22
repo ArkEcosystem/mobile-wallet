@@ -15,10 +15,14 @@ export class Wallet extends Account {
   lastUpdate?: number;
   cipherPassphrase?: any;
   cipherSecondPassphrase?: any;
+  isWatchOnly?: boolean;
 
-  constructor() {
+  constructor(isWatchOnly?: boolean) {
     super();
     this.reset();
+    if (isWatchOnly !== undefined) {
+      this.isWatchOnly = isWatchOnly;
+    }
   }
 
   deserialize(input: any): Wallet {
@@ -39,6 +43,7 @@ export class Wallet extends Account {
     this.lastUpdate = null;
     this.cipherPassphrase = null;
     this.cipherSecondPassphrase = null;
+    this.isWatchOnly = false;
   }
 
   loadTransactions(transactions: any) {
