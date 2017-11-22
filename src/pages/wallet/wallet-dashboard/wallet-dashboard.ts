@@ -132,7 +132,10 @@ export class WalletDashboardPage {
         buttons.push({
           text: translation['TRANSACTIONS_PAGE.SEND'],
           role: 'send',
-          icon: !this.platform.is('ios') ? 'arrow-round-up' : ''
+          icon: !this.platform.is('ios') ? 'arrow-round-up' : '',
+          handler: () => {
+            return this.navCtrl.push('TransactionSendPage');
+          }
         });
       }
       buttons.push({
