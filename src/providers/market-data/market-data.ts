@@ -45,7 +45,6 @@ export class MarketDataProvider {
 
   refreshPrice(): void {
     this.fetchCurrencies().subscribe((currencies) => {
-      console.log('currencies', currencies);
       this.fetchTicker(currencies).subscribe((ticker) => {
         this.onUpdateTicker$.next(ticker);
       });
