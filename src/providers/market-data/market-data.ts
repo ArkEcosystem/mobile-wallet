@@ -17,6 +17,8 @@ export class MarketDataProvider {
 
   private marketTicker: model.MarketTicker;
   private marketHistory: model.MarketHistory;
+  private marketCurrencies: object;
+  private marketCurrenciesDate?: Date;
 
   constructor(
     private http: Http,
@@ -42,25 +44,66 @@ export class MarketDataProvider {
   }
 
   refreshPrice(): void {
-    this.fetchTicker().subscribe((ticker) => {
-      this.onUpdateTicker$.next(ticker);
+    this.fetchCurrencies().subscribe((currencies) => {
+      console.log('currencies', currencies);
+      this.fetchTicker(currencies).subscribe((ticker) => {
+        this.onUpdateTicker$.next(ticker);
+      });
     });
   }
 
-  private fetchTicker(): Observable<model.MarketTicker> {
-    const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_TICKER_ENDPOINT}`;
+  private fetchTicker(currencies?: object): Observable<model.MarketTicker> {
+    const url = `${constants.API_MARKET_TICKER_URL}/${constants.API_MARKET_TICKER_ENDPOINT}`;
+    let $this = this;
+
+    currencies = currencies || this.marketCurrencies;
 
     return this.http.get(url).map((response) => {
-      let json = response.json();
-      this.marketTicker = new model.MarketTicker().deserialize(json);
+      let json = response.json()[0];
+
+      if (currencies) {
+        currencies['btc'] = json.price_btc;
+        currencies['usd'] = json.price_usd;
+        this.storageProvider.set(constants.STORAGE_MARKET_CURRENCIES, currencies);
+      }
+
+      this.marketTicker = new model.MarketTicker().deserialize(json, currencies);
       this.storageProvider.set(constants.STORAGE_MARKET_TICKER, json);
 
-      return new model.MarketTicker().deserialize(json);
+      return this.marketTicker;
+    });
+  }
+
+  private fetchCurrencies(): Observable<object> {
+    let todayDate = new Date();
+    todayDate.setHours(0, 0, 0);
+
+    if (!this.marketCurrenciesDate || (this.marketCurrenciesDate.getTime() === todayDate.getTime())) {
+      return Observable.of(this.marketCurrencies);
+    }
+
+    let currenciesList = model.CURRENCIES_LIST.map((currency) => {
+      return currency.code.toUpperCase();
+    }).join(',');
+    let currenciesUrl = `${constants.API_CURRENCY_TICKER_URL}/${constants.API_CURRENCY_TICKER_ENDPOINT}&symbols=${currenciesList}`;
+
+    return this.http.get(currenciesUrl).map((currenciesResponse) => {
+      let currenciesJson = currenciesResponse.json();
+      let currencies = {};
+      for (let currency in currenciesJson.rates) {
+        currencies[currency.toLowerCase()] = currenciesJson.rates[currency];
+      }
+
+      this.marketCurrencies = currencies;
+      this.storageProvider.set(constants.STORAGE_MARKET_CURRENCIES, currencies);
+      this.storageProvider.set(constants.STORAGE_MARKET_CURRENCIES_DATE, currenciesJson.date);
+
+      return this.marketCurrencies;
     });
   }
 
   fetchHistory(): Observable<model.MarketHistory> {
-    const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
+    const url = `${constants.API_MARKET_HISTORY_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
 
     return this.http.get(url).map((response) => {
       let json = response.json();
@@ -78,9 +121,15 @@ export class MarketDataProvider {
       this.marketHistory = new model.MarketHistory().deserialize(history);
     });
 
-    this.storageProvider.getObject(constants.STORAGE_MARKET_TICKER).subscribe((ticker) => {
-      this.marketTicker = new model.MarketTicker().deserialize(ticker);
-    })
+    this.storageProvider.getObject(constants.STORAGE_MARKET_CURRENCIES).subscribe((currencies) => {
+      this.marketCurrencies = currencies;
+      this.storageProvider.get(constants.STORAGE_MARKET_CURRENCIES_DATE).subscribe((date) => {
+        this.marketCurrenciesDate = date ? new Date(date) : null;
+        this.storageProvider.getObject(constants.STORAGE_MARKET_TICKER).subscribe((ticker) => {
+          this.marketTicker = new model.MarketTicker().deserialize(ticker, currencies);
+        });
+      });
+    });
   }
 
 }

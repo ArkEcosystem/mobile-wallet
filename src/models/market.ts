@@ -9,7 +9,7 @@ export interface Currency {
 export const CURRENCIES_LIST: Currency[] = [
   {
     code: "usd",
-    name: "Dolar",
+    name: "Dollar",
     symbol: "$",
   },
   {
@@ -21,6 +21,11 @@ export const CURRENCIES_LIST: Currency[] = [
     code: "brl",
     name: "Real",
     symbol: "R$",
+  },
+  {
+    code: "gbp",
+    name: "Pounds",
+    symbol: "£",
   }
 ];
 
@@ -72,23 +77,23 @@ export class MarketTicker {
     return lodash.find(this.market, query);
   }
 
-  deserialize(input: any): MarketTicker {
+  deserialize(input: any, currenciesPrices?: any): MarketTicker {
     let self: any = this;
     if (!input || !lodash.isObject(input)) return;
 
     let inputMarket = input.markets ? input.markets[0] : input;
 
-    self.timestamp = input.timestamp;
-    self.date = new Date(input.timestamp * 1000);
-    self.change1h = inputMarket.change1h || null;
-    self.change7d = inputMarket.change7d || null;
-    self.change24h = inputMarket.change24h || null;
+    self.timestamp = inputMarket.last_updated || input.timestamp;
+    self.date = new Date(self.timestamp * 1000);
+    self.change1h = inputMarket.percent_change_1h || inputMarket.change1h || null;
+    self.change7d = inputMarket.percent_change_7d || inputMarket.change7d || null;
+    self.change24h = inputMarket.percent_change_24h || inputMarket.change24h || null;
 
     self.info = {
-      category: inputMarket.category,
-      identifier: inputMarket.identifier,
+      category: inputMarket.category || null,
+      identifier: inputMarket.id || inputMarket.identifier,
       name: inputMarket.name,
-      position: inputMarket.position,
+      position: inputMarket.rank || inputMarket.position,
       symbol: inputMarket.symbol,
     }
 
@@ -98,9 +103,25 @@ export class MarketTicker {
       let marketCurrency: MarketCurrency = new MarketCurrency();
       marketCurrency.fromCurrency(currency);
 
-      marketCurrency.price = inputMarket.price ? inputMarket.price[currency.code] : 0.0;
-      marketCurrency.marketCap = inputMarket.marketCap ? inputMarket.marketCap[currency.code] : 0.0;
-      marketCurrency.volume = inputMarket.volume24 ? inputMarket.volume24[currency.code] : 0.0;
+      marketCurrency.price = 0.0;
+      marketCurrency.marketCap = 0.0;
+      marketCurrency.volume = 0.0;
+
+      if (inputMarket.price) {
+        marketCurrency.price = inputMarket.price[currency.code];
+      } else if (currenciesPrices && currenciesPrices[marketCurrency.code]) {
+        marketCurrency.price = currenciesPrices[marketCurrency.code];
+      }
+      if (inputMarket.marketCap) {
+        marketCurrency.marketCap = inputMarket.marketCap[currency.code];
+      } else if (currenciesPrices && currenciesPrices[marketCurrency.code]) {
+        marketCurrency.marketCap = currenciesPrices[marketCurrency.code] * inputMarket.available_supply;
+      }
+      if (inputMarket.volume24) {
+        marketCurrency.volume = inputMarket.volume24[currency.code];
+      } else if (currenciesPrices && currenciesPrices[marketCurrency.code]) {
+        marketCurrency.volume = currenciesPrices[marketCurrency.code] * (inputMarket['24h_volume_usd'] / inputMarket.price_usd);
+      }
 
       currencies.push(marketCurrency);
     }
