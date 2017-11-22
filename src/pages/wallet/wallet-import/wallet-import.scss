@@ -22,4 +22,10 @@ page-wallet-import {
   button {
     display: block;
   }
+  .qr-preview {
+    background: transparent;
+  }
+  .qr-preview-hide {
+    display: none;
+  }
 }

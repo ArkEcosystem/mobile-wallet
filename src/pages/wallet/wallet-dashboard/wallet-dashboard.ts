@@ -118,25 +118,31 @@ export class WalletDashboardPage {
 
   presentAddActionSheet() {
     this.translateService.get(['TRANSACTIONS_PAGE.SEND', 'TRANSACTIONS_PAGE.RECEIVE', 'CANCEL']).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      let action = this.actionSheetCtrl.create({
-        buttons: [
-          {
-            text: translation['TRANSACTIONS_PAGE.RECEIVE'],
-            role: 'receive',
-            icon: !this.platform.is('ios') ? 'arrow-round-down' : '',
-            handler: () => {
-              return this.openTransactionReceive();
-            }
-          }, {
-            text: translation['TRANSACTIONS_PAGE.SEND'],
-            role: 'send',
-            icon: !this.platform.is('ios') ? 'arrow-round-up' : ''
-          }, {
-            text: translation.CANCEL,
-            role: 'cancel',
-            icon: !this.platform.is('ios') ? 'close' : ''
+      let buttons: Array<object> = [
+        {
+          text: translation['TRANSACTIONS_PAGE.RECEIVE'],
+          role: 'receive',
+          icon: !this.platform.is('ios') ? 'arrow-round-down' : '',
+          handler: () => {
+            return this.openTransactionReceive();
           }
-        ]
+        }
+      ];
+      if (!this.wallet.isWatchOnly) {
+        buttons.push({
+          text: translation['TRANSACTIONS_PAGE.SEND'],
+          role: 'send',
+          icon: !this.platform.is('ios') ? 'arrow-round-up' : ''
+        });
+      }
+      buttons.push({
+        text: translation.CANCEL,
+        role: 'cancel',
+        icon: !this.platform.is('ios') ? 'close' : ''
+      });
+
+      let action = this.actionSheetCtrl.create({
+        buttons: buttons
       });
 
       action.present();

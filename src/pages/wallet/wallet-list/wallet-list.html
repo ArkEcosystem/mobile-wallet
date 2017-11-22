@@ -22,9 +22,14 @@
         <ion-scroll scrollX="true">
           <ion-card *ngFor="let wallet of wallets" [class.delegate]="wallet?.isDelegate" (click)="openWalletDashboard(wallet)">
             <ion-item>
-              <h2 class="amount">{{ currentNetwork?.symbol }} {{ wallet?.balance | unitsSatoshi | number: '1.0-2' }}</h2>
-              <p class="address">{{ wallet?.label || wallet?.address | accountLabel | truncateMiddle: 15 }}</p>
+              <ion-label stacked>
+                <h2 class="amount">{{ currentNetwork?.symbol }} {{ wallet?.balance | unitsSatoshi | number: '1.0-2' }}</h2>
+                <p class="address">{{ wallet?.label || wallet?.address | accountLabel | truncateMiddle: 15 }}</p>
+              </ion-label>
             </ion-item>
+            <ion-chip color="primary" *ngIf="wallet.isWatchOnly">
+              <ion-label>{{ 'WATCH_ONLY' | translate }}</ion-label>
+            </ion-chip>
           </ion-card>
         </ion-scroll>
       </ion-col>

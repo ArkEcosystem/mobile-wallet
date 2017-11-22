@@ -16,6 +16,7 @@ page-wallet-list {
     width: 60vw!important;
     padding: 1.5em .8em;
     display: inline-block;
+    min-height: 118px;
 
     &.delegate {
       background-image: url('../assets/img/light/delegate-block.png');
@@ -37,6 +38,11 @@ page-wallet-list {
 
     .address {
       margin-top: .5em;
+    }
+
+    .chip-md {
+      height: 25px !important;
+      margin-left: 15px;
     }
   }
   .fiat-bullet {
