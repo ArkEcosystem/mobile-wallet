@@ -8,6 +8,11 @@ export interface Currency {
 
 export const CURRENCIES_LIST: Currency[] = [
   {
+    code: "aud",
+    name: "Australian Dollar",
+    symbol: "A$",
+  },
+  {
     code: "usd",
     name: "Dollar",
     symbol: "$",
@@ -26,6 +31,11 @@ export const CURRENCIES_LIST: Currency[] = [
     code: "gbp",
     name: "Pounds",
     symbol: "£",
+  },
+  {
+    code: "eur",
+    name: "Euros",
+    symbol: "€",
   }
 ];
 
