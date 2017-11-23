@@ -63,8 +63,10 @@
     </ion-row>
     <ion-row>
       <ion-col align-self-end text-center>
-        <button ion-button class="button-continue">{{ 'TRANSACTIONS_PAGE.SEND' | translate }}</button>
+        <button ion-button class="button-continue" (click)="send()">{{ 'TRANSACTIONS_PAGE.SEND' | translate }}</button>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
+
+<pin-code [wallet]="currentWallet" (onSuccess)="onEnterPinCode($event)" #pinCode></pin-code>

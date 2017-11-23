@@ -74,3 +74,5 @@
     </ion-grid>
   </ion-toolbar>
 </ion-footer>
+
+<pin-code [wallet]="currentWallet" (onSuccess)="generateTransaction($event)" #pinCode></pin-code>

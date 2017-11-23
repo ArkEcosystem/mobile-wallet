@@ -1,4 +1,4 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -6,10 +6,11 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { Delegate, Network, VoteType } from 'ark-ts';
 
-import { Wallet, Transaction } from '@models/model';
+import { Wallet, Transaction, WalletPassphrases } from '@models/model';
 
 import * as constants from '@app/app.constants';
 import lodash from 'lodash';
+import { PinCodeComponent } from '@components/pin-code/pin-code';
 
 @IonicPage()
 @Component({
@@ -17,6 +18,8 @@ import lodash from 'lodash';
   templateUrl: 'delegates.html',
 })
 export class DelegatesPage {
+
+  @ViewChild('pinCode') pinCode: PinCodeComponent;
 
   public isSearch: boolean = false;
   public searchQuery: any = { username: ''};
@@ -26,6 +29,8 @@ export class DelegatesPage {
 
   public rankStatus: string = 'active';
   public currentNetwork: Network;
+
+  private selectedDelegate: Delegate;
 
   private currentWallet: Wallet;
   private walletVote: Delegate;
@@ -43,6 +48,8 @@ export class DelegatesPage {
   ) { }
 
   openDetailModal(delegate: Delegate) {
+    this.selectedDelegate = delegate;
+
     let modal = this.modalCtrl.create('DelegateDetailPage', {
       delegate,
       vote: this.walletVote,
@@ -51,26 +58,8 @@ export class DelegatesPage {
     modal.onDidDismiss((voter) => {
       if (!voter) return;
 
-      this.getPassphrases().then((passphrases) => {
-        if (!passphrases) return;
+      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
 
-        let type = VoteType.Add;
-
-        if (this.walletVote && this.walletVote.publicKey === voter.publicKey) type = VoteType.Remove;
-
-        this.arkApiProvider.api.transaction.createVote({
-          delegatePublicKey: voter.publicKey,
-          passphrase: passphrases['passphrase'],
-          secondPassphrase: passphrases['secondPassphrase'],
-          type
-        }).subscribe((transaction) => {
-          this.confirmTransaction(transaction, passphrases);
-        });
-
-        // TODO: Confirm transaction
-      }, () => {
-        // TODO: Toast error
-      })
     });
 
     modal.present();
@@ -97,6 +86,21 @@ export class DelegatesPage {
     }
 
     return false;
+  }
+
+  generateTransaction(passphrases: WalletPassphrases) {
+    let type = VoteType.Add;
+
+    if (this.walletVote && this.walletVote.publicKey === this.selectedDelegate.publicKey) type = VoteType.Remove;
+
+    this.arkApiProvider.api.transaction.createVote({
+      delegatePublicKey: this.selectedDelegate.publicKey,
+      passphrase: passphrases['passphrase'],
+      secondPassphrase: passphrases['secondPassphrase'],
+      type
+    }).subscribe((transaction) => {
+      this.confirmTransaction(transaction, passphrases);
+    });
   }
 
   private confirmTransaction(transaction: Transaction, passphrases: any) {
@@ -164,26 +168,6 @@ export class DelegatesPage {
       }, () => {
         // TODO: Toast error
       });
-  }
-
-  private getPassphrases(message?: string) {
-    let msg = message || 'PIN_CODE.TYPE_PIN_SIGN_TRANSACTION';
-    let modal = this.modalCtrl.create('PinCodeModal', {
-      message: msg,
-      outputPassword: true,
-      validatePassword: true,
-    });
-
-    modal.present();
-
-    return new Promise((resolve, reject) => {
-      modal.onDidDismiss((password) => {
-        if (!password) return reject();
-
-        let passphrases = this.userDataProvider.getPassphrasesByWallet(this.currentWallet, password);
-        resolve(passphrases);
-      });
-    });
   }
 
   private getSupply() {

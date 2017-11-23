@@ -5,6 +5,7 @@ import { TransactionSendPage } from './transaction-send';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
 import { SwipeContactsComponentModule } from '@components/swipe-contacts/swipe-contacts.module';
+import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { SwipeContactsComponentModule } from '@components/swipe-contacts/swipe-c
     TranslateModule,
     PipesModule,
     SwipeContactsComponentModule,
+    PinCodeComponentModule,
   ],
 })
 export class TransactionSendPageModule {}

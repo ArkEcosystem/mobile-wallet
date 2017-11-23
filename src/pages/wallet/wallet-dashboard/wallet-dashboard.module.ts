@@ -6,6 +6,7 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { PipesModule } from '@pipes/pipes.module';
+import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { PipesModule } from '@pipes/pipes.module';
     IonicPageModule.forChild(WalletDashboardPage),
     TranslateModule,
     PipesModule,
+    PinCodeComponentModule,
   ],
 })
 export class WalletDashboardPageModule {}

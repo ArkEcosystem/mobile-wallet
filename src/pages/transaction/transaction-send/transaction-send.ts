@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { Wallet, MarketTicker, MarketCurrency, Transaction, SendTransactionForm } from '@models/model';
+import { Wallet, MarketTicker, MarketCurrency, Transaction, SendTransactionForm, WalletPassphrases } from '@models/model';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { MarketDataProvider } from '@providers/market-data/market-data';
@@ -12,6 +12,7 @@ import { Network, Fees } from 'ark-ts/model';
 
 import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
 import lodash from 'lodash';
+import { PinCodeComponent } from '@components/pin-code/pin-code';
 
 @IonicPage()
 @Component({
@@ -20,6 +21,7 @@ import lodash from 'lodash';
   providers: [UnitsSatoshiPipe],
 })
 export class TransactionSendPage {
+  @ViewChild('pinCode') pinCode: PinCodeComponent;
 
   transaction: SendTransactionForm = {};
 
@@ -48,30 +50,38 @@ export class TransactionSendPage {
     let balance = Number(this.currentWallet.balance);
     if (balance === 0) return;
 
-    this.transaction['amount'] = this.unitsSatoshiPipe.transform(balance - this.fees.send);
+    this.transaction.amount = this.unitsSatoshiPipe.transform(balance - this.fees.send);
     this.onInputToken();
   }
 
   send() {
-   // TODO: Get passphrases
-  //  this.arkApiProvider.api.transaction.createTransaction({
-  //    amount: this.transaction.amount,
-
-  //  })
+    this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
   }
 
   selectContact(recipient) {
     this.showAddContact = lodash.isUndefined(recipient);
 
-    this.transaction['recipientAddress'] = recipient;
+    this.transaction.recipientAddress = recipient;
   }
 
   onInputToken() {
-    this.transaction['amountEquivalent'] = this.transaction['amount'] * this.marketCurrency.price;
+    this.transaction.amountEquivalent= this.transaction.amount * this.marketCurrency.price;
   }
 
   onInputFiat() {
-    this.transaction['amount'] = this.transaction['amountEquivalent'] / this.marketCurrency.price;
+    this.transaction.amount = this.transaction.amountEquivalent / this.marketCurrency.price;
+  }
+
+  onEnterPinCode(passphrases: WalletPassphrases) {
+    this.arkApiProvider.api.transaction.createTransaction({
+      amount: this.transaction.amount,
+      vendorField: this.transaction.smartBridge,
+      passphrase: passphrases.passphrase,
+      secondPassphrase: passphrases.secondPassphrase,
+      recipientId: this.transaction.recipientAddress,
+    }).subscribe((transaction) => {
+      console.log(transaction);
+    });
   }
 
   ionViewDidLoad() {

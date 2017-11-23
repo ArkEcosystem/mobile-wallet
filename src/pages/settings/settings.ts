@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -6,11 +6,12 @@ import 'rxjs/add/operator/takeUntil';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { UserSettings, Wallet } from '@models/model';
+import { UserSettings, Wallet, WalletPassphrases } from '@models/model';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { UserDataProvider } from '@providers/user-data/user-data';
 
 import lodash from 'lodash';
+import { PinCodeComponent } from '@components/pin-code/pin-code';
 
 @IonicPage()
 @Component({
@@ -18,14 +19,17 @@ import lodash from 'lodash';
   templateUrl: 'settings.html',
 })
 export class SettingsPage {
+  @ViewChild('pinCode') pinCode: PinCodeComponent;
 
   public objectKeys = Object.keys;
 
   public availableOptions;
   public currentSettings;
+  public onEnterPinCode;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
   private currentWallet: Wallet;
+
 
   constructor(
     private navCtrl: NavController,
@@ -47,16 +51,8 @@ export class SettingsPage {
   openWalletBackupPage() {
     if (!this.currentWallet) return this.presentSelectWallet();
 
-    this.getPassphrases().then((passphrases) => {
-      if (!passphrases) return;
-
-      let modal = this.modalCtrl.create('WalletBackupPage', {
-        title: 'SETTINGS_PAGE.WALLET_BACKUP',
-        passphrases,
-      });
-
-      modal.present();
-    });
+    this.onEnterPinCode = this.showBackup;
+    this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', true);
   }
 
   confirmClearData() {
@@ -76,7 +72,8 @@ export class SettingsPage {
           {
             text: translation.CONFIRM,
             handler: () => {
-              this.clearData();
+              this.onEnterPinCode = this.clearData;
+              this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', false);
             }
           }
         ]
@@ -103,37 +100,18 @@ export class SettingsPage {
     });
   }
 
-  private clearData() {
-    this.getPassphrases().then(() => {
-      this.settingsDataProvider.clearData();
-      this.navCtrl.setRoot('LoginPage');
-    });
+  private clearData(event) {
+    this.settingsDataProvider.clearData();
+    this.navCtrl.setRoot('IntroPage');
   }
 
-  private getPassphrases() {
-    let message = 'PIN_CODE.DEFAULT_MESSAGE';
-    let modal = this.modalCtrl.create('PinCodeModal', {
-      message,
-      outputPassword: true,
-      validatePassword: true,
+  private showBackup(passphrases: WalletPassphrases) {
+    let modal = this.modalCtrl.create('WalletBackupPage', {
+      title: 'SETTINGS_PAGE.WALLET_BACKUP',
+      passphrases,
     });
 
     modal.present();
-
-    return new Promise((resolve, reject) => {
-      modal.onDidDismiss((password) => {
-        if (!password) {
-          reject();
-        } else {
-          if (this.currentWallet) {
-            let passphrases = this.userDataProvider.getPassphrasesByWallet(this.currentWallet, password);
-            resolve(passphrases);
-          }
-
-          resolve();
-        }
-      });
-    });
   }
 
   onUpdate() {

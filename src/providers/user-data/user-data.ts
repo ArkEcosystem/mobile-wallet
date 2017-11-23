@@ -6,7 +6,7 @@ import { ForgeProvider } from '@providers/forge/forge';
 import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
 
-import { Contact, Profile, Wallet } from '@models/model';
+import { Contact, Profile, Wallet, WalletPassphrases } from '@models/model';
 
 import lodash from 'lodash';
 import { v4 as uuid } from 'uuid';
@@ -230,13 +230,10 @@ export class UserDataProvider {
     });
   }
 
-  getPassphrasesByWallet(wallet: Wallet, password: string) {
+  getPassphrasesByWallet(wallet: Wallet, password: string): WalletPassphrases {
     if (!wallet.cipherPassphrase && !wallet.cipherSecondPassphrase) return;
 
-    let passphrases = {
-      passphrase: undefined,
-      secondPassphrase: undefined
-    };
+    let passphrases: WalletPassphrases = {};
 
     if (wallet.cipherPassphrase) {
       passphrases.passphrase = this.forgeProvider.decrypt(wallet.cipherPassphrase, password, this.currentProfile.salt, this.currentProfile.iv);

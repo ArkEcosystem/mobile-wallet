@@ -64,3 +64,5 @@
   </ion-item-group>
 
 </ion-content>
+
+<pin-code [wallet]="currentWallet" (onSuccess)="onEnterPinCode($event)" #pinCode></pin-code>

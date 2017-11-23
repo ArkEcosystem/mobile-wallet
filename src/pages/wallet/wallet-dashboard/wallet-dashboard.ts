@@ -1,10 +1,10 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController, AlertController, LoadingController, Loading } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
-import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory } from '@models/model';
+import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory, WalletPassphrases } from '@models/model';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { MarketDataProvider } from '@providers/market-data/market-data';
@@ -16,6 +16,7 @@ import { Network, Fees, TransactionDelegate, PrivateKey  } from 'ark-ts';
 import { TranslateService } from '@ngx-translate/core';
 
 import * as constants from '@app/app.constants';
+import { PinCodeComponent } from '@components/pin-code/pin-code';
 
 @IonicPage()
 @Component({
@@ -23,6 +24,7 @@ import * as constants from '@app/app.constants';
   templateUrl: 'wallet-dashboard.html',
 })
 export class WalletDashboardPage {
+  @ViewChild('pinCode') pinCode: PinCodeComponent;
 
   public profile: Profile;
   public network: Network;
@@ -34,6 +36,9 @@ export class WalletDashboardPage {
   public ticker: MarketTicker;
   public marketHistory: MarketHistory;
   public marketCurrency: MarketCurrency;
+
+  public onEnterPinCode;
+  private newSecondPassphrase: string;
 
   public emptyTransactions: boolean = false;
   public minConfirmations = constants.WALLET_MIN_NUMBER_CONFIRMATIONS;
@@ -187,27 +192,9 @@ export class WalletDashboardPage {
     modal.onDidDismiss((name) => {
       if (lodash.isEmpty(name)) return;
 
-      this.getPassphrases().then((passphrases) => {
-        if (!passphrases) return;
+      this.onEnterPinCode = this.createDelegate;
+      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
 
-        let publicKey = this.wallet.publicKey || PrivateKey.fromSeed(passphrases['passphrase']).getPublicKey().toHex();
-
-        let transaction = <TransactionDelegate>{
-          passphrase: passphrases['passphrase'],
-          secondPassphrase: passphrases['secondPassphrase'],
-          username: name,
-          publicKey
-        }
-
-        this.arkApiProvider.api.transaction.createDelegate(transaction)
-          .takeUntil(this.unsubscriber$)
-          .subscribe((data) => {
-            this.confirmTransaction(data, passphrases);
-          });
-
-      }, () => {
-        // TODO: Toast error
-      })
     });
 
     modal.present();
@@ -219,17 +206,10 @@ export class WalletDashboardPage {
     modal.onDidDismiss((newSecondPassphrase) => {
       if (lodash.isEmpty(newSecondPassphrase)) return;
 
-      this.getPassphrases().then((passphrases) => {
-        this.arkApiProvider.api.transaction
-          .createSignature(passphrases['passphrase'], newSecondPassphrase)
-          .takeUntil(this.unsubscriber$)
-          .subscribe((data) => {
-            this.confirmTransaction(data, passphrases);
-          });
+      this.newSecondPassphrase = newSecondPassphrase;
+      this.onEnterPinCode = this.createSignature;
+      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
 
-      }, () => {
-        // TODO: Toast error
-      })
     });
 
     modal.present();
@@ -253,6 +233,32 @@ export class WalletDashboardPage {
         ]
       });
       confirm.present();
+    });
+  }
+
+  private createDelegate(passphrases: WalletPassphrases) {
+    let publicKey = this.wallet.publicKey || PrivateKey.fromSeed(passphrases.passphrase).getPublicKey().toHex();
+
+    let transaction = <TransactionDelegate>{
+      passphrase: passphrases.passphrase,
+      secondPassphrase: passphrases.secondPassphrase,
+      username: name,
+      publicKey
+    }
+
+    this.arkApiProvider.api.transaction.createDelegate(transaction)
+      .takeUntil(this.unsubscriber$)
+      .subscribe((data) => {
+        this.confirmTransaction(data, passphrases);
+      });
+  }
+
+  private createSignature(passphrases: WalletPassphrases) {
+    this.arkApiProvider.api.transaction
+    .createSignature(passphrases.passphrase, this.newSecondPassphrase)
+    .takeUntil(this.unsubscriber$)
+    .subscribe((data) => {
+      this.confirmTransaction(data, passphrases);
     });
   }
 
@@ -353,28 +359,6 @@ export class WalletDashboardPage {
     }, { cssClass: 'inset-modal-small' });
 
     responseModal.present();
-  }
-
-  private getPassphrases(message?: string) {
-    let msg = message || 'PIN_CODE.TYPE_PIN_SIGN_TRANSACTION';
-    let modal = this.modalCtrl.create('PinCodeModal', {
-      message: msg,
-      outputPassword: true,
-      validatePassword: true,
-    });
-
-    modal.present();
-
-    return new Promise((resolve, reject) => {
-      modal.onDidDismiss((password) => {
-        if (!password) {
-          reject();
-        } else {
-          let passphrases = this.userDataProvider.getPassphrasesByWallet(this.wallet, password);
-          resolve(passphrases);
-        }
-      });
-    });
   }
 
   private onUpdateMarket() {

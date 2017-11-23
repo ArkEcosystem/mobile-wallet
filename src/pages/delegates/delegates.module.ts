@@ -6,6 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 
+import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
+
 @NgModule({
   declarations: [
     DelegatesPage,
@@ -15,6 +17,7 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
     TranslateModule,
     PipesModule,
     FilterPipeModule,
+    PinCodeComponentModule,
   ],
 })
 export class DelegatesPageModule {}
