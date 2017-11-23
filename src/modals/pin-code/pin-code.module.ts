@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { PinCodePage } from './pin-code';
+import { PinCodeModal } from './pin-code';
 
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
-    PinCodePage,
+    PinCodeModal,
   ],
   imports: [
-    IonicPageModule.forChild(PinCodePage),
+    IonicPageModule.forChild(PinCodeModal),
     TranslateModule,
   ],
 })
-export class PinCodePageModule {}
+export class PinCodeModalModule {}

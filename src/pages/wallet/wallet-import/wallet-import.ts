@@ -56,7 +56,7 @@ export class WalletImportPage {
             $this.arkApiProvider.api.account
               .get({ address })
               .finally(() => {
-                let modal = this.modalCtrl.create('PinCodePage', {
+                let modal = this.modalCtrl.create('PinCodeModal', {
                   message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
                   outputPassword: true,
                   validatePassword: true,

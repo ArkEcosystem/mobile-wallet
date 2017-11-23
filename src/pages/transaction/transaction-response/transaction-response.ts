@@ -69,7 +69,7 @@ export class TransactionResponsePage {
   }
 
   saveSecondPassphrase() {
-    let modal = this.modalCtrl.create('PinCodePage', {
+    let modal = this.modalCtrl.create('PinCodeModal', {
       message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
       outputPassword: true,
       validatePassword: true,

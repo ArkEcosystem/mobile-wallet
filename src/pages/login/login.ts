@@ -29,14 +29,14 @@ export class LoginPage {
   private createPinCode(nextPage: string) {
     this.authProvider.getMasterPassword().do((master) => {
       if (!master) {
-        let createModal = this.modalCtrl.create('PinCodePage', {
+        let createModal = this.modalCtrl.create('PinCodeModal', {
           message: 'PIN_CODE.CREATE',
           outputPassword: true,
         });
 
         createModal.onDidDismiss((password) => {
           if (password) {
-            let validateModal = this.modalCtrl.create('PinCodePage', {
+            let validateModal = this.modalCtrl.create('PinCodeModal', {
               message: 'PIN_CODE.CONFIRM',
               expectedPassword: password,
             });

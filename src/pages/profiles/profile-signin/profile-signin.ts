@@ -87,7 +87,7 @@ export class ProfileSigninPage {
   }
 
   signin(profileId: string) {
-    let modal = this.modalCtrl.create('PinCodePage', {
+    let modal = this.modalCtrl.create('PinCodeModal', {
       validatePassword: true
     });
 

@@ -125,7 +125,7 @@ export class WalletListPage {
     wallet.address = account.address;
     wallet.publicKey = account.publicKey;
 
-    let modal = this.modalCtrl.create('PinCodePage', {
+    let modal = this.modalCtrl.create('PinCodeModal', {
       message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
       outputPassword: true,
       validatePassword: true

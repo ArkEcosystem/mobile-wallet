@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
+import { App, ModalController } from 'ionic-angular';
 
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
@@ -17,16 +18,17 @@ export class AuthProvider {
 
   public loggedProfileId: string;
 
-  constructor(private _storage: StorageProvider) {
-    this._checkLogin();
-  }
+  constructor(
+    private storage: StorageProvider,
+    private app: App,
+  ) { }
 
   login(profileId: string, password?: string): Observable<boolean> {
     return Observable.create((observer) => {
       this.loggedProfileId = profileId;
-      this._storage.set(constants.STORAGE_ACTIVE_PROFILE, profileId);
+      this.storage.set(constants.STORAGE_ACTIVE_PROFILE, profileId);
 
-      this._storage.set(constants.STORAGE_LOGIN, true);
+      this.storage.set(constants.STORAGE_LOGIN, true);
 
       this.onLogin$.next(profileId);
       observer.next(true);
@@ -34,8 +36,8 @@ export class AuthProvider {
   }
 
   logout(): void {
-    this._storage.set(constants.STORAGE_LOGIN, false);
-    this._storage.set(constants.STORAGE_ACTIVE_PROFILE, undefined);
+    this.storage.set(constants.STORAGE_LOGIN, false);
+    this.storage.set(constants.STORAGE_ACTIVE_PROFILE, undefined);
     this.loggedProfileId = undefined;
 
     this.onLogout$.next(false);
@@ -43,7 +45,7 @@ export class AuthProvider {
 
   hasSeenIntro(): Observable<boolean> {
     return Observable.create((observer) => {
-      this._storage.get(constants.STORAGE_INTROSEEN).subscribe((introSeen) => {
+      this.storage.get(constants.STORAGE_INTROSEEN).subscribe((introSeen) => {
         observer.next(introSeen === 'true');
         observer.complete();
       });
@@ -51,23 +53,23 @@ export class AuthProvider {
   }
 
   saveIntro(): void {
-    this._storage.set(constants.STORAGE_INTROSEEN, true);
+    this.storage.set(constants.STORAGE_INTROSEEN, true);
   }
 
   getMasterPassword(): Observable<string> {
-    return this._storage.get(constants.STORAGE_MASTERPASSWORD);
+    return this.storage.get(constants.STORAGE_MASTERPASSWORD);
   }
 
   saveMasterPassword(password: string): void {
     let hash = bcrypt.hashSync(password, 8);
     console.log(hash);
 
-    this._storage.set(constants.STORAGE_MASTERPASSWORD, hash);
+    this.storage.set(constants.STORAGE_MASTERPASSWORD, hash);
   }
 
   validateMasterPassword(password: string): Observable<any> {
     return Observable.create((observer) => {
-      this._storage.get(constants.STORAGE_MASTERPASSWORD).subscribe((master) => {
+      this.storage.get(constants.STORAGE_MASTERPASSWORD).subscribe((master) => {
         bcrypt.compare(password, master, (err, res) => {
           if (err) observer.error(err);
 
@@ -77,15 +79,5 @@ export class AuthProvider {
       });
     });
   }
-
-  private _checkLogin(): void {
-    this._storage.getObject(constants.STORAGE_LOGIN)
-      .flatMap(() => this._storage.get(constants.STORAGE_ACTIVE_PROFILE))
-      .subscribe((result) => {
-        // TODO:
-        // this.isLoginSubject$.next(result);
-      });
-  }
-
 
 }

@@ -6,11 +6,11 @@ import { AuthProvider } from '@providers/auth/auth';
 
 @IonicPage()
 @Component({
-  selector: 'page-pin-code',
+  selector: 'modal-pin-code',
   templateUrl: 'pin-code.html',
   providers: [Vibration],
 })
-export class PinCodePage {
+export class PinCodeModal {
 
   public message: string;
   public password: string;

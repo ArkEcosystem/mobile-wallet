@@ -112,7 +112,7 @@ export class SettingsPage {
 
   private getPassphrases() {
     let message = 'PIN_CODE.DEFAULT_MESSAGE';
-    let modal = this.modalCtrl.create('PinCodePage', {
+    let modal = this.modalCtrl.create('PinCodeModal', {
       message,
       outputPassword: true,
       validatePassword: true,
