@@ -93,7 +93,7 @@ export class WalletListPage {
   }
 
   private presentWalletGenerate() {
-    let modal = this.modalCtrl.create('GenerateEntropyPage');
+    let modal = this.modalCtrl.create('GenerateEntropyModal');
 
     modal.onDidDismiss((entropy) => {
       if (!entropy) return;

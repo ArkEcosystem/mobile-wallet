@@ -5,10 +5,10 @@ import { Crypto } from 'ark-ts/utils';
 
 @IonicPage()
 @Component({
-  selector: 'page-generate-entropy',
+  selector: 'modal-generate-entropy',
   templateUrl: 'generate-entropy.html',
 })
-export class GenerateEntropyPage {
+export class GenerateEntropyModal {
 
   public pan: number;
   public progress: number;
