@@ -50,6 +50,7 @@ export class MyApp {
     private screenOrientation: ScreenOrientation,
   ) {
     platform.ready().then(() => {
+      splashScreen.hide();
       menuCtrl.enable(false, 'sidebarMenu');
       statusBar.styleDefault();
 
