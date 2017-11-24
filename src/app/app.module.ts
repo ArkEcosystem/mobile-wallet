@@ -36,7 +36,7 @@ export function httpLoaderFactory(http: Http) {
     HttpModule,
     IonicModule.forRoot(MyApp, {
       scrollPadding: false,
-      scrollAssist: true,
+      scrollAssist: false,
       autoFocusAssist: false
     }),
     IonicStorageModule.forRoot(),

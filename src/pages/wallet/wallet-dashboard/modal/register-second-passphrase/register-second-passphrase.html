@@ -55,7 +55,7 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="note-toolbar">
+<ion-footer class="note-toolbar hide-on-keyboard-open" no-shadow no-border>
   <p *ngIf="step == 1">{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT' | translate }}</p>
   <p *ngIf="step == 2">{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE' | translate }}</p>
 </ion-footer>

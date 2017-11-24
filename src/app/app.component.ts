@@ -50,12 +50,20 @@ export class MyApp {
     private screenOrientation: ScreenOrientation,
   ) {
     platform.ready().then(() => {
-      this.menuCtrl.enable(false, 'sidebarMenu');
+      menuCtrl.enable(false, 'sidebarMenu');
       statusBar.styleDefault();
-      keyboard.disableScroll(false);
-      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
 
-      this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
+      if (platform.is('cordova')) {
+        keyboard.disableScroll(false);
+        keyboard.hideKeyboardAccessoryBar(true);
+
+        keyboard.onKeyboardShow().subscribe(() => document.body.classList.add('keyboard-is-open'));
+        keyboard.onKeyboardHide().subscribe(() => document.body.classList.remove('keyboard-is-open'));
+
+        screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+      }
+
+      authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
         if (!hasSeenIntro) {
           this.openPage('IntroPage');
           return;
