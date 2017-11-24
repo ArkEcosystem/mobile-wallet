@@ -11,6 +11,7 @@ import { Wallet, Transaction, WalletPassphrases } from '@models/model';
 import * as constants from '@app/app.constants';
 import lodash from 'lodash';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
+import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
 
 @IonicPage()
 @Component({
@@ -20,6 +21,7 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
 export class DelegatesPage {
 
   @ViewChild('pinCode') pinCode: PinCodeComponent;
+  @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
 
   public isSearch: boolean = false;
   public searchQuery: any = { username: ''};
@@ -99,59 +101,8 @@ export class DelegatesPage {
       secondPassphrase: passphrases['secondPassphrase'],
       type
     }).subscribe((transaction) => {
-      this.confirmTransaction(transaction, passphrases);
+      this.confirmTransaction.open(transaction, passphrases);
     });
-  }
-
-  private confirmTransaction(transaction: Transaction, passphrases: any) {
-    let response = { status: false, message: undefined };
-    transaction = new Transaction(this.currentWallet.address).deserialize(transaction);
-
-    this.arkApiProvider.createTransaction(transaction, passphrases['passphrase'], passphrases['secondPassphrase'])
-      .finally(() => {
-        if (response.status) {
-          let confirmModal = this.modalCtrl.create('TransactionConfirmPage', {
-            transaction,
-            passphrases,
-            address: this.currentWallet.address,
-          }, { cssClass: 'inset-modal', enableBackdropDismiss: true });
-
-          confirmModal.onDidDismiss((result) => {
-            if (lodash.isUndefined(result)) return;
-
-            if (result.status) {
-              return this.navCtrl.push('TransactionResponsePage', {
-                transaction,
-                passphrases,
-                response: result,
-                wallet: this.currentWallet,
-              });
-            }
-
-            response = result;
-            this.presentTransactionResponseModal(response);
-          });
-
-          confirmModal.present();
-        } else {
-          this.presentTransactionResponseModal(response);
-        }
-      })
-      .subscribe((tx) => {
-        response.status = true;
-        transaction = tx;
-      }, (error) => {
-        response.status = false,
-        response.message = error;
-      });
-  }
-
-  private presentTransactionResponseModal(response: any) {
-    let responseModal = this.modalCtrl.create('TransactionResponsePage', {
-      response
-    }, { cssClass: 'inset-modal-small' });
-
-    responseModal.present();
   }
 
   private fetchCurrentVote() {

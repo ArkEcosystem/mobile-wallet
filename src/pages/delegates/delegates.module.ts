@@ -7,6 +7,7 @@ import { PipesModule } from '@pipes/pipes.module';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 
 import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
+import { ConfirmTransactionComponentModule } from '@components/confirm-transaction/confirm-transaction.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
     PipesModule,
     FilterPipeModule,
     PinCodeComponentModule,
+    ConfirmTransactionComponentModule,
   ],
 })
 export class DelegatesPageModule {}

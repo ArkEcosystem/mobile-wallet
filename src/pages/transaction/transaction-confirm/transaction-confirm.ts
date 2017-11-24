@@ -41,6 +41,8 @@ export class TransactionConfirmPage {
     this.transaction = this.navParams.get('transaction');
     this.address = this.navParams.get('address');
 
+    console.log(passphrases, this.transaction, this.address);
+
     if (!this.transaction || !passphrases || !this.address) this.navCtrl.pop();
 
     this.currentNetwork = this.arkApiProvider.network;

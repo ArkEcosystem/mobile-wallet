@@ -18,13 +18,13 @@ export class PinCodeComponent {
 
   constructor(
     private userDataProvider: UserDataProvider,
-    private modalController: ModalController,
+    private modalCtrl: ModalController,
   ) { }
 
   open(message: string, outputPassword: boolean) {
     if (!this.wallet) return;
 
-    let modal = this.modalController.create('PinCodeModal', {
+    let modal = this.modalCtrl.create('PinCodeModal', {
       message,
       outputPassword,
       validatePassword: true,

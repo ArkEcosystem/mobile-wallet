@@ -13,6 +13,8 @@ import { Network, Fees } from 'ark-ts/model';
 import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
 import lodash from 'lodash';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
+import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
+import * as constants from '@app/app.constants';
 
 @IonicPage()
 @Component({
@@ -22,6 +24,7 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
 })
 export class TransactionSendPage {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
+  @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
 
   transaction: SendTransactionForm = {};
 
@@ -74,13 +77,13 @@ export class TransactionSendPage {
 
   onEnterPinCode(passphrases: WalletPassphrases) {
     this.arkApiProvider.api.transaction.createTransaction({
-      amount: this.transaction.amount,
+      amount: Number(this.transaction.amount) * constants.WALLET_UNIT_TO_SATOSHI,
       vendorField: this.transaction.smartBridge,
       passphrase: passphrases.passphrase,
       secondPassphrase: passphrases.secondPassphrase,
       recipientId: this.transaction.recipientAddress,
     }).subscribe((transaction) => {
-      console.log(transaction);
+      this.confirmTransaction.open(transaction, passphrases);
     });
   }
 

@@ -57,7 +57,7 @@
       <ion-col>
         <ion-item>
           <ion-label stacked>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</ion-label>
-          <ion-input type="text" name="transaction.smartBridge" [(ngModel)]="smartBridge" maxlength="60"></ion-input>
+          <ion-input type="text" name="transaction.smartBridge" [(ngModel)]="transaction.smartBridge" maxlength="60"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -70,3 +70,4 @@
 </ion-content>
 
 <pin-code [wallet]="currentWallet" (onSuccess)="onEnterPinCode($event)" #pinCode></pin-code>
+<confirm-transaction [wallet]="currentWallet" #confirmTransaction></confirm-transaction>

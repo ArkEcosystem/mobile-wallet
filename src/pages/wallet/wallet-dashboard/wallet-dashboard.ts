@@ -17,6 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import * as constants from '@app/app.constants';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
+import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
 
 @IonicPage()
 @Component({
@@ -25,6 +26,7 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
 })
 export class WalletDashboardPage {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
+  @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
 
   public profile: Profile;
   public network: Network;
@@ -249,7 +251,7 @@ export class WalletDashboardPage {
     this.arkApiProvider.api.transaction.createDelegate(transaction)
       .takeUntil(this.unsubscriber$)
       .subscribe((data) => {
-        this.confirmTransaction(data, passphrases);
+        this.confirmTransaction.open(data, passphrases);
       });
   }
 
@@ -258,7 +260,7 @@ export class WalletDashboardPage {
     .createSignature(passphrases.passphrase, this.newSecondPassphrase)
     .takeUntil(this.unsubscriber$)
     .subscribe((data) => {
-      this.confirmTransaction(data, passphrases);
+      this.confirmTransaction.open(data, passphrases);
     });
   }
 
@@ -308,57 +310,6 @@ export class WalletDashboardPage {
     this.refreshAccount(false);
     this.refreshTransactions(false);
     this.saveWallet();
-  }
-
-  private confirmTransaction(transaction: Transaction, passphrases: any) {
-    let response = { status: false, message: undefined };
-    transaction = new Transaction(this.wallet.address).deserialize(transaction);
-
-    this.arkApiProvider.createTransaction(transaction, passphrases['passphrase'], passphrases['secondPassphrase'])
-      .finally(() => {
-        if (response.status) {
-          let confirmModal = this.modalCtrl.create('TransactionConfirmPage', {
-            transaction,
-            passphrases,
-            address: this.address,
-          }, { cssClass: 'inset-modal', enableBackdropDismiss: true });
-
-          confirmModal.onDidDismiss((result) => {
-            if (lodash.isUndefined(result)) return;
-
-            if (result.status) {
-              return this.navCtrl.push('TransactionResponsePage', {
-                transaction,
-                passphrases,
-                response: result,
-                wallet: this.wallet,
-              });
-            }
-
-            response = result;
-            this.presentTransactionResponseModal(response);
-          });
-
-          confirmModal.present();
-        } else {
-          this.presentTransactionResponseModal(response);
-        }
-      })
-      .subscribe((tx) => {
-        response.status = true;
-        transaction = tx;
-      }, (error) => {
-        response.status = false,
-        response.message = error;
-      });
-  }
-
-  private presentTransactionResponseModal(response: any) {
-    let responseModal = this.modalCtrl.create('TransactionResponsePage', {
-      response
-    }, { cssClass: 'inset-modal-small' });
-
-    responseModal.present();
   }
 
   private onUpdateMarket() {

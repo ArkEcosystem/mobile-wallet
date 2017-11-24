@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
 import { SwipeContactsComponentModule } from '@components/swipe-contacts/swipe-contacts.module';
 import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
+import { ConfirmTransactionComponentModule } from '@components/confirm-transaction/confirm-transaction.module';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
     PipesModule,
     SwipeContactsComponentModule,
     PinCodeComponentModule,
+    ConfirmTransactionComponentModule,
   ],
 })
 export class TransactionSendPageModule {}
