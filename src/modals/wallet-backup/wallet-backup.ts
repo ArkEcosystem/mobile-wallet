@@ -7,10 +7,10 @@ import bip39 from 'bip39';
 
 @IonicPage()
 @Component({
-  selector: 'page-wallet-backup',
+  selector: 'modal-wallet-backup',
   templateUrl: 'wallet-backup.html',
 })
-export class WalletBackupPage {
+export class WalletBackupModal {
 
   public title: string;
   public entropy: string;

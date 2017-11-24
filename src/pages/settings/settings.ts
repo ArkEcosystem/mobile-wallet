@@ -106,7 +106,7 @@ export class SettingsPage {
   }
 
   private showBackup(passphrases: WalletPassphrases) {
-    let modal = this.modalCtrl.create('WalletBackupPage', {
+    let modal = this.modalCtrl.create('WalletBackupModal', {
       title: 'SETTINGS_PAGE.WALLET_BACKUP',
       passphrases,
     });

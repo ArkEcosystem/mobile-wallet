@@ -98,7 +98,7 @@ export class WalletListPage {
     modal.onDidDismiss((entropy) => {
       if (!entropy) return;
 
-      let showModal = this.modalCtrl.create('WalletBackupPage', {
+      let showModal = this.modalCtrl.create('WalletBackupModal', {
         title: 'WALLETS_PAGE.CREATE_WALLET',
         entropy,
       });
