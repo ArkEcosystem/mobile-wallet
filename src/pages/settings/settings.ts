@@ -33,7 +33,6 @@ export class SettingsPage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private settingsDataProvider: SettingsDataProvider,
     private alertCtrl: AlertController,
     private translateService: TranslateService,
@@ -45,7 +44,19 @@ export class SettingsPage {
   }
 
   openChangePinPage() {
-    // TODO:
+    let modal = this.modalCtrl.create('PinCodeModal', {
+      message: 'PIN_CODE.DEFAULT_MESSAGE',
+      outputPassword: true,
+      validatePassword: true,
+    });
+    let that = this;
+
+    modal.present();
+    modal.onDidDismiss((password) => {
+      if (password) {
+        this.pinCode.createUpdatePinCode(null, true);
+      }
+    });
   }
 
   openWalletBackupPage() {

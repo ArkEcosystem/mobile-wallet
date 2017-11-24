@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-
-import { AuthProvider } from '@providers/auth/auth';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, ModalController } from 'ionic-angular';
+import { PinCodeComponent } from '@components/pin-code/pin-code';
 
 @IonicPage()
 @Component({
@@ -9,58 +8,20 @@ import { AuthProvider } from '@providers/auth/auth';
   templateUrl: 'login.html',
 })
 export class LoginPage {
+  @ViewChild('pinCode') pinCode: PinCodeComponent;
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     public modalCtrl: ModalController,
-    private authProvider: AuthProvider,
   ) {
   }
 
   openProfileSignin() {
-    this.createPinCode('ProfileSigninPage');
+    this.pinCode.createUpdatePinCode('ProfileSigninPage');
   }
 
   openProfileCreate() {
-    this.createPinCode('ProfileCreatePage');
-  }
-
-  private createPinCode(nextPage: string) {
-    this.authProvider.getMasterPassword().do((master) => {
-      if (!master) {
-        let createModal = this.modalCtrl.create('PinCodeModal', {
-          message: 'PIN_CODE.CREATE',
-          outputPassword: true,
-        });
-
-        createModal.onDidDismiss((password) => {
-          if (password) {
-            let validateModal = this.modalCtrl.create('PinCodeModal', {
-              message: 'PIN_CODE.CONFIRM',
-              expectedPassword: password,
-            });
-
-            validateModal.onDidDismiss((status) => {
-              if (status) {
-                this.authProvider.saveMasterPassword(password);
-                this.navCtrl.push(nextPage);
-              } else {
-                // TODO: fail
-              }
-            })
-
-            validateModal.present();
-          } else {
-            // TODO: fail
-          }
-        });
-
-        createModal.present();
-      } else {
-        this.navCtrl.push(nextPage);
-      }
-    }).subscribe();
+    this.pinCode.createUpdatePinCode('ProfileCreatePage');
   }
 
 }

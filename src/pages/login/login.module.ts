@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { LoginPage } from './login';
 
 import { TranslateModule } from '@ngx-translate/core';
+import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     IonicPageModule.forChild(LoginPage),
     TranslateModule,
+    PinCodeComponentModule,
   ],
 })
 export class LoginPageModule {}
