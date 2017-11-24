@@ -28,7 +28,7 @@ export class ConfirmTransactionComponent {
     this.arkApiProvider.createTransaction(transaction, passphrases.passphrase, passphrases.secondPassphrase)
       .subscribe((tx) => {
         console.log(tx);
-        let modal = this.modalCtrl.create('TransactionConfirmPage', {
+        let modal = this.modalCtrl.create('ConfirmTransactionPage', {
           transaction: tx,
           passphrases,
           address: this.wallet.address,

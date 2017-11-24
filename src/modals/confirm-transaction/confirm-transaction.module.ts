@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { TransactionConfirmPage } from './transaction-confirm';
+import { ConfirmTransactionModal } from './confirm-transaction';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
 
 @NgModule({
   declarations: [
-    TransactionConfirmPage,
+    ConfirmTransactionModal,
   ],
   imports: [
-    IonicPageModule.forChild(TransactionConfirmPage),
+    IonicPageModule.forChild(ConfirmTransactionModal),
     TranslateModule,
     PipesModule,
   ],
 })
-export class TransactionConfirmPageModule {}
+export class ConfirmTransactionModalModule {}

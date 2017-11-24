@@ -15,10 +15,10 @@ import lodash from 'lodash';
 
 @IonicPage()
 @Component({
-  selector: 'page-transaction-confirm',
-  templateUrl: 'transaction-confirm.html',
+  selector: 'modal-confirm-transaction',
+  templateUrl: 'confirm-transaction.html',
 })
-export class TransactionConfirmPage {
+export class ConfirmTransactionModal {
 
   public transaction: Transaction;
   public address: string;
