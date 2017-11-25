@@ -1,3 +1,26 @@
 .layout-flex {
   flex: 1;
 }
+
+.list,
+form,
+.card {
+
+  ion-item-sliding {
+    background: color($colors, gray-background, base)!important;
+
+    &.active-slide .item {
+      background: color($colors, gray-background, base)!important;
+    }
+  }
+
+  .item:not(.item-divider) {
+    background: transparent!important;
+  }
+}
+
+form {
+  .item {
+    padding-left: 0;
+  }
+}

@@ -107,7 +107,8 @@
     "SENT_SUCCESS": "Transaction sent with success!",
     "COPY_TXID": "Copy TXID",
     "ENCRYPT_SAVE_SECOND_PASSPHRASE": "Do you want to encrypt and save your second passphrase?",
-    "RECIPIENT_NAME": "Recipient's name"
+    "RECIPIENT_NAME": "Recipient's name",
+    "QRCODE_COPY": "Tap on address to copy it to clipboard or click on icon to share QR code."
   },
   "PROFILES_PAGE": {
     "SIGN_IN": "Sign in",

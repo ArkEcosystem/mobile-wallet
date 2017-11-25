@@ -32,9 +32,12 @@
       </ion-row>
       <ion-row class="layout-flex">
         <ion-col align-self-end>
-          <button ion-button class="button-continue"[disabled]="!createProfileForm.form.valid" (click)="submitForm()">{{ 'NEXT' | translate }}</button>
         </ion-col>
       </ion-row>
     </ion-grid>
   </form>
 </ion-content>
+
+<ion-footer padding no-shadow no-border class="hide-on-keyboard-open">
+  <button ion-button class="button-continue" [disabled]="!createProfileForm.form.valid" (click)="submitForm()">{{ 'NEXT' | translate }}</button>
+</ion-footer>

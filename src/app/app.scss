@@ -7,6 +7,14 @@ ion-app.md {
 }
 
 #sidebarMenu {
+  .menu-inner {
+    background: #fff!important;
+
+    ion-content {
+      background: transparent!important;
+    }
+  }
+
   ion-header {
     padding: 40px 20px 20px 30px;
 

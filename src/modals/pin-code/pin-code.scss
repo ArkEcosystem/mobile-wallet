@@ -19,7 +19,7 @@ modal-pin-code {
     span {
       height: 20px;
       width: 20px;
-      border: 2px solid #d0d5d9;
+      border: 2px solid rgb(224, 229, 232);
       background-color: transparent;
       border-radius: 100%;
       position: relative;
@@ -40,7 +40,7 @@ modal-pin-code {
     height: 80px;
     font-weight: 500;
     font-size: 22pt;
-    border-color: #e6eaee;
+    border-color: rgb(224, 229, 232);
     color: #0b1828;
 
     &.activated {

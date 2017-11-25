@@ -11,12 +11,12 @@
 
 </ion-header>
 
-<ion-content padding no-bounce>
+<ion-content padding no-bounce class="column-mode">
   <ion-grid (pan)="panEvent($event)">
     <ion-row>
       <ion-col text-center>
-        <img src="./assets/img/wallet/hand-swipe.png">
-        <h5>{{ 'WALLETS_PAGE.ENTROPY_RANDOM_BYTES' | translate }}</h5>
+        <img src="./assets/img/wallet/hand-swipe.png" class="image">
+        <h5 class="message">{{ 'WALLETS_PAGE.ENTROPY_RANDOM_BYTES' | translate }}</h5>
         <progress-bar [progress]="progress"></progress-bar>
       </ion-col>
     </ion-row>
