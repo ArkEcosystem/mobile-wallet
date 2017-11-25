@@ -1,22 +1,9 @@
 page-transaction-receive {
-  scroll-content {
-    display: flex;
-    flex-direction: column;
-  }
-  ion-grid {
-    padding: 0;
-    height: 100%;
-  }
-  .grid {
-    padding: 0;
-  }
-  ion-row {
-    flex: 1;
-  }
   h6 {
     padding: 1em;
   }
-  .button {
+  .button-address {
     padding: 2em 1em;
+    text-transform: none;
   }
 }

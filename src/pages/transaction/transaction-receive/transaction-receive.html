@@ -11,11 +11,11 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content class="column-mode">
   <ion-grid>
     <ion-row justify-content-center align-items-end>
       <ion-col text-center>
-        <h6>{{ 'Tap on address to copy it to clipboard or click on icon to share QR code.' | translate }}</h6>
+        <h6>{{ 'TRANSACTIONS_PAGE.QRCODE_COPY' | translate }}</h6>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -25,7 +25,7 @@
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <button ion-button clear small color="primary" (click)="copyAddress()"><strong>{{ address }}</strong></button>
+        <button ion-button clear small color="primary" (click)="copyAddress()" class="button-address"><strong>{{ address }}</strong></button>
       </ion-col>
     </ion-row>
   </ion-grid>
