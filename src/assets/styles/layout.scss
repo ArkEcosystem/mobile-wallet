@@ -5,6 +5,7 @@
 .list,
 form,
 .card {
+  background: none;
 
   ion-item-sliding {
     background: color($colors, gray-background, base)!important;
@@ -23,4 +24,9 @@ form {
   .item {
     padding-left: 0;
   }
+}
+
+.header .toolbar-background {
+  background: none;
+  border: none;
 }

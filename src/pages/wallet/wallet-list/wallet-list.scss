@@ -11,9 +11,17 @@ page-wallet-list {
       padding: 0 .3em!important;
     }
   }
+  .marketcap-container {
+    padding-left: 0;
+
+    .price-container .col:first-child {
+      padding-left: 0;
+    }
+  }
   ion-card{
+    background-color: white!important;
     border-radius: 5px!important;
-    width: 60vw!important;
+    width: 70vw!important;
     padding: 1.5em .8em;
     display: inline-block;
     min-height: 118px;

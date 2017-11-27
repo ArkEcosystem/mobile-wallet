@@ -197,7 +197,7 @@ export class WalletListPage {
               scales: {
                 xAxes: [{
                   gridLines: {
-                    display: false,
+                    display: true,
                   }
                 }],
                 yAxes: [{

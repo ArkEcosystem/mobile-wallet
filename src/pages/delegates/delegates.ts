@@ -121,6 +121,7 @@ export class DelegatesPage {
       });
   }
 
+  // DEPRECATED:
   private getSupply() {
     this.arkApiProvider.api.block.blockchainStatus().takeUntil(this.unsubscriber$).subscribe((data) => {
       if (data.success) {
@@ -145,11 +146,11 @@ export class DelegatesPage {
     this.arkApiProvider.delegates.subscribe((data) => this.zone.run(() => this.delegates = data));
 
     this.onUpdateDelegates();
-    this.getSupply();
+    // this.getSupply();
     this.fetchCurrentVote();
     this.arkApiProvider.fetchAllDelegates().subscribe();
 
-    this.refreshListener = setInterval(() => this.getSupply(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
+    // this.refreshListener = setInterval(() => this.getSupply(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
   }
 
   ngOnDestroy() {

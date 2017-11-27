@@ -29,7 +29,7 @@ ion-app.md {
   }
   ion-list > .item {
     .icon {
-      color: rgb(0, 80, 232);
+      color: color($colors, primary, base);
     }
     .label {
       font-weight: 500;
