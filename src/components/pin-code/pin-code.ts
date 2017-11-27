@@ -48,7 +48,7 @@ export class PinCodeComponent {
     modal.present();
   }
 
-  createUpdatePinCode(nextPage?: string, forceChange: boolean = false) {
+  createUpdatePinCode(nextPage?: string, oldPassword?: string) {
     let createModal = (master?: any) => {
       if (!master) {
         let createModal = this.modalCtrl.create('PinCodeModal', {
@@ -66,6 +66,9 @@ export class PinCodeComponent {
             validateModal.onDidDismiss((status) => {
               if (status) {
                 this.authProvider.saveMasterPassword(password);
+                if (oldPassword) {
+                  this.userDataProvider.updateWalletEncryption(oldPassword, password);
+                }
                 //TODO: toast success message
                 if (nextPage) {
                   this.navCtrl.push(nextPage);
@@ -86,7 +89,7 @@ export class PinCodeComponent {
         this.navCtrl.push(nextPage);
       }
     }
-    if (!forceChange) {
+    if (!oldPassword) {
       this.authProvider.getMasterPassword().do(createModal).subscribe();
     } else {
       createModal();

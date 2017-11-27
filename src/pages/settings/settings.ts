@@ -54,7 +54,7 @@ export class SettingsPage {
     modal.present();
     modal.onDidDismiss((password) => {
       if (password) {
-        this.pinCode.createUpdatePinCode(null, true);
+        this.pinCode.createUpdatePinCode(null, password);
       }
     });
   }

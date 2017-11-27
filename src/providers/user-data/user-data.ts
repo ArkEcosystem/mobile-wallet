@@ -160,6 +160,19 @@ export class UserDataProvider {
     return this.saveProfiles();
   }
 
+  updateWalletEncryption(oldPassword: string, newPassword: string) {
+    for (let profileId in this.profiles) {
+      let profile = this.profiles[profileId];
+      for (let walletId in profile.wallets) {
+        let wallet = profile.wallets[walletId];
+        let passphrase = this.forgeProvider.decrypt(wallet.cipherPassphrase, oldPassword, profile.salt, profile.iv);
+        wallet.cipherPassphrase = this.forgeProvider.encrypt(passphrase, newPassword, profile.salt, profile.iv);
+      };
+    };
+
+    return this.saveProfiles();
+  }
+
   removeWalletByAddress(address: string, profileId: string = this.authProvider.loggedProfileId): void {
     delete this.profiles[profileId]['wallets'][address];
 
