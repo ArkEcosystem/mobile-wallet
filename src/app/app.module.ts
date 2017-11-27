@@ -1,6 +1,6 @@
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, Http } from '@angular/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -23,7 +23,7 @@ import { QRScanner } from '@ionic-native/qr-scanner';
 import { MyApp } from './app.component';
 import { ForgeProvider } from '../providers/forge/forge';
 
-export function httpLoaderFactory(http: Http) {
+export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
@@ -33,7 +33,7 @@ export function httpLoaderFactory(http: Http) {
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp, {
       scrollPadding: false,
       scrollAssist: false,
@@ -44,7 +44,7 @@ export function httpLoaderFactory(http: Http) {
       loader: {
         provide: TranslateLoader,
         useFactory: httpLoaderFactory,
-        deps: [Http]
+        deps: [HttpClient]
       }
     }),
   ],
