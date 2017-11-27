@@ -31,10 +31,10 @@ export class WalletImportPage {
   }
 
   scanQRCode() {
+    let $this = this;
     this.qrScanner.prepare()
     .then((status: QRScannerStatus) => {
       if (status.authorized) {
-        let $this = this;
         let scanSub = this.qrScanner.scan().subscribe((qrCode: string) => {
           qrCode = JSON.parse(qrCode);
 
@@ -56,23 +56,29 @@ export class WalletImportPage {
             $this.arkApiProvider.api.account
               .get({ address })
               .finally(() => {
-                let modal = this.modalCtrl.create('PinCodeModal', {
-                  message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
-                  outputPassword: true,
-                  validatePassword: true,
-                });
+                if (privateKey) {
+                  let modal = this.modalCtrl.create('PinCodeModal', {
+                    message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
+                    outputPassword: true,
+                    validatePassword: true,
+                  });
 
-                modal.onDidDismiss((password) => {
-                  if (password) {
-                    this.userDataProvider.addWallet(newWallet, passphrase || '', password).subscribe((result) => {
-                      this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
-                    });
-                  } else {
-                    // TODO: Toast error
-                  }
-                });
+                  modal.onDidDismiss((password) => {
+                    if (password) {
+                      this.userDataProvider.addWallet(newWallet, passphrase, password).subscribe((result) => {
+                        this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
+                      });
+                    } else {
+                      // TODO: Toast error
+                    }
+                  });
 
-                modal.present();
+                  modal.present();
+                } else {
+                  this.userDataProvider.addWallet(newWallet, '', '').subscribe((result) => {
+                    this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
+                  });
+                }
               })
               .subscribe((response) => {
                 if (response && response.success) {

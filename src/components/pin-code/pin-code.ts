@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 import { Wallet, WalletPassphrases } from '@models/model';
+import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
 
 import lodash from 'lodash';
@@ -18,7 +19,9 @@ export class PinCodeComponent {
 
   constructor(
     private userDataProvider: UserDataProvider,
+    private authProvider: AuthProvider,
     private modalCtrl: ModalController,
+    private navCtrl: NavController,
   ) { }
 
   open(message: string, outputPassword: boolean) {
@@ -43,6 +46,54 @@ export class PinCodeComponent {
     });
 
     modal.present();
+  }
+
+  createUpdatePinCode(nextPage?: string, oldPassword?: string) {
+    let createModal = (master?: any) => {
+      if (!master) {
+        let createModal = this.modalCtrl.create('PinCodeModal', {
+          message: 'PIN_CODE.CREATE',
+          outputPassword: true,
+        });
+
+        createModal.onDidDismiss((password) => {
+          if (password) {
+            let validateModal = this.modalCtrl.create('PinCodeModal', {
+              message: 'PIN_CODE.CONFIRM',
+              expectedPassword: password,
+            });
+
+            validateModal.onDidDismiss((status) => {
+              if (status) {
+                this.authProvider.saveMasterPassword(password);
+                if (oldPassword) {
+                  this.userDataProvider.updateWalletEncryption(oldPassword, password);
+                }
+                //TODO: toast success message
+                if (nextPage) {
+                  this.navCtrl.push(nextPage);
+                }
+              } else {
+                // TODO: fail
+              }
+            })
+
+            validateModal.present();
+          } else {
+            // TODO: fail
+          }
+        });
+
+        createModal.present();
+      } else if (nextPage) {
+        this.navCtrl.push(nextPage);
+      }
+    }
+    if (!oldPassword) {
+      this.authProvider.getMasterPassword().do(createModal).subscribe();
+    } else {
+      createModal();
+    }
   }
 
 }
