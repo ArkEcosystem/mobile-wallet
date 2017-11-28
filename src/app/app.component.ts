@@ -10,6 +10,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
+import { ToastProvider } from '@providers/toast/toast';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -47,6 +48,7 @@ export class MyApp {
     private marketDataProvider: MarketDataProvider,
     private arkApiProvider: ArkApiProvider,
     private settingsDataProvider: SettingsDataProvider,
+    private toastProvider: ToastProvider,
     private menuCtrl: MenuController,
     private alertCtrl: AlertController,
     private config: Config,

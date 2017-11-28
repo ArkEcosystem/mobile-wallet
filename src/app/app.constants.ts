@@ -25,6 +25,10 @@ export const STORAGE_FEES = 'fees';
 
 export const STORAGE_MASTERPASSWORD = 'masterpassword';
 
+// TOAST
+export const TOAST_HIDE_DELAY = 3000;
+export const TOAST_POSITION = 'bottom';
+
 // COIN MARKETCAP API
 export const API_MARKET_HISTORY_URL = "http://coinmarketcap.northpole.ro";
 export const API_MARKET_HISTORY_ENDPOINT = 'history.json?coin=ark';
