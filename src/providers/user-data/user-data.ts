@@ -164,6 +164,9 @@ export class UserDataProvider {
       let profile = this.profiles[profileId];
       for (let walletId in profile.wallets) {
         let wallet = profile.wallets[walletId];
+        if (wallet.isWatchOnly) {
+          continue;
+        }
         let wif = this.forgeProvider.decrypt(wallet.cipherWIF, oldPassword, this.currentNetwork);
         wallet.cipherWif = this.forgeProvider.encrypt(wif, newPassword, this.currentNetwork);
 
