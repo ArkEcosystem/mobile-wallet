@@ -51,7 +51,7 @@ export class WalletImportPassphrasePage {
         modal.onDidDismiss((password) => {
           if (password) {
             this.userDataProvider.addWallet(newWallet, privateKey.toWIF(), password).subscribe((result) => {
-              this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
+              this.navCtrl.push('WalletDashboardPage', { address: newWallet.address });
             });
           } else {
             // TODO: Toast error

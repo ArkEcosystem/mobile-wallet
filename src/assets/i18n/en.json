@@ -163,6 +163,8 @@
   },
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
+  "EXIT_APP_TEXT": "Exit App?",
+  "LOGOUT_PROFILE_TEXT": "Logout of Profile?",
   "DATE": "Date",
   "DONE": "Done",
   "NAME": "Name",

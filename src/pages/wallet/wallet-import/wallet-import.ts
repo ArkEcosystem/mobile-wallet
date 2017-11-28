@@ -66,7 +66,7 @@ export class WalletImportPage {
                   modal.onDidDismiss((password) => {
                     if (password) {
                       this.userDataProvider.addWallet(newWallet, passphrase, password).subscribe((result) => {
-                        this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
+                        this.navCtrl.push('WalletDashboardPage', { address: newWallet.address });
                       });
                     } else {
                       // TODO: Toast error
@@ -76,7 +76,7 @@ export class WalletImportPage {
                   modal.present();
                 } else {
                   this.userDataProvider.addWallet(newWallet, '', '').subscribe((result) => {
-                    this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
+                    this.navCtrl.push('WalletDashboardPage', { address: newWallet.address });
                   });
                 }
               })
