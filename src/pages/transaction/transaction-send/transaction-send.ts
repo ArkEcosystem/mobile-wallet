@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { Wallet, MarketTicker, MarketCurrency, Transaction, SendTransactionForm, WalletPassphrases } from '@models/model';
+import { Wallet, MarketTicker, MarketCurrency, Transaction, SendTransactionForm, WalletKeys } from '@models/model';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { MarketDataProvider } from '@providers/market-data/market-data';
@@ -75,15 +75,15 @@ export class TransactionSendPage {
     this.transaction.amount = this.transaction.amountEquivalent / this.marketCurrency.price;
   }
 
-  onEnterPinCode(passphrases: WalletPassphrases) {
+  onEnterPinCode(keys: WalletKeys) {
     this.arkApiProvider.api.transaction.createTransaction({
       amount: Number(this.transaction.amount) * constants.WALLET_UNIT_TO_SATOSHI,
       vendorField: this.transaction.smartBridge,
-      passphrase: passphrases.passphrase,
-      secondPassphrase: passphrases.secondPassphrase,
+      passphrase: keys.key,
+      secondPassphrase: keys.secondKey,
       recipientId: this.transaction.recipientAddress,
     }).subscribe((transaction) => {
-      this.confirmTransaction.open(transaction, passphrases);
+      this.confirmTransaction.open(transaction, keys);
     });
   }
 

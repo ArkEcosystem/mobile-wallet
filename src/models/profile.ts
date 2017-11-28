@@ -3,10 +3,8 @@ import { Contact } from '@models/contact';
 
 export class Profile {
   contacts: any = {};
-  iv: any;
   name: string;
   networkId: string;
-  salt: any;
   wallets: any = {};
 
   deserialize(input: any): Profile {
@@ -24,8 +22,6 @@ export class Profile {
     this.name = null;
     this.networkId = null;
     this.wallets = {};
-    this.iv = null;
-    this.salt = null;
   }
 }
 

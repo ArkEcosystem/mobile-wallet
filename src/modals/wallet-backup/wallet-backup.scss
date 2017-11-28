@@ -1,10 +1,14 @@
 modal-wallet-backup {
 
   .col {
-    padding: 1.5em!important;
+    padding: 1.5em 2em!important;
   }
 
   .list {
+    .item-block {
+      padding-left: 0;
+    }
+
     margin: .5em 0 0 0;
 
     .item-value {
@@ -35,6 +39,7 @@ modal-wallet-backup {
     }
 
     .account-list {
+
       .item-caption {
         color: rgb(203, 203, 203);
       }

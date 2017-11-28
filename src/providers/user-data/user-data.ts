@@ -6,13 +6,14 @@ import { ForgeProvider } from '@providers/forge/forge';
 import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
 
-import { Contact, Profile, Wallet, WalletPassphrases } from '@models/model';
+import { Contact, Profile, Wallet, WalletKeys } from '@models/model';
 
 import lodash from 'lodash';
 import { v4 as uuid } from 'uuid';
 import { Network } from 'ark-ts/model';
 
 import * as constants from '@app/app.constants';
+import { PrivateKey } from 'ark-ts';
 
 @Injectable()
 export class UserDataProvider {
@@ -108,9 +109,6 @@ export class UserDataProvider {
   }
 
   addProfile(profile: Profile) {
-    profile.salt = this.forgeProvider.generateSalt();
-    profile.iv = this.forgeProvider.generateIv();
-
     this.profiles[this.generateUniqueId()] = profile;
 
     return this.saveProfiles();
@@ -137,20 +135,21 @@ export class UserDataProvider {
     if (lodash.isUndefined(profileId)) return;
 
     let profile = this.getProfileById(profileId);
-    if (wallet && !wallet.cipherSecondPassphrase) {
-      wallet.cipherSecondPassphrase = this.forgeProvider.encrypt(secondPassphrase, pinCode, profile.salt, profile.iv);
+    if (wallet && !wallet.cipherSecondWif) {
+      let secondWif = PrivateKey.fromSeed(secondPassphrase).toWIF();
+      wallet.cipherSecondWif = this.forgeProvider.encrypt(secondWif, pinCode, this.currentNetwork);
       return this.saveWallet(wallet, profileId, true);
     }
 
     return this.saveProfiles();
   }
 
-  addWallet(wallet: Wallet, passphrase: string, pinCode: string, profileId: string = this.authProvider.loggedProfileId) {
+  addWallet(wallet: Wallet, wif: string, pinCode: string, profileId: string = this.authProvider.loggedProfileId) {
     if (lodash.isUndefined(profileId)) return;
 
     let profile = this.getProfileById(profileId);
-    let cipherPassphrase = this.forgeProvider.encrypt(passphrase, pinCode, profile.salt, profile.iv);
-    wallet.cipherPassphrase = cipherPassphrase;
+    let cipherWif = this.forgeProvider.encrypt(wif, pinCode, this.currentNetwork);
+    wallet.cipherWif = cipherWif;
 
     if (!profile.wallets[wallet.address]) {
       this.onCreateWallet$.next(wallet);
@@ -165,8 +164,15 @@ export class UserDataProvider {
       let profile = this.profiles[profileId];
       for (let walletId in profile.wallets) {
         let wallet = profile.wallets[walletId];
-        let passphrase = this.forgeProvider.decrypt(wallet.cipherPassphrase, oldPassword, profile.salt, profile.iv);
-        wallet.cipherPassphrase = this.forgeProvider.encrypt(passphrase, newPassword, profile.salt, profile.iv);
+        let wif = this.forgeProvider.decrypt(wallet.cipherWIF, oldPassword, this.currentNetwork);
+        wallet.cipherWif = this.forgeProvider.encrypt(wif, newPassword, this.currentNetwork);
+
+        if (wallet.cipherSecondWIF) {
+          let secondWIF = this.forgeProvider.decrypt(wallet.cipherSecondWIF, oldPassword, this.currentNetwork);
+          wallet.cipherSecondWif = this.forgeProvider.encrypt(secondWIF, newPassword, this.currentNetwork);
+        }
+
+        this.saveWallet(wallet, profileId);
       };
     };
 
@@ -243,20 +249,20 @@ export class UserDataProvider {
     });
   }
 
-  getPassphrasesByWallet(wallet: Wallet, password: string): WalletPassphrases {
-    if (!wallet.cipherPassphrase && !wallet.cipherSecondPassphrase) return;
+  getKeysByWallet(wallet: Wallet, password: string): WalletKeys {
+    if (!wallet.cipherWif && !wallet.cipherSecondWif) return;
 
-    let passphrases: WalletPassphrases = {};
+    let keys: WalletKeys = {};
 
-    if (wallet.cipherPassphrase) {
-      passphrases.passphrase = this.forgeProvider.decrypt(wallet.cipherPassphrase, password, this.currentProfile.salt, this.currentProfile.iv);
+    if (wallet.cipherWif) {
+      keys.key = this.forgeProvider.decrypt(wallet.cipherWif, password, this.currentNetwork);
     }
 
-    if (wallet.cipherSecondPassphrase) {
-      passphrases.secondPassphrase = this.forgeProvider.decrypt(wallet.cipherSecondPassphrase, password, this.currentProfile.salt, this.currentProfile.iv);
+    if (wallet.cipherSecondWif) {
+      keys.secondKey = this.forgeProvider.decrypt(wallet.cipherSecondWif, password, this.currentNetwork);
     }
 
-    return passphrases;
+    return keys;
   }
 
   private setCurrentNetwork(): void {

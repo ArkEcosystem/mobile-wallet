@@ -50,7 +50,7 @@ export class WalletImportPassphrasePage {
 
         modal.onDidDismiss((password) => {
           if (password) {
-            this.userDataProvider.addWallet(newWallet, this.passphrase, password).subscribe((result) => {
+            this.userDataProvider.addWallet(newWallet, privateKey.toWIF(), password).subscribe((result) => {
               this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
             });
           } else {

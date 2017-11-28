@@ -7,9 +7,22 @@ import * as constants from '@app/app.constants';
 
 import { PublicKey } from 'ark-ts';
 
-export interface WalletPassphrases {
-  passphrase?: string;
-  secondPassphrase?: string;
+export interface AccountBackup {
+  address?: string;
+  publicKey?: string;
+  qrAddress?: string;
+  mnemonic?: string;
+  entropy?: string;
+  seed?: string;
+  bip38?: string;
+  secondBip38?: string;
+  wif?: string;
+  secondWif?: string;
+}
+
+export interface WalletKeys {
+  key?: string;
+  secondKey?: string;
 }
 
 export class Wallet extends Account {
@@ -18,8 +31,8 @@ export class Wallet extends Account {
   label?: string;
   transactions?: Transaction[];
   lastUpdate?: number;
-  cipherPassphrase?: any;
-  cipherSecondPassphrase?: any;
+  cipherWif?: any;
+  cipherSecondWif?: any;
   isWatchOnly?: boolean;
 
   constructor(isWatchOnly?: boolean) {
@@ -46,8 +59,8 @@ export class Wallet extends Account {
     this.username = null;
     this.transactions = [];
     this.lastUpdate = null;
-    this.cipherPassphrase = null;
-    this.cipherSecondPassphrase = null;
+    this.cipherWif = null;
+    this.cipherSecondWif = null;
     this.isWatchOnly = false;
   }
 

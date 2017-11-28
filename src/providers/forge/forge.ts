@@ -1,37 +1,27 @@
 import { Injectable } from '@angular/core';
-import forge from 'node-forge';
+import wif from 'wif';
+import bip38 from 'bip38';
+import { PrivateKey, Network } from 'ark-ts';
 
 @Injectable()
 export class ForgeProvider {
 
+  private scryptParams = {N: 4096, r: 8, p: 8};
+
   constructor() { }
 
-  public generateSalt() {
-    return forge.util.encode64(forge.random.getBytesSync(128));
+  public encrypt(wif: string, password: string, network: Network): string {
+    let key = PrivateKey.fromWIF(wif, network);
+
+    return bip38.encrypt(key.hash, key.getPublicKey().isCompressed, password, null, this.scryptParams);
   }
 
-  public generateIv() {
-    return forge.util.encode64(forge.random.getBytesSync(16));
-  }
+  public decrypt(encryptedKey: string, password: string, network: Network): string {
+    let decrypted = bip38.decrypt(encryptedKey, password, null, this.scryptParams);
 
-  public encrypt(message: string, password: string, salt: any, iv: any) {
-    let key = forge.pkcs5.pbkdf2(password, forge.util.decode64(salt), 4, 16);
-    let cipher = forge.cipher.createCipher('AES-CBC', key);
-    cipher.start({ iv: forge.util.decode64(iv)});
-    cipher.update(forge.util.createBuffer(message));
-    cipher.finish();
+    let wifString = wif.encode(network.wif, decrypted.privateKey, decrypted.compressed);
 
-    return forge.util.encode64(cipher.output.getBytes());
-  }
-
-  public decrypt(cipherText: string, password: string, salt: string, iv: string) {
-    let key = forge.pkcs5.pbkdf2(password, forge.util.decode64(salt), 4, 16);
-    let decipher = forge.cipher.createDecipher('AES-CBC', key);
-    decipher.start({ iv: forge.util.decode64(iv) });
-    decipher.update(forge.util.createBuffer(forge.util.decode64(cipherText)));
-    decipher.finish();
-
-    return decipher.output.toString();
+    return wifString;
   }
 
 }

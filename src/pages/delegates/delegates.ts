@@ -6,7 +6,7 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { Delegate, Network, VoteType } from 'ark-ts';
 
-import { Wallet, Transaction, WalletPassphrases } from '@models/model';
+import { Wallet, Transaction, WalletKeys } from '@models/model';
 
 import * as constants from '@app/app.constants';
 import lodash from 'lodash';
@@ -90,15 +90,15 @@ export class DelegatesPage {
     return false;
   }
 
-  generateTransaction(passphrases: WalletPassphrases) {
+  generateTransaction(passphrases: WalletKeys) {
     let type = VoteType.Add;
 
     if (this.walletVote && this.walletVote.publicKey === this.selectedDelegate.publicKey) type = VoteType.Remove;
 
     this.arkApiProvider.api.transaction.createVote({
       delegatePublicKey: this.selectedDelegate.publicKey,
-      passphrase: passphrases['passphrase'],
-      secondPassphrase: passphrases['secondPassphrase'],
+      passphrase: passphrases.key,
+      secondPassphrase: passphrases.secondKey,
       type
     }).subscribe((transaction) => {
       this.confirmTransaction.open(transaction, passphrases);

@@ -17,20 +17,24 @@
     <ion-row class="account-container">
       <ion-col>
         <div class="qrcode-container">
-          <qr-code [value]="account?.qraddress" size="80"></qr-code>
+          <qr-code [value]="account?.qrAddress" size="80"></qr-code>
         </div>
         <ion-list class="account-list" no-lines>
           <ion-item text-wrap>
             <p class="item-caption">{{ 'WALLETS_PAGE.PUBLIC_ADDRESS_SHARE' | translate }}</p>
             <h6 class="item-value text-selectable">{{ account?.address }}</h6>
           </ion-item>
-          <ion-item text-wrap>
+          <ion-item text-wrap *ngIf="account?.mnemonic">
             <p class="item-caption">{{ 'WALLETS_PAGE.SECRET_PASSPHRASE' | translate }} <ion-badge color="danger"><strong>{{ 'WALLETS_PAGE.KEEP_SAFE' | translate | uppercase }}</strong></ion-badge></p>
             <h6 class="item-value text-selectable">{{ account?.mnemonic }}</h6>
           </ion-item>
-          <ion-item text-wrap *ngIf="account?.secondPassphrase">
-            <p class="item-caption">{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }} <ion-badge color="danger"><strong>{{ 'WALLETS_PAGE.KEEP_SAFE' | translate | uppercase }}</strong></ion-badge></p>
-            <h6 class="item-value text-selectable">{{ account?.secondPassphrase }}</h6>
+          <ion-item text-wrap *ngIf="account?.bip38">
+            <p class="item-caption">{{ 'WALLETS_PAGE.BIP38_SEED' | translate }}</p>
+            <h6 class="item-value text-selectable">{{ account?.bip38 }}</h6>
+          </ion-item>
+          <ion-item text-wrap *ngIf="account?.secondBip38">
+            <p class="item-caption">{{ 'WALLETS_PAGE.SECOND_BIP38_SEED' | translate }}</p>
+            <h6 class="item-value text-selectable">{{ account?.secondBip38 }}</h6>
           </ion-item>
         </ion-list>
       </ion-col>
@@ -51,14 +55,18 @@
             <h6 class="item-value text-selectable">{{ account?.publicKey }}</h6>
           </ion-item>
           <ion-item text-wrap>
-            <p class="item-caption">{{ 'WALLETS_PAGE.WIF' | translate }}</p>
+            <p class="item-caption">{{ 'WALLETS_PAGE.WIF' | translate }} <ion-badge color="danger"><strong>{{ 'WALLETS_PAGE.KEEP_SAFE' | translate | uppercase }}</strong></ion-badge></p>
             <h6 class="item-value text-selectable">{{ account?.wif }}</h6>
+          </ion-item>
+          <ion-item text-wrap *ngIf="account?.secondWif">
+            <p class="item-caption">{{ 'WALLETS_PAGE.SECOND_WIF' | translate }} <ion-badge color="danger"><strong>{{ 'WALLETS_PAGE.KEEP_SAFE' | translate | uppercase }}</strong></ion-badge></p>
+            <h6 class="item-value text-selectable">{{ account?.secondWif }}</h6>
           </ion-item>
         </ion-list>
         <div class="note-message">
           <p>{{ 'WALLETS_PAGE.BACKUP_ACCOUNT' | translate }}</p>
         </div>
-        <div text-center *ngIf="!passphrases">
+        <div text-center *ngIf="!keys">
           <button ion-button class="button-continue" (click)="next()">{{ 'NEXT' | translate }}</button>
         </div>
       </ion-col>

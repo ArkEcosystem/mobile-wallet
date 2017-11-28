@@ -134,7 +134,7 @@ export class WalletListPage {
     modal.onDidDismiss((password) => {
       if (!password) return;
 
-      this.userDataProvider.addWallet(wallet, account.mnemonic, password).takeUntil(this.unsubscriber$).subscribe((response) => {
+      this.userDataProvider.addWallet(wallet, account.wif, password).takeUntil(this.unsubscriber$).subscribe((response) => {
         this.loadWallets();
       });
     })
@@ -150,6 +150,8 @@ export class WalletListPage {
       let wallet = new Wallet().deserialize(w);
       list.push(wallet);
     }
+
+    console.log(list);
 
     this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
   }

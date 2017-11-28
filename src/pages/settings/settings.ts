@@ -6,7 +6,7 @@ import 'rxjs/add/operator/takeUntil';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { UserSettings, Wallet, WalletPassphrases } from '@models/model';
+import { UserSettings, Wallet, WalletKeys } from '@models/model';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { UserDataProvider } from '@providers/user-data/user-data';
 
@@ -116,10 +116,10 @@ export class SettingsPage {
     this.navCtrl.setRoot('IntroPage');
   }
 
-  private showBackup(passphrases: WalletPassphrases) {
+  private showBackup(keys: WalletKeys) {
     let modal = this.modalCtrl.create('WalletBackupModal', {
       title: 'SETTINGS_PAGE.WALLET_BACKUP',
-      passphrases,
+      keys,
     });
 
     modal.present();

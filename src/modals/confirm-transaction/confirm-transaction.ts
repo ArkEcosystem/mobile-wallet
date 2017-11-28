@@ -37,13 +37,9 @@ export class ConfirmTransactionModal {
     private marketDataProvider: MarketDataProvider,
     private settingsDataProvider: SettingsDataProvider,
   ) {
-    let passphrases = this.navParams.get('passphrases');
     this.transaction = this.navParams.get('transaction');
-    this.address = this.navParams.get('address');
 
-    console.log(passphrases, this.transaction, this.address);
-
-    if (!this.transaction || !passphrases || !this.address) this.navCtrl.pop();
+    if (!this.transaction) this.navCtrl.pop();
 
     this.currentNetwork = this.arkApiProvider.network;
   }

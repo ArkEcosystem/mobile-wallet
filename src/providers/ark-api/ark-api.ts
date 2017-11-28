@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
 
@@ -32,7 +32,7 @@ export class ArkApiProvider {
   constructor(
     private userDataProvider: UserDataProvider,
     private storageProvider: StorageProvider,
-    private http: Http,
+    private http: HttpClient,
   ) {
     this.loadData();
 
@@ -124,7 +124,7 @@ export class ArkApiProvider {
 
   }
 
-  public createTransaction(transaction: Transaction, passphrase: string, secondPassphrase: string): Observable<Transaction> {
+  public createTransaction(transaction: Transaction, key: string, secondKey: string): Observable<Transaction> {
     return Observable.create((observer) => {
       if (!arkts.PublicKey.validateAddress(transaction.address, this._network)) {
         observer.error(`The destination address ${transaction.address} is erroneous`);
@@ -143,11 +143,11 @@ export class ArkApiProvider {
       transaction.signSignature = null;
       transaction.id = null;
 
-      let keys = this.arkjs.crypto.getKeys(passphrase);
+      let keys = this.arkjs.crypto.getKeys(key);
       this.arkjs.crypto.sign(transaction, keys);
 
-      if (secondPassphrase) {
-        let secondKeys = this.arkjs.crypto.getKeys(secondPassphrase);
+      if (secondKey) {
+        let secondKeys = this.arkjs.crypto.getKeys(secondKey);
         this.arkjs.crypto.secondSign(transaction, secondKeys);
       }
 
@@ -160,18 +160,15 @@ export class ArkApiProvider {
 
   public postTransaction(transaction: arkts.Transaction, peer: arkts.Peer = this._network.activePeer, broadcast: boolean = true) {
     return Observable.create((observer) => {
-      const headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('os', 'ark-mobile');
-      headers.append('version', packageJson.version);
-      headers.append('port', '1');
-      headers.append('nethash', this._network.nethash);
-
-      const options = new RequestOptions({ headers });
+      let headers = new HttpHeaders().set('Content-Type', 'application/json');
+      headers = headers.append('os', 'ark-mobile');
+      headers = headers.append('version', packageJson.version);
+      headers = headers.append('port', '1');
+      headers = headers.append('nethash', this._network.nethash);
 
       let url = `http://${peer.ip}:${peer.port}/peer/transactions`;
       let data = JSON.stringify({ transactions: [transaction] });
-      this.http.post(url, data, options).map((resp) => resp.json()).subscribe((data: arkts.TransactionPostResponse) => {
+      this.http.post(url, data, { headers }).subscribe((data: arkts.TransactionPostResponse) => {
         if (data.success) {
           this.onSendTransaction$.next(transaction);
           if (broadcast) {

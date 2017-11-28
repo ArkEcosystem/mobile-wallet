@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
@@ -21,7 +21,7 @@ export class MarketDataProvider {
   private marketCurrenciesDate?: Date;
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private storageProvider: StorageProvider,
   ) {
     this.loadData();
@@ -53,12 +53,11 @@ export class MarketDataProvider {
 
   private fetchTicker(currencies?: object): Observable<model.MarketTicker> {
     const url = `${constants.API_MARKET_TICKER_URL}/${constants.API_MARKET_TICKER_ENDPOINT}`;
-    let $this = this;
 
     currencies = currencies || this.marketCurrencies;
 
     return this.http.get(url).map((response) => {
-      let json = response.json()[0];
+      let json = response[0];
 
       if (currencies) {
         currencies['btc'] = json.price_btc;
@@ -87,15 +86,14 @@ export class MarketDataProvider {
     let currenciesUrl = `${constants.API_CURRENCY_TICKER_URL}/${constants.API_CURRENCY_TICKER_ENDPOINT}&symbols=${currenciesList}`;
 
     return this.http.get(currenciesUrl).map((currenciesResponse) => {
-      let currenciesJson = currenciesResponse.json();
       let currencies = {};
-      for (let currency in currenciesJson.rates) {
-        currencies[currency.toLowerCase()] = currenciesJson.rates[currency];
+      for (let currency in currenciesResponse['rates']) {
+        currencies[currency.toLowerCase()] = currenciesResponse['rates'][currency];
       }
 
       this.marketCurrencies = currencies;
       this.storageProvider.set(constants.STORAGE_MARKET_CURRENCIES, currencies);
-      this.storageProvider.set(constants.STORAGE_MARKET_CURRENCIES_DATE, currenciesJson.date);
+      this.storageProvider.set(constants.STORAGE_MARKET_CURRENCIES_DATE, currenciesResponse['date']);
 
       return this.marketCurrencies;
     });
@@ -105,11 +103,10 @@ export class MarketDataProvider {
     const url = `${constants.API_MARKET_HISTORY_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
 
     return this.http.get(url).map((response) => {
-      let json = response.json();
-      let history = new model.MarketHistory().deserialize(json.history);
+      let history = new model.MarketHistory().deserialize(response['history']);
 
       this.marketHistory = history;
-      this.storageProvider.set(constants.STORAGE_MARKET_HISTORY, json.history);
+      this.storageProvider.set(constants.STORAGE_MARKET_HISTORY, response['history']);
 
       return history;
     });

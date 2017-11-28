@@ -6,7 +6,7 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Transaction, Wallet } from '@models/model';
+import { Transaction, Wallet, WalletKeys } from '@models/model';
 import { TransactionType } from 'ark-ts';
 
 @IonicPage()
@@ -20,7 +20,7 @@ export class TransactionResponsePage {
 
   public transaction: Transaction;
   public wallet: Wallet;
-  public passphrases: any = { passphrase: undefined, secondPassphrase: undefined };
+  public keys: WalletKeys = {};
   public response: any = { status: false, message: '' };
 
   public showKeepSecondPassphrase: boolean = true;
@@ -37,7 +37,7 @@ export class TransactionResponsePage {
   ) {
     this.wallet = this.navParams.get('wallet');
     this.response = this.navParams.get('response');
-    this.passphrases = this.navParams.get('passphrases');
+    this.keys = this.navParams.get('keys');
 
     let transaction = this.navParams.get('transaction');
 
@@ -78,7 +78,7 @@ export class TransactionResponsePage {
     modal.onDidDismiss((password) => {
       if (!password) return;
 
-      this.userDataProvider.encryptSecondPassphrase(this.wallet, password, this.passphrases.secondPassphrase).subscribe((data) => {
+      this.userDataProvider.encryptSecondPassphrase(this.wallet, password, this.keys.secondKey).subscribe((data) => {
         this.wallet = this.userDataProvider.getWalletByAddress(this.wallet.address);
 
         this.showKeepSecondPassphrase = false;
@@ -93,7 +93,7 @@ export class TransactionResponsePage {
   verifySecondPassphrasHasEncrypted() {
     if (!this.transaction) return;
 
-    if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondSignature && !this.wallet.cipherPassphrase)) {
+    if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondSignature && !this.wallet.cipherWif)) {
       if (this.response.status) return this.showKeepSecondPassphrase = true;
     }
 

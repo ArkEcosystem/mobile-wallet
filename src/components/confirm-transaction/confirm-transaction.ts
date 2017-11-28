@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ModalController, NavController } from 'ionic-angular';
-import { Wallet, WalletPassphrases, Transaction } from '@models/model';
+import { Wallet, WalletKeys, Transaction } from '@models/model';
 
 import lodash from 'lodash';
 
@@ -22,16 +22,14 @@ export class ConfirmTransactionComponent {
     private navCtrl: NavController,
   ) { }
 
-  open(transaction: any, passphrases: WalletPassphrases) {
+  open(transaction: any, passphrases: WalletKeys) {
     transaction = new Transaction(this.wallet.address).deserialize(transaction);
 
-    this.arkApiProvider.createTransaction(transaction, passphrases.passphrase, passphrases.secondPassphrase)
+    this.arkApiProvider.createTransaction(transaction, passphrases.key, passphrases.secondKey)
       .subscribe((tx) => {
         console.log(tx);
         let modal = this.modalCtrl.create('ConfirmTransactionModal', {
-          transaction: tx,
-          passphrases,
-          address: this.wallet.address,
+          transaction: tx
         }, { cssClass: 'inset-modal', enableBackdropDismiss: true });
 
         modal.onDidDismiss((result) => {

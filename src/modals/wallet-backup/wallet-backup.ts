@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { PrivateKey } from 'ark-ts/core';
 import bip39 from 'bip39';
+import { WalletKeys, AccountBackup } from '@models/model';
 
 @IonicPage()
 @Component({
@@ -14,10 +15,10 @@ export class WalletBackupModal {
 
   public title: string;
   public entropy: string;
-  public passphrases: string;
+  public keys: WalletKeys;
   public message: string;
 
-  public account: any;
+  public account: AccountBackup = {};
 
   private currentNetwork;
 
@@ -29,10 +30,10 @@ export class WalletBackupModal {
   ) {
     this.title = this.navParams.get('title');
     this.entropy = this.navParams.get('entropy');
-    this.passphrases = this.navParams.get('passphrases');
+    this.keys = this.navParams.get('keys');
     this.message = this.navParams.get('message');
 
-    if (!this.title || (!this.entropy && !this.passphrases)) this.dismiss();
+    if (!this.title || (!this.entropy && !this.keys)) this.dismiss();
 
     this.currentNetwork = this.userDataProvider.currentNetwork;
   }
@@ -41,27 +42,47 @@ export class WalletBackupModal {
     this.dismiss(this.account);
   }
 
-  dismiss(result?: boolean) {
+  dismiss(result?: any) {
     this.viewCtrl.dismiss(result);
   }
 
   ionViewDidLoad() {
-    this.account = {};
-
-    if (this.passphrases) {
-      this.account.mnemonic = this.passphrases['passphrase'];
-      // this.account.entropy = bip39.mnemonicToEntropy(this.account.mnemonic);
-      this.account.secondPassphrase = this.passphrases['secondPassphrase'];
-    } else if (this.entropy) {
-      this.account.entropy = this.entropy;
-      this.account.mnemonic = bip39.entropyToMnemonic(this.account.entropy);
+    if (this.keys) {
+      return this.generateAccountFromKeys();
     }
+
+    this.generateAccountFromEntropy();
+  }
+
+  private generateAccountFromKeys() {
+    let pvKey = PrivateKey.fromWIF(this.keys.key, this.currentNetwork);
+    let pbKey = pvKey.getPublicKey();
+    pbKey.setNetwork(this.currentNetwork);
+
+    let wallet = this.userDataProvider.getWalletByAddress(pbKey.getAddress());
+
+    this.account.address = wallet.address;
+    this.account.qrAddress = `{"a": "${this.account.address}"}`;
+    this.account.bip38 = wallet.cipherWif;
+    this.account.publicKey = pbKey.toHex();
+    this.account.seed = pvKey.toHex();
+    this.account.wif = this.keys.key;
+
+    if (this.keys.secondKey) {
+      this.account.secondBip38 = wallet.cipherSecondWif;
+      this.account.secondWif = this.keys.secondKey;
+    }
+  }
+
+  private generateAccountFromEntropy() {
+    this.account.entropy = this.entropy;
+    this.account.mnemonic = bip39.entropyToMnemonic(this.account.entropy);
 
     let pvKey = PrivateKey.fromSeed(this.account.mnemonic, this.currentNetwork);
     let pbKey = pvKey.getPublicKey();
 
     this.account.address = pbKey.getAddress();
-    this.account.qraddress = `{"a": "${this.account.address}"}`;
+    this.account.qrAddress = `{"a": "${this.account.address}"}`;
     this.account.publicKey = pbKey.toHex();
     this.account.wif = pvKey.toWIF();
     this.account.seed = bip39.mnemonicToSeedHex(this.account.mnemonic);

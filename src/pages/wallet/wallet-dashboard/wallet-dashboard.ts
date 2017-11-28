@@ -4,7 +4,7 @@ import { IonicPage, NavController, NavParams, Platform, ActionSheetController, M
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
-import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory, WalletPassphrases } from '@models/model';
+import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory, WalletKeys } from '@models/model';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { MarketDataProvider } from '@providers/market-data/market-data';
@@ -238,12 +238,12 @@ export class WalletDashboardPage {
     });
   }
 
-  private createDelegate(passphrases: WalletPassphrases) {
-    let publicKey = this.wallet.publicKey || PrivateKey.fromSeed(passphrases.passphrase).getPublicKey().toHex();
+  private createDelegate(keys: WalletKeys) {
+    let publicKey = this.wallet.publicKey || PrivateKey.fromSeed(keys.key).getPublicKey().toHex();
 
     let transaction = <TransactionDelegate>{
-      passphrase: passphrases.passphrase,
-      secondPassphrase: passphrases.secondPassphrase,
+      passphrase: keys.key,
+      secondPassphrase: keys.secondKey,
       username: name,
       publicKey
     }
@@ -251,16 +251,16 @@ export class WalletDashboardPage {
     this.arkApiProvider.api.transaction.createDelegate(transaction)
       .takeUntil(this.unsubscriber$)
       .subscribe((data) => {
-        this.confirmTransaction.open(data, passphrases);
+        this.confirmTransaction.open(data, keys);
       });
   }
 
-  private createSignature(passphrases: WalletPassphrases) {
+  private createSignature(keys: WalletKeys) {
     this.arkApiProvider.api.transaction
-    .createSignature(passphrases.passphrase, this.newSecondPassphrase)
+    .createSignature(keys.key, this.newSecondPassphrase)
     .takeUntil(this.unsubscriber$)
     .subscribe((data) => {
-      this.confirmTransaction.open(data, passphrases);
+      this.confirmTransaction.open(data, keys);
     });
   }
 
@@ -375,8 +375,8 @@ export class WalletDashboardPage {
     this.refreshAllData();
     this.refreshPrice();
 
-    // this.refreshDataIntervalListener = setInterval(() => this.refreshAllData(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
-    // this.refreshTickerIntervalListener = setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
+    this.refreshDataIntervalListener = setInterval(() => this.refreshAllData(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
+    this.refreshTickerIntervalListener = setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
 
     this.onUpdateWallet();
     this.onUpdateMarket();
