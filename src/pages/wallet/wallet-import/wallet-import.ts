@@ -67,7 +67,7 @@ export class WalletImportPage {
 
                   modal.onDidDismiss((password) => {
                     if (password) {
-                      this.userDataProvider.addWallet(newWallet, passphrase, password).subscribe((result) => {
+                      this.userDataProvider.addWallet(newWallet, privateKey.toWIF(), password).subscribe((result) => {
                         this.navCtrl.push('WalletDashboardPage', { address: newWallet.address });
                       });
                     } else {
@@ -77,7 +77,7 @@ export class WalletImportPage {
 
                   modal.present();
                 } else {
-                  this.userDataProvider.addWallet(newWallet, '', '').subscribe((result) => {
+                  this.userDataProvider.addWallet(newWallet, null, '').subscribe((result) => {
                     this.navCtrl.push('WalletDashboardPage', { address: newWallet.address });
                   });
                 }
