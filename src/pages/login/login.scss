@@ -1,12 +1,23 @@
 page-login {
   ion-content {
-    background: url('../assets/img/login/blocks-bg.png') repeat;
+    background: url('../assets/img/light/login-pattern.png') repeat;
     background-size: contain;
+    background-repeat:no-repeat;
+    background-position: top center;
 
     .image-container {
       overflow: hidden;
       display: inline-block;
       position: relative;
+      padding-bottom: 0;
+    }
+
+    .slogan-container {
+      padding-top: 0;
+
+      .app-name {
+        font-weight: 600;
+      }
     }
 
     .image-logo {
@@ -15,7 +26,7 @@ page-login {
       top: 50%;
       left: 50%;
       max-height: 100%;
-      max-width: 60%;
+      max-width: 55%;
       transform: translate(-50%, -50%);
     }
   }
