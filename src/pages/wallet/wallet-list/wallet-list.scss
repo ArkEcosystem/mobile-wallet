@@ -24,19 +24,33 @@ page-wallet-list {
     width: 70vw!important;
     padding: 1.5em .8em;
     display: inline-block;
-    min-height: 118px;
+    min-height: 111px;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 
+    &.normal {
+      background-image: url('../assets/img/light/normal-block.png');
+      background-size: cover;
+    }
     &.delegate {
       background-image: url('../assets/img/light/delegate-block.png');
       background-size: cover;
+    }
 
-      .item {
-        background: transparent;
+    .item {
+      background: transparent;
 
-        .address,
-        .amount {
-          color: white;
-        }
+      .address,
+      .amount {
+        color: white;
+      }
+
+      .address {
+        float: left;
+        width: 50%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
 
@@ -50,7 +64,9 @@ page-wallet-list {
 
     .chip-md {
       height: 25px !important;
-      margin-left: 15px;
+      display: inline-block;
+      float: right;
+      border-radius: 5px;
     }
   }
   .fiat-bullet {

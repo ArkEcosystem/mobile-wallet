@@ -20,16 +20,16 @@
     <ion-row no-padding *ngIf="wallets?.length > 0">
       <ion-col no-padding>
         <ion-scroll scrollX="true">
-          <ion-card *ngFor="let wallet of wallets" [class.delegate]="wallet?.isDelegate" (click)="openWalletDashboard(wallet)">
-            <ion-item>
-              <ion-label stacked>
+          <ion-card *ngFor="let wallet of wallets" [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}" (click)="openWalletDashboard(wallet)">
+            <ion-item class="wallet">
+              <ion-label>
                 <h2 class="amount">{{ currentNetwork?.symbol }} {{ wallet?.balance | unitsSatoshi | number: '1.0-2' }}</h2>
                 <p class="address">{{ wallet?.label || wallet?.address | accountLabel | truncateMiddle: 15 }}</p>
+                <div color="primary" class="chip chip-md chip-md-primary" *ngIf="wallet.isWatchOnly">
+                  <ion-label class="label label-md">{{ 'WATCH_ONLY' | translate }}</ion-label>
+                </div>
               </ion-label>
             </ion-item>
-            <ion-chip color="primary" *ngIf="wallet.isWatchOnly">
-              <ion-label>{{ 'WATCH_ONLY' | translate }}</ion-label>
-            </ion-chip>
           </ion-card>
         </ion-scroll>
       </ion-col>
