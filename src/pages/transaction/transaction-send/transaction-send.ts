@@ -7,6 +7,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
+import { ToastProvider } from '@providers/toast/toast';
 
 import { Network, Fees } from 'ark-ts/model';
 
@@ -43,6 +44,7 @@ export class TransactionSendPage {
     private arkApiProvider: ArkApiProvider,
     private marketDataProvider: MarketDataProvider,
     private settingsDataProvider: SettingsDataProvider,
+    private toastProvider: ToastProvider,
     private unitsSatoshiPipe: UnitsSatoshiPipe,
   ) {
     this.currentWallet = this.userDataProvider.currentWallet;
@@ -84,6 +86,8 @@ export class TransactionSendPage {
       recipientId: this.transaction.recipientAddress,
     }).subscribe((transaction) => {
       this.confirmTransaction.open(transaction, keys);
+    }, (error) => {
+      this.toastProvider.error('TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR');
     });
   }
 
