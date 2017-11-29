@@ -92,18 +92,18 @@ export class DelegatesPage {
     return false;
   }
 
-  generateTransaction(passphrases: WalletKeys) {
+  generateTransaction(keys: WalletKeys) {
     let type = VoteType.Add;
 
     if (this.walletVote && this.walletVote.publicKey === this.selectedDelegate.publicKey) type = VoteType.Remove;
 
     this.arkApiProvider.api.transaction.createVote({
       delegatePublicKey: this.selectedDelegate.publicKey,
-      passphrase: passphrases.key,
-      secondPassphrase: passphrases.secondKey,
+      passphrase: PrivateKey.fromWIF(keys.key),
+      secondPassphrase: PrivateKey.fromWIF(keys.secondKey),
       type
     }).subscribe((transaction) => {
-      this.confirmTransaction.open(transaction, passphrases);
+      this.confirmTransaction.open(transaction, keys);
     });
   }
 
