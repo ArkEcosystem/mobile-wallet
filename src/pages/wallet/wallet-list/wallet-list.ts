@@ -53,7 +53,7 @@ export class WalletListPage {
   }
 
   openWalletDashboard(wallet: Wallet) {
-    this.navCtrl.setRoot('WalletDashboardPage', {
+    this.navCtrl.push('WalletDashboardPage', {
       address: wallet.address
     });
   }

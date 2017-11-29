@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 import { Subject } from 'rxjs/Subject';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { ToastProvider } from '@providers/toast/toast';
 import { Delegate, Network, VoteType } from 'ark-ts';
 
 import { Wallet, Transaction, WalletKeys } from '@models/model';
@@ -47,6 +48,7 @@ export class DelegatesPage {
     private zone: NgZone,
     private modalCtrl: ModalController,
     private userDataProvider: UserDataProvider,
+    private toastProvider: ToastProvider,
   ) { }
 
   openDetailModal(delegate: Delegate) {
@@ -117,7 +119,7 @@ export class DelegatesPage {
           this.walletVote = data.delegates[0];
         }
       }, () => {
-        // TODO: Toast error
+        this.toastProvider.error('DELEGATES_PAGE.VOTE_FETCH_ERROR');
       });
   }
 

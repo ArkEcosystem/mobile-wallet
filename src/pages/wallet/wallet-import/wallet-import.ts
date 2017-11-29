@@ -4,6 +4,7 @@ import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 import { Wallet } from '@models/model';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
+import { ToastProvider } from '@providers/toast/toast';
 import { PrivateKey, PublicKey, Network } from 'ark-ts';
 
 @IonicPage()
@@ -21,6 +22,7 @@ export class WalletImportPage {
     private qrScanner: QRScanner,
     private userDataProvider: UserDataProvider,
     private arkApiProvider: ArkApiProvider,
+    private toastProvider: ToastProvider,
     private modalCtrl: ModalController,
   ) {
     this.currentNetwork = this.userDataProvider.currentNetwork;
@@ -66,17 +68,17 @@ export class WalletImportPage {
                   modal.onDidDismiss((password) => {
                     if (password) {
                       this.userDataProvider.addWallet(newWallet, passphrase, password).subscribe((result) => {
-                        this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
+                        this.navCtrl.push('WalletDashboardPage', { address: newWallet.address });
                       });
                     } else {
-                      // TODO: Toast error
+                      this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR');
                     }
                   });
 
                   modal.present();
                 } else {
                   this.userDataProvider.addWallet(newWallet, '', '').subscribe((result) => {
-                    this.navCtrl.setRoot('WalletDashboardPage', { address: newWallet.address });
+                    this.navCtrl.push('WalletDashboardPage', { address: newWallet.address });
                   });
                 }
               })
@@ -102,15 +104,9 @@ export class WalletImportPage {
         this.qrScanner.show();
         this.showingQrScanner = true;
       } else if (status.denied) {
-        // camera permission was permanently denied
-        // you must use QRScanner.openSettings() method to guide the user to the settings page
-        // then they can grant the permission from there
-
-        // TODO: Toast error
+        this.toastProvider.error('QR_CODE.PERMISSION_PERMANENTLY_DENIED');
       } else {
-        // permission was denied, but not permanently. You can ask for permission again at a later time.
-
-        // TODO: Toast error
+        this.toastProvider.error('QR_CODE.PERMISSION_DENIED');
       }
     })
     .catch((e: any) => console.log('Error is', e));

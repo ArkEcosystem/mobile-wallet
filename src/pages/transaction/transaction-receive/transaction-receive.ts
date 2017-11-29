@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
 
+import { ToastProvider } from '@providers/toast/toast';
+
 @IonicPage()
 @Component({
   selector: 'page-transaction-receive',
@@ -17,6 +19,7 @@ export class TransactionReceivePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private _clipboard: Clipboard,
+    private toastProvider: ToastProvider,
   ) {
     this.address = this.navParams.get('address');
     this.token = this.navParams.get('token');
@@ -24,7 +27,7 @@ export class TransactionReceivePage {
 
   copyAddress() {
     this._clipboard.copy(this.address);
-    // TODO: Toast message
+    this.toastProvider.success('ADDRESS_COPIED_TEXT')
   }
 
   // TODO: Share

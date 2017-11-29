@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { StorageProvider } from '@providers/storage/storage';
+import { ToastProvider } from '@providers/toast/toast';
 
 let packageJson = require('@root/package.json');
 import { Transaction } from '@models/transaction';
@@ -32,6 +33,7 @@ export class ArkApiProvider {
   constructor(
     private userDataProvider: UserDataProvider,
     private storageProvider: StorageProvider,
+    private toastProvider: ToastProvider,
     private http: HttpClient,
   ) {
     this.loadData();
@@ -80,11 +82,18 @@ export class ArkApiProvider {
         let sortHeight = lodash.orderBy(lodash.filter(response.peers, {'status': 'OK', 'port': port}), ['height','delay'], ['desc','asc']);
         this._peers = sortHeight;
         this.updateNetwork(sortHeight[0]);
+      } else {
+        this.toastProvider.error('API.PEER_LIST_ERROR');
       }
     },
     // Get list from file
     () => {
-      return arkts.PeerApi.findGoodPeer(this._network).first().subscribe((peer) => this.updateNetwork(peer));
+      return arkts.PeerApi
+        .findGoodPeer(this._network)
+        .first()
+        .subscribe((peer) => this.updateNetwork(peer), () => {
+          this.toastProvider.error('API.PEER_LIST_ERROR');
+        });
     });
   }
 
@@ -135,6 +144,7 @@ export class ArkApiProvider {
       transaction.senderId = transaction.address;
 
       if (transaction.getAmount() > Number(wallet.balance)) {
+        this.toastProvider.error('API.BALANCE_TOO_LOW');
         observer.error(`Not enough ${this._network.token} on your account`);
         return observer.complete();
       }
@@ -173,9 +183,13 @@ export class ArkApiProvider {
           this.onSendTransaction$.next(transaction);
           if (broadcast) {
             this.broadcastTransaction(transaction);
+            this.toastProvider.success('API.TRANSACTION_SENT');
           }
           observer.next(transaction);
         } else {
+          if (broadcast) {
+            this.toastProvider.error('API.TRANSACTION_FAILED');
+          }
           observer.error(data);
         }
       }, (error) => observer.error(error));

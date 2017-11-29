@@ -26,7 +26,8 @@
     "USERNAME_ALREADY_EXISTS": "This username already exists",
     "NOTE_COST_TEXT": "Note that the cost of registering the delegate is",
     "UNVOTE_CURRENT_DELEGATE": "You already have a delegate, do you want to unvote {{ delegate }} first?",
-    "WARNING_SELECT_WALLET_FIRST": "You need to select a wallet first to enable the voting process"
+    "WARNING_SELECT_WALLET_FIRST": "You need to select a wallet first to enable the voting process",
+    "VOTE_FETCH_ERROR": "Could not fetch current vote"
   },
   "LOGIN_PAGE": {
     "ARK_WALLET": "ARK Wallet",
@@ -48,7 +49,12 @@
     "WRONG": "Please enter the correct PIN",
     "DEFAULT_MESSAGE": "Type your PIN",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type your PIN to encrypt passphrase",
-    "TYPE_PIN_SIGN_TRANSACTION": "Type your PIN to sign transaction"
+    "TYPE_PIN_SIGN_TRANSACTION": "Type your PIN to sign transaction",
+    "PIN_CREATED_TEXT": "Your PIN has been created",
+    "PIN_UPDATED_TEXT": "Your PIN has been updated",
+    "PIN_CREATED_ERROR_TEXT": "There was a problem creating your PIN",
+    "PIN_UPDATED_ERROR_TEXT": "There was a problem updating your PIN",
+    "LOGIN_ERROR": "There was a problem signing in with your PIN"
   },
   "WALLETS_PAGE": {
     "BALANCE": "Balance",
@@ -89,7 +95,8 @@
     "NEW_WALLET_NAME": "New wallet name",
     "ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE": "The second passphrase was successfully encrypted",
     "PASSPHRASE_NOT_MATCH": "The passphrase entered does not match the one you just got.",
-    "REMOVE_WALLET_TEXT": "Your account will be removed. Make sure you have backed up, you will need the original passphrase to restore."
+    "REMOVE_WALLET_TEXT": "Your account will be removed. Make sure you have backed up, you will need the original passphrase to restore.",
+    "ADD_WALLET_ERROR": "Could not add wallet"
   },
   "TRANSACTIONS_PAGE": {
     "ID": "Id",
@@ -111,13 +118,15 @@
     "COPY_TXID": "Copy TXID",
     "ENCRYPT_SAVE_SECOND_PASSPHRASE": "Do you want to encrypt and save your second passphrase?",
     "RECIPIENT_NAME": "Recipient's name",
-    "QRCODE_COPY": "Tap on address to copy it to clipboard or click on icon to share QR code."
+    "QRCODE_COPY": "Tap on address to copy it to clipboard or click on icon to share QR code.",
+    "CREATE_TRANSACTION_ERROR": "Could not create transaction. Check internet connectivity"
   },
   "PROFILES_PAGE": {
     "SIGN_IN": "Sign in",
     "CREATE_PROFILE": "Create Profile",
     "GET_STARTED": "Get started",
-    "ADD_PROFILE_TEXT": "Click on the button below to create a profile"
+    "ADD_PROFILE_TEXT": "Click on the button below to create a profile",
+    "ADD_PROFILE_ERROR": "Could not add profile"
   },
   "NETWORKS_PAGE": {
     "NETWORK_STATUS": "Network Status",
@@ -161,8 +170,20 @@
     "FRIDAY": "Fri",
     "SATURDAY": "Sat"
   },
+  "QR_CODE": {
+    "PERMISSION_DENIED": "QR Camera denied",
+    "PERMISSION_PERMANENTLY_DENIED": "QR Camera permanently denied. Go to your Device Settings to change."
+  },
+  "API": {
+    "PEER_LIST_ERROR": "Could not get list of peers",
+    "TRANSACTION_SENT": "Transaction was sent",
+    "TRANSACTION_FAILED": "Transaction failed",
+    "BALANCE_TOO_LOW": "Balance too low for transaction"
+  },
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
+  "EXIT_APP_TEXT": "Exit App?",
+  "LOGOUT_PROFILE_TEXT": "Logout of Profile?",
   "DATE": "Date",
   "DONE": "Done",
   "NAME": "Name",
@@ -182,5 +203,6 @@
   "TYPE": "Type",
   "EXIT": "Exit",
   "FAILED": "Failed",
-  "WATCH_ONLY": "Watch Only"
+  "WATCH_ONLY": "Watch Only",
+  "ADDRESS_COPIED_TEXT": "Address Copied"
 }

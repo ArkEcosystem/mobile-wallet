@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Config, Nav, MenuController } from 'ionic-angular';
+import { Platform, Config, Nav, MenuController, AlertController, App } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -10,6 +10,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
+import { ToastProvider } from '@providers/toast/toast';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -31,6 +32,9 @@ export class MyApp {
   public network = null;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
+  private alert = null;
+  private exitText = null;
+  private logoutText = null;
 
   @ViewChild(Nav) nav: Nav;
 
@@ -44,15 +48,36 @@ export class MyApp {
     private marketDataProvider: MarketDataProvider,
     private arkApiProvider: ArkApiProvider,
     private settingsDataProvider: SettingsDataProvider,
+    private toastProvider: ToastProvider,
     private menuCtrl: MenuController,
+    private alertCtrl: AlertController,
     private config: Config,
     private keyboard: Keyboard,
     private screenOrientation: ScreenOrientation,
+    private app: App,
   ) {
     platform.ready().then(() => {
       splashScreen.hide();
       menuCtrl.enable(false, 'sidebarMenu');
       statusBar.styleDefault();
+
+      platform.registerBackButtonAction(() => {
+        if (this.menuCtrl && this.menuCtrl.isOpen()) {
+          return this.menuCtrl.close();
+        }
+        let navPromise = app.navPop();
+        if (!navPromise) {
+          if (this.nav.getActive().name === 'LoginPage' || this.nav.getActive().name === 'IntroPage') {
+            this.showConfirmation(this.exitText, () => {
+              platform.exitApp();
+            });
+          } else {
+            this.showConfirmation(this.logoutText, () => {
+              this.logout();
+            });
+          }
+        }
+      }, 500);
 
       if (platform.is('cordova')) {
         keyboard.disableScroll(false);
@@ -86,10 +111,20 @@ export class MyApp {
     this.translateService.get('BACK_BUTTON_TEXT').subscribe(translate => {
       this.config.set('ios', 'backButtonText', translate);
     });
+    this.translateService.get('EXIT_APP_TEXT').subscribe(translate => {
+      this.exitText = translate;
+    });
+    this.translateService.get('LOGOUT_PROFILE_TEXT').subscribe(translate => {
+      this.logoutText = translate;
+    });
   }
 
-  openPage(p) {
-    this.nav.setRoot(p);
+  openPage(p, rootPage: boolean = true) {
+    if (rootPage) {
+      this.nav.setRoot(p);
+    } else {
+      this.nav.push(p);
+    }
   }
 
   logout() {
@@ -140,6 +175,37 @@ export class MyApp {
       .subscribe(() => {
         this.arkApiProvider.delegates.subscribe((delegates) => this.onUpdateDelegates(delegates))
       });
+  }
+
+  private showConfirmation(title: string, successCb: () => void, failureCb: () => void = () => {}, message: string = null): void {
+    if (this.alert) {
+      this.alert.dismiss();
+      this.alert = null;
+
+      return;
+    }
+    this.alert = this.alertCtrl.create({
+      title: title,
+      message: message,
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            this.alert = null;
+            failureCb();
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.alert = null;
+            successCb();
+          }
+        }
+      ]
+    });
+    this.alert.present();
   }
 
   private initialVerify() {
