@@ -56,7 +56,7 @@ export class ContactCreatePage {
       this._userDataProvider.editContact(this.address, this.contact);
     }
 
-    this._navCtrl.setRoot('ContactListPage');
+    this._navCtrl.push('ContactListPage');
   }
 
   scanQRCode() {
