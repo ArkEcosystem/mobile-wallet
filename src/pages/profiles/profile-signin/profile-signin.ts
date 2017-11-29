@@ -6,6 +6,7 @@ import 'rxjs/add/operator/takeUntil';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { AuthProvider } from '@providers/auth/auth';
+import { ToastProvider } from '@providers/toast/toast';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -32,6 +33,7 @@ export class ProfileSigninPage {
     private userDataProvider: UserDataProvider,
     private translateService: TranslateService,
     private authProvider: AuthProvider,
+    private toastProvider: ToastProvider,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
   ) { }
@@ -97,7 +99,7 @@ export class ProfileSigninPage {
           if (status) {
             this.navCtrl.setRoot('WalletListPage');
           } else {
-            // TODO: Show toast error
+            this.toastProvider.error('PIN_CODE.LOGIN_ERROR');
           }
         });
       }

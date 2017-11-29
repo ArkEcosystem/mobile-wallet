@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams, LoadingController, ModalController
 import { Profile, Wallet } from '@models/model';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
+import { ToastProvider } from '@providers/toast/toast';
 
 import { PublicKey, PrivateKey, Network } from 'ark-ts';
 
@@ -24,6 +25,7 @@ export class WalletImportPassphrasePage {
     private userDataProvider: UserDataProvider,
     private loadingCtrl: LoadingController,
     private arkApiProvider: ArkApiProvider,
+    private toastProvider: ToastProvider,
     private modalCtrl: ModalController,
   ) { }
 
@@ -54,7 +56,7 @@ export class WalletImportPassphrasePage {
               this.navCtrl.push('WalletDashboardPage', { address: newWallet.address });
             });
           } else {
-            // TODO: Toast error
+            this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR')
           }
 
         });

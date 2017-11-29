@@ -3,6 +3,7 @@ import { ModalController, NavController } from 'ionic-angular';
 import { Wallet, WalletKeys } from '@models/model';
 import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { ToastProvider } from '@providers/toast/toast';
 
 import lodash from 'lodash';
 
@@ -20,6 +21,7 @@ export class PinCodeComponent {
   constructor(
     private userDataProvider: UserDataProvider,
     private authProvider: AuthProvider,
+    private toastProvider: ToastProvider,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
   ) { }
@@ -69,18 +71,18 @@ export class PinCodeComponent {
                 if (oldPassword) {
                   this.userDataProvider.updateWalletEncryption(oldPassword, password);
                 }
-                //TODO: toast success message
+                this.toastProvider.success(oldPassword ? 'PIN_CODE.PIN_UPDATED_TEXT' : 'PIN_CODE.PIN_CREATED_TEXT');
                 if (nextPage) {
                   this.navCtrl.push(nextPage);
                 }
               } else {
-                // TODO: fail
+                this.toastProvider.error(oldPassword ? 'PIN_CODE.PIN_UPDATED_ERROR_TEXT' : 'PIN_CODE.PIN_CREATED_ERROR_TEXT');
               }
             })
 
             validateModal.present();
           } else {
-            // TODO: fail
+            this.toastProvider.error(oldPassword ? 'PIN_CODE.PIN_UPDATED_ERROR_TEXT' : 'PIN_CODE.PIN_CREATED_ERROR_TEXT');
           }
         });
 

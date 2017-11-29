@@ -6,6 +6,7 @@ import 'rxjs/add/operator/takeUntil';
 
 import { Profile } from '@models/profile';
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { ToastProvider } from '@providers/toast/toast';
 
 import lodash from 'lodash';
 
@@ -27,6 +28,7 @@ export class ProfileCreatePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private userDataProvider: UserDataProvider,
+    private toastProvider: ToastProvider,
   ) { }
 
   onSelectNetwork(networkId: string) {
@@ -41,7 +43,7 @@ export class ProfileCreatePage {
     this.userDataProvider.addProfile(profile).takeUntil(this.unsubscriber$).subscribe((result) => {
       this.navCtrl.setRoot('ProfileSigninPage');
     }, () => {
-      // TODO: Toast error
+      this.toastProvider.error('PROFILES_PAGE.ADD_PROFILE_ERROR');
     });
   }
 

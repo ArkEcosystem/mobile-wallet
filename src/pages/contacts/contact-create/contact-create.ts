@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { ToastProvider } from '@providers/toast/toast';
 
 import { Contact } from '@models/contact';
 import { PublicKey } from 'ark-ts/core';
@@ -30,6 +31,7 @@ export class ContactCreatePage {
     private _navCtrl: NavController,
     private _navParams: NavParams,
     private _userDataProvider: UserDataProvider,
+    private toastProvider: ToastProvider,
     private qrScanner: QRScanner,
   ) {
     let param = this._navParams.get('contact');
@@ -63,9 +65,7 @@ export class ContactCreatePage {
     .then((status: QRScannerStatus) => {
       if (status.authorized) {
         let scanSub = this.qrScanner.scan().subscribe((qrCode: string) => {
-          console.log(qrCode);
           qrCode = JSON.parse(qrCode);
-          console.log(qrCode);
 
           if (qrCode['a']) {
             $this.address = qrCode['a'];
@@ -73,21 +73,14 @@ export class ContactCreatePage {
 
           this.qrScanner.hide();
           $this.showingQrScanner = false;
-          console.log($this.showingQrScanner);
           scanSub.unsubscribe();
         });
         this.qrScanner.show();
         this.showingQrScanner = true;
       } else if (status.denied) {
-        // camera permission was permanently denied
-        // you must use QRScanner.openSettings() method to guide the user to the settings page
-        // then they can grant the permission from there
-
-        // TODO: Toast error
+        this.toastProvider.error('QR_CODE.PERMISSION_PERMANENTLY_DENIED');
       } else {
-        // permission was denied, but not permanently. You can ask for permission again at a later time.
-
-        // TODO: Toast error
+        this.toastProvider.error('QR_CODE.PERMISSION_DENIED');
       }
     })
     .catch((e: any) => console.log('Error is', e));
