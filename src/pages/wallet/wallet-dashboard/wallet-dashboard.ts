@@ -72,7 +72,6 @@ export class WalletDashboardPage {
       'DELEGATES_PAGE.REGISTER_DELEGATE',
       'WALLETS_PAGE.SECOND_PASSPHRASE',
       'WALLETS_PAGE.REMOVE_WALLET',
-      'CANCEL'
     ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
       let delegateItem =  {
         text: translation['DELEGATES_PAGE.REGISTER_DELEGATE'],
@@ -107,10 +106,6 @@ export class WalletDashboardPage {
           handler: () => {
             this.presentDeleteWalletConfirm();
           }
-        }, {
-          text: translation['CANCEL'],
-          role: 'cancel',
-          icon: !this.platform.is('ios') ? 'close' : ''
         }
       ];
 
@@ -124,7 +119,7 @@ export class WalletDashboardPage {
   }
 
   presentAddActionSheet() {
-    this.translateService.get(['TRANSACTIONS_PAGE.SEND', 'TRANSACTIONS_PAGE.RECEIVE', 'CANCEL']).takeUntil(this.unsubscriber$).subscribe((translation) => {
+    this.translateService.get(['TRANSACTIONS_PAGE.SEND', 'TRANSACTIONS_PAGE.RECEIVE']).takeUntil(this.unsubscriber$).subscribe((translation) => {
       let buttons: Array<object> = [
         {
           text: translation['TRANSACTIONS_PAGE.RECEIVE'],
@@ -145,11 +140,6 @@ export class WalletDashboardPage {
           }
         });
       }
-      buttons.push({
-        text: translation.CANCEL,
-        role: 'cancel',
-        icon: !this.platform.is('ios') ? 'close' : ''
-      });
 
       let action = this.actionSheetCtrl.create({
         buttons: buttons

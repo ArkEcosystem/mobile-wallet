@@ -62,7 +62,6 @@ export class WalletListPage {
     this.translateService.get([
       'GENERATE',
       'IMPORT',
-      'CANCEL',
     ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
       let actionSheet = this.actionSheetCtrl.create({
         buttons: [
@@ -80,10 +79,6 @@ export class WalletListPage {
             handler: () => {
               this.presentWalletImport();
             }
-          }, {
-            text: translation.CANCEL,
-            icon: !this.platform.is('ios') ? 'close' : null,
-            role: 'cancel'
           }
         ]
       });
