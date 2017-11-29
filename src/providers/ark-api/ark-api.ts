@@ -13,6 +13,7 @@ import { Transaction } from '@models/transaction';
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
 import * as constants from '@app/app.constants';
+import arktsConfig from 'ark-ts/config';
 
 @Injectable()
 export class ArkApiProvider {
@@ -135,6 +136,14 @@ export class ArkApiProvider {
 
   public createTransaction(transaction: Transaction, key: string, secondKey: string): Observable<Transaction> {
     return Observable.create((observer) => {
+      let configNetwork = arktsConfig.networks[this._network.name];
+      let jsNetwork = {
+        messagePrefix: configNetwork.name,
+        bip32: configNetwork.bip32,
+        pubKeyHash: configNetwork.version,
+        wif: configNetwork.wif,
+      };
+
       if (!arkts.PublicKey.validateAddress(transaction.address, this._network)) {
         observer.error(`The destination address ${transaction.address} is erroneous`);
         return observer.complete();
@@ -153,11 +162,11 @@ export class ArkApiProvider {
       transaction.signSignature = null;
       transaction.id = null;
 
-      let keys = this.arkjs.crypto.getKeys(key);
+      let keys = this.arkjs.ECPair.fromWIF(key, jsNetwork);
       this.arkjs.crypto.sign(transaction, keys);
 
       if (secondKey) {
-        let secondKeys = this.arkjs.crypto.getKeys(secondKey);
+        let secondKeys = this.arkjs.ECPair.fromWIF(secondKey, jsNetwork);
         this.arkjs.crypto.secondSign(transaction, secondKeys);
       }
 

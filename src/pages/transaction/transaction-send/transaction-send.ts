@@ -16,6 +16,7 @@ import lodash from 'lodash';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
 import * as constants from '@app/app.constants';
+import { PrivateKey, TransactionSend } from 'ark-ts';
 
 @IonicPage()
 @Component({
@@ -78,13 +79,16 @@ export class TransactionSendPage {
   }
 
   onEnterPinCode(keys: WalletKeys) {
-    this.arkApiProvider.api.transaction.createTransaction({
+    let data: TransactionSend = {
       amount: Number(this.transaction.amount) * constants.WALLET_UNIT_TO_SATOSHI,
       vendorField: this.transaction.smartBridge,
-      passphrase: keys.key,
-      secondPassphrase: keys.secondKey,
+      passphrase: PrivateKey.fromWIF(keys.key, this.currentNetwork),
       recipientId: this.transaction.recipientAddress,
-    }).subscribe((transaction) => {
+    };
+
+    if (keys.secondKey) data.secondPassphrase = PrivateKey.fromWIF(keys.secondKey);
+
+    this.arkApiProvider.api.transaction.createTransaction(data).subscribe((transaction) => {
       this.confirmTransaction.open(transaction, keys);
     }, (error) => {
       this.toastProvider.error('TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR');

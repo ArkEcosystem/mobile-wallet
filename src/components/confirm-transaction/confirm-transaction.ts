@@ -22,12 +22,11 @@ export class ConfirmTransactionComponent {
     private navCtrl: NavController,
   ) { }
 
-  open(transaction: any, passphrases: WalletKeys) {
+  open(transaction: any, keys: WalletKeys) {
     transaction = new Transaction(this.wallet.address).deserialize(transaction);
 
-    this.arkApiProvider.createTransaction(transaction, passphrases.key, passphrases.secondKey)
+    this.arkApiProvider.createTransaction(transaction, keys.key, keys.secondKey)
       .subscribe((tx) => {
-        console.log(tx);
         let modal = this.modalCtrl.create('ConfirmTransactionModal', {
           transaction: tx
         }, { cssClass: 'inset-modal', enableBackdropDismiss: true });
@@ -40,8 +39,8 @@ export class ConfirmTransactionComponent {
           this.onConfirm.emit(tx);
 
           return this.navCtrl.push('TransactionResponsePage', {
-            tx,
-            passphrases,
+            transaction: tx,
+            keys,
             response: result,
             wallet: this.wallet,
           });

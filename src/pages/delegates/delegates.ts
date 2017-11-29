@@ -5,7 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
-import { Delegate, Network, VoteType } from 'ark-ts';
+import { Delegate, Network, VoteType, PrivateKey, TransactionVote } from 'ark-ts';
 
 import { Wallet, Transaction, WalletKeys } from '@models/model';
 
@@ -97,12 +97,15 @@ export class DelegatesPage {
 
     if (this.walletVote && this.walletVote.publicKey === this.selectedDelegate.publicKey) type = VoteType.Remove;
 
-    this.arkApiProvider.api.transaction.createVote({
+    let data: TransactionVote = {
       delegatePublicKey: this.selectedDelegate.publicKey,
-      passphrase: PrivateKey.fromWIF(keys.key),
-      secondPassphrase: PrivateKey.fromWIF(keys.secondKey),
-      type
-    }).subscribe((transaction) => {
+      passphrase: PrivateKey.fromWIF(keys.key, this.currentNetwork),
+      type,
+    };
+
+    if (keys.secondKey) data.secondPassphrase = PrivateKey.fromWIF(keys.secondKey, this.currentNetwork);
+
+    this.arkApiProvider.api.transaction.createVote(data).subscribe((transaction) => {
       this.confirmTransaction.open(transaction, keys);
     });
   }

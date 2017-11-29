@@ -242,11 +242,12 @@ export class WalletDashboardPage {
     let publicKey = this.wallet.publicKey || PrivateKey.fromSeed(keys.key).getPublicKey().toHex();
 
     let transaction = <TransactionDelegate>{
-      passphrase: keys.key,
-      secondPassphrase: keys.secondKey,
+      passphrase: PrivateKey.fromWIF(keys.key, this.network),
       username: name,
       publicKey
     }
+
+    if (keys.secondKey) transaction.secondPassphrase = PrivateKey.fromWIF(keys.secondKey, this.network);
 
     this.arkApiProvider.api.transaction.createDelegate(transaction)
       .takeUntil(this.unsubscriber$)
