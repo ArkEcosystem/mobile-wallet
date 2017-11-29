@@ -173,6 +173,12 @@
     "PERMISSION_DENIED": "QR Camera denied",
     "PERMISSION_PERMANENTLY_DENIED": "QR Camera permanently denied. Go to your Device Settings to change."
   },
+  "API": {
+    "PEER_LIST_ERROR": "Could not get list of peers",
+    "TRANSACTION_SENT": "Transaction was sent",
+    "TRANSACTION_FAILED": "Transaction failed",
+    "BALANCE_TOO_LOW": "Balance too low for transaction"
+  },
   "ARE_YOU_SURE": "Are you sure?",
   "BACK_BUTTON_TEXT": "Back",
   "EXIT_APP_TEXT": "Exit App?",
