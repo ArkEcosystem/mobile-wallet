@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ToastController } from 'ionic-angular';
 
+import { TranslateService } from '@ngx-translate/core';
+
 import * as constants from '@app/app.constants';
 
 @Injectable()
@@ -24,7 +26,13 @@ export class ToastProvider {
     'debug'
   ]
 
-  constructor(private toastCtrl: ToastController) { }
+  constructor(
+    private toastCtrl: ToastController,
+    private translateService: TranslateService,
+  ) {
+    translateService.setDefaultLang('en');
+    translateService.use('en');
+  }
 
   error(message: string, hideDelay?: number, position?: string): void {
     this.show(message, this.TypeEnum.ERROR, hideDelay, position);
@@ -51,13 +59,15 @@ export class ToastProvider {
     if (this.TypeName[type]) {
       cssClass += ' toast-' + this.TypeName[type]
     }
-    let toast = this.toastCtrl.create({
-      message: message,
-      duration: hideDelay || this.hideDelay,
-      position: position || this.position,
-      cssClass: cssClass
-    });
+    this.translateService.get(message).subscribe((translation) => {
+      let toast = this.toastCtrl.create({
+        message: translation,
+        duration: hideDelay || this.hideDelay,
+        position: position || this.position,
+        cssClass: cssClass
+      });
 
-    toast.present();
+      toast.present();
+    })
   }
 }
