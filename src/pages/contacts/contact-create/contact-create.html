@@ -16,12 +16,13 @@
     <ion-item>
       <ion-label floating>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
       <ion-input type="text" name="address" [(ngModel)]="address" [disabled]="!isNew" (keyup)="validateAddress()" required></ion-input>
+      <ion-img src="./assets/img/wallet/qr-code-button.png" width="30" height="30" (click)="scanQRCode()" item-right></ion-img>
     </ion-item>
   </form>
   <ion-grid [ngClass]="{'qr-preview-hide': !showingQrScanner}">
     <ion-row>
       <ion-col text-center>
-        <img src="./assets/img/wallet/qr-code.png">
+        <img class="qr-placeholder" src="./assets/img/wallet/qr-code.png">
         <h5>{{ 'WALLETS_PAGE.SCAN_QRCODE_TEXT' | translate }}</h5>
       </ion-col>
     </ion-row>
@@ -29,6 +30,5 @@
 </ion-content>
 
 <ion-footer no-border no-shadow padding [ngClass]="{'qr-preview-hide': showingQrScanner}">
-  <button ion-button color="primary" (click)="scanQRCode()">{{ 'WALLETS_PAGE.SCAN_QRCODE' | translate }}</button>
-  <button ion-button [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'SAVE' | translate }}</button>
+  <button ion-button class="button-continue" [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'SAVE' | translate }}</button>
 </ion-footer>
