@@ -15,6 +15,7 @@ import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
 import lodash from 'lodash';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
+import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';
 import * as constants from '@app/app.constants';
 import { PrivateKey, TransactionSend } from 'ark-ts';
 
@@ -27,6 +28,7 @@ import { PrivateKey, TransactionSend } from 'ark-ts';
 export class TransactionSendPage {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
+  @ViewChild('qrScanner') qrScanner: QRScannerComponent;
 
   transaction: SendTransactionForm = {};
 
@@ -36,7 +38,7 @@ export class TransactionSendPage {
   marketCurrency: MarketCurrency;
   fees: Fees;
 
-  showAddContact: boolean = false;
+  showAddContact: boolean = true;
 
   constructor(
     public navCtrl: NavController,
@@ -70,6 +72,10 @@ export class TransactionSendPage {
     this.transaction.recipientAddress = recipient;
   }
 
+  scanQRCode() {
+    this.qrScanner.open();
+  }
+
   onInputToken() {
     this.transaction.amountEquivalent= this.transaction.amount * this.marketCurrency.price;
   }
@@ -93,6 +99,12 @@ export class TransactionSendPage {
     }, (error) => {
       this.toastProvider.error('TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR');
     });
+  }
+
+  onScanQRCode(qrCode: object) {
+    if (qrCode['a']) {
+      this.transaction.recipientAddress = qrCode['a'];
+    }
   }
 
   ionViewDidLoad() {

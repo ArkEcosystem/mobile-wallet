@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, Config, Nav, MenuController, AlertController, App } from 'ionic-angular';
+import { Platform, Config, Nav, MenuController, AlertController, App, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -30,6 +30,7 @@ export class MyApp {
   public rootPage = 'LoginPage';
   public profile = null;
   public network = null;
+  public hideNav = false;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
   private alert = null;
@@ -55,6 +56,7 @@ export class MyApp {
     private keyboard: Keyboard,
     private screenOrientation: ScreenOrientation,
     private app: App,
+    private events: Events,
   ) {
     platform.ready().then(() => {
       splashScreen.hide();
@@ -96,6 +98,13 @@ export class MyApp {
         }
 
         this.openPage('LoginPage');
+      });
+
+      events.subscribe('qrScanner:show', () => {
+        this.hideNav = true;
+      });
+      events.subscribe('qrScanner:hide', () => {
+        this.hideNav = false;
       });
 
     });
