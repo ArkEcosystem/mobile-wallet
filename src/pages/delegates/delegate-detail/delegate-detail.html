@@ -1,19 +1,20 @@
 <ion-content no-bounce tappable>
+  <close-popup color="light" (onClose)="dismiss()"></close-popup>
   <ion-grid class="no-padding">
     <ion-row>
       <ion-col class="no-padding">
-        <ion-toolbar padding class="info-toolbar">
+        <ion-toolbar class="info-toolbar">
           <h3 class="username">{{ delegate?.username }}</h3>
           <div class="qrcode-box">
-            <qr-code [value]="qraddress" size="120"></qr-code>
+            <qr-code [value]="qraddress" size="100"></qr-code>
           </div>
-          <p>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</p>
+          <p ion-text color="light">{{ 'WALLETS_PAGE.ADDRESS' | translate }}</p>
           <h5 class="address" (click)="copyAddress()">{{ delegate?.address | truncateMiddle: 20 }}</h5>
         </ion-toolbar>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col padding>
+      <ion-col>
         <ion-list class="list-selectable">
 
           <ion-item no-lines text-wrap>
@@ -69,12 +70,9 @@
 
 <ion-footer class="no-padding hide-on-keyboard-open" no-shadow no-border>
   <ion-grid class="no-padding">
-    <ion-row>
-      <ion-col>
-        <button ion-button block outline (click)="dismiss()">{{ 'CANCEL' | translate }}</button>
-      </ion-col>
-      <ion-col>
-        <button ion-button block (click)="submit()" color="primary" [disabled]="!isWalletSelected()">{{ (isSameDelegate() ? 'DELEGATES_PAGE.UNVOTE' : 'DELEGATES_PAGE.VOTE') | translate }} ({{ currentNetwork?.symbol }}{{ fees?.vote | unitsSatoshi }})</button>
+    <ion-row *ngIf="isWalletSelected()">
+      <ion-col text-center padding>
+        <button ion-button (click)="submit()" color="primary" [disabled]="!isWalletSelected()">{{ (isSameDelegate() ? 'DELEGATES_PAGE.UNVOTE' : 'DELEGATES_PAGE.VOTE') | translate }} ({{ currentNetwork?.symbol }}{{ fees?.vote | unitsSatoshi }})</button>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="!isWalletSelected()" class="note-toolbar">

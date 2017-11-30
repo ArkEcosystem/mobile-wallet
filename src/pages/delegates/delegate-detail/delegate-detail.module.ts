@@ -5,6 +5,7 @@ import { DelegateDetailPage } from './delegate-detail';
 import { TranslateModule } from '@ngx-translate/core';
 import { QRCodeModule } from 'angular2-qrcode';
 import { PipesModule } from '@pipes/pipes.module';
+import { ClosePopupComponentModule } from '@components/close-popup/close-popup.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { PipesModule } from '@pipes/pipes.module';
     TranslateModule,
     QRCodeModule,
     PipesModule,
+    ClosePopupComponentModule,
   ],
 })
 export class DelegateDetailPageModule {}

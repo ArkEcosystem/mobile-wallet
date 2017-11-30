@@ -38,6 +38,7 @@ export class ConfirmTransactionModal {
     private settingsDataProvider: SettingsDataProvider,
   ) {
     this.transaction = this.navParams.get('transaction');
+    this.address = this.transaction.address;
 
     if (!this.transaction) this.navCtrl.pop();
 

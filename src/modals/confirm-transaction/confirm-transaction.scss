@@ -1,14 +1,30 @@
-modal-transaction-confirm {
-  .header-toolbar {
-    background: #f6f7f9;
-
-    h3 {
-      color: rgb(0, 80, 232);
-      margin-top: 1rem!important;
-    }
+modal-confirm-transaction {
+  ion-content {
+    background: white!important;
   }
 
-  .button {
-    padding: 1em 2em;
+  .header-row {
+    background: color($colors, light, base)!important;
+  }
+
+  .header-toolbar {
+
+    &:after {
+      background-image: url('../assets/img/light/send-confirm.png');
+      background-size: contain;
+      background-repeat:no-repeat;
+      background-position: center center;
+      opacity: .1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      content: "";
+    }
+
+    .amount {
+      margin-top: 1rem!important;
+    }
   }
 }

@@ -1,8 +1,9 @@
 <ion-content>
+  <close-popup color="dark" (onClose)="dismiss()"></close-popup>
   <ion-grid class="no-padding">
-    <ion-row>
+    <ion-row class="header-row">
       <ion-col text-center padding align-self-end class="header-toolbar">
-        <h3>{{ transaction?.getAmount() | unitsSatoshi | number: '1.0-2' }} {{ currentNetwork?.symbol }}</h3>
+        <h3 class="amount" ion-text color="primary">{{ transaction?.getAmount() | unitsSatoshi | number: '1.0-2' }} {{ currentNetwork?.symbol }}</h3>
         <p>{{ marketCurrency?.symbol }}{{ transaction?.getAmountEquivalent(marketCurrency, ticker) | unitsSatoshi | number: '1.0-2' }}</p>
       </ion-col>
     </ion-row>
@@ -56,15 +57,6 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer no-shadow no-border text-center>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <button ion-button block outline (click)="dismiss()">{{ 'CANCEL' | translate }}</button>
-      </ion-col>
-      <ion-col>
-        <button ion-button block color="primary" (click)="broadcast()">{{ 'TRANSACTIONS_PAGE.SEND' | translate }}</button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-footer no-shadow no-border text-center padding>
+  <button ion-button color="primary" class="button-continue" (click)="broadcast()">{{ 'TRANSACTIONS_PAGE.SEND' | translate }}</button>
 </ion-footer>

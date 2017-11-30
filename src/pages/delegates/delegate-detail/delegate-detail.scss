@@ -2,6 +2,11 @@ page-delegate-detail {
   .full-height {
     padding: 0;
   }
+  .info-toolbar,
+  .list-selectable {
+    padding: 1em 2em;
+  }
+
   .info-toolbar {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -26,7 +31,7 @@ page-delegate-detail {
   }
   .qrcode-box {
     display: inline-block;
-    padding: .7em;
+    padding: 1em;
     background: white;
     border-radius: 5px;
   }
