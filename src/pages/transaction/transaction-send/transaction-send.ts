@@ -79,6 +79,9 @@ export class TransactionSendPage {
   }
 
   validContact(saveContactIfValid: boolean = false) {
+    if (!this.showAddContact) {
+      return true;
+    }
     let validAddress = PublicKey.validateAddress(this.transaction.recipientAddress, this.currentNetwork);
     let validName = new RegExp('^[a-zA-Z0-9 ]+$').test(this.transaction.recipientName);
     this.sendTransactionHTMLForm.form.controls['recipientAddress'].setErrors({ incorret: !validAddress });
