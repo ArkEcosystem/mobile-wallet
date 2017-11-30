@@ -10,8 +10,8 @@
 </ion-header>
 
 <ion-content no-bounce class="outer-content">
-  <form>
-    <ion-grid class="full-height" padding [ngClass]="{'qr-preview': showingQrScanner}">
+  <form #sendTransactionForm="ngForm">
+    <ion-grid class="full-height" padding>
       <ion-row>
         <ion-col>
           <ion-label>{{ 'TRANSACTIONS_PAGE.SEND_TO' | translate }}:</ion-label>
@@ -22,7 +22,7 @@
         <ion-col>
           <ion-item>
             <ion-label stacked>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
-            <ion-input type="text" name="recipientAddress" [(ngModel)]="transaction.recipientAddress" required></ion-input>
+            <ion-input type="text" name="recipientAddress" [(ngModel)]="transaction.recipientAddress" (keyup)="validContact()" required></ion-input>
             <img src="./assets/img/wallet/qr-code-button.png" width="30" height="30" (click)="scanQRCode()" item-right />
           </ion-item>
         </ion-col>
@@ -42,7 +42,7 @@
               <ion-col>
                 <ion-item>
                   <ion-label stacked>{{ currentNetwork?.token }}</ion-label>
-                  <ion-input type="number" step="0.00000001" min="0.00000001" max="10000000000" name="amount" [(ngModel)]="transaction.amount" (input)="onInputToken()" required></ion-input>
+                  <ion-input type="number" step="0.00000001" min="0.00000001" max="10000000000" name="amount" [(ngModel)]="transaction.amount" (input)="onInputToken()" (keyup)="validContact()" required></ion-input>
                 </ion-item>
               </ion-col>
               <ion-col>
