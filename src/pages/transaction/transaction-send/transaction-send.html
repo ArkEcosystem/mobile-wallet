@@ -23,7 +23,7 @@
           <ion-item>
             <ion-label stacked>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
             <ion-input type="text" name="recipientAddress" [(ngModel)]="transaction.recipientAddress" required></ion-input>
-            <ion-img src="./assets/img/wallet/qr-code-button.png" width="30" height="30" (click)="scanQRCode()" item-right></ion-img>
+            <img src="./assets/img/wallet/qr-code-button.png" width="30" height="30" (click)="scanQRCode()" item-right />
           </ion-item>
         </ion-col>
       </ion-row>
