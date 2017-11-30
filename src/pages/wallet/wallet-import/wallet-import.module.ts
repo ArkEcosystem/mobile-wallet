@@ -4,6 +4,8 @@ import { WalletImportPage } from './wallet-import';
 
 import { TranslateModule } from '@ngx-translate/core';
 
+import { QRScannerComponentModule } from '@components/qr-scanner/qr-scanner.module';
+
 @NgModule({
   declarations: [
     WalletImportPage,
@@ -11,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     IonicPageModule.forChild(WalletImportPage),
     TranslateModule,
+    QRScannerComponentModule,
   ],
 })
 export class WalletImportPageModule {}

@@ -14,7 +14,7 @@ export class SwipeContactsComponent {
   @Output() onSelectContact = new EventEmitter();
 
   contacts: any;
-  selectedAddress: string;
+  selectedAddress: string = 'add';
 
   constructor(
     private navCtrl: NavController,

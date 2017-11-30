@@ -4,6 +4,8 @@ import { ContactCreatePage } from './contact-create';
 
 import { TranslateModule } from '@ngx-translate/core';
 
+import { QRScannerComponentModule } from '@components/qr-scanner/qr-scanner.module';
+
 @NgModule({
   declarations: [
     ContactCreatePage,
@@ -11,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     IonicPageModule.forChild(ContactCreatePage),
     TranslateModule,
+    QRScannerComponentModule,
   ],
 })
 export class ContactCreatePageModule {}

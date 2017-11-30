@@ -1,5 +1,21 @@
 page-wallet-dashboard {
 
+  .header {
+    background-color: #ffffff;
+    background-size: cover;
+
+    &.default-wallet {
+      background-image: url('../assets/img/wallet/balance-wallet-bg.png');
+    }
+    &.delegate-wallet {
+      background-image: url('../assets/img/wallet/balance-delegate-bg.png');
+    }
+
+    .dark-navbar > .toolbar-background {
+      background-color: transparent;
+    }
+  }
+
   .toolbar {
     padding: 0;
   }
@@ -11,15 +27,8 @@ page-wallet-dashboard {
   }
 
   .account-balance {
-    background: url('../assets/img/wallet/balance-wallet-bg.png') #080e20 repeat;
-    background-size: cover;
     padding: .5em 0 2em 0;
     color: white;
-
-    &.delegate {
-      background-image: url('../assets/img/wallet/balance-delegate-bg.png');
-      background-color: #394cf8;
-    }
   }
   ion-fab {
     bottom: 20px!important;

@@ -1,12 +1,13 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
 
 import { Contact } from '@models/contact';
 import { PublicKey } from 'ark-ts/core';
+
+import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';
 
 import lodash from 'lodash';
 
@@ -17,8 +18,8 @@ import lodash from 'lodash';
 })
 export class ContactCreatePage {
   @ViewChild('createContactForm') createContactForm: HTMLFormElement;
+  @ViewChild('qrScanner') qrScanner: QRScannerComponent;
 
-  public showingQrScanner: boolean = false;
   public isNew: boolean;
   public isValid: boolean = false;
 
@@ -32,7 +33,6 @@ export class ContactCreatePage {
     private _navParams: NavParams,
     private _userDataProvider: UserDataProvider,
     private toastProvider: ToastProvider,
-    private qrScanner: QRScanner,
   ) {
     let param = this._navParams.get('contact');
     this.address = this._navParams.get('address');
@@ -60,31 +60,13 @@ export class ContactCreatePage {
   }
 
   scanQRCode() {
-    let $this = this;
-    this.qrScanner.prepare()
-    .then((status: QRScannerStatus) => {
-      if (status.authorized) {
-        let scanSub = this.qrScanner.scan().subscribe((qrCode: string) => {
-          qrCode = JSON.parse(qrCode);
-
-          if (qrCode['a']) {
-            $this.address = qrCode['a'];
-          }
-
-          this.qrScanner.hide();
-          $this.showingQrScanner = false;
-          scanSub.unsubscribe();
-        });
-        this.qrScanner.show();
-        this.showingQrScanner = true;
-      } else if (status.denied) {
-        this.toastProvider.error('QR_CODE.PERMISSION_PERMANENTLY_DENIED');
-      } else {
-        this.toastProvider.error('QR_CODE.PERMISSION_DENIED');
-      }
-    })
-    .catch((e: any) => console.log('Error is', e));
+    this.qrScanner.open();
   }
 
+  onScanQRCode(qrCode: object) {
+    if (qrCode['a']) {
+      this.address = qrCode['a'];
+    }
+  }
 
 }

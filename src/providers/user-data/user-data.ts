@@ -148,8 +148,10 @@ export class UserDataProvider {
     if (lodash.isUndefined(profileId)) return;
 
     let profile = this.getProfileById(profileId);
-    let cipherWif = this.forgeProvider.encrypt(wif, pinCode, this.currentNetwork);
-    wallet.cipherWif = cipherWif;
+    if (wif) {
+      let cipherWif = this.forgeProvider.encrypt(wif, pinCode, this.currentNetwork);
+      wallet.cipherWif = cipherWif;
+    }
 
     if (!profile.wallets[wallet.address]) {
       this.onCreateWallet$.next(wallet);

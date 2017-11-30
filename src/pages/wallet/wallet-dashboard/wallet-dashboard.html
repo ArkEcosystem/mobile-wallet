@@ -1,6 +1,6 @@
-<ion-header no-shadow no-border>
+<ion-header no-shadow no-border [ngClass]="{'delegate-wallet': wallet?.isDelegate, 'default-wallet': wallet ? !wallet.isDelegate : false}">
 
-  <ion-navbar no-border-bottom no-shadow hideBackButton="true" color="primary" class="dark-navbar" [class.delegate]="wallet?.isDelegate">
+  <ion-navbar no-border-bottom no-shadow hideBackButton="true" color="primary" class="dark-navbar">
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -13,7 +13,7 @@
   </ion-navbar>
   <ion-toolbar no-border-top>
     <ion-grid>
-      <ion-row class="account-balance" [class.delegate]="wallet?.isDelegate">
+      <ion-row class="account-balance">
         <ion-col text-center>
           <p>{{ 'WALLETS_PAGE.BALANCE' | translate }}</p>
           <h1>{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-2' }}</h1>
@@ -25,7 +25,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-fab top right edge>
+  <ion-fab bottom right edge>
     <button ion-fab color="primary" (click)="presentAddActionSheet()"><ion-icon name="md-add"></ion-icon></button>
   </ion-fab>
 

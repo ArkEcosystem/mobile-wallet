@@ -11,7 +11,7 @@
 
 <ion-content no-bounce class="outer-content">
   <form>
-    <ion-grid class="full-height" padding>
+    <ion-grid class="full-height" padding [ngClass]="{'qr-preview': showingQrScanner}">
       <ion-row>
         <ion-col>
           <ion-label>{{ 'TRANSACTIONS_PAGE.SEND_TO' | translate }}:</ion-label>
@@ -23,6 +23,7 @@
           <ion-item>
             <ion-label stacked>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
             <ion-input type="text" name="recipientAddress" [(ngModel)]="transaction.recipientAddress" required></ion-input>
+            <img src="./assets/img/wallet/qr-code-button.png" width="30" height="30" (click)="scanQRCode()" item-right />
           </ion-item>
         </ion-col>
       </ion-row>
@@ -72,3 +73,4 @@
 
 <pin-code [wallet]="currentWallet" (onSuccess)="onEnterPinCode($event)" #pinCode></pin-code>
 <confirm-transaction [wallet]="currentWallet" #confirmTransaction></confirm-transaction>
+<qr-scanner (onSuccess)="onScanQRCode($event)" #qrScanner></qr-scanner>
