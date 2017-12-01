@@ -8,9 +8,9 @@ export interface Currency {
 
 export const CURRENCIES_LIST: Currency[] = [
   {
-    code: "aud",
-    name: "Australian Dollar",
-    symbol: "A$",
+    code: "btc",
+    name: "Bitcoin",
+    symbol: "Ƀ",
   },
   {
     code: "usd",
@@ -18,25 +18,75 @@ export const CURRENCIES_LIST: Currency[] = [
     symbol: "$",
   },
   {
-    code: "btc",
-    name: "Bitcoin",
-    symbol: "Ƀ",
-  },
-  {
-    code: "brl",
-    name: "Real",
-    symbol: "R$",
+    code: "eur",
+    name: "Euro",
+    symbol: "€",
   },
   {
     code: "gbp",
-    name: "Pounds",
+    name: "British Pound",
     symbol: "£",
   },
   {
-    code: "eur",
-    name: "Euros",
-    symbol: "€",
-  }
+    code: "krw",
+    name: "South Korean Won",
+    symbol: "₩",
+  },
+  {
+    code: "cny",
+    name: "Chinese Yuan",
+    symbol: "CN¥",
+  },
+  {
+    code: "jpy",
+    name: "Japanese Yen",
+    symbol: "¥",
+  },
+  {
+    code: "aud",
+    name: "Australian Dollar",
+    symbol: "A$",
+  },
+  {
+    code: "cad",
+    name: "Canadian Dollar",
+    symbol: "CA$",
+  },
+  {
+    code: "rub",
+    name: "Russian Ruble",
+    symbol: "RUB",
+  },
+  {
+    code: "inr",
+    name: "Indian Rupee",
+    symbol: "₹",
+  },
+  {
+    code: "brl",
+    name: "Brazilian Real",
+    symbol: "R$",
+  },
+  {
+    code: "chf",
+    name: "Swiss Franc",
+    symbol: "CHF",
+  },
+  {
+    code: "hkd",
+    name: "Hong Kong Dollar",
+    symbol: "HK$",
+  },
+  {
+    code: "idr",
+    name: "Indonesian Rupiah",
+    symbol: "IDR",
+  },
+  {
+    code: "mxn",
+    name: "Mexican Peso",
+    symbol: "MX$",
+  },
 ];
 
 export class MarketCurrency implements Currency {
