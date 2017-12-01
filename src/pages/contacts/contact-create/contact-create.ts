@@ -66,6 +66,7 @@ export class ContactCreatePage {
   onScanQRCode(qrCode: object) {
     if (qrCode['a']) {
       this.address = qrCode['a'];
+      this.validateAddress();
     }
   }
 
