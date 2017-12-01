@@ -49,7 +49,7 @@
             </ion-col>
             <ion-col col-3 text-left>
               <p>{{ 'MARKETS_PAGE.PERCENTAGE_CHANGE' | translate }}</p>
-              <h6 ion-text [color]="marketTicker?.change1h < 0 ? 'danger' : 'secondary'">{{ marketTicker?.change1h }}%</h6>
+              <h6 ion-text [color]="fiatCurrency?.change24h < 0 ? 'danger' : 'secondary'">{{ fiatCurrency?.change24h | number: '1.2-2' }}%</h6>
             </ion-col>
           </ion-row>
         </ion-grid>

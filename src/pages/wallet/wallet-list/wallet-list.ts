@@ -175,10 +175,10 @@ export class WalletListPage {
         this.marketDataProvider.history.takeUntil(this.unsubscriber$).subscribe((history) => {
           if (!history) return;
 
-          let currency = settings.currency == 'btc' ? this.settingsDataProvider.getDefaults().currency : settings.currency;
+          let currency = settings.currency == 'BTC' ? this.settingsDataProvider.getDefaults().currency : settings.currency;
 
-          let fiatHistory = history.getLastWeekPrice(currency);
-          let btcHistory = history.getLastWeekPrice('btc');
+          let fiatHistory = history.getLastWeekPrice(currency.toUpperCase());
+          let btcHistory = history.getLastWeekPrice('BTC');
 
           this.priceChart = new Chart(this.priceChart.nativeElement, {
             type: 'line',
