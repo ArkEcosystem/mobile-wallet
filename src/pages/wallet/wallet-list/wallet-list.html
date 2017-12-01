@@ -34,7 +34,7 @@
         </ion-scroll>
       </ion-col>
     </ion-row>
-    <ion-row padding *ngIf="wallets?.length > 0" class="marketcap-container">
+    <ion-row padding *ngIf="wallets?.length > 0 && currentNetwork?.name != 'devnet'" class="marketcap-container">
       <ion-col>
         <h3 class="market-cap-title">{{ 'MARKETS_PAGE.MARKET_CAP' | translate }}</h3>
         <ion-grid class="no-padding" class="price-container">

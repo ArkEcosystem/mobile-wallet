@@ -14,7 +14,7 @@
         <h2 ion-text [color]="transaction.isSender() ? 'danger' : 'secondary'">
           {{ transaction?.isSender() ? '-' : '+' }} {{ transaction?.getAmount() | unitsSatoshi | number: '1.0-5' }} {{ currentNetwork?.token }}
         </h2>
-        <h4>{{ equivalentSymbol }}{{ equivalentAmount | unitsSatoshi | number: '1.2-2' }}</h4>
+        <h4 *ngIf="currentNetwork?.name != 'devnet'">{{ equivalentSymbol }}{{ equivalentAmount | unitsSatoshi | number: '1.2-2' }}</h4>
       </ion-col>
     </ion-row>
     <ion-row>
