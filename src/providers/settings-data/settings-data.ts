@@ -60,13 +60,14 @@ export class SettingsDataProvider {
     return UserSettings.defaults();
   }
 
-  public save(options: UserSettings = this._settings): Observable<any> {
-    if (!lodash.isObject(options)) return;
+  public save(options?: UserSettings): Observable<any> {
+    let settings = options || this._settings;
 
     for (let prop in options) {
-      this._settings[prop] = options[prop];
+      this._settings[prop] = settings[prop];
     }
 
+    if (options) this.onUpdate$.next(this._settings);
     return this._storageProvider.set(constants.STORAGE_SETTINGS, this._settings);
   }
 

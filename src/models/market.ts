@@ -159,7 +159,7 @@ export class MarketTicker {
       marketCurrency.date = null;
       marketCurrency.change24h = 0;
 
-      if (input.currencies[currencyCode]) {
+      if (input['currencies'] && input.currencies[currencyCode]) {
         marketCurrency.price = input.currencies[currencyCode].PRICE;
         marketCurrency.marketCap = input.currencies[currencyCode].MKTCAP;
         marketCurrency.volume = input.currencies[currencyCode].SUPPLY;

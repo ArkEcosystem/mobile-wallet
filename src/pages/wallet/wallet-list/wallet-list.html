@@ -55,8 +55,14 @@
         </ion-grid>
       </ion-col>
     </ion-row>
-    <ion-row class="rowChart" [style.display]="wallets?.length > 0 ? 'block' : 'none'">
-      <canvas #priceChart></canvas>
+    <ion-row class="rowChart" *ngIf="chartLabels" [style.display]="wallets?.length > 0 ? 'block' : 'none'">
+      <canvas baseChart
+        [datasets]="chartData"
+        [labels]="chartLabels"
+        [options]="chartOptions"
+        [colors]="chartColors"
+        [legend]="false"
+        chartType="line"></canvas>
     </ion-row>
   </ion-grid>
 </ion-content>

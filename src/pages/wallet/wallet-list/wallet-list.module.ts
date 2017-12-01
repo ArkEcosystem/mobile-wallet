@@ -6,6 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
 import { EmptyListComponentModule } from '@components/empty-list/empty-list.module';
 
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [
     WalletListPage,
@@ -15,6 +17,7 @@ import { EmptyListComponentModule } from '@components/empty-list/empty-list.modu
     TranslateModule,
     PipesModule,
     EmptyListComponentModule,
+    ChartsModule,
   ],
 })
 export class WalletListPageModule {}

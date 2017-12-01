@@ -21,8 +21,6 @@ export class MarketDataProvider {
   private settings: UserSettings;
   private marketTicker: model.MarketTicker;
   private marketHistory: model.MarketHistory;
-  private marketCurrencies: object;
-  private marketCurrenciesDate?: Date;
 
   constructor(
     private http: HttpClient,
@@ -30,11 +28,14 @@ export class MarketDataProvider {
     private settingsDataProvider: SettingsDataProvider,
   ) {
     this.loadData();
+    this.fetchTicker();
+
     settingsDataProvider.settings.subscribe((settings) => {
       this.settings = settings;
       this.fetchHistory();
-      this.fetchTicker();
     });
+
+    this.onUpdateSettings();
   }
 
   get history(): Observable<model.MarketHistory> {
@@ -81,7 +82,7 @@ export class MarketDataProvider {
     const myCurrencyCode = (this.settings.currency == 'btc' ? this.settingsDataProvider.getDefaults().currency : this.settings.currency).toUpperCase();
 
     return this.http.get(url + 'BTC')
-      .map((btcResponse) => { return btcResponse; })
+      .map((btcResponse) => btcResponse)
       .flatMap((btcResponse) => this.http.get(url + myCurrencyCode).map((currencyResponse) => {
         let historyData = {
           BTC: btcResponse['Data'],
@@ -94,6 +95,13 @@ export class MarketDataProvider {
 
         return history;
       }));
+  }
+
+  private onUpdateSettings() {
+    this.settingsDataProvider.onUpdate$.subscribe((settings) => {
+      this.settings = settings;
+      this.marketHistory = null;
+    })
   }
 
   private loadData() {
