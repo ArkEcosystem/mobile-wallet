@@ -20,7 +20,9 @@
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <qr-code [value]="'address'" [size]="180"></qr-code>
+        <div class="qrcode-container">
+          <qr-code [value]="qraddress" [size]="160"></qr-code>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>

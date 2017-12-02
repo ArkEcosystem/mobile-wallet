@@ -62,7 +62,7 @@ export class DelegatesPage {
     modal.onDidDismiss((voter) => {
       if (!voter) return;
 
-      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
+      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
     });
 

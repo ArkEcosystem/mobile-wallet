@@ -23,6 +23,7 @@ export interface AccountBackup {
 export interface WalletKeys {
   key?: string;
   secondKey?: string;
+  secondPassphrase?: string;
 }
 
 export class Wallet extends Account {

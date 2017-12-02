@@ -2,6 +2,13 @@ page-transaction-receive {
   h6 {
     padding: 1em;
   }
+
+  .qrcode-container {
+    display: inline-block;
+    background: white;
+    padding: 1em;
+  }
+
   .button-address {
     padding: 2em 1em;
     text-transform: none;

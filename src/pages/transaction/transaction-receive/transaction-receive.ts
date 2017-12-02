@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Clipboard } from '@ionic-native/clipboard';
 
 import { ToastProvider } from '@providers/toast/toast';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 @IonicPage()
 @Component({
@@ -13,23 +14,29 @@ import { ToastProvider } from '@providers/toast/toast';
 export class TransactionReceivePage {
 
   public address;
+  public qraddress: any;
   public token;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private _clipboard: Clipboard,
+    private clipboard: Clipboard,
     private toastProvider: ToastProvider,
+    private socialSharing: SocialSharing,
   ) {
     this.address = this.navParams.get('address');
     this.token = this.navParams.get('token');
+
+    this.qraddress = `'{"a": "${this.address}"}'`;
   }
 
   copyAddress() {
-    this._clipboard.copy(this.address);
+    this.clipboard.copy(this.address);
     this.toastProvider.success('ADDRESS_COPIED_TEXT')
   }
 
-  // TODO: Share
+  share() {
+    this.socialSharing.share(this.address).then(null, (error) => this.toastProvider.error(error));
+  }
 
 }

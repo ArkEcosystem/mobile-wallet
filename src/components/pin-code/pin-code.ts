@@ -26,7 +26,7 @@ export class PinCodeComponent {
     private navCtrl: NavController,
   ) { }
 
-  open(message: string, outputPassword: boolean) {
+  open(message: string, outputPassword: boolean, verifySecondPassphrase: boolean = false) {
     if (!this.wallet) return;
 
     let modal = this.modalCtrl.create('PinCodeModal', {
@@ -44,10 +44,32 @@ export class PinCodeComponent {
 
       if (lodash.isEmpty(passphrases) || lodash.isNil(passphrases)) return this.onWrong.emit();
 
+      if (verifySecondPassphrase) return this.requestSecondPassphrase(passphrases);
+
       return this.onSuccess.emit(passphrases);
     });
 
     modal.present();
+  }
+
+  private requestSecondPassphrase(passphrases: WalletKeys) {
+    if (this.wallet.secondSignature && !this.wallet.cipherSecondWif) {
+      let modal = this.modalCtrl.create('EnterSecondPassphraseModal', null, { cssClass: 'inset-modal-small' });
+
+      modal.onDidDismiss((passphrase) => {
+        if (!passphrase) {
+          this.toastProvider.error('TRANSACTIONS_PAGE.SECOND_PASSPHRASE_NOT_ENTERED');
+          return this.onWrong.emit();
+        }
+
+        passphrases.secondPassphrase = passphrase;
+        this.onSuccess.emit(passphrases);
+      });
+
+      modal.present();
+    } else {
+      this.onSuccess.emit(passphrases);
+    }
   }
 
   createUpdatePinCode(nextPage?: string, oldPassword?: string) {
