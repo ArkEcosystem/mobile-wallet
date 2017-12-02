@@ -43,6 +43,9 @@ export class ConfirmTransactionComponent {
             keys,
             response: result,
             wallet: this.wallet,
+          })
+          .then(() => {
+            this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1);
           });
 
         })

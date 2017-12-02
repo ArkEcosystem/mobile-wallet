@@ -22,9 +22,22 @@ export class SettingsDataProvider {
       "pt-br": "Portuguese - Brazil",
     },
     currencies: {
-      "usd": "Dolar",
       "btc": "Bitcoin",
-      "brl": "Real",
+      "usd": "Dollar",
+      "eur": "Euro",
+      "gbp": "British Pound",
+      "krw": "South Korean Won",
+      "cny": "Chinese Yuan",
+      "jpy": "Japanese Yen",
+      "aud": "Australian Dollar",
+      "cad": "Canadian Dollar",
+      "rub": "Russian Ruble",
+      "inr": "Indian Rupee",
+      "brl": "Brazilian Real",
+      "chf": "Swiss Franc",
+      "hkd": "Hong Kong Dollar",
+      "idr": "Indonesian Rupiah",
+      "mxn": "Mexican Peso",
     },
   }
 
@@ -47,13 +60,14 @@ export class SettingsDataProvider {
     return UserSettings.defaults();
   }
 
-  public save(options: UserSettings = this._settings): Observable<any> {
-    if (!lodash.isObject(options)) return;
+  public save(options?: UserSettings): Observable<any> {
+    let settings = options || this._settings;
 
     for (let prop in options) {
-      this._settings[prop] = options[prop];
+      this._settings[prop] = settings[prop];
     }
 
+    if (options) this.onUpdate$.next(this._settings);
     return this._storageProvider.set(constants.STORAGE_SETTINGS, this._settings);
   }
 

@@ -8,9 +8,9 @@ export interface Currency {
 
 export const CURRENCIES_LIST: Currency[] = [
   {
-    code: "aud",
-    name: "Australian Dollar",
-    symbol: "A$",
+    code: "btc",
+    name: "Bitcoin",
+    symbol: "Ƀ",
   },
   {
     code: "usd",
@@ -18,25 +18,75 @@ export const CURRENCIES_LIST: Currency[] = [
     symbol: "$",
   },
   {
-    code: "btc",
-    name: "Bitcoin",
-    symbol: "Ƀ",
-  },
-  {
-    code: "brl",
-    name: "Real",
-    symbol: "R$",
+    code: "eur",
+    name: "Euro",
+    symbol: "€",
   },
   {
     code: "gbp",
-    name: "Pounds",
+    name: "British Pound",
     symbol: "£",
   },
   {
-    code: "eur",
-    name: "Euros",
-    symbol: "€",
-  }
+    code: "krw",
+    name: "South Korean Won",
+    symbol: "₩",
+  },
+  {
+    code: "cny",
+    name: "Chinese Yuan",
+    symbol: "CN¥",
+  },
+  {
+    code: "jpy",
+    name: "Japanese Yen",
+    symbol: "¥",
+  },
+  {
+    code: "aud",
+    name: "Australian Dollar",
+    symbol: "A$",
+  },
+  {
+    code: "cad",
+    name: "Canadian Dollar",
+    symbol: "CA$",
+  },
+  {
+    code: "rub",
+    name: "Russian Ruble",
+    symbol: "RUB",
+  },
+  {
+    code: "inr",
+    name: "Indian Rupee",
+    symbol: "₹",
+  },
+  {
+    code: "brl",
+    name: "Brazilian Real",
+    symbol: "R$",
+  },
+  {
+    code: "chf",
+    name: "Swiss Franc",
+    symbol: "CHF",
+  },
+  {
+    code: "hkd",
+    name: "Hong Kong Dollar",
+    symbol: "HK$",
+  },
+  {
+    code: "idr",
+    name: "Indonesian Rupiah",
+    symbol: "IDR",
+  },
+  {
+    code: "mxn",
+    name: "Mexican Peso",
+    symbol: "MX$",
+  },
 ];
 
 export class MarketCurrency implements Currency {
@@ -46,6 +96,9 @@ export class MarketCurrency implements Currency {
   price: number;
   marketCap: number;
   volume: number;
+  date: Date;
+  timestamp: number;
+  change24h: number;
 
   fromCurrency(currency: Currency) {
     this.code = currency.code;
@@ -63,11 +116,6 @@ export class MarketInfo {
 }
 
 export class MarketTicker {
-  date: Date;
-  timestamp: number;
-  change1h: number;
-  change7d: number;
-  change24h: number;
   info: MarketInfo;
   market: MarketCurrency[];
 
@@ -87,50 +135,37 @@ export class MarketTicker {
     return lodash.find(this.market, query);
   }
 
-  deserialize(input: any, currenciesPrices?: any): MarketTicker {
+  deserialize(input: any): MarketTicker {
     let self: any = this;
     if (!input || !lodash.isObject(input)) return;
 
-    let inputMarket = input.markets ? input.markets[0] : input;
-
-    self.timestamp = inputMarket.last_updated || input.timestamp;
-    self.date = new Date(self.timestamp * 1000);
-    self.change1h = inputMarket.percent_change_1h || inputMarket.change1h || null;
-    self.change7d = inputMarket.percent_change_7d || inputMarket.change7d || null;
-    self.change24h = inputMarket.percent_change_24h || inputMarket.change24h || null;
-
     self.info = {
-      category: inputMarket.category || null,
-      identifier: inputMarket.id || inputMarket.identifier,
-      name: inputMarket.name,
-      position: inputMarket.rank || inputMarket.position,
-      symbol: inputMarket.symbol,
+      identifier: input.symbol,
+      name: input.symbol,
+      symbol: input.symbol,
     }
 
     let currencies: MarketCurrency[] = [];
 
     for (let currency of CURRENCIES_LIST) {
+      let currencyCode = currency.code.toUpperCase();
       let marketCurrency: MarketCurrency = new MarketCurrency();
       marketCurrency.fromCurrency(currency);
 
       marketCurrency.price = 0.0;
       marketCurrency.marketCap = 0.0;
       marketCurrency.volume = 0.0;
+      marketCurrency.timestamp = 0;
+      marketCurrency.date = null;
+      marketCurrency.change24h = 0;
 
-      if (inputMarket.price) {
-        marketCurrency.price = inputMarket.price[currency.code];
-      } else if (currenciesPrices && currenciesPrices[marketCurrency.code]) {
-        marketCurrency.price = currenciesPrices[marketCurrency.code];
-      }
-      if (inputMarket.marketCap) {
-        marketCurrency.marketCap = inputMarket.marketCap[currency.code];
-      } else if (currenciesPrices && currenciesPrices[marketCurrency.code]) {
-        marketCurrency.marketCap = currenciesPrices[marketCurrency.code] * inputMarket.available_supply;
-      }
-      if (inputMarket.volume24) {
-        marketCurrency.volume = inputMarket.volume24[currency.code];
-      } else if (currenciesPrices && currenciesPrices[marketCurrency.code]) {
-        marketCurrency.volume = currenciesPrices[marketCurrency.code] * (inputMarket['24h_volume_usd'] / inputMarket.price_usd);
+      if (input['currencies'] && input.currencies[currencyCode]) {
+        marketCurrency.price = input.currencies[currencyCode].PRICE;
+        marketCurrency.marketCap = input.currencies[currencyCode].MKTCAP;
+        marketCurrency.volume = input.currencies[currencyCode].SUPPLY;
+        marketCurrency.timestamp = input.currencies[currencyCode].time;
+        marketCurrency.date = new Date(marketCurrency.timestamp * 1000);
+        marketCurrency.change24h = input.currencies[currencyCode].CHANGEPCT24HOUR || null;
       }
 
       currencies.push(marketCurrency);
@@ -147,15 +182,18 @@ export class MarketHistory {
 
   deserialize(input: any): MarketHistory {
     let self: any = this;
-    if (!Array.isArray(input)) return;
+    if (!input || !lodash.isObject(input)) return;
 
     let history = {};
 
-    for (let ticker of input) {
-      let obj = new MarketTicker().deserialize(ticker);
-      let date = obj.date.setHours(0, 0, 0, 0);
-
-      history[date] = obj;
+    for (let currency in input) {
+      for (let data of input[currency]) {
+        let date = (new Date(data.time * 1000)).setHours(0, 0, 0, 0);
+        if (!history[currency]) {
+          history[currency] = {};
+        }
+        history[currency][date] = data.close;
+      }
     }
 
     self.history = history;
@@ -163,17 +201,15 @@ export class MarketHistory {
     return self;
   }
 
-  findDate(date: Date): MarketTicker {
+  findDate(currencyCode: string, date: Date): MarketTicker {
     let timestampDate = date.setHours(0, 0, 0, 0);
 
-    return new MarketTicker(this.history[timestampDate]);
+    return new MarketTicker(this.history[currencyCode.toUpperCase()][timestampDate]);
   }
 
   getLastWeekPrice(currencyCode: string): any {
-    let tickers: MarketTicker[] = lodash(this.history).values().takeRight(7).value();
-
-    let dates = lodash.map(tickers, (t) => t.date);
-    let prices = lodash.map(tickers, (t) => t.getCurrency({ code: currencyCode }).price);
+    let dates = lodash(this.history[currencyCode]).keys().takeRight(7).value().map((date) => { return new Date(parseInt(date)) });
+    let prices = lodash(this.history[currencyCode]).values().takeRight(7).value();
 
     return { dates, prices };
   }

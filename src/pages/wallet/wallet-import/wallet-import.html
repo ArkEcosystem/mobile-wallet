@@ -9,6 +9,11 @@
 <ion-content padding>
   <ion-grid>
     <ion-row>
+      <ion-col text-center>
+        <img src="./assets/img/wallet/import-wallet.png" class="image">
+      </ion-col>
+    </ion-row>
+    <ion-row>
       <ion-col text-center align-self-end>
         <button ion-button color="primary" (click)="scanQRCode()">{{ 'WALLETS_PAGE.SCAN_QRCODE' | translate }}</button>
         <p>or type <a (click)="openWalletImportPassphrase()">{{ 'WALLETS_PAGE.SECRET_PASSPHRASE' | translate }}</a></p>

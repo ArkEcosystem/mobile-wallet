@@ -34,7 +34,7 @@
         </ion-scroll>
       </ion-col>
     </ion-row>
-    <ion-row padding *ngIf="wallets?.length > 0" class="marketcap-container">
+    <ion-row padding *ngIf="wallets?.length > 0 && currentNetwork?.name != 'devnet'" class="marketcap-container">
       <ion-col>
         <h3 class="market-cap-title">{{ 'MARKETS_PAGE.MARKET_CAP' | translate }}</h3>
         <ion-grid class="no-padding" class="price-container">
@@ -49,14 +49,20 @@
             </ion-col>
             <ion-col col-3 text-left>
               <p>{{ 'MARKETS_PAGE.PERCENTAGE_CHANGE' | translate }}</p>
-              <h6 ion-text [color]="marketTicker?.change1h < 0 ? 'danger' : 'secondary'">{{ marketTicker?.change1h }}%</h6>
+              <h6 ion-text [color]="fiatCurrency?.change24h < 0 ? 'danger' : 'secondary'">{{ fiatCurrency?.change24h | number: '1.2-2' }}%</h6>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-col>
     </ion-row>
-    <ion-row class="rowChart" [style.display]="wallets?.length > 0 ? 'block' : 'none'">
-      <canvas #priceChart></canvas>
+    <ion-row class="rowChart" *ngIf="chartLabels" [style.display]="wallets?.length > 0 ? 'block' : 'none'">
+      <canvas baseChart
+        [datasets]="chartData"
+        [labels]="chartLabels"
+        [options]="chartOptions"
+        [colors]="chartColors"
+        [legend]="false"
+        chartType="line"></canvas>
     </ion-row>
   </ion-grid>
 </ion-content>

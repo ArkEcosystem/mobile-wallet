@@ -25,6 +25,8 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { MyApp } from './app.component';
 import { ForgeProvider } from '../providers/forge/forge';
 
+import '@root/node_modules/chart.js/src/chart.js';
+
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }

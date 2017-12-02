@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform } from 'ionic-angular';
 
 import { Chart } from 'chart.js';
@@ -14,7 +14,9 @@ import { Network } from 'ark-ts/model';
 
 import { TranslateService } from '@ngx-translate/core';
 
+import * as constants from '@app/app.constants';
 import lodash from 'lodash';
+import { BaseChartDirective } from 'ng2-charts';
 
 @IonicPage()
 @Component({
@@ -22,7 +24,7 @@ import lodash from 'lodash';
   templateUrl: 'wallet-list.html',
 })
 export class WalletListPage {
-  @ViewChild('priceChart') priceChart: any;
+  @ViewChild(BaseChartDirective) chart: any;
 
   public currentProfile: Profile;
   public currentNetwork: Network;
@@ -32,6 +34,16 @@ export class WalletListPage {
   public fiatCurrency: MarketCurrency;
   public marketHistory: MarketHistory;
   public marketTicker: MarketTicker;
+
+  private forceChartRefreshListener;
+  private chartOptions: any;
+  private chartLabels: any;
+  private chartData: any;
+  private chartColors: any = [{
+    borderColor: '#394cf8'
+  }, {
+    borderColor: '#f3a447'
+  }]
 
   private unsubscriber$: Subject<void> = new Subject<void>();
 
@@ -146,8 +158,6 @@ export class WalletListPage {
       list.push(wallet);
     }
 
-    console.log(list);
-
     this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
   }
 
@@ -177,62 +187,65 @@ export class WalletListPage {
 
           let currency = settings.currency == 'btc' ? this.settingsDataProvider.getDefaults().currency : settings.currency;
 
-          let fiatHistory = history.getLastWeekPrice(currency);
-          let btcHistory = history.getLastWeekPrice('btc');
+          let fiatHistory = history.getLastWeekPrice(currency.toUpperCase());
+          let btcHistory = history.getLastWeekPrice('BTC');
 
-          this.priceChart = new Chart(this.priceChart.nativeElement, {
-            type: 'line',
-            options: {
-              maintainAspectRatio: false,
-              response: true,
-              legend: {
-                display: false,
-              },
-              tooltips: {
-                enabled: false,
-              },
-              scales: {
-                xAxes: [{
-                  gridLines: {
-                    display: true,
-                  }
-                }],
-                yAxes: [{
-                  display: false,
-                  id: 'A',
-                  type: 'linear',
-                  position: 'left',
-                  ticks: {
-                    max: Number(lodash.max(fiatHistory.prices)) * 1.1,
-                    min: Number(lodash.min(fiatHistory.prices))
-                  }
-                }, {
-                  display: false,
-                  id: 'B',
-                  type: 'linear',
-                  position: 'right',
-                  ticks: {
-                    max: Number(lodash.max(btcHistory.prices)) * 1.1,
-                    min: Number(lodash.min(btcHistory.prices)),
-                  }
-                }]
-              }
+          this.chartLabels = null;
+
+          this.chartData = [{
+            yAxisID : "A",
+            fill: false,
+            data: fiatHistory.prices,
+          }, {
+            yAxisID : "B",
+            fill: false,
+            data: btcHistory.prices,
+          }];
+
+          this.chartOptions = {
+            maintainAspectRatio: false,
+            response: true,
+            legend: {
+              display: false,
             },
-            data: {
-              labels: lodash.map(fiatHistory.dates, (d: Date) => days[d.getDay()]),
-              datasets: [{
-                yAxisID : "A",
-                fill: false,
-                borderColor: '#394cf8',
-                data: fiatHistory.prices,
-              }, {
-                yAxisID : "B",
-                fill: false,
-                borderColor: '#f3a447',
-                data: btcHistory.prices,
+            tooltips: {
+              enabled: false,
+            },
+            scales: {
+              xAxes: [{
+                gridLines: {
+                  drawBorder: false,
+                  display: true,
+                }
               }],
+              yAxes: [{
+                gridLines: {
+                  drawBorder: false,
+                  display: true,
+                },
+                display: false,
+                id: 'A',
+                type: 'linear',
+                position: 'left',
+                ticks: {
+                  max: Number(lodash.max(fiatHistory.prices)) * 1.1,
+                  min: Number(lodash.min(fiatHistory.prices))
+                }
+              }, {
+                display: false,
+                id: 'B',
+                type: 'linear',
+                position: 'right',
+                ticks: {
+                  max: Number(lodash.max(btcHistory.prices)) * 1.1,
+                  min: Number(lodash.min(btcHistory.prices)),
+                }
+              }]
             }
-          });
+          };
+
+          setTimeout(() => this.chartLabels = lodash.map(fiatHistory.dates, (d: Date) => days[d.getDay()]), 0);
+
         });
       });
     });
@@ -249,7 +262,8 @@ export class WalletListPage {
     });
   }
 
-  ionViewDidLoad() {
+
+  ionViewDidEnter() {
     this.loadWallets();
     this.onUpdateWallet();
     this.setMarketHistory();
@@ -261,8 +275,10 @@ export class WalletListPage {
     this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).subscribe((ticker) => this.setTicker(ticker));
 
     // wait 5sec to refresh the price
-    setTimeout(() => this.marketDataProvider.refreshPrice(), 5000);
+    setTimeout(() => this.marketDataProvider.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
+  }
 
+  ionViewDidLoad() {
     // Fetch from api or get from storage
     this.marketDataProvider.fetchHistory().subscribe((history) => {
       this.marketHistory = history

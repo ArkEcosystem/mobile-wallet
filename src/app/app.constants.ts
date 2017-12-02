@@ -9,8 +9,6 @@ export const WALLET_MIN_NUMBER_CONFIRMATIONS = 51;
 
 // STORAGE
 export const STORAGE_MARKET_TICKER = 'market_ticker';
-export const STORAGE_MARKET_CURRENCIES = 'market_currencies';
-export const STORAGE_MARKET_CURRENCIES_DATE = 'market_currencies_date';
 export const STORAGE_MARKET_HISTORY = 'market_history';
 
 export const STORAGE_LOGIN = 'login';
@@ -30,9 +28,6 @@ export const TOAST_HIDE_DELAY = 3000;
 export const TOAST_POSITION = 'bottom';
 
 // COIN MARKETCAP API
-export const API_MARKET_HISTORY_URL = "http://coinmarketcap.northpole.ro";
-export const API_MARKET_HISTORY_ENDPOINT = 'history.json?coin=ark';
-export const API_MARKET_TICKER_URL = 'https://api.coinmarketcap.com';
-export const API_MARKET_TICKER_ENDPOINT = 'v1/ticker/ark/';
-export const API_CURRENCY_TICKER_URL = 'https://api.fixer.io';
-export const API_CURRENCY_TICKER_ENDPOINT = 'latest?base=USD';
+export const API_MARKET_URL = "https://min-api.cryptocompare.com";
+export const API_MARKET_HISTORY_ENDPOINT = 'data/histoday?fsym=ARK&allData=true&tsym=';
+export const API_MARKET_TICKER_ENDPOINT = 'data/pricemultifull?fsyms=ARK&tsyms=';
