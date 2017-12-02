@@ -185,7 +185,7 @@ export class WalletDashboardPage {
       if (lodash.isEmpty(name)) return;
 
       this.onEnterPinCode = this.createDelegate;
-      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
+      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
     });
 
@@ -247,8 +247,10 @@ export class WalletDashboardPage {
   }
 
   private createSignature(keys: WalletKeys) {
+    keys.secondPassphrase = this.newSecondPassphrase;
+
     this.arkApiProvider.api.transaction
-    .createSignature(keys.key, this.newSecondPassphrase)
+    .createSignature(PrivateKey.fromWIF(keys.key), keys.secondPassphrase)
     .takeUntil(this.unsubscriber$)
     .subscribe((data) => {
       this.confirmTransaction.open(data, keys);

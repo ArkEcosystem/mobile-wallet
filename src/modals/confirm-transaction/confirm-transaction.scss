@@ -1,10 +1,10 @@
 modal-confirm-transaction {
   ion-content {
-    background: white!important;
+    background: color($colors, secondary-background, base)!important;
   }
 
   .header-row {
-    background: color($colors, light, base)!important;
+    background: color($colors, primary-background, base)!important;
   }
 
   .header-toolbar {

@@ -8,10 +8,10 @@ form,
   background: none;
 
   ion-item-sliding {
-    background: color($colors, gray-background, base)!important;
+    background: color($colors, primary-background, base)!important;
 
     &.active-slide .item {
-      background: color($colors, gray-background, base)!important;
+      background: color($colors, primary-background, base)!important;
     }
   }
 

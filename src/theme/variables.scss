@@ -39,7 +39,9 @@ $colors: (
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222,
-  gray-background: #edf2f5,
+  primary-background: #edf2f5,
+  secondary-background: #fff,
+  warning: #ffeaa5,
 );
 
 
@@ -90,6 +92,6 @@ $colors: (
 
 // OVERRIDE
 
-$background-ios-color: color($colors, gray-background, base);
-$background-md-color: color($colors, gray-background, base);
-$background-wp-color: color($colors, gray-background, base);
+$background-ios-color: color($colors, primary-background, base);
+$background-md-color: color($colors, primary-background, base);
+$background-wp-color: color($colors, primary-background, base);

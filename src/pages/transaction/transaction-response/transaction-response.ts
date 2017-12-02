@@ -1,10 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, AlertController, Content, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Content, ViewController } from 'ionic-angular';
 
 import { Clipboard } from '@ionic-native/clipboard';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { TranslateService } from '@ngx-translate/core';
+import { ToastProvider } from '@providers/toast/toast';
 
 import { Transaction, Wallet, WalletKeys } from '@models/model';
 import { TransactionType } from 'ark-ts';
@@ -31,9 +31,8 @@ export class TransactionResponsePage {
     private clipboard: Clipboard,
     private modalCtrl: ModalController,
     private userDataProvider: UserDataProvider,
-    private alertCtrl: AlertController,
-    private translateService: TranslateService,
     private viewController: ViewController,
+    private toastProvider: ToastProvider,
   ) {
     this.wallet = this.navParams.get('wallet');
     this.response = this.navParams.get('response');
@@ -53,19 +52,7 @@ export class TransactionResponsePage {
   }
 
   presentEncryptedAlert() {
-    this.translateService.get([
-      'WALLETS_PAGE.SECOND_PASSPHRASE',
-      'WALLETS_PAGE.ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE'
-    ]).subscribe((translation) => {
-      let alert = this.alertCtrl.create({
-        title: translation['WALLETS_PAGE.SECOND_PASSPHRASE'],
-        subTitle: translation['WALLETS_PAGE.ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE'],
-        buttons: ['Ok'],
-        enableBackdropDismiss: true,
-      });
-
-      alert.present();
-    })
+    this.toastProvider.success('WALLETS_PAGE.ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE');
   }
 
   saveSecondPassphrase() {
@@ -78,7 +65,7 @@ export class TransactionResponsePage {
     modal.onDidDismiss((password) => {
       if (!password) return;
 
-      this.userDataProvider.encryptSecondPassphrase(this.wallet, password, this.keys.secondKey).subscribe((data) => {
+      this.userDataProvider.encryptSecondPassphrase(this.wallet, password, this.keys.secondPassphrase).subscribe((data) => {
         this.wallet = this.userDataProvider.getWalletByAddress(this.wallet.address);
 
         this.showKeepSecondPassphrase = false;
@@ -93,7 +80,7 @@ export class TransactionResponsePage {
   verifySecondPassphrasHasEncrypted() {
     if (!this.transaction) return;
 
-    if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondSignature && !this.wallet.cipherWif)) {
+    if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondSignature && !this.wallet.cipherSecondWif)) {
       if (this.response.status) return this.showKeepSecondPassphrase = true;
     }
 

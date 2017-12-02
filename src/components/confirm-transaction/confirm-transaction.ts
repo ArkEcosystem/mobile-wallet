@@ -25,7 +25,7 @@ export class ConfirmTransactionComponent {
   open(transaction: any, keys: WalletKeys) {
     transaction = new Transaction(this.wallet.address).deserialize(transaction);
 
-    this.arkApiProvider.createTransaction(transaction, keys.key, keys.secondKey)
+    this.arkApiProvider.createTransaction(transaction, keys.key, keys.secondKey, keys.secondPassphrase)
       .subscribe((tx) => {
         let modal = this.modalCtrl.create('ConfirmTransactionModal', {
           transaction: tx
