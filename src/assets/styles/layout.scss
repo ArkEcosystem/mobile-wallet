@@ -30,3 +30,9 @@ form {
   background: none;
   border: none;
 }
+
+.menu-inner .icon,
+.action-sheet-icon {
+  color: color($colors, primary, base);
+  -webkit-text-stroke: .4px color($colors, primary, base);
+}

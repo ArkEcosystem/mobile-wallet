@@ -77,7 +77,7 @@ export class WalletDashboardPage {
       let delegateItem =  {
         text: translation['DELEGATES_PAGE.REGISTER_DELEGATE'],
         role: 'delegate',
-        icon: !this.platform.is('ios') ? 'contact' : '',
+        icon: !this.platform.is('ios') ? 'ios-contact-outline' : '',
         handler: () => {
           this.presentRegisterDelegateModal();
         },
@@ -86,7 +86,7 @@ export class WalletDashboardPage {
       let secondPassphraseItem = {
         text: translation['WALLETS_PAGE.SECOND_PASSPHRASE'],
         role: '2ndpassphrase',
-        icon: !this.platform.is('ios') ? 'lock' : '',
+        icon: !this.platform.is('ios') ? 'ios-lock-outline' : '',
         handler: () => {
           this.presentRegisterSecondPassphraseModal();
         },
@@ -96,14 +96,14 @@ export class WalletDashboardPage {
         {
           text: translation['WALLETS_PAGE.LABEL'],
           role: 'label',
-          icon: !this.platform.is('ios') ? 'pricetag' : '',
+          icon: !this.platform.is('ios') ? 'ios-bookmark-outline' : '',
           handler: () => {
             this.presentLabelModal();
           },
         }, {
           text: translation['WALLETS_PAGE.REMOVE_WALLET'],
           role: 'delete',
-          icon: !this.platform.is('ios') ? 'trash' : '',
+          icon: !this.platform.is('ios') ? 'ios-trash-outline' : '',
           handler: () => {
             this.presentDeleteWalletConfirm();
           }
@@ -125,7 +125,7 @@ export class WalletDashboardPage {
         {
           text: translation['TRANSACTIONS_PAGE.RECEIVE'],
           role: 'receive',
-          icon: !this.platform.is('ios') ? 'arrow-round-down' : '',
+          icon: !this.platform.is('ios') ? 'ios-arrow-round-down' : '',
           handler: () => {
             return this.openTransactionReceive();
           }
@@ -135,7 +135,7 @@ export class WalletDashboardPage {
         buttons.push({
           text: translation['TRANSACTIONS_PAGE.SEND'],
           role: 'send',
-          icon: !this.platform.is('ios') ? 'arrow-round-up' : '',
+          icon: !this.platform.is('ios') ? 'ios-arrow-round-up' : '',
           handler: () => {
             return this.navCtrl.push('TransactionSendPage');
           }

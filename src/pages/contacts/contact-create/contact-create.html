@@ -16,7 +16,7 @@
     <ion-item>
       <ion-label floating>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
       <ion-input type="text" name="address" [(ngModel)]="address" [disabled]="!isNew" (keyup)="validateAddress()" required></ion-input>
-      <img src="./assets/img/wallet/qr-code-button.png" width="30" height="30" (click)="scanQRCode()" item-right />
+      <img src="./assets/img/wallet/light/wallet/qr-code-button.png" width="30" height="30" (click)="scanQRCode()" item-right />
     </ion-item>
   </form>
 </ion-content>

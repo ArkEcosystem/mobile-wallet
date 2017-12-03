@@ -17,12 +17,12 @@
   <ion-grid>
     <ion-row>
       <ion-col text-center align-self-center *ngIf="response?.status">
-        <img src="./assets/img/light/transfer-success.png">
+        <img src="./assets/img/light/transaction/transfer-success.png">
         <h5>{{ 'TRANSACTIONS_PAGE.SENT_SUCCESS' | translate }}</h5>
         <button ion-button outline (click)="copyTxid()" class="copy-txid-btn">{{ 'TRANSACTIONS_PAGE.COPY_TXID' | translate }}</button>
       </ion-col>
       <ion-col align-self-center *ngIf="!response?.status">
-        <img src="./assets/img/light/transfer-error.png">
+        <img src="./assets/img/light/transaction/transfer-error.png">
       </ion-col>
     </ion-row>
   </ion-grid>
