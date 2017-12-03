@@ -7,16 +7,27 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-grid>
+  <ion-grid padding class="full-height">
     <ion-row>
       <ion-col text-center>
-        <img src="./assets/img/wallet/import-wallet.png" class="image">
+        <img src="./assets/img/wallet/qr-code.png" class="image">
+        <h6>{{ 'WALLETS_PAGE.SCAN_QRCODE_TEXT' | translate }}</h6>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row class="layout-flex">
       <ion-col text-center align-self-end>
-        <button ion-button color="primary" (click)="scanQRCode()">{{ 'WALLETS_PAGE.SCAN_QRCODE' | translate }}</button>
-        <p>or type <a (click)="openWalletImportPassphrase()">{{ 'WALLETS_PAGE.SECRET_PASSPHRASE' | translate }}</a></p>
+        <ion-grid no-padding>
+          <ion-row>
+            <ion-col>
+              <button ion-button color="primary" (click)="scanQRCode()" text-center>{{ 'WALLETS_PAGE.SCAN_QRCODE' | translate }}</button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <p>or type <a (click)="openWalletImportPassphrase()">{{ 'WALLETS_PAGE.SECRET_PASSPHRASE' | translate }}</a></p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-col>
     </ion-row>
   </ion-grid>
