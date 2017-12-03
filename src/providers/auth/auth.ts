@@ -15,6 +15,7 @@ export class AuthProvider {
 
   public onLogin$: Subject<string> = new Subject();
   public onLogout$: Subject<boolean> = new Subject();
+  public onSeeIntro$: Subject<void> = new Subject();
 
   public loggedProfileId: string;
 
@@ -35,12 +36,12 @@ export class AuthProvider {
     });
   }
 
-  logout(): void {
+  logout(broadcast: boolean = true): void {
     this.storage.set(constants.STORAGE_LOGIN, false);
     this.storage.set(constants.STORAGE_ACTIVE_PROFILE, undefined);
     this.loggedProfileId = undefined;
 
-    this.onLogout$.next(false);
+    if (broadcast) this.onLogout$.next(false);
   }
 
   hasSeenIntro(): Observable<boolean> {
@@ -53,6 +54,7 @@ export class AuthProvider {
   }
 
   saveIntro(): void {
+    this.onSeeIntro$.next();
     this.storage.set(constants.STORAGE_INTROSEEN, true);
   }
 

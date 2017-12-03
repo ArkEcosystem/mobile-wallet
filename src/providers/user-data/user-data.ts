@@ -13,7 +13,7 @@ import { v4 as uuid } from 'uuid';
 import { Network } from 'ark-ts/model';
 
 import * as constants from '@app/app.constants';
-import { PrivateKey } from 'ark-ts';
+import { PrivateKey, NetworkType } from 'ark-ts';
 
 @Injectable()
 export class UserDataProvider {
@@ -39,6 +39,7 @@ export class UserDataProvider {
 
     this.onLogin();
     this.onClearStorage();
+    this.onSeeIntro();
   }
 
   addContact(address: string, contact: Contact, profileId: string = this.authProvider.loggedProfileId) {
@@ -134,7 +135,6 @@ export class UserDataProvider {
   encryptSecondPassphrase(wallet: Wallet, pinCode: string, secondPassphrase: string, profileId: string = this.authProvider.loggedProfileId) {
     if (lodash.isUndefined(profileId)) return;
 
-    let profile = this.getProfileById(profileId);
     if (wallet && !wallet.cipherSecondWif) {
       let secondWif = PrivateKey.fromSeed(secondPassphrase).toWIF();
       wallet.cipherSecondWif = this.forgeProvider.encrypt(secondWif, pinCode, this.currentNetwork);
@@ -286,6 +286,9 @@ export class UserDataProvider {
       let profile = new Profile().deserialize(this.profiles[profileId]);
       this.currentProfile = profile;
       if (broadcast) this.onSelectProfile$.next(profile);
+    } else {
+      this.currentProfile = null;
+      this.authProvider.logout(false);
     }
   }
 
@@ -301,11 +304,27 @@ export class UserDataProvider {
     });
   }
 
+  private onSeeIntro() {
+    this.authProvider.onSeeIntro$.subscribe(() => {
+      // Generate initial profiles
+      let profiles = {};
+      let mainnetId = lodash.findKey(this.networks, (n) => n.type === NetworkType.Mainnet);
+      profiles[this.generateUniqueId()] = <Profile>{
+        name: "Personal Wallets",
+        networkId: mainnetId,
+      }
+
+      this.profiles = profiles;
+      this.saveProfiles();
+    });
+  }
+
   private onClearStorage() {
     this.storageProvider.onClear$
       .debounceTime(100)
       .do(() => {
         this.loadAllData();
+
         this.setCurrentProfile(null);
       })
       .subscribe();
