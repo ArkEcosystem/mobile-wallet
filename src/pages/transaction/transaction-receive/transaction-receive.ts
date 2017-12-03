@@ -31,8 +31,9 @@ export class TransactionReceivePage {
   }
 
   copyAddress() {
-    this.clipboard.copy(this.address);
-    this.toastProvider.success('ADDRESS_COPIED_TEXT')
+    this.clipboard.copy(this.address).then(
+      () => this.toastProvider.success('COPIED_CLIPBOARD'),
+      () => this.toastProvider.error('COPY_CLIPBOARD_FAILED'));
   }
 
   share() {

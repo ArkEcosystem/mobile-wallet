@@ -27,7 +27,7 @@ export class PinCodeComponent {
   ) { }
 
   open(message: string, outputPassword: boolean, verifySecondPassphrase: boolean = false) {
-    if (!this.wallet) return;
+    if (outputPassword && !this.wallet) return false;
 
     let modal = this.modalCtrl.create('PinCodeModal', {
       message,

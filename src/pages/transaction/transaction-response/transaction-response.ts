@@ -48,7 +48,9 @@ export class TransactionResponsePage {
   }
 
   copyTxid() {
-    this.clipboard.copy(this.transaction.id);
+    this.clipboard.copy(this.transaction.id).then(
+      () => this.toastProvider.success('COPIED_CLIPBOARD'),
+      () => this.toastProvider.error('COPY_CLIPBOARD_FAILED'));
   }
 
   presentEncryptedAlert() {

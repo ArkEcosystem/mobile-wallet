@@ -184,6 +184,8 @@
     "BALANCE_TOO_LOW": "Balance too low for transaction"
   },
   "ARE_YOU_SURE": "Are you sure?",
+  "COPY_CLIPBOARD_FAILED": "Copy to clipboard failed",
+  "COPIED_CLIPBOARD": "Copied to clipboard",
   "BACK_BUTTON_TEXT": "Back",
   "EXIT_APP_TEXT": "Exit App?",
   "LOGOUT_PROFILE_TEXT": "Logout of Profile?",
@@ -206,6 +208,5 @@
   "TYPE": "Type",
   "EXIT": "Exit",
   "FAILED": "Failed",
-  "WATCH_ONLY": "Watch Only",
-  "ADDRESS_COPIED_TEXT": "Address Copied"
+  "WATCH_ONLY": "Watch Only"
 }

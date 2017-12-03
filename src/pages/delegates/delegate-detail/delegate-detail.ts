@@ -10,6 +10,7 @@ import { Wallet } from '@models/wallet';
 import { TranslateService } from '@ngx-translate/core';
 import { Clipboard } from '@ionic-native/clipboard';
 import lodash from 'lodash';
+import { ToastProvider } from '@providers/toast/toast';
 
 @IonicPage()
 @Component({
@@ -35,6 +36,7 @@ export class DelegateDetailPage {
     private userDataProvider: UserDataProvider,
     private alertCtrl: AlertController,
     private translateService: TranslateService,
+    private toastProvider: ToastProvider,
   ) {
     this.delegate = this.navParams.get('delegate');
     this.walletVote = this.navParams.get('vote');
@@ -61,7 +63,9 @@ export class DelegateDetailPage {
   }
 
   copyAddress() {
-    this.clipboard.copy(this.delegate.address);
+    this.clipboard.copy(this.delegate.address).then(
+      () => this.toastProvider.success('COPIED_CLIPBOARD'),
+      () => this.toastProvider.error('COPY_CLIPBOARD_FAILED'));
   }
 
   submit() {
