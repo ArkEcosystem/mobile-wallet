@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform, Content } from 'ionic-angular';
 
 import { Chart } from 'chart.js';
 import { Subject } from 'rxjs/Subject';
@@ -24,6 +24,7 @@ import { BaseChartDirective } from 'ng2-charts';
   templateUrl: 'wallet-list.html',
 })
 export class WalletListPage {
+  @ViewChild(Content) content: Content;
   @ViewChild(BaseChartDirective) chart: any;
 
   public currentProfile: Profile;
@@ -276,6 +277,8 @@ export class WalletListPage {
 
     // wait 5sec to refresh the price
     setTimeout(() => this.marketDataProvider.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
+
+    this.content.resize();
   }
 
   ionViewDidLoad() {

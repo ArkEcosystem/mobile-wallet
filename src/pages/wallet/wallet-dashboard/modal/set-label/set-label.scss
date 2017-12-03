@@ -1,3 +1,9 @@
 page-set-label {
+  ion-header {
+    background: color($colors, primary-background, base)!important;
+  }
 
+  ion-content {
+    background: color($colors, secondary-background, base)!important;
+  }
 }

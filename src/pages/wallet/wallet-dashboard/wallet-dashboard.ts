@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController, AlertController, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController, AlertController, LoadingController, Loading, Content } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -25,6 +25,7 @@ import { ConfirmTransactionComponent } from '@components/confirm-transaction/con
   templateUrl: 'wallet-dashboard.html',
 })
 export class WalletDashboardPage {
+  @ViewChild(Content) content: Content;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
 
@@ -373,6 +374,8 @@ export class WalletDashboardPage {
 
     this.onUpdateWallet();
     this.onUpdateMarket();
+
+    this.content.resize();
   }
 
   ngOnDestroy() {

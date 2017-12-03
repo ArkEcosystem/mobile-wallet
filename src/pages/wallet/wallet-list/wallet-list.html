@@ -55,7 +55,7 @@
         </ion-grid>
       </ion-col>
     </ion-row>
-    <ion-row class="rowChart" *ngIf="chartLabels" [style.display]="wallets?.length > 0 ? 'block' : 'none'">
+    <ion-row class="rowChart" *ngIf="chartLabels && wallets?.length > 0 && currentNetwork?.name != 'devnet'" [style.display]="wallets?.length > 0 ? 'block' : 'none'">
       <canvas baseChart
         [datasets]="chartData"
         [labels]="chartLabels"
