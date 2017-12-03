@@ -173,7 +173,7 @@ export class ArkApiProvider {
         secondKeys = this.arkjs.ECPair.fromSeed(secondPassphrase);
       }
 
-      this.arkjs.crypto.secondSign(transaction, secondKeys);
+      if (secondKeys) this.arkjs.crypto.secondSign(transaction, secondKeys);
 
       transaction.id = this.arkjs.crypto.getId(transaction);
 
