@@ -17,6 +17,7 @@ export class WalletBackupModal {
   public entropy: string;
   public keys: WalletKeys;
   public message: string;
+  public showAdvancedOptions: boolean = false;
 
   public account: AccountBackup = {};
 
@@ -44,6 +45,10 @@ export class WalletBackupModal {
 
   dismiss(result?: any) {
     this.viewCtrl.dismiss(result);
+  }
+
+  showAdvanced() {
+    this.showAdvancedOptions = true;
   }
 
   ionViewDidLoad() {
