@@ -4,7 +4,7 @@
     <ion-row class="header-row">
       <ion-col text-center padding align-self-end class="header-toolbar">
         <h3 class="amount" ion-text color="primary">{{ transaction?.getAmount() | unitsSatoshi | number: '1.0-2' }} {{ currentNetwork?.symbol }}</h3>
-        <p *ngIf="currentNetwork?.name != 'devnet'">{{ marketCurrency?.symbol }}{{ transaction?.getAmountEquivalent(marketCurrency, ticker) | unitsSatoshi | number: '1.0-2' }}</p>
+        <p appMainnetOnly>{{ marketCurrency?.symbol }}{{ transaction?.getAmountEquivalent(marketCurrency, ticker) | unitsSatoshi | number: '1.0-2' }}</p>
       </ion-col>
     </ion-row>
     <ion-row>

@@ -6,6 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
 import { ClosePopupComponentModule } from '@components/close-popup/close-popup.module';
 
+import { DirectivesModule } from '@directives/directives.module';
+
 @NgModule({
   declarations: [
     ConfirmTransactionModal,
@@ -15,6 +17,7 @@ import { ClosePopupComponentModule } from '@components/close-popup/close-popup.m
     TranslateModule,
     PipesModule,
     ClosePopupComponentModule,
+    DirectivesModule,
   ],
 })
 export class ConfirmTransactionModalModule {}
