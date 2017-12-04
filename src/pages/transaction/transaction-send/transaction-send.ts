@@ -100,11 +100,12 @@ export class TransactionSendPage {
   }
 
   onInputToken() {
-    this.transaction.amountEquivalent= this.transaction.amount * this.marketCurrency.price;
+    let precision = this.marketCurrency.code === 'btc' ? 8 : 2;
+    this.transaction.amountEquivalent = +(this.transaction.amount * this.marketCurrency.price).toFixed(precision);
   }
 
   onInputFiat() {
-    this.transaction.amount = this.transaction.amountEquivalent / this.marketCurrency.price;
+    this.transaction.amount = +(this.transaction.amountEquivalent / this.marketCurrency.price).toFixed(8);
   }
 
   onEnterPinCode(keys: WalletKeys) {
