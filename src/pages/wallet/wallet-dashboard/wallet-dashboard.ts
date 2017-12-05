@@ -41,6 +41,7 @@ export class WalletDashboardPage {
   public marketCurrency: MarketCurrency;
 
   public onEnterPinCode;
+  private newDelegateName: string;
   private newSecondPassphrase: string;
 
   public emptyTransactions: boolean = false;
@@ -185,6 +186,7 @@ export class WalletDashboardPage {
     modal.onDidDismiss((name) => {
       if (lodash.isEmpty(name)) return;
 
+      this.newDelegateName = name;
       this.onEnterPinCode = this.createDelegate;
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
@@ -234,7 +236,7 @@ export class WalletDashboardPage {
 
     let transaction = <TransactionDelegate>{
       passphrase: PrivateKey.fromWIF(keys.key, this.network),
-      username: name,
+      username: this.newDelegateName,
       publicKey
     }
 

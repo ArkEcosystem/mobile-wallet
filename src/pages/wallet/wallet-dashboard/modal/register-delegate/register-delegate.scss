@@ -6,4 +6,8 @@ page-register-delegate {
   ion-content {
     background: color($colors, secondary-background, base)!important;
   }
+
+  ion-input {
+    text-transform: lowercase;
+  }
 }
