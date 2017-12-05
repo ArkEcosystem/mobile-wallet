@@ -44,13 +44,19 @@ export class WalletImportPage {
       let address = qrCode['a'] || null;
       let passphrase = qrCode['passphrase'] || null;
       if (address) {
-        publicKey = PublicKey.fromAddress(address);
-        publicKey.setNetwork(this.currentNetwork);
+        if (PublicKey.validateAddress(address, this.currentNetwork)) {
+          publicKey = PublicKey.fromAddress(address);
+          publicKey.setNetwork(this.currentNetwork);
+        } else {
+          this.toastProvider.error('WALLETS_PAGE.IMPORT_INVALID_ADDRESS');
+        }
       } else {
         privateKey = PrivateKey.fromSeed(passphrase, this.currentNetwork);
         publicKey = privateKey.getPublicKey();
         address = publicKey.getAddress();
       }
+
+      if (!publicKey) return;
 
       let newWallet = new Wallet(!privateKey);
       this.arkApiProvider.api.account

@@ -153,6 +153,8 @@ export class UserDataProvider {
       wallet.cipherWif = cipherWif;
     }
 
+    console.log(profile);
+
     if (!profile.wallets[wallet.address]) {
       this.onCreateWallet$.next(wallet);
       return this.saveWallet(wallet, profileId);

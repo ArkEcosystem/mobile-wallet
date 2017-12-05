@@ -96,7 +96,8 @@
     "ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE": "The second passphrase was successfully encrypted",
     "PASSPHRASE_NOT_MATCH": "The passphrase entered does not match the one you just got.",
     "REMOVE_WALLET_TEXT": "Your account will be removed. Make sure you have backed up, you will need the original passphrase to restore.",
-    "ADD_WALLET_ERROR": "Could not add wallet"
+    "ADD_WALLET_ERROR": "Could not add wallet",
+    "IMPORT_INVALID_ADDRESS": "This address can not be imported into this profile"
   },
   "TRANSACTIONS_PAGE": {
     "ID": "Id",
