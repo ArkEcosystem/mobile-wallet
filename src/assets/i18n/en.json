@@ -208,5 +208,6 @@
   "TYPE": "Type",
   "EXIT": "Exit",
   "FAILED": "Failed",
-  "WATCH_ONLY": "Watch Only"
+  "WATCH_ONLY": "Watch Only",
+  "SHOW_ADVANCED": "Show Advanced"
 }

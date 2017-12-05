@@ -5,6 +5,8 @@ import { TransactionShowPage } from './transaction-show';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
 
+import { DirectivesModule } from '@directives/directives.module';
+
 @NgModule({
   declarations: [
     TransactionShowPage,
@@ -13,6 +15,7 @@ import { PipesModule } from '@pipes/pipes.module';
     IonicPageModule.forChild(TransactionShowPage),
     TranslateModule,
     PipesModule,
+    DirectivesModule,
   ],
 })
 export class TransactionShowPageModule {}

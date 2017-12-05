@@ -4,7 +4,7 @@ import arkConfig from 'ark-ts/config';
 import { MarketCurrency, MarketHistory, MarketTicker } from '@models/market';
 
 const TX_TYPES = {
-  0: 'Sent',
+  0: 'Send',
   1: 'Second Signature Creation',
   2: 'Delegate Registration',
   3: 'Vote',

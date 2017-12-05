@@ -9,6 +9,8 @@ import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
 import { ConfirmTransactionComponentModule } from '@components/confirm-transaction/confirm-transaction.module';
 import { QRScannerComponentModule } from '@components/qr-scanner/qr-scanner.module';
 
+import { DirectivesModule } from '@directives/directives.module';
+
 @NgModule({
   declarations: [
     TransactionSendPage,
@@ -21,6 +23,7 @@ import { QRScannerComponentModule } from '@components/qr-scanner/qr-scanner.modu
     PinCodeComponentModule,
     ConfirmTransactionComponentModule,
     QRScannerComponentModule,
+    DirectivesModule,
   ],
 })
 export class TransactionSendPageModule {}

@@ -41,7 +41,10 @@
     </ion-row>
     <ion-row class="advanced-container">
       <ion-col>
-        <ion-list class="advanced-list">
+        <div class="note-message">
+          <p>{{ 'WALLETS_PAGE.BACKUP_ACCOUNT' | translate }}</p>
+        </div>
+        <ion-list class="advanced-list" *ngIf="showAdvancedOptions">
           <ion-item text-wrap *ngIf="account?.entropy">
             <p class="item-caption">{{ 'WALLETS_PAGE.ENTROPY' | translate }}</p>
             <h6 class="item-value text-selectable">{{ account?.entropy }}</h6>
@@ -63,8 +66,8 @@
             <h6 class="item-value text-selectable">{{ account?.secondWif }}</h6>
           </ion-item>
         </ion-list>
-        <div class="note-message">
-          <p>{{ 'WALLETS_PAGE.BACKUP_ACCOUNT' | translate }}</p>
+        <div class="show-advanced" text-center *ngIf="!showAdvancedOptions">
+          <button ion-button (click)="showAdvanced()">{{ 'SHOW_ADVANCED' | translate }}</button>
         </div>
         <div text-center *ngIf="!keys">
           <button ion-button class="button-continue" (click)="next()">{{ 'NEXT' | translate }}</button>

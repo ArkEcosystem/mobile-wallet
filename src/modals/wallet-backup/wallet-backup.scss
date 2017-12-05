@@ -18,11 +18,20 @@ modal-wallet-backup {
   }
 
   .advanced-container {
+    .note-message {
+      color: white;
+      background: #b72626;
+      font-weight: bold;
+    }
 
     .advanced-list {
       .item-caption {
         color: rgb(99, 99, 99);
       }
+    }
+
+    .show-advanced {
+      margin-bottom: 1em;
     }
   }
 

@@ -35,6 +35,7 @@ export class RegisterDelegatePage {
   }
 
   validateName() {
+    this.name = this.name.toLowerCase();
     let find = lodash.find(this.delegates, { username: this.name.trim() });
 
     this.isExists = !lodash.isNil(find);
