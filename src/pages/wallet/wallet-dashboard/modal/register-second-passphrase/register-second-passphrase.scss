@@ -7,6 +7,15 @@ page-register-second-passphrase {
     background: color($colors, secondary-background, base)!important;
   }
 
+  ion-footer {
+    &.note-toolbar {
+      color: white;
+      background: #b72626;
+      font-weight: bold;
+      padding: 1em 2em;
+    }
+  }
+
   .item {
     padding-left: 0;
     background: none;
