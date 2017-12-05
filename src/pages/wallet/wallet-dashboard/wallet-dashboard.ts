@@ -111,8 +111,8 @@ export class WalletDashboardPage {
         }
       ];
 
-      if (!this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
-      if (!this.wallet.isDelegate) buttons.unshift(delegateItem);
+      if (!this.wallet.isWatchOnly && !this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
+      if (!this.wallet.isWatchOnly && !this.wallet.isDelegate) buttons.unshift(delegateItem);
 
       let action = this.actionSheetCtrl.create({buttons});
 
