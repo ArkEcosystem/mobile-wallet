@@ -23,6 +23,7 @@
         "@angular/platform-browser-dynamic": "4.4.3",
         "@ionic-native/clipboard": "^4.4.2",
         "@ionic-native/core": "^4.4.2",
+        "@ionic-native/in-app-browser": "^4.4.2",
         "@ionic-native/keyboard": "^4.4.2",
         "@ionic-native/qr-scanner": "^4.4.2",
         "@ionic-native/screen-orientation": "^4.4.2",
@@ -51,6 +52,7 @@
         "cordova-plugin-compat": "^1.2.0",
         "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-device": "^1.1.7",
+        "cordova-plugin-inappbrowser": "^1.7.2",
         "cordova-plugin-qrscanner": "^2.5.0",
         "cordova-plugin-screen-orientation": "^2.0.2",
         "cordova-plugin-splashscreen": "^4.1.0",
@@ -95,7 +97,8 @@
             "cordova-plugin-vibration": {},
             "cordova-plugin-screen-orientation": {},
             "cordova-sqlite-storage": {},
-            "cordova-plugin-x-socialsharing": {}
+            "cordova-plugin-x-socialsharing": {},
+            "cordova-plugin-inappbrowser": {}
         },
         "platforms": [
             "android",

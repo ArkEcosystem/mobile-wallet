@@ -7,7 +7,14 @@ page-transaction-response {
     height: auto;
   }
 
+  .success-container {
+    .row {
+      flex: 1 auto;
+    }
+  }
+
   .copy-txid-btn {
-    margin-top: 1em;
+    margin: 1em auto;
+    display: block;
   }
 }

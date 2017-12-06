@@ -122,7 +122,8 @@
     "QRCODE_COPY": "Tap on address to copy it to clipboard or click on icon to share QR code.",
     "CREATE_TRANSACTION_ERROR": "Could not create transaction. Check internet connectivity",
     "SECOND_PASSPHRASE_NOT_ENTERED": "The second passphrase has not entered",
-    "INVALID_CONTACT_ERROR": "Invalid Contact"
+    "INVALID_CONTACT_ERROR": "Invalid Contact",
+    "OPEN_EXPLORER": "Open in Explorer"
   },
   "PROFILES_PAGE": {
     "SIGN_IN": "Sign in",

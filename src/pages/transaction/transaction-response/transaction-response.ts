@@ -1,19 +1,20 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Content, ViewController } from 'ionic-angular';
 
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Clipboard } from '@ionic-native/clipboard';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
 
 import { Transaction, Wallet, WalletKeys } from '@models/model';
-import { TransactionType } from 'ark-ts';
+import { TransactionType, Network } from 'ark-ts';
 
 @IonicPage()
 @Component({
   selector: 'page-transaction-response',
   templateUrl: 'transaction-response.html',
-  providers: [Clipboard],
+  providers: [Clipboard, InAppBrowser],
 })
 export class TransactionResponsePage {
   @ViewChild(Content) content: Content;
@@ -24,6 +25,7 @@ export class TransactionResponsePage {
   public response: any = { status: false, message: '' };
 
   public showKeepSecondPassphrase: boolean = true;
+  public currentNetwork: Network;
 
   constructor(
     public navCtrl: NavController,
@@ -33,6 +35,7 @@ export class TransactionResponsePage {
     private userDataProvider: UserDataProvider,
     private viewController: ViewController,
     private toastProvider: ToastProvider,
+    private iab: InAppBrowser,
   ) {
     this.wallet = this.navParams.get('wallet');
     this.response = this.navParams.get('response');
@@ -42,6 +45,7 @@ export class TransactionResponsePage {
 
     if (!this.response) this.navCtrl.pop();
 
+    this.currentNetwork = this.userDataProvider.currentNetwork;
     if (transaction) this.transaction = new Transaction(this.wallet.address).deserialize(transaction);
 
     this.verifySecondPassphrasHasEncrypted();
@@ -51,6 +55,11 @@ export class TransactionResponsePage {
     this.clipboard.copy(this.transaction.id).then(
       () => this.toastProvider.success('COPIED_CLIPBOARD'),
       () => this.toastProvider.error('COPY_CLIPBOARD_FAILED'));
+  }
+
+  openInExplorer() {
+    let url = `${this.currentNetwork.explorer}/tx/${this.transaction.id}`;
+    return this.iab.create(url);
   }
 
   presentEncryptedAlert() {
