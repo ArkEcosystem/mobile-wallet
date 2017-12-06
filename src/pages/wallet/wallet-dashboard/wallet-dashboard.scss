@@ -39,7 +39,7 @@ page-wallet-dashboard {
     width: 100%;
     margin: .7em auto;
     box-shadow: none;
-    border-bottom: 1px solid #edf2f5;
+    border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
     .icon-bg {
       margin: 0;
       padding: 0;

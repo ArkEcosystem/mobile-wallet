@@ -81,14 +81,14 @@ export class WalletListPage {
           {
             text: translation.GENERATE,
             role: 'generate',
-            icon: !this.platform.is('ios') ? 'card' : null,
+            icon: !this.platform.is('ios') ? 'ios-card-outline' : null,
             handler: () => {
               this.presentWalletGenerate();
             }
           }, {
             text: translation.IMPORT,
             role: 'import',
-            icon: !this.platform.is('ios') ? 'sync' : null,
+            icon: !this.platform.is('ios') ? 'ios-cloud-upload-outline' : null,
             handler: () => {
               this.presentWalletImport();
             }

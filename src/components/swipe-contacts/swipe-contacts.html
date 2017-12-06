@@ -2,13 +2,13 @@
   <ion-card (click)="add()" class="add-item" [class.active]="selectedAddress == 'add'">
     <ion-card-content text-wrap text-center>
       <div class="circle-letter">+</div>
-      <h5 class="card-title">{{ 'Add Contact' | translate }}</h5>
+      <p class="card-title">{{ 'Add Contact' | translate }}</p>
     </ion-card-content>
   </ion-card>
   <ion-card *ngFor="let contact of contacts" [class.active]="selectedAddress == contact.address" (click)="select(contact)" class="contact-item">
     <ion-card-content text-wrap text-center>
       <div class="circle-letter">{{ contact?.name?.charAt(0) }}</div>
-      <h5 class="card-title">{{ contact?.name }}</h5>
+      <p class="card-title">{{ contact?.name }}</p>
     </ion-card-content>
   </ion-card>
 </ion-scroll>

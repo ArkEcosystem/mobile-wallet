@@ -1,0 +1,18 @@
+.toast-service .toast-wrapper {
+  font-weight: bold;
+}
+.toast-error .toast-wrapper {
+  background-color: #FF0000;
+}
+.toast-success .toast-wrapper {
+  background-color: #2E8B57;
+}
+.toast-warn .toast-wrapper {
+  background-color: #FF8C00;
+}
+.toast-log .toast-wrapper {
+  background-color: #A9A9A9;
+}
+.toast-debug .toast-wrapper {
+  background-color: #4169E1;
+}

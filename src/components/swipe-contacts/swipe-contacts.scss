@@ -12,7 +12,7 @@ swipe-contacts {
   ion-card {
     margin: .5em .5em .5em .2em!important;
     border-radius: 5px!important;
-    width: 28vw!important;
+    width: 32vw!important;
     padding: 1.5em .8em;
     display: inline-block;
     vertical-align: middle;
@@ -29,12 +29,16 @@ swipe-contacts {
     }
 
     &.active {
-      border-color:rgb(86, 139, 247);
-      background: rgb(86, 139, 247)!important;
-      color: white!important;
+      border-color:color($colors, primary, base);
+      background: color($colors, primary, base)!important;
+      box-shadow: 0px 1px 4px 1px rgba(52,95,242,0.4)!important;
+
+      .card-content .card-title {
+        color: white!important;
+      }
 
       .circle-letter {
-        background-color:rgb(7, 94, 255)!important;
+        background-color:lighten(color($colors, primary, base), 10%)!important;
       }
     }
   }

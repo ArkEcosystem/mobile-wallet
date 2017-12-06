@@ -3,7 +3,7 @@
   <ion-navbar>
     <h6 class="no-padding no-margin" text-center>{{ 'TRANSACTIONS_PAGE.SEND_TRANSACTION' | translate }}</h6>
     <ion-buttons end>
-      <button ion-button (click)="sendAll()">{{ 'TRANSACTIONS_PAGE.SEND_ALL' | translate }}</button>
+      <button ion-button clear (click)="sendAll()" color="primary">{{ 'TRANSACTIONS_PAGE.SEND_ALL' | translate }}</button>
     </ion-buttons>
   </ion-navbar>
 
@@ -63,13 +63,15 @@
           </ion-item>
         </ion-col>
       </ion-row>
+      <ion-row class="full-height">
+        <ion-col align-self-end>
+          <button ion-button class="button-continue" (click)="send()">{{ 'TRANSACTIONS_PAGE.SEND' | translate }}</button>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </form>
 </ion-content>
 
-<ion-footer padding no-shadow no-border class="hide-on-keyboard-open">
-  <button ion-button class="button-continue" (click)="send()">{{ 'TRANSACTIONS_PAGE.SEND' | translate }}</button>
-</ion-footer>
 
 <pin-code [wallet]="currentWallet" (onSuccess)="onEnterPinCode($event)" #pinCode></pin-code>
 <confirm-transaction [wallet]="currentWallet" #confirmTransaction></confirm-transaction>

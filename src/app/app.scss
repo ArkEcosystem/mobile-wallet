@@ -1,6 +1,7 @@
 @import "../assets/styles/modal";
 @import "../assets/styles/responsive";
 @import "../assets/styles/layout";
+@import "../assets/styles/toast";
 
 ion-app.md {
   background: transparent;
@@ -129,10 +130,10 @@ ion-app.md {
   .item {
     padding: .5em 0;
     user-select: auto!important;
-    border-bottom: 1px solid #eee!important;
+    border-bottom: 1px solid darken(color($colors, primary-background, base), 5%)!important;
 
     &:last-child {
-      border-bottom: none;
+      border-bottom: none!important;
     }
 
     p {
@@ -171,29 +172,6 @@ ion-app.md {
   margin: 1.5em auto;
   color: black;
   background: #ffeaa5;
-}
-
-.md ion-list > .item:first-child,
-.md ion-list > .item-wrapper:first-child .item,
-.wp ion-list > .item:first-child,
-.wp ion-list > .item-wrapper:first-child .item,
-.ios ion-list > .item:first-child,
-.ios ion-list > .item-wrapper:first-child .item {
-  border-top: none;
-}
-
-.md ion-list > .item:last-child,
-.md ion-list > .item-wrapper:last-child .item,
-.wp ion-list > .item:last-child,
-.wp ion-list > .item-wrapper:last-child .item,
-.ios ion-list > .item:last-child,
-.ios ion-list > .item-wrapper:last-child .item {
-  border-bottom: none;
-}
-
-.no-valiadte .item-input.ng-valid.input-has-value::after,
-.no-valiadte .item.ng-valid.input-has-value::after {
-  border-bottom-color: transparent;
 }
 
 ion-content.column-mode {
@@ -238,30 +216,7 @@ ion-fab.pull-footer {
   }
 }
 
-.box-passphrase {
-  border: 2px solid rgba(0, 80, 232, 0.3);
-  color: rgba(0, 0, 0, 0.8);
-  text-align: justify;
+.sole-message {
+  font-size: 13pt;
   padding: 1em;
-  margin: 1em;
-  line-height: 1.5em
-}
-
-.toast-service .toast-wrapper {
-  font-weight: bold;
-}
-.toast-error .toast-wrapper {
-  background-color: #FF0000;
-}
-.toast-success .toast-wrapper {
-  background-color: #2E8B57;
-}
-.toast-warn .toast-wrapper {
-  background-color: #FF8C00;
-}
-.toast-log .toast-wrapper {
-  background-color: #A9A9A9;
-}
-.toast-debug .toast-wrapper {
-  background-color: #4169E1;
 }
