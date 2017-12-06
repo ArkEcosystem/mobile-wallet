@@ -2,9 +2,10 @@ ion-modal[class^="inset-modal"] {
   background-color: rgba(0, 0, 0, .5) !important;
   transition: opacity .25s ease-in-out;
 
-  .modal-wrapper {
+  .modal-wrapper,
+  .show-page {
     overflow: hidden;
-    border-radius: 10px!important;
+    border-radius: 10px;
   }
 
 }
