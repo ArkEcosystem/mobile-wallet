@@ -137,7 +137,8 @@ export class UserDataProvider {
 
     if (wallet && !wallet.cipherSecondWif) {
       let secondWif = PrivateKey.fromSeed(secondPassphrase).toWIF();
-      wallet.cipherSecondWif = this.forgeProvider.encrypt(secondWif, pinCode, this.currentNetwork);
+      wallet.secondBip38 = this.forgeProvider.encryptBip38(secondWif, pinCode, this.currentNetwork);
+      wallet.cipherSecondWif = this.forgeProvider.encrypt(secondWif, pinCode, wallet.address, wallet.iv);
       return this.saveWallet(wallet, profileId, true);
     }
 
@@ -148,12 +149,12 @@ export class UserDataProvider {
     if (lodash.isUndefined(profileId)) return;
 
     let profile = this.getProfileById(profileId);
-    if (wif) {
-      let cipherWif = this.forgeProvider.encrypt(wif, pinCode, this.currentNetwork);
-      wallet.cipherWif = cipherWif;
-    }
 
-    console.log(profile);
+    let iv = this.forgeProvider.generateIv();
+    let cipherWif = this.forgeProvider.encrypt(wif, pinCode, wallet.address, iv);
+    wallet.bip38 = this.forgeProvider.encryptBip38(wif, pinCode, this.currentNetwork);
+    wallet.iv = iv;
+    wallet.cipherWif = cipherWif;
 
     if (!profile.wallets[wallet.address]) {
       this.onCreateWallet$.next(wallet);
@@ -171,12 +172,14 @@ export class UserDataProvider {
         if (wallet.isWatchOnly) {
           continue;
         }
-        let wif = this.forgeProvider.decrypt(wallet.cipherWIF, oldPassword, this.currentNetwork);
-        wallet.cipherWif = this.forgeProvider.encrypt(wif, newPassword, this.currentNetwork);
+        let wif = this.forgeProvider.decrypt(wallet.cipherWif, oldPassword, wallet.address, wallet.iv);
+        wallet.cipherWif = this.forgeProvider.encrypt(wif, newPassword, wallet.address, wallet.iv);
+        wallet.bip38 = this.forgeProvider.encryptBip38(wif, newPassword, this.currentNetwork);
 
-        if (wallet.cipherSecondWIF) {
-          let secondWIF = this.forgeProvider.decrypt(wallet.cipherSecondWIF, oldPassword, this.currentNetwork);
-          wallet.cipherSecondWif = this.forgeProvider.encrypt(secondWIF, newPassword, this.currentNetwork);
+        if (wallet.cipherSecondWif) {
+          let secondWif = this.forgeProvider.decrypt(wallet.cipherSecondWif, oldPassword, wallet.address, wallet.iv);
+          wallet.cipherSecondWif = this.forgeProvider.encrypt(secondWif, newPassword, wallet.address, wallet.iv);
+          wallet.secondBip38 = this.forgeProvider.encryptBip38(secondWif, newPassword, this.currentNetwork);
         }
 
         this.saveWallet(wallet, profileId);
@@ -262,11 +265,11 @@ export class UserDataProvider {
     let keys: WalletKeys = {};
 
     if (wallet.cipherWif) {
-      keys.key = this.forgeProvider.decrypt(wallet.cipherWif, password, this.currentNetwork);
+      keys.key = this.forgeProvider.decrypt(wallet.cipherWif, password, wallet.address, wallet.iv);
     }
 
     if (wallet.cipherSecondWif) {
-      keys.secondKey = this.forgeProvider.decrypt(wallet.cipherSecondWif, password, this.currentNetwork);
+      keys.secondKey = this.forgeProvider.decrypt(wallet.cipherSecondWif, password, wallet.address, wallet.iv);
     }
 
     return keys;

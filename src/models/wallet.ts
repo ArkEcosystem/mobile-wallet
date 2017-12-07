@@ -35,6 +35,9 @@ export class Wallet extends Account {
   cipherWif?: any;
   cipherSecondWif?: any;
   isWatchOnly?: boolean;
+  iv?: any;
+  bip38?: string;
+  secondBip38?: string;
 
   constructor(isWatchOnly?: boolean) {
     super();

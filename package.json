@@ -70,6 +70,7 @@
         "json-typescript-mapper": "github:luciorubeens/json-typescript-mapper#master",
         "ng2-charts": "^1.6.0",
         "ngx-filter-pipe": "^1.0.0",
+        "node-forge": "^0.7.1",
         "rxjs": "^5.4.2",
         "sw-toolbox": "3.6.0",
         "wif": "^2.0.6",

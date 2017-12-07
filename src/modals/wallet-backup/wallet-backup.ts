@@ -68,13 +68,13 @@ export class WalletBackupModal {
 
     this.account.address = wallet.address;
     this.account.qrAddress = `{"a": "${this.account.address}"}`;
-    this.account.bip38 = wallet.cipherWif;
+    this.account.bip38 = wallet.bip38;
     this.account.publicKey = pbKey.toHex();
     this.account.seed = pvKey.toHex();
     this.account.wif = this.keys.key;
 
     if (this.keys.secondKey) {
-      this.account.secondBip38 = wallet.cipherSecondWif;
+      this.account.secondBip38 = wallet.secondBip38;
       this.account.secondWif = this.keys.secondKey;
     }
   }
