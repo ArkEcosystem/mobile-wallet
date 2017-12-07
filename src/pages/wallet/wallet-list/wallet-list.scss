@@ -69,11 +69,20 @@ page-wallet-list {
       border-radius: 5px;
     }
   }
+  .fiat-bullet,
+  .btc-bullet {
+    border-radius: 100%;
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin-left: 4px;
+    margin-bottom: 2px;
+  }
   .fiat-bullet {
-    color: #394cf8
+    background: #394cf8
   }
   .btc-bullet {
-    color: #f3a447
+    background: #f3a447
   }
   .market-cap-title {
     font-weight: 700;
