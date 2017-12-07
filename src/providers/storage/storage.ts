@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
-import 'rxjs/add/observable/frompromise';
+import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
 
 import lodash from 'lodash';
