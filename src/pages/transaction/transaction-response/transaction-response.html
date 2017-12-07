@@ -16,10 +16,21 @@
 <ion-content no-bounce padding class="column-mode">
   <ion-grid>
     <ion-row>
-      <ion-col text-center align-self-center *ngIf="response?.status">
-        <img src="./assets/img/light/transaction/transfer-success.png">
-        <h5>{{ 'TRANSACTIONS_PAGE.SENT_SUCCESS' | translate }}</h5>
-        <button ion-button outline (click)="copyTxid()" class="copy-txid-btn">{{ 'TRANSACTIONS_PAGE.COPY_TXID' | translate }}</button>
+      <ion-col text-center class="full-height" *ngIf="response?.status">
+        <ion-grid class="success-container">
+          <ion-row>
+            <ion-col text-center align-self-center>
+              <img src="./assets/img/light/transaction/transfer-success.png">
+              <h5>{{ 'TRANSACTIONS_PAGE.SENT_SUCCESS' | translate }}</h5>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col text-center align-self-end>
+              <button ion-button (click)="copyTxid()" class="copy-txid-btn" color="primary">{{ 'TRANSACTIONS_PAGE.COPY_TXID' | translate }}</button>
+              <button ion-button clear (click)="openInExplorer()" class="open-explorer-btn">{{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate }}</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-col>
       <ion-col align-self-center *ngIf="!response?.status">
         <img src="./assets/img/light/transaction/transfer-error.png">
@@ -32,7 +43,7 @@
   <p>{{ response?.message }}</p>
 </ion-footer>
 
-<ion-footer no-shadow no-border padding *ngIf="transaction && showKeepSecondPassphrase">
+<ion-footer no-shadow padding *ngIf="transaction && showKeepSecondPassphrase">
   <ion-grid>
     <ion-row>
       <ion-col text-center>
