@@ -11,6 +11,17 @@ page-transaction-send {
   ion-auto-complete {
     width: 100% !important;
 
+    ul {
+      position: initial !important;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      background: transparent;
+
+      li {
+        border-bottom-color: #dedede !important;
+      }
+    }
+
     .searchbar-search-icon {
       display: none;
     }
