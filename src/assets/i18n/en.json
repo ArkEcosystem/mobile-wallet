@@ -118,11 +118,12 @@
     "SENT_SUCCESS": "Transaction sent with success!",
     "COPY_TXID": "Copy TXID",
     "ENCRYPT_SAVE_SECOND_PASSPHRASE": "Do you want to encrypt and save your second passphrase?",
-    "CONTACT_NAME": "Contact's name",
+    "CONTACT_NAME": "New Contact's Name (optional)",
     "QRCODE_COPY": "Tap on address to copy it to clipboard or click on icon to share QR code.",
     "CREATE_TRANSACTION_ERROR": "Could not create transaction. Check internet connectivity",
     "SECOND_PASSPHRASE_NOT_ENTERED": "The second passphrase has not entered",
-    "INVALID_CONTACT_ERROR": "Invalid Contact"
+    "INVALID_FORM_ERROR": "Invalid Form Data",
+    "INVALID_ADDRESS_ERROR": "Invalid Address"
   },
   "PROFILES_PAGE": {
     "SIGN_IN": "Sign in",
@@ -176,7 +177,8 @@
   "QR_CODE": {
     "PERMISSION_DENIED": "QR Camera denied",
     "PERMISSION_PERMANENTLY_DENIED": "QR Camera permanently denied. Go to your Device Settings to change.",
-    "PROBLEM_TEXT": "There was a problem scanning a QR Code"
+    "PROBLEM_TEXT": "There was a problem scanning a QR Code",
+    "INVALID_QR_ERROR": "There was a problem scanning a QR Code"
   },
   "API": {
     "PEER_LIST_ERROR": "Could not get list of peers",

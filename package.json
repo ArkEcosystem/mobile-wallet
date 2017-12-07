@@ -64,6 +64,7 @@
         "iod": "^1.1.1",
         "ionic-angular": "^3.9.2",
         "ionic-plugin-keyboard": "^2.2.1",
+        "ionic2-auto-complete": "^1.5.3-beta",
         "ionicons": "3.0.0",
         "json-typescript-mapper": "github:luciorubeens/json-typescript-mapper#master",
         "ng2-charts": "^1.6.0",

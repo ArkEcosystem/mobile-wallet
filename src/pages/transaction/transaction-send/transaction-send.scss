@@ -1,7 +1,30 @@
 page-transaction-send {
-  .swipe-contacts {
-    display: block;
-    height: 150px;
+  .qr-container {
+    height: 100%;
+    padding-top: 20px;
+
+    img {
+      width: 30px;
+    }
+  }
+
+  ion-auto-complete {
+    width: 100% !important;
+
+    .searchbar-search-icon {
+      display: none;
+    }
+
+    .searchbar-input {
+      background-color: transparent !important;
+      -webkit-box-shadow: none !important;
+      box-shadow: none !important;
+      padding-left: 10px !important;
+    }
+
+    ion-list li {
+      padding: 10px 0;
+    }
   }
 
   .item {

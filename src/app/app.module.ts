@@ -10,10 +10,12 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { ArkApiProvider } from '../providers/ark-api/ark-api';
-import { MarketDataProvider } from '../providers/market-data/market-data';
-import { SettingsDataProvider } from '../providers/settings-data/settings-data';
-import { ToastProvider } from '../providers/toast/toast';
+import { ArkApiProvider } from '@providers/ark-api/ark-api';
+import { MarketDataProvider } from '@providers/market-data/market-data';
+import { SettingsDataProvider } from '@providers/settings-data/settings-data';
+import { ToastProvider } from '@providers/toast/toast';
+import { ForgeProvider } from '@providers/forge/forge';
+import { ContactsAutoCompleteService } from '@providers/auto-complete/contacts-service';
 
 // Ionic native
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -23,9 +25,9 @@ import { QRScanner } from '@ionic-native/qr-scanner';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
 import { MyApp } from './app.component';
-import { ForgeProvider } from '../providers/forge/forge';
 
 import '@root/node_modules/chart.js/src/chart.js';
+import { AutoCompleteModule } from 'ionic2-auto-complete';
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -51,6 +53,7 @@ export function httpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    AutoCompleteModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -73,6 +76,7 @@ export function httpLoaderFactory(http: HttpClient) {
     SettingsDataProvider,
     ForgeProvider,
     ToastProvider,
+    ContactsAutoCompleteService,
   ]
 })
 export class AppModule {}

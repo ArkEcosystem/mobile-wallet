@@ -4,12 +4,13 @@ import { TransactionSendPage } from './transaction-send';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
-import { SwipeContactsComponentModule } from '@components/swipe-contacts/swipe-contacts.module';
 import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
 import { ConfirmTransactionComponentModule } from '@components/confirm-transaction/confirm-transaction.module';
 import { QRScannerComponentModule } from '@components/qr-scanner/qr-scanner.module';
 
 import { DirectivesModule } from '@directives/directives.module';
+
+import { AutoCompleteModule } from 'ionic2-auto-complete';
 
 @NgModule({
   declarations: [
@@ -19,11 +20,11 @@ import { DirectivesModule } from '@directives/directives.module';
     IonicPageModule.forChild(TransactionSendPage),
     TranslateModule,
     PipesModule,
-    SwipeContactsComponentModule,
     PinCodeComponentModule,
     ConfirmTransactionComponentModule,
     QRScannerComponentModule,
     DirectivesModule,
+    AutoCompleteModule,
   ],
 })
 export class TransactionSendPageModule {}

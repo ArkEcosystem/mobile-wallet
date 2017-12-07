@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { FormGroup, Validators, FormControl } from '@angular/forms'
 
 import { Contact, Wallet, MarketTicker, MarketCurrency, Transaction, SendTransactionForm, WalletKeys } from '@models/model';
 
@@ -8,6 +9,8 @@ import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
+
+import { ContactsAutoCompleteService } from '@providers/auto-complete/contacts-service';
 
 import { PublicKey } from 'ark-ts/core';
 import { Network, Fees } from 'ark-ts/model';
@@ -20,6 +23,8 @@ import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';
 import * as constants from '@app/app.constants';
 import { PrivateKey, TransactionSend } from 'ark-ts';
 
+import { AutoCompleteComponent } from 'ionic2-auto-complete';
+
 @IonicPage()
 @Component({
   selector: 'page-transaction-send',
@@ -31,7 +36,9 @@ export class TransactionSendPage {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
   @ViewChild('qrScanner') qrScanner: QRScannerComponent;
+  @ViewChild('searchBar') searchBar: AutoCompleteComponent;
 
+  sendForm: FormGroup;
   transaction: SendTransactionForm = {};
 
   currentWallet: Wallet;
@@ -39,6 +46,7 @@ export class TransactionSendPage {
   marketTicker: MarketTicker;
   marketCurrency: MarketCurrency;
   fees: Fees;
+  contact: object;
 
   showAddContact: boolean = true;
 
@@ -50,6 +58,7 @@ export class TransactionSendPage {
     private marketDataProvider: MarketDataProvider,
     private settingsDataProvider: SettingsDataProvider,
     private toastProvider: ToastProvider,
+    public contactsAutoCompleteService: ContactsAutoCompleteService,
     private unitsSatoshiPipe: UnitsSatoshiPipe,
   ) {
     this.currentWallet = this.userDataProvider.currentWallet;
@@ -65,34 +74,70 @@ export class TransactionSendPage {
   }
 
   send() {
-    if (!this.showAddContact || this.validContact(true)) {
+    if (!this.validForm()) {
+      this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_FORM_ERROR');
+    } else if (!this.validAddress()) {
+      this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_ADDRESS_ERROR');
+    } else {
+      this.createContact();
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
-    } else if (this.showAddContact) {
-      this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_CONTACT_ERROR');
     }
   }
 
-  selectContact(recipient) {
-    this.showAddContact = lodash.isUndefined(recipient);
-
-    this.transaction.recipientAddress = recipient;
+  onSearchItem(recipient) {
+    if (recipient && recipient['address']) {
+      this.contact = recipient;
+      this.transaction.recipientAddress = recipient['address'];
+    }
   }
 
-  validContact(saveContactIfValid: boolean = false) {
-    if (!this.showAddContact) {
+  onSearchInput(input) {
+    this.contact = null;
+    this.transaction.recipientAddress = input;
+  }
+
+  private validAddress(): boolean {
+    if (this.contact) {
       return true;
     }
-    let validAddress = PublicKey.validateAddress(this.transaction.recipientAddress, this.currentNetwork);
-    let validName = new RegExp('^[a-zA-Z0-9 ]+$').test(this.transaction.recipientName);
-    this.sendTransactionHTMLForm.form.controls['recipientAddress'].setErrors({ incorret: !validAddress });
-    this.sendTransactionHTMLForm.form.controls['recipientName'].setErrors({ incorret: !validName });
-    if (saveContactIfValid && validAddress && validName) {
+
+    let isValid = PublicKey.validateAddress(this.transaction.recipientAddress, this.currentNetwork);
+    this.sendTransactionHTMLForm.form.controls['recipientAddress'].setErrors({ incorret: !isValid });
+
+    return isValid;
+  }
+
+  private validForm(): boolean {
+    let isValid = true;
+    for (let name in this.sendTransactionHTMLForm.form.controls) {
+      if (name === 'recipientAddress') {
+        continue;
+      }
+      let control = this.sendTransactionHTMLForm.form.controls[name];
+      isValid = control.valid;
+      if (!isValid) {
+        break;
+      }
+    }
+
+    return isValid;
+  }
+
+  createContact(saveContactIfValid: boolean = false) {
+    if (this.contact) {
+      return;
+    }
+
+    let validAddress = this.validAddress();
+    let validName = !!this.transaction.recipientName;
+    if (validName) {
+      validName = new RegExp('^[a-zA-Z0-9]+[a-zA-Z0-9- ]+$').test(this.transaction.recipientName);
+    }
+    if (validAddress && validName) {
       let contact = new Contact();
       contact.name = this.transaction.recipientName;
       this.userDataProvider.addContact(this.transaction.recipientAddress, contact);
     }
-
-    return validAddress && validName;
   }
 
   scanQRCode() {
@@ -127,8 +172,11 @@ export class TransactionSendPage {
 
   onScanQRCode(qrCode: object) {
     if (qrCode['a']) {
+      this.contact = null;
       this.transaction.recipientAddress = qrCode['a'];
-      this.validContact();
+      this.searchBar.inputElem.value = qrCode['a'];
+    } else {
+      this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }
   }
 
@@ -140,6 +188,18 @@ export class TransactionSendPage {
       this.settingsDataProvider.settings.subscribe((settings) => {
         this.marketCurrency = ticker.getCurrency({ code: settings.currency });
       })
+    })
+  }
+
+  ngOnInit(): void {
+    this.sendForm = new FormGroup({
+      recipientAddress: new FormControl(''),
+      recipientName: new FormControl(''),
+      amount: new FormControl('', [
+        Validators.required
+      ]),
+      amountEquivalent: new FormControl(''),
+      smartBridge: new FormControl('')
     })
   }
 
