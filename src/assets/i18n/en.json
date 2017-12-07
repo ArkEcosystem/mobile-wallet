@@ -61,7 +61,7 @@
     "WALLETS": "Wallets",
     "CREATE_WALLET": "Create Wallet",
     "BACKUP_PASSPHRASE": "Backup this passphrase securely, without these words you can not restore your wallet.",
-    "BACKUP_ACCOUNT": "Backup this account securely, without this data you can not restore your wallet or move your funds.",
+    "BACKUP_ACCOUNT": "IMPORTANT! Backup this 'secret passphrase' securely, without these words you can not restore your wallet or send transactions and ALL ARK TOKENS WILL BE LOST.",
     "BACKUP_SECOND_PASSPHRASE": "Backup this second passphrase securely, without these words you can not move your funds.",
     "BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT": "You can edit for a password of your choice. Remember to backup safely, you will need to re-type for validation.",
     "PUBLIC_ADDRESS": "Public Address",
@@ -163,7 +163,7 @@
     "MARKET_CAP": "Market Cap.",
     "VOLUME": "Volume",
     "PRICE": "Price",
-    "PERCENTAGE_CHANGE": "% Change"
+    "PERCENTAGE_CHANGE": "24h Change"
   },
   "WEEK_DAY": {
     "SUNDAY": "Sun",
