@@ -151,7 +151,6 @@ export class WalletListPage {
   }
 
   private loadWallets() {
-    this.currentProfile = this.userDataProvider.currentProfile;
     if (lodash.isEmpty(this.currentProfile.wallets)) return;
 
     let list = [];

@@ -160,11 +160,9 @@ export class UserDataProvider {
 
     if (!profile.wallets[wallet.address]) {
       this.onCreateWallet$.next(wallet);
-      console.log(profile.wallets);
       return this.saveWallet(wallet, profileId);
     }
 
-    console.log('porra');
     return this.saveProfiles();
   }
 

@@ -71,11 +71,10 @@ export class WalletBackupModal {
     this.account.mnemonic = this.keys.key;
     // this.account.bip38 = wallet.bip38;
     this.account.publicKey = pbKey.toHex();
-    this.account.seed = pvKey.toHex();
+    this.account.seed = bip39.mnemonicToSeedHex(this.account.mnemonic);
     this.account.wif = pvKey.toWIF();
 
     if (this.keys.secondKey) {
-      let secondPvKey = PrivateKey.fromSeed(this.keys.secondKey)
       // this.account.secondBip38 = wallet.secondBip38;
       this.account.secondMnemonic = this.keys.secondKey;
     }
