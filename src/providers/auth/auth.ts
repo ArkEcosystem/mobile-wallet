@@ -64,7 +64,6 @@ export class AuthProvider {
 
   saveMasterPassword(password: string): void {
     let hash = bcrypt.hashSync(password, 8);
-    console.log(hash);
 
     this.storage.set(constants.STORAGE_MASTERPASSWORD, hash);
   }

@@ -99,11 +99,10 @@ export class DelegatesPage {
 
     let data: TransactionVote = {
       delegatePublicKey: this.selectedDelegate.publicKey,
-      passphrase: PrivateKey.fromWIF(keys.key, this.currentNetwork),
+      passphrase: keys.key,
+      secondPassphrase: keys.secondKey,
       type,
     };
-
-    if (keys.secondKey) data.secondPassphrase = PrivateKey.fromWIF(keys.secondKey, this.currentNetwork);
 
     this.arkApiProvider.api.transaction.createVote(data).subscribe((transaction) => {
       this.confirmTransaction.open(transaction, keys);
