@@ -236,12 +236,11 @@ export class WalletDashboardPage {
     let publicKey = this.wallet.publicKey || PrivateKey.fromSeed(keys.key).getPublicKey().toHex();
 
     let transaction = <TransactionDelegate>{
-      passphrase: PrivateKey.fromWIF(keys.key, this.network),
+      passphrase: keys.key,
+      secondPassphrase: keys.secondKey,
       username: this.newDelegateName,
       publicKey
     }
-
-    if (keys.secondKey) transaction.secondPassphrase = PrivateKey.fromWIF(keys.secondKey, this.network);
 
     this.arkApiProvider.api.transaction.createDelegate(transaction)
       .takeUntil(this.unsubscriber$)
@@ -254,7 +253,7 @@ export class WalletDashboardPage {
     keys.secondPassphrase = this.newSecondPassphrase;
 
     this.arkApiProvider.api.transaction
-    .createSignature(PrivateKey.fromWIF(keys.key), keys.secondPassphrase)
+    .createSignature(keys.key, keys.secondPassphrase)
     .takeUntil(this.unsubscriber$)
     .subscribe((data) => {
       this.confirmTransaction.open(data, keys);

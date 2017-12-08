@@ -112,11 +112,10 @@ export class TransactionSendPage {
     let data: TransactionSend = {
       amount: Number(this.transaction.amount) * constants.WALLET_UNIT_TO_SATOSHI,
       vendorField: this.transaction.smartBridge,
-      passphrase: PrivateKey.fromWIF(keys.key, this.currentNetwork),
+      passphrase: keys.key,
+      secondPassphrase: keys.secondKey,
       recipientId: this.transaction.recipientAddress,
     };
-
-    if (keys.secondKey) data.secondPassphrase = PrivateKey.fromWIF(keys.secondKey);
 
     this.arkApiProvider.api.transaction.createTransaction(data).subscribe((transaction) => {
       this.confirmTransaction.open(transaction, keys);

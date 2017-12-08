@@ -12,12 +12,12 @@ export interface AccountBackup {
   publicKey?: string;
   qrAddress?: string;
   mnemonic?: string;
+  secondMnemonic?: string;
   entropy?: string;
   seed?: string;
-  bip38?: string;
-  secondBip38?: string;
+  // bip38?: string;
+  // secondBip38?: string;
   wif?: string;
-  secondWif?: string;
 }
 
 export interface WalletKeys {
@@ -32,12 +32,12 @@ export class Wallet extends Account {
   label?: string;
   transactions?: Transaction[];
   lastUpdate?: number;
-  cipherWif?: any;
-  cipherSecondWif?: any;
+  cipherKey?: any;
+  cipherSecondKey?: any;
   isWatchOnly?: boolean;
   iv?: any;
-  bip38?: string;
-  secondBip38?: string;
+  // bip38?: string;
+  // secondBip38?: string;
 
   constructor(isWatchOnly?: boolean) {
     super();
@@ -63,8 +63,8 @@ export class Wallet extends Account {
     this.username = null;
     this.transactions = [];
     this.lastUpdate = null;
-    this.cipherWif = null;
-    this.cipherSecondWif = null;
+    this.cipherKey = null;
+    this.cipherSecondKey = null;
     this.isWatchOnly = false;
   }
 

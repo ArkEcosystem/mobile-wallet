@@ -60,7 +60,7 @@ export class WalletBackupModal {
   }
 
   private generateAccountFromKeys() {
-    let pvKey = PrivateKey.fromWIF(this.keys.key, this.currentNetwork);
+    let pvKey = PrivateKey.fromSeed(this.keys.key, this.currentNetwork);
     let pbKey = pvKey.getPublicKey();
     pbKey.setNetwork(this.currentNetwork);
 
@@ -68,14 +68,16 @@ export class WalletBackupModal {
 
     this.account.address = wallet.address;
     this.account.qrAddress = `{"a": "${this.account.address}"}`;
-    this.account.bip38 = wallet.bip38;
+    this.account.mnemonic = this.keys.key;
+    // this.account.bip38 = wallet.bip38;
     this.account.publicKey = pbKey.toHex();
     this.account.seed = pvKey.toHex();
-    this.account.wif = this.keys.key;
+    this.account.wif = pvKey.toWIF();
 
     if (this.keys.secondKey) {
-      this.account.secondBip38 = wallet.secondBip38;
-      this.account.secondWif = this.keys.secondKey;
+      let secondPvKey = PrivateKey.fromSeed(this.keys.secondKey)
+      // this.account.secondBip38 = wallet.secondBip38;
+      this.account.secondMnemonic = this.keys.secondKey;
     }
   }
 

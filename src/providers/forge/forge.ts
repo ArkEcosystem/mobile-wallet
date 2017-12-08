@@ -10,7 +10,7 @@ export class ForgeProvider {
 
   private keySize = 32; // AES-256
   private interations = 5000;
-  private scryptParams = {N: 4096, r: 8, p: 8};
+  // private scryptParams = {N: 4096, r: 8, p: 8};
 
   constructor() { }
 
@@ -38,6 +38,7 @@ export class ForgeProvider {
     return decipher.output.toString();
   }
 
+  /* DEPRECATED: Due to the slowness on devices was replaced by pbkdf2
   public encryptBip38(wif: string, password: string, network: Network): string {
     let key = PrivateKey.fromWIF(wif, network);
 
@@ -51,5 +52,6 @@ export class ForgeProvider {
 
     return wifString;
   }
+  */
 
 }

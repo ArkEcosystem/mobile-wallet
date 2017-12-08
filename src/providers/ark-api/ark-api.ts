@@ -134,7 +134,7 @@ export class ArkApiProvider {
 
   }
 
-  public createTransaction(transaction: Transaction, key: string, secondKey: string, secondPassphrase: string = null): Observable<Transaction> {
+  public createTransaction(transaction: Transaction, key: string, secondKey: string, secondPassphrase: string): Observable<Transaction> {
     return Observable.create((observer) => {
       let configNetwork = arktsConfig.networks[this._network.name];
       let jsNetwork = {
@@ -162,18 +162,15 @@ export class ArkApiProvider {
       transaction.signSignature = null;
       transaction.id = null;
 
-      let keys = this.arkjs.ECPair.fromWIF(key, jsNetwork);
+      let keys = this.arkjs.crypto.getKeys(key, jsNetwork);
       this.arkjs.crypto.sign(transaction, keys);
 
-      let secondKeys;
+      secondPassphrase = secondKey || secondPassphrase;
 
-      if (secondKey) {
-        secondKeys = this.arkjs.ECPair.fromWIF(secondKey, jsNetwork);
-      } else if (secondPassphrase) {
-        secondKeys = this.arkjs.ECPair.fromSeed(secondPassphrase);
+      if (secondPassphrase) {
+        let secondKeys = this.arkjs.crypto.getKeys(secondPassphrase, jsNetwork);
+        this.arkjs.crypto.secondSign(transaction, secondKeys);
       }
-
-      if (secondKeys) this.arkjs.crypto.secondSign(transaction, secondKeys);
 
       transaction.id = this.arkjs.crypto.getId(transaction);
 
