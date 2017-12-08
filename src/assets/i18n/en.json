@@ -61,7 +61,7 @@
     "WALLETS": "Wallets",
     "CREATE_WALLET": "Create Wallet",
     "BACKUP_PASSPHRASE": "Backup this passphrase securely, without these words you can not restore your wallet.",
-    "BACKUP_ACCOUNT": "Backup this account securely, without this data you can not restore your wallet or move your funds.",
+    "BACKUP_ACCOUNT": "IMPORTANT! Backup this 'secret passphrase' securely, without these words you can not restore your wallet or send transactions and ALL ARK TOKENS WILL BE LOST.",
     "BACKUP_SECOND_PASSPHRASE": "Backup this second passphrase securely, without these words you can not move your funds.",
     "BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT": "You can edit for a password of your choice. Remember to backup safely, you will need to re-type for validation.",
     "PUBLIC_ADDRESS": "Public Address",
@@ -106,7 +106,7 @@
     "TRANSACTION": "Transaction",
     "AMOUNT": "Amount",
     "FEE": "Fee",
-    "SMART_BRIDGE": "Smart Bridge",
+    "SMART_BRIDGE": "SmartBridge (optional)",
     "RECIPIENT": "Recipient",
     "FROM": "From",
     "TO": "To",
@@ -118,10 +118,12 @@
     "SENT_SUCCESS": "Transaction sent with success!",
     "COPY_TXID": "Copy TXID",
     "ENCRYPT_SAVE_SECOND_PASSPHRASE": "Do you want to encrypt and save your second passphrase?",
-    "RECIPIENT_NAME": "Recipient's name",
+    "CONTACT_NAME": "New Contact's Name (optional)",
     "QRCODE_COPY": "Tap on address to copy it to clipboard or click on icon to share QR code.",
     "CREATE_TRANSACTION_ERROR": "Could not create transaction. Check internet connectivity",
     "SECOND_PASSPHRASE_NOT_ENTERED": "The second passphrase has not entered",
+    "INVALID_FORM_ERROR": "Invalid Form Data",
+    "INVALID_ADDRESS_ERROR": "Invalid Address",
     "INVALID_CONTACT_ERROR": "Invalid Contact",
     "OPEN_EXPLORER": "Open in Explorer"
   },
@@ -163,7 +165,7 @@
     "MARKET_CAP": "Market Cap.",
     "VOLUME": "Volume",
     "PRICE": "Price",
-    "PERCENTAGE_CHANGE": "% Change"
+    "PERCENTAGE_CHANGE": "24h Change"
   },
   "WEEK_DAY": {
     "SUNDAY": "Sun",
@@ -177,7 +179,8 @@
   "QR_CODE": {
     "PERMISSION_DENIED": "QR Camera denied",
     "PERMISSION_PERMANENTLY_DENIED": "QR Camera permanently denied. Go to your Device Settings to change.",
-    "PROBLEM_TEXT": "There was a problem scanning a QR Code"
+    "PROBLEM_TEXT": "There was a problem scanning a QR Code",
+    "INVALID_QR_ERROR": "There was a problem scanning a QR Code"
   },
   "API": {
     "PEER_LIST_ERROR": "Could not get list of peers",

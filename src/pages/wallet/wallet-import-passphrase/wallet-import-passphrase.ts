@@ -53,7 +53,12 @@ export class WalletImportPassphrasePage {
         modal.onDidDismiss((password) => {
           if (password) {
             this.userDataProvider.addWallet(newWallet, this.passphrase, password).subscribe((result) => {
-              this.navCtrl.push('WalletDashboardPage', { address: newWallet.address });
+              this.navCtrl.push('WalletDashboardPage', { address: newWallet.address })
+                .then(() => {
+                  this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1).then(() => {
+                    this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1);
+                  });
+                });
             });
           } else {
             this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR')

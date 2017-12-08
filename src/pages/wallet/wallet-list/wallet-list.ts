@@ -59,8 +59,7 @@ export class WalletListPage {
     private settingsDataProvider: SettingsDataProvider,
     private platform: Platform,
   ) {
-    this.currentNetwork = this.userDataProvider.currentNetwork;
-    this.currentProfile = this.userDataProvider.currentProfile;
+    this.loadUserData();
 
     this.userDataProvider.clearCurrentWallet();
   }
@@ -151,6 +150,7 @@ export class WalletListPage {
   }
 
   private loadWallets() {
+    this.loadUserData();
     if (lodash.isEmpty(this.currentProfile.wallets)) return;
 
     let list = [];
@@ -162,7 +162,15 @@ export class WalletListPage {
     this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
   }
 
-  private onUpdateWallet() {
+  private loadUserData() {
+    this.currentNetwork = this.userDataProvider.currentNetwork;
+    this.currentProfile = this.userDataProvider.currentProfile;
+  }
+
+  private onCreateUpdateWallet() {
+    this.userDataProvider.onCreateWallet$
+      .takeUntil(this.unsubscriber$)
+      .subscribe(() => this.loadWallets());
     this.userDataProvider.onUpdateWallet$
       .takeUntil(this.unsubscriber$)
       .subscribe(() => this.loadWallets());
@@ -266,7 +274,7 @@ export class WalletListPage {
 
   ionViewDidEnter() {
     this.loadWallets();
-    this.onUpdateWallet();
+    this.onCreateUpdateWallet();
     this.setMarketHistory();
 
     // Fetch from api or get from storage

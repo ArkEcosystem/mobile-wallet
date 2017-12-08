@@ -40,11 +40,11 @@
         <ion-grid class="no-padding" class="price-container">
           <ion-row nowrap>
             <ion-col col-3 text-left>
-              <p>{{ fiatCurrency?.code | uppercase }} <span class="fiat-bullet">•</span></p>
+              <p>{{ fiatCurrency?.code | uppercase }} <span class="fiat-bullet"></span></p>
               <h6>{{ fiatCurrency?.price | currency:fiatCurrency?.code:'symbol' }}</h6>
             </ion-col>
             <ion-col col-5 text-left>
-              <p>{{ btcCurrency?.code | uppercase }} <span class="btc-bullet">•</span></p>
+              <p>{{ btcCurrency?.code | uppercase }} <span class="btc-bullet"></span></p>
               <h6>{{ btcCurrency?.price }}</h6>
             </ion-col>
             <ion-col col-3 text-left>

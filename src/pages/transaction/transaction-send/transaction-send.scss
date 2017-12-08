@@ -1,9 +1,46 @@
 page-transaction-send {
-  .swipe-contacts {
-    display: block;
-    height: 150px;
+  .qr-container {
+    height: 100%;
+    padding-top: 20px;
+
+    img {
+      width: 30px;
+    }
   }
 
+  ion-auto-complete {
+    width: 100% !important;
+
+    ul {
+      left: auto !important;
+      width: initial;
+
+      li {
+        padding: 15px 15px 13px 15px;
+        border-bottom-color: #dedede;
+      }
+    }
+
+    .searchbar-search-icon {
+      display: none;
+    }
+
+    .searchbar-input {
+      background-color: transparent !important;
+      -webkit-box-shadow: none !important;
+      box-shadow: none !important;
+      padding-left: 10px !important;
+    }
+
+    ion-list li {
+      padding: 10px 0;
+    }
+  }
+
+  ion-row.row-contacts .item {
+    contain: none !important;
+    position: initial !important;
+  }
   .item {
     padding-left: 0;
     background: transparent!important;

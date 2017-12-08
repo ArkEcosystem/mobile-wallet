@@ -79,8 +79,11 @@ export class ArkApiProvider {
     // Get list from active peer
     this._api.peer.list().subscribe((response) => {
       if (response) {
-        let port = this._network.activePeer.port;
-        let sortHeight = lodash.orderBy(lodash.filter(response.peers, {'status': 'OK', 'port': port}), ['height','delay'], ['desc','asc']);
+        let port = +this._network.activePeer.port;
+        let filteredPeers = lodash.filter(response.peers, (peer) => {
+          return peer['status'] === 'OK' && peer['port'] === port;
+        });
+        let sortHeight = lodash.orderBy(filteredPeers, ['height','delay'], ['desc','asc']);
         this._peers = sortHeight;
         this.updateNetwork(sortHeight[0]);
       } else {
@@ -91,7 +94,6 @@ export class ArkApiProvider {
     () => {
       return arkts.PeerApi
         .findGoodPeer(this._network)
-        .first()
         .subscribe((peer) => this.updateNetwork(peer), () => {
           this.toastProvider.error('API.PEER_LIST_ERROR');
         });

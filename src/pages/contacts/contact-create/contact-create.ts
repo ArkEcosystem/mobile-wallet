@@ -47,16 +47,27 @@ export class ContactCreatePage {
     this.createContactForm.form.controls['address'].setErrors({ incorret: !validate });
     console.log(validate, this.address, this._network);
     if (validate) this.createContactForm.form.controls['address'].setErrors(null);
+
+    return validate;
   }
 
   submitForm() {
+    if (!this.validateAddress()) {
+      return;
+    }
+
     if (this.isNew) {
       this._userDataProvider.addContact(this.address, this.contact);
     } else {
       this._userDataProvider.editContact(this.address, this.contact);
     }
 
-    this._navCtrl.push('ContactListPage');
+    this._navCtrl.push('ContactListPage')
+      .then(() => {
+        this._navCtrl.remove(this._navCtrl.getActive().index - 1, 1).then(() => {
+          this._navCtrl.remove(this._navCtrl.getActive().index - 1, 1);
+        });
+      });
   }
 
   scanQRCode() {
