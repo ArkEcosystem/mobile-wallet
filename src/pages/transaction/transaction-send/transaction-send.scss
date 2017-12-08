@@ -12,13 +12,11 @@ page-transaction-send {
     width: 100% !important;
 
     ul {
-      position: initial !important;
-      -webkit-box-shadow: none;
-      box-shadow: none;
-      background: transparent;
+      left: auto !important;
 
       li {
-        border-bottom-color: #dedede !important;
+        padding: 15px 15px 13px 15px;
+        border-bottom-color: #dedede;
       }
     }
 
@@ -38,6 +36,10 @@ page-transaction-send {
     }
   }
 
+  ion-row.row-contacts .item {
+    contain: none !important;
+    position: initial !important;
+  }
   .item {
     padding-left: 0;
     background: transparent!important;
