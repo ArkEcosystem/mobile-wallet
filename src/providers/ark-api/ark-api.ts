@@ -94,7 +94,6 @@ export class ArkApiProvider {
     () => {
       return arkts.PeerApi
         .findGoodPeer(this._network)
-        .first()
         .subscribe((peer) => this.updateNetwork(peer), () => {
           this.toastProvider.error('API.PEER_LIST_ERROR');
         });
