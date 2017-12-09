@@ -48,7 +48,8 @@ export class TransactionSendPage {
   fees: Fees;
   contact: object;
 
-  showAddContact: boolean = true;
+  tokenPlaceholder: number = 100;
+  fiatPlaceholder: number;
 
   constructor(
     public navCtrl: NavController,
@@ -186,6 +187,7 @@ export class TransactionSendPage {
 
       this.settingsDataProvider.settings.subscribe((settings) => {
         this.marketCurrency = ticker.getCurrency({ code: settings.currency });
+        this.fiatPlaceholder = +(this.tokenPlaceholder * this.marketCurrency.price).toFixed(2);
       })
     })
   }

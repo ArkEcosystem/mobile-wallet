@@ -38,13 +38,13 @@
               <ion-col>
                 <ion-item>
                   <ion-label stacked>{{ currentNetwork?.token }}</ion-label>
-                  <ion-input type="number" formControlName="amount" step="0.00000001" min="0.00000001" max="10000000000" name="amount" [(ngModel)]="transaction.amount" (input)="onInputToken()" required></ion-input>
+                  <ion-input type="number" formControlName="amount" step="0.00000001" min="0.00000001" max="10000000000" name="amount" [(ngModel)]="transaction.amount" (input)="onInputToken()" [placeholder]="tokenPlaceholder" required></ion-input>
                 </ion-item>
               </ion-col>
               <ion-col appMainnetOnly>
                 <ion-item>
                   <ion-label stacked>{{ marketCurrency?.code | uppercase }}</ion-label>
-                  <ion-input type="number" formControlName="amountEquivalent" step="0.01" min="0.00000001" max="10000000000" name="amountEquivalent" [(ngModel)]="transaction.amountEquivalent" (input)="onInputFiat()" required></ion-input>
+                  <ion-input type="number" formControlName="amountEquivalent" step="0.01" min="0.00000001" max="10000000000" name="amountEquivalent" [(ngModel)]="transaction.amountEquivalent" (input)="onInputFiat()" [placeholder]="fiatPlaceholder" required></ion-input>
                 </ion-item>
               </ion-col>
             </ion-row>
