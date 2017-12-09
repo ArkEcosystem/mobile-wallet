@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-title *ngIf="!isSearch">{{ 'DELEGATES_PAGE.DELEGATES' | translate }}</ion-title>
-    <ion-searchbar *ngIf="isSearch" (ionInput)="onInputSearch($event)" [(ngModel)]="searchQuery.username" spellcheck="false" animated="true" placeholder="{{ 'SEARCH' | translate }}"></ion-searchbar>
+    <ion-searchbar *ngIf="isSearch" (ionInput)="onInputSearch($event)" [(ngModel)]="searchQuery.username" spellcheck="false" animated="true" showCancelButton="false" placeholder="{{ 'SEARCH' | translate }}"></ion-searchbar>
 
     <ion-buttons end>
       <button ion-button icon-only (click)="toggleSearchBar()">
@@ -13,7 +13,7 @@
   </ion-navbar>
 
   <ion-toolbar>
-    <ion-segment [(ngModel)]="rankStatus">
+    <ion-segment [(ngModel)]="rankStatus" color="danger">
       <ion-segment-button value="active">
         {{ 'DELEGATES_PAGE.ACTIVE' | translate }}
       </ion-segment-button>

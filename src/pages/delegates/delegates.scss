@@ -1,4 +1,12 @@
 page-delegates {
+  .segment-button {
+    color: color($colors, dark, base)!important;
+  }
+
+  .searchbar-clear-icon {
+    display: none!important;
+  }
+
   .delegate-list {
     .delegate-item {
       border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
