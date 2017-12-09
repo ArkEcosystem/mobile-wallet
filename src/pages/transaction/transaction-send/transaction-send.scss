@@ -37,6 +37,10 @@ page-transaction-send {
     }
   }
 
+  .row {
+    padding: .5em 0;
+  }
+
   ion-row.row-contacts .item {
     contain: none !important;
     position: initial !important;
