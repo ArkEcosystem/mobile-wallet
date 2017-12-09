@@ -18,11 +18,14 @@ import { TranslateService } from '@ngx-translate/core';
 import * as constants from '@app/app.constants';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
+import { Clipboard } from '@ionic-native/clipboard';
+import { ToastProvider } from '@providers/toast/toast';
 
 @IonicPage()
 @Component({
   selector: 'page-wallet-dashboard',
   templateUrl: 'wallet-dashboard.html',
+  providers: [Clipboard],
 })
 export class WalletDashboardPage {
   @ViewChild(Content) content: Content;
@@ -66,7 +69,13 @@ export class WalletDashboardPage {
     private loadingCtrl: LoadingController,
     private settingsDataProvider: SettingsDataProvider,
     private zone: NgZone,
+    private clipboard: Clipboard,
+    private toastProvider: ToastProvider,
   ) { }
+
+  copyAddress() {
+    this.clipboard.copy(this.address).then(() => this.toastProvider.success('COPIED_CLIPBOARD'), (err) => this.toastProvider.error(err));
+  }
 
   presentWalletActionSheet() {
     this.translateService.get([

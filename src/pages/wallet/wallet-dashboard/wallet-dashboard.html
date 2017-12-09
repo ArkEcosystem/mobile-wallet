@@ -15,9 +15,9 @@
     <ion-grid>
       <ion-row class="account-balance">
         <ion-col text-center>
-          <p>{{ wallet?.address }}</p>
           <h1>{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-2' }}</h1>
           <h4 appMainnetOnly>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | number: '1.0-2' }}</h4>
+          <p (click)="copyAddress()" class="toolbar-address">{{ wallet?.address }}</p>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -44,7 +44,7 @@
             <h3 class="address">{{ (tx?.isTransfer()) && (tx?.senderId | accountLabel | truncateMiddle: 12 : tx?.senderId) || (tx?.getTypeLabel() | translate) }}</h3>
 
             <div text-right item-end>
-              <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi | number: '1.0-5' }} {{ network?.token | uppercase }}</h3>
+              <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi | number: '1.0-2' }} {{ network?.token | uppercase }}</h3>
               <p class="timestamp">{{ tx?.date | date: 'MMM dd, hh:mm a' }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
             </div>
             <ion-icon *ngIf="tx?.isSender()" item-end name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>

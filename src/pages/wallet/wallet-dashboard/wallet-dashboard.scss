@@ -18,9 +18,14 @@ page-wallet-dashboard {
 
   .toolbar {
     padding: 0;
+
+    .toolbar-address {
+      padding-top: 1em;
+      opacity: 0.8;
+    }
   }
   .main-grid {
-    padding: 0 .2em!important;
+    padding: 0 .5em!important;
   }
   .grid {
     padding: 0;
