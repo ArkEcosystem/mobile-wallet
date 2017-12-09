@@ -25,16 +25,16 @@ page-wallet-list {
     padding: 1.5em .8em;
     display: inline-block;
     min-height: 111px;
-    -webkit-box-shadow: none;
-    box-shadow: none;
 
     &.normal {
       background-image: url('../assets/img/light/normal-block.png');
       background-size: cover;
+      box-shadow: 0px 1px 3px 0px transparentize(color($colors, danger-alternative, base), .2)!important;
     }
     &.delegate {
       background-image: url('../assets/img/light/delegate-block.png');
       background-size: cover;
+      box-shadow: 0px 1px 5px 0px transparentize(color($colors, primary, base), .2)!important;
     }
 
     .item {
