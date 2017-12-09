@@ -25,9 +25,7 @@
               <ion-label>
                 <h2 class="amount">{{ currentNetwork?.symbol }} {{ wallet?.balance | unitsSatoshi | number: '1.0-2' }}</h2>
                 <p class="address">{{ wallet?.label || wallet?.address | accountLabel | truncateMiddle: 15 }}</p>
-                <div color="primary" class="chip chip-md chip-md-primary" *ngIf="wallet.isWatchOnly">
-                  <ion-label class="label label-md">{{ 'WATCH_ONLY' | translate }}</ion-label>
-                </div>
+                <ion-badge class="watch-only-badge" [color]="wallet?.isDelegate ? 'primary' : 'danger-alternative'" *ngIf="wallet.isWatchOnly">{{ 'WATCH_ONLY' | translate }}</ion-badge>
               </ion-label>
             </ion-item>
           </ion-card>

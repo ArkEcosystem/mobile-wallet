@@ -47,7 +47,7 @@ page-wallet-list {
 
       .address {
         float: left;
-        width: 50%;
+        width: 70%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -60,13 +60,16 @@ page-wallet-list {
 
     .address {
       margin-top: .5em;
+      opacity: 0.9;
     }
 
-    .chip-md {
-      height: 25px !important;
+    .watch-only-badge {
+      margin-top: .3em;
+      vertical-align: middle;
       display: inline-block;
-      float: right;
-      border-radius: 5px;
+      position: absolute;
+      right: 2px;
+      opacity: 0.7;
     }
   }
   .fiat-bullet,
