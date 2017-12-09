@@ -10,6 +10,10 @@ ion-modal[class^="inset-modal"] {
 
 }
 
+ion-modal.inset-modal-tiny {
+  padding: 27vh 15vw;
+}
+
 ion-modal.inset-modal-small {
   padding: 25vh 15vw;
 }

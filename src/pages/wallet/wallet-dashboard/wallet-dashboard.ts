@@ -178,7 +178,7 @@ export class WalletDashboardPage {
   }
 
   presentLabelModal() {
-    let modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label }, { cssClass: 'inset-modal' });
+    let modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label }, { cssClass: 'inset-modal-tiny' });
 
     modal.onDidDismiss((data) => {
       if (lodash.isEmpty(data)) return;
