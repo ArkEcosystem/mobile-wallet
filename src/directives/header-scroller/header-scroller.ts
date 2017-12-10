@@ -9,7 +9,7 @@ import { Directive, ElementRef, OnInit } from '@angular/core';
 	selector: '[header-scroller]'
 })
 export class HeaderScrollerDirective implements OnInit {
-  private triggerDistance: number = 100;
+  private triggerDistance: number = 50;
 	private transition: number = 0.5;
   private el: HTMLElement;
   private lastScrollTop: number = 0;

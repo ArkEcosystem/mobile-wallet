@@ -70,11 +70,11 @@ export class MyApp {
         let navPromise = app.navPop();
         if (!navPromise) {
           if (this.nav.getActive().name === 'LoginPage' || this.nav.getActive().name === 'IntroPage') {
-            this.showConfirmation(this.exitText, () => {
+            this.showConfirmation(this.exitText).then(() => {
               platform.exitApp();
             });
           } else {
-            this.showConfirmation(this.logoutText, () => {
+            this.showConfirmation(this.logoutText).then(() => {
               this.logout();
             });
           }
@@ -186,35 +186,39 @@ export class MyApp {
       });
   }
 
-  private showConfirmation(title: string, successCb: () => void, failureCb: () => void = () => {}, message: string = null): void {
+  private showConfirmation(title: string): Promise<void> {
     if (this.alert) {
       this.alert.dismiss();
       this.alert = null;
 
       return;
     }
-    this.alert = this.alertCtrl.create({
-      title: title,
-      message: message,
-      buttons: [
-        {
-          text: 'No',
-          role: 'cancel',
-          handler: () => {
-            this.alert = null;
-            failureCb();
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            this.alert = null;
-            successCb();
-          }
-        }
-      ]
+
+    return new Promise((resolve, reject) => {
+      this.translateService.get(['NO', 'YES']).subscribe((translation) => {
+        this.alert = this.alertCtrl.create({
+          subTitle: title,
+          buttons: [
+            {
+              text: translation.NO,
+              role: 'cancel',
+              handler: () => {
+                this.alert = null;
+                reject();
+              }
+            },
+            {
+              text: translation.YES,
+              handler: () => {
+                this.alert = null;
+                resolve();
+              }
+            }
+          ]
+        });
+        this.alert.present();
+      });
     });
-    this.alert.present();
   }
 
   private initialVerify() {

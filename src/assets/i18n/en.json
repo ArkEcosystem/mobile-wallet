@@ -188,6 +188,8 @@
     "TRANSACTION_FAILED": "Transaction failed",
     "BALANCE_TOO_LOW": "Balance too low for transaction"
   },
+  "NO": "No",
+  "YES": "Yes",
   "ARE_YOU_SURE": "Are you sure?",
   "COPY_CLIPBOARD_FAILED": "Copy to clipboard failed",
   "COPIED_CLIPBOARD": "Copied to clipboard",
