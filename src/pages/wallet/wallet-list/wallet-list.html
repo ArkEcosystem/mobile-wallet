@@ -36,7 +36,7 @@
       <ion-col>
         <h3 class="market-cap-title">{{ 'MARKETS_PAGE.MARKET_CAP' | translate }}</h3>
         <ion-grid class="no-padding" class="price-container">
-          <ion-row nowrap>
+          <ion-row nowrap justify-content-center align-items-baseline>
             <ion-col col-3 text-left>
               <p>{{ fiatCurrency?.code | uppercase }} <span class="fiat-bullet"></span></p>
               <h6>{{ fiatCurrency?.price | currency:fiatCurrency?.code:'symbol' }}</h6>
@@ -45,7 +45,7 @@
               <p>{{ btcCurrency?.code | uppercase }} <span class="btc-bullet"></span></p>
               <h6>{{ btcCurrency?.price }}</h6>
             </ion-col>
-            <ion-col col-3 text-left>
+            <ion-col col-4 text-left>
               <p>{{ 'MARKETS_PAGE.PERCENTAGE_CHANGE' | translate }}</p>
               <h6 ion-text [color]="fiatCurrency?.change24h < 0 ? 'danger' : 'secondary'">{{ fiatCurrency?.change24h | number: '1.2-2' }}%</h6>
             </ion-col>
