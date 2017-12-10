@@ -1,6 +1,6 @@
 modal-wallet-backup {
 
-  .col {
+  .col:not(.no-padding) {
     padding: 1.5em 2em!important;
   }
 
@@ -14,6 +14,20 @@ modal-wallet-backup {
     .item-value {
       line-height: 1.5;
       margin-top: .3em;
+    }
+  }
+
+  .advanced-toolbar {
+    padding-left: 0;
+    padding-right: 2em;
+    color: color($colors, dark, base);
+
+    .toolbar-background {
+      background: darken(color($colors, primary-background, base), 5%);
+    }
+
+    .toolbar-content {
+      padding-left: 2em;
     }
   }
 

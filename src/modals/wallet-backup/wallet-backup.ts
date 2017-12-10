@@ -47,8 +47,8 @@ export class WalletBackupModal {
     this.viewCtrl.dismiss(result);
   }
 
-  showAdvanced() {
-    this.showAdvancedOptions = true;
+  toggleAdvanced() {
+    this.showAdvancedOptions = !this.showAdvancedOptions;
   }
 
   ionViewDidLoad() {
@@ -60,6 +60,7 @@ export class WalletBackupModal {
   }
 
   private generateAccountFromKeys() {
+    console.log(this.keys);
     let pvKey = PrivateKey.fromSeed(this.keys.key, this.currentNetwork);
     let pbKey = pvKey.getPublicKey();
     pbKey.setNetwork(this.currentNetwork);
