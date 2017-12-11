@@ -10,6 +10,7 @@ import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 
 import { Profile, MarketCurrency, MarketTicker, MarketHistory, Wallet } from '@models/model';
+import { PublicKey } from 'ark-ts/core';
 import { Network } from 'ark-ts/model';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -156,7 +157,9 @@ export class WalletListPage {
     let list = [];
     for (let w of lodash.values(this.currentProfile.wallets)) {
       let wallet = new Wallet().deserialize(w);
-      list.push(wallet);
+      if (PublicKey.validateAddress(wallet.address, this.currentNetwork)) {
+        list.push(wallet);
+      }
     }
 
     this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
