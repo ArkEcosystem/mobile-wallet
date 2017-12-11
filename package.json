@@ -39,7 +39,7 @@
         "@types/uuid": "^3.4.3",
         "android-versions": "^1.2.1",
         "angular2-qrcode": "^2.0.1",
-        "ark-ts": "^0.3.1",
+        "ark-ts": "^0.3.2",
         "arkjs": "github:arkecosystem/ark-js#master",
         "bcryptjs": "^2.4.3",
         "bip38": "^2.0.1",
