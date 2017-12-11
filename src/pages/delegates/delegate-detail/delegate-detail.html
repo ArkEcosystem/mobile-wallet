@@ -13,56 +13,36 @@
         </ion-toolbar>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <ion-row class="details">
       <ion-col>
-        <ion-list class="list-selectable">
-
-          <ion-item no-lines text-wrap>
-            <ion-label stacked>
-              <p>{{ 'DELEGATES_PAGE.RANK' | translate }} / {{ 'STATUS' | translate }}</p>
-              <h4 item-content class="content">
-                {{ delegate?.rate }} / {{ (delegate?.rate <= 51 ? 'DELEGATES_PAGE.ACTIVE' : 'DELEGATES_PAGE.STANDBY') | translate }}
-              </h4>
-            </ion-label>
-          </ion-item>
-
-          <ion-item no-lines text-wrap>
-            <ion-label stacked>
-              <p>{{ 'DELEGATES_PAGE.APPROVAL' | translate }}</p>
-              <h4 item-content class="content">
-                {{ delegate?.approval }}%
-              </h4>
-            </ion-label>
-          </ion-item>
-
-          <ion-item no-lines text-wrap>
-            <ion-label stacked>
-              <p>{{ 'DELEGATES_PAGE.PRODUCTIVITY' | translate }}</p>
-              <h4 item-content class="content">
-                {{ delegate?.productivity }}%
-              </h4>
-            </ion-label>
-          </ion-item>
-
-          <ion-item no-lines text-wrap>
-            <ion-label stacked>
-              <p>{{ 'DELEGATES_PAGE.PRODUCED_BLOCKS' | translate }}</p>
-              <h4 item-content class="content">
-                {{ delegate?.producedBlocks }}
-              </h4>
-            </ion-label>
-          </ion-item>
-
-          <ion-item no-lines text-wrap>
-            <ion-label stacked>
-              <p>{{ 'DELEGATES_PAGE.MISSED_BLOCKS' | translate }}</p>
-              <h4 item-content class="content">
-                {{ delegate?.missedBlocks }}
-              </h4>
-            </ion-label>
-          </ion-item>
-
-        </ion-list>
+        <ion-item no-lines text-wrap>
+          <ion-label stacked>
+            <p>{{ 'DELEGATES_PAGE.RANK' | translate }} / {{ 'STATUS' | translate }}</p>
+            <h4 item-content class="content">
+              {{ delegate?.rate }} / {{ (delegate?.rate <= 51 ? 'DELEGATES_PAGE.ACTIVE' : 'DELEGATES_PAGE.STANDBY') | translate }}
+            </h4>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item no-lines text-wrap>
+          <ion-label stacked>
+            <p>{{ 'DELEGATES_PAGE.APPROVAL' | translate }}</p>
+            <h4 item-content class="content">
+              {{ delegate?.approval }}%
+            </h4>
+          </ion-label>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item no-lines text-wrap>
+          <ion-label stacked>
+            <p>{{ 'DELEGATES_PAGE.UPTIME' | translate }}</p>
+            <h4 item-content class="content">
+              {{ delegate?.productivity }}%
+            </h4>
+          </ion-label>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>

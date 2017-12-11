@@ -36,4 +36,12 @@ page-delegate-detail {
     border-radius: 5px;
   }
 
+  ion-row.details ion-item {
+    background: transparent;
+
+    ion-label {
+      margin: 20px 0 0;
+    }
+  }
+
 }
