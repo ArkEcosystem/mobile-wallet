@@ -80,6 +80,7 @@ export class WalletDashboardPage {
   presentWalletActionSheet() {
     this.translateService.get([
       'WALLETS_PAGE.LABEL',
+      'DELEGATES_PAGE.DELEGATES',
       'DELEGATES_PAGE.REGISTER_DELEGATE',
       'WALLETS_PAGE.SECOND_PASSPHRASE',
       'WALLETS_PAGE.REMOVE_WALLET',
@@ -104,6 +105,13 @@ export class WalletDashboardPage {
 
       let buttons = [
         {
+          text: translation['DELEGATES_PAGE.DELEGATES'],
+          role: 'label',
+          icon: !this.platform.is('ios') ? 'ios-people-outline' : '',
+          handler: () => {
+            this.presentDelegatesModal();
+          },
+        }, {
           text: translation['WALLETS_PAGE.LABEL'],
           role: 'label',
           icon: !this.platform.is('ios') ? 'ios-bookmark-outline' : '',
@@ -175,6 +183,10 @@ export class WalletDashboardPage {
       address: this.address,
       token: this.network.token,
     });
+  }
+
+  presentDelegatesModal() {
+    this.navCtrl.push('DelegatesPage');
   }
 
   presentLabelModal() {
