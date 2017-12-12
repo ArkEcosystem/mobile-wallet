@@ -33,7 +33,6 @@ export class MyApp {
   public hideNav = false;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
-  private alert = null;
   private exitText = null;
   private logoutText = null;
 
@@ -64,6 +63,10 @@ export class MyApp {
       statusBar.styleDefault();
 
       platform.registerBackButtonAction(() => {
+        const overlay = app._appRoot._overlayPortal.getActive();
+        if (overlay && overlay.dismiss) {
+          return overlay.dismiss();
+        }
         if (this.menuCtrl && this.menuCtrl.isOpen()) {
           return this.menuCtrl.close();
         }
@@ -187,36 +190,23 @@ export class MyApp {
   }
 
   private showConfirmation(title: string): Promise<void> {
-    if (this.alert) {
-      this.alert.dismiss();
-      this.alert = null;
-
-      return;
-    }
-
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.translateService.get(['NO', 'YES']).subscribe((translation) => {
-        this.alert = this.alertCtrl.create({
+        let alert = this.alertCtrl.create({
           subTitle: title,
           buttons: [
             {
               text: translation.NO,
               role: 'cancel',
-              handler: () => {
-                this.alert = null;
-                reject();
-              }
+              handler: () => {}
             },
             {
               text: translation.YES,
-              handler: () => {
-                this.alert = null;
-                resolve();
-              }
+              handler: () => resolve()
             }
           ]
         });
-        this.alert.present();
+        alert.present();
       });
     });
   }
