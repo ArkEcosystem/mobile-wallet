@@ -4,6 +4,7 @@ import 'rxjs/add/operator/map'
 import lodash from 'lodash';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { PublicKey } from 'ark-ts/core';
 
 @Injectable()
 export class ContactsAutoCompleteService implements AutoCompleteService {
@@ -38,7 +39,8 @@ export class ContactsAutoCompleteService implements AutoCompleteService {
 
       return 0;
     }).filter((result) => {
-      return result.address && ((result.address.toLowerCase().indexOf(keyword) > -1) || (result.name && (result.name.toLowerCase().indexOf(keyword) > -1)));
+      let isValidAddress = result.address ? PublicKey.validateAddress(result.address, this.userDataProvider.currentNetwork) : false;
+      return isValidAddress && ((result.address.toLowerCase().indexOf(keyword) > -1) || (result.name && (result.name.toLowerCase().indexOf(keyword) > -1)));
     });
 
     return results;
