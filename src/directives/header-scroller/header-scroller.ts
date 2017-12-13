@@ -10,9 +10,9 @@ import { Directive, ElementRef, OnInit } from '@angular/core';
 })
 export class HeaderScrollerDirective implements OnInit {
   private triggerDistance: number = 50;
-	private transition: number = 0.5;
   private el: HTMLElement;
   private lastScrollTop: number = 0;
+  private lastMargin: number = 0;
 
 	constructor(el: ElementRef) {
 		this.el = el.nativeElement;
@@ -26,8 +26,6 @@ export class HeaderScrollerDirective implements OnInit {
 		let scrollList = (childList || []).filter(e => e.classList.contains('scroll-content'));
     let scroll = scrollList.length ? scrollList[0] : null;
 
-    // Set animation transition
-    scroll.style.transition = `margin ${this.transition}s linear`;
     scroll.style.zIndex = '998';
     scroll.style.backgroundColor = 'inherit';
 
@@ -50,15 +48,27 @@ export class HeaderScrollerDirective implements OnInit {
       let headerOffset = header.offsetHeight;
 
       let newMargin;
-      if (scrollTop > this.lastScrollTop && scrollTop >= this.triggerDistance) {
-        newMargin = navOffset;
-      } else if (scrollTop < this.lastScrollTop && scrollTop <= this.triggerDistance) {
-        newMargin = headerOffset;
-        scroller.scrollTop = 0;
+      let newPadding;
+
+      if (scrollTop > this.lastScrollTop && scrollTop > this.triggerDistance) {
+        newMargin = (this.lastMargin || headerOffset) - (scrollTop - this.lastScrollTop);
+        if (newMargin <= navOffset) {
+          newMargin = navOffset;
+        }
+      } else if (scrollTop < this.lastScrollTop) {
+        newMargin = (this.lastMargin || headerOffset) + (this.lastScrollTop - scrollTop);
+        if (newMargin >= headerOffset) {
+          newMargin = headerOffset;
+        }
+      }
+      if (newMargin) {
+        newPadding = headerOffset - newMargin;
       }
 
       scrollerStyle.marginTop = `${newMargin}px`;
+      scrollerStyle.paddingTop = `${newPadding}px`;
       this.lastScrollTop = scrollTop;
+      this.lastMargin = newMargin;
 		});
 	}
 }
