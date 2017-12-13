@@ -6,7 +6,7 @@ import { Directive, ElementRef, OnInit } from '@angular/core';
  */
 
 @Directive({
-	selector: '[header-scroller]'
+  selector: '[header-scroller]'
 })
 export class HeaderScrollerDirective implements OnInit {
   private triggerDistance: number = 50;
@@ -14,28 +14,28 @@ export class HeaderScrollerDirective implements OnInit {
   private lastScrollTop: number = 0;
   private lastMargin: number = 0;
 
-	constructor(el: ElementRef) {
-		this.el = el.nativeElement;
-	}
+  constructor(el: ElementRef) {
+    this.el = el.nativeElement;
+  }
 
-	public ngOnInit() {
-		let el = this.el;
-		let children = el && el.children;
-		let childList = children && <Array<HTMLElement>>Array.from(children);
+  public ngOnInit() {
+    let el = this.el;
+    let children = el && el.children;
+    let childList = children && <Array<HTMLElement>>Array.from(children);
 
-		let scrollList = (childList || []).filter(e => e.classList.contains('scroll-content'));
+    let scrollList = (childList || []).filter(e => e.classList.contains('scroll-content'));
     let scroll = scrollList.length ? scrollList[0] : null;
 
     scroll.style.zIndex = '998';
     scroll.style.backgroundColor = 'inherit';
 
-		if (scroll) {
-			this.bindScroller(scroll);
-		}
-	}
+    if (scroll) {
+      this.bindScroller(scroll);
+    }
+  }
 
-	private bindScroller(el: HTMLElement): void {
-		el.addEventListener('scroll', event => {
+  private bindScroller(el: HTMLElement): void {
+    el.addEventListener('scroll', event => {
       let scroller = <HTMLElement>event.target;
 
       let header = <HTMLElement>scroller.parentElement.previousElementSibling;
@@ -69,6 +69,6 @@ export class HeaderScrollerDirective implements OnInit {
       scrollerStyle.paddingTop = `${newPadding}px`;
       this.lastScrollTop = scrollTop;
       this.lastMargin = newMargin;
-		});
-	}
+    });
+  }
 }
