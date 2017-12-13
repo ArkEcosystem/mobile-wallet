@@ -110,6 +110,7 @@ export class MyApp {
         this.hideNav = false;
       });
 
+      this.settingsDataProvider.onUpdate$.subscribe(() => this.initTranslate());
     });
 
     this.initTranslate();
@@ -118,16 +119,19 @@ export class MyApp {
   initTranslate() {
     // Set the default language for translation strings, and the current language.
     this.translateService.setDefaultLang('en');
-    this.translateService.use('en'); // Set your language here
+    this.settingsDataProvider.settings.subscribe(settings => {
+      console.log(settings.language);
+      this.translateService.use(settings.language); // Set your language here
 
-    this.translateService.get('BACK_BUTTON_TEXT').subscribe(translate => {
-      this.config.set('ios', 'backButtonText', translate);
-    });
-    this.translateService.get('EXIT_APP_TEXT').subscribe(translate => {
-      this.exitText = translate;
-    });
-    this.translateService.get('LOGOUT_PROFILE_TEXT').subscribe(translate => {
-      this.logoutText = translate;
+      this.translateService.get('BACK_BUTTON_TEXT').subscribe(translate => {
+        this.config.set('ios', 'backButtonText', translate);
+      });
+      this.translateService.get('EXIT_APP_TEXT').subscribe(translate => {
+        this.exitText = translate;
+      });
+      this.translateService.get('LOGOUT_PROFILE_TEXT').subscribe(translate => {
+        this.logoutText = translate;
+      });
     });
   }
 
