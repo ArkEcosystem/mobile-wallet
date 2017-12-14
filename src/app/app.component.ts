@@ -60,7 +60,7 @@ export class MyApp {
     platform.ready().then(() => {
       splashScreen.hide();
       menuCtrl.enable(false, 'sidebarMenu');
-      statusBar.styleDefault();
+      statusBar.show();
 
       platform.registerBackButtonAction(() => {
         const overlay = app._appRoot._overlayPortal.getActive();
