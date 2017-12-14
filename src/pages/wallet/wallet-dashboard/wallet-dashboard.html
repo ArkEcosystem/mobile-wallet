@@ -17,7 +17,10 @@
         <ion-col text-center>
           <h1>{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-2' }}</h1>
           <h4 appMainnetOnly>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | number: '1.0-2' }}</h4>
-          <p (click)="copyAddress()" class="toolbar-address">{{ wallet?.address }}</p>
+          <p (click)="copyAddress()" class="toolbar-address">
+            <ion-icon name="ios-copy-outline" item-start></ion-icon>
+            {{ wallet?.address }}
+          </p>
         </ion-col>
       </ion-row>
     </ion-grid>

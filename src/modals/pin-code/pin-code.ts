@@ -1,8 +1,9 @@
 import { Component, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Vibration } from '@ionic-native/vibration';
-
 import { AuthProvider } from '@providers/auth/auth';
+
+import * as constants from '@app/app.constants';
 
 @IonicPage()
 @Component({
@@ -40,7 +41,7 @@ export class PinCodeModal {
   }
 
   add(value: number) {
-    this.vibration.vibrate(100);
+    this.vibration.vibrate(constants.VIBRATION_TIME_MS);
 
     if (this.password.length < 6) {
       this.zone.run(() => {
@@ -77,7 +78,7 @@ export class PinCodeModal {
   }
 
   setWrong() {
-    this.vibration.vibrate(500);
+    this.vibration.vibrate(constants.VIBRATION_TIME_LONG_MS);
 
     this.zone.run(() => {
       this.isWrong = true;
@@ -91,7 +92,7 @@ export class PinCodeModal {
   }
 
   delete() {
-    this.vibration.vibrate(100);
+    this.vibration.vibrate(constants.VIBRATION_TIME_MS);
 
     if (this.password.length > 0) {
       this.zone.run(() => {

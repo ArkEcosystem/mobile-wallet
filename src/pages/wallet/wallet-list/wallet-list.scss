@@ -27,12 +27,12 @@ page-wallet-list {
     min-height: 111px;
 
     &.normal {
-      background-image: url('../assets/img/light/normal-block.png');
+      background-image: url('../assets/img/light/wallet/normal-block.png');
       background-size: cover;
       box-shadow: 0px 1px 3px 0px transparentize(color($colors, danger-alternative, base), .2)!important;
     }
     &.delegate {
-      background-image: url('../assets/img/light/delegate-block.png');
+      background-image: url('../assets/img/light/wallet/delegate-block.png');
       background-size: cover;
       box-shadow: 0px 1px 5px 0px transparentize(color($colors, primary, base), .2)!important;
     }
