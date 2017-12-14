@@ -38,6 +38,6 @@
   </form>
 </ion-content>
 
-<ion-footer padding no-shadow no-border class="hide-on-keyboard-open">
+<ion-footer padding no-shadow no-border keyboard-attach>
   <button ion-button class="button-continue" [disabled]="!createProfileForm.form.valid" (click)="submitForm()">{{ 'NEXT' | translate }}</button>
 </ion-footer>

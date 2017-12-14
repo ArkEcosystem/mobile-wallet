@@ -2,6 +2,7 @@ import { Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Content, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
+import { setTimeout } from 'timers';
 
 
 /**
@@ -24,7 +25,7 @@ import { Subscription } from 'rxjs/Subscription';
  * <ion-content #content>
  * </ion-content>
  *
- * <ion-footer [keyboardAttach]="content">
+ * <ion-footer [keyboard-attach]="content">
  *   <ion-toolbar>
  *     <ion-item>
  *       <ion-input></ion-input>
@@ -35,22 +36,28 @@ import { Subscription } from 'rxjs/Subscription';
  */
 
 @Directive({
-  selector: '[keyboardAttach]'
+  selector: '[keyboard-attach]'
 })
 export class KeyboardAttachDirective implements OnInit, OnDestroy {
-  @Input('keyboardAttach') content: Content;
+  @Input('keyboard-attach') content: Content;
 
   private onShowSubscription: Subscription;
   private onHideSubscription: Subscription;
+  private initialPaddingBottom: number = 0;
 
   constructor(
     private elementRef: ElementRef,
     private keyboard: Keyboard,
     private platform: Platform
-  ) {}
+  ) {
+    setTimeout(() => {
+      let computedStyle = window.getComputedStyle(elementRef.nativeElement);
+      this.initialPaddingBottom = parseInt(computedStyle['padding-bottom']) || 0;
+    }, 0);
+  }
 
   ngOnInit() {
-    if (this.platform.is('cordova') && this.platform.is('ios')) {
+    if (this.platform.is('cordova')) {
       this.onShowSubscription = this.keyboard.onKeyboardShow().subscribe(e => this.onShow(e));
       this.onHideSubscription = this.keyboard.onKeyboardHide().subscribe(() => this.onHide());
     }
@@ -75,7 +82,7 @@ export class KeyboardAttachDirective implements OnInit, OnDestroy {
   };
 
   private setElementPosition(pixels: number) {
-    this.elementRef.nativeElement.style.paddingBottom = pixels + 'px';
+    this.elementRef.nativeElement.style.paddingBottom = pixels + this.initialPaddingBottom + 'px';
     this.content.resize();
   }
 }

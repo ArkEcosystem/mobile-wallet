@@ -6,7 +6,7 @@
 
 </ion-header>
 
-<ion-content class="column-mode" padding>
+<ion-content class="column-mode" padding #content>
   <ion-grid>
     <ion-row>
       <ion-col text-center>
@@ -26,6 +26,6 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer no-shadow no-border padding text-center>
+<ion-footer no-shadow no-border padding text-center [keyboard-attach]="content">
   <button ion-button class="button-continue" [disabled]="!importWalletPassphrase.form.valid" (click)="submitForm()">{{ 'IMPORT' | translate }}</button>
 </ion-footer>
