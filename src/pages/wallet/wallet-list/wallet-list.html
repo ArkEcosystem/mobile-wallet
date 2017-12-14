@@ -20,7 +20,7 @@
     <ion-row no-padding *ngIf="wallets?.length > 0">
       <ion-col no-padding>
         <ion-scroll scrollX="true">
-          <ion-card *ngFor="let wallet of wallets" [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}" (click)="openWalletDashboard(wallet)">
+          <ion-card *ngFor="let wallet of wallets" [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}" tappable (click)="openWalletDashboard(wallet)">
             <ion-item class="wallet">
               <ion-label>
                 <h2 class="amount">{{ currentNetwork?.symbol }} {{ wallet?.balance | unitsSatoshi | number: '1.0-2' }}</h2>

@@ -28,7 +28,7 @@
 <ion-content tappable>
   <ion-grid padding fixed *ngIf="delegates" [ngSwitch]="rankStatus">
     <div *ngSwitchCase="'active'" class="delegate-list">
-      <ion-row (click)="openDetailModal(delegate)" nowrap text-left *ngFor="let delegate of delegates.slice(0, 51) | filterBy: searchQuery" class="delegate-item">
+      <ion-row (click)="openDetailModal(delegate)" tappable nowrap text-left *ngFor="let delegate of delegates.slice(0, 51) | filterBy: searchQuery" class="delegate-item">
         <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
         <ion-col col-7>
           {{ delegate?.username }}
