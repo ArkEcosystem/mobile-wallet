@@ -25,6 +25,7 @@
     <preference name="SplashScreenDelay" value="5000" />
     <preference name="SplashScreenSpinnerColor" value="#0000ff" />
     <platform name="android">
+        <preference name="android-manifest/application/activity/@android:windowSoftInputMode" value="adjustPan" />
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
@@ -90,6 +91,7 @@
     <engine name="browser" spec="^5.0.1" />
     <engine name="ios" spec="^4.5.4" />
     <plugin name="cordova-clipboard" spec="^1.1.1" />
+    <plugin name="cordova-custom-config" spec="^5.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
     <plugin name="cordova-plugin-inappbrowser" spec="^1.7.2" />
