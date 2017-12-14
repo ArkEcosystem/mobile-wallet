@@ -12,7 +12,9 @@
   "CONTACTS_PAGE": {
     "ADD_CONTACT_TEXT": "Click on the button below to add a contact",
     "CONTACT": "Contact",
-    "CONTACTS": "Contacts"
+    "CONTACTS": "Contacts",
+    "DELETE_CONTACT": "Delete Contact",
+    "EDIT_CONTACT": "Edit Contact"
   },
   "COPIED_CLIPBOARD": "Copied to clipboard",
   "COPY": "Copy",
