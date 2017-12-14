@@ -64,8 +64,12 @@ export class IntroPage {
   }
 
   slideChanged() {
-    this.activeIndex = this.slider.getActiveIndex();
-    console.log(this.activeIndex);
+    let activeIndex = this.slider.getActiveIndex();
+    let slideLength = this.slider.length();
+
+    if (activeIndex >= slideLength) return;
+
+    this.activeIndex = activeIndex;
     this.showSkip = !this.slider.isEnd();
   }
 

@@ -9,6 +9,8 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { Network, Peer, PeerResponse } from 'ark-ts';
 
 import * as constants from '@app/app.constants';
+import { TranslateService } from '@ngx-translate/core';
+import { ToastProvider } from '@providers/toast/toast';
 
 @IonicPage()
 @Component({
@@ -32,6 +34,8 @@ export class NetworkStatusPage {
     private arkApiProvider: ArkApiProvider,
     private loadingCtrl: LoadingController,
     private zone: NgZone,
+    private translateService: TranslateService,
+    private toastProvider: ToastProvider,
   ) {
     this.currentNetwork = this.arkApiProvider.network;
     this.currentPeer = this.currentNetwork.activePeer;
@@ -42,11 +46,15 @@ export class NetworkStatusPage {
   }
 
   changePeer() {
-    this.loader = this.loadingCtrl.create({
-      duration: 10000
+    this.translateService.get('NETWORKS_PAGE.LOOKING_GOOD_PEER').debounceTime(500).subscribe((translate) => {
+      this.loader = this.loadingCtrl.create({
+        content: translate,
+        duration: 10000
+      });
+
+      this.arkApiProvider.findGoodPeer();
+      this.loader.present();
     });
-    this.arkApiProvider.findGoodPeer();
-    this.loader.present();
   }
 
   private refreshData() {
@@ -65,6 +73,7 @@ export class NetworkStatusPage {
       .takeUntil(this.unsubscriber$)
       .do((peer) => {
         if (this.loader) this.loader.dismiss();
+        this.translateService.get('NETWORKS_PAGE.PEER_SUCCESSFULLY_CHANGED').subscribe((translate) => this.toastProvider.success(translate));
         this.zone.run(() => this.currentPeer = peer);
       }).subscribe();
   }

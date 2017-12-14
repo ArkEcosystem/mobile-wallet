@@ -13,7 +13,7 @@
   </ion-navbar>
 
   <ion-toolbar>
-    <ion-segment [(ngModel)]="rankStatus" color="danger">
+    <ion-segment [(ngModel)]="rankStatus" [color]="platform.is('ios') ? 'primary' : 'danger'">
       <ion-segment-button value="active">
         {{ 'DELEGATES_PAGE.ACTIVE' | translate }}
       </ion-segment-button>

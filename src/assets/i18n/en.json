@@ -77,6 +77,8 @@
     "CHOOSE_ONE": "Choose one of the network types",
     "DELAY": "Delay",
     "HEIGHT": "Height",
+    "LOOKING_GOOD_PEER": "Looking for a good peer",
+    "PEER_SUCCESSFULLY_CHANGED": "Peer successfully changed",
     "NETWORK_STATUS": "Network Status",
     "NETWORK_TYPE": "Network Type",
     "PEER": "Peer"
