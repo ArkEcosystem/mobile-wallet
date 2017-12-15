@@ -70,6 +70,7 @@
         "ionic2-auto-complete": "^1.5.3-beta",
         "ionicons": "3.0.0",
         "json-typescript-mapper": "github:luciorubeens/json-typescript-mapper#master",
+        "moment-timezone": "^0.5.14",
         "ng2-charts": "^1.6.0",
         "ngx-filter-pipe": "^1.0.0",
         "node-forge": "^0.7.1",

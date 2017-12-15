@@ -48,7 +48,7 @@
 
             <div text-right item-end>
               <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi | number: '1.0-2' }} {{ network?.token | uppercase }}</h3>
-              <p class="timestamp">{{ tx?.date | date: 'MMM dd, hh:mm a' }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
+              <p class="timestamp">{{ tx?.date | timezone | timestampHuman }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
             </div>
             <ion-icon *ngIf="tx?.isSender()" item-end name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
             <ion-icon *ngIf="!tx?.isSender()" item-end name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>
