@@ -36,6 +36,7 @@
         "@ngx-translate/http-loader": "2.0.0",
         "@types/bcryptjs": "^2.4.1",
         "@types/lodash": "^4.14.86",
+        "@types/moment-timezone": "^0.5.2",
         "@types/uuid": "^3.4.3",
         "android-versions": "^1.2.1",
         "angular2-qrcode": "^2.0.1",
