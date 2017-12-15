@@ -1,3 +1,36 @@
 page-contact-list {
+  .contact-item {
+    padding-right: 16px;
+    .item-md {
+      padding-left: 8px;
 
+      .item-inner {
+        border-bottom: none !important;
+      }
+    }
+
+    .circle-letter {
+      height: 50px;
+      width: 50px;
+      line-height: 50px;
+      font-size: 1.4em;
+      margin-right: 15px;
+    }
+
+    h2 {
+      font-size: 1.5em;
+    }
+
+    button.more {
+      background: transparent;
+      -webkit-box-shadow: none;
+      -box-shadow: none;
+
+      .icon {
+        color: #111;
+        -webkit-text-stroke: transparent;
+        font-size: 2.5em;
+      }
+    }
+  }
 }

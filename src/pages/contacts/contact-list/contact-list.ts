@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { Platform, IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 
 import { TranslateService } from '@ngx-translate/core';
+
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/takeUntil';
 
 import lodash from 'lodash';
 
@@ -19,16 +22,44 @@ export class ContactListPage {
   public contacts = [];
   public addresses = [];
 
+  private unsubscriber$: Subject<void> = new Subject<void>();
+
   constructor(
+    private platform: Platform,
     private _navCtrl: NavController,
     private _navParams: NavParams,
     private _userDataProvider: UserDataProvider,
     private _translateService: TranslateService,
     private _alertCtrl: AlertController,
+    private _actionSheetCtrl: ActionSheetController,
   ) { }
 
-  openSendPage(address) {
-    this._navCtrl.push('TransactionSendPage', { address });
+  presentContactActionSheet(address) {
+    this._translateService.get([
+      'CONTACTS_PAGE.EDIT_CONTACT',
+      'CONTACTS_PAGE.DELETE_CONTACT',
+    ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
+      let buttons = [
+        {
+          text: translation['CONTACTS_PAGE.EDIT_CONTACT'],
+          role: 'label',
+          icon: !this.platform.is('ios') ? 'md-create' : '',
+          handler: () => {
+            this.openEditPage(address);
+          },
+        }, {
+          text: translation['CONTACTS_PAGE.DELETE_CONTACT'],
+          role: 'label',
+          icon: !this.platform.is('ios') ? 'md-trash' : '',
+          handler: () => {
+            this.showDeleteConfirm(address);
+          },
+        }
+      ];
+
+      let action = this._actionSheetCtrl.create({buttons});
+      action.present();
+    });
   }
 
   showDeleteConfirm(address) {

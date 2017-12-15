@@ -12,7 +12,9 @@
   "CONTACTS_PAGE": {
     "ADD_CONTACT_TEXT": "Click on the button below to add a contact",
     "CONTACT": "Contact",
-    "CONTACTS": "Contacts"
+    "CONTACTS": "Contacts",
+    "DELETE_CONTACT": "Delete Contact",
+    "EDIT_CONTACT": "Edit Contact"
   },
   "COPIED_CLIPBOARD": "Copied to clipboard",
   "COPY": "Copy",
@@ -125,6 +127,7 @@
     "DARK_MODE": "Dark Mode",
     "INTERNATIONALIZATION": "Internationalization",
     "LANGUAGE": "Language",
+    "PRIVACY_POLICY": "Privacy Policy",
     "SECURITY": "Security",
     "SELECT_WALLET": "Select Wallet",
     "SELECT_WALLET_FIRST_TEXT": "Select a wallet first on the wallets page",

@@ -17,26 +17,18 @@
     <ion-row *ngIf="!isEmpty()">
       <ion-col>
         <ion-list>
-          <ion-item-sliding *ngFor="let address of addresses">
-            <button ion-item (click)="openEditPage(address)">
+          <ion-item class="contact-item" *ngFor="let address of addresses">
+            <ion-item>
               <div class="circle-letter" item-start>
                 {{ contacts[address]?.name?.charAt(0) }}
               </div>
               <h2>{{ contacts[address]?.name }}</h2>
-              <p>{{ contacts[address]?.description }}</p>
+              <p>{{ address }}</p>
+            </ion-item>
+            <button ion-button item-right icon-only class="more" (click)="presentContactActionSheet(address)">
+              <ion-icon name="md-more"></ion-icon>
             </button>
-
-            <ion-item-options side="right">
-              <button ion-button color="primary" (click)="openSendPage(address)">
-                <ion-icon name="send"></ion-icon>
-                {{ 'TRANSACTIONS_PAGE.SEND' | translate }} {{ network?.token }}
-              </button>
-              <button ion-button color="danger" (click)="showDeleteConfirm(address)">
-                <ion-icon name="trash"></ion-icon>
-                {{ 'DELETE' | translate }}
-              </button>
-            </ion-item-options>
-          </ion-item-sliding>
+          </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>

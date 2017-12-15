@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
+import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -9,14 +10,16 @@ import { TranslateService } from '@ngx-translate/core';
 import { UserSettings, Wallet, WalletKeys } from '@models/model';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { PinCodeComponent } from '@components/pin-code/pin-code';
 
 import lodash from 'lodash';
-import { PinCodeComponent } from '@components/pin-code/pin-code';
+import * as constants from '@app/app.constants';
 
 @IonicPage()
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
+  providers: [InAppBrowser],
 })
 export class SettingsPage {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
@@ -30,7 +33,6 @@ export class SettingsPage {
   private unsubscriber$: Subject<void> = new Subject<void>();
   private currentWallet: Wallet;
 
-
   constructor(
     private navCtrl: NavController,
     private settingsDataProvider: SettingsDataProvider,
@@ -38,6 +40,7 @@ export class SettingsPage {
     private translateService: TranslateService,
     private modalCtrl: ModalController,
     private userDataProvider: UserDataProvider,
+    private inAppBrowser: InAppBrowser,
   ) {
     this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
     this.currentWallet = this.userDataProvider.currentWallet;
@@ -64,6 +67,10 @@ export class SettingsPage {
 
     this.onEnterPinCode = this.showBackup;
     this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', true);
+  }
+
+  openPrivacyPolicy() {
+    return this.inAppBrowser.create(constants.PRIVACY_POLICY_URL);
   }
 
   confirmClearData() {
