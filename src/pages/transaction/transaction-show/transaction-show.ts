@@ -25,18 +25,14 @@ export class TransactionShowPage {
     private navParams: NavParams,
     private userDataProvider: UserDataProvider
   ) {
-    this.transaction = this.navParams.get('transaction');
+    let transaction = this.navParams.get('transaction');
     this.currentNetwork = this.userDataProvider.currentNetwork;
     this.equivalentAmount = this.navParams.get('equivalentAmount');
     this.equivalentSymbol = this.navParams.get('equivalentSymbol');
 
-    if (!this.transaction) this.navCtrl.popToRoot();
+    if (!transaction) this.navCtrl.popToRoot();
 
-    let walletRecipient = this.userDataProvider.getWalletByAddress(this.transaction.recipientId);
-    let walletSender = this.userDataProvider.getWalletByAddress(this.transaction.senderId);
-
-    this.recipientLabel = walletRecipient ? walletRecipient.label : null;
-    this.senderLabel = walletSender ? walletSender.label : null;
+    this.transaction = new Transaction(transaction.address).deserialize(transaction);
   }
 
 }
