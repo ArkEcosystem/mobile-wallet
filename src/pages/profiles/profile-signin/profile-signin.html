@@ -15,25 +15,7 @@
 
     <ion-row *ngIf="!isEmpty()">
       <ion-col>
-        <ion-list>
-          <ion-item-sliding *ngFor="let id of profilesIds">
-            <button ion-item (click)="signin(id)">
-              <div class="circle-letter" [ngClass]="(isMainnet(id)) ? 'mainnet' : ''" item-start>
-                {{ getNetworkName(id)?.charAt(0) }}
-              </div>
-              <h2>{{ profiles[id]?.name }}</h2>
-              <p>{{ getNetworkName(id) }}</p>
-            </button>
-
-            <ion-item-options side="right">
-              <button ion-button color="danger" (click)="showDeleteConfirm(id)">
-                <ion-icon name="trash"></ion-icon>
-                {{ 'DELETE' | translate }}
-              </button>
-            </ion-item-options>
-          </ion-item-sliding>
-
-        </ion-list>
+        <address-list [map]="addresses" icon="md-more" circleProperty="value" (onTap)="signin($event)" (onHold)="presentProfileActionSheet()" (onMore)="presentProfileActionSheet()"></address-list>
       </ion-col>
     </ion-row>
 

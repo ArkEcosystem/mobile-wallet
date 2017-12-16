@@ -4,6 +4,7 @@ import { ProfileSigninPage } from './profile-signin';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { EmptyListComponentModule } from '@components/empty-list/empty-list.module';
+import { AddressListComponentModule } from '@components/address-list/address-list.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { EmptyListComponentModule } from '@components/empty-list/empty-list.modu
     EmptyListComponentModule,
     TranslateModule,
     IonicPageModule.forChild(ProfileSigninPage),
+    AddressListComponentModule,
   ]
 })
 export class ProfileSigninPageModule {}

@@ -4,10 +4,12 @@ import { EmptyListComponentModule } from './empty-list/empty-list.module';
 import { PinCodeComponentModule } from './pin-code/pin-code.module';
 import { ConfirmTransactionComponentModule } from '@components/confirm-transaction/confirm-transaction.module';
 import { ClosePopupComponentModule } from './close-popup/close-popup.module';
+import { AddressListComponentModule } from './address-list/address-list.module';
 
 @NgModule({
 	declarations: [
     ProgressBarComponent,
+    AddressListComponentModule,
   ],
 	imports: [],
 	exports: [
@@ -16,6 +18,7 @@ import { ClosePopupComponentModule } from './close-popup/close-popup.module';
     PinCodeComponentModule,
     ConfirmTransactionComponentModule,
     ClosePopupComponentModule,
+    AddressListComponentModule,
   ]
 })
 export class ComponentsModule {}

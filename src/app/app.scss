@@ -204,22 +204,6 @@ ion-fab.pull-footer {
   right: 20px!important;
 }
 
-.circle-letter {
-  display: inline-block;
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
-  border-radius: 50%;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-align: center;
-  color: white;
-  background: #b6c4cc;
-  &.mainnet {
-    background: #ed2a2d;
-  }
-}
-
 .sole-message {
   font-size: 11.5pt;
   padding: 1em;

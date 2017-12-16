@@ -16,20 +16,7 @@
 
     <ion-row *ngIf="!isEmpty()">
       <ion-col>
-        <ion-list>
-          <ion-item class="contact-item" *ngFor="let address of addresses">
-            <ion-item>
-              <div class="circle-letter" item-start>
-                {{ contacts[address]?.name?.charAt(0) }}
-              </div>
-              <h2>{{ contacts[address]?.name }}</h2>
-              <p>{{ address }}</p>
-            </ion-item>
-            <button ion-button item-right icon-only class="more" (click)="presentContactActionSheet(address)">
-              <ion-icon name="md-more"></ion-icon>
-            </button>
-          </ion-item>
-        </ion-list>
+        <address-list [map]="addresses" icon="md-more" (onTap)="presentContactActionSheet($event)" ></address-list>
       </ion-col>
     </ion-row>
   </ion-grid>

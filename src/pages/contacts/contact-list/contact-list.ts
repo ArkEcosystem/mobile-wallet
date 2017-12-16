@@ -20,55 +20,52 @@ export class ContactListPage {
   public profile;
   public network;
   public contacts = [];
-  public addresses = [];
+  public addresses: any;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(
     private platform: Platform,
-    private _navCtrl: NavController,
-    private _navParams: NavParams,
-    private _userDataProvider: UserDataProvider,
-    private _translateService: TranslateService,
-    private _alertCtrl: AlertController,
-    private _actionSheetCtrl: ActionSheetController,
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private userDataProvider: UserDataProvider,
+    private translateService: TranslateService,
+    private alertCtrl: AlertController,
+    private actionSheetCtrl: ActionSheetController,
   ) { }
 
   presentContactActionSheet(address) {
-    this._translateService.get([
-      'CONTACTS_PAGE.EDIT_CONTACT',
-      'CONTACTS_PAGE.DELETE_CONTACT',
-    ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
+    this.translateService.get(['EDIT', 'DELETE']).takeUntil(this.unsubscriber$).subscribe((translation) => {
       let buttons = [
         {
-          text: translation['CONTACTS_PAGE.EDIT_CONTACT'],
+          text: translation.EDIT,
           role: 'label',
-          icon: !this.platform.is('ios') ? 'md-create' : '',
+          icon: !this.platform.is('ios') ? 'ios-create-outline' : '',
           handler: () => {
             this.openEditPage(address);
           },
         }, {
-          text: translation['CONTACTS_PAGE.DELETE_CONTACT'],
+          text: translation.DELETE,
           role: 'label',
-          icon: !this.platform.is('ios') ? 'md-trash' : '',
+          icon: !this.platform.is('ios') ? 'ios-trash-outline' : '',
           handler: () => {
             this.showDeleteConfirm(address);
           },
         }
       ];
 
-      let action = this._actionSheetCtrl.create({buttons});
+      let action = this.actionSheetCtrl.create({buttons});
       action.present();
     });
   }
 
   showDeleteConfirm(address) {
-    this._translateService.get([
+    this.translateService.get([
       'CANCEL',
       'CONFIRM',
       'ARE_YOU_SURE',
     ]).subscribe((translation) => {
-      let alert = this._alertCtrl.create({
+      let alert = this.alertCtrl.create({
         title: translation.ARE_YOU_SURE,
         buttons: [
           {
@@ -92,25 +89,28 @@ export class ContactListPage {
   }
 
   delete(address) {
-    this._userDataProvider.removeContactByAddress(address);
+    this.userDataProvider.removeContactByAddress(address);
     this._load();
   }
 
   openEditPage(address) {
     let contact = this.contacts[address];
-    return this._navCtrl.push('ContactCreatePage', { address, contact });
+    return this.navCtrl.push('ContactCreatePage', { address, contact });
   }
 
   openCreatePage() {
-    return this._navCtrl.push('ContactCreatePage');
+    return this.navCtrl.push('ContactCreatePage');
   }
 
   private _load() {
-    this.profile = this._userDataProvider.currentProfile;
-    this.network = this._userDataProvider.currentNetwork;
+    this.profile = this.userDataProvider.currentProfile;
+    this.network = this.userDataProvider.currentNetwork;
 
     this.contacts = this.profile.contacts;
-    this.addresses = Object.keys(this.contacts);
+    this.addresses = lodash(this.contacts).mapValues('name').transform((result, key, value) => {
+      result.push({ index: key, key, value });
+    }, []).value();
+    console.log(this.addresses);
   }
 
   ionViewDidLoad() {

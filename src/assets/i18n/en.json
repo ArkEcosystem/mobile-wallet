@@ -12,9 +12,7 @@
   "CONTACTS_PAGE": {
     "ADD_CONTACT_TEXT": "Click on the button below to add a contact",
     "CONTACT": "Contact",
-    "CONTACTS": "Contacts",
-    "DELETE_CONTACT": "Delete Contact",
-    "EDIT_CONTACT": "Edit Contact"
+    "CONTACTS": "Contacts"
   },
   "COPIED_CLIPBOARD": "Copied to clipboard",
   "COPY": "Copy",
@@ -47,17 +45,19 @@
   },
   "DELETE": "Delete",
   "DONE": "Done",
+  "EDIT": "Edit",
   "EXIT": "Exit",
   "EXIT_APP_TEXT": "Exit App?",
   "FAILED": "Failed",
+  "GENERAL": "General",
   "GENERATE": "Generate",
   "IMPORT": "Import",
   "INTRO_PAGE": {
     "FAST_EASY": "Fast and Easy",
     "GET_STARTED": "Get Started",
     "SECURITY": "Security",
-    "TEXT_1": "We provide all the tools you need to manage your Ark tokens, anytime, anywhere, worldwide!",
-    "TEXT_2": "All your sensitive data is securely stored using AES-256 encryption and protected by your PIN Code",
+    "TEXT_1": "We provide all the tools you need to manage your ARK tokens, anytime, anywhere, worldwide!",
+    "TEXT_2": "All your sensitive data is securely stored using PBKDF2 algorithm and AES-256 encryption protected by your PIN Code",
     "TEXT_3": "Swipe between profiles and wallets, check your balances, send and receive funds and much more",
     "WELCOME": "Welcome Aboard"
   },
@@ -125,7 +125,6 @@
     "CLEAR_DATA_TEXT": "All your data, including created profiles, wallets and contacts will be removed from the app and reset to default.",
     "CURRENCY": "Currency",
     "DARK_MODE": "Dark Mode",
-    "INTERNATIONALIZATION": "Internationalization",
     "LANGUAGE": "Language",
     "PRIVACY_POLICY": "Privacy Policy",
     "SECURITY": "Security",
