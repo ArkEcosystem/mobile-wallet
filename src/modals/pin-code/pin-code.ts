@@ -41,7 +41,7 @@ export class PinCodeModal {
   }
 
   add(value: number) {
-    this.vibration.vibrate(constants.VIBRATION_TIME_MS);
+    // this.vibration.vibrate(constants.VIBRATION_TIME_MS);
 
     if (this.password.length < 6) {
       this.zone.run(() => {
@@ -92,7 +92,7 @@ export class PinCodeModal {
   }
 
   delete() {
-    this.vibration.vibrate(constants.VIBRATION_TIME_MS);
+    // this.vibration.vibrate(constants.VIBRATION_TIME_MS);
 
     if (this.password.length > 0) {
       this.zone.run(() => {
