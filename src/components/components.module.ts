@@ -9,7 +9,6 @@ import { AddressListComponentModule } from './address-list/address-list.module';
 @NgModule({
 	declarations: [
     ProgressBarComponent,
-    AddressListComponentModule,
   ],
 	imports: [],
 	exports: [
