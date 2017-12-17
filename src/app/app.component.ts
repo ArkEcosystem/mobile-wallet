@@ -57,42 +57,13 @@ export class MyApp {
     private app: App,
     private events: Events,
   ) {
+
     platform.ready().then(() => {
       splashScreen.hide();
       menuCtrl.enable(false, 'sidebarMenu');
-      statusBar.show();
 
-      platform.registerBackButtonAction(() => {
-        const overlay = app._appRoot._overlayPortal.getActive();
-        if (overlay && overlay.dismiss) {
-          return overlay.dismiss();
-        }
-        if (this.menuCtrl && this.menuCtrl.isOpen()) {
-          return this.menuCtrl.close();
-        }
-        let navPromise = app.navPop();
-        if (!navPromise) {
-          if (this.nav.getActive().name === 'LoginPage' || this.nav.getActive().name === 'IntroPage') {
-            this.showConfirmation(this.exitText).then(() => {
-              platform.exitApp();
-            });
-          } else {
-            this.showConfirmation(this.logoutText).then(() => {
-              this.logout();
-            });
-          }
-        }
-      }, 500);
-
-      if (platform.is('cordova')) {
-        keyboard.disableScroll(false);
-        keyboard.hideKeyboardAccessoryBar(true);
-
-        keyboard.onKeyboardShow().subscribe(() => document.body.classList.add('keyboard-is-open'));
-        keyboard.onKeyboardHide().subscribe(() => document.body.classList.remove('keyboard-is-open'));
-
-        screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
-      }
+      this.initConfig();
+      this.setBackButton();
 
       authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
         if (!hasSeenIntro) {
@@ -114,6 +85,59 @@ export class MyApp {
     });
 
     this.initTranslate();
+  }
+
+  setBackButton() {
+    this.platform.registerBackButtonAction(() => {
+      const overlay = this.app._appRoot._overlayPortal.getActive();
+      if (overlay && overlay.dismiss) {
+        return overlay.dismiss();
+      }
+      if (this.menuCtrl && this.menuCtrl.isOpen()) {
+        return this.menuCtrl.close();
+      }
+      let navPromise = this.app.navPop();
+      if (!navPromise) {
+        if (this.nav.getActive().name === 'LoginPage' || this.nav.getActive().name === 'IntroPage') {
+          this.showConfirmation(this.exitText).then(() => {
+            this.platform.exitApp();
+          });
+        } else {
+          this.showConfirmation(this.logoutText).then(() => {
+            this.logout();
+          });
+        }
+      }
+    }, 500);
+  }
+
+  initConfig() {
+    // all platforms
+		this.config.set('scrollAssist', false);
+    this.config.set('autoFocusAssist', false);
+
+    // android
+    this.config.set('android', 'scrollAssist', false);
+    this.config.set('android', 'autoFocusAssist', 'delay');
+
+
+    if (this.platform.is('cordova')) {
+
+      if (this.platform.is('ios')) {
+        this.statusBar.overlaysWebView(false);
+        this.statusBar.styleDefault();
+        this.keyboard.disableScroll(true);
+      }
+
+      if (this.platform.is('android')) {
+        this.statusBar.show();
+      }
+
+      this.keyboard.onKeyboardShow().subscribe(() => document.body.classList.add('keyboard-is-open'));
+      this.keyboard.onKeyboardHide().subscribe(() => document.body.classList.remove('keyboard-is-open'));
+
+      this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
+    }
   }
 
   initTranslate() {
@@ -215,14 +239,7 @@ export class MyApp {
     });
   }
 
-  private initialVerify() {
-    // if (lodash.isNil(this.localDataProvider.profiles)) {
-    //   return this.openPage('LoginPage');
-    // }
-  }
-
   ngOnInit() {
-    this.initialVerify();
     this.onUserLogin();
     this.onUserLogout();
 

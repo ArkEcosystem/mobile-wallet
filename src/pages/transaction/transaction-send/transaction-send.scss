@@ -9,6 +9,10 @@ page-transaction-send {
     }
   }
 
+  form {
+    overflow-y: scroll !important;
+  }
+
   ion-auto-complete {
     width: 100% !important;
 

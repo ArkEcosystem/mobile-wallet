@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Config } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms'
 
 import { Contact, Wallet, MarketTicker, MarketCurrency, Transaction, SendTransactionForm, WalletKeys } from '@models/model';
@@ -54,6 +54,7 @@ export class TransactionSendPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private config: Config,
     private userDataProvider: UserDataProvider,
     private arkApiProvider: ArkApiProvider,
     private marketDataProvider: MarketDataProvider,
@@ -64,6 +65,7 @@ export class TransactionSendPage {
   ) {
     this.currentWallet = this.userDataProvider.currentWallet;
     this.currentNetwork = this.userDataProvider.currentNetwork;
+    // this.config.set('android', 'scrollPadding', true);
   }
 
   sendAll() {
@@ -191,6 +193,10 @@ export class TransactionSendPage {
       })
     })
   }
+
+  // ngOnDestroy() {
+  //   this.config.set('android', 'scrollPadding', false);
+  // }
 
   ngOnInit(): void {
     this.sendForm = new FormGroup({

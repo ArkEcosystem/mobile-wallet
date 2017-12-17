@@ -40,11 +40,7 @@ export function httpLoaderFactory(http: HttpClient) {
   imports: [
     BrowserModule,
     HttpClientModule,
-    IonicModule.forRoot(MyApp, {
-      scrollPadding: false,
-      scrollAssist: true,
-      autoFocusAssist: false
-    }),
+    IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     TranslateModule.forRoot({
       loader: {

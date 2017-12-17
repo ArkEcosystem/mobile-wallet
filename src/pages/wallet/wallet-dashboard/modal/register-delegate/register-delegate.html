@@ -11,8 +11,8 @@
 
 </ion-header>
 
-<ion-content class="column-mode">
-  <ion-grid padding>
+<ion-content padding>
+  <ion-grid>
     <ion-row>
       <ion-col align-self-center>
         <form #registerDelegateForm="ngForm">
@@ -24,17 +24,17 @@
             <p class="error-message" *ngIf="isExists">{{ 'DELEGATES_PAGE.USERNAME_ALREADY_EXISTS' | translate }}</p>
           </ion-item>
         </form>
-      </ion-col>
-    </ion-row>
-    <ion-row hide-on-keyboard-open>
-      <ion-col text-center align-self-center>
-        <button ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid || isExists" (click)="submitForm()">{{ 'CREATE' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+        <ion-row>
+          <ion-col text-center>
+            <button ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid || isExists" (click)="submitForm()">{{ 'CREATE' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+          </ion-col>
+        </ion-row>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
 
-<ion-footer class="note-toolbar no-padding" class="hide-on-keyboard-open">
+<ion-footer class="note-toolbar no-padding">
   <ion-grid no-padding>
     <ion-row>
       <ion-col text-center no-padding>
