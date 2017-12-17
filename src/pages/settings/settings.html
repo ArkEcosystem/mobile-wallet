@@ -11,8 +11,7 @@
   <ion-list>
 
     <ion-item-group>
-      <ion-item-divider color="light">{{ 'GENERAL' | translate }}</ion-item-divider>
-      <ion-item>
+      <ion-item detail-push>
         <ion-icon name="ios-globe-outline" color="primary" item-start></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.LANGUAGE' | translate }}</ion-label>
         <ion-select [(ngModel)]="currentSettings.language" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
@@ -22,7 +21,7 @@
         </ion-select>
       </ion-item>
 
-      <ion-item>
+      <ion-item detail-push>
         <ion-icon name="ios-cash-outline" color="primary" item-start></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.CURRENCY' | translate }}</ion-label>
         <ion-select [(ngModel)]="currentSettings.currency" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
@@ -34,19 +33,19 @@
     </ion-item-group>
 
     <ion-item-group>
-      <ion-item-divider color="light">{{ 'SETTINGS_PAGE.SECURITY' | translate }}</ion-item-divider>
-      <button ion-item (click)="openChangePinPage()">
+      <ion-item-divider color="primary-background"></ion-item-divider>
+      <button detail-push ion-item (click)="openChangePinPage()">
         <ion-icon name="ios-lock-outline" color="primary" item-start></ion-icon>
         {{ 'SETTINGS_PAGE.CHANGE_PIN' | translate }}
       </button>
-      <button ion-item (click)="openWalletBackupPage()">
+      <button detail-push ion-item (click)="openWalletBackupPage()">
         <ion-icon name="ios-briefcase-outline" color="primary" item-start></ion-icon>
         {{ 'SETTINGS_PAGE.WALLET_BACKUP' | translate }}
       </button>
     </ion-item-group>
 
     <ion-item-group [hidden]="true">
-      <ion-item-divider color="light">{{ 'SETTINGS_PAGE.APPEARANCE' | translate }}</ion-item-divider>
+      <ion-item-divider color="primary-background"></ion-item-divider>
       <ion-item ion-item>
         <ion-icon name="ios-moon-outline" color="primary" item-start></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.DARK_MODE' | translate }}</ion-label>
@@ -55,15 +54,20 @@
     </ion-item-group>
 
     <ion-item-group>
-      <ion-item-divider color="light">{{ 'SETTINGS_PAGE.APPLICATION' | translate }}</ion-item-divider>
-      <button ion-item (click)="confirmClearData()">
+      <ion-item-divider color="primary-background"></ion-item-divider>
+      <button detail-push ion-item (click)="confirmClearData()">
         <ion-icon name="ios-trash-outline" color="primary" item-start></ion-icon>
         {{ 'SETTINGS_PAGE.CLEAR_DATA' | translate }}
       </button>
-      <button ion-item (click)="openPrivacyPolicy()">
+      <button detail-push ion-item (click)="openPrivacyPolicy()">
         <ion-icon name="ios-document-outline" color="primary" item-start></ion-icon>
         {{ 'SETTINGS_PAGE.PRIVACY_POLICY' | translate }}
       </button>
+      <ion-item detail-none>
+        <ion-icon name="ios-information-circle-outline" color="primary" item-start></ion-icon>
+        {{ 'SETTINGS_PAGE.VERSION' | translate }}
+        <div item-right><p>{{ appVersion }}</p></div>
+      </ion-item>
     </ion-item-group>
 
   </ion-list>

@@ -15,6 +15,8 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
 import lodash from 'lodash';
 import * as constants from '@app/app.constants';
 
+let packageJson = require('@root/package.json');
+
 @IonicPage()
 @Component({
   selector: 'page-settings',
@@ -29,6 +31,7 @@ export class SettingsPage {
   public availableOptions;
   public currentSettings;
   public onEnterPinCode;
+  public appVersion: number = packageJson.version;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
   private currentWallet: Wallet;

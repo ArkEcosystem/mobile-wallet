@@ -1,3 +1,19 @@
 page-settings {
 
+  .list {
+    margin-top: 0;
+
+    ion-item-group {
+      border-top: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+    }
+
+    .item:not(.item-divider) {
+      background-color: color($colors, secondary-background, base) !important;
+
+      .input-wrapper > .label {
+        color: inherit;
+      }
+    }
+  }
 }

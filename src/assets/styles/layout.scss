@@ -8,15 +8,15 @@ form,
   background: none;
 
   ion-item-sliding {
-    background: color($colors, primary-background, base)!important;
+    background: color($colors, primary-background, base);
 
     &.active-slide .item {
-      background: color($colors, primary-background, base)!important;
+      background: color($colors, primary-background, base);
     }
   }
 
   .item:not(.item-divider) {
-    background: transparent!important;
+    background: transparent;
   }
 }
 
