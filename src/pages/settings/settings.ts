@@ -124,6 +124,8 @@ export class SettingsPage {
   }
 
   private showBackup(keys: WalletKeys) {
+    if (!keys) return;
+
     let modal = this.modalCtrl.create('WalletBackupModal', {
       title: 'SETTINGS_PAGE.WALLET_BACKUP',
       keys,

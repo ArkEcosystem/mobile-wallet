@@ -24,6 +24,8 @@ export class PinCodeModal {
   // Check if the entered password is correct
   private validatePassword: boolean = false;
 
+  private length: number = 6;
+
 
   constructor(
     public navCtrl: NavController,
@@ -43,12 +45,12 @@ export class PinCodeModal {
   add(value: number) {
     // this.vibration.vibrate(constants.VIBRATION_TIME_MS);
 
-    if (this.password.length < 6) {
+    if (this.password.length < this.length) {
       this.zone.run(() => {
         this.password = this.password + value;
       });
 
-      if (this.password.length == 6) {
+      if (this.password.length == this.length) {
 
         if (!this.expectedPassword && !this.validatePassword) {
           return this.dismiss(true);
@@ -102,6 +104,8 @@ export class PinCodeModal {
   }
 
   dismiss(status: boolean = true) {
+    if (this.password.length < this.length) return this.viewCtrl.dismiss();
+
     if (this.outputPassword) {
       this.viewCtrl.dismiss(this.password);
       return;
