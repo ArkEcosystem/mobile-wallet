@@ -29,7 +29,7 @@ export class ConfirmTransactionComponent {
       .subscribe((tx) => {
         let modal = this.modalCtrl.create('ConfirmTransactionModal', {
           transaction: tx
-        }, { cssClass: 'inset-modal', enableBackdropDismiss: true });
+        }, { cssClass: 'inset-modal-send', enableBackdropDismiss: true });
 
         modal.onDidDismiss((result) => {
           if (lodash.isUndefined(result)) return;
