@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'close-popup',
@@ -6,6 +6,9 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 })
 export class ClosePopupComponent {
 
+  @HostBinding('style.z-index') style = 1000;
+
+  @Input('large') large: boolean;
   @Input('color') color: string;
   @Output('onClose') onClose: EventEmitter<void> = new EventEmitter();
 

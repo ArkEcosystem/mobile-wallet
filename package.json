@@ -2,18 +2,20 @@
     "name": "ark-mobile",
     "version": "1.0.0",
     "author": {
-      "name": "Lucio Rubens",
-      "email": "luciorubeens@gmail.com",
-      "url": "https://github.com/luciorubeens"
+        "name": "Lucio Rubens",
+        "email": "luciorubeens@gmail.com",
+        "url": "https://github.com/luciorubeens"
     },
-    "contributors": [{
-      "name": "Alex Barnsley",
-      "email": "alex@ark.io",
-      "url": "https://github.com/alexbarnsley"
-    }],
+    "contributors": [
+        {
+            "name": "Alex Barnsley",
+            "email": "alex@ark.io",
+            "url": "https://github.com/alexbarnsley"
+        }
+    ],
     "homepage": "https://github.com/ArkEcosystem/ark-mobile#readme",
     "bugs": {
-      "url": "https://github.com/ArkEcosystem/ark-mobile/issues"
+        "url": "https://github.com/ArkEcosystem/ark-mobile/issues"
     },
     "license": "MIT",
     "private": true,
