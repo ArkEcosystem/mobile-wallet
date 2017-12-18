@@ -1,4 +1,13 @@
 page-transaction-send {
+  .content-ios {
+    .qr-container {
+      padding-top: 30px;
+    }
+
+    ion-auto-complete .searchbar-ios {
+      background: transparent;
+    }
+  }
   .qr-container {
     height: 100%;
     padding-top: 20px;

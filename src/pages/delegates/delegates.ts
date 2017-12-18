@@ -1,5 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Platform, Slides } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
@@ -20,7 +20,7 @@ import { ConfirmTransactionComponent } from '@components/confirm-transaction/con
   templateUrl: 'delegates.html',
 })
 export class DelegatesPage {
-
+  @ViewChild('delegateSlider') slider: Slides;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
 
@@ -32,6 +32,10 @@ export class DelegatesPage {
 
   public rankStatus: string = 'active';
   public currentNetwork: Network;
+  public slides: string[] = [
+    'active',
+    'standBy',
+  ];
 
   private selectedDelegate: Delegate;
 
@@ -77,6 +81,14 @@ export class DelegatesPage {
 
   onInputSearch(evt) {
 
+  }
+
+  onSlideChanged(slider) {
+    this.rankStatus = this.slides[slider.realIndex];
+  }
+
+  onSegmentChange() {
+    this.slider.slideTo(this.slides.indexOf(this.rankStatus));
   }
 
   getTotalForged() {

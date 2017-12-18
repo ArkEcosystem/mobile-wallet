@@ -8,6 +8,12 @@ page-delegates {
   }
 
   .delegate-list {
+    ion-scroll {
+      position: initial;
+      .scroll-content {
+        overflow-y: visible;
+      }
+    }
     .delegate-item {
       border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
       padding: .4em 0;

@@ -81,7 +81,7 @@ export class ArkApiProvider {
       if (response) {
         let port = +this._network.activePeer.port;
         let filteredPeers = lodash.filter(response.peers, (peer) => {
-          return peer['status'] === 'OK' && peer['port'] === port && peer.ip !== this._network.activePeer.ip;
+          return peer['status'] === 'OK' && peer['port'] === port && peer.ip !== this._network.activePeer.ip && peer.ip !== '127.0.0.1';
         });
         let sortHeight = lodash.orderBy(filteredPeers, ['height','delay'], ['desc','asc']);
         this._peers = sortHeight;
