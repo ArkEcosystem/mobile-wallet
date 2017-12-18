@@ -95,6 +95,7 @@
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
+    <allow-navigation href="http://192.168.1.100:8101" />
     <engine name="android" spec="^6.4.0" />
     <engine name="browser" spec="^5.0.1" />
     <engine name="ios" spec="^4.5.4" />
