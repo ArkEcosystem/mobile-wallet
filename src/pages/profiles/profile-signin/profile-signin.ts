@@ -41,14 +41,14 @@ export class ProfileSigninPage {
     private actionSheetCtrl: ActionSheetController,
   ) { }
 
-  presentProfileActionSheet(address) {
+  presentProfileActionSheet(profileId: string) {
     this.translateService.get(['EDIT', 'DELETE']).takeUntil(this.unsubscriber$).subscribe((translation) => {
       let buttons = [{
         text: translation.DELETE,
         role: 'delete',
         icon: !this.platform.is('ios') ? 'ios-trash-outline' : '',
         handler: () => {
-          this.showDeleteConfirm(address);
+          this.showDeleteConfirm(profileId);
         },
       }];
 

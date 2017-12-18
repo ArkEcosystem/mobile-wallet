@@ -8,7 +8,7 @@
       <h3 class="address-key">{{ item.key }}</h3>
       <p class="address-value">{{ item.value }}</p>
     </ion-item>
-    <button ion-button item-right clear icon-only class="more disable-hover" *ngIf="icon" (tap)="more()">
+    <button ion-button item-right clear icon-only class="more disable-hover" *ngIf="icon" (tap)="more(item.index)">
       <ion-icon [name]="icon"></ion-icon>
     </button>
   </ion-item>

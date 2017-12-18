@@ -12,7 +12,7 @@ export class AddressListComponent {
 
   @Output() onTap: EventEmitter<string> = new EventEmitter<string>();
   @Output() onPress: EventEmitter<string> = new EventEmitter<string>();
-  @Output() onMore: EventEmitter<void> = new EventEmitter<void>();
+  @Output() onMore: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }
 
@@ -24,8 +24,8 @@ export class AddressListComponent {
     this.onPress.emit(key);
   }
 
-  more() {
-    this.onMore.emit();
+  more(key: string) {
+    this.onMore.emit(key);
   }
 
 }
