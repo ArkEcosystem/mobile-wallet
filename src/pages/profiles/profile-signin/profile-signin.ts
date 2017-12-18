@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController, ActionSheetController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -14,6 +14,7 @@ import lodash from 'lodash';
 import { NetworkType } from 'ark-ts/model';
 import { AddressMap } from '@models/model';
 import { Platform } from 'ionic-angular/platform/platform';
+import { PinCodeComponent } from '@components/pin-code/pin-code';
 
 @IonicPage()
 @Component({
@@ -21,11 +22,13 @@ import { Platform } from 'ionic-angular/platform/platform';
   templateUrl: 'profile-signin.html',
 })
 export class ProfileSigninPage {
+  @ViewChild('pinCode') pinCode: PinCodeComponent;
 
   public profiles;
   public addresses: AddressMap[];
   public networks;
 
+  private profileIdSelected: string;
   private unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -87,24 +90,25 @@ export class ProfileSigninPage {
     });
   }
 
-  signin(profileId: string) {
-    let modal = this.modalCtrl.create('PinCodeModal', {
-      validatePassword: true
-    });
+  verify(profileId: string) {
+    this.profileIdSelected = profileId;
+    this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', false);
+  }
 
-    modal.onDidDismiss((status) => {
+  signin() {
+    if (!this.profileIdSelected) return;
+
+    this.authProvider.login(this.profileIdSelected).takeUntil(this.unsubscriber$).subscribe((status) => {
       if (status) {
-        this.authProvider.login(profileId).takeUntil(this.unsubscriber$).subscribe((status) => {
-          if (status) {
-            this.navCtrl.setRoot('WalletListPage');
-          } else {
-            this.toastProvider.error('PIN_CODE.LOGIN_ERROR');
-          }
-        });
+        this.navCtrl.setRoot('WalletListPage');
+      } else {
+        this.error();
       }
     });
+  }
 
-    modal.present();
+  error() {
+    this.toastProvider.error('PIN_CODE.LOGIN_ERROR');
   }
 
   load() {

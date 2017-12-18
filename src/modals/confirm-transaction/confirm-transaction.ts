@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -36,11 +36,13 @@ export class ConfirmTransactionModal {
     private arkApiProvider: ArkApiProvider,
     private marketDataProvider: MarketDataProvider,
     private settingsDataProvider: SettingsDataProvider,
+    private loadingCtrl: LoadingController,
   ) {
     this.transaction = this.navParams.get('transaction');
     this.address = this.transaction.address;
 
     if (!this.transaction) this.navCtrl.pop();
+    this.loadingCtrl.create().dismissAll();
 
     this.currentNetwork = this.arkApiProvider.network;
   }

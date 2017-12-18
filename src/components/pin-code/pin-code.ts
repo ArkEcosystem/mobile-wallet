@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ModalController, NavController } from 'ionic-angular';
+import { ModalController, NavController, LoadingController, Loading } from 'ionic-angular';
 import { Wallet, WalletKeys } from '@models/model';
 import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
@@ -18,13 +18,17 @@ export class PinCodeComponent {
   @Output('onSuccess') onSuccess: EventEmitter<WalletKeys> = new EventEmitter();
   @Output('onWrong') onWrong: EventEmitter<void> = new EventEmitter();
 
+  private loader: Loading;
+
   constructor(
     private userDataProvider: UserDataProvider,
     private authProvider: AuthProvider,
     private toastProvider: ToastProvider,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
-  ) { }
+    private loadingCtrl: LoadingController,
+  ) {
+  }
 
   open(message: string, outputPassword: boolean, verifySecondPassphrase: boolean = false) {
     if (outputPassword && !this.wallet) return false;
@@ -38,9 +42,21 @@ export class PinCodeComponent {
     modal.onDidDismiss((password) => {
       if (lodash.isNil(password)) return this.onWrong.emit();
 
-      if (!outputPassword) return this.onSuccess.emit();
+      let loader = this.loadingCtrl.create({
+        dismissOnPageChange: true,
+        enableBackdropDismiss: false,
+        showBackdrop: true
+      });
+
+      loader.present();
+
+      if (!outputPassword) {
+        loader.dismiss();
+        return this.onSuccess.emit();
+      }
 
       let passphrases = this.userDataProvider.getKeysByWallet(this.wallet, password);
+      loader.dismiss();
 
       if (lodash.isEmpty(passphrases) || lodash.isNil(passphrases)) return this.onWrong.emit();
 
