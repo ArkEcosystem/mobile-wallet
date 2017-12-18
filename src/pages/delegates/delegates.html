@@ -13,7 +13,7 @@
   </ion-navbar>
 
   <ion-toolbar>
-    <ion-segment [(ngModel)]="rankStatus" [color]="platform.is('ios') ? 'primary' : 'danger'">
+    <ion-segment [(ngModel)]="rankStatus" (ionChange)="onSegmentChange()" [color]="platform.is('ios') ? 'primary' : 'danger'">
       <ion-segment-button value="active">
         {{ 'DELEGATES_PAGE.ACTIVE' | translate }}
       </ion-segment-button>
@@ -26,38 +26,42 @@
 </ion-header>
 
 <ion-content tappable>
-  <ion-grid padding fixed *ngIf="delegates" [ngSwitch]="rankStatus">
-    <div *ngSwitchCase="'active'" class="delegate-list">
-      <ion-row (click)="openDetailModal(delegate)" tappable nowrap text-left *ngFor="let delegate of delegates.slice(0, 51) | filterBy: searchQuery" class="delegate-item">
-        <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
-        <ion-col col-7>
-          {{ delegate?.username }}
-          <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTE' | translate | lowercase }}</ion-badge>
-        </ion-col>
-        <ion-col col-3><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
-      </ion-row>
-      <ion-row *ngIf="(delegates.slice(0, 51) | filterBy: searchQuery).length === 0">
-        <ion-col padding text-center>
-          <h6>{{ 'DELEGATES_PAGE.NO_MATCHING_SEARCH' | translate }}</h6>
-        </ion-col>
-      </ion-row>
-    </div>
-    <div *ngSwitchCase="'standBy'" class="delegate-list">
-      <ion-row (click)="openDetailModal(delegate)" nowrap text-left *ngFor="let delegate of delegates.slice(51, delegates.length) | filterBy: searchQuery" class="delegate-item">
-        <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
-        <ion-col col-7>
-          {{ delegate?.username }}
-          <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTE' | translate | lowercase }}</ion-badge>
-        </ion-col>
-        <ion-col col-3><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
-      </ion-row>
-      <ion-row *ngIf="(delegates.slice(51, delegates.length) | filterBy: searchQuery).length === 0">
-        <ion-col padding text-center>
-          <h6>{{ 'DELEGATES_PAGE.NO_MATCHING_SEARCH' | translate }}</h6>
-        </ion-col>
-      </ion-row>
-    </div>
-  </ion-grid>
+  <ion-slides #delegateSlider (ionSlideDidChange)="onSlideChanged($event)" *ngIf="delegates">
+    <ion-slide class="delegate-list">
+      <ion-scroll>
+        <ion-row (click)="openDetailModal(delegate)" tappable nowrap text-left *ngFor="let delegate of delegates.slice(0, 51) | filterBy: searchQuery" class="delegate-item">
+          <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
+          <ion-col col-7>
+            {{ delegate?.username }}
+            <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTE' | translate | lowercase }}</ion-badge>
+          </ion-col>
+          <ion-col col-3><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
+        </ion-row>
+        <ion-row *ngIf="(delegates.slice(0, 51) | filterBy: searchQuery).length === 0">
+          <ion-col padding text-center>
+            <h6>{{ 'DELEGATES_PAGE.NO_MATCHING_SEARCH' | translate }}</h6>
+          </ion-col>
+        </ion-row>
+      </ion-scroll>
+    </ion-slide>
+    <ion-slide class="delegate-list">
+      <ion-scroll>
+        <ion-row (click)="openDetailModal(delegate)" nowrap text-left *ngFor="let delegate of delegates.slice(51, delegates.length) | filterBy: searchQuery" class="delegate-item">
+          <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
+          <ion-col col-7>
+            {{ delegate?.username }}
+            <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTE' | translate | lowercase }}</ion-badge>
+          </ion-col>
+          <ion-col col-3><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
+        </ion-row>
+        <ion-row *ngIf="(delegates.slice(51, delegates.length) | filterBy: searchQuery).length === 0">
+          <ion-col padding text-center>
+            <h6>{{ 'DELEGATES_PAGE.NO_MATCHING_SEARCH' | translate }}</h6>
+          </ion-col>
+        </ion-row>
+      </ion-scroll>
+    </ion-slide>
+  </ion-slides>
 </ion-content>
 
 <pin-code [wallet]="currentWallet" (onSuccess)="generateTransaction($event)" #pinCode></pin-code>
