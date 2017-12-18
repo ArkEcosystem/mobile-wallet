@@ -116,6 +116,9 @@ export class MyApp {
 		this.config.set('scrollAssist', false);
     this.config.set('autoFocusAssist', false);
 
+    // ios
+    this.config.set('ios', 'scrollPadding', false);
+
     // android
     this.config.set('android', 'scrollAssist', false);
     this.config.set('android', 'autoFocusAssist', 'delay');
@@ -125,7 +128,7 @@ export class MyApp {
 
       if (this.platform.is('ios')) {
         this.statusBar.styleDefault();
-        this.keyboard.disableScroll(true);
+        this.keyboard.disableScroll(false);
       }
 
       if (this.platform.is('android')) {
