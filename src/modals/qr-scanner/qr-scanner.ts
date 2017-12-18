@@ -16,6 +16,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 export class QRScannerModal {
 
   private ionApp: HTMLElement;
+  private timeoutListener;
 
   constructor(
     private app: App,
@@ -44,7 +45,7 @@ export class QRScannerModal {
         this.ionApp.classList.add('transparent');
         this.showCamera();
 
-        setTimeout(() => {
+        this.timeoutListener = setTimeout(() => {
           this.hideCamera();
           scanSub.unsubscribe();
           this.toastProvider.error('QR_CODE.PROBLEM_TEXT');
@@ -86,6 +87,7 @@ export class QRScannerModal {
   }
 
   ionViewDidLeave() {
+    if (this.timeoutListener) clearInterval(this.timeoutListener);
     this.hideCamera();
   }
 
