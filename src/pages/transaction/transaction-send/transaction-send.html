@@ -18,7 +18,7 @@
             <ion-label stacked>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
             <ion-auto-complete item-content [dataProvider]="contactsAutoCompleteService" [showResultsFirst]="true" [options]="{placeholder: ''}" formControlName="recipientAddress" (itemSelected)="onSearchItem($event)" (ionAutoInput)="onSearchInput($event)" #searchBar></ion-auto-complete>
             <div class="qr-container" item-right>
-              <img src="./assets/img/light/wallet/qr-code-button.png" (click)="scanQRCode()" />
+              <img src="./assets/img/light/wallet/qr-code-button.png" tappable (tap)="scanQRCode()" />
             </div>
           </ion-item>
         </ion-col>

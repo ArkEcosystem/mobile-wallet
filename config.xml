@@ -24,7 +24,6 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="5000" />
     <preference name="SplashScreenSpinnerColor" value="#0000ff" />
-    <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
     <platform name="android">
         <preference name="android-manifest/application/activity/@android:windowSoftInputMode" value="adjustPan" />
         <allow-intent href="market:*" />
@@ -48,7 +47,6 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
-        <preference name="StatusBarOverlaysWebView" value="false" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
@@ -89,9 +87,6 @@
     <allow-navigation href="http://169.254.7.66:8100" />
     <allow-navigation href="http://192.168.1.5:8100" />
     <allow-navigation href="http://192.168.1.3:8100" />
-    <feature name="CDVWKWebViewEngine">
-        <param name="ios-package" value="CDVWKWebViewEngine" />
-    </feature>
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
@@ -104,7 +99,6 @@
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
     <plugin name="cordova-plugin-inappbrowser" spec="^1.7.2" />
-    <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
     <plugin name="cordova-plugin-qrscanner" spec="^2.5.0" />
     <plugin name="cordova-plugin-screen-orientation" spec="^2.0.2" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.1.0" />

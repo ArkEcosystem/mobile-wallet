@@ -70,7 +70,6 @@
         "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-device": "^1.1.7",
         "cordova-plugin-inappbrowser": "^1.7.2",
-        "cordova-plugin-ionic-webview": "^1.1.16",
         "cordova-plugin-qrscanner": "^2.5.0",
         "cordova-plugin-screen-orientation": "^2.0.2",
         "cordova-plugin-splashscreen": "^4.1.0",
@@ -118,7 +117,6 @@
             "cordova-plugin-x-socialsharing": {},
             "cordova-plugin-inappbrowser": {},
             "cordova-custom-config": {},
-            "cordova-plugin-ionic-webview": {},
             "cordova-plugin-statusbar": {},
             "cordova-plugin-console": {},
             "ionic-plugin-keyboard": {}

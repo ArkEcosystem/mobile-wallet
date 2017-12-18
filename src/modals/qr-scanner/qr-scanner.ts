@@ -47,8 +47,9 @@ export class QRScannerModal {
         setTimeout(() => {
           this.hideCamera();
           scanSub.unsubscribe();
+          this.toastProvider.error('QR_CODE.PROBLEM_TEXT');
           this.dismiss();
-        }, 10000);
+        }, 50000);
       } else if (status.denied) {
         this.toastProvider.error('QR_CODE.PERMISSION_PERMANENTLY_DENIED');
         this.dismiss();
@@ -69,7 +70,6 @@ export class QRScannerModal {
   }
 
   private hideCamera() {
-    this.qrScanner.pausePreview();
     this.qrScanner.hide();
     this.events.publish('qrScanner:hide');
   }
@@ -77,16 +77,11 @@ export class QRScannerModal {
   private dismiss(qrCode: object = null) {
     this.qrScanner.getStatus().then((status: QRScannerStatus) => {
       if (status.showing) {
-        this.ionApp.classList.remove('transparent');
         this.hideCamera();
-        this.qrScanner.destroy();
       }
     });
 
-    if (this.platform.is('ios')) {
-      this.statusBar.overlaysWebView(false);
-      this.statusBar.styleDefault();
-    }
+    this.ionApp.classList.remove('transparent');
     this.viewCtrl.dismiss(qrCode);
   }
 

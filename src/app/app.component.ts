@@ -124,7 +124,6 @@ export class MyApp {
     if (this.platform.is('cordova')) {
 
       if (this.platform.is('ios')) {
-        this.statusBar.overlaysWebView(false);
         this.statusBar.styleDefault();
         this.keyboard.disableScroll(true);
       }
