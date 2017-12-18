@@ -39,6 +39,14 @@ modal-wallet-backup {
     }
 
     .advanced-list {
+      .item-inner {
+        padding-right: 0;
+
+        .label {
+          margin-right: 0;
+        }
+      }
+
       .item-caption {
         color: rgb(99, 99, 99);
       }

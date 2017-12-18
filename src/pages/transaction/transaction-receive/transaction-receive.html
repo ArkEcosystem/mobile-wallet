@@ -4,7 +4,7 @@
     <ion-title>{{ 'TRANSACTIONS_PAGE.RECEIVE' | translate }} {{ token }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="share()">
-        <ion-icon name="share-alt"></ion-icon>
+        <ion-icon name="share"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -21,7 +21,7 @@
     <ion-row>
       <ion-col text-center>
         <div class="qrcode-container">
-          <qr-code [value]="qraddress" [size]="160"></qr-code>
+          <qr-code [value]="qraddress" [size]="140"></qr-code>
         </div>
       </ion-col>
     </ion-row>

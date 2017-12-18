@@ -22,13 +22,16 @@ page-delegate-detail {
     }
 
   }
+
+  .button-continue {
+    margin-top: 0;
+  }
+
   .username {
     font-weight: 700;
     margin-bottom: 1em;
   }
-  .address {
-    margin-top: 0;
-  }
+
   .qrcode-box {
     display: inline-block;
     padding: 1em;

@@ -8,12 +8,11 @@
           <div class="qrcode-box">
             <qr-code [value]="qraddress" size="100"></qr-code>
           </div>
-          <p ion-text color="light">{{ 'WALLETS_PAGE.ADDRESS' | translate }}</p>
           <h5 class="address" (click)="copyAddress()">{{ delegate?.address | truncateMiddle: 20 }}</h5>
         </ion-toolbar>
       </ion-col>
     </ion-row>
-    <ion-row class="details">
+    <ion-row class="details" align-items-center justify-content-around>
       <ion-col>
         <ion-item no-lines text-wrap>
           <ion-label stacked>
