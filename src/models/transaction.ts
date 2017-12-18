@@ -4,11 +4,11 @@ import arkConfig from 'ark-ts/config';
 import { MarketCurrency, MarketHistory, MarketTicker } from '@models/market';
 
 const TX_TYPES = {
-  0: 'Send',
-  1: 'Second Signature Creation',
-  2: 'Delegate Registration',
-  3: 'Vote',
-  4: 'Multisignature Creation',
+  0: 'TRANSACTIONS_PAGE.SENT',
+  1: 'TRANSACTIONS_PAGE.SECOND_SIGNATURE_CREATION',
+  2: 'TRANSACTIONS_PAGE.DELEGATE_REGISTRATION',
+  3: 'DELEGATES_PAGE.VOTE',
+  4: 'TRANSACTIONS.MULTISIGNATURE_CREATION',
 };
 
 export interface SendTransactionForm {
@@ -70,7 +70,7 @@ export class Transaction extends TransactionModel {
   getTypeLabel(): string {
     let type = TX_TYPES[this.type];
 
-    if (this.isTransfer() && !this.isSender()) type = 'Received';
+    if (this.isTransfer() && !this.isSender()) type = 'TRANSACTIONS_PAGE.RECEIVED';
 
     return type;
   }
