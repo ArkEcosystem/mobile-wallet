@@ -77,7 +77,7 @@ export class GenerateEntropyModal {
     this.progress = 0;
     this.bytes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     this.entropy = this.bytes;
-    this.turns = 20 + parseInt(Number(Math.random() * 10).toString());
+    this.turns = 4 + parseInt(Number(Math.random() * 10).toString());
     this.count = 0;
     this.total = this.turns * this.bytes.length;
     this.finished = false;
@@ -94,6 +94,7 @@ export class GenerateEntropyModal {
 
   ionViewDidLeave() {
     this.reset();
+    this.menuCtrl.swipeEnable(true, 'sidebarMenu');
   }
 
 }
