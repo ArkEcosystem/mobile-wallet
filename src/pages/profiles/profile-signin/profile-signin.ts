@@ -12,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 import lodash from 'lodash';
 import { NetworkType } from 'ark-ts/model';
+import { PublicKey } from 'ark-ts/core';
 import { AddressMap } from '@models/model';
 import { Platform } from 'ionic-angular/platform/platform';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
@@ -51,7 +52,11 @@ export class ProfileSigninPage {
         role: 'delete',
         icon: !this.platform.is('ios') ? 'ios-trash-outline' : '',
         handler: () => {
-          this.showDeleteConfirm(profileId);
+          if (!this.profileHasWallets(profileId)) {
+            this.showDeleteConfirm(profileId);
+          } else {
+            this.toastProvider.error('PROFILES_PAGE.DELETE_NOT_EMPTY');
+          }
         },
       }];
 
@@ -137,6 +142,18 @@ export class ProfileSigninPage {
   ngOnDestroy() {
     this.unsubscriber$.next();
     this.unsubscriber$.complete();
+  }
+
+  private profileHasWallets(profileId: string): boolean {
+    let profile = this.profiles[profileId];
+    let network = this.networks[profile.networkId];
+    for (let wallet of lodash.values(profile.wallets)) {
+      if (PublicKey.validateAddress(wallet.address, network)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }

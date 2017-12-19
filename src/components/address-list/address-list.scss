@@ -45,6 +45,7 @@ address-list {
     button.more {
       background: transparent;
       box-shadow: none;
+      padding: 10px !important;
 
       .icon {
         color: color($colors, dark, base);

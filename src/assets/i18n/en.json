@@ -105,6 +105,7 @@
     "ADD_PROFILE_ERROR": "Could not add profile",
     "ADD_PROFILE_TEXT": "Click on the button below to create a profile",
     "CREATE_PROFILE": "Create Profile",
+    "DELETE_NOT_EMPTY": "You cannot delete a Profile that has 1 or more Wallets",
     "GET_STARTED": "Get started",
     "SIGN_IN": "Sign in"
   },
