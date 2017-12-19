@@ -69,6 +69,7 @@
   "LOGOUT_PROFILE_TEXT": "Logout of Profile?",
   "MARKETS_PAGE": {
     "MARKET_CAP": "Market Cap.",
+    "MARKET_DATA": "Market Data",
     "PERCENTAGE_CHANGE": "24h Change",
     "PRICE": "Price",
     "VOLUME": "Volume"
@@ -210,6 +211,7 @@
     "SECRET_PASSPHRASE": "Secret Passphrase",
     "SECRET_PASSPHRASE_KEEP_SAFE": "Secret Passphrase (KEEP SAFE)",
     "SEED": "Seed",
+    "TOTAL_BALANCE": "Total Balance",
     "USERNAME": "Username",
     "WALLETS": "Wallets",
     "WIF": "WIF"

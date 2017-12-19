@@ -9,32 +9,38 @@
 
 </ion-header>
 
-<ion-content class="column-mode-simple" no-padding no-bounce>
+<ion-content class="column-mode-simple" [class.delegate]="selectedWallet?.isDelegate" no-padding no-bounce>
   <ion-grid no-padding class="full-height">
     <empty-list message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="presentActionSheet()" *ngIf="wallets?.length === 0"></empty-list>
 
     <ion-fab bottom right class="pull-footer" *ngIf="wallets?.length > 0">
       <button ion-fab color="primary" (click)="presentActionSheet()"><ion-icon name="md-add"></ion-icon></button>
     </ion-fab>
-
-    <ion-row no-padding *ngIf="wallets?.length > 0">
+    <ion-row class="total-balance-container" *ngIf="wallets?.length > 0">
+      <ion-col>
+        <p>{{ 'WALLETS_PAGE.TOTAL_BALANCE' | translate }}</p>
+        <h2 class="amount">{{ currentNetwork?.symbol }} {{ totalBalance | unitsSatoshi | number: '1.0-2' }}</h2>
+      </ion-col>
+    </ion-row>
+    <ion-row no-padding *ngIf="wallets?.length > 0" class="wallets-container">
       <ion-col no-padding>
-        <ion-scroll scrollX="true">
-          <ion-card *ngFor="let wallet of wallets" [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}" tappable (click)="openWalletDashboard(wallet)">
+        <ion-slides spaceBetween="-75" speed="100" loop="true" #walletSlider (ionSlideDidChange)="onSlideChanged($event)">
+          <ion-slide *ngFor="let wallet of wallets" tappable (click)="openWalletDashboard(wallet)">
             <ion-item class="wallet">
-              <ion-label>
+              <ion-label [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}">
                 <h2 class="amount">{{ currentNetwork?.symbol }} {{ wallet?.balance | unitsSatoshi | number: '1.0-2' }}</h2>
                 <p class="address">{{ wallet?.label || wallet?.address | accountLabel | truncateMiddle: 15 }}</p>
                 <ion-badge class="watch-only-badge" [color]="wallet?.isDelegate ? 'primary' : 'danger-alternative'" *ngIf="wallet.isWatchOnly">{{ 'WATCH_ONLY' | translate }}</ion-badge>
               </ion-label>
             </ion-item>
-          </ion-card>
-        </ion-scroll>
+          </ion-slide>
+        </ion-slides>
       </ion-col>
     </ion-row>
     <ion-row padding *ngIf="wallets?.length > 0" class="marketcap-container" appMainnetOnly>
       <ion-col>
-        <h3 class="market-cap-title">{{ 'MARKETS_PAGE.MARKET_CAP' | translate }}</h3>
+        <hr>
+        <h4 class="market-cap-title"><ion-icon name="ios-analytics"></ion-icon> {{ 'MARKETS_PAGE.MARKET_DATA' | translate }}</h4>
         <ion-grid class="no-padding" class="price-container">
           <ion-row nowrap justify-content-center align-items-baseline>
             <ion-col text-left>

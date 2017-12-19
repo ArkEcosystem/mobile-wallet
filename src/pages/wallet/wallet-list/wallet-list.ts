@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform, Content, Slides } from 'ionic-angular';
 
 import { Chart } from 'chart.js';
 import { Subject } from 'rxjs/Subject';
@@ -25,12 +25,15 @@ import { BaseChartDirective } from 'ng2-charts';
   templateUrl: 'wallet-list.html',
 })
 export class WalletListPage {
+  @ViewChild('walletSlider') slider: Slides;
   @ViewChild(Content) content: Content;
   @ViewChild(BaseChartDirective) chart: any;
 
   public currentProfile: Profile;
   public currentNetwork: Network;
   public wallets: Wallet[] = [];
+  public totalBalance: number;
+  public selectedWallet: Wallet;
 
   public btcCurrency: MarketCurrency;
   public fiatCurrency: MarketCurrency;
@@ -63,6 +66,10 @@ export class WalletListPage {
     this.loadUserData();
 
     this.userDataProvider.clearCurrentWallet();
+  }
+
+  onSlideChanged(event) {
+    this.selectedWallet = this.userDataProvider.getWalletByAddress(this.wallets[this.slider.realIndex].address);
   }
 
   openWalletDashboard(wallet: Wallet) {
@@ -162,6 +169,7 @@ export class WalletListPage {
       }
     }
 
+    this.totalBalance = lodash(list).values().sumBy((w) => parseInt(w.balance));
     this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
   }
 
@@ -228,6 +236,7 @@ export class WalletListPage {
                 gridLines: {
                   drawBorder: false,
                   display: true,
+                  color: '#e1e4ea',
                 }
               }],
               yAxes: [{
