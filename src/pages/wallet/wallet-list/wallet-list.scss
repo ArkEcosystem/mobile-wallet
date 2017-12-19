@@ -1,7 +1,9 @@
 page-wallet-list {
 
   .content {
-    background: linear-gradient(0deg, rgba(0,0,0,0) 0%, transparentize(color($colors, wallet-normal-gradient, base), 0.80) 70%, color($colors, wallet-normal-gradient, base) 100%);
+    &.normal {
+      background: linear-gradient(0deg, rgba(0,0,0,0) 0%, transparentize(color($colors, wallet-normal-gradient, base), 0.80) 70%, color($colors, wallet-normal-gradient, base) 100%);
+    }
 
     &.delegate {
       background: linear-gradient(0deg, rgba(0,0,0,0) 0%, transparentize(color($colors, wallet-delegate-gradient, base), 0.80) 70%, color($colors, wallet-delegate-gradient, base) 100%);
@@ -86,13 +88,16 @@ page-wallet-list {
   .marketcap-container {
     padding: 0 25px !important;
 
+    hr {
+      margin: 1em 0;
+    }
+
     .price-container .col:first-child {
       padding-left: 0;
     }
 
     .market-cap-title {
       font-weight: 700;
-      font-size: 1.8rem;
 
       .icon {
         vertical-align: top;
