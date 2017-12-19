@@ -128,7 +128,7 @@ export class MyApp {
 
       if (this.platform.is('ios')) {
         this.statusBar.styleDefault();
-        this.keyboard.disableScroll(false);
+        this.keyboard.disableScroll(true);
       }
 
       if (this.platform.is('android')) {

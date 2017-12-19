@@ -46,36 +46,36 @@ export class PinCodeModal {
     // this.vibration.vibrate(constants.VIBRATION_TIME_MS);
 
     if (this.password.length < this.length) {
-      this.zone.run(() => {
+      this.zone.runOutsideAngular(() => {
         this.password = this.password + value;
-      });
 
-      if (this.password.length == this.length) {
+        if (this.password.length == this.length) {
 
-        if (!this.expectedPassword && !this.validatePassword) {
-          return this.dismiss(true);
-        }
-
-        // Confirm with the previous entered password
-        if (this.expectedPassword) {
-          if (this.expectedPassword !== this.password) {
-            this.setWrong();
-          } else {
-            this.dismiss(true);
+          if (!this.expectedPassword && !this.validatePassword) {
+            return this.dismiss(true);
           }
-        }
 
-        if (this.validatePassword) {
-          this.authProvider.validateMasterPassword(this.password).subscribe((result) => {
-            if (!result) {
+          // Confirm with the previous entered password
+          if (this.expectedPassword) {
+            if (this.expectedPassword !== this.password) {
               this.setWrong();
             } else {
               this.dismiss(true);
             }
-          });
-        }
+          }
 
-      }
+          if (this.validatePassword) {
+            this.authProvider.validateMasterPassword(this.password).subscribe((result) => {
+              if (!result) {
+                this.setWrong();
+              } else {
+                this.dismiss(true);
+              }
+            });
+          }
+
+        }
+      });
     }
   }
 

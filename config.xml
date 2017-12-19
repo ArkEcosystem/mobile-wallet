@@ -24,6 +24,7 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="5000" />
     <preference name="SplashScreenSpinnerColor" value="#0000ff" />
+    <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
     <platform name="android">
         <preference name="android-manifest/application/activity/@android:windowSoftInputMode" value="adjustPan" />
         <allow-intent href="market:*" />
@@ -90,10 +91,12 @@
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
-    <allow-navigation href="http://192.168.1.100:8101" />
+    <feature name="CDVWKWebViewEngine">
+        <param name="ios-package" value="CDVWKWebViewEngine" />
+    </feature>
+    <allow-navigation href="http://localhost:8080/*" />
     <engine name="android" spec="^6.4.0" />
     <engine name="browser" spec="^5.0.1" />
-    <engine name="ios" spec="^4.5.4" />
     <plugin name="cordova-clipboard" spec="^1.1.1" />
     <plugin name="cordova-custom-config" spec="^5.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
@@ -108,4 +111,6 @@
     <plugin name="cordova-plugin-x-socialsharing" spec="^5.2.1" />
     <plugin name="cordova-sqlite-storage" spec="^2.1.4" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
+    <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
+    <engine name="ios" spec="~4.4.0" />
 </widget>

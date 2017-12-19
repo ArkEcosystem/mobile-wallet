@@ -34,10 +34,10 @@
         <ion-grid class="grid-keyboard">
           <ion-row>
             <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(1)">1</button>
+              <button ion-button round outline tappable (tap)="add(1)" touch-pin>1</button>
             </ion-col>
             <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(2)">2</button>
+              <button ion-button round outline tappable (tap)="add(2)" (touchstart)="lol($event)">2</button>
             </ion-col>
             <ion-col col-4>
               <button ion-button round outline tappable (tap)="add(3)">3</button>

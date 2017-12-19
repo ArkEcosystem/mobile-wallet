@@ -65,11 +65,12 @@
         "cordova-browser": "^5.0.1",
         "cordova-clipboard": "^1.1.1",
         "cordova-custom-config": "^5.0.0",
-        "cordova-ios": "^4.5.4",
+        "cordova-ios": "^4.4.0",
         "cordova-plugin-compat": "^1.2.0",
         "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-device": "^1.1.7",
         "cordova-plugin-inappbrowser": "^1.7.2",
+        "cordova-plugin-ionic-webview": "^1.1.16",
         "cordova-plugin-qrscanner": "^2.5.0",
         "cordova-plugin-screen-orientation": "^2.0.2",
         "cordova-plugin-splashscreen": "^4.1.0",
@@ -119,7 +120,8 @@
             "cordova-custom-config": {},
             "cordova-plugin-statusbar": {},
             "cordova-plugin-console": {},
-            "ionic-plugin-keyboard": {}
+            "ionic-plugin-keyboard": {},
+            "cordova-plugin-ionic-webview": {}
         },
         "platforms": [
             "android",

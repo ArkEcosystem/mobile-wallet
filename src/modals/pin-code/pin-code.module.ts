@@ -4,6 +4,7 @@ import { PinCodeModal } from './pin-code';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { ClosePopupComponentModule } from '@components/close-popup/close-popup.module';
+import { DirectivesModule } from '@directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { ClosePopupComponentModule } from '@components/close-popup/close-popup.m
     IonicPageModule.forChild(PinCodeModal),
     TranslateModule,
     ClosePopupComponentModule,
+    DirectivesModule,
   ],
 })
 export class PinCodeModalModule {}

@@ -171,6 +171,9 @@ export class WalletListPage {
 
     this.totalBalance = lodash(list).values().sumBy((w) => parseInt(w.balance));
     this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
+    if (!this.selectedWallet) {
+      this.selectedWallet = this.userDataProvider.getWalletByAddress(this.wallets[0].address);
+    }
   }
 
   private loadUserData() {
