@@ -16,7 +16,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 export class QRScannerModal {
 
   private ionApp: HTMLElement;
-  private timeoutListener;
 
   constructor(
     private app: App,
@@ -44,13 +43,6 @@ export class QRScannerModal {
 
         this.ionApp.classList.add('transparent');
         this.showCamera();
-
-        this.timeoutListener = setTimeout(() => {
-          this.hideCamera();
-          scanSub.unsubscribe();
-          this.toastProvider.error('QR_CODE.PROBLEM_TEXT');
-          this.dismiss();
-        }, 50000);
       } else if (status.denied) {
         this.toastProvider.error('QR_CODE.PERMISSION_PERMANENTLY_DENIED');
         this.dismiss();
@@ -87,8 +79,8 @@ export class QRScannerModal {
   }
 
   ionViewDidLeave() {
-    if (this.timeoutListener) clearInterval(this.timeoutListener);
     this.hideCamera();
+    this.qrScanner.destroy();
   }
 
 }
