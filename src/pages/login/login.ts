@@ -1,6 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, ModalController } from 'ionic-angular';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
+import { AuthProvider } from '@providers/auth/auth';
+import { UserDataProvider } from '@providers/user-data/user-data';
+
+import lodash from 'lodash';
 
 @IonicPage()
 @Component({
@@ -10,10 +14,17 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
 export class LoginPage {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
 
+  public hasProfiles: boolean = false;
+
   constructor(
     public navCtrl: NavController,
     public modalCtrl: ModalController,
+    private authProvider: AuthProvider,
+    private userDataProvider: UserDataProvider,
   ) {
+    this.authProvider.getMasterPassword().do(master => {
+      this.hasProfiles = master && !lodash.isNil(this.userDataProvider.profiles);
+    }).subscribe();
   }
 
   openProfileSignin() {

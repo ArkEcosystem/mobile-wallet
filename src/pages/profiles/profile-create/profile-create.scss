@@ -1,4 +1,15 @@
 page-profile-create {
+  .scroll-content {
+    padding: 16px 0 !important;
+
+    ion-grid {
+      padding: 5px 0;
+    }
+  }
+  ion-row.create-field {
+    padding: 0 16px;
+  }
+
   .button-group {
     padding: 0;
     margin: .5em 0 0 0;
@@ -8,6 +19,22 @@ page-profile-create {
       border-radius: 5px;
     }
   }
+
+  .advanced-toolbar {
+    margin-top: 2em;
+    padding-left: 0;
+    padding-right: 2em;
+    color: color($colors, dark, base);
+
+    .toolbar-background {
+      background: darken(color($colors, primary-background, base), 5%);
+    }
+
+    .toolbar-content {
+      padding-left: 2em;
+    }
+  }
+
   .network-types {
     margin-top: 1em;
     p {

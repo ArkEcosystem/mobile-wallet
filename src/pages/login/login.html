@@ -13,7 +13,7 @@
     </ion-row>
     <ion-row>
       <ion-col text-center align-self-end>
-        <button class="button-continue" (click)="openProfileSignin()" ion-button>{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</button>
+        <button class="button-continue" (click)="openProfileSignin()" ion-button [hidden]="!hasProfiles">{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</button>
         <button class="button-continue create-profile-btn" (click)="openProfileCreate()" ion-button clear>{{ 'LOGIN_PAGE.CREATE_PROFILE' | translate }}</button>
       </ion-col>
     </ion-row>

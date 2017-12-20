@@ -54,7 +54,6 @@ export class AuthProvider {
   }
 
   saveIntro(): void {
-    this.onSeeIntro$.next();
     this.storage.set(constants.STORAGE_INTROSEEN, true);
   }
 

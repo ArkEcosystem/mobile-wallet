@@ -39,7 +39,6 @@ export class UserDataProvider {
 
     this.onLogin();
     this.onClearStorage();
-    this.onSeeIntro();
   }
 
   addContact(address: string, contact: Contact, profileId: string = this.authProvider.loggedProfileId) {
@@ -308,21 +307,6 @@ export class UserDataProvider {
     return this.authProvider.onLogin$.subscribe((id) => {
       this.setCurrentProfile(id);
       this.setCurrentNetwork();
-    });
-  }
-
-  private onSeeIntro() {
-    this.authProvider.onSeeIntro$.subscribe(() => {
-      // Generate initial profiles
-      let profiles = {};
-      let mainnetId = lodash.findKey(this.networks, (n) => n.type === NetworkType.Mainnet);
-      profiles[this.generateUniqueId()] = <Profile>{
-        name: "Personal Wallets",
-        networkId: mainnetId,
-      }
-
-      this.profiles = profiles;
-      this.saveProfiles();
     });
   }
 

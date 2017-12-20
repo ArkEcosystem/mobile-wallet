@@ -21,6 +21,7 @@ export class ProfileCreatePage {
   public networksIds;
 
   public newProfile = { name: '', networkId: '' };
+  public showAdvancedOptions: boolean = false;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
 
@@ -51,6 +52,10 @@ export class ProfileCreatePage {
     this.networks = this.userDataProvider.networks;
     this.networksIds = lodash.keys(this.networks);
     this.newProfile.networkId = this.networksIds[0];
+  }
+
+  toggleAdvanced() {
+    this.showAdvancedOptions = !this.showAdvancedOptions;
   }
 
   ionViewDidLoad() {
