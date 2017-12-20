@@ -33,6 +33,7 @@ export class WalletListPage {
   public currentNetwork: Network;
   public wallets: Wallet[] = [];
   public totalBalance: number;
+  public fiatBalance: number;
   public selectedWallet: Wallet;
 
   public btcCurrency: MarketCurrency;
@@ -175,6 +176,9 @@ export class WalletListPage {
     }
 
     this.totalBalance = lodash(list).values().sumBy((w) => parseInt(w.balance));
+    let wholeArk = (this.totalBalance / constants.WALLET_UNIT_TO_SATOSHI);
+    this.fiatBalance = wholeArk * (this.fiatCurrency ? this.fiatCurrency.price : 0);
+
     this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
     if (!this.selectedWallet) {
       this.selectedWallet = this.userDataProvider.getWalletByAddress(this.wallets[0].address);
@@ -288,6 +292,7 @@ export class WalletListPage {
       let currency = settings.currency == 'btc' ? this.settingsDataProvider.getDefaults().currency : settings.currency;
 
       this.fiatCurrency = ticker.getCurrency({ code: currency });
+      this.loadWallets();
     });
   }
 
