@@ -5,9 +5,7 @@
         <ion-toolbar class="info-toolbar">
           <close-popup color="light" large="true" (onClose)="dismiss()"></close-popup>
           <h3 class="username">{{ delegate?.username }}</h3>
-          <div class="qrcode-box">
-            <qr-code [value]="qraddress" size="100"></qr-code>
-          </div>
+          <ark-qr-code [address]="delegate?.address" size="100"></ark-qr-code>
           <h5 class="address" (click)="copyAddress()">{{ delegate?.address | truncateMiddle: 20 }}</h5>
         </ion-toolbar>
       </ion-col>
