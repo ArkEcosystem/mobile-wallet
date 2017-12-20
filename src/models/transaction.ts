@@ -51,9 +51,13 @@ export class Transaction extends TransactionModel {
   getAmountEquivalent(marketCurrency: MarketCurrency, market: MarketTicker | MarketHistory): number {
     if (!market || !marketCurrency) return 0;
 
-    let ticker = market instanceof MarketTicker ? market : market.findDate(marketCurrency.code, this.date);
-    let currency = ticker ? ticker.getCurrency({ code: marketCurrency.code }) : null;
-    let price = currency ? currency.price : 0;
+    let price = 0;
+    if (market instanceof MarketTicker) {
+      let currency = market ? market.getCurrency({ code: marketCurrency.code }) : null;
+      price = currency ? currency.price : 0;
+    } else {
+      price = market.getPriceByDate(marketCurrency.code, this.date);
+    }
 
     return this.getAmount() * price;
   }

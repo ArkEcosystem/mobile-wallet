@@ -201,10 +201,10 @@ export class MarketHistory {
     return self;
   }
 
-  findDate(currencyCode: string, date: Date): MarketTicker {
+  getPriceByDate(currencyCode: string, date: Date): number {
     let timestampDate = date.setHours(0, 0, 0, 0);
 
-    return new MarketTicker(this.history[currencyCode.toUpperCase()][timestampDate]);
+    return this.history[currencyCode.toUpperCase()][timestampDate];
   }
 
   getLastWeekPrice(currencyCode: string): any {
