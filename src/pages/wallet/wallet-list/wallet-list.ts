@@ -75,6 +75,11 @@ export class WalletListPage {
   openWalletDashboard(wallet: Wallet) {
     this.navCtrl.push('WalletDashboardPage', {
       address: wallet.address
+    }).then(() => {
+      this.userDataProvider.saveWallet(wallet).subscribe(() => {
+        this.loadWallets();
+        this.slider.slideTo(0);
+      });
     });
   }
 
