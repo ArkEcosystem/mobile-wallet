@@ -47,7 +47,7 @@ export class WalletDashboardPage {
   private newDelegateName: string;
   private newSecondPassphrase: string;
 
-  public emptyTransactions: boolean = false;
+  public emptyTransactions: boolean = true;
   public minConfirmations = constants.WALLET_MIN_NUMBER_CONFIRMATIONS;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
@@ -71,7 +71,15 @@ export class WalletDashboardPage {
     private zone: NgZone,
     private clipboard: Clipboard,
     private toastProvider: ToastProvider,
-  ) { }
+  ) {
+    this.address = this.navParams.get('address');
+
+    if (!this.address) this.navCtrl.popToRoot();
+
+    this.profile = this.userDataProvider.currentProfile;
+    this.network = this.userDataProvider.currentNetwork;
+    this.wallet = this.userDataProvider.getWalletByAddress(this.address);
+  }
 
   copyAddress() {
     this.clipboard.copy(this.address).then(() => this.toastProvider.success('COPIED_CLIPBOARD'), (err) => this.toastProvider.error(err));
@@ -350,9 +358,6 @@ export class WalletDashboardPage {
   }
 
   private load() {
-    this.profile = this.userDataProvider.currentProfile;
-    this.network = this.userDataProvider.currentNetwork;
-    this.wallet = this.userDataProvider.getWalletByAddress(this.address);
 
     this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);
     this.marketDataProvider.ticker.subscribe((ticker) => this.setTicker(ticker));
@@ -366,6 +371,7 @@ export class WalletDashboardPage {
     this.userDataProvider.setCurrentWallet(this.wallet);
 
     let transactions = this.wallet.transactions;
+    this.emptyTransactions = lodash.isEmpty(transactions);
 
     if (!lodash.isEmpty(transactions)) {
       this.wallet.loadTransactions(transactions);
@@ -383,10 +389,6 @@ export class WalletDashboardPage {
   }
 
   ionViewDidEnter() {
-    this.address = this.navParams.get('address');
-
-    if (!this.address) this.navCtrl.popToRoot();
-
     this.load();
 
     this.refreshAllData();

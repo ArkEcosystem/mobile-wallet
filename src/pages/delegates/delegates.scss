@@ -16,10 +16,10 @@ page-delegates {
     }
 
     .list {
-      // margin: 0 16px;
+      margin: 0 16px;
 
       .delegate-item {
-        // border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
+        border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
         padding: 0;
 
         .input-wrapper > .label {

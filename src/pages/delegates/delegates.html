@@ -29,8 +29,8 @@
   <ion-slides #delegateSlider (ionSlideDidChange)="onSlideChanged($event)" *ngIf="delegates">
     <ion-slide class="delegate-list">
       <ion-scroll>
-        <ion-list inset>
-          <ion-item detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngFor="let delegate of activeDelegates | filterBy: searchQuery" class="delegate-item">
+        <ion-list>
+          <ion-item no-lines detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngFor="let delegate of activeDelegates | filterBy: searchQuery" class="delegate-item">
             <ion-grid>
               <ion-row>
                 <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
@@ -52,8 +52,8 @@
     </ion-slide>
     <ion-slide class="delegate-list">
       <ion-scroll>
-        <ion-list inset>
-          <ion-item detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngFor="let delegate of standByDelegates | filterBy: searchQuery" class="delegate-item">
+        <ion-list>
+          <ion-item no-lines detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngFor="let delegate of standByDelegates | filterBy: searchQuery" class="delegate-item">
             <ion-grid>
               <ion-row>
                 <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>

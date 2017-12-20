@@ -128,13 +128,14 @@ export class MyApp {
 
       if (this.platform.is('ios')) {
         this.statusBar.styleDefault();
-        this.keyboard.disableScroll(true);
+        this.keyboard.disableScroll(false);
       }
 
       if (this.platform.is('android')) {
         this.statusBar.show();
       }
 
+      this.keyboard.hideKeyboardAccessoryBar(true);
       this.keyboard.onKeyboardShow().subscribe(() => document.body.classList.add('keyboard-is-open'));
       this.keyboard.onKeyboardHide().subscribe(() => document.body.classList.remove('keyboard-is-open'));
 
