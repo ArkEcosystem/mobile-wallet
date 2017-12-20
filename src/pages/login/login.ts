@@ -15,6 +15,7 @@ export class LoginPage {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
 
   public hasProfiles: boolean = false;
+  public isReady: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -24,6 +25,7 @@ export class LoginPage {
   ) {
     this.authProvider.getMasterPassword().do(master => {
       this.hasProfiles = master && !lodash.isNil(this.userDataProvider.profiles);
+      this.isReady = true;
     }).subscribe();
   }
 
