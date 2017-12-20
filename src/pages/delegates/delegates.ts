@@ -26,7 +26,11 @@ export class DelegatesPage {
 
   public isSearch: boolean = false;
   public searchQuery: any = { username: ''};
+
   public delegates: Delegate[];
+  public activeDelegates: Delegate[];
+  public standByDelegates: Delegate[];
+
   public supply: number = 0;
   public preMinned: number = constants.BLOCKCHAIN_PREMINNED;
 
@@ -129,7 +133,6 @@ export class DelegatesPage {
       .votes({ address: this.currentWallet.address })
       .takeUntil(this.unsubscriber$)
       .subscribe((data) => {
-        console.log(data);
         if (data.success && data.delegates.length > 0) {
           this.walletVote = data.delegates[0];
         }
@@ -160,7 +163,13 @@ export class DelegatesPage {
     this.currentNetwork = this.arkApiProvider.network;
     this.currentWallet = this.userDataProvider.currentWallet;
 
-    this.arkApiProvider.delegates.subscribe((data) => this.zone.run(() => this.delegates = data));
+    this.zone.runOutsideAngular(() => {
+      this.arkApiProvider.delegates.subscribe((data) => this.zone.run(() => {
+        this.delegates = data;
+        this.activeDelegates = this.delegates.slice(0, 51);
+        this.standByDelegates = this.delegates.slice(51, this.delegates.length);
+      }));
+    })
 
     this.onUpdateDelegates();
     // this.getSupply();

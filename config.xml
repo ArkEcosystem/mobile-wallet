@@ -97,8 +97,9 @@
     <allow-navigation href="http://localhost:8080/*" />
     <engine name="android" spec="^6.4.0" />
     <engine name="browser" spec="^5.0.1" />
+    <engine name="ios" spec="^4.5.4" />
     <plugin name="cordova-clipboard" spec="^1.1.1" />
-    <plugin name="cordova-custom-config" spec="^5.0.0" />
+    <plugin name="cordova-custom-config" spec="^5.0.1" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.7" />
     <plugin name="cordova-plugin-inappbrowser" spec="^1.7.2" />
@@ -112,5 +113,4 @@
     <plugin name="cordova-plugin-x-socialsharing" spec="^5.2.1" />
     <plugin name="cordova-sqlite-storage" spec="^2.1.4" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <engine name="ios" spec="~4.5.4" />
 </widget>
