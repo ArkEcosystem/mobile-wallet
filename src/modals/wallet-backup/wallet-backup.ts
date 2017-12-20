@@ -68,7 +68,6 @@ export class WalletBackupModal {
     let wallet = this.userDataProvider.getWalletByAddress(pbKey.getAddress());
 
     this.account.address = wallet.address;
-    this.account.qrAddress = `{"a": "${this.account.address}"}`;
     this.account.mnemonic = this.keys.key;
     // this.account.bip38 = wallet.bip38;
     this.account.publicKey = pbKey.toHex();
@@ -89,7 +88,6 @@ export class WalletBackupModal {
     let pbKey = pvKey.getPublicKey();
 
     this.account.address = pbKey.getAddress();
-    this.account.qrAddress = `{"a": "${this.account.address}"}`;
     this.account.publicKey = pbKey.toHex();
     this.account.wif = pvKey.toWIF();
     this.account.seed = bip39.mnemonicToSeedHex(this.account.mnemonic);
