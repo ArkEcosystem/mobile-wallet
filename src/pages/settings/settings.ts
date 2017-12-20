@@ -66,7 +66,7 @@ export class SettingsPage {
   }
 
   openWalletBackupPage() {
-    if (!this.currentWallet) return this.presentSelectWallet();
+    if (!this.currentWallet || this.currentWallet.isWatchOnly) return this.presentSelectWallet();
 
     this.onEnterPinCode = this.showBackup;
     this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', true);
@@ -106,12 +106,13 @@ export class SettingsPage {
 
   private presentSelectWallet() {
     this.translateService.get([
-      'SETTINGS_PAGE.SELECT_WALLET',
-      'SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT'
+      'SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT',
+      'SETTINGS_PAGE.NOT_AVAILABLE_WATCH_ONLY',
     ]).subscribe((translation) => {
+      let message = this.currentWallet && this.currentWallet.isWatchOnly ? translation['SETTINGS_PAGE.NOT_AVAILABLE_WATCH_ONLY'] : translation['SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT'];
+
       let alert = this.alertCtrl.create({
-        title: translation['SETTINGS_PAGE.SELECT_WALLET'],
-        message: translation['SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT'],
+        message,
         buttons: [{
           text: 'Ok'
         }]
