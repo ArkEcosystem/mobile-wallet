@@ -3,7 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { TransactionReceivePage } from './transaction-receive';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { QRCodeModule } from 'angular2-qrcode';
+import { QRCodeComponentModule } from '@components/qr-code/qr-code.module';
 
 @NgModule({
   declarations: [
@@ -12,7 +12,7 @@ import { QRCodeModule } from 'angular2-qrcode';
   imports: [
     IonicPageModule.forChild(TransactionReceivePage),
     TranslateModule,
-    QRCodeModule,
+    QRCodeComponentModule,
   ],
 })
 export class WalletReceivePageModule {}
