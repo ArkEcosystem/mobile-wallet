@@ -19,7 +19,7 @@ export class WalletBackupModal {
   public message: string;
   public showAdvancedOptions: boolean = false;
 
-  public account: AccountBackup = {};
+  public account: AccountBackup;
 
   private currentNetwork;
 
@@ -60,39 +60,41 @@ export class WalletBackupModal {
   }
 
   private generateAccountFromKeys() {
-    console.log(this.keys);
     let pvKey = PrivateKey.fromSeed(this.keys.key, this.currentNetwork);
     let pbKey = pvKey.getPublicKey();
     pbKey.setNetwork(this.currentNetwork);
 
     let wallet = this.userDataProvider.getWalletByAddress(pbKey.getAddress());
 
-    this.account.address = wallet.address;
-    this.account.qrAddress = `{"a": "${this.account.address}"}`;
-    this.account.mnemonic = this.keys.key;
-    // this.account.bip38 = wallet.bip38;
-    this.account.publicKey = pbKey.toHex();
-    this.account.seed = bip39.mnemonicToSeedHex(this.account.mnemonic);
-    this.account.wif = pvKey.toWIF();
+    let account: AccountBackup = {};
+    account.address = wallet.address;
+    account.mnemonic = this.keys.key;
+    account.publicKey = pbKey.toHex();
+    account.seed = bip39.mnemonicToSeedHex(account.mnemonic);
+    account.wif = pvKey.toWIF();
 
     if (this.keys.secondKey) {
-      // this.account.secondBip38 = wallet.secondBip38;
-      this.account.secondMnemonic = this.keys.secondKey;
+      account.secondMnemonic = this.keys.secondKey;
     }
+
+    this.account = account;
   }
 
   private generateAccountFromEntropy() {
-    this.account.entropy = this.entropy;
-    this.account.mnemonic = bip39.entropyToMnemonic(this.account.entropy);
+    let account: AccountBackup = {};
 
-    let pvKey = PrivateKey.fromSeed(this.account.mnemonic, this.currentNetwork);
+    account.entropy = this.entropy;
+    account.mnemonic = bip39.entropyToMnemonic(account.entropy);
+
+    let pvKey = PrivateKey.fromSeed(account.mnemonic, this.currentNetwork);
     let pbKey = pvKey.getPublicKey();
 
-    this.account.address = pbKey.getAddress();
-    this.account.qrAddress = `{"a": "${this.account.address}"}`;
-    this.account.publicKey = pbKey.toHex();
-    this.account.wif = pvKey.toWIF();
-    this.account.seed = bip39.mnemonicToSeedHex(this.account.mnemonic);
+    account.address = pbKey.getAddress();
+    account.publicKey = pbKey.toHex();
+    account.wif = pvKey.toWIF();
+    account.seed = bip39.mnemonicToSeedHex(account.mnemonic);
+
+    this.account = account;
   }
 
 }

@@ -3,9 +3,9 @@ import { IonicPageModule } from 'ionic-angular';
 import { DelegateDetailPage } from './delegate-detail';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { QRCodeModule } from 'angular2-qrcode';
 import { PipesModule } from '@pipes/pipes.module';
 import { ClosePopupComponentModule } from '@components/close-popup/close-popup.module';
+import { QRCodeComponentModule } from '@components/qr-code/qr-code.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,7 @@ import { ClosePopupComponentModule } from '@components/close-popup/close-popup.m
   imports: [
     IonicPageModule.forChild(DelegateDetailPage),
     TranslateModule,
-    QRCodeModule,
+    QRCodeComponentModule,
     PipesModule,
     ClosePopupComponentModule,
   ],

@@ -16,9 +16,7 @@
   <ion-grid no-padding class="dark-navbar">
     <ion-row class="account-container">
       <ion-col>
-        <div class="qrcode-container">
-          <qr-code [value]="account?.qrAddress" size="80"></qr-code>
-        </div>
+        <ark-qr-code [address]="account?.address" size="100"></ark-qr-code>
         <ion-list class="account-list" no-lines>
           <ion-item text-wrap>
             <p class="item-caption">{{ 'WALLETS_PAGE.PUBLIC_ADDRESS_SHARE' | translate }}</p>
