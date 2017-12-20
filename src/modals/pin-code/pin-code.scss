@@ -42,6 +42,7 @@ modal-pin-code {
     font-size: 22pt;
     border-color: rgb(224, 229, 232);
     color: #0b1828;
+    pointer-events: auto;
 
     &.activated {
       color: #0b1828;
