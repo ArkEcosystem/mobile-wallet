@@ -123,7 +123,6 @@ export class MyApp {
     this.config.set('android', 'scrollAssist', false);
     this.config.set('android', 'autoFocusAssist', 'delay');
 
-
     if (this.platform.is('cordova')) {
 
       if (this.platform.is('ios')) {
@@ -134,6 +133,18 @@ export class MyApp {
       if (this.platform.is('android')) {
         this.statusBar.show();
       }
+
+      this.platform.resume.subscribe(() => {
+        const overlay = this.app._appRoot._overlayPortal.getActive();
+        if (overlay && overlay.dismiss) {
+          overlay.dismiss();
+        }
+        if (this.menuCtrl && this.menuCtrl.isOpen()) {
+          this.menuCtrl.close();
+        }
+        this.app.navPop();
+        this.logout();
+      });
 
       this.keyboard.hideKeyboardAccessoryBar(true);
       this.keyboard.onKeyboardShow().subscribe(() => document.body.classList.add('keyboard-is-open'));
