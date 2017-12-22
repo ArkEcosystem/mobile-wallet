@@ -25,7 +25,7 @@ export class QRCodeComponent implements OnChanges {
     if (!this.size) this.size = 80;
 
     let params = this.formatParams();
-    let scheme = `${constants.URI_SCHEME_PREFIX}${this.address}${params}`;
+    let scheme = `${constants.URI_QRCODE_SCHEME_PREFIX}${this.address}${params}`;
 
     this.value = JSON.parse(JSON.stringify(scheme));
   }

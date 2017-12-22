@@ -111,6 +111,7 @@
   },
   "QR_CODE": {
     "INVALID_QR_ERROR": "There was a problem scanning a QR Code",
+    "INVALID_QRCODE": "This QR Code does not have a valid address or passphrase",
     "PERMISSION_DENIED": "QR Camera denied",
     "PERMISSION_PERMANENTLY_DENIED": "QR Camera permanently denied. Go to your Device Settings to change.",
     "PROBLEM_TEXT": "There was a problem scanning a QR Code"

@@ -5,13 +5,16 @@ import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 
 import { ToastProvider } from '@providers/toast/toast';
 import { setTimeout } from 'timers';
-import { StatusBar } from '@ionic-native/status-bar';
+import { Vibration } from '@ionic-native/vibration';
+
+import lodash from 'lodash';
+import * as constants from '@app/app.constants';
 
 @IonicPage()
 @Component({
   selector: 'modal-qr-scanner',
   templateUrl: 'qr-scanner.html',
-  providers: [StatusBar],
+  providers: [Vibration],
 })
 export class QRScannerModal {
 
@@ -23,8 +26,8 @@ export class QRScannerModal {
     private qrScanner: QRScanner,
     private toastProvider: ToastProvider,
     private viewCtrl: ViewController,
-    private statusBar: StatusBar,
     private platform: Platform,
+    private vibration: Vibration,
   ) {
     this.scanQrCode();
   }
@@ -35,10 +38,19 @@ export class QRScannerModal {
       if (status.authorized) {
         this.ionApp = <HTMLElement>document.getElementsByTagName("ion-app")[0];
         let scanSub = this.qrScanner.scan().subscribe((qrCode: string) => {
-          let qrCodeJson: object = JSON.parse(qrCode);
+          this.vibration.vibrate(constants.VIBRATION_TIME_MS);
+
+          let response;
+
+          try {
+            response = JSON.parse(qrCode);
+          } catch {
+            response = qrCode;
+          }
+
           this.hideCamera();
           scanSub.unsubscribe();
-          this.dismiss(qrCodeJson);
+          this.dismiss(response);
         });
 
         this.ionApp.classList.add('transparent');

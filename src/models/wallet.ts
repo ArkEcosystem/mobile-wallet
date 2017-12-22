@@ -7,6 +7,14 @@ import * as constants from '@app/app.constants';
 
 import { PublicKey } from 'ark-ts';
 
+export interface QRCodeScheme {
+  address?: string;
+  amount?: string;
+  label?: string;
+  vendorField?: string;
+  passphrase?: string;
+}
+
 export interface AccountBackup {
   address?: string;
   publicKey?: string;

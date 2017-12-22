@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-import { Wallet } from '@models/model';
+import { Wallet, QRCodeScheme } from '@models/model';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
@@ -34,15 +34,15 @@ export class WalletImportPage {
   }
 
   scanQRCode() {
-    this.qrScanner.open();
+    this.qrScanner.open(true);
   }
 
-  onScanQRCode(qrCode: object) {
-    if (qrCode['a'] || qrCode['passphrase']) {
+  onScanQRCode(qrCode: QRCodeScheme) {
+    if (qrCode.address || qrCode.passphrase) {
       let privateKey = null;
       let publicKey = null;
-      let address = qrCode['a'] || null;
-      let passphrase = qrCode['passphrase'] || null;
+      let address = qrCode.address || null;
+      let passphrase = qrCode.passphrase || null;
       if (address) {
         if (PublicKey.validateAddress(address, this.currentNetwork)) {
           publicKey = PublicKey.fromAddress(address);
@@ -107,6 +107,8 @@ export class WalletImportPage {
           newWallet.address = address;
           newWallet.publicKey = publicKey.toHex();
         });
+    } else {
+      this.toastProvider.error('QR_CODE.INVALID_QRCODE');
     }
   }
 
