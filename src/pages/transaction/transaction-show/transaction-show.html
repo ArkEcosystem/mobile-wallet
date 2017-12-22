@@ -2,6 +2,11 @@
 
   <ion-navbar>
     <ion-title>{{ 'TRANSACTIONS_PAGE.TRANSACTION' | translate }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only *ngIf="showOptions" (click)="presentOptions()">
+        <ion-icon name="md-more"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>

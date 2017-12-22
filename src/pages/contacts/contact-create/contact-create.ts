@@ -26,26 +26,26 @@ export class ContactCreatePage {
   public contact: Contact;
   public address: string;
 
-  private _network;
+  private currentNetwork;
 
   constructor(
-    private _navCtrl: NavController,
-    private _navParams: NavParams,
-    private _userDataProvider: UserDataProvider,
+    private navCtrl: NavController,
+    private navParams: NavParams,
+    private userDataProvider: UserDataProvider,
     private toastProvider: ToastProvider,
   ) {
-    let param = this._navParams.get('contact');
-    this.address = this._navParams.get('address');
+    let param = this.navParams.get('contact');
+    this.address = this.navParams.get('address');
 
     this.isNew = lodash.isEmpty(param);
     this.contact = this.isNew ? new Contact() : param;
-    this._network = this._userDataProvider.currentNetwork;
+    this.currentNetwork = this.userDataProvider.currentNetwork;
   }
 
   validateAddress() {
-    let validate = PublicKey.validateAddress(this.address, this._network);
+    let validate = PublicKey.validateAddress(this.address, this.currentNetwork);
     this.createContactForm.form.controls['address'].setErrors({ incorret: !validate });
-    console.log(validate, this.address, this._network);
+    console.log(validate, this.address, this.currentNetwork);
     if (validate) this.createContactForm.form.controls['address'].setErrors(null);
 
     return validate;
@@ -57,15 +57,15 @@ export class ContactCreatePage {
     }
 
     if (this.isNew) {
-      this._userDataProvider.addContact(this.address, this.contact);
+      this.userDataProvider.addContact(this.address, this.contact);
     } else {
-      this._userDataProvider.editContact(this.address, this.contact);
+      this.userDataProvider.editContact(this.address, this.contact);
     }
 
-    this._navCtrl.push('ContactListPage')
+    this.navCtrl.push('ContactListPage')
       .then(() => {
-        this._navCtrl.remove(this._navCtrl.getActive().index - 1, 1).then(() => {
-          this._navCtrl.remove(this._navCtrl.getActive().index - 1, 1);
+        this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1).then(() => {
+          this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1);
         });
       });
   }

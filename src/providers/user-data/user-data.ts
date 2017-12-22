@@ -65,7 +65,7 @@ export class UserDataProvider {
   }
 
   getContactByAddress(address: string): Contact {
-    if (lodash.isNil(this.profiles)) return;
+    if (lodash.isNil(this.profiles) || !address) return;
 
     let contacts = lodash.map(this.profiles, (p) => p['contacts']);
     let merged = Object.assign({}, ...contacts);

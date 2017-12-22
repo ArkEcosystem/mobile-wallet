@@ -28,7 +28,6 @@ export class ContactsAutoCompleteService implements AutoCompleteService {
         return { address: address.toString(), name: label.toString() };
       }
     });
-    console.log(contacts, wallets);
 
     let results = contacts.concat(wallets).sort((a, b) => {
       if (a.name < b.name) {

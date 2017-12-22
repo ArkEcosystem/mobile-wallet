@@ -207,6 +207,13 @@ export class TransactionSendPage {
       ]),
       amountEquivalent: new FormControl(''),
       smartBridge: new FormControl('')
+    });
+
+    let address = this.navParams.get('address') || '';
+    this.contact = this.userDataProvider.getContactByAddress(address);
+
+    this.sendForm.patchValue({
+      recipientAddress: address,
     })
   }
 

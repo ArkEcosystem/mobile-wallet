@@ -141,6 +141,7 @@
   "STATUS": "Status",
   "TRANSACTIONS_PAGE": {
     "2ND_SIGNATURE_CREATION": "2nd Signature Creation",
+    "ADD_ADDRESS_TO_CONTACTS": "Add {{ address }} to contacts",
     "AMOUNT": "Amount",
     "CONFIRMATIONS": "Confirmations",
     "CONTACT_NAME": "New Contact's Name (optional)",
@@ -166,6 +167,7 @@
     "SECOND_PASSPHRASE_NOT_ENTERED": "The second passphrase has not entered",
     "SEND": "Send",
     "SEND_ALL": "Send All",
+    "SEND_TOKEN_TO_ADDRESS": "Send {{ token }} to {{ address }}",
     "SENT": "Sent",
     "SENT_TO": "Sent to",
     "SEND_TRANSACTION": "Send Transaction",
