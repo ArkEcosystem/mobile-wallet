@@ -36,6 +36,7 @@ export class Wallet extends Account {
   cipherSecondKey?: any;
   isWatchOnly?: boolean;
   iv?: any;
+  isCold?: boolean;
   // bip38?: string;
   // secondBip38?: string;
 
@@ -66,10 +67,11 @@ export class Wallet extends Account {
     this.cipherKey = null;
     this.cipherSecondKey = null;
     this.isWatchOnly = false;
+    this.isCold = false;
   }
 
   loadTransactions(transactions: any) {
-    if (!Array.isArray(transactions)) return;
+    if (!Array.isArray(transactions) || transactions.length <= 0) return;
 
     this.transactions = [];
 

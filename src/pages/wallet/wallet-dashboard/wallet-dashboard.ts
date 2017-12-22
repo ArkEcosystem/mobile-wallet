@@ -47,7 +47,7 @@ export class WalletDashboardPage {
   private newDelegateName: string;
   private newSecondPassphrase: string;
 
-  public emptyTransactions: boolean = true;
+  public emptyTransactions: boolean = false;
   public minConfirmations = constants.WALLET_MIN_NUMBER_CONFIRMATIONS;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
@@ -299,22 +299,25 @@ export class WalletDashboardPage {
   }
 
   private refreshTransactions(save: boolean = true, loader?: Loading) {
-    this.arkApiProvider.api.transaction.list({
-      recipientId: this.address,
-      senderId: this.address,
-      orderBy: 'timestamp:desc',
-    })
-    .finally(() => {
-      if (loader) loader.dismiss();
-      this.emptyTransactions = lodash.isEmpty(this.wallet.transactions);
-    })
-    .takeUntil(this.unsubscriber$)
-    .subscribe((response) => {
-      if (response && response.success) {
-        this.wallet.loadTransactions(response.transactions);
-        this.wallet.lastUpdate = new Date().getTime();
-        if (save) this.saveWallet();
-      }
+    this.zone.runOutsideAngular(() => {
+      this.arkApiProvider.api.transaction.list({
+        recipientId: this.address,
+        senderId: this.address,
+        orderBy: 'timestamp:desc',
+      })
+      .finally(() => this.zone.run(() => {
+        if (loader) loader.dismiss();
+        this.emptyTransactions = lodash.isEmpty(this.wallet.transactions);
+      }))
+      .takeUntil(this.unsubscriber$)
+      .subscribe((response) => {
+        if (response && response.success) {
+          this.wallet.loadTransactions(response.transactions);
+          this.wallet.lastUpdate = new Date().getTime();
+          this.wallet.isCold = lodash.isEmpty(response.transactions);
+          if (save) this.saveWallet();
+        }
+      });
     });
   }
 
@@ -373,9 +376,8 @@ export class WalletDashboardPage {
     let transactions = this.wallet.transactions;
     this.emptyTransactions = lodash.isEmpty(transactions);
 
-    if (!lodash.isEmpty(transactions)) {
-      this.wallet.loadTransactions(transactions);
-    } else {
+    // search for new transactions immediately
+    if (this.emptyTransactions && !this.wallet.isCold) {
       this.translateService.get('TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS').takeUntil(this.unsubscriber$).subscribe((translation) => {
         let loader = this.loadingCtrl.create({
           content: `${translation}...`,
