@@ -32,6 +32,7 @@ export const API_MARKET_TICKER_ENDPOINT = 'data/pricemultifull?fsyms=ARK&tsyms='
 // GENERIC
 export const VIBRATION_TIME_MS = 30;
 export const VIBRATION_TIME_LONG_MS = 200;
+export const APP_TIMEOUT_DESTROY = 60000;
 
 // ARK
 export const PRIVACY_POLICY_URL = 'https://ark.io/PrivacyPolicy.txt';

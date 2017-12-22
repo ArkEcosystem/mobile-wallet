@@ -21,6 +21,8 @@ import 'rxjs/add/operator/takeUntil';
 
 import { Wallet, Profile } from '@models/model';
 import * as arkts from 'ark-ts';
+import * as constants from '@app/app.constants';
+import moment from 'moment';
 
 @Component({
   templateUrl: 'app.html',
@@ -35,6 +37,8 @@ export class MyApp {
   private unsubscriber$: Subject<void> = new Subject<void>();
   private exitText = null;
   private logoutText = null;
+
+  private lastPauseTimestamp: Date;
 
   @ViewChild(Nav) nav: Nav;
 
@@ -134,16 +138,25 @@ export class MyApp {
         this.statusBar.show();
       }
 
+      this.platform.pause.subscribe(() => {
+        this.lastPauseTimestamp = moment().toDate();
+      });
+
       this.platform.resume.subscribe(() => {
-        const overlay = this.app._appRoot._overlayPortal.getActive();
-        if (overlay && overlay.dismiss) {
-          overlay.dismiss();
+        let now = moment();
+        let diff = now.diff(this.lastPauseTimestamp);
+
+        if (diff >= constants.APP_TIMEOUT_DESTROY) {
+          const overlay = this.app._appRoot._overlayPortal.getActive();
+          if (overlay && overlay.dismiss) {
+            overlay.dismiss();
+          }
+          if (this.menuCtrl && this.menuCtrl.isOpen()) {
+            this.menuCtrl.close();
+          }
+          this.app.navPop();
+          this.logout();
         }
-        if (this.menuCtrl && this.menuCtrl.isOpen()) {
-          this.menuCtrl.close();
-        }
-        this.app.navPop();
-        this.logout();
       });
 
       this.keyboard.hideKeyboardAccessoryBar(true);
