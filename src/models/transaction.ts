@@ -11,6 +11,14 @@ const TX_TYPES = {
   4: 'TRANSACTIONS.MULTISIGNATURE_CREATION',
 };
 
+const TX_TYPES_ACTIVITY = {
+  0: 'TRANSACTIONS_PAGE.SENT_TO',
+  1: 'TRANSACTIONS_PAGE.SECOND_SIGNATURE_CREATION',
+  2: 'TRANSACTIONS_PAGE.DELEGATE_REGISTRATION',
+  3: 'DELEGATES_PAGE.VOTE',
+  4: 'TRANSACTIONS.MULTISIGNATURE_CREATION',
+};
+
 export interface SendTransactionForm {
   amount?: number;
   amountEquivalent?: number;
@@ -71,10 +79,28 @@ export class Transaction extends TransactionModel {
     return currentTimestamp;
   }
 
+  getAppropriateAddress() {
+    if (this.isTransfer()) {
+      if (this.isSender()) {
+        return this.recipientId;
+      } else if (this.isReceiver(this.address)) {
+        return this.senderId;
+      }
+    }
+  }
+
   getTypeLabel(): string {
     let type = TX_TYPES[this.type];
 
     if (this.isTransfer() && !this.isSender()) type = 'TRANSACTIONS_PAGE.RECEIVED';
+
+    return type;
+  }
+
+  getActivityLabel() {
+    let type = TX_TYPES_ACTIVITY[this.type];
+
+    if (this.isTransfer() && !this.isSender()) type = 'TRANSACTIONS_PAGE.RECEIVED_FROM';
 
     return type;
   }
