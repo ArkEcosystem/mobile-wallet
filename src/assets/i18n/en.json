@@ -84,6 +84,7 @@
     "PEER_SUCCESSFULLY_CHANGED": "Peer successfully changed",
     "NETWORK_STATUS": "Network Status",
     "NETWORK_TYPE": "Network Type",
+    "INTERNET_DESCONNECTED": "Unable to connect to the Internet!",
     "PEER": "Peer"
   },
   "NEXT": "Next",

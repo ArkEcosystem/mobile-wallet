@@ -3,6 +3,7 @@ import { Platform, Config, Nav, MenuController, AlertController, App, Events } f
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Keyboard } from '@ionic-native/keyboard';
+import { Network } from '@ionic-native/network';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { AuthProvider } from '@providers/auth/auth';
@@ -26,7 +27,7 @@ import moment from 'moment';
 
 @Component({
   templateUrl: 'app.html',
-  providers: [ScreenOrientation],
+  providers: [ScreenOrientation, Network],
 })
 export class MyApp {
   public rootPage = 'LoginPage';
@@ -60,6 +61,7 @@ export class MyApp {
     private screenOrientation: ScreenOrientation,
     private app: App,
     private events: Events,
+    private ionicNetwork: Network,
   ) {
 
     platform.ready().then(() => {
@@ -266,9 +268,14 @@ export class MyApp {
     });
   }
 
+  private verifyNetwork() {
+    this.ionicNetwork.onDisconnect().takeUntil(this.unsubscriber$).subscribe(() => this.toastProvider.error('NETWORKS_PAGE.INTERNET_DESCONNECTED'));
+  }
+
   ngOnInit() {
     this.onUserLogin();
     this.onUserLogout();
+    this.verifyNetwork();
 
     this.onCreateWallet();
     this.arkApiProvider.onUpdateDelegates$
