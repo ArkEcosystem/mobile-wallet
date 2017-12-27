@@ -111,15 +111,17 @@ export class WalletDashboardPage {
         },
       };
 
+      let delegatesItem = {
+        text: translation['DELEGATES_PAGE.DELEGATES'],
+        role: 'label',
+        icon: !this.platform.is('ios') ? 'ios-people-outline' : '',
+        handler: () => {
+          this.presentDelegatesModal();
+        },
+      };
+
       let buttons = [
         {
-          text: translation['DELEGATES_PAGE.DELEGATES'],
-          role: 'label',
-          icon: !this.platform.is('ios') ? 'ios-people-outline' : '',
-          handler: () => {
-            this.presentDelegatesModal();
-          },
-        }, {
           text: translation['WALLETS_PAGE.LABEL'],
           role: 'label',
           icon: !this.platform.is('ios') ? 'ios-bookmark-outline' : '',
@@ -138,6 +140,7 @@ export class WalletDashboardPage {
 
       // DEPRECATED:
       // if (!this.wallet.isWatchOnly && !this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
+      if (!this.wallet.isWatchOnly) buttons.unshift(delegatesItem); // "Watch Only" address can't vote
       if (!this.wallet.isWatchOnly && !this.wallet.isDelegate) buttons.unshift(delegateItem);
 
       let action = this.actionSheetCtrl.create({buttons});
