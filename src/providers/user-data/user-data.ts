@@ -157,7 +157,7 @@ export class UserDataProvider {
       wallet.cipherKey = cipherKey;
     }
 
-    if (!profile.wallets[wallet.address]) {
+    if (!profile.wallets[wallet.address] || profile.wallets[wallet.address].isWatchOnly) {
       this.onCreateWallet$.next(wallet);
       return this.saveWallet(wallet, profileId);
     }
