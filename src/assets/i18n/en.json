@@ -166,7 +166,7 @@
     "RECEIVED_FROM": "Received from",
     "RECIPIENT": "Recipient",
     "SECOND_SIGNATURE_CREATION": "Second Signature Creation",
-    "SECOND_PASSPHRASE_NOT_ENTERED": "The second passphrase has not entered",
+    "SECOND_PASSPHRASE_NOT_ENTERED": "The second passphrase has not been entered",
     "SEND": "Send",
     "SEND_ALL": "Send All",
     "SEND_TOKEN_TO_ADDRESS": "Send {{ token }} to {{ address }}",
