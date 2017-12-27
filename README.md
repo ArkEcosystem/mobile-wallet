@@ -14,10 +14,6 @@ ARK’s mobile wallet is a hybrid application (using the same codebase for Andro
   1. Open and click the eye at the bottom
   1. Enter the ID **0894ffa2** and “View App”
 
-## Screenshots
-
-
-
 ## Features
 
 - Import your existing passphrase (import by QR Scanner or write/paste your passphrase).
