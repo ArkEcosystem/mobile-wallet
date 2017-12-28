@@ -108,7 +108,7 @@ export class ContactListPage {
 
     this.contacts = this.profile.contacts;
     this.addresses = lodash(this.contacts).mapValues('name').transform((result, key, value) => {
-      result.push({ index: key, key, value });
+      result.push({ index: value, value, key });
     }, []).value();
   }
 
