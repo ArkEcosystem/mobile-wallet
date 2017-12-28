@@ -37,3 +37,4 @@ export const APP_TIMEOUT_DESTROY = 60000;
 // ARK
 export const PRIVACY_POLICY_URL = 'https://ark.io/PrivacyPolicy.txt';
 export const URI_QRCODE_SCHEME_PREFIX = "ark:";
+export const NUM_ACTIVE_DELEGATES = 51;
