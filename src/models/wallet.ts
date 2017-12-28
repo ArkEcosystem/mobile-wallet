@@ -5,8 +5,6 @@ import { Transaction } from '@models/transaction';
 
 import * as constants from '@app/app.constants';
 
-import { PublicKey } from 'ark-ts';
-
 export interface QRCodeScheme {
   address?: string;
   amount?: string;
@@ -98,9 +96,8 @@ export class Wallet extends Account {
   getBalanceEquivalent(currency: MarketCurrency) {
     let balance = this.getBalance() || 0;
     let price = currency ? currency.price : 0;
-    let totalAmount = balance * price;
 
-    return totalAmount;
+    return balance * price;
   }
 
 }

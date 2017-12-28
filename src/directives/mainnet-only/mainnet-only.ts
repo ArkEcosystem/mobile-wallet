@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Renderer, OnInit } from '@angular/core';
+import { Directive, ElementRef, OnInit } from '@angular/core';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { NetworkType } from 'ark-ts/model';
 

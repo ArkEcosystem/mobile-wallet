@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform, IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
+import { Platform, IonicPage, NavController, AlertController, ActionSheetController } from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 
@@ -27,7 +27,6 @@ export class ContactListPage {
   constructor(
     private platform: Platform,
     private navCtrl: NavController,
-    private navParams: NavParams,
     private userDataProvider: UserDataProvider,
     private translateService: TranslateService,
     private alertCtrl: AlertController,

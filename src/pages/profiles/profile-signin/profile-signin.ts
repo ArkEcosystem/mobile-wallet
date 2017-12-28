@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ModalController, ActionSheetController } from 'ionic-angular';
+import {Component, OnDestroy, ViewChild} from '@angular/core';
+import { IonicPage, NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -22,7 +22,7 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
   selector: 'page-profile-signin',
   templateUrl: 'profile-signin.html',
 })
-export class ProfileSigninPage {
+export class ProfileSigninPage implements OnDestroy {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
 
   public profiles;
@@ -41,7 +41,6 @@ export class ProfileSigninPage {
     private authProvider: AuthProvider,
     private toastProvider: ToastProvider,
     private alertCtrl: AlertController,
-    private modalCtrl: ModalController,
     private actionSheetCtrl: ActionSheetController,
   ) { }
 
@@ -90,7 +89,7 @@ export class ProfileSigninPage {
   }
 
   delete(profileId: string) {
-    return this.userDataProvider.removeProfileById(profileId).takeUntil(this.unsubscriber$).subscribe((result) => {
+    return this.userDataProvider.removeProfileById(profileId).takeUntil(this.unsubscriber$).subscribe(() => {
       this.load();
     });
   }

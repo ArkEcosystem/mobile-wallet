@@ -22,8 +22,6 @@ export class TransactionShowPage {
   public equivalentAmount: number = 0;
   public equivalentSymbol: string;
 
-  public recipientLabel: string;
-  public senderLabel: string;
   public showOptions: boolean = false;
 
   private currentWallet: Wallet;

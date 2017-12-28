@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 
@@ -39,7 +39,7 @@ export class SettingsDataProvider {
       "idr": "Indonesian Rupiah",
       "mxn": "Mexican Peso",
     },
-  }
+  };
 
   constructor(private _storageProvider: StorageProvider) {
     this.load().subscribe((data) => {

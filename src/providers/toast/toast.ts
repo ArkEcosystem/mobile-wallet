@@ -16,7 +16,7 @@ export class ToastProvider {
     WARN: 2,
     LOG: 3,
     DEBUG: 4
-  }
+  };
 
   private TypeName = [
     'error',
@@ -24,7 +24,7 @@ export class ToastProvider {
     'warn',
     'log',
     'debug'
-  ]
+  ];
 
   constructor(
     private toastCtrl: ToastController,

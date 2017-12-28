@@ -43,7 +43,7 @@ export class RegisterSecondPassphrasePage {
     if (this.passphrase !== this.repassphrase) {
       this.isWrong = true;
       return;
-    };
+    }
 
     this.dismiss(this.passphrase);
   }

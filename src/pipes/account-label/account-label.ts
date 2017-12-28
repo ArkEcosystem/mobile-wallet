@@ -1,8 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { UserDataProvider } from '@providers/user-data/user-data';
 
-import lodash from 'lodash';
-
 @Pipe({
   name: 'accountLabel',
 })

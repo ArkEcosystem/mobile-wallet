@@ -114,7 +114,7 @@ export class ArkApiProvider {
 
     return Observable.create((observer) => {
 
-      this._api.delegate.list({ limit, offset }).expand((project) => {
+      this._api.delegate.list({ limit, offset }).expand(() => {
         let req = this._api.delegate.list({ limit, offset });
         return currentPage < totalPages ? req : Observable.empty();
       }).do((response) => {

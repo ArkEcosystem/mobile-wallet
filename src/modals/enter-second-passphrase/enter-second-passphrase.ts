@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, ViewController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -11,8 +11,6 @@ export class EnterSecondPassphraseModal {
   public passphrase: string;
 
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
     private viewCtrl: ViewController,
   ) {
   }

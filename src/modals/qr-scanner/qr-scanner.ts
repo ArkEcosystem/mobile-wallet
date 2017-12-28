@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import { App, IonicPage, ViewController, Events, Platform } from 'ionic-angular';
+import { IonicPage, ViewController, Events } from 'ionic-angular';
 
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
 
 import { ToastProvider } from '@providers/toast/toast';
-import { setTimeout } from 'timers';
 import { Vibration } from '@ionic-native/vibration';
 
-import lodash from 'lodash';
 import * as constants from '@app/app.constants';
 
 @IonicPage()
@@ -21,12 +19,10 @@ export class QRScannerModal {
   private ionApp: HTMLElement;
 
   constructor(
-    private app: App,
     private events: Events,
     private qrScanner: QRScanner,
     private toastProvider: ToastProvider,
     private viewCtrl: ViewController,
-    private platform: Platform,
     private vibration: Vibration,
   ) {
     this.scanQrCode();
@@ -63,7 +59,7 @@ export class QRScannerModal {
         this.dismiss();
       }
     })
-    .catch((e: any) => {
+    .catch(() => {
       this.toastProvider.error('QR_CODE.PROBLEM_TEXT');
       this.dismiss();
     });

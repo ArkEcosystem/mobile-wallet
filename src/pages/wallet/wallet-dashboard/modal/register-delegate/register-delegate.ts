@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -10,7 +10,7 @@ import lodash from 'lodash';
   selector: 'page-register-delegate',
   templateUrl: 'register-delegate.html',
 })
-export class RegisterDelegatePage {
+export class RegisterDelegatePage implements OnDestroy {
 
   public fee: number;
   public symbol: string;

@@ -7,9 +7,9 @@ import { Platform } from 'ionic-angular';
 export class HideOnKeyboardOpenDirective {
 
   constructor(
-    private el: ElementRef,
     private renderer: Renderer2,
     private platform: Platform,
+    el: ElementRef
   ) {
     if (!this.platform.is('ios')) {
       this.renderer.addClass(el.nativeElement, 'hide-on-keyboard-open');

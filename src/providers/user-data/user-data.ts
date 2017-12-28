@@ -13,7 +13,6 @@ import { v4 as uuid } from 'uuid';
 import { Network } from 'ark-ts/model';
 
 import * as constants from '@app/app.constants';
-import { PrivateKey, NetworkType } from 'ark-ts';
 
 @Injectable()
 export class UserDataProvider {
@@ -184,8 +183,8 @@ export class UserDataProvider {
         }
 
         this.saveWallet(wallet, profileId);
-      };
-    };
+      }
+    }
 
     return this.saveProfiles();
   }
@@ -246,7 +245,7 @@ export class UserDataProvider {
         if (!networks || lodash.isEmpty(networks)) {
           const uniqueDefaults = {};
 
-          for (var i = 0; i < defaults.length; i++) {
+          for (let i = 0; i < defaults.length; i++) {
             uniqueDefaults[this.generateUniqueId()] = defaults[i];
           }
 

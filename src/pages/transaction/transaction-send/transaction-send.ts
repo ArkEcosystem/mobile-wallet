@@ -1,8 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Config } from 'ionic-angular';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms'
 
-import { Contact, Wallet, MarketTicker, MarketCurrency, Transaction, SendTransactionForm, WalletKeys } from '@models/model';
+import { Contact, Wallet, MarketTicker, MarketCurrency, SendTransactionForm, WalletKeys } from '@models/model';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { MarketDataProvider } from '@providers/market-data/market-data';
@@ -16,12 +16,11 @@ import { PublicKey } from 'ark-ts/core';
 import { Network, Fees } from 'ark-ts/model';
 
 import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
-import lodash from 'lodash';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
 import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';
 import * as constants from '@app/app.constants';
-import { PrivateKey, TransactionSend } from 'ark-ts';
+import { TransactionSend } from 'ark-ts';
 
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
 
@@ -31,7 +30,7 @@ import { AutoCompleteComponent } from 'ionic2-auto-complete';
   templateUrl: 'transaction-send.html',
   providers: [UnitsSatoshiPipe],
 })
-export class TransactionSendPage {
+export class TransactionSendPage implements OnInit{
   @ViewChild('sendTransactionForm') sendTransactionHTMLForm: HTMLFormElement;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
@@ -54,7 +53,6 @@ export class TransactionSendPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private config: Config,
     private userDataProvider: UserDataProvider,
     private arkApiProvider: ArkApiProvider,
     private marketDataProvider: MarketDataProvider,
@@ -126,7 +124,7 @@ export class TransactionSendPage {
     return isValid;
   }
 
-  createContact(saveContactIfValid: boolean = false) {
+  createContact() {
     if (this.contact) {
       return;
     }
@@ -167,7 +165,7 @@ export class TransactionSendPage {
 
     this.arkApiProvider.api.transaction.createTransaction(data).subscribe((transaction) => {
       this.confirmTransaction.open(transaction, keys);
-    }, (error) => {
+    }, () => {
       this.toastProvider.error('TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR');
     });
   }
@@ -193,10 +191,6 @@ export class TransactionSendPage {
       })
     })
   }
-
-  // ngOnDestroy() {
-  //   this.config.set('android', 'scrollPadding', false);
-  // }
 
   ngOnInit(): void {
     this.sendForm = new FormGroup({

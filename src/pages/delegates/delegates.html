@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-title *ngIf="!isSearch">{{ 'DELEGATES_PAGE.DELEGATES' | translate }}</ion-title>
-    <ion-searchbar *ngIf="isSearch" (ionInput)="onInputSearch($event)" [(ngModel)]="searchQuery.username" spellcheck="false" animated="true" showCancelButton="false" placeholder="{{ 'SEARCH' | translate }}"></ion-searchbar>
+    <ion-searchbar *ngIf="isSearch" [(ngModel)]="searchQuery.username" spellcheck="false" animated="true" showCancelButton="false" placeholder="{{ 'SEARCH' | translate }}"></ion-searchbar>
 
     <ion-buttons end>
       <button ion-button icon-only (click)="toggleSearchBar()">

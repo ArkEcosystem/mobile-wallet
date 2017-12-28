@@ -71,12 +71,10 @@ export class Transaction extends TransactionModel {
   }
 
   getTimestamp() {
-    var blockchainDate = arkConfig.blockchain.date;
-    var blockchainTime = blockchainDate.getTime() / 1000;
+    const blockchainDate = arkConfig.blockchain.date;
+    const blockchainTime = blockchainDate.getTime() / 1000;
 
-    let currentTimestamp = this.timestamp + blockchainTime;
-
-    return currentTimestamp;
+    return this.timestamp + blockchainTime;
   }
 
   getAppropriateAddress() {

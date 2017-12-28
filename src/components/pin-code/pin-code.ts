@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ModalController, NavController, LoadingController, Loading } from 'ionic-angular';
+import { ModalController, NavController, LoadingController } from 'ionic-angular';
 import { Wallet, WalletKeys } from '@models/model';
 import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
@@ -17,8 +17,6 @@ export class PinCodeComponent {
 
   @Output('onSuccess') onSuccess: EventEmitter<WalletKeys> = new EventEmitter();
   @Output('onWrong') onWrong: EventEmitter<void> = new EventEmitter();
-
-  private loader: Loading;
 
   constructor(
     private userDataProvider: UserDataProvider,
@@ -116,7 +114,7 @@ export class PinCodeComponent {
               } else {
                 this.toastProvider.error(oldPassword ? 'PIN_CODE.PIN_UPDATED_ERROR_TEXT' : 'PIN_CODE.PIN_CREATED_ERROR_TEXT');
               }
-            })
+            });
 
             validateModal.present();
           } else {
@@ -128,7 +126,7 @@ export class PinCodeComponent {
       } else if (nextPage) {
         this.navCtrl.push(nextPage);
       }
-    }
+    };
     if (!oldPassword) {
       this.authProvider.getMasterPassword().do(createModal).subscribe();
     } else {

@@ -1,7 +1,6 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import {Component, OnDestroy, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform, Content, Slides } from 'ionic-angular';
 
-import { Chart } from 'chart.js';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
@@ -24,7 +23,7 @@ import { BaseChartDirective } from 'ng2-charts';
   selector: 'page-wallet-list',
   templateUrl: 'wallet-list.html',
 })
-export class WalletListPage {
+export class WalletListPage implements OnDestroy{
   @ViewChild('walletSlider') slider: Slides;
   @ViewChild(Content) content: Content;
   @ViewChild(BaseChartDirective) chart: any;
@@ -41,15 +40,14 @@ export class WalletListPage {
   public marketHistory: MarketHistory;
   public marketTicker: MarketTicker;
 
-  private forceChartRefreshListener;
-  private chartOptions: any;
-  private chartLabels: any;
-  private chartData: any;
-  private chartColors: any = [{
+  public chartOptions: any;
+  public chartLabels: any;
+  public chartData: any;
+  public chartColors: any = [{
     borderColor: '#394cf8'
   }, {
     borderColor: '#f3a447'
-  }]
+  }];
 
   private unsubscriber$: Subject<void> = new Subject<void>();
 
@@ -69,7 +67,7 @@ export class WalletListPage {
     this.userDataProvider.clearCurrentWallet();
   }
 
-  onSlideChanged(event) {
+  onSlideChanged() {
     this.selectedWallet = this.userDataProvider.getWalletByAddress(this.wallets[this.slider.realIndex].address);
   }
 
@@ -132,7 +130,7 @@ export class WalletListPage {
 
 
       showModal.present();
-    })
+    });
 
     modal.present();
   }
@@ -155,10 +153,10 @@ export class WalletListPage {
     modal.onDidDismiss((password) => {
       if (!password) return;
 
-      this.userDataProvider.addWallet(wallet, account.mnemonic, password).takeUntil(this.unsubscriber$).subscribe((response) => {
+      this.userDataProvider.addWallet(wallet, account.mnemonic, password).takeUntil(this.unsubscriber$).subscribe(() => {
         this.loadWallets();
       });
-    })
+    });
 
     modal.present();
   }

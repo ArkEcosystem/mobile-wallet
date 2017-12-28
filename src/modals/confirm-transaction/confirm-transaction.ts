@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -18,7 +18,7 @@ import lodash from 'lodash';
   selector: 'modal-confirm-transaction',
   templateUrl: 'confirm-transaction.html',
 })
-export class ConfirmTransactionModal {
+export class ConfirmTransactionModal implements OnDestroy {
 
   public transaction: Transaction;
   public address: string;
@@ -49,7 +49,7 @@ export class ConfirmTransactionModal {
 
   broadcast() {
     this.arkApiProvider.postTransaction(this.transaction)
-      .subscribe((response) => {
+      .subscribe(() => {
         this.dismiss(true);
       }, (error) => {
         this.dismiss(false, error.error);

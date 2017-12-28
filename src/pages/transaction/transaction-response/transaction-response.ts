@@ -76,14 +76,14 @@ export class TransactionResponsePage {
     modal.onDidDismiss((password) => {
       if (!password) return;
 
-      this.userDataProvider.encryptSecondPassphrase(this.wallet, password, this.keys.secondPassphrase).subscribe((data) => {
+      this.userDataProvider.encryptSecondPassphrase(this.wallet, password, this.keys.secondPassphrase).subscribe(() => {
         this.wallet = this.userDataProvider.getWalletByAddress(this.wallet.address);
 
         this.showKeepSecondPassphrase = false;
         if (this.content) this.content.resize();
         this.presentEncryptedAlert();
       });
-    })
+    });
 
     modal.present();
   }

@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
-import { App, ModalController } from 'ionic-angular';
 
-import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 
 import * as constants from '@app/app.constants';
-import lodash from 'lodash';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -15,16 +13,14 @@ export class AuthProvider {
 
   public onLogin$: Subject<string> = new Subject();
   public onLogout$: Subject<boolean> = new Subject();
-  public onSeeIntro$: Subject<void> = new Subject();
 
   public loggedProfileId: string;
 
   constructor(
-    private storage: StorageProvider,
-    private app: App,
+    private storage: StorageProvider
   ) { }
 
-  login(profileId: string, password?: string): Observable<boolean> {
+  login(profileId: string): Observable<boolean> {
     return Observable.create((observer) => {
       this.loggedProfileId = profileId;
       this.storage.set(constants.STORAGE_ACTIVE_PROFILE, profileId);
