@@ -45,7 +45,6 @@ export class ContactCreatePage {
   validateAddress() {
     let validate = PublicKey.validateAddress(this.address, this.currentNetwork);
     this.createContactForm.form.controls['address'].setErrors({ incorret: !validate });
-    console.log(validate, this.address, this.currentNetwork);
     if (validate) this.createContactForm.form.controls['address'].setErrors(null);
 
     return validate;

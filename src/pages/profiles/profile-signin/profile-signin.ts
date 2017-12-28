@@ -128,7 +128,6 @@ export class ProfileSigninPage {
       result.push({ index: id, key: data[0], value: networkName, highlight: isMainnet });
     }, []).value();
 
-    console.log(this.addresses);
   }
 
   isEmpty() {

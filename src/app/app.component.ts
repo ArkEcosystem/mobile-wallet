@@ -173,7 +173,6 @@ export class MyApp {
     // Set the default language for translation strings, and the current language.
     this.translateService.setDefaultLang('en');
     this.settingsDataProvider.settings.subscribe(settings => {
-      console.log(settings.language);
       this.translateService.use(settings.language); // Set your language here
 
       this.translateService.get('BACK_BUTTON_TEXT').subscribe(translate => {
@@ -292,4 +291,3 @@ export class MyApp {
   }
 
 }
-
