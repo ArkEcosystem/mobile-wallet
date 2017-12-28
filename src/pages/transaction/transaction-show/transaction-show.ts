@@ -60,7 +60,7 @@ export class TransactionShowPage {
     let address = this.transaction.getAppropriateAddress();
     let addressTruncated = this.TruncateMiddlePipe.transform(address, 10, null);
     let contact = this.userDataProvider.getContactByAddress(address);
-    let contactOrAddress = contact['name'] || addressTruncated;
+    let contactOrAddress = contact ? contact['name'] : addressTruncated;
 
     this.translateService.get([
       'TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS',
