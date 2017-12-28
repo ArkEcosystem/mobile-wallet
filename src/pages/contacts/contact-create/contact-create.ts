@@ -25,6 +25,7 @@ export class ContactCreatePage {
 
   public contact: Contact;
   public address: string;
+  public contactName: string;
 
   private currentNetwork;
 
@@ -39,6 +40,7 @@ export class ContactCreatePage {
 
     this.isNew = lodash.isEmpty(param);
     this.contact = this.isNew ? new Contact() : param;
+    this.contactName = this.contact.name;
     this.currentNetwork = this.userDataProvider.currentNetwork;
   }
 
@@ -55,6 +57,7 @@ export class ContactCreatePage {
       return;
     }
 
+    this.contact.name = this.contactName;
     if (this.isNew) {
       this.userDataProvider.addContact(this.address, this.contact);
     } else {

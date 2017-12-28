@@ -10,7 +10,7 @@
   <form #createContactForm="ngForm">
     <ion-item>
       <ion-label floating>{{ 'NAME' | translate }}</ion-label>
-      <ion-input type="text" name="name" [(ngModel)]="contact.name" (keyup)="validateAddress()" required></ion-input>
+      <ion-input type="text" name="name" [(ngModel)]="contactName" (keyup)="validateAddress()" required></ion-input>
     </ion-item>
 
     <ion-item class="item-address">
