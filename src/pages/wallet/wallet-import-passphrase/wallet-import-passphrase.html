@@ -13,7 +13,7 @@
         <form #importWalletPassphrase="ngForm">
           <ion-item>
             <ion-label floating>{{ 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE' | translate }}</ion-label>
-            <ion-textarea name="passphrase" rows="2" [(ngModel)]="passphrase" required></ion-textarea>
+            <ion-textarea name="passphrase" rows="2" [(ngModel)]="passphrase" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required></ion-textarea>
           </ion-item>
         </form>
       </ion-col>
