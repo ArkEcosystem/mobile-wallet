@@ -110,7 +110,6 @@ export class ContactListPage {
     this.addresses = lodash(this.contacts).mapValues('name').transform((result, key, value) => {
       result.push({ index: key, key, value });
     }, []).value();
-    console.log(this.addresses);
   }
 
   ionViewDidLoad() {
