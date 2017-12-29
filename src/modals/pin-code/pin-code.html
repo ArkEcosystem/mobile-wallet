@@ -34,46 +34,46 @@
         <ion-grid class="grid-keyboard">
           <ion-row>
             <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(1)">1</button>
+              <a ion-button round outline (click)="add(1)">1</a>
             </ion-col>
             <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(2)">2</button>
+              <a ion-button round outline (click)="add(2)">2</a>
             </ion-col>
             <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(3)">3</button>
-            </ion-col>
-          </ion-row>
-          <ion-row nowrap>
-            <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(4)">4</button>
-            </ion-col>
-            <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(5)">5</button>
-            </ion-col>
-            <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(6)">6</button>
+              <a ion-button round outline (click)="add(3)">3</a>
             </ion-col>
           </ion-row>
           <ion-row nowrap>
             <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(7)">7</button>
+              <a ion-button round outline (click)="add(4)">4</a>
             </ion-col>
             <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(8)">8</button>
+              <a ion-button round outline (click)="add(5)">5</a>
             </ion-col>
             <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(9)">9</button>
+              <a ion-button round outline (click)="add(6)">6</a>
+            </ion-col>
+          </ion-row>
+          <ion-row nowrap>
+            <ion-col col-4>
+              <a ion-button round outline (click)="add(7)">7</a>
+            </ion-col>
+            <ion-col col-4>
+              <a ion-button round outline (click)="add(8)">8</a>
+            </ion-col>
+            <ion-col col-4>
+              <a ion-button round outline (click)="add(9)">9</a>
             </ion-col>
           </ion-row>
           <ion-row nowrap>
             <ion-col col-4 class="help-item"></ion-col>
             <ion-col col-4>
-              <button ion-button round outline tappable (tap)="add(0)">0</button>
+              <a ion-button round outline (click)="add(0)">0</a>
             </ion-col>
             <ion-col col-4>
-              <button ion-button round clear tappable (tap)="delete()" class="help-item">
+              <a ion-button round clear (click)="delete()" class="help-item">
                 <ion-icon name="ios-backspace"></ion-icon>
-              </button>
+              </a>
             </ion-col>
           </ion-row>
         </ion-grid>
