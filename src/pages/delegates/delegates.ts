@@ -162,19 +162,18 @@ export class DelegatesPage {
   ionViewDidEnter() {
     this.currentNetwork = this.arkApiProvider.network;
     this.currentWallet = this.userDataProvider.currentWallet;
-
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.delegates.subscribe((data) => this.zone.run(() => {
         this.delegates = data;
-        this.activeDelegates = this.delegates.slice(0, 51);
-        this.standByDelegates = this.delegates.slice(51, this.delegates.length);
+        this.activeDelegates = this.delegates.slice(0, constants.NUM_ACTIVE_DELEGATES);
+        this.standByDelegates = this.delegates.slice(constants.NUM_ACTIVE_DELEGATES, this.delegates.length);
       }));
     })
 
     this.onUpdateDelegates();
     // this.getSupply();
     this.fetchCurrentVote();
-    this.arkApiProvider.fetchAllDelegates().subscribe();
+    this.arkApiProvider.fetchDelegates(constants.NUM_ACTIVE_DELEGATES*2).subscribe();
 
     // this.refreshListener = setInterval(() => this.getSupply(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
   }
