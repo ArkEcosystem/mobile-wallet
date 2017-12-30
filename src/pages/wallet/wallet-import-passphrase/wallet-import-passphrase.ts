@@ -43,44 +43,42 @@ export class WalletImportPassphrasePage {
 
     this.arkApiProvider.api.account
       .get({ address })
-      .finally(() => {
-        let modal = this.modalCtrl.create('PinCodeModal', {
-          message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
-          outputPassword: true,
-          validatePassword: true,
-        });
-
-        modal.onDidDismiss((password) => {
-          if (password) {
-            this.userDataProvider.addWallet(newWallet, this.passphrase, password).subscribe((result) => {
-              this.navCtrl.push('WalletDashboardPage', { address: newWallet.address })
-                .then(() => {
-                  this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1).then(() => {
-                    this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1);
-                  });
-                });
-            });
-          } else {
-            this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR')
-          }
-
-        });
-
-        modal.present();
-      })
       .subscribe((response) => {
         if (response && response.success) {
-          let account = response.account;
+          
+          // wallet found, encrypt passphrase
+          let modal = this.modalCtrl.create('PinCodeModal', {
+            message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
+            outputPassword: true,
+            validatePassword: true,
+          });
 
+          modal.onDidDismiss((password) => {
+            if (password) {
+              this.userDataProvider.addWallet(newWallet, this.passphrase, password).subscribe((result) => {
+                this.navCtrl.push('WalletDashboardPage', { address: newWallet.address })
+                  .then(() => {
+                    this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1).then(() => {
+                      this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1);
+                    });
+                  });
+              });
+            } else {
+              this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR')
+            }
+
+          });
+
+          modal.present();
+
+          // import the found wallet
+          let account = response.account;
           newWallet = newWallet.deserialize(account);
         } else {
-          newWallet.address = address;
-          newWallet.publicKey = publicKey.toHex();
+          this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR')
         }
       }, () => {
-        // Empty wallet
-        newWallet.address = address;
-        newWallet.publicKey = publicKey.toHex();
+        this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR')
       });
   }
 
