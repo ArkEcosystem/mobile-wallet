@@ -13,6 +13,7 @@ import { v4 as uuid } from 'uuid';
 import { Network } from 'ark-ts/model';
 
 import * as constants from '@app/app.constants';
+import { NetworkType } from "ark-ts";
 
 @Injectable()
 export class UserDataProvider {
@@ -28,6 +29,10 @@ export class UserDataProvider {
   public onCreateWallet$: Subject<Wallet> = new Subject();
   public onUpdateWallet$: Subject<Wallet> = new Subject();
   public onSelectProfile$: Subject<Profile> = new Subject();
+
+  public get isDevNet(): boolean {
+    return this.currentNetwork && this.currentNetwork.type === NetworkType.Devnet;
+  }
 
   constructor(
     private storageProvider: StorageProvider,

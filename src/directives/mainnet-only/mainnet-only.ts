@@ -1,6 +1,5 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { NetworkType } from 'ark-ts/model';
 
 @Directive({
   selector: '[appMainnetOnly]'
@@ -12,7 +11,7 @@ export class MainnetOnlyDirective implements OnInit {
   ) { }
 
   ngOnInit() {
-    if (this.userDataProvider.currentNetwork && this.userDataProvider.currentNetwork.type === NetworkType.Devnet) {
+    if (this.userDataProvider.isDevNet) {
       this.elementRef.nativeElement.style.display = 'none';
     }
   }

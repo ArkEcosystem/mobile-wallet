@@ -91,6 +91,10 @@
   },
   "NEXT": "Next",
   "NO": "No",
+  "PASSPHRASE_TEST": {
+    "INFO": "Please type the required words from your passphrase to validate the wallet creation.",
+    "WRONG_WORD": "The typed word is not correct"
+  },
   "PIN_CODE": {
     "CONFIRM": "Confirm your PIN",
     "CREATE": "Create your PIN",
@@ -235,5 +239,6 @@
     "TUESDAY": "Tue",
     "WEDNESDAY": "Wed"
   },
+  "WORD": "Word",
   "YES": "Yes"
 }
