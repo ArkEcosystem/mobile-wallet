@@ -19,7 +19,8 @@ export class SettingsDataProvider {
   public AVALIABLE_OPTIONS = {
     languages: {
       "en": "English",
-      "sv": "Svenska"
+      "sv": "Svenska",
+      "de": "Deutsch"
     },
     currencies: {
       "btc": "Bitcoin",
