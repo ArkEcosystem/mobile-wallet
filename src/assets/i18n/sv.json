@@ -40,8 +40,8 @@
     "UPTIME": "Uptime",
     "USERNAME_ALREADY_EXISTS": "Det här användarnamnet finns redan",
     "VOTE": "Rösta",
-    "VOTE_FETCH_ERROR": "Kunde ej hämta nuvanrade röstning",
-    "WARNING_SELECT_WALLET_FIRST": "Du behöver först välja en plånbok för att aktivear röstprocessen"
+    "VOTE_FETCH_ERROR": "Kunde ej hämta nuvarande röstning",
+    "WARNING_SELECT_WALLET_FIRST": "Du behöver först välja en plånbok för att aktivera röstprocessen"
   },
   "DELETE": "Ta bort",
   "DONE": "Klar",
@@ -106,7 +106,7 @@
     "ADD_PROFILE_ERROR": "Kunde ej lägga till profil",
     "ADD_PROFILE_TEXT": "Tryck på knappen nedan för att skapa en profil",
     "CREATE_PROFILE": "Skapa Profil",
-    "DELETE_NOT_EMPTY": "Du kan inte ta bort en Profil som har 1 or fler Plånböcker",
+    "DELETE_NOT_EMPTY": "Du kan inte ta bort en Profil som har 1 eller fler Plånböcker",
     "GET_STARTED": "Kom igång",
     "SIGN_IN": "Logga in"
   },
@@ -117,7 +117,7 @@
     "PERMISSION_PERMANENTLY_DENIED": "QR-kamera permanent nekad. Gå till din enhets inställningar för att ändra detta.",
     "PROBLEM_TEXT": "Problem att läsa in QR-kod"
   },
-  "RENAME": "By namn",
+  "RENAME": "Byt namn",
   "SAVE": "Spara",
   "SEARCH": "Sök",
   "SETTINGS_PAGE": {
