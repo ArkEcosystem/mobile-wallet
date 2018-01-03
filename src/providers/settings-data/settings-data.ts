@@ -19,7 +19,7 @@ export class SettingsDataProvider {
   public AVALIABLE_OPTIONS = {
     languages: {
       "en": "English",
-	  "it": "Italiano",
+      "it": "Italiano",
       "sv": "Svenska"
     },
     currencies: {
