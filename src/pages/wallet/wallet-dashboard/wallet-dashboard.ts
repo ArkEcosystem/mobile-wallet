@@ -91,6 +91,7 @@ export class WalletDashboardPage {
       'DELEGATES_PAGE.DELEGATES',
       'DELEGATES_PAGE.REGISTER_DELEGATE',
       'WALLETS_PAGE.SECOND_PASSPHRASE',
+      'SETTINGS_PAGE.WALLET_BACKUP',
       'WALLETS_PAGE.REMOVE_WALLET',
     ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
       let delegateItem =  {
@@ -138,15 +139,41 @@ export class WalletDashboardPage {
         }
       ];
 
+      let backupItem = {
+        text: translation['SETTINGS_PAGE.WALLET_BACKUP'],
+        role: 'label',
+        icon: !this.platform.is('ios') ? 'ios-briefcase-outline' : '',
+        handler: () => {
+          this.presentWalletBackupPage();
+        }
+      };
+
       // DEPRECATED:
       // if (!this.wallet.isWatchOnly && !this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
       if (!this.wallet.isWatchOnly) buttons.unshift(delegatesItem); // "Watch Only" address can't vote
       if (!this.wallet.isWatchOnly && !this.wallet.isDelegate) buttons.unshift(delegateItem);
+      if (!this.wallet.isWatchOnly) buttons.splice(buttons.length - 1, 0, backupItem);
 
       let action = this.actionSheetCtrl.create({buttons});
 
       action.present();
     });
+  }
+
+  presentWalletBackupPage() {
+    this.onEnterPinCode = this.showBackup;
+    this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', true);
+  }
+
+  private showBackup(keys: WalletKeys) {
+    if (!keys) return;
+
+    let modal = this.modalCtrl.create('WalletBackupModal', {
+      title: 'SETTINGS_PAGE.WALLET_BACKUP',
+      keys,
+    });
+
+    modal.present();
   }
 
   presentAddActionSheet() {
