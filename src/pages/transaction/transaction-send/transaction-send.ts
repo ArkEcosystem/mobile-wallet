@@ -24,6 +24,7 @@ import * as constants from '@app/app.constants';
 import { PrivateKey, TransactionSend } from 'ark-ts';
 
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
+import { BigNumber } from 'bignumber.js';
 
 @IonicPage()
 @Component({
@@ -157,8 +158,9 @@ export class TransactionSendPage {
   }
 
   onEnterPinCode(keys: WalletKeys) {
+    let amount = new BigNumber(this.transaction.amount)
     let data: TransactionSend = {
-      amount: Number(this.transaction.amount) * constants.WALLET_UNIT_TO_SATOSHI,
+      amount: amount.times(constants.WALLET_UNIT_TO_SATOSHI).toNumber(),
       vendorField: this.transaction.smartBridge,
       passphrase: keys.key,
       secondPassphrase: keys.secondKey,
