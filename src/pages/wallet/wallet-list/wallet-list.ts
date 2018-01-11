@@ -163,7 +163,7 @@ export class WalletListPage implements OnDestroy{
 
   private loadWallets() {
     this.loadUserData();
-    if (lodash.isEmpty(this.currentProfile.wallets)) return;
+    if (!this.currentProfile || lodash.isEmpty(this.currentProfile.wallets)) return;
 
     let list = [];
     for (let w of lodash.values(this.currentProfile.wallets)) {

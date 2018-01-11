@@ -79,7 +79,7 @@ export class MarketDataProvider {
 
   fetchHistory(): Observable<model.MarketHistory> {
     const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
-    const myCurrencyCode = (this.settings.currency == 'btc' ? this.settingsDataProvider.getDefaults().currency : this.settings.currency).toUpperCase();
+    const myCurrencyCode = ((!this.settings || this.settings.currency == 'btc') ? this.settingsDataProvider.getDefaults().currency : this.settings.currency).toUpperCase();
 
     return this.http.get(url + 'BTC')
       .map((btcResponse) => btcResponse)
