@@ -9,12 +9,10 @@ export class MainnetOnlyDirective implements OnInit {
   constructor(
     private userDataProvider: UserDataProvider,
     private elementRef: ElementRef,
-    // private renderer: Renderer
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
-    if (this.userDataProvider.currentNetwork.type === NetworkType.Devnet) {
+    if (this.userDataProvider.currentNetwork && this.userDataProvider.currentNetwork.type === NetworkType.Devnet) {
       this.elementRef.nativeElement.style.display = 'none';
     }
   }
