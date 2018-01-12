@@ -314,8 +314,8 @@ export class WalletListPage implements OnDestroy{
     // On refresh price
     this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).subscribe((ticker) => this.setTicker(ticker));
 
-    // wait 5sec to refresh the price
-    setTimeout(() => this.marketDataProvider.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
+    this.marketDataProvider.refreshPrice();
+    setInterval(() => this.marketDataProvider.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
 
     this.content.resize();
   }
