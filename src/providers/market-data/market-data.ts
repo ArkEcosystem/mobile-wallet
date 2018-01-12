@@ -17,10 +17,11 @@ import * as constants from '@app/app.constants';
 export class MarketDataProvider {
 
   public onUpdateTicker$: Subject<model.MarketTicker> = new Subject<model.MarketTicker>();
+  public onUpdateHistory$: Subject<model.MarketHistory> = new Subject<model.MarketHistory>();
 
   private settings: UserSettings;
-  private marketTicker: model.MarketTicker;
-  private marketHistory: model.MarketHistory;
+  private static marketTicker: model.MarketTicker;
+  private static marketHistory: model.MarketHistory;
 
   constructor(
     private http: HttpClient,
@@ -39,13 +40,13 @@ export class MarketDataProvider {
   }
 
   get history(): Observable<model.MarketHistory> {
-    if (this.marketHistory) return Observable.of(this.marketHistory);
+    if (MarketDataProvider.marketHistory) return Observable.of(MarketDataProvider.marketHistory);
 
     return this.fetchHistory();
   }
 
   get ticker(): Observable<model.MarketTicker> {
-    if (this.marketTicker) return Observable.of(this.marketTicker);
+    if (MarketDataProvider.marketTicker) return Observable.of(MarketDataProvider.marketTicker);
 
     return this.fetchTicker();
   }
@@ -70,17 +71,16 @@ export class MarketDataProvider {
         currencies: json,
       };
 
-      this.marketTicker = new model.MarketTicker().deserialize(tickerObject);
+      MarketDataProvider.marketTicker = new model.MarketTicker().deserialize(tickerObject);
       this.storageProvider.set(constants.STORAGE_MARKET_TICKER, tickerObject);
 
-      return this.marketTicker;
+      return MarketDataProvider.marketTicker;
     });
   }
 
   fetchHistory(): Observable<model.MarketHistory> {
     const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
-    const myCurrencyCode = ((!this.settings || this.settings.currency == 'btc') ? this.settingsDataProvider.getDefaults().currency : this.settings.currency).toUpperCase();
-
+    const myCurrencyCode = ((!this.settings || !this.settings.currency) ? this.settingsDataProvider.getDefaults().currency : this.settings.currency).toUpperCase();
     return this.http.get(url + 'BTC')
       .map((btcResponse) => btcResponse)
       .flatMap((btcResponse) => this.http.get(url + myCurrencyCode).map((currencyResponse) => {
@@ -90,8 +90,9 @@ export class MarketDataProvider {
         historyData[myCurrencyCode] = currencyResponse['Data'];
         let history = new model.MarketHistory().deserialize(historyData);
 
-        this.marketHistory = history;
+        MarketDataProvider.marketHistory = history;
         this.storageProvider.set(constants.STORAGE_MARKET_HISTORY, historyData);
+        this.onUpdateHistory$.next(history);
 
         return history;
       }));
@@ -100,19 +101,19 @@ export class MarketDataProvider {
   private onUpdateSettings() {
     this.settingsDataProvider.onUpdate$.subscribe((settings) => {
       this.settings = settings;
-      this.marketHistory = null;
+      MarketDataProvider.marketHistory = null;
     })
   }
 
   private loadData() {
     this.storageProvider.getObject(constants.STORAGE_MARKET_HISTORY).subscribe((history) => {
       if (history) {
-        this.marketHistory = new model.MarketHistory().deserialize(history);
+        MarketDataProvider.marketHistory = new model.MarketHistory().deserialize(history);
       }
     });
     this.storageProvider.getObject(constants.STORAGE_MARKET_TICKER).subscribe((ticker) => {
       if (ticker) {
-        this.marketTicker = new model.MarketTicker().deserialize(ticker);
+        MarketDataProvider.marketTicker = new model.MarketTicker().deserialize(ticker);
       }
     });
   }

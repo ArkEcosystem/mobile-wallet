@@ -26,7 +26,7 @@ import { BaseChartDirective } from 'ng2-charts';
 export class WalletListPage implements OnDestroy{
   @ViewChild('walletSlider') slider: Slides;
   @ViewChild(Content) content: Content;
-  @ViewChild(BaseChartDirective) chart: any;
+  @ViewChild('chart') chart: BaseChartDirective;
 
   public currentProfile: Profile;
   public currentNetwork: Network;
@@ -212,10 +212,11 @@ export class WalletListPage implements OnDestroy{
       let days = lodash.values(translation);
 
       this.settingsDataProvider.settings.subscribe((settings) => {
-        this.marketDataProvider.history.takeUntil(this.unsubscriber$).subscribe((history) => {
+        this.marketDataProvider.history.subscribe();
+        this.marketDataProvider.onUpdateHistory$.takeUntil(this.unsubscriber$).subscribe((history) => {
           if (!history) return;
 
-          let currency = settings.currency == 'btc' ? this.settingsDataProvider.getDefaults().currency : settings.currency;
+          let currency = (!settings || !settings.currency) ? this.settingsDataProvider.getDefaults().currency : settings.currency;
 
           let fiatHistory = history.getLastWeekPrice(currency.toUpperCase());
           let btcHistory = history.getLastWeekPrice('BTC');
@@ -275,7 +276,14 @@ export class WalletListPage implements OnDestroy{
             }
           };
 
+          if (currency === 'btc') {
+            this.chartData[0].data = [];
+          }
+
           setTimeout(() => this.chartLabels = lodash.map(fiatHistory.dates, (d: Date) => days[d.getDay()]), 0);
+          if (this.chart && this.chart.chart) {
+            this.chart.chart.update();
+          }
 
         });
       });
@@ -287,7 +295,7 @@ export class WalletListPage implements OnDestroy{
     this.btcCurrency = ticker.getCurrency({ code: 'btc' });
 
     this.settingsDataProvider.settings.subscribe((settings) => {
-      let currency = settings.currency == 'btc' ? this.settingsDataProvider.getDefaults().currency : settings.currency;
+      let currency = (!settings || !settings.currency) ? this.settingsDataProvider.getDefaults().currency : settings.currency;
 
       this.fiatCurrency = ticker.getCurrency({ code: currency });
       this.loadWallets();
