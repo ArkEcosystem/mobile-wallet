@@ -73,7 +73,7 @@ export class TransactionSendPage {
     let balance = Number(this.currentWallet.balance);
     if (balance === 0) return;
 
-    this.transaction.amount = this.unitsSatoshiPipe.transform(balance - this.fees.send);
+    this.transaction.amount = this.unitsSatoshiPipe.transform(balance - this.fees.send, true);
     this.onInputToken();
   }
 
