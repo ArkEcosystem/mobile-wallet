@@ -15,8 +15,8 @@
     <ion-grid>
       <ion-row class="account-balance">
         <ion-col text-center>
-          <h1>{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-2' }}</h1>
-          <h4 appMainnetOnly>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | number: '1.0-2' }}</h4>
+          <h1>{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-8' }}</h1>
+          <h4 appMainnetOnly>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | marketNumber }}</h4>
           <p (click)="copyAddress()" tappable class="toolbar-address">
             <ion-icon name="ios-copy-outline" item-start></ion-icon>
             {{ wallet?.address }}
@@ -47,7 +47,7 @@
             <h3 class="address">{{ (tx?.isTransfer()) && (tx?.getAppropriateAddress() | accountLabel | truncateMiddle: 12 : tx?.getAppropriateAddress()) || (tx?.getTypeLabel() | translate) }}</h3>
 
             <div text-right item-end>
-              <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi | number: '1.0-2' }} {{ network?.token | uppercase }}</h3>
+              <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi }} {{ network?.token | uppercase }}</h3>
               <p class="timestamp">{{ tx?.date | timezone | timestampHuman }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
             </div>
             <ion-icon *ngIf="tx?.isSender()" item-end name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>

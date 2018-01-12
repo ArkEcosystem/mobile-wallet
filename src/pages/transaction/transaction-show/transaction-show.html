@@ -17,9 +17,9 @@
       <ion-col text-center>
         <span>{{ transaction?.getTypeLabel() | translate }}</span>
         <h2 ion-text [color]="transaction.isSender() ? 'danger' : 'secondary'">
-          {{ transaction?.isSender() ? '-' : '+' }} {{ transaction?.getAmount() | unitsSatoshi | number: '1.0-5' }} {{ currentNetwork?.token }}
+          {{ transaction?.isSender() ? '-' : '+' }} {{ transaction?.getAmount() | unitsSatoshi }} {{ currentNetwork?.token }}
         </h2>
-        <h4 appMainnetOnly>{{ equivalentSymbol }}{{ equivalentAmount | unitsSatoshi | number: '1.2-2' }}</h4>
+        <h4 appMainnetOnly>{{ equivalentSymbol }}{{ equivalentAmount | marketNumber }}</h4>
         <button ion-button clear (click)="openInExplorer()" class="open-explorer-btn">{{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate }}</button>
       </ion-col>
     </ion-row>
