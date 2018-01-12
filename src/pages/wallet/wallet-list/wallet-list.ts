@@ -317,14 +317,12 @@ export class WalletListPage implements OnDestroy{
     this.marketDataProvider.refreshPrice();
     setInterval(() => this.marketDataProvider.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
 
-    this.content.resize();
-  }
-
-  ionViewDidLoad() {
     // Fetch from api or get from storage
     this.marketDataProvider.fetchHistory().subscribe((history) => {
       this.marketHistory = history
     }, () => this.marketDataProvider.history.subscribe((history) => this.marketHistory = history));
+
+    this.content.resize();
   }
 
   ngOnDestroy() {
