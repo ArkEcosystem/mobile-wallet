@@ -4,7 +4,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
 
-import { Contact } from '@models/contact';
+import { Contact, QRCodeScheme } from '@models/model';
 import { PublicKey } from 'ark-ts/core';
 
 import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';
@@ -73,12 +73,12 @@ export class ContactCreatePage {
   }
 
   scanQRCode() {
-    this.qrScanner.open();
+    this.qrScanner.open(true);
   }
 
-  onScanQRCode(qrCode: object) {
-    if (qrCode['a']) {
-      this.address = qrCode['a'];
+  onScanQRCode(qrCode: QRCodeScheme) {
+    if (qrCode.address) {
+      this.address = qrCode.address;
       this.validateAddress();
     }
   }
