@@ -53,7 +53,7 @@ export class TransactionShowPage {
 
   openInExplorer() {
     let url = `${this.currentNetwork.explorer}/tx/${this.transaction.id}`;
-    return this.inAppBrowser.create(url);
+    return this.inAppBrowser.create(url, '_system');
   }
 
   presentOptions() {
