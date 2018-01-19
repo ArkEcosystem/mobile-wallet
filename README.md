@@ -9,10 +9,6 @@ ARK’s mobile wallet is a hybrid application (using the same codebase for Andro
 
 - [Google Play](https://play.google.com/store/apps/details?id=io.ark.wallet.mobile)
 - App Store (Waiting for approval from Apple)
-- Ionic View (for iOS):
-  1. Install [Ionic View — Test Ionic Apps](https://itunes.apple.com/us/app/ionic-view-test-ionic-apps/id1271789931?mt=8)
-  1. Open and click the eye at the bottom
-  1. Enter the ID **0894ffa2** and “View App”
 
 ## Features
 
