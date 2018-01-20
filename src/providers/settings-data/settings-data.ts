@@ -20,6 +20,7 @@ export class SettingsDataProvider {
     languages: {
       "en": "English",
       "it": "Italiano",
+      "nl": "Nederlands",
       "sv": "Svenska",
       "ru": "Русский"
     },
