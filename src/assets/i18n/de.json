@@ -187,7 +187,7 @@
     "BACKUP_ACCOUNT": "WICHTIG! Sichere diese geheime Passphrase, ohne diese Wörter kannst du dein Wallet nicht wiederherstellen und ALLE DEINE ARK MÜNZEN WERDEN VERLOREN SEIN.",
     "BACKUP_PASSPHRASE": "Sichere diese geheime Passphrase, ohne diese Wörter kannst du dein Wallet nicht wiederherstellen.",
     "BACKUP_SECOND_PASSPHRASE": "Sichere diese zweite Passphrase, ohne diese Wörter kannst du dein Wallet nicht wiederherstellen.",
-    "BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT": "Du kannst ein Passphrase deiner Wahl hinzufügen. Vergiss nicht diesen zu sichern, du musst ihn nachher nochmals zur Bestätigung eingeben.",
+    "BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT": "Du kannst eine Passphrase deiner Wahl hinzufügen. Vergiss nicht diesen zu sichern, du musst ihn nachher nochmals zur Bestätigung eingeben.",
     "BALANCE": "Saldo",
     "BIP38_SEED": "BIP38 Seed",
     "CREATE_WALLET": "Erstelle Wallet",
