@@ -73,7 +73,7 @@ export class SettingsPage {
   }
 
   openPrivacyPolicy() {
-    return this.inAppBrowser.create(constants.PRIVACY_POLICY_URL);
+    return this.inAppBrowser.create(constants.PRIVACY_POLICY_URL, '_system');
   }
 
   confirmClearData() {
