@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Config } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms'
 
-import { Contact, Wallet, MarketTicker, MarketCurrency, Transaction, SendTransactionForm, WalletKeys } from '@models/model';
+import { Contact, Wallet, MarketTicker, MarketCurrency, QRCodeScheme, Transaction, SendTransactionForm, WalletKeys } from '@models/model';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { MarketDataProvider } from '@providers/market-data/market-data';
@@ -145,7 +145,7 @@ export class TransactionSendPage {
   }
 
   scanQRCode() {
-    this.qrScanner.open();
+    this.qrScanner.open(true);
   }
 
   onInputToken() {
@@ -174,11 +174,11 @@ export class TransactionSendPage {
     });
   }
 
-  onScanQRCode(qrCode: object) {
-    if (qrCode['a']) {
+  onScanQRCode(qrCode: QRCodeScheme) {
+    if (qrCode.address) {
       this.contact = null;
-      this.transaction.recipientAddress = qrCode['a'];
-      this.searchBar.inputElem.value = qrCode['a'];
+      this.transaction.recipientAddress = qrCode.address;
+      this.searchBar.inputElem.value = qrCode.address;
     } else {
       this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }
