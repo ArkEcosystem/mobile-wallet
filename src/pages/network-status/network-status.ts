@@ -1,12 +1,12 @@
-import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
+import {Component, NgZone, OnDestroy} from '@angular/core';
+import { IonicPage, LoadingController } from 'ionic-angular';
 
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import 'rxjs/add/operator/takeUntil';
 
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 
-import { Network, Peer, PeerResponse } from 'ark-ts';
+import { Network, Peer } from 'ark-ts';
 
 import * as constants from '@app/app.constants';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,20 +17,17 @@ import { ToastProvider } from '@providers/toast/toast';
   selector: 'page-network-status',
   templateUrl: 'network-status.html',
 })
-export class NetworkStatusPage {
+export class NetworkStatusPage implements OnDestroy {
 
   public currentNetwork: Network;
   public currentPeer: Peer;
 
-  private subscriber$: Observable<PeerResponse>;
   private unsubscriber$: Subject<void> = new Subject<void>();
 
   private refreshIntervalListener;
   private loader;
 
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
     private arkApiProvider: ArkApiProvider,
     private loadingCtrl: LoadingController,
     private zone: NgZone,

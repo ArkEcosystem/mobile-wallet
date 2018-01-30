@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 
 import { Profile, Wallet } from '@models/model';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
 
-import { PublicKey, PrivateKey, Network } from 'ark-ts';
+import { PrivateKey, Network } from 'ark-ts';
 
 @IonicPage()
 @Component({
@@ -23,7 +23,6 @@ export class WalletImportPassphrasePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private userDataProvider: UserDataProvider,
-    private loadingCtrl: LoadingController,
     private arkApiProvider: ArkApiProvider,
     private toastProvider: ToastProvider,
     private modalCtrl: ModalController,
@@ -52,7 +51,7 @@ export class WalletImportPassphrasePage {
 
         modal.onDidDismiss((password) => {
           if (password) {
-            this.userDataProvider.addWallet(newWallet, this.passphrase, password).subscribe((result) => {
+            this.userDataProvider.addWallet(newWallet, this.passphrase, password).subscribe(() => {
               this.navCtrl.push('WalletDashboardPage', { address: newWallet.address })
                 .then(() => {
                   this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1).then(() => {

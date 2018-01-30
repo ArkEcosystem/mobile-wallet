@@ -1,6 +1,3 @@
-import { Wallet } from '@models/wallet';
-import { Contact } from '@models/contact';
-
 export class Profile {
   contacts: any = {};
   name: string;

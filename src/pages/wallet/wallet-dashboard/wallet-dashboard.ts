@@ -1,4 +1,4 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import {Component, NgZone, OnDestroy, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, ActionSheetController, ModalController, AlertController, LoadingController, Loading, Content } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -27,7 +27,7 @@ import { ToastProvider } from '@providers/toast/toast';
   templateUrl: 'wallet-dashboard.html',
   providers: [Clipboard],
 })
-export class WalletDashboardPage {
+export class WalletDashboardPage implements OnDestroy {
   @ViewChild(Content) content: Content;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
@@ -103,22 +103,13 @@ export class WalletDashboardPage {
         },
       };
 
-      let secondPassphraseItem = {
-        text: translation['WALLETS_PAGE.SECOND_PASSPHRASE'],
-        role: '2ndpassphrase',
-        icon: !this.platform.is('ios') ? 'ios-lock-outline' : '',
-        handler: () => {
-          this.presentRegisterSecondPassphraseModal();
-        },
-      };
-
       let delegatesItem = {
-        text: translation['DELEGATES_PAGE.DELEGATES'],
-        role: 'label',
-        icon: !this.platform.is('ios') ? 'ios-people-outline' : '',
-        handler: () => {
-          this.presentDelegatesModal();
-        },
+          text: translation['DELEGATES_PAGE.DELEGATES'],
+          role: 'label',
+          icon: !this.platform.is('ios') ? 'ios-people-outline' : '',
+          handler: () => {
+            this.presentDelegatesModal();
+          },
       };
 
       let buttons = [
@@ -299,7 +290,7 @@ export class WalletDashboardPage {
       secondPassphrase: keys.secondKey,
       username: this.newDelegateName,
       publicKey
-    }
+    };
 
     this.arkApiProvider.api.transaction.createDelegate(transaction)
       .takeUntil(this.unsubscriber$)

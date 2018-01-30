@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 
 import forge from 'node-forge';
-import wif from 'wif';
-import bip38 from 'bip38';
-import { PrivateKey, Network } from 'ark-ts';
 
 @Injectable()
 export class ForgeProvider {

@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { ToastProvider } from '@providers/toast/toast';
 
 import { Contact, QRCodeScheme} from '@models/model';
 import { PublicKey } from 'ark-ts/core';
@@ -21,7 +20,6 @@ export class ContactCreatePage {
   @ViewChild('qrScanner') qrScanner: QRScannerComponent;
 
   public isNew: boolean;
-  public isValid: boolean = false;
 
   public contact: Contact;
   public address: string;
@@ -32,8 +30,7 @@ export class ContactCreatePage {
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
-    private userDataProvider: UserDataProvider,
-    private toastProvider: ToastProvider,
+    private userDataProvider: UserDataProvider
   ) {
     let param = this.navParams.get('contact');
     this.address = this.navParams.get('address');

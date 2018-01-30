@@ -1,16 +1,15 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import {Component, NgZone, OnDestroy, ViewChild} from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, Platform, Slides } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
-import { Delegate, Network, VoteType, PrivateKey, TransactionVote } from 'ark-ts';
+import { Delegate, Network, VoteType, TransactionVote } from 'ark-ts';
 
-import { Wallet, Transaction, WalletKeys } from '@models/model';
+import { Wallet, WalletKeys } from '@models/model';
 
 import * as constants from '@app/app.constants';
-import lodash from 'lodash';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
 
@@ -19,7 +18,7 @@ import { ConfirmTransactionComponent } from '@components/confirm-transaction/con
   selector: 'page-delegates',
   templateUrl: 'delegates.html',
 })
-export class DelegatesPage {
+export class DelegatesPage implements OnDestroy {
   @ViewChild('delegateSlider') slider: Slides;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
@@ -83,10 +82,6 @@ export class DelegatesPage {
     this.isSearch = !this.isSearch;
   }
 
-  onInputSearch(evt) {
-
-  }
-
   onSlideChanged(slider) {
     this.rankStatus = this.slides[slider.realIndex];
   }
@@ -141,15 +136,6 @@ export class DelegatesPage {
       });
   }
 
-  // DEPRECATED:
-  private getSupply() {
-    this.arkApiProvider.api.block.blockchainStatus().takeUntil(this.unsubscriber$).subscribe((data) => {
-      if (data.success) {
-        this.zone.run(() => this.supply = data.supply);
-      }
-    })
-  }
-
   private onUpdateDelegates() {
     this.arkApiProvider.onUpdateDelegates$
       .takeUntil(this.unsubscriber$)
@@ -168,14 +154,11 @@ export class DelegatesPage {
         this.activeDelegates = this.delegates.slice(0, constants.NUM_ACTIVE_DELEGATES);
         this.standByDelegates = this.delegates.slice(constants.NUM_ACTIVE_DELEGATES, this.delegates.length);
       }));
-    })
+    });
 
     this.onUpdateDelegates();
-    // this.getSupply();
     this.fetchCurrentVote();
     this.arkApiProvider.fetchDelegates(constants.NUM_ACTIVE_DELEGATES*2).subscribe();
-
-    // this.refreshListener = setInterval(() => this.getSupply(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
   }
 
   ngOnDestroy() {

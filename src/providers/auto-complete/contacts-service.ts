@@ -9,7 +9,7 @@ import { PublicKey } from 'ark-ts/core';
 @Injectable()
 export class ContactsAutoCompleteService implements AutoCompleteService {
   labelAttribute = "name";
-  formValueAttribute = "address"
+  formValueAttribute = "address";
 
   constructor(private userDataProvider: UserDataProvider) { }
 
@@ -21,7 +21,7 @@ export class ContactsAutoCompleteService implements AutoCompleteService {
         return { address: key.toString(), name: 'Contact: ' + value['name'].toString() };
       }
     });
-    let wallets = lodash.map(this.userDataProvider.currentProfile.wallets, (value, key) => {
+    let wallets = lodash.map(this.userDataProvider.currentProfile.wallets, (value) => {
       let address = value['address'];
       let label = value['label'] || value['address'];
       if (address && label) {

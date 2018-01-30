@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Slides } from 'ionic-angular';
+import { IonicPage, NavController, Slides } from 'ionic-angular';
 
 import { AuthProvider } from '@providers/auth/auth';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,7 +18,6 @@ export class IntroPage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private authProvider: AuthProvider,
     private translateService: TranslateService,
   ) {

@@ -48,7 +48,7 @@ export class ConfirmTransactionComponent {
             this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1);
           });
 
-        })
+        });
 
         modal.present();
       }, (error) => {

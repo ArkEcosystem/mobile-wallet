@@ -1,9 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { ModalController } from 'ionic-angular';
 
-import { AccountBackup } from '@models/model';
-
-import lodash from 'lodash';
 import * as constants from '@app/app.constants';
 
 @Component({
@@ -37,8 +33,6 @@ export class QRCodeComponent implements OnChanges {
     if (this.amount) params.push(`amount=${this.amount}`);
     if (this.vendorField) params.push(`vendorField=${this.vendorField}`);
 
-    let stringify = params.length > 0 ? `?${params.join("&")}` : '';
-
-    return stringify;
+    return params.length > 0 ? `?${params.join("&")}` : '';
   }
 }

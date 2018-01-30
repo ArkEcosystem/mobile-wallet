@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { IonicPage, NavController, AlertController, ModalController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { Subject } from 'rxjs/Subject';
@@ -7,12 +7,11 @@ import 'rxjs/add/operator/takeUntil';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { UserSettings, Wallet, WalletKeys } from '@models/model';
+import { Wallet, WalletKeys } from '@models/model';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
 
-import lodash from 'lodash';
 import * as constants from '@app/app.constants';
 
 let packageJson = require('@root/package.json');
@@ -23,7 +22,7 @@ let packageJson = require('@root/package.json');
   templateUrl: 'settings.html',
   providers: [InAppBrowser],
 })
-export class SettingsPage {
+export class SettingsPage implements OnInit, OnDestroy {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
 
   public objectKeys = Object.keys;
@@ -55,7 +54,6 @@ export class SettingsPage {
       outputPassword: true,
       validatePassword: true,
     });
-    let that = this;
 
     modal.present();
     modal.onDidDismiss((password) => {
@@ -116,13 +114,13 @@ export class SettingsPage {
         buttons: [{
           text: 'Ok'
         }]
-      })
+      });
 
       alert.present();
     });
   }
 
-  private clearData(event) {
+  private clearData() {
     this.settingsDataProvider.clearData();
     this.navCtrl.setRoot('IntroPage');
   }

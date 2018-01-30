@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { Platform, Config, Nav, MenuController, AlertController, App, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -8,7 +8,6 @@ import { ScreenOrientation } from '@ionic-native/screen-orientation';
 
 import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
@@ -20,7 +19,7 @@ import lodash from 'lodash';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
-import { Wallet, Profile } from '@models/model';
+import { Profile } from '@models/model';
 import * as arkts from 'ark-ts';
 import * as constants from '@app/app.constants';
 import moment from 'moment';
@@ -29,7 +28,7 @@ import moment from 'moment';
   templateUrl: 'app.html',
   providers: [ScreenOrientation, Network],
 })
-export class MyApp {
+export class MyApp implements OnInit, OnDestroy {
   public rootPage = 'LoginPage';
   public profile = null;
   public network = null;
@@ -46,11 +45,9 @@ export class MyApp {
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
-    private splashScreen: SplashScreen,
     private authProvider: AuthProvider,
     private translateService: TranslateService,
     private userDataProvider: UserDataProvider,
-    private marketDataProvider: MarketDataProvider,
     private arkApiProvider: ArkApiProvider,
     private settingsDataProvider: SettingsDataProvider,
     private toastProvider: ToastProvider,
@@ -60,8 +57,9 @@ export class MyApp {
     private keyboard: Keyboard,
     private screenOrientation: ScreenOrientation,
     private app: App,
-    private events: Events,
     private ionicNetwork: Network,
+    splashScreen: SplashScreen,
+    events: Events
   ) {
 
     platform.ready().then(() => {

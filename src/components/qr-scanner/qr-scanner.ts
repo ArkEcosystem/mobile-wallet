@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 import { QRCodeScheme } from '@models/model';
 

@@ -27,7 +27,7 @@
     </ion-row>
     <ion-row no-padding *ngIf="wallets?.length > 0" class="wallets-container">
       <ion-col no-padding>
-        <ion-slides spaceBetween="-75" speed="100" #walletSlider (ionSlideDidChange)="onSlideChanged($event)">
+        <ion-slides spaceBetween="-75" speed="100" #walletSlider (ionSlideDidChange)="onSlideChanged()">
           <ion-slide *ngFor="let wallet of wallets" tappable (tap)="openWalletDashboard(wallet)">
             <ion-item class="wallet">
               <ion-label [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}">
