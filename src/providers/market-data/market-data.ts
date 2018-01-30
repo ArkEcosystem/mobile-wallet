@@ -20,8 +20,8 @@ export class MarketDataProvider {
   public onUpdateHistory$: Subject<model.MarketHistory> = new Subject<model.MarketHistory>();
 
   private settings: UserSettings;
-  private static marketTicker: model.MarketTicker;
-  private static marketHistory: model.MarketHistory;
+  private marketTicker: model.MarketTicker;
+  private marketHistory: model.MarketHistory;
 
   constructor(
     private http: HttpClient,
@@ -40,13 +40,13 @@ export class MarketDataProvider {
   }
 
   get history(): Observable<model.MarketHistory> {
-    if (MarketDataProvider.marketHistory) return Observable.of(MarketDataProvider.marketHistory);
+    if (this.marketHistory) return Observable.of(this.marketHistory);
 
     return this.fetchHistory();
   }
 
   get ticker(): Observable<model.MarketTicker> {
-    if (MarketDataProvider.marketTicker) return Observable.of(MarketDataProvider.marketTicker);
+    if (this.marketTicker) return Observable.of(this.marketTicker);
 
     return this.fetchTicker();
   }
@@ -71,10 +71,10 @@ export class MarketDataProvider {
         currencies: json,
       };
 
-      MarketDataProvider.marketTicker = new model.MarketTicker().deserialize(tickerObject);
+      this.marketTicker = new model.MarketTicker().deserialize(tickerObject);
       this.storageProvider.set(constants.STORAGE_MARKET_TICKER, tickerObject);
 
-      return MarketDataProvider.marketTicker;
+      return this.marketTicker;
     });
   }
 
@@ -90,7 +90,7 @@ export class MarketDataProvider {
         historyData[myCurrencyCode] = currencyResponse['Data'];
         let history = new model.MarketHistory().deserialize(historyData);
 
-        MarketDataProvider.marketHistory = history;
+        this.marketHistory = history;
         this.storageProvider.set(constants.STORAGE_MARKET_HISTORY, historyData);
         this.onUpdateHistory$.next(history);
 
@@ -101,19 +101,19 @@ export class MarketDataProvider {
   private onUpdateSettings() {
     this.settingsDataProvider.onUpdate$.subscribe((settings) => {
       this.settings = settings;
-      MarketDataProvider.marketHistory = null;
+      this.marketHistory = null;
     })
   }
 
   private loadData() {
     this.storageProvider.getObject(constants.STORAGE_MARKET_HISTORY).subscribe((history) => {
       if (history) {
-        MarketDataProvider.marketHistory = new model.MarketHistory().deserialize(history);
+        this.marketHistory = new model.MarketHistory().deserialize(history);
       }
     });
     this.storageProvider.getObject(constants.STORAGE_MARKET_TICKER).subscribe((ticker) => {
       if (ticker) {
-        MarketDataProvider.marketTicker = new model.MarketTicker().deserialize(ticker);
+        this.marketTicker = new model.MarketTicker().deserialize(ticker);
       }
     });
   }
