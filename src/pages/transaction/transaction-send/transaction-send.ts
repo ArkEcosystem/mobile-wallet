@@ -71,7 +71,7 @@ export class TransactionSendPage implements OnInit{
     let balance = Number(this.currentWallet.balance);
     if (balance === 0) return;
 
-    this.transaction.amount = this.unitsSatoshiPipe.transform(balance - this.fees.send);
+    this.transaction.amount = this.unitsSatoshiPipe.transform(balance - this.fees.send, true);
     this.onInputToken();
   }
 
@@ -143,7 +143,7 @@ export class TransactionSendPage implements OnInit{
   }
 
   scanQRCode() {
-    this.qrScanner.open();
+    this.qrScanner.open(true);
   }
 
   onInputToken() {
@@ -172,11 +172,11 @@ export class TransactionSendPage implements OnInit{
     });
   }
 
-  onScanQRCode(qrCode: object) {
-    if (qrCode['a']) {
+  onScanQRCode(qrCode: QRCodeScheme) {
+    if (qrCode.address) {
       this.contact = null;
-      this.transaction.recipientAddress = qrCode['a'];
-      this.searchBar.inputElem.value = qrCode['a'];
+      this.transaction.recipientAddress = qrCode.address;
+      this.searchBar.inputElem.value = qrCode.address;
     } else {
       this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }

@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 
-import { Contact, QRCodeScheme} from '@models/model';
+import { Contact, QRCodeScheme } from '@models/model';
 import { PublicKey } from 'ark-ts/core';
 
 import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';

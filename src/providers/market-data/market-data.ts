@@ -17,6 +17,7 @@ import * as constants from '@app/app.constants';
 export class MarketDataProvider {
 
   public onUpdateTicker$: Subject<model.MarketTicker> = new Subject<model.MarketTicker>();
+  public onUpdateHistory$: Subject<model.MarketHistory> = new Subject<model.MarketHistory>();
 
   private settings: UserSettings;
   private marketTicker: model.MarketTicker;
@@ -79,8 +80,7 @@ export class MarketDataProvider {
 
   fetchHistory(): Observable<model.MarketHistory> {
     const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
-    const myCurrencyCode = (this.settings.currency == 'btc' ? this.settingsDataProvider.getDefaults().currency : this.settings.currency).toUpperCase();
-
+    const myCurrencyCode = ((!this.settings || !this.settings.currency) ? this.settingsDataProvider.getDefaults().currency : this.settings.currency).toUpperCase();
     return this.http.get(url + 'BTC')
       .map((btcResponse) => btcResponse)
       .flatMap((btcResponse) => this.http.get(url + myCurrencyCode).map((currencyResponse) => {
@@ -92,6 +92,7 @@ export class MarketDataProvider {
 
         this.marketHistory = history;
         this.storageProvider.set(constants.STORAGE_MARKET_HISTORY, historyData);
+        this.onUpdateHistory$.next(history);
 
         return history;
       }));
