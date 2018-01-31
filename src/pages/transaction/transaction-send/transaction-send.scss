@@ -82,6 +82,15 @@ page-transaction-send {
       -webkit-box-shadow: inset 0 -1px 0 0 #f53d3d;
       box-shadow: inset 0 -1px 0 0 #f53d3d;
     }
+
+    .auto-complete-row {
+      display: flex;
+
+      .autocomplete-second-line {
+        display: block;
+        font-size: .75em
+      }
+    }
   }
   .item {
     padding-left: 0;

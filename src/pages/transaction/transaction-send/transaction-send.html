@@ -16,18 +16,41 @@
         <ion-col>
           <ion-item>
             <ion-label stacked>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
-            <ion-auto-complete item-content [dataProvider]="contactsAutoCompleteService" [showResultsFirst]="true" [options]="{placeholder: ''}" formControlName="recipientAddress" (itemSelected)="onSearchItem($event)" (ionAutoInput)="onSearchInput($event)" #searchBar></ion-auto-complete>
+            <ng-template #contactsTemplate let-attrs="attrs">
+              <span class="auto-complete-row">
+                <ion-icon [name]="attrs.data.iconName" item-start></ion-icon>
+                <span>
+                  <span [innerHTML]="attrs.data.name | boldprefix:attrs.keyword"></span>
+                  <span class="autocomplete-second-line" [innerHTML]="attrs.data.address | boldprefix:attrs.keyword"></span>
+                </span>
+                </span>
+            </ng-template>
+            <ion-auto-complete item-content
+                               [dataProvider]="contactsAutoCompleteService"
+                               [showResultsFirst]="true"
+                               [options]="{placeholder: ''}"
+                               formControlName="recipientAddress"
+                               (itemSelected)="onSearchItem($event)"
+                               (ionAutoInput)="onSearchInput($event)"
+                               [template]="contactsTemplate"
+                               #searchBar>
+            </ion-auto-complete>
             <div class="qr-container" item-right>
               <img src="./assets/img/light/wallet/qr-code-button.png" tappable (tap)="scanQRCode()" />
             </div>
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="!contact">
+      <ion-row *ngIf="!isExistingContact">
         <ion-col>
           <ion-item>
             <ion-label stacked>{{ 'TRANSACTIONS_PAGE.CONTACT_NAME' | translate }}</ion-label>
-            <ion-input type="text" formControlName="recipientName" name="recipientName" [(ngModel)]="transaction.recipientName"></ion-input>
+            <ion-input type="text"
+                       formControlName="recipientName"
+                       name="recipientName"
+                       [(ngModel)]="transaction.recipientName"
+                       (keyup)="isRecipientNameAutoSet = false">
+            </ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -38,13 +61,32 @@
               <ion-col>
                 <ion-item>
                   <ion-label stacked>{{ currentNetwork?.token }}</ion-label>
-                  <ion-input type="number" formControlName="amount" step="0.00000001" min="0.00000001" max="10000000000" name="amount" [(ngModel)]="transaction.amount" (input)="onInputToken()" [placeholder]="tokenPlaceholder" required></ion-input>
+                  <ion-input type="number"
+                             formControlName="amount"
+                             step="0.00000001"
+                             min="0.00000001"
+                             max="10000000000"
+                             name="amount"
+                             [(ngModel)]="transaction.amount"
+                             (input)="onInputToken()"
+                             [placeholder]="tokenPlaceholder"
+                             required>
+                  </ion-input>
                 </ion-item>
               </ion-col>
               <ion-col appMainnetOnly>
                 <ion-item>
                   <ion-label stacked>{{ marketCurrency?.code | uppercase }}</ion-label>
-                  <ion-input type="number" formControlName="amountEquivalent" step="0.01" min="0.00000001" max="10000000000" name="amountEquivalent" [(ngModel)]="transaction.amountEquivalent" (input)="onInputFiat()" [placeholder]="fiatPlaceholder" required></ion-input>
+                  <ion-input type="number"
+                             formControlName="amountEquivalent"
+                             step="0.01" min="0.00000001"
+                             max="10000000000"
+                             name="amountEquivalent"
+                             [(ngModel)]="transaction.amountEquivalent"
+                             (input)="onInputFiat()"
+                             [placeholder]="fiatPlaceholder"
+                             required>
+                  </ion-input>
                 </ion-item>
               </ion-col>
             </ion-row>

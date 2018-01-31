@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms'
 
@@ -23,7 +23,10 @@ import * as constants from '@app/app.constants';
 import { TransactionSend } from 'ark-ts';
 
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
+import { AutoCompleteContact } from "@models/contact";
+import { TranslatableObject } from "@models/translate";
 import { BigNumber } from 'bignumber.js';
+import { ArkUtility } from "../../../utils/ark-utility";
 
 @IonicPage()
 @Component({
@@ -31,7 +34,7 @@ import { BigNumber } from 'bignumber.js';
   templateUrl: 'transaction-send.html',
   providers: [UnitsSatoshiPipe],
 })
-export class TransactionSendPage implements OnInit{
+export class TransactionSendPage implements OnInit {
   @ViewChild('sendTransactionForm') sendTransactionHTMLForm: HTMLFormElement;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
@@ -46,10 +49,13 @@ export class TransactionSendPage implements OnInit{
   marketTicker: MarketTicker;
   marketCurrency: MarketCurrency;
   fees: Fees;
-  contact: object;
+  isExistingContact: boolean = true;
+  isRecipientNameAutoSet: boolean;
 
   tokenPlaceholder: number = 100;
   fiatPlaceholder: number;
+
+  private currentAutoCompleteFieldValue: string;
 
   constructor(
     public navCtrl: NavController,
@@ -64,14 +70,27 @@ export class TransactionSendPage implements OnInit{
   ) {
     this.currentWallet = this.userDataProvider.currentWallet;
     this.currentNetwork = this.userDataProvider.currentNetwork;
-    // this.config.set('android', 'scrollPadding', true);
   }
 
   sendAll() {
-    let balance = Number(this.currentWallet.balance);
-    if (balance === 0) return;
+    const balance = Number(this.currentWallet.balance);
+    const sendableAmount = balance - this.fees.send;
+    if (sendableAmount <= 0) {
+      this.toastProvider.error({
+          key: 'API.BALANCE_TOO_LOW_DETAIL',
+          parameters: {
+            token: this.currentNetwork.token,
+            fee: ArkUtility.arktoshiToArk(this.fees.send),
+            amount: ArkUtility.arktoshiToArk(balance),
+            totalAmount: ArkUtility.arktoshiToArk(balance + this.fees.send),
+            balance: ArkUtility.arktoshiToArk(balance)
+          }
+        } as TranslatableObject,
+        10000);
+      return;
+    }
 
-    this.transaction.amount = this.unitsSatoshiPipe.transform(balance - this.fees.send, true);
+    this.transaction.amount = this.unitsSatoshiPipe.transform(sendableAmount, true);
     this.onInputToken();
   }
 
@@ -86,31 +105,50 @@ export class TransactionSendPage implements OnInit{
     }
   }
 
-  onSearchItem(recipient) {
-    if (recipient && recipient['address']) {
-      this.contact = recipient;
-      this.transaction.recipientAddress = recipient['address'];
+  public onSearchItem(contact: AutoCompleteContact): void {
+    if (!contact || !contact.address) {
+      return;
+    }
+
+    this.transaction.recipientAddress = contact.address;
+    this.currentAutoCompleteFieldValue = contact.name;
+    this.isRecipientNameAutoSet = true;
+
+    // if we have a real contact or a wallet with a label, we don't show the field to add a new contact
+    if (contact.name != contact.address) {
+      this.isExistingContact = true;
+      this.transaction.recipientName = contact.name;
+    } else {
+      this.isExistingContact = false;
+      this.transaction.recipientName = null;
     }
   }
 
-  onSearchInput(input) {
-    this.contact = null;
+  public onSearchInput(input: string): void {
+    // this check is needed because clicking into the field, also triggers this method
+    // an then the recipientName is set to null, even though nothing has changed
+    if (input == this.currentAutoCompleteFieldValue) {
+      return;
+    }
+
+    if (this.isRecipientNameAutoSet) {
+      this.transaction.recipientName = null;
+    }
+
+    this.isExistingContact = false;
+    this.currentAutoCompleteFieldValue = input;
     this.transaction.recipientAddress = input;
   }
 
   private validAddress(): boolean {
-    if (this.contact) {
-      return true;
-    }
-
     let isValid = PublicKey.validateAddress(this.transaction.recipientAddress, this.currentNetwork);
-    this.sendTransactionHTMLForm.form.controls['recipientAddress'].setErrors({ incorret: !isValid });
+    this.sendTransactionHTMLForm.form.controls['recipientAddress'].setErrors({ incorrect: !isValid });
 
     return isValid;
   }
 
   private validForm(): boolean {
-    let isValid = true;
+    let isValid: boolean;
     for (let name in this.sendTransactionHTMLForm.form.controls) {
       if (name === 'recipientAddress') {
         continue;
@@ -126,7 +164,7 @@ export class TransactionSendPage implements OnInit{
   }
 
   createContact() {
-    if (this.contact) {
+    if (this.isExistingContact || !this.transaction.recipientName) {
       return;
     }
 
@@ -172,11 +210,10 @@ export class TransactionSendPage implements OnInit{
     });
   }
 
-  onScanQRCode(qrCode: QRCodeScheme) {
-    if (qrCode.address) {
-      this.contact = null;
-      this.transaction.recipientAddress = qrCode.address;
-      this.searchBar.inputElem.value = qrCode.address;
+  onScanQRCode(qrCode: object) {
+    const address = qrCode['a'];
+    if (address) {
+      this.setFormValuesFromAddress(address);
     } else {
       this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }
@@ -205,12 +242,20 @@ export class TransactionSendPage implements OnInit{
       smartBridge: new FormControl('')
     });
 
-    let address = this.navParams.get('address') || '';
-    this.contact = this.userDataProvider.getContactByAddress(address);
-
-    this.sendForm.patchValue({
-      recipientAddress: address,
-    })
+    this.setFormValuesFromAddress(this.navParams.get('address') || '');
   }
 
+  private setFormValuesFromAddress(address: string): void {
+    this.sendForm.patchValue({recipientAddress: address});
+    this.isRecipientNameAutoSet = true;
+
+    const contact: Contact = this.userDataProvider.getContactByAddress(address);
+    if (contact) {
+      this.isExistingContact = true;
+      this.transaction.recipientName = contact.name;
+    } else {
+      this.isExistingContact = false;
+      this.transaction.recipientName = null;
+    }
+  }
 }
