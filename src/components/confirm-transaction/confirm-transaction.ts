@@ -1,7 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ModalController, NavController } from 'ionic-angular';
-import { Wallet, WalletKeys, Transaction } from '@models/model';
+import { Wallet, WalletKeys, Transaction, TranslatableObject } from '@models/model';
+import { TranslateService } from "@ngx-translate/core";
 
 import lodash from 'lodash';
 
@@ -20,6 +21,7 @@ export class ConfirmTransactionComponent {
     private arkApiProvider: ArkApiProvider,
     private modalCtrl: ModalController,
     private navCtrl: NavController,
+    private translateService: TranslateService
   ) { }
 
   open(transaction: any, keys: WalletKeys) {
@@ -51,12 +53,15 @@ export class ConfirmTransactionComponent {
         });
 
         modal.present();
-      }, (error) => {
-        this.onError.emit(error);
-        this.presentWrongModal({
-          status: false,
-          message: error
-        })
+      }, (error: TranslatableObject) => {
+        this.translateService.get(error.key, error.parameters)
+          .subscribe((errorMessage) => {
+            this.onError.emit(errorMessage);
+            this.presentWrongModal({
+              status: false,
+              message: errorMessage
+            });
+          });
       });
   }
 

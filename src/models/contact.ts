@@ -5,6 +5,12 @@ export interface AddressMap {
   highlight?: boolean;
 }
 
+export interface AutoCompleteContact {
+  address: string;
+  name: string;
+  iconName: string;
+}
+
 export class Contact {
   name: string;
   description?: string;

@@ -8,12 +8,13 @@ import { StorageProvider } from '@providers/storage/storage';
 import { ToastProvider } from '@providers/toast/toast';
 
 let packageJson = require('@root/package.json');
-import { Transaction } from '@models/transaction';
+import { Transaction, TranslatableObject } from '@models/model';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
 import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
+import { ArkUtility } from "../../utils/ark-utility";
 
 @Injectable()
 export class ArkApiProvider {
@@ -35,8 +36,7 @@ export class ArkApiProvider {
     private userDataProvider: UserDataProvider,
     private storageProvider: StorageProvider,
     private toastProvider: ToastProvider,
-    private http: HttpClient,
-  ) {
+    private http: HttpClient) {
     this.loadData();
 
     this.userDataProvider.onActivateNetwork$.subscribe((network) => {
@@ -146,16 +146,30 @@ export class ArkApiProvider {
       };
 
       if (!arkts.PublicKey.validateAddress(transaction.address, this._network)) {
-        observer.error(`The destination address ${transaction.address} is erroneous`);
+        observer.error({
+          key: 'API.DESTINATION_ADDRESS_ERROR',
+          parameters: {address: transaction.address}
+        } as TranslatableObject);
         return observer.complete();
       }
 
       let wallet = this.userDataProvider.getWalletByAddress(transaction.address);
       transaction.senderId = transaction.address;
 
-      if (transaction.getAmount() > Number(wallet.balance)) {
+      const totalAmount = transaction.getAmount();
+      const balance = Number(wallet.balance);
+      if (totalAmount > balance) {
         this.toastProvider.error('API.BALANCE_TOO_LOW');
-        observer.error(`Not enough ${this._network.token} on your account`);
+        observer.error({
+          key: 'API.BALANCE_TOO_LOW_DETAIL',
+          parameters: {
+            token: this._network.token,
+            fee: ArkUtility.arktoshiToArk(transaction.fee),
+            amount: ArkUtility.arktoshiToArk(transaction.amount),
+            totalAmount: ArkUtility.arktoshiToArk(totalAmount),
+            balance: ArkUtility.arktoshiToArk(balance)
+          }
+        } as TranslatableObject);
         return observer.complete();
       }
 
