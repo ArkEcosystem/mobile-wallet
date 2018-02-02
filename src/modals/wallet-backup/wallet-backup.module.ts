@@ -7,12 +7,12 @@ import { QRCodeComponentModule } from '@components/qr-code/qr-code.module';
 
 @NgModule({
   declarations: [
-    WalletBackupModal,
+    WalletBackupModal
   ],
   imports: [
     IonicPageModule.forChild(WalletBackupModal),
     TranslateModule,
-    QRCodeComponentModule,
+    QRCodeComponentModule
   ],
 })
 export class WalletBackupModalModule {}

@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import {IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { PrivateKey } from 'ark-ts/core';
 import bip39 from 'bip39';
-import { WalletKeys, AccountBackup } from '@models/model';
+import { WalletKeys, AccountBackup, PassphraseWord } from '@models/model';
+import { ArkUtility } from "../../utils/ark-utility";
 
 @IonicPage()
 @Component({
@@ -27,8 +28,8 @@ export class WalletBackupModal {
     public navCtrl: NavController,
     public navParams: NavParams,
     private viewCtrl: ViewController,
-    private userDataProvider: UserDataProvider,
-  ) {
+    private modalCtrl: ModalController,
+    private userDataProvider: UserDataProvider) {
     this.title = this.navParams.get('title');
     this.entropy = this.navParams.get('entropy');
     this.keys = this.navParams.get('keys');
@@ -40,7 +41,19 @@ export class WalletBackupModal {
   }
 
   next() {
-    this.dismiss(this.account);
+    if (!this.account || !this.account.mnemonic) {
+      this.dismiss(this.account);
+    }
+
+    let wordTesterModal = this.modalCtrl.create('PassphraseWordTesterModal', {
+      words: this.getRandomWords(3, this.account.mnemonic.split(' '))
+    });
+
+    wordTesterModal.onDidDismiss(validationSuccess => {
+      this.dismiss(validationSuccess ? this.account : null);
+    });
+
+    wordTesterModal.present();
   }
 
   dismiss(result?: any) {
@@ -57,6 +70,23 @@ export class WalletBackupModal {
     }
 
     this.generateAccountFromEntropy();
+  }
+
+  private getRandomWords(numberOfWords: number, words: string[]): PassphraseWord[] {
+    numberOfWords = words.length >= numberOfWords ? numberOfWords : words.length;
+
+    const randomWords: PassphraseWord[] = [];
+    while (randomWords.length !== numberOfWords) {
+      const randomIndex: number = ArkUtility.getRandomInt(0, words.length - 1);
+      if (randomWords.every(w => w.number - 1 !== randomIndex)) {
+        const randomWord: string = words[randomIndex];
+        randomWords.push(new PassphraseWord(randomWord,
+                                            randomIndex + 1,
+                                            this.userDataProvider.isDevNet ? randomWord : null));
+      }
+    }
+
+    return randomWords.sort((one, two) => one.number - two.number);
   }
 
   private generateAccountFromKeys() {
