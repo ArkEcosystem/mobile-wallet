@@ -21,7 +21,7 @@ import { ToastProvider } from '@providers/toast/toast';
 export class DelegateDetailPage {
 
   public delegate: Delegate;
-  public qraddress: string = '{a: ""}';
+  public qraddress = '{a: ""}';
   public fees: Fees;
   public currentNetwork: Network;
   public currentWallet: Wallet;
@@ -47,7 +47,7 @@ export class DelegateDetailPage {
 
     this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);
 
-    if (!this.delegate) this.navCtrl.pop();
+    if (!this.delegate) { this.navCtrl.pop(); }
   }
 
   isSameDelegate() {
@@ -69,7 +69,7 @@ export class DelegateDetailPage {
   }
 
   submit() {
-    if (!this.currentWallet) return false;
+    if (!this.currentWallet) { return false; }
 
     if (this.walletVote && this.walletVote.publicKey !== this.delegate.publicKey) {
       this.translateService.get([
@@ -78,7 +78,7 @@ export class DelegateDetailPage {
         'DELEGATES_PAGE.UNVOTE'
       ], { delegate: this.walletVote.username })
         .subscribe((translation) => {
-          let alert = this.alertCtrl.create({
+          const alert = this.alertCtrl.create({
             title: translation['DELEGATES_PAGE.UNVOTE'],
             message: translation['DELEGATES_PAGE.UNVOTE_CURRENT_DELEGATE'],
             buttons: [{
@@ -89,10 +89,10 @@ export class DelegateDetailPage {
                 this.unvote();
               }
             }]
-          })
+          });
 
           alert.present();
-        })
+        });
     } else {
       this.dismiss(this.delegate);
     }

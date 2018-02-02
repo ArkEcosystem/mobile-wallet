@@ -14,8 +14,8 @@ import lodash from 'lodash';
 export class LoginPage {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
 
-  public hasProfiles: boolean = false;
-  public isReady: boolean = false;
+  public hasProfiles = false;
+  public isReady = false;
 
   constructor(
     public navCtrl: NavController,

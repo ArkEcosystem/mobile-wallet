@@ -12,9 +12,9 @@ import { TranslateService } from '@ngx-translate/core';
 export class IntroPage {
   @ViewChild(Slides) slider: Slides;
 
-  public showSkip: boolean = true;
+  public showSkip = true;
   public slides: any;
-  public activeIndex: number = 0;
+  public activeIndex = 0;
 
   constructor(
     private navCtrl: NavController,
@@ -63,10 +63,10 @@ export class IntroPage {
   }
 
   slideChanged() {
-    let activeIndex = this.slider.getActiveIndex();
-    let slideLength = this.slider.length();
+    const activeIndex = this.slider.getActiveIndex();
+    const slideLength = this.slider.length();
 
-    if (activeIndex >= slideLength) return;
+    if (activeIndex >= slideLength) { return; }
 
     this.activeIndex = activeIndex;
     this.showSkip = !this.slider.isEnd();

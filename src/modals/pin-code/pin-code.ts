@@ -15,16 +15,16 @@ export class PinCodeModal {
 
   public message: string;
   public password: string;
-  public isWrong: boolean = false;
+  public isWrong = false;
 
   // Send a password created before, useful for create pin and confirm
   private expectedPassword: string;
   // Will send back the entered password
-  private outputPassword: boolean = false;
+  private outputPassword = false;
   // Check if the entered password is correct
-  private validatePassword: boolean = false;
+  private validatePassword = false;
 
-  private length: number = 6;
+  private length = 6;
 
 
   constructor(
@@ -50,7 +50,7 @@ export class PinCodeModal {
         this.password = this.password + value;
       });
 
-      if (this.password.length == this.length) {
+        if (this.password.length === this.length) {
 
         if (!this.expectedPassword && !this.validatePassword) {
           return this.dismiss(true);
@@ -104,7 +104,7 @@ export class PinCodeModal {
   }
 
   dismiss(status: boolean = true) {
-    if (this.password.length < this.length) return this.viewCtrl.dismiss();
+    if (this.password.length < this.length) { return this.viewCtrl.dismiss(); }
 
     if (this.outputPassword) {
       this.viewCtrl.dismiss(this.password);

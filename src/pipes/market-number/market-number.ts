@@ -30,7 +30,7 @@ export class MarketNumberPipe implements PipeTransform, OnDestroy {
   }
 
   private updateCurrency(settings: UserSettings) {
-    if (!this.marketTicker) return;
+    if (!this.marketTicker) { return; }
 
     this.marketCurrency = this.marketTicker.getCurrency({ code: settings.currency });
   }
@@ -40,10 +40,10 @@ export class MarketNumberPipe implements PipeTransform, OnDestroy {
       return;
     }
 
-    let currency = forceCurrency || this.marketCurrency;
-    if (!currency) return;
+    const currency = forceCurrency || this.marketCurrency;
+    if (!currency) { return; }
 
-    let trueValue = new BigNumber(value.toString());
+    const trueValue = new BigNumber(value.toString());
     let decimalPlaces = 2;
 
     if (currency && currency.code === 'btc') {

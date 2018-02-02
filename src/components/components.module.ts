@@ -7,11 +7,11 @@ import { ClosePopupComponentModule } from './close-popup/close-popup.module';
 import { AddressListComponentModule } from './address-list/address-list.module';
 
 @NgModule({
-	declarations: [
+  declarations: [
     ProgressBarComponent,
   ],
-	imports: [],
-	exports: [
+  imports: [],
+  exports: [
     ProgressBarComponent,
     EmptyListComponentModule,
     PinCodeComponentModule,

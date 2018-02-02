@@ -21,7 +21,7 @@ export class ProfileCreatePage implements OnDestroy {
   public networksIds;
 
   public newProfile = { name: '', networkId: '' };
-  public showAdvancedOptions: boolean = false;
+  public showAdvancedOptions = false;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
 
@@ -37,7 +37,7 @@ export class ProfileCreatePage implements OnDestroy {
   }
 
   submitForm() {
-    let profile = new Profile();
+    const profile = new Profile();
     profile.name = this.newProfile.name;
     profile.networkId = this.newProfile.networkId;
 

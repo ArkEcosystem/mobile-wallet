@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {PassphraseWord} from "@models/passphrase-word";
+import {PassphraseWord} from '@models/passphrase-word';
 
 @IonicPage()
 @Component({

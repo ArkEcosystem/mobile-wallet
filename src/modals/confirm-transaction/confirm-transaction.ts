@@ -41,7 +41,7 @@ export class ConfirmTransactionModal implements OnDestroy {
     this.transaction = this.navParams.get('transaction');
     this.address = this.transaction.address;
 
-    if (!this.transaction) this.navCtrl.pop();
+    if (!this.transaction) { this.navCtrl.pop(); }
     this.loadingCtrl.create().dismissAll();
 
     this.currentNetwork = this.arkApiProvider.network;
@@ -57,15 +57,15 @@ export class ConfirmTransactionModal implements OnDestroy {
   }
 
   dismiss(status?: boolean, message?: string) {
-    if (lodash.isUndefined(status)) return this.viewCtrl.dismiss();
+    if (lodash.isUndefined(status)) { return this.viewCtrl.dismiss(); }
 
-    let response = { status, message };
+    const response = { status, message };
     this.viewCtrl.dismiss(response);
   }
 
   private onUpdateTicker() {
     this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).do((ticker) => {
-      if (!ticker) return;
+      if (!ticker) { return; }
 
       this.ticker = ticker;
       this.settingsDataProvider.settings.subscribe((settings) => {

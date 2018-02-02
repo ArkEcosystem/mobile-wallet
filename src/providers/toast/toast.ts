@@ -4,7 +4,7 @@ import { ToastController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import * as constants from '@app/app.constants';
-import { TranslatableObject } from "@models/translate";
+import { TranslatableObject } from '@models/translate';
 
 @Injectable()
 export class ToastProvider {
@@ -58,7 +58,7 @@ export class ToastProvider {
   show(messageOrObj: string | TranslatableObject, type?: number, hideDelay?: number, position?: string) {
     let cssClass = 'toast-service';
     if (this.TypeName[type]) {
-      cssClass += ' toast-' + this.TypeName[type]
+      cssClass += ' toast-' + this.TypeName[type];
     }
     let message: string;
     let parameters: any;
@@ -71,7 +71,7 @@ export class ToastProvider {
       parameters = obj.parameters;
     }
     this.translateService.get(message, parameters).subscribe((translation) => {
-      let toast = this.toastCtrl.create({
+      const toast = this.toastCtrl.create({
         message: translation,
         duration: hideDelay || this.hideDelay,
         position: position || this.position,
@@ -79,6 +79,6 @@ export class ToastProvider {
       });
 
       toast.present();
-    })
+    });
   }
 }

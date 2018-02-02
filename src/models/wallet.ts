@@ -55,9 +55,9 @@ export class Wallet extends Account {
   }
 
   deserialize(input: any): Wallet {
-    let self: any = this;
+    const self: any = this;
 
-    for (let prop in input) {
+    for (const prop in input) {
       self[prop] = input[prop];
     }
     return self;
@@ -65,7 +65,7 @@ export class Wallet extends Account {
 
   reset() {
     this.label = null;
-    this.balance = "0";
+    this.balance = '0';
     this.isDelegate =  false;
     this.username = null;
     this.transactions = [];
@@ -77,12 +77,12 @@ export class Wallet extends Account {
   }
 
   loadTransactions(transactions: any) {
-    if (!Array.isArray(transactions) || transactions.length <= 0) return;
+    if (!Array.isArray(transactions) || transactions.length <= 0) { return; }
 
     this.transactions = [];
 
-    for (let tx of transactions) {
-      let transaction = new Transaction(this.address);
+    for (const tx of transactions) {
+      const transaction = new Transaction(this.address);
       transaction.deserialize(tx);
 
       this.transactions.push(transaction);
@@ -94,8 +94,8 @@ export class Wallet extends Account {
   }
 
   getBalanceEquivalent(currency: MarketCurrency) {
-    let balance = this.getBalance() || 0;
-    let price = currency ? currency.price : 0;
+    const balance = this.getBalance() || 0;
+    const price = currency ? currency.price : 0;
 
     return balance * price;
   }

@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ModalController, NavController } from 'ionic-angular';
 import { Wallet, WalletKeys, Transaction, TranslatableObject } from '@models/model';
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
 
 import lodash from 'lodash';
 
@@ -29,14 +29,14 @@ export class ConfirmTransactionComponent {
 
     this.arkApiProvider.createTransaction(transaction, keys.key, keys.secondKey, keys.secondPassphrase)
       .subscribe((tx) => {
-        let modal = this.modalCtrl.create('ConfirmTransactionModal', {
+        const modal = this.modalCtrl.create('ConfirmTransactionModal', {
           transaction: tx
         }, { cssClass: 'inset-modal-send', enableBackdropDismiss: true });
 
         modal.onDidDismiss((result) => {
-          if (lodash.isUndefined(result)) return;
+          if (lodash.isUndefined(result)) { return; }
 
-          if (!result.status) return this.presentWrongModal(result);
+          if (!result.status) { return this.presentWrongModal(result); }
 
           this.onConfirm.emit(tx);
 
@@ -66,7 +66,7 @@ export class ConfirmTransactionComponent {
   }
 
   presentWrongModal(response) {
-    let responseModal = this.modalCtrl.create('TransactionResponsePage', {
+    const responseModal = this.modalCtrl.create('TransactionResponsePage', {
       response
     }, { cssClass: 'inset-modal-small' });
 

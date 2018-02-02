@@ -11,16 +11,16 @@ export class AccountLabelPipe implements PipeTransform {
   }
 
   transform(value: string, defaultText: string, ...args) {
-    let contact = this.userDataProvider.getContactByAddress(value);
-    if (contact) return contact.name;
+    const contact = this.userDataProvider.getContactByAddress(value);
+    if (contact) { return contact.name; }
 
-    let wallet = this.userDataProvider.getWalletByAddress(value);
+    const wallet = this.userDataProvider.getWalletByAddress(value);
     if (wallet) {
-      let label = wallet.username || wallet.label;
-      if (label) return label;
+      const label = wallet.username || wallet.label;
+      if (label) { return label; }
     }
 
-    if (defaultText) return defaultText;
+    if (defaultText) { return defaultText; }
 
     return value;
   }

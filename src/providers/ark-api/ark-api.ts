@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/expand';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { StorageProvider } from '@providers/storage/storage';
 import { ToastProvider } from '@providers/toast/toast';
 
-let packageJson = require('@root/package.json');
+const packageJson = require('@root/package.json');
 import { Transaction, TranslatableObject } from '@models/model';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
 import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
-import { ArkUtility } from "../../utils/ark-utility";
+import { ArkUtility } from '../../utils/ark-utility';
 
 @Injectable()
 export class ArkApiProvider {
@@ -40,7 +42,7 @@ export class ArkApiProvider {
     this.loadData();
 
     this.userDataProvider.onActivateNetwork$.subscribe((network) => {
-      if (lodash.isEmpty(network)) return;
+      if (lodash.isEmpty(network)) { return; }
 
       // set default peer
       if (network && !network.activePeer) {
@@ -64,26 +66,26 @@ export class ArkApiProvider {
   }
 
   public get fees() {
-    if (!lodash.isUndefined(this._fees)) return Observable.of(this._fees);
+    if (!lodash.isUndefined(this._fees)) { return Observable.of(this._fees); }
 
     return this.fetchFees();
   }
 
   public get delegates(): Observable<arkts.Delegate[]> {
-    if (!lodash.isEmpty(this._delegates)) return Observable.of(this._delegates);
+    if (!lodash.isEmpty(this._delegates)) { return Observable.of(this._delegates); }
 
-    return this.fetchDelegates(constants.NUM_ACTIVE_DELEGATES*2);
+    return this.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2);
   }
 
   public findGoodPeer(): void {
     // Get list from active peer
     this._api.peer.list().subscribe((response) => {
       if (response) {
-        let port = +this._network.activePeer.port;
-        let filteredPeers = lodash.filter(response.peers, (peer) => {
+        const port = +this._network.activePeer.port;
+        const filteredPeers = lodash.filter(response.peers, (peer) => {
           return peer['status'] === 'OK' && peer['port'] === port && peer.ip !== this._network.activePeer.ip && peer.ip !== '127.0.0.1';
         });
-        let sortHeight = lodash.orderBy(filteredPeers, ['height','delay'], ['desc','asc']);
+        const sortHeight = lodash.orderBy(filteredPeers, ['height', 'delay'], ['desc', 'asc']);
         this._peers = sortHeight;
         this.updateNetwork(sortHeight[0]);
       } else {
@@ -101,10 +103,10 @@ export class ArkApiProvider {
   }
 
   public fetchDelegates(numberDelegatesToGet: number, getAllDelegates = false): Observable<arkts.Delegate[]> {
-    if (!this._api) return;
+    if (!this._api) { return; }
     const limit = 51;
 
-    let totalCount = limit;
+    const totalCount = limit;
     let offset, currentPage;
     offset = currentPage = 0;
 
@@ -115,11 +117,11 @@ export class ArkApiProvider {
     return Observable.create((observer) => {
 
       this._api.delegate.list({ limit, offset }).expand(() => {
-        let req = this._api.delegate.list({ limit, offset });
+        const req = this._api.delegate.list({ limit, offset });
         return currentPage < totalPages ? req : Observable.empty();
       }).do((response) => {
         offset += limit;
-        if (response.success && getAllDelegates) numberDelegatesToGet = response.totalCount;
+        if (response.success && getAllDelegates) { numberDelegatesToGet = response.totalCount; }
         totalPages = Math.ceil(numberDelegatesToGet / limit);
         currentPage++;
       }).finally(() => {
@@ -129,7 +131,7 @@ export class ArkApiProvider {
         observer.next(delegates);
         observer.complete();
       }).subscribe((data) => {
-        if (data.success) delegates = [...delegates, ...data.delegates];
+        if (data.success) { delegates = [...delegates, ...data.delegates]; }
       });
     });
 
@@ -137,8 +139,8 @@ export class ArkApiProvider {
 
   public createTransaction(transaction: Transaction, key: string, secondKey: string, secondPassphrase: string): Observable<Transaction> {
     return Observable.create((observer) => {
-      let configNetwork = arktsConfig.networks[this._network.name];
-      let jsNetwork = {
+      const configNetwork = arktsConfig.networks[this._network.name];
+      const jsNetwork = {
         messagePrefix: configNetwork.name,
         bip32: configNetwork.bip32,
         pubKeyHash: configNetwork.version,
@@ -153,7 +155,7 @@ export class ArkApiProvider {
         return observer.complete();
       }
 
-      let wallet = this.userDataProvider.getWalletByAddress(transaction.address);
+      const wallet = this.userDataProvider.getWalletByAddress(transaction.address);
       transaction.senderId = transaction.address;
 
       const totalAmount = transaction.getAmount();
@@ -177,13 +179,13 @@ export class ArkApiProvider {
       transaction.signSignature = null;
       transaction.id = null;
 
-      let keys = this.arkjs.crypto.getKeys(key, jsNetwork);
+      const keys = this.arkjs.crypto.getKeys(key, jsNetwork);
       this.arkjs.crypto.sign(transaction, keys);
 
       secondPassphrase = secondKey || secondPassphrase;
 
       if (secondPassphrase) {
-        let secondKeys = this.arkjs.crypto.getKeys(secondPassphrase, jsNetwork);
+        const secondKeys = this.arkjs.crypto.getKeys(secondPassphrase, jsNetwork);
         this.arkjs.crypto.secondSign(transaction, secondKeys);
       }
 
@@ -202,10 +204,10 @@ export class ArkApiProvider {
       headers = headers.append('port', '1');
       headers = headers.append('nethash', this._network.nethash);
 
-      let url = `http://${peer.ip}:${peer.port}/peer/transactions`;
-      let data = JSON.stringify({ transactions: [transaction] });
-      this.http.post(url, data, { headers }).subscribe((data: arkts.TransactionPostResponse) => {
-        if (data.success) {
+      const url = `http://${peer.ip}:${peer.port}/peer/transactions`;
+      const data = JSON.stringify({ transactions: [transaction] });
+      this.http.post(url, data, { headers }).subscribe((result: arkts.TransactionPostResponse) => {
+        if (result.success) {
           this.onSendTransaction$.next(transaction);
           if (broadcast) {
             this.broadcastTransaction(transaction);
@@ -216,7 +218,7 @@ export class ArkApiProvider {
           if (broadcast) {
             this.toastProvider.error('API.TRANSACTION_FAILED');
           }
-          observer.error(data);
+          observer.error(result);
         }
       }, (error) => observer.error(error));
     });
@@ -224,9 +226,9 @@ export class ArkApiProvider {
   }
 
   private broadcastTransaction(transaction: arkts.Transaction) {
-    let max = 10;
+    const max = 10;
 
-    for (let peer of this._peers.slice(0, max)) {
+    for (const peer of this._peers.slice(0, max)) {
       this.postTransaction(transaction, peer, false).subscribe();
     }
   }
@@ -240,7 +242,7 @@ export class ArkApiProvider {
     this.userDataProvider.updateNetwork(this.userDataProvider.currentProfile.networkId, this._network);
     this._api = new arkts.Client(this._network);
 
-    this.fetchDelegates(constants.NUM_ACTIVE_DELEGATES*2).subscribe((data) => {
+    this.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2).subscribe((data) => {
       this._delegates = data;
     });
 
@@ -257,9 +259,9 @@ export class ArkApiProvider {
           observer.next(this._fees);
         }
       }, () => {
-        observer.next(this.storageProvider.getObject(constants.STORAGE_FEES))
+        observer.next(this.storageProvider.getObject(constants.STORAGE_FEES));
       });
-    })
+    });
   }
 
   private loadData() {

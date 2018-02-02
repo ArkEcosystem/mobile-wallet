@@ -14,7 +14,7 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
 
 import * as constants from '@app/app.constants';
 
-let packageJson = require('@root/package.json');
+const packageJson = require('@root/package.json');
 
 @IonicPage()
 @Component({
@@ -49,7 +49,7 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   openChangePinPage() {
-    let modal = this.modalCtrl.create('PinCodeModal', {
+    const modal = this.modalCtrl.create('PinCodeModal', {
       message: 'PIN_CODE.DEFAULT_MESSAGE',
       outputPassword: true,
       validatePassword: true,
@@ -64,7 +64,7 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   openWalletBackupPage() {
-    if (!this.currentWallet || this.currentWallet.isWatchOnly) return this.presentSelectWallet();
+    if (!this.currentWallet || this.currentWallet.isWatchOnly) { return this.presentSelectWallet(); }
 
     this.onEnterPinCode = this.showBackup;
     this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', true);
@@ -81,7 +81,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       'ARE_YOU_SURE',
       'SETTINGS_PAGE.CLEAR_DATA_TEXT',
     ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      let confirm = this.alertCtrl.create({
+      const confirm = this.alertCtrl.create({
         title: translation.ARE_YOU_SURE,
         message: translation['SETTINGS_PAGE.CLEAR_DATA_TEXT'],
         buttons: [
@@ -107,9 +107,11 @@ export class SettingsPage implements OnInit, OnDestroy {
       'SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT',
       'SETTINGS_PAGE.NOT_AVAILABLE_WATCH_ONLY',
     ]).subscribe((translation) => {
-      let message = this.currentWallet && this.currentWallet.isWatchOnly ? translation['SETTINGS_PAGE.NOT_AVAILABLE_WATCH_ONLY'] : translation['SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT'];
+      const message = this.currentWallet && this.currentWallet.isWatchOnly
+        ? translation['SETTINGS_PAGE.NOT_AVAILABLE_WATCH_ONLY']
+        : translation['SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT'];
 
-      let alert = this.alertCtrl.create({
+      const alert = this.alertCtrl.create({
         message,
         buttons: [{
           text: 'Ok'
@@ -126,9 +128,9 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   private showBackup(keys: WalletKeys) {
-    if (!keys) return;
+    if (!keys) { return; }
 
-    let modal = this.modalCtrl.create('WalletBackupModal', {
+    const modal = this.modalCtrl.create('WalletBackupModal', {
       title: 'SETTINGS_PAGE.WALLET_BACKUP',
       keys,
     });

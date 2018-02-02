@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { FormGroup, Validators, FormControl } from '@angular/forms'
+import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Contact, Wallet, MarketTicker, MarketCurrency, SendTransactionForm, WalletKeys } from '@models/model';
 
@@ -23,10 +23,10 @@ import * as constants from '@app/app.constants';
 import { TransactionSend } from 'ark-ts';
 
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
-import { AutoCompleteContact } from "@models/contact";
-import { TranslatableObject } from "@models/translate";
+import { AutoCompleteContact } from '@models/contact';
+import { TranslatableObject } from '@models/translate';
 import { BigNumber } from 'bignumber.js';
-import { ArkUtility } from "../../../utils/ark-utility";
+import { ArkUtility } from '../../../utils/ark-utility';
 
 @IonicPage()
 @Component({
@@ -49,10 +49,10 @@ export class TransactionSendPage implements OnInit {
   marketTicker: MarketTicker;
   marketCurrency: MarketCurrency;
   fees: Fees;
-  isExistingContact: boolean = true;
+  isExistingContact = true;
   isRecipientNameAutoSet: boolean;
 
-  tokenPlaceholder: number = 100;
+  tokenPlaceholder = 100;
   fiatPlaceholder: number;
 
   private currentAutoCompleteFieldValue: string;
@@ -115,7 +115,7 @@ export class TransactionSendPage implements OnInit {
     this.isRecipientNameAutoSet = true;
 
     // if we have a real contact or a wallet with a label, we don't show the field to add a new contact
-    if (contact.name != contact.address) {
+    if (contact.name !== contact.address) {
       this.isExistingContact = true;
       this.transaction.recipientName = contact.name;
     } else {
@@ -127,7 +127,7 @@ export class TransactionSendPage implements OnInit {
   public onSearchInput(input: string): void {
     // this check is needed because clicking into the field, also triggers this method
     // an then the recipientName is set to null, even though nothing has changed
-    if (input == this.currentAutoCompleteFieldValue) {
+    if (input === this.currentAutoCompleteFieldValue) {
       return;
     }
 
@@ -141,7 +141,7 @@ export class TransactionSendPage implements OnInit {
   }
 
   private validAddress(): boolean {
-    let isValid = PublicKey.validateAddress(this.transaction.recipientAddress, this.currentNetwork);
+    const isValid = PublicKey.validateAddress(this.transaction.recipientAddress, this.currentNetwork);
     this.sendTransactionHTMLForm.form.controls['recipientAddress'].setErrors({ incorrect: !isValid });
 
     return isValid;
@@ -149,11 +149,11 @@ export class TransactionSendPage implements OnInit {
 
   private validForm(): boolean {
     let isValid: boolean;
-    for (let name in this.sendTransactionHTMLForm.form.controls) {
+    for (const name in this.sendTransactionHTMLForm.form.controls) {
       if (name === 'recipientAddress') {
         continue;
       }
-      let control = this.sendTransactionHTMLForm.form.controls[name];
+      const control = this.sendTransactionHTMLForm.form.controls[name];
       isValid = control.valid;
       if (!isValid) {
         break;
@@ -168,13 +168,13 @@ export class TransactionSendPage implements OnInit {
       return;
     }
 
-    let validAddress = this.validAddress();
+    const validAddress = this.validAddress();
     let validName = !!this.transaction.recipientName;
     if (validName) {
       validName = new RegExp('^[a-zA-Z0-9]+[a-zA-Z0-9- ]+$').test(this.transaction.recipientName);
     }
     if (validAddress && validName) {
-      let contact = new Contact();
+      const contact = new Contact();
       contact.name = this.transaction.recipientName;
       this.userDataProvider.addContact(this.transaction.recipientAddress, contact);
     }
@@ -185,7 +185,7 @@ export class TransactionSendPage implements OnInit {
   }
 
   onInputToken() {
-    let precision = this.marketCurrency.code === 'btc' ? 8 : 2;
+    const precision = this.marketCurrency.code === 'btc' ? 8 : 2;
     this.transaction.amountEquivalent = +(this.transaction.amount * this.marketCurrency.price).toFixed(precision);
   }
 
@@ -194,8 +194,8 @@ export class TransactionSendPage implements OnInit {
   }
 
   onEnterPinCode(keys: WalletKeys) {
-    let amount = new BigNumber(this.transaction.amount)
-    let data: TransactionSend = {
+    const amount = new BigNumber(this.transaction.amount);
+    const data: TransactionSend = {
       amount: amount.times(constants.WALLET_UNIT_TO_SATOSHI).toNumber(),
       vendorField: this.transaction.smartBridge,
       passphrase: keys.key,
@@ -227,8 +227,8 @@ export class TransactionSendPage implements OnInit {
       this.settingsDataProvider.settings.subscribe((settings) => {
         this.marketCurrency = ticker.getCurrency({ code: settings.currency });
         this.fiatPlaceholder = +(this.tokenPlaceholder * this.marketCurrency.price).toFixed(2);
-      })
-    })
+      });
+    });
   }
 
   ngOnInit(): void {

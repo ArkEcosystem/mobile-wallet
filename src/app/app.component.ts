@@ -100,7 +100,7 @@ export class MyApp implements OnInit, OnDestroy {
       if (this.menuCtrl && this.menuCtrl.isOpen()) {
         return this.menuCtrl.close();
       }
-      let navPromise = this.app.navPop();
+      const navPromise = this.app.navPop();
       if (!navPromise) {
         if (this.nav.getActive().name === 'LoginPage' || this.nav.getActive().name === 'IntroPage') {
           this.showConfirmation(this.exitText).then(() => {
@@ -117,7 +117,7 @@ export class MyApp implements OnInit, OnDestroy {
 
   initConfig() {
     // all platforms
-		this.config.set('scrollAssist', false);
+    this.config.set('scrollAssist', false);
     this.config.set('autoFocusAssist', false);
 
     // ios
@@ -143,8 +143,8 @@ export class MyApp implements OnInit, OnDestroy {
       });
 
       this.platform.resume.subscribe(() => {
-        let now = moment();
-        let diff = now.diff(this.lastPauseTimestamp);
+        const now = moment();
+        const diff = now.diff(this.lastPauseTimestamp);
 
         if (diff >= constants.APP_TIMEOUT_DESTROY) {
           const overlay = this.app._appRoot._overlayPortal.getActive();
@@ -213,16 +213,16 @@ export class MyApp implements OnInit, OnDestroy {
 
       this.menuCtrl.enable(false, 'sidebarMenu');
       return this.openPage('LoginPage');
-    })
+    });
   }
 
   // Verify if any account registered is a delegate
   private onUpdateDelegates(delegates: arkts.Delegate[]) {
     lodash.flatMap(this.userDataProvider.profiles, (profile: Profile) => {
-      let wallets = lodash.values(profile.wallets);
+      const wallets = lodash.values(profile.wallets);
       return lodash.filter(wallets, { isDelegate: false });
     }).forEach((wallet: any) => {
-      let find = lodash.find(delegates, { address: wallet['address'] });
+      const find = lodash.find(delegates, { address: wallet['address'] });
 
       if (find) {
         wallet['isDelegate'] = true;
@@ -239,14 +239,14 @@ export class MyApp implements OnInit, OnDestroy {
       .takeUntil(this.unsubscriber$)
       .debounceTime(500)
       .subscribe(() => {
-        this.arkApiProvider.delegates.subscribe((delegates) => this.onUpdateDelegates(delegates))
+        this.arkApiProvider.delegates.subscribe((delegates) => this.onUpdateDelegates(delegates));
       });
   }
 
   private showConfirmation(title: string): Promise<void> {
     return new Promise((resolve) => {
       this.translateService.get(['NO', 'YES']).subscribe((translation) => {
-        let alert = this.alertCtrl.create({
+        const alert = this.alertCtrl.create({
           subTitle: title,
           buttons: [
             {
@@ -266,7 +266,10 @@ export class MyApp implements OnInit, OnDestroy {
   }
 
   private verifyNetwork() {
-    this.ionicNetwork.onDisconnect().takeUntil(this.unsubscriber$).subscribe(() => this.toastProvider.error('NETWORKS_PAGE.INTERNET_DESCONNECTED'));
+    this.ionicNetwork
+      .onDisconnect()
+      .takeUntil(this.unsubscriber$)
+      .subscribe(() => this.toastProvider.error('NETWORKS_PAGE.INTERNET_DESCONNECTED'));
   }
 
   ngOnInit() {
