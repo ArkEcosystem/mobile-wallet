@@ -1,7 +1,13 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, OnDestroy } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Vibration } from '@ionic-native/vibration';
 import { AuthProvider } from '@providers/auth/auth';
+
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+
+import moment from 'moment';
+import lodash from 'lodash';
 
 import * as constants from '@app/app.constants';
 
@@ -11,21 +17,24 @@ import * as constants from '@app/app.constants';
   templateUrl: 'pin-code.html',
   providers: [Vibration],
 })
-export class PinCodeModal {
+export class PinCodeModal implements OnDestroy {
 
   public message: string;
   public password: string;
-  public isWrong: boolean = false;
+  public isWrong = false;
+
+  public unlockDiff = 0;
+  public unlockCountdown$: Subscription;
 
   // Send a password created before, useful for create pin and confirm
   private expectedPassword: string;
   // Will send back the entered password
-  private outputPassword: boolean = false;
+  private outputPassword = false;
   // Check if the entered password is correct
-  private validatePassword: boolean = false;
+  private validatePassword = false;
 
-  private length: number = 6;
-
+  private length = 6;
+  private attempts = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -43,19 +52,23 @@ export class PinCodeModal {
   }
 
   add(value: number) {
-    // this.vibration.vibrate(constants.VIBRATION_TIME_MS);
+    if (this.unlockDiff > 0) {
+      return;
+    }
 
     if (this.password.length < this.length) {
-      this.zone.runOutsideAngular(() => {
+      this.zone.run(() => {
         this.password = this.password + value;
 
+        // When the user reach the password length
         if (this.password.length == this.length) {
 
+          // New password
           if (!this.expectedPassword && !this.validatePassword) {
             return this.dismiss(true);
           }
 
-          // Confirm with the previous entered password
+          // Confirm with the previous entered password (validate new password)
           if (this.expectedPassword) {
             if (this.expectedPassword !== this.password) {
               this.setWrong();
@@ -64,6 +77,7 @@ export class PinCodeModal {
             }
           }
 
+          // Compare the password entered with the saved in the storage
           if (this.validatePassword) {
             this.authProvider.validateMasterPassword(this.password).subscribe((result) => {
               if (!result) {
@@ -73,29 +87,36 @@ export class PinCodeModal {
               }
             });
           }
-
         }
       });
+    }
+  }
+
+  verifyAttempts() {
+    if (this.attempts >= constants.PIN_ATTEMPS_LIMIT) {
+      this.authProvider.increaseUnlockTimestamp().then(() => this.loadUnlockTime());
     }
   }
 
   setWrong() {
     this.vibration.vibrate(constants.VIBRATION_TIME_LONG_MS);
 
-    this.zone.run(() => {
-      this.isWrong = true;
-      this.password = '';
-      this.message = 'PIN_CODE.WRONG';
+    this.authProvider.increaseAttempts().subscribe(() => {
+      this.attempts++;
+      this.verifyAttempts();
 
-      setTimeout(() => {
-        this.isWrong = false;
-      }, 500);
-    });
+      this.zone.run(() => {
+        this.isWrong = true;
+        this.password = '';
+        this.message = 'PIN_CODE.WRONG';
+
+        setTimeout(() => this.isWrong = false, 500);
+      });
+
+    })
   }
 
   delete() {
-    // this.vibration.vibrate(constants.VIBRATION_TIME_MS);
-
     if (this.password.length > 0) {
       this.zone.run(() => {
         this.password = this.password.substring(0, this.password.length - 1);
@@ -104,7 +125,14 @@ export class PinCodeModal {
   }
 
   dismiss(status: boolean = true) {
-    if (this.password.length < this.length) return this.viewCtrl.dismiss();
+    if (this.password.length < this.length) {
+      return this.viewCtrl.dismiss();
+    }
+
+    // When logged in, the attempts are restarted
+    if (status) {
+      this.authProvider.clearAttempts();
+    }
 
     if (this.outputPassword) {
       this.viewCtrl.dismiss(this.password);
@@ -113,4 +141,47 @@ export class PinCodeModal {
 
     this.viewCtrl.dismiss(status);
   }
+
+  private loadUnlockTime() {
+    this.authProvider.getUnlockTimestamp().subscribe((timestamp) => {
+      if (!timestamp || lodash.isEmpty(timestamp)) {
+        return;
+      }
+
+      // If an unlock time is set in storage
+      // Check if this time has already been spent
+      const now = moment.now();
+      const diff = moment(timestamp).diff(now, 'seconds');
+
+      if (diff <= 0) {
+        this.authProvider.clearAttempts();
+        this.attempts = 0;
+        return this.loadUnlockTime();
+      }
+
+      this.unlockDiff = diff;
+
+      this.password = '';
+      this.message = 'PIN_CODE.WRONG_PIN_MANY_TIMES';
+
+      // Start the countdown
+      this.unlockCountdown$ = Observable.timer(0, 1000)
+                                        .map(x => this.zone.run(() => this.unlockDiff--))
+                                        .takeWhile(() => this.unlockDiff > 0)
+                                        .finally(() => this.zone.run(() => this.message = 'PIN_CODE.DEFAULT_MESSAGE'))
+                                        .subscribe();
+    })
+  }
+
+  ionViewDidLoad() {
+    this.authProvider.getAttempts().subscribe((attempts) => this.attempts = attempts);
+    this.loadUnlockTime();
+  }
+
+  ngOnDestroy() {
+    if (this.unlockCountdown$) {
+      this.unlockCountdown$.unsubscribe();
+    }
+  }
+
 }

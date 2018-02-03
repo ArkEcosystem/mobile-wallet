@@ -20,6 +20,8 @@ export const STORAGE_INTROSEEN = 'intro';
 export const STORAGE_DELEGATES = 'delegates';
 export const STORAGE_FEES = 'fees';
 export const STORAGE_MASTERPASSWORD = 'masterpassword';
+export const STORAGE_AUTH_UNLOCK_TIMESTAMP = 'auth_timestamp';
+export const STORAGE_AUTH_ATTEMPTS = 'auth_attemps';
 
 // TOAST
 export const TOAST_HIDE_DELAY = 3000;
@@ -34,6 +36,10 @@ export const API_MARKET_TICKER_ENDPOINT = 'data/pricemultifull?fsyms=ARK&tsyms='
 export const VIBRATION_TIME_MS = 30;
 export const VIBRATION_TIME_LONG_MS = 200;
 export const APP_TIMEOUT_DESTROY = 60000;
+
+// PIN
+export const PIN_ATTEMPS_LIMIT = 3;
+export const PIN_ATTEMPS_TIMEOUT_MILLISECONDS = 30 * 1000;
 
 // ARK
 export const PRIVACY_POLICY_URL = 'https://ark.io/PrivacyPolicy.txt';
