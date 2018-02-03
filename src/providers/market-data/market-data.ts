@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/mergeMap';
 
 import { StorageProvider } from '@providers/storage/storage';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
@@ -40,13 +42,13 @@ export class MarketDataProvider {
   }
 
   get history(): Observable<model.MarketHistory> {
-    if (this.marketHistory) return Observable.of(this.marketHistory);
+    if (this.marketHistory) { return Observable.of(this.marketHistory); }
 
     return this.fetchHistory();
   }
 
   get ticker(): Observable<model.MarketTicker> {
-    if (this.marketTicker) return Observable.of(this.marketTicker);
+    if (this.marketTicker) { return Observable.of(this.marketTicker); }
 
     return this.fetchTicker();
   }
@@ -60,13 +62,13 @@ export class MarketDataProvider {
   private fetchTicker(): Observable<model.MarketTicker> {
     const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_TICKER_ENDPOINT}`;
 
-    let currenciesList = model.CURRENCIES_LIST.map((currency) => {
+    const currenciesList = model.CURRENCIES_LIST.map((currency) => {
       return currency.code.toUpperCase();
     }).join(',');
 
     return this.http.get(url + currenciesList).map((response) => {
-      let json = response['RAW']['ARK'];
-      let tickerObject = {
+      const json = response['RAW']['ARK'];
+      const tickerObject = {
         symbol: json['BTC']['FROMSYMBOL'],
         currencies: json,
       };
@@ -80,15 +82,17 @@ export class MarketDataProvider {
 
   fetchHistory(): Observable<model.MarketHistory> {
     const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
-    const myCurrencyCode = ((!this.settings || !this.settings.currency) ? this.settingsDataProvider.getDefaults().currency : this.settings.currency).toUpperCase();
+    const myCurrencyCode = ((!this.settings || !this.settings.currency)
+      ? this.settingsDataProvider.getDefaults().currency
+      : this.settings.currency).toUpperCase();
     return this.http.get(url + 'BTC')
       .map((btcResponse) => btcResponse)
       .flatMap((btcResponse) => this.http.get(url + myCurrencyCode).map((currencyResponse) => {
-        let historyData = {
+        const historyData = {
           BTC: btcResponse['Data'],
         };
         historyData[myCurrencyCode] = currencyResponse['Data'];
-        let history = new model.MarketHistory().deserialize(historyData);
+        const history = new model.MarketHistory().deserialize(historyData);
 
         this.marketHistory = history;
         this.storageProvider.set(constants.STORAGE_MARKET_HISTORY, historyData);
@@ -102,7 +106,7 @@ export class MarketDataProvider {
     this.settingsDataProvider.onUpdate$.subscribe((settings) => {
       this.settings = settings;
       this.marketHistory = null;
-    })
+    });
   }
 
   private loadData() {

@@ -18,14 +18,14 @@ export class QRScannerComponent {
   constructor(private modalCtrl: ModalController) { }
 
   open(format: boolean = false) {
-    let modal = this.modalCtrl.create('QRScannerModal');
+    const modal = this.modalCtrl.create('QRScannerModal');
 
     modal.onDidDismiss((qrCode) => {
-      if (lodash.isNil(qrCode)) return this.onWrong.emit();
+      if (lodash.isNil(qrCode)) { return this.onWrong.emit(); }
 
       let response = qrCode;
 
-      if (format) response = this.formatScheme(qrCode);
+      if (format) { response = this.formatScheme(qrCode); }
 
       return this.onSuccess.emit(response);
     });
@@ -34,10 +34,10 @@ export class QRScannerComponent {
   }
 
   private formatScheme(qrCode: any): QRCodeScheme {
-    if (lodash.isObject(qrCode)) return this.formatOld(qrCode);
+    if (lodash.isObject(qrCode)) { return this.formatOld(qrCode); }
 
-    let scheme: QRCodeScheme = {};
-    let prefixUriRegex = new RegExp(`${constants.URI_QRCODE_SCHEME_PREFIX}([AaDd]{1}[0-9a-zA-Z]{33})`, 'g');
+    const scheme: QRCodeScheme = {};
+    const prefixUriRegex = new RegExp(`${constants.URI_QRCODE_SCHEME_PREFIX}([AaDd]{1}[0-9a-zA-Z]{33})`, 'g');
 
     if (qrCode.match(prefixUriRegex)) {
       scheme.address = prefixUriRegex.exec(qrCode)[1];
@@ -57,7 +57,7 @@ export class QRScannerComponent {
   }
 
   private formatOld(json): QRCodeScheme {
-    let scheme: QRCodeScheme = {};
+    const scheme: QRCodeScheme = {};
 
     if (json['a'] || json['address']) {
       scheme.address = json['a'] || json['address'];

@@ -3,7 +3,8 @@ import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
 import { ForgeProvider } from '@providers/forge/forge';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 
 import { Contact, Profile, Wallet, WalletKeys } from '@models/model';
@@ -13,7 +14,7 @@ import { v4 as uuid } from 'uuid';
 import { Network } from 'ark-ts/model';
 
 import * as constants from '@app/app.constants';
-import { NetworkType } from "ark-ts";
+import { NetworkType } from 'ark-ts';
 
 @Injectable()
 export class UserDataProvider {
@@ -46,9 +47,9 @@ export class UserDataProvider {
   }
 
   addContact(address: string, contact: Contact, profileId: string = this.authProvider.loggedProfileId) {
-    if (lodash.isNil(this.profiles)) return;
+    if (lodash.isNil(this.profiles)) { return; }
 
-    let contacts = this.profiles[profileId].contacts || {};
+    const contacts = this.profiles[profileId].contacts || {};
     contacts[address] = contact;
 
     this.profiles[profileId]['contacts'] = contacts;
@@ -57,7 +58,7 @@ export class UserDataProvider {
   }
 
   editContact(address: string, contact: Contact) {
-    if (lodash.isNil(this.profiles)) return;
+    if (lodash.isNil(this.profiles)) { return; }
 
     lodash.forEach(this.profiles, (item, id) => {
       if (item['contacts'][address]) {
@@ -69,18 +70,18 @@ export class UserDataProvider {
   }
 
   getContactByAddress(address: string): Contact {
-    if (lodash.isNil(this.profiles) || !address) return;
+    if (lodash.isNil(this.profiles) || !address) { return; }
 
-    let contacts = lodash.map(this.profiles, (p) => p['contacts']);
-    let merged = Object.assign({}, ...contacts);
+    const contacts = lodash.map(this.profiles, (p) => p['contacts']);
+    const merged = Object.assign({}, ...contacts);
 
-    if (lodash.isNil(merged)) return;
+    if (lodash.isNil(merged)) { return; }
 
     return <Contact>merged[address];
   }
 
   removeContactByAddress(address: string) {
-    if (lodash.isNil(this.profiles)) return;
+    if (lodash.isNil(this.profiles)) { return; }
 
     lodash.forEach(this.profiles, (item, id) => {
       this.profiles[id]['contacts'] = lodash.omit(item['contacts'], [address]);
@@ -129,14 +130,17 @@ export class UserDataProvider {
   }
 
   saveProfiles(profiles = this.profiles) {
-    let currentProfile = this.authProvider.loggedProfileId;
+    const currentProfile = this.authProvider.loggedProfileId;
 
-    if (currentProfile) this.setCurrentProfile(currentProfile, false);
+    if (currentProfile) { this.setCurrentProfile(currentProfile, false); }
     return this.storageProvider.set(constants.STORAGE_PROFILES, profiles);
   }
 
-  encryptSecondPassphrase(wallet: Wallet, pinCode: string, secondPassphrase: string, profileId: string = this.authProvider.loggedProfileId) {
-    if (lodash.isUndefined(profileId)) return;
+  encryptSecondPassphrase(wallet: Wallet,
+                          pinCode: string,
+                          secondPassphrase: string,
+                          profileId: string = this.authProvider.loggedProfileId) {
+    if (lodash.isUndefined(profileId)) { return; }
 
     if (wallet && !wallet.cipherSecondKey) {
       // wallet.secondBip38 = this.forgeProvider.encryptBip38(secondWif, pinCode, this.currentNetwork);
@@ -148,15 +152,15 @@ export class UserDataProvider {
   }
 
   addWallet(wallet: Wallet, passphrase: string, pinCode: string, profileId: string = this.authProvider.loggedProfileId) {
-    if (lodash.isUndefined(profileId)) return;
+    if (lodash.isUndefined(profileId)) { return; }
 
-    let profile = this.getProfileById(profileId);
+    const profile = this.getProfileById(profileId);
 
-    let iv = this.forgeProvider.generateIv();
+    const iv = this.forgeProvider.generateIv();
 
     if (passphrase) {
       wallet.iv = iv;
-      let cipherKey = this.forgeProvider.encrypt(passphrase, pinCode, wallet.address, iv);
+      const cipherKey = this.forgeProvider.encrypt(passphrase, pinCode, wallet.address, iv);
       // wallet.bip38 = this.forgeProvider.encryptBip38(wif, pinCode, this.currentNetwork);
       wallet.cipherKey = cipherKey;
     }
@@ -170,19 +174,19 @@ export class UserDataProvider {
   }
 
   updateWalletEncryption(oldPassword: string, newPassword: string) {
-    for (let profileId in this.profiles) {
-      let profile = this.profiles[profileId];
-      for (let walletId in profile.wallets) {
-        let wallet = profile.wallets[walletId];
+    for (const profileId in this.profiles) {
+      const profile = this.profiles[profileId];
+      for (const walletId in profile.wallets) {
+        const wallet = profile.wallets[walletId];
         if (wallet.isWatchOnly) {
           continue;
         }
-        let key = this.forgeProvider.decrypt(wallet.cipherKey, oldPassword, wallet.address, wallet.iv);
+        const key = this.forgeProvider.decrypt(wallet.cipherKey, oldPassword, wallet.address, wallet.iv);
         wallet.cipherKey = this.forgeProvider.encrypt(key, newPassword, wallet.address, wallet.iv);
         // wallet.bip38 = this.forgeProvider.encryptBip38(wif, newPassword, this.currentNetwork);
 
         if (wallet.cipherSecondKey) {
-          let secondKey = this.forgeProvider.decrypt(wallet.cipherSecondKey, oldPassword, wallet.address, wallet.iv);
+          const secondKey = this.forgeProvider.decrypt(wallet.cipherSecondKey, oldPassword, wallet.address, wallet.iv);
           wallet.cipherSecondKey = this.forgeProvider.encrypt(secondKey, newPassword, wallet.address, wallet.iv);
           // wallet.secondBip38 = this.forgeProvider.encryptBip38(secondWif, newPassword, this.currentNetwork);
         }
@@ -201,9 +205,9 @@ export class UserDataProvider {
   }
 
   getWalletByAddress(address: string, profileId: string = this.authProvider.loggedProfileId): Wallet {
-    if (lodash.isUndefined(profileId)) return;
+    if (lodash.isUndefined(profileId)) { return; }
 
-    let profile = this.getProfileById(profileId);
+    const profile = this.getProfileById(profileId);
     let wallet = new Wallet();
 
     if (profile.wallets[address]) {
@@ -216,15 +220,15 @@ export class UserDataProvider {
   }
 
   saveWallet(wallet: Wallet, profileId: string = this.authProvider.loggedProfileId, notificate: boolean = false) {
-    if (lodash.isUndefined(profileId)) return;
+    if (lodash.isUndefined(profileId)) { return; }
 
-    let profile = this.getProfileById(profileId);
+    const profile = this.getProfileById(profileId);
     wallet.lastUpdate = new Date().getTime();
     profile.wallets[wallet.address] = wallet;
 
     this.profiles[profileId] = profile;
 
-    if (notificate) this.onUpdateWallet$.next(wallet);
+    if (notificate) { this.onUpdateWallet$.next(wallet); }
 
     return this.saveProfiles();
   }
@@ -266,9 +270,9 @@ export class UserDataProvider {
   }
 
   getKeysByWallet(wallet: Wallet, password: string): WalletKeys {
-    if (!wallet.cipherKey && !wallet.cipherSecondKey) return;
+    if (!wallet.cipherKey && !wallet.cipherSecondKey) { return; }
 
-    let keys: WalletKeys = {};
+    const keys: WalletKeys = {};
 
     if (wallet.cipherKey) {
       keys.key = this.forgeProvider.decrypt(wallet.cipherKey, password, wallet.address, wallet.iv);
@@ -282,9 +286,9 @@ export class UserDataProvider {
   }
 
   private setCurrentNetwork(): void {
-    if (!this.currentProfile) return;
+    if (!this.currentProfile) { return; }
 
-    let network = new Network();
+    const network = new Network();
 
     Object.assign(network, this.networks[this.currentProfile.networkId]);
     this.onActivateNetwork$.next(network);
@@ -294,9 +298,9 @@ export class UserDataProvider {
 
   private setCurrentProfile(profileId: string, broadcast: boolean = true): void {
     if (profileId && this.profiles[profileId]) {
-      let profile = new Profile().deserialize(this.profiles[profileId]);
+      const profile = new Profile().deserialize(this.profiles[profileId]);
       this.currentProfile = profile;
-      if (broadcast) this.onSelectProfile$.next(profile);
+      if (broadcast) { this.onSelectProfile$.next(profile); }
     } else {
       this.currentProfile = null;
       this.authProvider.logout(false);

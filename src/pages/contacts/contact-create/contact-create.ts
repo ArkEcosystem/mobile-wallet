@@ -9,7 +9,7 @@ import { PublicKey } from 'ark-ts/core';
 import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';
 
 import lodash from 'lodash';
-import { ToastProvider } from "@providers/toast/toast";
+import { ToastProvider } from '@providers/toast/toast';
 
 @IonicPage()
 @Component({
@@ -34,7 +34,7 @@ export class ContactCreatePage {
     private userDataProvider: UserDataProvider,
     private toastProvider: ToastProvider
   ) {
-    let param = this.navParams.get('contact');
+    const param = this.navParams.get('contact');
     this.address = this.navParams.get('address');
 
     this.isNew = lodash.isEmpty(param);
@@ -44,9 +44,9 @@ export class ContactCreatePage {
   }
 
   validateAddress() {
-    let validate = PublicKey.validateAddress(this.address, this.currentNetwork);
+    const validate = PublicKey.validateAddress(this.address, this.currentNetwork);
     this.createContactForm.form.controls['address'].setErrors({ incorrect: !validate });
-    if (validate) this.createContactForm.form.controls['address'].setErrors(null);
+    if (validate) { this.createContactForm.form.controls['address'].setErrors(null); }
 
     return validate;
   }

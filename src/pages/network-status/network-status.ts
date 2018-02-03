@@ -1,8 +1,10 @@
 import {Component, NgZone, OnDestroy} from '@angular/core';
 import { IonicPage, LoadingController } from 'ionic-angular';
 
-import { Subject } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/debounceTime';
 
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 
@@ -69,8 +71,9 @@ export class NetworkStatusPage implements OnDestroy {
     this.arkApiProvider.onUpdatePeer$
       .takeUntil(this.unsubscriber$)
       .do((peer) => {
-        if (this.loader) this.loader.dismiss();
-        this.translateService.get('NETWORKS_PAGE.PEER_SUCCESSFULLY_CHANGED').subscribe((translate) => this.toastProvider.success(translate));
+        if (this.loader) { this.loader.dismiss(); }
+        this.translateService.get('NETWORKS_PAGE.PEER_SUCCESSFULLY_CHANGED')
+          .subscribe((translate) => this.toastProvider.success(translate));
         this.zone.run(() => this.currentPeer = peer);
       }).subscribe();
   }

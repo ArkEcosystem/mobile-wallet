@@ -8,7 +8,7 @@ import { AddressMap } from '@models/contact';
 export class AddressListComponent {
   @Input() map: AddressMap[];
   @Input() icon: string;
-  @Input() circleProperty: string = 'key'; // key or value
+  @Input() circleProperty = 'key'; // key or value
 
   @Output() onTap: EventEmitter<string> = new EventEmitter<string>();
   @Output() onPress: EventEmitter<string> = new EventEmitter<string>();

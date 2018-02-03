@@ -24,7 +24,7 @@ export class TransactionResponsePage {
   public keys: WalletKeys = {};
   public response: any = { status: false, message: '' };
 
-  public showKeepSecondPassphrase: boolean = true;
+  public showKeepSecondPassphrase = true;
   public currentNetwork: Network;
 
   constructor(
@@ -41,12 +41,12 @@ export class TransactionResponsePage {
     this.response = this.navParams.get('response');
     this.keys = this.navParams.get('keys');
 
-    let transaction = this.navParams.get('transaction');
+    const transaction = this.navParams.get('transaction');
 
-    if (!this.response) this.navCtrl.pop();
+    if (!this.response) { this.navCtrl.pop(); }
 
     this.currentNetwork = this.userDataProvider.currentNetwork;
-    if (transaction) this.transaction = new Transaction(this.wallet.address).deserialize(transaction);
+    if (transaction) { this.transaction = new Transaction(this.wallet.address).deserialize(transaction); }
 
     this.verifySecondPassphrasHasEncrypted();
   }
@@ -58,7 +58,7 @@ export class TransactionResponsePage {
   }
 
   openInExplorer() {
-    let url = `${this.currentNetwork.explorer}/tx/${this.transaction.id}`;
+    const url = `${this.currentNetwork.explorer}/tx/${this.transaction.id}`;
     return this.iab.create(url);
   }
 
@@ -67,20 +67,20 @@ export class TransactionResponsePage {
   }
 
   saveSecondPassphrase() {
-    let modal = this.modalCtrl.create('PinCodeModal', {
+    const modal = this.modalCtrl.create('PinCodeModal', {
       message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
       outputPassword: true,
       validatePassword: true,
     });
 
     modal.onDidDismiss((password) => {
-      if (!password) return;
+      if (!password) { return; }
 
       this.userDataProvider.encryptSecondPassphrase(this.wallet, password, this.keys.secondPassphrase).subscribe(() => {
         this.wallet = this.userDataProvider.getWalletByAddress(this.wallet.address);
 
         this.showKeepSecondPassphrase = false;
-        if (this.content) this.content.resize();
+        if (this.content) { this.content.resize(); }
         this.presentEncryptedAlert();
       });
     });
@@ -89,14 +89,14 @@ export class TransactionResponsePage {
   }
 
   verifySecondPassphrasHasEncrypted() {
-    if (!this.transaction) return;
+    if (!this.transaction) { return; }
 
     if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondSignature && !this.wallet.cipherSecondKey)) {
-      if (this.response.status) return this.showKeepSecondPassphrase = true;
+      if (this.response.status) { return this.showKeepSecondPassphrase = true; }
     }
 
     this.showKeepSecondPassphrase = false;
-    if (this.content) this.content.resize();
+    if (this.content) { this.content.resize(); }
   }
 
   dismiss() {

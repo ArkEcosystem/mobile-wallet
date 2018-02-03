@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 
@@ -18,31 +19,31 @@ export class SettingsDataProvider {
 
   public AVALIABLE_OPTIONS = {
     languages: {
-      "en": "English",
-      "de": "Deutsch",
-      "it": "Italiano",
-      "nl": "Nederlands",
-      "sv": "Svenska",
-      "ru": "Русский",
-      "gr": "Ελληνικά"
+      'en': 'English',
+      'de': 'Deutsch',
+      'it': 'Italiano',
+      'nl': 'Nederlands',
+      'sv': 'Svenska',
+      'ru': 'Русский',
+      'gr': 'Ελληνικά'
     },
     currencies: {
-      "btc": "Bitcoin",
-      "usd": "Dollar",
-      "eur": "Euro",
-      "gbp": "British Pound",
-      "krw": "South Korean Won",
-      "cny": "Chinese Yuan",
-      "jpy": "Japanese Yen",
-      "aud": "Australian Dollar",
-      "cad": "Canadian Dollar",
-      "rub": "Russian Ruble",
-      "inr": "Indian Rupee",
-      "brl": "Brazilian Real",
-      "chf": "Swiss Franc",
-      "hkd": "Hong Kong Dollar",
-      "idr": "Indonesian Rupiah",
-      "mxn": "Mexican Peso",
+      'btc': 'Bitcoin',
+      'usd': 'Dollar',
+      'eur': 'Euro',
+      'gbp': 'British Pound',
+      'krw': 'South Korean Won',
+      'cny': 'Chinese Yuan',
+      'jpy': 'Japanese Yen',
+      'aud': 'Australian Dollar',
+      'cad': 'Canadian Dollar',
+      'rub': 'Russian Ruble',
+      'inr': 'Indian Rupee',
+      'brl': 'Brazilian Real',
+      'chf': 'Swiss Franc',
+      'hkd': 'Hong Kong Dollar',
+      'idr': 'Indonesian Rupiah',
+      'mxn': 'Mexican Peso',
     },
   };
 
@@ -66,13 +67,13 @@ export class SettingsDataProvider {
   }
 
   public save(options?: UserSettings): Observable<any> {
-    let settings = options || this._settings;
+    const settings = options || this._settings;
 
-    for (let prop in options) {
+    for (const prop in options) {
       this._settings[prop] = settings[prop];
     }
 
-    if (options) this.onUpdate$.next(this._settings);
+    if (options) { this.onUpdate$.next(this._settings); }
     return this._storageProvider.set(constants.STORAGE_SETTINGS, this._settings);
   }
 

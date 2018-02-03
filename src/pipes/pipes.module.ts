@@ -7,14 +7,14 @@ import { TimestampHumanPipe } from './timestamp-human/timestamp-human';
 import { TimezonePipe } from './timezone/timezone';
 
 @NgModule({
-	declarations: [TruncateMiddlePipe,
+  declarations: [TruncateMiddlePipe,
     UnitsSatoshiPipe,
     MarketNumberPipe,
     AccountLabelPipe,
     TimestampHumanPipe,
     TimezonePipe],
-	imports: [],
-	exports: [TruncateMiddlePipe,
+  imports: [],
+  exports: [TruncateMiddlePipe,
     UnitsSatoshiPipe,
     MarketNumberPipe,
     AccountLabelPipe,

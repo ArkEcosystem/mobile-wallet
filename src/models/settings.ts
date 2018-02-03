@@ -4,10 +4,10 @@ export class UserSettings {
   public darkMode: boolean;
   public notification: boolean;
 
-  constructor() {};
+  constructor() {}
 
   public static defaults(): UserSettings {
-    let settings = new UserSettings();
+    const settings = new UserSettings();
     settings.language = 'en';
     settings.currency = 'usd';
     settings.darkMode = false;

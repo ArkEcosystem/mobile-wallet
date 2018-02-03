@@ -18,21 +18,21 @@ export class QRCodeComponent implements OnChanges {
   constructor() { }
 
   ngOnChanges() {
-    if (!this.size) this.size = 80;
+    if (!this.size) { this.size = 80; }
 
-    let params = this.formatParams();
-    let scheme = `${constants.URI_QRCODE_SCHEME_PREFIX}${this.address}${params}`;
+    const params = this.formatParams();
+    const scheme = `${constants.URI_QRCODE_SCHEME_PREFIX}${this.address}${params}`;
 
     this.value = JSON.parse(JSON.stringify(scheme));
   }
 
   private formatParams() {
-    let params = [];
+    const params = [];
 
-    if (this.label) params.push(`label=${this.label}`);
-    if (this.amount) params.push(`amount=${this.amount}`);
-    if (this.vendorField) params.push(`vendorField=${this.vendorField}`);
+    if (this.label) { params.push(`label=${this.label}`); }
+    if (this.amount) { params.push(`amount=${this.amount}`); }
+    if (this.vendorField) { params.push(`vendorField=${this.vendorField}`); }
 
-    return params.length > 0 ? `?${params.join("&")}` : '';
+    return params.length > 0 ? `?${params.join('&')}` : '';
   }
 }

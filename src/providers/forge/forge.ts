@@ -16,8 +16,8 @@ export class ForgeProvider {
   }
 
   public encrypt(message: string, password: string, address: string, iv: any) {
-    let derivedKey = forge.pkcs5.pbkdf2(password, address, this.interations, this.keySize);
-    let cipher = forge.cipher.createCipher('AES-CBC', derivedKey);
+    const derivedKey = forge.pkcs5.pbkdf2(password, address, this.interations, this.keySize);
+    const cipher = forge.cipher.createCipher('AES-CBC', derivedKey);
     cipher.start({ iv: forge.util.decode64(iv) });
     cipher.update(forge.util.createBuffer(message));
     cipher.finish();
@@ -26,8 +26,8 @@ export class ForgeProvider {
   }
 
   public decrypt(cipherText: string, password: string, address: string, iv: any) {
-    let derivedKey = forge.pkcs5.pbkdf2(password, address, this.interations, this.keySize);
-    let decipher = forge.cipher.createDecipher('AES-CBC', derivedKey);
+    const derivedKey = forge.pkcs5.pbkdf2(password, address, this.interations, this.keySize);
+    const decipher = forge.cipher.createDecipher('AES-CBC', derivedKey);
     decipher.start({ iv: forge.util.decode64(iv) });
     decipher.update(forge.util.createBuffer(forge.util.decode64(cipherText)));
     decipher.finish();

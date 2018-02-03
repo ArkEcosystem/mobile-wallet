@@ -9,6 +9,6 @@ export class PassphraseWord {
   }
 
   public get isCorrect(): boolean {
-    return this.userValue == this.passphraseValue;
+    return this.userValue === this.passphraseValue;
   }
 }

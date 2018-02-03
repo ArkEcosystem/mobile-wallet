@@ -5,7 +5,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { PrivateKey } from 'ark-ts/core';
 import bip39 from 'bip39';
 import { WalletKeys, AccountBackup, PassphraseWord } from '@models/model';
-import { ArkUtility } from "../../utils/ark-utility";
+import { ArkUtility } from '../../utils/ark-utility';
 
 @IonicPage()
 @Component({
@@ -18,7 +18,7 @@ export class WalletBackupModal {
   public entropy: string;
   public keys: WalletKeys;
   public message: string;
-  public showAdvancedOptions: boolean = false;
+  public showAdvancedOptions = false;
 
   public account: AccountBackup;
 
@@ -35,7 +35,7 @@ export class WalletBackupModal {
     this.keys = this.navParams.get('keys');
     this.message = this.navParams.get('message');
 
-    if (!this.title || (!this.entropy && !this.keys)) this.dismiss();
+    if (!this.title || (!this.entropy && !this.keys)) { this.dismiss(); }
 
     this.currentNetwork = this.userDataProvider.currentNetwork;
   }
@@ -45,7 +45,7 @@ export class WalletBackupModal {
       this.dismiss(this.account);
     }
 
-    let wordTesterModal = this.modalCtrl.create('PassphraseWordTesterModal', {
+    const wordTesterModal = this.modalCtrl.create('PassphraseWordTesterModal', {
       words: this.getRandomWords(3, this.account.mnemonic.split(' '))
     });
 
@@ -90,13 +90,13 @@ export class WalletBackupModal {
   }
 
   private generateAccountFromKeys() {
-    let pvKey = PrivateKey.fromSeed(this.keys.key, this.currentNetwork);
-    let pbKey = pvKey.getPublicKey();
+    const pvKey = PrivateKey.fromSeed(this.keys.key, this.currentNetwork);
+    const pbKey = pvKey.getPublicKey();
     pbKey.setNetwork(this.currentNetwork);
 
-    let wallet = this.userDataProvider.getWalletByAddress(pbKey.getAddress());
+    const wallet = this.userDataProvider.getWalletByAddress(pbKey.getAddress());
 
-    let account: AccountBackup = {};
+    const account: AccountBackup = {};
     account.address = wallet.address;
     account.mnemonic = this.keys.key;
     account.publicKey = pbKey.toHex();
@@ -111,13 +111,13 @@ export class WalletBackupModal {
   }
 
   private generateAccountFromEntropy() {
-    let account: AccountBackup = {};
+    const account: AccountBackup = {};
 
     account.entropy = this.entropy;
     account.mnemonic = bip39.entropyToMnemonic(account.entropy);
 
-    let pvKey = PrivateKey.fromSeed(account.mnemonic, this.currentNetwork);
-    let pbKey = pvKey.getPublicKey();
+    const pvKey = PrivateKey.fromSeed(account.mnemonic, this.currentNetwork);
+    const pbKey = pvKey.getPublicKey();
 
     account.address = pbKey.getAddress();
     account.publicKey = pbKey.toHex();

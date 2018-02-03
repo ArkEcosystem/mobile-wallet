@@ -19,10 +19,10 @@ export class TransactionShowPage {
 
   public transaction: Transaction;
   public currentNetwork: Network;
-  public equivalentAmount: number = 0;
+  public equivalentAmount = 0;
   public equivalentSymbol: string;
 
-  public showOptions: boolean = false;
+  public showOptions = false;
 
   private currentWallet: Wallet;
 
@@ -33,38 +33,38 @@ export class TransactionShowPage {
     private inAppBrowser: InAppBrowser,
     private actionSheetCtrl: ActionSheetController,
     private translateService: TranslateService,
-    private TruncateMiddlePipe: TruncateMiddlePipe,
+    private truncateMiddlePipe: TruncateMiddlePipe,
     private platform: Platform,
   ) {
-    let transaction = this.navParams.get('transaction');
+    const transaction = this.navParams.get('transaction');
     this.currentNetwork = this.userDataProvider.currentNetwork;
     this.currentWallet = this.userDataProvider.currentWallet;
 
     this.equivalentAmount = this.navParams.get('equivalentAmount');
     this.equivalentSymbol = this.navParams.get('equivalentSymbol');
 
-    if (!transaction) this.navCtrl.popToRoot();
+    if (!transaction) { this.navCtrl.popToRoot(); }
 
     this.transaction = new Transaction(transaction.address).deserialize(transaction);
     this.shouldShowOptions();
   }
 
   openInExplorer() {
-    let url = `${this.currentNetwork.explorer}/tx/${this.transaction.id}`;
+    const url = `${this.currentNetwork.explorer}/tx/${this.transaction.id}`;
     return this.inAppBrowser.create(url, '_system');
   }
 
   presentOptions() {
-    let address = this.transaction.getAppropriateAddress();
-    let addressTruncated = this.TruncateMiddlePipe.transform(address, 10, null);
-    let contact = this.userDataProvider.getContactByAddress(address);
-    let contactOrAddress = contact ? contact['name'] : addressTruncated;
+    const address = this.transaction.getAppropriateAddress();
+    const addressTruncated = this.truncateMiddlePipe.transform(address, 10, null);
+    const contact = this.userDataProvider.getContactByAddress(address);
+    const contactOrAddress = contact ? contact['name'] : addressTruncated;
 
     this.translateService.get([
       'TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS',
       'TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS',
     ], { address: contactOrAddress, token: this.currentNetwork.token }).subscribe((translation) => {
-      let buttons = [];
+      const buttons = [];
 
       if (!contact) {
         buttons.push({
@@ -85,7 +85,7 @@ export class TransactionShowPage {
           handler: () => {
             this.sendToAddress(address);
           }
-        })
+        });
       }
 
       this.actionSheetCtrl.create({ buttons }).present();
@@ -97,13 +97,13 @@ export class TransactionShowPage {
   }
 
   sendToAddress(address: string) {
-    this.navCtrl.push('TransactionSendPage', { address })
+    this.navCtrl.push('TransactionSendPage', { address });
   }
 
   private shouldShowOptions() {
     if (this.transaction.isTransfer()) {
-      let contact = this.userDataProvider.getContactByAddress(this.transaction.getAppropriateAddress());
-      if (!contact || !this.currentWallet.isWatchOnly) return this.showOptions = true;
+      const contact = this.userDataProvider.getContactByAddress(this.transaction.getAppropriateAddress());
+      if (!contact || !this.currentWallet.isWatchOnly) { return this.showOptions = true; }
     }
   }
 
