@@ -1,6 +1,8 @@
 {
   "API": {
     "BALANCE_TOO_LOW": "Saldo zu gering für Transaktion",
+    "BALANCE_TOO_LOW_DETAIL": "Nicht genug {{ token }} auf deinem Wallet! Die Transaktionskosten sind: {{ totalAmount }} ({{ amount }} + {{ fee }} Gebühr), dein Wallet Saldo ist jedoch nur {{ balance }}!",
+    "DESTINATION_ADDRESS_ERROR": "Die Zieladresse '{{ address }} ist fehlerhaft",
     "PEER_LIST_ERROR": "Konnte Peers Liste nicht finden",
     "TRANSACTION_FAILED": "Transaktion fehlgeschlagen",
     "TRANSACTION_SENT": "Transaktion durchgeführt"
@@ -64,7 +66,7 @@
   "LOGIN_PAGE": {
     "ARK_WALLET": "ARK Wallet",
     "CREATE_PROFILE": "Erstelle ein Profil",
-    "SLOGAN": "Wilkommen zum ARK Ecosystem"
+    "SLOGAN": "Willkommen beim ARK Ecosystem"
   },
   "LOGOUT_PROFILE_TEXT": "Ausloggen?",
   "MARKETS_PAGE": {
@@ -87,8 +89,12 @@
     "INTERNET_DESCONNECTED": "Internet Verbindung nicht möglich!",
     "PEER": "Peer"
   },
-  "NEXT": "Nächste",
+  "NEXT": "Weiter",
   "NO": "Nein",
+  "PASSPHRASE_TEST": {
+    "INFO": "Um die Wallet Erstellung abzuschliessen, gib bitte die verlangten Wörter von deiner Passphrase ein.",
+    "WRONG_WORD": "Das eingegebene Wort ist nicht richtig"
+  },
   "PIN_CODE": {
     "CONFIRM": "Bestätige deinen PIN",
     "CREATE": "Erstelle deinen PIN",
@@ -161,14 +167,15 @@
     "MULTISIGNATURE_CREATION": "Multisignatur erzeugen",
     "OPEN_EXPLORER": "Öffnen in Explorer",
     "QRCODE_COPY": "Klicke auf die Adresse, um sie zu kopieren oder klicke auf das Icon um den QR Code zu teilen.",
-    "RECEIVE": "Erhalten",
-    "RECEIVED": "Erhalten",
-    "RECEIVED_FROM": "Erhalten von",
+    "RECEIVE": "Empfangen",
+    "RECEIVE_TOKEN": "{{ Token }} Empfangen",
+    "RECEIVED": "Empfangen",
+    "RECEIVED_FROM": "Empfangen von",
     "RECIPIENT": "Empfänger",
     "SECOND_SIGNATURE_CREATION": "Zweite Signatur erzeugen",
     "SECOND_PASSPHRASE_NOT_ENTERED": "Die zweite Signatur wurde nicht eingegeben",
     "SEND": "Senden",
-    "SEND_ALL": "Alle senden",
+    "SEND_ALL": "Alles senden",
     "SEND_TOKEN_TO_ADDRESS": "Sende {{ token }} an {{ address }}",
     "SENT": "Gesendet",
     "SENT_TO": "Gesendet an",
@@ -218,7 +225,7 @@
     "SECRET_PASSPHRASE": "Geheime Passphrase",
     "SECRET_PASSPHRASE_KEEP_SAFE": "Bewahre es sicher auf!",
     "SEED": "Seed",
-    "TOTAL_BALANCE": "Gesamtsumme",
+    "TOTAL_BALANCE": "Total",
     "USERNAME": "Benutzername",
     "WALLETS": "Wallets",
     "WIF": "WIF"
@@ -233,5 +240,6 @@
     "TUESDAY": "Di",
     "WEDNESDAY": "Mi"
   },
+  "WORD": "Wort",
   "YES": "Ja"
 }
