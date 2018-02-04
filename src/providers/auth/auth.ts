@@ -5,9 +5,11 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
+import 'rxjs/add/operator/share';
 
 import * as constants from '@app/app.constants';
 import * as bcrypt from 'bcryptjs';
+import moment from 'moment';
 
 @Injectable()
 export class AuthProvider {
@@ -75,6 +77,35 @@ export class AuthProvider {
         });
       });
     });
+  }
+
+  getUnlockTimestamp() {
+    return this.storage.getObject(constants.STORAGE_AUTH_UNLOCK_TIMESTAMP);
+  }
+
+  getAttempts() {
+    return this.storage.get(constants.STORAGE_AUTH_ATTEMPTS);
+  }
+
+  increaseAttempts() {
+    return this.getAttempts().do((attempts) => this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, Number(attempts) + 1));
+  }
+
+  increaseUnlockTimestamp(): Promise<Date> {
+    return new Promise(resolve => {
+      this.getAttempts().subscribe((attempts) => {
+        const currentAttempt = (Number(attempts) - constants.PIN_ATTEMPTS_LIMIT) + 1;
+        const lastTimestamp = moment(moment.now());
+        const nextTimestamp = lastTimestamp.add(constants.PIN_ATTEMPTS_TIMEOUT_MILLISECONDS * currentAttempt, 'ms').toDate();
+        this.storage.set(constants.STORAGE_AUTH_UNLOCK_TIMESTAMP, nextTimestamp);
+        resolve(nextTimestamp);
+      });
+    });
+  }
+
+  clearAttempts() {
+    this.storage.set(constants.STORAGE_AUTH_UNLOCK_TIMESTAMP, null);
+    this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, 0);
   }
 
 }

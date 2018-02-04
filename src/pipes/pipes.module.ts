@@ -5,6 +5,7 @@ import { MarketNumberPipe } from './../pipes/market-number/market-number';
 import { AccountLabelPipe } from './../pipes/account-label/account-label';
 import { TimestampHumanPipe } from './timestamp-human/timestamp-human';
 import { TimezonePipe } from './timezone/timezone';
+import { SecondsToTimePipe } from './seconds-to-time/seconds-to-time';
 
 @NgModule({
   declarations: [TruncateMiddlePipe,
@@ -12,13 +13,15 @@ import { TimezonePipe } from './timezone/timezone';
     MarketNumberPipe,
     AccountLabelPipe,
     TimestampHumanPipe,
-    TimezonePipe],
+    TimezonePipe,
+    SecondsToTimePipe],
   imports: [],
   exports: [TruncateMiddlePipe,
     UnitsSatoshiPipe,
     MarketNumberPipe,
     AccountLabelPipe,
     TimestampHumanPipe,
-    TimezonePipe]
+    TimezonePipe,
+    SecondsToTimePipe]
 })
 export class PipesModule {}
