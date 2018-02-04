@@ -1,6 +1,8 @@
 {
   "API": {
     "BALANCE_TOO_LOW": "Saldo te laag voor transacties",
+    "BALANCE_TOO_LOW_DETAIL": "Niet genoeg {{ token }} aanwezig op je account! De totale kosten zijn: {{ totalAmount }} ( {{ amount }} + {{ fee }} transactiekosten), maar je account bevat maar {{ balance }}!",
+    "DESTINATION_ADDRESS_ERROR": "Het ontvangsadres '{{ address }}' is niet correct",
     "PEER_LIST_ERROR": "Kon geen lijst van peers ophalen",
     "TRANSACTION_FAILED": "Transactie mislukt",
     "TRANSACTION_SENT": "Transactie verzonden"
@@ -85,14 +87,20 @@
     "NETWORK_STATUS": "Netwerk Status",
     "NETWORK_TYPE": "Netwerk Type",
     "INTERNET_DESCONNECTED": "Verbinding maken met internet mislukt!",
-    "PEER": ""
+    "PEER": "Peer"
   },
   "NEXT": "Volgende",
   "NO": "Nee",
+  "PASSPHRASE_TEST": {
+    "INFO": "Type alsjeblieft de gevraagde woorden van je passphrase om de wallet aanmaak te valideren.",
+    "WRONG_WORD": "Dit woord is niet correct"
+  },
   "PIN_CODE": {
     "CONFIRM": "Bevestig je pincode",
     "CREATE": "Maak pincode aan",
     "DEFAULT_MESSAGE": "Type je pincode",
+    "WRONG_PIN_MANY_TIMES": "Je hebt te vaak een verkeerde pincode ingevuld!",
+    "WAIT_TO_TRY": "Wacht {{ time }} en probeer het nogmaals",
     "LOGIN_ERROR": "Er was een probleem tijdens inloggen met je pincode",
     "PIN_CREATED_ERROR_TEXT": "Er was een probleem tijdens het aanmaken van je pincode",
     "PIN_CREATED_TEXT": "Je pincode is aangemaakt",
@@ -162,6 +170,7 @@
     "OPEN_EXPLORER": "Openen in explorer",
     "QRCODE_COPY": "Klik op het adres om het naar het klembord te kopiëren, of klik op pictogram om QR code te delen",
     "RECEIVE": "Ontvangen",
+    "RECEIVE_TOKEN": "Ontvang {{ Token }}",
     "RECEIVED": "Ontvangen",
     "RECEIVED_FROM": "Ontvangen van",
     "RECIPIENT": "Ontvanger",
@@ -233,5 +242,6 @@
     "TUESDAY": "di",
     "WEDNESDAY": "wo"
   },
+  "WORD": "Woord",
   "YES": "Ja"
 }
