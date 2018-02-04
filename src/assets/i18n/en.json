@@ -2,7 +2,7 @@
   "API": {
     "BALANCE_TOO_LOW": "Balance too low for transaction",
     "BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} on your account! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your account balance is only {{ balance }}!",
-    "DESTINATION_ADDRESS_ERROR": "The destination address {{ address }} is erroneous",
+    "DESTINATION_ADDRESS_ERROR": "The destination address '{{ address }}' is erroneous",
     "PEER_LIST_ERROR": "Could not get list of peers",
     "TRANSACTION_FAILED": "Transaction failed",
     "TRANSACTION_SENT": "Transaction was sent"
@@ -170,6 +170,7 @@
     "OPEN_EXPLORER": "Open in Explorer",
     "QRCODE_COPY": "Tap on address to copy it to clipboard or click on icon to share QR code.",
     "RECEIVE": "Receive",
+    "RECEIVE_TOKEN": "Receive {{ Token }}",
     "RECEIVED": "Received",
     "RECEIVED_FROM": "Received from",
     "RECIPIENT": "Recipient",

@@ -25,7 +25,8 @@
         "lint": "ionic-app-scripts lint",
         "ionic:build": "ionic-app-scripts build",
         "ionic:serve": "ionic-app-scripts serve",
-        "ionic:lab": "ionic-app-scripts serve --lab"
+        "ionic:lab": "ionic-app-scripts serve --lab",
+        "missing-translations": "node missing-translations"
     },
     "dependencies": {
         "@angular/common": "4.4.3",

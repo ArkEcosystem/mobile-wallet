@@ -15,7 +15,7 @@ export class TransactionReceivePage {
 
   public address;
   public qraddress: any;
-  public token;
+  public tokenParam: Object;
 
   constructor(
     public navCtrl: NavController,
@@ -25,7 +25,7 @@ export class TransactionReceivePage {
     private socialSharing: SocialSharing,
   ) {
     this.address = this.navParams.get('address');
-    this.token = this.navParams.get('token');
+    this.tokenParam = {Token: this.navParams.get('token')};
 
     this.qraddress = `'{"a": "${this.address}"}'`;
   }
