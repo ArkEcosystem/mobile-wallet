@@ -94,12 +94,12 @@ export class AuthProvider {
   increaseUnlockTimestamp(): Promise<Date> {
     return new Promise(resolve => {
       this.getAttempts().subscribe((attempts) => {
-        const currentAttempt = (Number(attempts) - constants.PIN_ATTEMPS_LIMIT) + 1;
+        const currentAttempt = (Number(attempts) - constants.PIN_ATTEMPTS_LIMIT) + 1;
         const lastTimestamp = moment(moment.now());
-        const nextTimestamp = lastTimestamp.add(constants.PIN_ATTEMPS_TIMEOUT_MILLISECONDS * currentAttempt, 'ms').toDate();
+        const nextTimestamp = lastTimestamp.add(constants.PIN_ATTEMPTS_TIMEOUT_MILLISECONDS * currentAttempt, 'ms').toDate();
         this.storage.set(constants.STORAGE_AUTH_UNLOCK_TIMESTAMP, nextTimestamp);
         resolve(nextTimestamp);
-      })
+      });
     });
   }
 

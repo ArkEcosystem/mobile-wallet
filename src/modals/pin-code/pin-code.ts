@@ -95,7 +95,7 @@ export class PinCodeModal implements OnDestroy {
   }
 
   verifyAttempts() {
-    if (this.attempts >= constants.PIN_ATTEMPS_LIMIT) {
+    if (this.attempts >= constants.PIN_ATTEMPTS_LIMIT) {
       this.authProvider.increaseUnlockTimestamp().then(() => this.loadUnlockTime());
     }
   }
