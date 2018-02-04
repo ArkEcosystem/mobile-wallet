@@ -58,6 +58,7 @@ $ npm run ionic:serve
 - Engage with other users and developers on [ARK Slack](https://ark.io/slack/).
 - Join to our [gitter](https://gitter.im/ark-developers/Lobby).
 - [Contribute bounties](./CONTRIBUTING.md).
+- [Help translate](./TRANSLATING.md).
 
 ## Authors
 - Lúcio Rubens <lucio@ark.io>
