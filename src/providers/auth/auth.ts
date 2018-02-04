@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
 
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/share';
@@ -39,7 +40,7 @@ export class AuthProvider {
     this.storage.set(constants.STORAGE_ACTIVE_PROFILE, undefined);
     this.loggedProfileId = undefined;
 
-    if (broadcast) this.onLogout$.next(false);
+    if (broadcast) { this.onLogout$.next(false); }
   }
 
   hasSeenIntro(): Observable<boolean> {
@@ -60,7 +61,7 @@ export class AuthProvider {
   }
 
   saveMasterPassword(password: string): void {
-    let hash = bcrypt.hashSync(password, 8);
+    const hash = bcrypt.hashSync(password, 8);
 
     this.storage.set(constants.STORAGE_MASTERPASSWORD, hash);
   }
@@ -69,7 +70,7 @@ export class AuthProvider {
     return Observable.create((observer) => {
       this.storage.get(constants.STORAGE_MASTERPASSWORD).subscribe((master) => {
         bcrypt.compare(password, master, (err, res) => {
-          if (err) observer.error(err);
+          if (err) { observer.error(err); }
 
           observer.next(res);
           observer.complete();

@@ -43,7 +43,7 @@ export class KeyboardAttachDirective implements OnInit, OnDestroy {
 
   private onShowSubscription: Subscription;
   private onHideSubscription: Subscription;
-  private initialPaddingBottom: number = 0;
+  private initialPaddingBottom = 0;
 
   constructor(
     private elementRef: ElementRef,
@@ -51,7 +51,7 @@ export class KeyboardAttachDirective implements OnInit, OnDestroy {
     private platform: Platform
   ) {
     setTimeout(() => {
-      let computedStyle = window.getComputedStyle(elementRef.nativeElement);
+      const computedStyle = window.getComputedStyle(elementRef.nativeElement);
       this.initialPaddingBottom = parseInt(computedStyle['padding-bottom']) || 0;
     }, 0);
   }
@@ -73,13 +73,13 @@ export class KeyboardAttachDirective implements OnInit, OnDestroy {
   }
 
   private onShow(e) {
-    let keyboardHeight: number = e.keyboardHeight || (e.detail && e.detail.keyboardHeight);
+    const keyboardHeight: number = e.keyboardHeight || (e.detail && e.detail.keyboardHeight);
     this.setElementPosition(keyboardHeight);
-  };
+  }
 
   private onHide() {
     this.setElementPosition(0);
-  };
+  }
 
   private setElementPosition(pixels: number) {
     this.elementRef.nativeElement.style.paddingBottom = pixels + this.initialPaddingBottom + 'px';

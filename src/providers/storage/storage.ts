@@ -21,7 +21,7 @@ export class StorageProvider {
   }
 
   public getObject(key) {
-    return Observable.fromPromise(this._storage.get(key)).map((result) => JSON.parse(result || "{}"));
+    return Observable.fromPromise(this._storage.get(key)).map((result) => JSON.parse(result || '{}'));
   }
 
   public set(key, value) {

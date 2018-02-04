@@ -17,7 +17,7 @@ export class RegisterDelegatePage implements OnDestroy {
   public name: string;
 
   public allowedDelegateNameChars = '[a-z0-9!@$&_.]+';
-  public isExists: boolean = false;
+  public isExists = false;
 
   private delegates;
   private unsubscriber$: Subject<void> = new Subject<void>();
@@ -36,7 +36,7 @@ export class RegisterDelegatePage implements OnDestroy {
 
   validateName() {
     this.name = this.name.toLowerCase();
-    let find = lodash.find(this.delegates, { username: this.name.trim() });
+    const find = lodash.find(this.delegates, { username: this.name.trim() });
 
     this.isExists = !lodash.isNil(find);
   }

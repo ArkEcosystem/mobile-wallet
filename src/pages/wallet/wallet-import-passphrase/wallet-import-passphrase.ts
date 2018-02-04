@@ -17,7 +17,7 @@ export class WalletImportPassphrasePage {
 
   public currentProfile: Profile;
   public currentNetwork: Network;
-  public passphrase: string = '';
+  public passphrase = '';
 
   constructor(
     public navCtrl: NavController,
@@ -34,16 +34,16 @@ export class WalletImportPassphrasePage {
   }
 
   submitForm() {
-    let privateKey = PrivateKey.fromSeed(this.passphrase, this.currentNetwork);
-    let publicKey = privateKey.getPublicKey();
-    let address = publicKey.getAddress();
+    const privateKey = PrivateKey.fromSeed(this.passphrase, this.currentNetwork);
+    const publicKey = privateKey.getPublicKey();
+    const address = publicKey.getAddress();
 
     let newWallet = new Wallet();
 
     this.arkApiProvider.api.account
       .get({ address })
       .finally(() => {
-        let modal = this.modalCtrl.create('PinCodeModal', {
+        const modal = this.modalCtrl.create('PinCodeModal', {
           message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
           outputPassword: true,
           validatePassword: true,
@@ -60,7 +60,7 @@ export class WalletImportPassphrasePage {
                 });
             });
           } else {
-            this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR')
+            this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR');
           }
 
         });
@@ -69,7 +69,7 @@ export class WalletImportPassphrasePage {
       })
       .subscribe((response) => {
         if (response && response.success) {
-          let account = response.account;
+          const account = response.account;
 
           newWallet = newWallet.deserialize(account);
         } else {

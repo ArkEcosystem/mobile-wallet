@@ -28,7 +28,7 @@ export const TOAST_HIDE_DELAY = 3000;
 export const TOAST_POSITION = 'bottom';
 
 // COIN MARKETCAP API
-export const API_MARKET_URL = "https://min-api.cryptocompare.com";
+export const API_MARKET_URL = 'https://min-api.cryptocompare.com';
 export const API_MARKET_HISTORY_ENDPOINT = 'data/histoday?fsym=ARK&allData=true&tsym=';
 export const API_MARKET_TICKER_ENDPOINT = 'data/pricemultifull?fsyms=ARK&tsyms=';
 
@@ -43,5 +43,5 @@ export const PIN_ATTEMPS_TIMEOUT_MILLISECONDS = 30 * 1000;
 
 // ARK
 export const PRIVACY_POLICY_URL = 'https://ark.io/PrivacyPolicy.txt';
-export const URI_QRCODE_SCHEME_PREFIX = "ark:";
+export const URI_QRCODE_SCHEME_PREFIX = 'ark:';
 export const NUM_ACTIVE_DELEGATES = 51;

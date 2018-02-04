@@ -20,7 +20,7 @@ export class GenerateEntropyModal {
   private count: number;
   private total: number;
 
-  private finished: boolean = false;
+  private finished = false;
 
   constructor(
     public navCtrl: NavController,
@@ -34,14 +34,14 @@ export class GenerateEntropyModal {
 
   panEvent(e) {
     this.pan++;
-    if (this.finished) return;
+    if (this.finished) { return; }
 
-    if (e.isFinal || e.isFirst) return;
+    if (e.isFinal || e.isFirst) { return; }
 
     let pos;
-    let available = [];
+    const available = [];
 
-    for (let i in this.bytes) {
+    for (const i in this.bytes) {
       if (!this.bytes[i]) {
         available.push(i);
       }
@@ -63,7 +63,7 @@ export class GenerateEntropyModal {
     this.progress = parseInt(Number(this.count / this.total * 100).toString());
 
     if (this.count > this.total) {
-      let hex = this.entropy.map(v => this.lpad(v.toString(16), '0', 2)).join('');
+      const hex = this.entropy.map(v => this.lpad(v.toString(16), '0', 2)).join('');
       this.finished = true;
       this.dismiss(hex);
     }
@@ -81,8 +81,8 @@ export class GenerateEntropyModal {
   }
 
   lpad(str, pad, length) {
-    while (str.length < length) str = pad + str
-    return str
+    while (str.length < length) { str = pad + str; }
+    return str;
   }
 
   dismiss(result?) {

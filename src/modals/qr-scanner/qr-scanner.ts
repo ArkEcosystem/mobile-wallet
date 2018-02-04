@@ -32,8 +32,8 @@ export class QRScannerModal {
     this.qrScanner.prepare()
     .then((status: QRScannerStatus) => {
       if (status.authorized) {
-        this.ionApp = <HTMLElement>document.getElementsByTagName("ion-app")[0];
-        let scanSub = this.qrScanner.scan().subscribe((qrCode: string) => {
+        this.ionApp = <HTMLElement>document.getElementsByTagName('ion-app')[0];
+        const scanSub = this.qrScanner.scan().subscribe((qrCode: string) => {
           this.vibration.vibrate(constants.VIBRATION_TIME_MS);
 
           let response;

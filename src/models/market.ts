@@ -8,84 +8,84 @@ export interface Currency {
 
 export const CURRENCIES_LIST: Currency[] = [
   {
-    code: "btc",
-    name: "Bitcoin",
-    symbol: "Ƀ",
+    code: 'btc',
+    name: 'Bitcoin',
+    symbol: 'Ƀ',
   },
   {
-    code: "usd",
-    name: "Dollar",
-    symbol: "$",
+    code: 'usd',
+    name: 'Dollar',
+    symbol: '$',
   },
   {
-    code: "eur",
-    name: "Euro",
-    symbol: "€",
+    code: 'eur',
+    name: 'Euro',
+    symbol: '€',
   },
   {
-    code: "gbp",
-    name: "British Pound",
-    symbol: "£",
+    code: 'gbp',
+    name: 'British Pound',
+    symbol: '£',
   },
   {
-    code: "krw",
-    name: "South Korean Won",
-    symbol: "₩",
+    code: 'krw',
+    name: 'South Korean Won',
+    symbol: '₩',
   },
   {
-    code: "cny",
-    name: "Chinese Yuan",
-    symbol: "CN¥",
+    code: 'cny',
+    name: 'Chinese Yuan',
+    symbol: 'CN¥',
   },
   {
-    code: "jpy",
-    name: "Japanese Yen",
-    symbol: "¥",
+    code: 'jpy',
+    name: 'Japanese Yen',
+    symbol: '¥',
   },
   {
-    code: "aud",
-    name: "Australian Dollar",
-    symbol: "A$",
+    code: 'aud',
+    name: 'Australian Dollar',
+    symbol: 'A$',
   },
   {
-    code: "cad",
-    name: "Canadian Dollar",
-    symbol: "CA$",
+    code: 'cad',
+    name: 'Canadian Dollar',
+    symbol: 'CA$',
   },
   {
-    code: "rub",
-    name: "Russian Ruble",
-    symbol: "RUB",
+    code: 'rub',
+    name: 'Russian Ruble',
+    symbol: 'RUB',
   },
   {
-    code: "inr",
-    name: "Indian Rupee",
-    symbol: "₹",
+    code: 'inr',
+    name: 'Indian Rupee',
+    symbol: '₹',
   },
   {
-    code: "brl",
-    name: "Brazilian Real",
-    symbol: "R$",
+    code: 'brl',
+    name: 'Brazilian Real',
+    symbol: 'R$',
   },
   {
-    code: "chf",
-    name: "Swiss Franc",
-    symbol: "CHF",
+    code: 'chf',
+    name: 'Swiss Franc',
+    symbol: 'CHF',
   },
   {
-    code: "hkd",
-    name: "Hong Kong Dollar",
-    symbol: "HK$",
+    code: 'hkd',
+    name: 'Hong Kong Dollar',
+    symbol: 'HK$',
   },
   {
-    code: "idr",
-    name: "Indonesian Rupiah",
-    symbol: "IDR",
+    code: 'idr',
+    name: 'Indonesian Rupiah',
+    symbol: 'IDR',
   },
   {
-    code: "mxn",
-    name: "Mexican Peso",
-    symbol: "MX$",
+    code: 'mxn',
+    name: 'Mexican Peso',
+    symbol: 'MX$',
   },
 ];
 
@@ -120,11 +120,11 @@ export class MarketTicker {
   market: MarketCurrency[];
 
   constructor(data?: any) {
-    if (!data) return;
+    if (!data) { return; }
 
-    let self: any = this;
+    const self: any = this;
 
-    for (let prop in data) {
+    for (const prop in data) {
       self[prop] = data[prop];
     }
 
@@ -136,20 +136,20 @@ export class MarketTicker {
   }
 
   deserialize(input: any): MarketTicker {
-    let self: any = this;
-    if (!input || !lodash.isObject(input)) return;
+    const self: any = this;
+    if (!input || !lodash.isObject(input)) { return; }
 
     self.info = {
       identifier: input.symbol,
       name: input.symbol,
       symbol: input.symbol,
-    }
+    };
 
-    let currencies: MarketCurrency[] = [];
+    const currencies: MarketCurrency[] = [];
 
-    for (let currency of CURRENCIES_LIST) {
-      let currencyCode = currency.code.toUpperCase();
-      let marketCurrency: MarketCurrency = new MarketCurrency();
+    for (const currency of CURRENCIES_LIST) {
+      const currencyCode = currency.code.toUpperCase();
+      const marketCurrency: MarketCurrency = new MarketCurrency();
       marketCurrency.fromCurrency(currency);
 
       marketCurrency.price = 0.0;
@@ -181,14 +181,14 @@ export class MarketHistory {
   history: any;
 
   deserialize(input: any): MarketHistory {
-    let self: any = this;
-    if (!input || !lodash.isObject(input)) return;
+    const self: any = this;
+    if (!input || !lodash.isObject(input)) { return; }
 
-    let history = {};
+    const history = {};
 
-    for (let currency in input) {
-      for (let data of input[currency]) {
-        let date = (new Date(data.time * 1000)).setHours(0, 0, 0, 0);
+    for (const currency in input) {
+      for (const data of input[currency]) {
+        const date = (new Date(data.time * 1000)).setHours(0, 0, 0, 0);
         if (!history[currency]) {
           history[currency] = {};
         }
@@ -202,14 +202,14 @@ export class MarketHistory {
   }
 
   getPriceByDate(currencyCode: string, date: Date): number {
-    let timestampDate = date.setHours(0, 0, 0, 0);
+    const timestampDate = date.setHours(0, 0, 0, 0);
 
     return this.history[currencyCode.toUpperCase()][timestampDate];
   }
 
   getLastWeekPrice(currencyCode: string): any {
-    let dates = lodash(this.history[currencyCode]).keys().takeRight(7).value().map((date) => { return new Date(parseInt(date)) });
-    let prices = lodash(this.history[currencyCode]).values().takeRight(7).value();
+    const dates = lodash(this.history[currencyCode]).keys().takeRight(7).value().map((date) => new Date(parseInt(date)));
+    const prices = lodash(this.history[currencyCode]).values().takeRight(7).value();
 
     return { dates, prices };
   }

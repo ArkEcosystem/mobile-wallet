@@ -23,17 +23,17 @@ export class DelegatesPage implements OnDestroy {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
 
-  public isSearch: boolean = false;
+  public isSearch = false;
   public searchQuery: any = { username: ''};
 
   public delegates: Delegate[];
   public activeDelegates: Delegate[];
   public standByDelegates: Delegate[];
 
-  public supply: number = 0;
+  public supply = 0;
   public preMinned: number = constants.BLOCKCHAIN_PREMINNED;
 
-  public rankStatus: string = 'active';
+  public rankStatus = 'active';
   public currentNetwork: Network;
   public slides: string[] = [
     'active',
@@ -62,13 +62,13 @@ export class DelegatesPage implements OnDestroy {
   openDetailModal(delegate: Delegate) {
     this.selectedDelegate = delegate;
 
-    let modal = this.modalCtrl.create('DelegateDetailPage', {
+    const modal = this.modalCtrl.create('DelegateDetailPage', {
       delegate,
       vote: this.walletVote,
     }, { cssClass: 'inset-modal-large', showBackdrop: false, enableBackdropDismiss: true });
 
     modal.onDidDismiss((voter) => {
-      if (!voter) return;
+      if (!voter) { return; }
 
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
@@ -91,7 +91,7 @@ export class DelegatesPage implements OnDestroy {
   }
 
   getTotalForged() {
-    let forged = this.supply === 0 ? 0 : this.supply - this.preMinned;
+    const forged = this.supply === 0 ? 0 : this.supply - this.preMinned;
 
     return forged;
   }
@@ -107,9 +107,9 @@ export class DelegatesPage implements OnDestroy {
   generateTransaction(keys: WalletKeys) {
     let type = VoteType.Add;
 
-    if (this.walletVote && this.walletVote.publicKey === this.selectedDelegate.publicKey) type = VoteType.Remove;
+    if (this.walletVote && this.walletVote.publicKey === this.selectedDelegate.publicKey) { type = VoteType.Remove; }
 
-    let data: TransactionVote = {
+    const data: TransactionVote = {
       delegatePublicKey: this.selectedDelegate.publicKey,
       passphrase: keys.key,
       secondPassphrase: keys.secondKey,
@@ -122,7 +122,7 @@ export class DelegatesPage implements OnDestroy {
   }
 
   private fetchCurrentVote() {
-    if (!this.currentWallet) return;
+    if (!this.currentWallet) { return; }
 
     this.arkApiProvider.api.account
       .votes({ address: this.currentWallet.address })
@@ -140,7 +140,7 @@ export class DelegatesPage implements OnDestroy {
     this.arkApiProvider.onUpdateDelegates$
       .takeUntil(this.unsubscriber$)
       .do((delegates) => {
-        this.zone.run(() => this.delegates = delegates)
+        this.zone.run(() => this.delegates = delegates);
       })
       .subscribe();
   }
@@ -158,7 +158,7 @@ export class DelegatesPage implements OnDestroy {
 
     this.onUpdateDelegates();
     this.fetchCurrentVote();
-    this.arkApiProvider.fetchDelegates(constants.NUM_ACTIVE_DELEGATES*2).subscribe();
+    this.arkApiProvider.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2).subscribe();
   }
 
   ngOnDestroy() {

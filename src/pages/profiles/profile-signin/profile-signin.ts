@@ -46,7 +46,7 @@ export class ProfileSigninPage implements OnDestroy {
 
   presentProfileActionSheet(profileId: string) {
     this.translateService.get(['EDIT', 'DELETE']).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      let buttons = [{
+      const buttons = [{
         text: translation.DELETE,
         role: 'delete',
         icon: !this.platform.is('ios') ? 'ios-trash-outline' : '',
@@ -59,7 +59,7 @@ export class ProfileSigninPage implements OnDestroy {
         },
       }];
 
-      let action = this.actionSheetCtrl.create({buttons});
+      const action = this.actionSheetCtrl.create({buttons});
       action.present();
     });
   }
@@ -70,7 +70,7 @@ export class ProfileSigninPage implements OnDestroy {
 
   showDeleteConfirm(profileId: string) {
     this.translateService.get(['ARE_YOU_SURE', 'CONFIRM', 'CANCEL']).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      let confirm = this.alertCtrl.create({
+      const confirm = this.alertCtrl.create({
         title: translation.ARE_YOU_SURE,
         buttons: [
           {
@@ -100,7 +100,7 @@ export class ProfileSigninPage implements OnDestroy {
   }
 
   signin() {
-    if (!this.profileIdSelected) return;
+    if (!this.profileIdSelected) { return; }
 
     this.authProvider.login(this.profileIdSelected).takeUntil(this.unsubscriber$).subscribe((status) => {
       if (status) {
@@ -120,9 +120,9 @@ export class ProfileSigninPage implements OnDestroy {
     this.networks = this.userDataProvider.networks;
 
     this.addresses = lodash(this.profiles).mapValues((o) => [o.name, o.networkId]).transform((result, data, id) => {
-      let network = this.networks[data[1]];
-      let networkName = lodash.capitalize(network.name);
-      let isMainnet = network.type === NetworkType.Mainnet;
+      const network = this.networks[data[1]];
+      const networkName = lodash.capitalize(network.name);
+      const isMainnet = network.type === NetworkType.Mainnet;
 
       result.push({ index: id, key: data[0], value: networkName, highlight: isMainnet });
     }, []).value();
@@ -143,9 +143,9 @@ export class ProfileSigninPage implements OnDestroy {
   }
 
   private profileHasWallets(profileId: string): boolean {
-    let profile = this.profiles[profileId];
-    let network = this.networks[profile.networkId];
-    for (let wallet of lodash.values(profile.wallets)) {
+    const profile = this.profiles[profileId];
+    const network = this.networks[profile.networkId];
+    for (const wallet of lodash.values(profile.wallets)) {
       if (PublicKey.validateAddress(wallet.address, network)) {
         return true;
       }

@@ -18,8 +18,8 @@ export class RegisterSecondPassphrasePage {
   public fees: Fees;
   public currentNetwork: Network;
 
-  public step: number = 1;
-  public isWrong: boolean = false;
+  public step = 1;
+  public isWrong = false;
 
   constructor(
     public navCtrl: NavController,

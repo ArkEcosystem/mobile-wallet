@@ -23,7 +23,7 @@ import { BaseChartDirective } from 'ng2-charts';
   selector: 'page-wallet-list',
   templateUrl: 'wallet-list.html',
 })
-export class WalletListPage implements OnDestroy{
+export class WalletListPage implements OnDestroy {
   @ViewChild('walletSlider') slider: Slides;
   @ViewChild(Content) content: Content;
   @ViewChild('chart') chart: BaseChartDirective;
@@ -87,7 +87,7 @@ export class WalletListPage implements OnDestroy{
       'GENERATE',
       'IMPORT',
     ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      let actionSheet = this.actionSheetCtrl.create({
+      const actionSheet = this.actionSheetCtrl.create({
         buttons: [
           {
             text: translation.GENERATE,
@@ -112,18 +112,18 @@ export class WalletListPage implements OnDestroy{
   }
 
   private presentWalletGenerate() {
-    let modal = this.modalCtrl.create('GenerateEntropyModal');
+    const modal = this.modalCtrl.create('GenerateEntropyModal');
 
     modal.onDidDismiss((entropy) => {
-      if (!entropy) return;
+      if (!entropy) { return; }
 
-      let showModal = this.modalCtrl.create('WalletBackupModal', {
+      const showModal = this.modalCtrl.create('WalletBackupModal', {
         title: 'WALLETS_PAGE.CREATE_WALLET',
         entropy,
       });
 
       showModal.onDidDismiss((account) => {
-        if (!account) return;
+        if (!account) { return; }
 
         this.storeWallet(account);
       });
@@ -140,18 +140,18 @@ export class WalletListPage implements OnDestroy{
   }
 
   private storeWallet(account) {
-    let wallet = new Wallet();
+    const wallet = new Wallet();
     wallet.address = account.address;
     wallet.publicKey = account.publicKey;
 
-    let modal = this.modalCtrl.create('PinCodeModal', {
+    const modal = this.modalCtrl.create('PinCodeModal', {
       message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
       outputPassword: true,
       validatePassword: true
     });
 
     modal.onDidDismiss((password) => {
-      if (!password) return;
+      if (!password) { return; }
 
       this.userDataProvider.addWallet(wallet, account.mnemonic, password).takeUntil(this.unsubscriber$).subscribe(() => {
         this.loadWallets();
@@ -163,18 +163,18 @@ export class WalletListPage implements OnDestroy{
 
   private loadWallets() {
     this.loadUserData();
-    if (!this.currentProfile || lodash.isEmpty(this.currentProfile.wallets)) return;
+    if (!this.currentProfile || lodash.isEmpty(this.currentProfile.wallets)) { return; }
 
-    let list = [];
-    for (let w of lodash.values(this.currentProfile.wallets)) {
-      let wallet = new Wallet().deserialize(w);
+    const list = [];
+    for (const w of lodash.values(this.currentProfile.wallets)) {
+      const wallet = new Wallet().deserialize(w);
       if (PublicKey.validateAddress(wallet.address, this.currentNetwork)) {
         list.push(wallet);
       }
     }
 
     this.totalBalance = lodash(list).values().sumBy((w) => parseInt(w.balance));
-    let wholeArk = (this.totalBalance / constants.WALLET_UNIT_TO_SATOSHI);
+    const wholeArk = (this.totalBalance / constants.WALLET_UNIT_TO_SATOSHI);
     this.fiatBalance = wholeArk * (this.fiatCurrency ? this.fiatCurrency.price : 0);
 
     this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
@@ -207,28 +207,28 @@ export class WalletListPage implements OnDestroy{
       'WEEK_DAY.FRIDAY',
       'WEEK_DAY.SATURDAY',
     ]).subscribe((translation) => {
-      if (lodash.isEmpty(this.wallets)) return;
+      if (lodash.isEmpty(this.wallets)) { return; }
 
-      let days = lodash.values(translation);
+      const days = lodash.values(translation);
 
       this.settingsDataProvider.settings.subscribe((settings) => {
         this.marketDataProvider.history.subscribe();
         this.marketDataProvider.onUpdateHistory$.takeUntil(this.unsubscriber$).subscribe((history) => {
-          if (!history) return;
+          if (!history) { return; }
 
-          let currency = (!settings || !settings.currency) ? this.settingsDataProvider.getDefaults().currency : settings.currency;
+          const currency = (!settings || !settings.currency) ? this.settingsDataProvider.getDefaults().currency : settings.currency;
 
-          let fiatHistory = history.getLastWeekPrice(currency.toUpperCase());
-          let btcHistory = history.getLastWeekPrice('BTC');
+          const fiatHistory = history.getLastWeekPrice(currency.toUpperCase());
+          const btcHistory = history.getLastWeekPrice('BTC');
 
           this.chartLabels = null;
 
           this.chartData = [{
-            yAxisID : "A",
+            yAxisID : 'A',
             fill: false,
             data: fiatHistory.prices,
           }, {
-            yAxisID : "B",
+            yAxisID : 'B',
             fill: false,
             data: btcHistory.prices,
           }];
@@ -295,7 +295,7 @@ export class WalletListPage implements OnDestroy{
     this.btcCurrency = ticker.getCurrency({ code: 'btc' });
 
     this.settingsDataProvider.settings.subscribe((settings) => {
-      let currency = (!settings || !settings.currency) ? this.settingsDataProvider.getDefaults().currency : settings.currency;
+      const currency = (!settings || !settings.currency) ? this.settingsDataProvider.getDefaults().currency : settings.currency;
 
       this.fiatCurrency = ticker.getCurrency({ code: currency });
       this.loadWallets();
@@ -319,7 +319,7 @@ export class WalletListPage implements OnDestroy{
 
     // Fetch from api or get from storage
     this.marketDataProvider.fetchHistory().subscribe((history) => {
-      this.marketHistory = history
+      this.marketHistory = history;
     }, () => this.marketDataProvider.history.subscribe((history) => this.marketHistory = history));
 
     this.content.resize();

@@ -6,9 +6,9 @@ export class Profile {
 
   deserialize(input: any): Profile {
     this.reset();
-    let self: any = this;
+    const self: any = this;
 
-    for (let prop in input) {
+    for (const prop in input) {
       self[prop] = input[prop];
     }
     return self;

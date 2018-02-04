@@ -5,6 +5,8 @@ import { AuthProvider } from '@providers/auth/auth';
 
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/timer';
+import 'rxjs/add/operator/takeWhile';
 
 import moment from 'moment';
 import lodash from 'lodash';
@@ -59,36 +61,36 @@ export class PinCodeModal implements OnDestroy {
     if (this.password.length < this.length) {
       this.zone.run(() => {
         this.password = this.password + value;
+      });
 
-        // When the user reach the password length
-        if (this.password.length == this.length) {
+      // When the user reach the password length
+      if (this.password.length === this.length) {
 
-          // New password
-          if (!this.expectedPassword && !this.validatePassword) {
-            return this.dismiss(true);
+        // New password
+        if (!this.expectedPassword && !this.validatePassword) {
+          return this.dismiss(true);
+        }
+
+        // Confirm with the previous entered password (validate new password)
+        if (this.expectedPassword) {
+          if (this.expectedPassword !== this.password) {
+            this.setWrong();
+          } else {
+            this.dismiss(true);
           }
+        }
 
-          // Confirm with the previous entered password (validate new password)
-          if (this.expectedPassword) {
-            if (this.expectedPassword !== this.password) {
+        // Compare the password entered with the saved in the storage
+        if (this.validatePassword) {
+          this.authProvider.validateMasterPassword(this.password).subscribe((result) => {
+            if (!result) {
               this.setWrong();
             } else {
               this.dismiss(true);
             }
-          }
-
-          // Compare the password entered with the saved in the storage
-          if (this.validatePassword) {
-            this.authProvider.validateMasterPassword(this.password).subscribe((result) => {
-              if (!result) {
-                this.setWrong();
-              } else {
-                this.dismiss(true);
-              }
-            });
-          }
+          });
         }
-      });
+      }
     }
   }
 
@@ -113,7 +115,7 @@ export class PinCodeModal implements OnDestroy {
         setTimeout(() => this.isWrong = false, 500);
       });
 
-    })
+    });
   }
 
   delete() {
@@ -170,7 +172,7 @@ export class PinCodeModal implements OnDestroy {
                                         .takeWhile(() => this.unlockDiff > 0)
                                         .finally(() => this.zone.run(() => this.message = 'PIN_CODE.DEFAULT_MESSAGE'))
                                         .subscribe();
-    })
+    });
   }
 
   ionViewDidLoad() {

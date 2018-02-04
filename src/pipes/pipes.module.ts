@@ -8,15 +8,15 @@ import { TimezonePipe } from './timezone/timezone';
 import { SecondsToTimePipe } from './seconds-to-time/seconds-to-time';
 
 @NgModule({
-	declarations: [TruncateMiddlePipe,
+  declarations: [TruncateMiddlePipe,
     UnitsSatoshiPipe,
     MarketNumberPipe,
     AccountLabelPipe,
     TimestampHumanPipe,
     TimezonePipe,
     SecondsToTimePipe],
-	imports: [],
-	exports: [TruncateMiddlePipe,
+  imports: [],
+  exports: [TruncateMiddlePipe,
     UnitsSatoshiPipe,
     MarketNumberPipe,
     AccountLabelPipe,

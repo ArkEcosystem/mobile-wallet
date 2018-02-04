@@ -35,7 +35,7 @@ export class ContactListPage {
 
   presentContactActionSheet(address) {
     this.translateService.get(['EDIT', 'DELETE']).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      let buttons = [
+      const buttons = [
         {
           text: translation.EDIT,
           role: 'label',
@@ -53,7 +53,7 @@ export class ContactListPage {
         }
       ];
 
-      let action = this.actionSheetCtrl.create({buttons});
+      const action = this.actionSheetCtrl.create({buttons});
       action.present();
     });
   }
@@ -64,7 +64,7 @@ export class ContactListPage {
       'CONFIRM',
       'ARE_YOU_SURE',
     ]).subscribe((translation) => {
-      let alert = this.alertCtrl.create({
+      const alert = this.alertCtrl.create({
         title: translation.ARE_YOU_SURE,
         buttons: [
           {
@@ -80,7 +80,7 @@ export class ContactListPage {
       });
 
       alert.present();
-    })
+    });
   }
 
   isEmpty() {
@@ -93,7 +93,7 @@ export class ContactListPage {
   }
 
   openEditPage(address) {
-    let contact = this.contacts[address];
+    const contact = this.contacts[address];
     return this.navCtrl.push('ContactCreatePage', { address, contact });
   }
 

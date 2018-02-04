@@ -29,18 +29,18 @@ export class PinCodeComponent {
   }
 
   open(message: string, outputPassword: boolean, verifySecondPassphrase: boolean = false) {
-    if (outputPassword && !this.wallet) return false;
+    if (outputPassword && !this.wallet) { return false; }
 
-    let modal = this.modalCtrl.create('PinCodeModal', {
+    const modal = this.modalCtrl.create('PinCodeModal', {
       message,
       outputPassword,
       validatePassword: true,
     });
 
     modal.onDidDismiss((password) => {
-      if (lodash.isNil(password)) return this.onWrong.emit();
+      if (lodash.isNil(password)) { return this.onWrong.emit(); }
 
-      let loader = this.loadingCtrl.create({
+      const loader = this.loadingCtrl.create({
         dismissOnPageChange: true,
         enableBackdropDismiss: false,
         showBackdrop: true
@@ -53,12 +53,12 @@ export class PinCodeComponent {
         return this.onSuccess.emit();
       }
 
-      let passphrases = this.userDataProvider.getKeysByWallet(this.wallet, password);
+      const passphrases = this.userDataProvider.getKeysByWallet(this.wallet, password);
       loader.dismiss();
 
-      if (lodash.isEmpty(passphrases) || lodash.isNil(passphrases)) return this.onWrong.emit();
+      if (lodash.isEmpty(passphrases) || lodash.isNil(passphrases)) { return this.onWrong.emit(); }
 
-      if (verifySecondPassphrase) return this.requestSecondPassphrase(passphrases);
+      if (verifySecondPassphrase) { return this.requestSecondPassphrase(passphrases); }
 
       return this.onSuccess.emit(passphrases);
     });
@@ -68,7 +68,7 @@ export class PinCodeComponent {
 
   private requestSecondPassphrase(passphrases: WalletKeys) {
     if (this.wallet.secondSignature && !this.wallet.cipherSecondKey) {
-      let modal = this.modalCtrl.create('EnterSecondPassphraseModal', null, { cssClass: 'inset-modal' });
+      const modal = this.modalCtrl.create('EnterSecondPassphraseModal', null, { cssClass: 'inset-modal' });
 
       modal.onDidDismiss((passphrase) => {
         if (!passphrase) {
@@ -87,16 +87,16 @@ export class PinCodeComponent {
   }
 
   createUpdatePinCode(nextPage?: string, oldPassword?: string) {
-    let createModal = (master?: any) => {
+    const createPinCodeModalFunc = (master?: any) => {
       if (!master) {
-        let createModal = this.modalCtrl.create('PinCodeModal', {
+        const pinCodeModal = this.modalCtrl.create('PinCodeModal', {
           message: 'PIN_CODE.CREATE',
           outputPassword: true,
         });
 
-        createModal.onDidDismiss((password) => {
+        pinCodeModal.onDidDismiss((password) => {
           if (password) {
-            let validateModal = this.modalCtrl.create('PinCodeModal', {
+            const validateModal = this.modalCtrl.create('PinCodeModal', {
               message: 'PIN_CODE.CONFIRM',
               expectedPassword: password,
             });
@@ -122,15 +122,15 @@ export class PinCodeComponent {
           }
         });
 
-        createModal.present();
+        pinCodeModal.present();
       } else if (nextPage) {
         this.navCtrl.push(nextPage);
       }
     };
     if (!oldPassword) {
-      this.authProvider.getMasterPassword().do(createModal).subscribe();
+      this.authProvider.getMasterPassword().do(createPinCodeModalFunc).subscribe();
     } else {
-      createModal();
+      createPinCodeModalFunc();
     }
   }
 

@@ -1,11 +1,11 @@
 import { AutoCompleteService } from 'ionic2-auto-complete';
-import { Injectable } from "@angular/core";
-import 'rxjs/add/operator/map'
+import { Injectable } from '@angular/core';
+import 'rxjs/add/operator/map';
 import lodash from 'lodash';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { PublicKey } from 'ark-ts/core';
-import { AutoCompleteContact } from "@models/contact";
+import { AutoCompleteContact } from '@models/contact';
 
 @Injectable()
 export class ContactsAutoCompleteService implements AutoCompleteService {
@@ -25,7 +25,7 @@ export class ContactsAutoCompleteService implements AutoCompleteService {
         return {
           address: key.toString(),
           name: value['name'].toString(),
-          iconName: "ios-contacts-outline"
+          iconName: 'ios-contacts-outline'
         } as AutoCompleteContact;
       }
     });
@@ -37,7 +37,7 @@ export class ContactsAutoCompleteService implements AutoCompleteService {
         return {
           address: address.toString(),
           name: label.toString(),
-          iconName: "ios-cash-outline"
+          iconName: 'ios-cash-outline'
         } as AutoCompleteContact;
       }
     });
@@ -48,11 +48,11 @@ export class ContactsAutoCompleteService implements AutoCompleteService {
   }
 
   private static sortContacts(a: AutoCompleteContact, b: AutoCompleteContact): number {
-    if (a.name != a.address && b.name == b.address) {
+    if (a.name !== a.address && b.name === b.address) {
       return -1;
     }
 
-    if (a.name == a.address && b.name != b.address) {
+    if (a.name === a.address && b.name !== b.address) {
       return 1;
     }
 
