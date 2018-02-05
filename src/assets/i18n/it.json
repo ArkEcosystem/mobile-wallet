@@ -1,6 +1,8 @@
 {
   "API": {
     "BALANCE_TOO_LOW": "Saldo troppo basso per la transazione",
+    "BALANCE_TOO_LOW_DETAIL": "Non ci sono abastanza {{ token }} sul conto! Il costo della transazione è: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). Il saldo del conto è {{ balance }}!",
+    "DESTINATION_ADDRESS_ERROR": "L'indirizzo di destinazione '{{ address }}' non è corretto",
     "PEER_LIST_ERROR": "Impossibile ottenere l'elenco dei nodi",
     "TRANSACTION_FAILED": "Transazione fallita",
     "TRANSACTION_SENT": "Transazione inviata"
@@ -89,10 +91,16 @@
   },
   "NEXT": "Prossimo",
   "NO": "No",
+  "PASSPHRASE_TEST": {
+    "INFO": "Digitare le parole richieste dalla frase segreta per convalidare la creazione del portafoglio.",
+    "WRONG_WORD": "La parola digitata non è corretta"
+  },
   "PIN_CODE": {
     "CONFIRM": "Conferma il tuo PIN",
     "CREATE": "Crea il tuo PIN",
     "DEFAULT_MESSAGE": "Immetti il tuo PIN",
+    "WRONG_PIN_MANY_TIMES": "Hai inserito il codice PIN sbagliato troppe volte!",
+    "WAIT_TO_TRY": "Si prega di attendere {{ time }} e riprovare",
     "LOGIN_ERROR": "Si è verificato un problema durante l'accesso con il tuo PIN",
     "PIN_CREATED_ERROR_TEXT": "Si è verificato un problema creando il tuo PIN",
     "PIN_CREATED_TEXT": "Il tuo PIN è stato creato",
@@ -162,6 +170,7 @@
     "OPEN_EXPLORER": "Apri in Explorer",
     "QRCODE_COPY": "Toccare l'indirizzo per copiarlo negli appunti o fare clic sull'icona per condividere il codice QR.",
     "RECEIVE": "Ricevi",
+    "RECEIVE_TOKEN": "Ricevi {{ Token }}",
     "RECEIVED": "Ricevuto",
     "RECEIVED_FROM": "Ricevuto da",
     "RECIPIENT": "Destinatario",
@@ -233,5 +242,6 @@
     "TUESDAY": "Mar",
     "WEDNESDAY": "Mer"
   },
+  "WORD": "Parola",
   "YES": "Si"
 }
