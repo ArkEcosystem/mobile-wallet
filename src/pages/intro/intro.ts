@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 @IonicPage()
 @Component({
   selector: 'page-intro',
-  templateUrl: 'intro.html',
+  templateUrl: './intro.html',
 })
 export class IntroPage {
   @ViewChild(Slides) slider: Slides;
