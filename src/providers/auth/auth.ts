@@ -88,7 +88,10 @@ export class AuthProvider {
   }
 
   increaseAttempts() {
-    return this.getAttempts().do((attempts) => this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, Number(attempts) + 1));
+    return this.getAttempts().mergeMap(attempts => {
+      const increasedAttempts = Number(attempts) + 1;
+      return this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, increasedAttempts).map(() => increasedAttempts);
+    });
   }
 
   increaseUnlockTimestamp(): Promise<Date> {

@@ -103,8 +103,8 @@ export class PinCodeModal implements OnDestroy {
   setWrong() {
     this.vibration.vibrate(constants.VIBRATION_TIME_LONG_MS);
 
-    this.authProvider.increaseAttempts().subscribe(() => {
-      this.attempts++;
+    this.authProvider.increaseAttempts().subscribe((newAttempts) => {
+      this.attempts = newAttempts;
       this.verifyAttempts();
 
       this.zone.run(() => {
