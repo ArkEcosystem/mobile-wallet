@@ -99,6 +99,8 @@
     "CONFIRM": "Bestätige deinen PIN",
     "CREATE": "Erstelle deinen PIN",
     "DEFAULT_MESSAGE": "Gib deinen PIN ein",
+    "WRONG_PIN_MANY_TIMES": "Du hast zu viele Male einen falschen PIN eingegeben.",
+    "WAIT_TO_TRY": "Bitte warte {{ time }} und versuche es noch einmal",
     "LOGIN_ERROR": "Es gab ein Problem beim Einloggen mit deinem PIN",
     "PIN_CREATED_ERROR_TEXT": "Es gab ein Problem beim Erstellen deines PINs",
     "PIN_CREATED_TEXT": "Dein PIN wurde erstellt",
