@@ -21,8 +21,12 @@
       "es2015",
       "dom"
     ],
-    "target": "es5"
+    "target": "es5",
+    "sourceMap": false
   },
+  "exclude": [
+    "../node_modules"
+  ],
   "include": [
     "helpers.ts",
     "../src/**/*.ts",

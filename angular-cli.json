@@ -8,8 +8,7 @@
       "root": "src",
       "outDir": "../dist",
       "assets": [
-        "assets",
-        "favicon.ico"
+        "assets"
       ],
       "index": "index.html",
       "main": "app/main.ts",
@@ -18,7 +17,8 @@
       "tsconfig": "../tsconfig.json",
       "testTsconfig": "../test/tsconfig.test.json",
       "prefix": "app",
-      "scripts": []
+      "scripts": [],
+      "showCircularDependencies": true
     }
   ],
   "e2e": {
@@ -57,6 +57,10 @@
   },
   "defaults": {
     "styleExt": "css",
-    "component": {}
+    "component": {},
+    "build": {
+      "progress": false,
+      "sourcemaps": false
+    }
   }
 }

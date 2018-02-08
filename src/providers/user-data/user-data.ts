@@ -11,10 +11,9 @@ import { Contact, Profile, Wallet, WalletKeys } from '@models/model';
 
 import lodash from 'lodash';
 import { v4 as uuid } from 'uuid';
-import { Network } from 'ark-ts/model';
+import { Network, NetworkType } from 'ark-ts/model';
 
 import * as constants from '@app/app.constants';
-import { NetworkType } from 'ark-ts';
 
 @Injectable()
 export class UserDataProvider {

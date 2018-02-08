@@ -5,6 +5,7 @@ module.exports = function (config) {
   const coverage = config.angularCli && config.angularCli.codeCoverage
 
   const plugins = [
+    require('karma-webpack'),
     require('@angular/cli/plugins/karma'),
     require('karma-chrome-launcher'),
     require('karma-spec-reporter'),
@@ -35,7 +36,17 @@ module.exports = function (config) {
       suppressSkipped: true,
     },
     angularCli: {
+      progress: false,
+      sourcemap: false,
       environment: 'dev'
+    },
+    // Adds empty polyfills of Node modules
+    webpack: {
+      node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty',
+      }
     },
     reporters: coverage ? ['progress', 'coverage-istanbul'] : ['progress', 'spec'],
     port: 9876,
