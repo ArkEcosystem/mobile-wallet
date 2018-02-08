@@ -1,6 +1,8 @@
 {
   "API": {
     "BALANCE_TOO_LOW": "Saldo ej tillräckligt för transaktionen",
+    "BALANCE_TOO_LOW_DETAIL": "Inte tillräckligt med {{ token }} på ditt konto! Transaktionskostnaden är: {{ totalAmount }} ({{ amount }} + {{ fee }}). Men ditt saldo är bara {{ balance }}!",
+    "DESTINATION_ADDRESS_ERROR": "Destinationsadressen '{{ address }}' är felaktig",
     "PEER_LIST_ERROR": "Kunde ej hämta peer-lista",
     "TRANSACTION_FAILED": "Transaktionen misslyckades",
     "TRANSACTION_SENT": "Transaktionen skickades"
@@ -89,10 +91,15 @@
   },
   "NEXT": "Nästa",
   "NO": "Nej",
+  "PASSPHRASE_TEST": {
+    "INFO": "Var vänlig och skriv in the obligatoriska orden från din lösenordsfras för att validera skapandet av plånboken.",
+    "WRONG_WORD": "De inmatade orden är felaktiga."
+  },
   "PIN_CODE": {
     "CONFIRM": "Bekräfta din PIN",
     "CREATE": "Skapa din PIN",
     "DEFAULT_MESSAGE": "Skriv in din PIN",
+    "WRONG_PIN_MANY_TIMES": "Du skrev in en felaktig PIN för många gånger!",
     "LOGIN_ERROR": "Problem att logga in med din PIN",
     "PIN_CREATED_ERROR_TEXT": "Problem att skapa din PIN",
     "PIN_CREATED_TEXT": "Din PIN har skapats",
@@ -100,6 +107,7 @@
     "PIN_UPDATED_TEXT": "Din PIN har uppdaterats",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Skriv in din PIN för att kryptera lösenordsfrasen",
     "TYPE_PIN_SIGN_TRANSACTION": "Skriv in din PIN för att signera transaktionen",
+    "TYPE_PIN_ENCRYPT_PASSPHRASE": "Skriv in din PIN för att kryptera lösenordsfrasen",
     "WRONG": "Vänligen ange rätt PIN"
   },
   "PROFILES_PAGE": {
@@ -162,6 +170,7 @@
     "OPEN_EXPLORER": "Öppna i Utforskaren",
     "QRCODE_COPY": "Tryck på adress att kopiera till urklipp eller tryck på ikonen för att dela QR-kod.",
     "RECEIVE": "Ta emot",
+    "RECEIVE_TOKEN": "Ta emot {{ Token }}",
     "RECEIVED": "Mottagen",
     "RECEIVED_FROM": "Mottagen från",
     "RECIPIENT": "Mottagare",
@@ -233,5 +242,6 @@
     "TUESDAY": "Tis",
     "WEDNESDAY": "Ons"
   },
+  "WORD": "Ord",
   "YES": "Ja"
 }
