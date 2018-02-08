@@ -56,6 +56,11 @@ $ npm run ionic:serve
 
 To run the unit tests:
 ```bash
+$ npm test
+```
+
+To run the unit tests and watch them:
+```bash
 $ npm run test:unit
 ```
 

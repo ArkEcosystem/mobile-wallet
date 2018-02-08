@@ -1,12 +1,12 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "Panak"
+    "name": "ark-mobile"
   },
   "apps": [
     {
       "root": "src",
-      "outDir": "dist",
+      "outDir": "../dist",
       "assets": [
         "assets",
         "favicon.ico"
@@ -14,30 +14,25 @@
       "index": "index.html",
       "main": "app/main.ts",
       "polyfills": "polyfills.ts",
-      "test": "test.ts",
-      "tsconfig": "tsconfig.app.json",
-      "testTsconfig": "tsconfig.spec.json",
+      "test": "../test/helpers.ts",
+      "tsconfig": "../tsconfig.json",
+      "testTsconfig": "../test/tsconfig.test.json",
       "prefix": "app",
-      "scripts": [],
-      "environmentSource": "environments/environment.ts",
-      "environments": {
-        "dev": "environments/environment.ts",
-        "prod": "environments/environment.prod.ts"
-      }
+      "scripts": []
     }
   ],
   "e2e": {
     "protractor": {
-      "config": "./protractor.conf.js"
+      "config": "./e2e/protractor.conf.js"
     }
   },
   "lint": [
     {
-      "project": "src/tsconfig.app.json",
+      "project": "tsconfig.app.json",
       "exclude": "**/node_modules/**"
     },
     {
-      "project": "src/tsconfig.spec.json",
+      "project": "test/tsconfig.test.json",
       "exclude": "**/node_modules/**"
     },
     {
@@ -47,13 +42,14 @@
   ],
   "test": {
     "karma": {
-      "config": "./karma.conf.js"
+      "config": "test/karma.conf.js"
     },
     "codeCoverage": {
       "exclude": [
+        "src/service-worker.js",
         "src/polyfills.ts",
-        "src/test.ts",
-        "src/mocks.ts",
+        "test/helpers.ts",
+        "test/mocks.ts",
         "**/*.mock.ts",
         "**/node_modules/**"
       ]

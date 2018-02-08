@@ -1,10 +1,8 @@
 {
-  "extends": "../tsconfig.ng-cli.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "outDir": "../out-tsc/spec",
-    "baseUrl": "./",
-    "module": "commonjs",
-    "target": "es5",
+    "outDir": "../out-tsc/test",
+    "baseUrl": "../src/",
     "paths": {
       "@components/*": ["components/*"],
       "@providers/*": ["providers/*"],
@@ -17,13 +15,18 @@
     "types": [
       "jasmine",
       "node"
-    ]
+    ],
+    "lib": [
+      "es5",
+      "es2015",
+      "dom"
+    ],
+    "target": "es5"
   },
-  "files": [
-    "test.ts"
-  ],
   "include": [
-    "**/*.spec.ts",
-    "**/*.d.ts"
+    "helpers.ts",
+    "../src/**/*.ts",
+    "../src/**/*.spec.ts",
+    "../src/**/*.d.ts"
   ]
 }

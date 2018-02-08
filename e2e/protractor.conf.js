@@ -1,10 +1,10 @@
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    './e2e/**/*.e2e-spec.ts'
+    './**/*.e2e-spec.ts'
   ],
   capabilities: {
-    'browserName': 'chrome',
+    browserName: 'chrome',
     chromeOptions: {
       args: ['--no-sandbox']
     }
@@ -32,11 +32,5 @@ exports.config = {
       color: true,
       showStack: true
     }));
-    // To generate a JUnit report
-    // jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
-    //   savePath: process.env.JUNIT_REPORT_PATH,
-    //   outputFile: process.env.JUNIT_REPORT_NAME,
-    //   consolidateAll: true
-    // }));
   }
 };
