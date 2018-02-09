@@ -1,9 +1,12 @@
 dist: trusty
-sudo: false
+sudo: required
 
 language: node_js
 node_js:
   - "8"
+
+addons:
+  - chrome: stable
 
 cache:
   directories:
@@ -15,4 +18,6 @@ install:
 script:
   - npm run missing-translations
   - npm run lint  --bailOnLintError true
+  - npm test
+  - npm run test:e2e
   - npm run build -- --prod
