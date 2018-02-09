@@ -12,7 +12,7 @@
       "@directives/*": ["src/directives/*"],
       "@pipes/*": ["src/pipes/*"],
       "@app/*": ["src/app/*"],
-      "@root/*": ["./"]
+      "@root/*": ["./*"]
     },
     "lib": [
       "dom",

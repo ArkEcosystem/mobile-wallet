@@ -10,7 +10,7 @@
       "@directives/*": ["directives/*"],
       "@pipes/*": ["pipes/*"],
       "@app/*": ["app/*"],
-      "@root/*": ["../"]
+      "@root/*": ["../*"]
     },
     "types": [
       "jasmine",

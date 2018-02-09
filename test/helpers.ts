@@ -30,11 +30,19 @@ import {
   Platform,
 } from 'ionic-angular';
 
+// import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { AuthProvider } from '@providers/auth/auth';
 import { ToastProvider } from '@providers/toast/toast';
 import { UserDataProvider } from '@providers/user-data/user-data';
 
-import { AuthProviderMock, DeepLinkerMock, ToastProviderMock, TranslateLoaderMock, UserDataProviderMock } from './mocks'; 
+import {
+  ArkApiProviderMock,
+  AuthProviderMock,
+  DeepLinkerMock,
+  ToastProviderMock,
+  TranslateLoaderMock,
+  UserDataProviderMock
+} from './mocks';
 
 declare const require: any;
 
@@ -88,6 +96,7 @@ export class TestHelpers {
         {provide: Platform, useFactory: () => PlatformMock.instance()},
         {provide: Config, useFactory: () => ConfigMock.instance()},
         {provide: DeepLinker, useClass: DeepLinkerMock},
+        // {provide: ArkApiProvider, useClass: ArkApiProviderMock},
         {provide: AuthProvider, useClass: AuthProviderMock},
         {provide: ToastProvider, useClass: ToastProviderMock},
         {provide: UserDataProvider, useClass: UserDataProviderMock},

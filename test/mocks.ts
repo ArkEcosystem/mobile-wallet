@@ -1,6 +1,9 @@
 import { EventEmitter, Pipe } from '@angular/core';
 import { Observable } from 'rxjs';
 
+export class ArkApiProviderMock {
+}
+
 export class AuthProviderMock {
   getMasterPassword(): Observable<string> {
     return Observable.of('My secret password')
