@@ -17,6 +17,7 @@ export class PinCodeComponent {
 
   @Output('onSuccess') onSuccess: EventEmitter<WalletKeys> = new EventEmitter();
   @Output('onWrong') onWrong: EventEmitter<void> = new EventEmitter();
+  @Output('onClosed') onClosed: EventEmitter<void> = new EventEmitter();
 
   constructor(
     private userDataProvider: UserDataProvider,
@@ -38,7 +39,7 @@ export class PinCodeComponent {
     });
 
     modal.onDidDismiss((password) => {
-      if (lodash.isNil(password)) { return this.onWrong.emit(); }
+      if (lodash.isNil(password)) { return this.onClosed.emit(); }
 
       const loader = this.loadingCtrl.create({
         dismissOnPageChange: true,
