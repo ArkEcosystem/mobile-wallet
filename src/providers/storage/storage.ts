@@ -7,7 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/map';
 
-import lodash from 'lodash';
+import { isObject, isString, toString } from 'lodash';
 
 @Injectable()
 export class StorageProvider {
@@ -25,12 +25,12 @@ export class StorageProvider {
   }
 
   public set(key, value) {
-    if (lodash.isObject(value)) {
+    if (isObject(value)) {
       value = JSON.stringify(value);
     }
 
-    if (value && !lodash.isString(value)) {
-      value = lodash(value).toString();
+    if (value && !isString(value)) {
+      value = toString(value);
     }
 
     return Observable.fromPromise(this._storage.set(key, value));

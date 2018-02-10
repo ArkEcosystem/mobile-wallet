@@ -4,7 +4,7 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
 
-import lodash from 'lodash';
+import { isNil } from 'lodash';
 
 @IonicPage()
 @Component({
@@ -24,7 +24,7 @@ export class LoginPage {
     private userDataProvider: UserDataProvider,
   ) {
     this.authProvider.getMasterPassword().do(master => {
-      this.hasProfiles = master && !lodash.isNil(this.userDataProvider.profiles);
+      this.hasProfiles = master && !isNil(this.userDataProvider.profiles);
       this.isReady = true;
     }).subscribe();
   }

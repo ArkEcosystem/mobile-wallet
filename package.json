@@ -26,7 +26,12 @@
         "ionic:build": "ionic-app-scripts build",
         "ionic:serve": "ionic-app-scripts serve",
         "ionic:lab": "ionic-app-scripts serve --lab",
-        "missing-translations": "node missing-translations"
+        "missing-translations": "node missing-translations",
+        "test": "ng test --single-run",
+        "test:unit": "ng test",
+        "test:coverage": "ng test --single-run --code-coverage",
+        "test:e2e": "ionic-app-scripts build && protractor e2e/protractor.conf.js",
+        "postinstall": "webdriver-manager update"
     },
     "dependencies": {
         "@angular/common": "4.4.3",
@@ -100,8 +105,29 @@
         "zone.js": "0.8.20"
     },
     "devDependencies": {
+        "@angular/cli": "^1.6.7",
+        "@angular/router": "^5.2.3",
         "@ionic/app-scripts": "3.1.8",
-        "typescript": "2.6.2"
+        "@types/jasmine": "^2.8.6",
+        "@types/node": "^9.4.1",
+        "angular-cli": "^1.0.0-beta.28.3",
+        "connect": "^3.6.5",
+        "ionic-mocks": "^1.2.1",
+        "jasmine-core": "2.99.1",
+        "jasmine-reporters": "^2.3.0",
+        "jasmine-spec-reporter": "^4.2.1",
+        "karma": "^2.0.0",
+        "karma-chrome-launcher": "^2.2.0",
+        "karma-cli": "^1.0.1",
+        "karma-coverage-istanbul-reporter": "^1.4.1",
+        "karma-jasmine": "^1.1.1",
+        "karma-jasmine-html-reporter": "^0.2.2",
+        "karma-spec-reporter": "0.0.32",
+        "karma-webpack": "^2.0.9",
+        "protractor": "^5.3.0",
+        "serve-static": "^1.13.1",
+        "ts-node": "^4.1.0",
+        "typescript": "^2.6.2"
     },
     "description": "A Wallet for Everyone",
     "config": {

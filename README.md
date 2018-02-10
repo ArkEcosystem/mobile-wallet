@@ -52,6 +52,28 @@ Debug in browser:
 $ npm run ionic:serve
 ```
 
+## Testing
+
+To run the unit tests:
+```bash
+$ npm test
+```
+
+To run the unit tests and watch them:
+```bash
+$ npm run test:unit
+```
+
+To run the unit tests and generate a coverage report:
+```bash
+$ npm run test:coverage
+```
+
+To run the E2E (end to end) tests:
+```bash
+$ npm run test:e2e
+```
+
 ## Contributing
 
 - If you find any bugs, submit an [issue](../../issues) or open [pull-request](../../pulls), helping us catch and fix them.

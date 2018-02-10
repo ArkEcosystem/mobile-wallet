@@ -1,0 +1,36 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/test",
+    "baseUrl": "../src/",
+    "paths": {
+      "@components/*": ["components/*"],
+      "@providers/*": ["providers/*"],
+      "@models/*": ["models/*"],
+      "@directives/*": ["directives/*"],
+      "@pipes/*": ["pipes/*"],
+      "@app/*": ["app/*"],
+      "@root/*": ["../*"]
+    },
+    "types": [
+      "jasmine",
+      "node"
+    ],
+    "lib": [
+      "es5",
+      "es2015",
+      "dom"
+    ],
+    "target": "es5",
+    "sourceMap": false
+  },
+  "exclude": [
+    "../node_modules"
+  ],
+  "include": [
+    "helpers.ts",
+    "../src/**/*.ts",
+    "../src/**/*.spec.ts",
+    "../src/**/*.d.ts"
+  ]
+}

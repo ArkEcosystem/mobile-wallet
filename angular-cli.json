@@ -1,0 +1,66 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "ark-mobile"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "../dist",
+      "assets": [
+        "assets"
+      ],
+      "index": "index.html",
+      "main": "app/main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "../test/helpers.ts",
+      "tsconfig": "../tsconfig.json",
+      "testTsconfig": "../test/tsconfig.test.json",
+      "prefix": "app",
+      "scripts": [],
+      "showCircularDependencies": true
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./e2e/protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "tsconfig.app.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "test/tsconfig.test.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json",
+      "exclude": "**/node_modules/**"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "test/karma.conf.js"
+    },
+    "codeCoverage": {
+      "exclude": [
+        "src/service-worker.js",
+        "src/polyfills.ts",
+        "test/helpers.ts",
+        "test/mocks.ts",
+        "**/*.mock.ts",
+        "**/node_modules/**"
+      ]
+    }
+  },
+  "defaults": {
+    "styleExt": "css",
+    "component": {},
+    "build": {
+      "progress": false,
+      "sourcemaps": false
+    }
+  }
+}

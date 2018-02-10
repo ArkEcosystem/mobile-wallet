@@ -2,7 +2,7 @@ const path = require('path');
 const defaults = require('@ionic/app-scripts/config/webpack.config');
 
 module.exports = function() {
-  let aliases = {
+  const aliases = {
     '@components': path.resolve('./src/components/'),
     '@providers': path.resolve('./src/providers/'),
     '@models': path.resolve('./src/models/'),
