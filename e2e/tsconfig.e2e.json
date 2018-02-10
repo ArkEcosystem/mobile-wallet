@@ -8,6 +8,7 @@
       "jasminewd2",
       "node"
     ],
+    "module": "CommonJS",
     "sourceMap": false
   }
 }
