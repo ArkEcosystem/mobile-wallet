@@ -211,6 +211,7 @@
     "MY_WALLET": "My Wallet",
     "NEW_WALLET_NAME": "New wallet name",
     "NO_TRANSACTIONS": "No transactions available",
+    "OR_TYPE": "or type",
     "PASSPHRASE": "Passphrase",
     "PASSPHRASE_NOT_MATCH": "The passphrase entered does not match the one you just got.",
     "PUBLIC_ADDRESS": "Public Address",
