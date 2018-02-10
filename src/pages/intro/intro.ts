@@ -17,7 +17,7 @@ export class IntroPage {
   public activeIndex = 0;
 
   constructor(
-    private platform: Platform,
+    public platform: Platform,
     private navCtrl: NavController,
     private authProvider: AuthProvider,
     private translateService: TranslateService,
