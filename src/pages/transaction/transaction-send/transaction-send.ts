@@ -25,6 +25,7 @@ import { TransactionSend } from 'ark-ts';
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
 import { AutoCompleteContact } from '@models/contact';
 import { TranslatableObject } from '@models/translate';
+import { QRCodeScheme } from '@models/model';
 import { BigNumber } from 'bignumber.js';
 import { ArkUtility } from '../../../utils/ark-utility';
 
@@ -210,10 +211,9 @@ export class TransactionSendPage implements OnInit {
     });
   }
 
-  onScanQRCode(qrCode: object) {
-    const address = qrCode['a'];
-    if (address) {
-      this.setFormValuesFromAddress(address);
+  onScanQRCode(qrCode: QRCodeScheme) {
+    if (qrCode.address) {
+      this.setFormValuesFromAddress(qrCode.address);
     } else {
       this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }
