@@ -246,6 +246,7 @@ export class TransactionSendPage implements OnInit {
   }
 
   private setFormValuesFromAddress(address: string): void {
+    this.transaction.recipientAddress = address;
     this.sendForm.patchValue({recipientAddress: address});
     this.isRecipientNameAutoSet = true;
 
