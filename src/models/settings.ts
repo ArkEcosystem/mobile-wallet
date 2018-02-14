@@ -1,3 +1,4 @@
+
 export class UserSettings {
   public language: string;
   public currency: string;
@@ -6,9 +7,9 @@ export class UserSettings {
 
   constructor() {}
 
-  public static defaults(): UserSettings {
+  public static defaults(lang: string): UserSettings {
     const settings = new UserSettings();
-    settings.language = 'en';
+    settings.language = lang;
     settings.currency = 'usd';
     settings.darkMode = false;
     settings.notification = false;

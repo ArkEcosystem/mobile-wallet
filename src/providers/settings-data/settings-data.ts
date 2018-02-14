@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@providers/storage/storage';
+import { TranslateService } from '@ngx-translate/core';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -47,7 +48,7 @@ export class SettingsDataProvider {
     },
   };
 
-  constructor(private _storageProvider: StorageProvider) {
+  constructor(private _storageProvider: StorageProvider, private translateService: TranslateService) {
     this.load().subscribe((data) => {
       this._settings = data;
       this.save();
@@ -63,7 +64,11 @@ export class SettingsDataProvider {
   }
 
   public getDefaults(): UserSettings {
-    return UserSettings.defaults();
+    let userLocale = this.translateService.getBrowserLang();
+    if (this.AVALIABLE_OPTIONS.languages[userLocale] === undefined) {
+      userLocale = 'en'; // Default to English if we don't support user's language yet
+    }
+    return UserSettings.defaults(userLocale);
   }
 
   public save(options?: UserSettings): Observable<any> {
