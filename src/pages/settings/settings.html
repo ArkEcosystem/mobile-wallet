@@ -38,6 +38,11 @@
         <ion-icon name="ios-lock-outline" color="primary" item-start></ion-icon>
         {{ 'SETTINGS_PAGE.CHANGE_PIN' | translate }}
       </button>
+      <ion-item ion-item >
+        <ion-icon name="ios-finger-print" color="primary" item-start></ion-icon>
+        <ion-label>{{ 'SETTINGS_PAGE.TOUCH_ID' | translate }}</ion-label>
+        <ion-toggle [disabled]="!touchIdAvailable" [(ngModel)]="currentSettings.touchId" (ngModelChange)="onUpdate()"></ion-toggle>
+      </ion-item>
     </ion-item-group>
 
     <ion-item-group [hidden]="true">

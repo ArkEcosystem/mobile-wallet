@@ -1,7 +1,12 @@
 import { Component, NgZone, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Platform, IonicPage, NavParams, ViewController } from 'ionic-angular';
 import { Vibration } from '@ionic-native/vibration';
 import { AuthProvider } from '@providers/auth/auth';
+import { TouchID } from '@ionic-native/touch-id';
+import { TranslateService } from '@ngx-translate/core';
+
+import { SettingsDataProvider } from '@providers/settings-data/settings-data';
+import { UserSettings } from '@models/settings';
 
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
@@ -17,7 +22,7 @@ import * as constants from '@app/app.constants';
 @Component({
   selector: 'modal-pin-code',
   templateUrl: 'pin-code.html',
-  providers: [Vibration],
+  providers: [Vibration, TouchID],
 })
 export class PinCodeModal implements OnDestroy {
 
@@ -38,19 +43,31 @@ export class PinCodeModal implements OnDestroy {
   private length = 6;
   private attempts = 0;
 
+  public isTouchIdAvailable = false;
+  public currentSettings: UserSettings;
+
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public viewCtrl: ViewController,
+    private platform: Platform,
+    private navParams: NavParams,
+    private viewCtrl: ViewController,
     private authProvider: AuthProvider,
     private zone: NgZone,
     private vibration: Vibration,
+    private touchId: TouchID,
+    private settingsDataProvider: SettingsDataProvider,
+    private translateService: TranslateService,
   ) {
     this.password = '';
     this.message = this.navParams.get('message');
     this.expectedPassword = this.navParams.get('expectedPassword');
     this.outputPassword = this.navParams.get('outputPassword') || false;
     this.validatePassword = this.navParams.get('validatePassword') || false;
+
+    this.settingsDataProvider.settings.subscribe(settings => this.currentSettings = settings);
+
+    if (this.platform.is('cordova')) {
+      this.touchId.isAvailable().then(() => this.isTouchIdAvailable = true);
+    }
   }
 
   add(value: number) {
@@ -92,6 +109,16 @@ export class PinCodeModal implements OnDestroy {
         }
       }
     }
+  }
+
+  authByTouch () {
+    this.translateService.get('PIN_CODE.USE_FINGERPRINT').subscribe(translation => {
+      this.touchId.verifyFingerprintWithCustomPasswordFallback(translation).then(
+        // TODO:
+        (res) => console.log(res),
+        (err) => console.error('err', err)
+      );
+    });
   }
 
   verifyAttempts() {

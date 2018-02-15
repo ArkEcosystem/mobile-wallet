@@ -67,7 +67,11 @@
             </ion-col>
           </ion-row>
           <ion-row nowrap>
-            <ion-col col-4 class="help-item"></ion-col>
+            <ion-col col-4>
+              <button ion-button round clear (click)="authByTouch()" class="help-item" *ngIf="isTouchIdAvailable" [disabled]="!currentSettings.touchId">
+                <ion-icon name="ios-finger-print"></ion-icon>
+              </button>
+            </ion-col>
             <ion-col col-4>
               <button ion-button round outline (click)="add(0)" [disabled]="unlockDiff > 0">0</button>
             </ion-col>
