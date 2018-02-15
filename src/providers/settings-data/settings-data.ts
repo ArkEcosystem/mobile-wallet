@@ -64,11 +64,11 @@ export class SettingsDataProvider {
   }
 
   public getDefaults(): UserSettings {
-    let userLocale = this.translateService.getBrowserLang();
-    if (this.AVALIABLE_OPTIONS.languages[userLocale] === undefined) {
-      userLocale = 'en'; // Default to English if we don't support user's language yet
-    }
-    return UserSettings.defaults(userLocale);
+    const cultureLang = this.translateService.getBrowserCultureLang();
+    const browserLang = this.translateService.getBrowserLang();
+    const appLang = this.AVALIABLE_OPTIONS.languages[cultureLang] || this.AVALIABLE_OPTIONS.languages[browserLang] || 'en';
+
+    return UserSettings.defaults(appLang);
   }
 
   public save(options?: UserSettings): Observable<any> {
