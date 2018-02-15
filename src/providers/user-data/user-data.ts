@@ -45,50 +45,6 @@ export class UserDataProvider {
     this.onClearStorage();
   }
 
-  addContact(address: string, contact: Contact, profileId: string = this.authProvider.loggedProfileId) {
-    if (lodash.isNil(this.profiles)) { return; }
-
-    const contacts = this.profiles[profileId].contacts || {};
-    contacts[address] = contact;
-
-    this.profiles[profileId]['contacts'] = contacts;
-
-    return this.saveProfiles();
-  }
-
-  editContact(address: string, contact: Contact) {
-    if (lodash.isNil(this.profiles)) { return; }
-
-    lodash.forEach(this.profiles, (item, id) => {
-      if (item['contacts'][address]) {
-        this.profiles[id]['contacts'][address] = contact;
-      }
-    });
-
-    return this.saveProfiles();
-  }
-
-  getContactByAddress(address: string): Contact {
-    if (lodash.isNil(this.profiles) || !address) { return; }
-
-    const contacts = lodash.map(this.profiles, (p) => p['contacts']);
-    const merged = Object.assign({}, ...contacts);
-
-    if (lodash.isNil(merged)) { return; }
-
-    return <Contact>merged[address];
-  }
-
-  removeContactByAddress(address: string) {
-    if (lodash.isNil(this.profiles)) { return; }
-
-    lodash.forEach(this.profiles, (item, id) => {
-      this.profiles[id]['contacts'] = lodash.omit(item['contacts'], [address]);
-    });
-
-    return this.saveProfiles();
-  }
-
   addNetwork(network: Network) {
     this.networks[this.generateUniqueId()] = network;
 
@@ -240,8 +196,19 @@ export class UserDataProvider {
     this.currentWallet = undefined;
   }
 
+  public getCurrentProfile(): Profile {
+    return this.profiles[this.authProvider.loggedProfileId];
+  }
+
   loadProfiles() {
-    return this.storageProvider.getObject(constants.STORAGE_PROFILES);
+    return this.storageProvider
+      .getObject(constants.STORAGE_PROFILES)
+      .map(profiles => {
+        // we have to create "real" contacts here, because the "address" property was not on the contact object
+        // in the first versions of the app
+        Object.keys(profiles || {}).forEach(id => UserDataProvider.mapContacts(profiles[id].contacts));
+        return profiles;
+      });
   }
 
   loadNetworks() {
@@ -284,6 +251,14 @@ export class UserDataProvider {
     return keys;
   }
 
+  // this method is required to "migrate" contacts, in the first version of the app the contact's didnt't include an address property
+  private static mapContacts(contacts: {[address: string]: Contact}): {[address: string]: Contact} {
+    Object.keys(contacts || {}).forEach(address => {
+      contacts[address].address = address;
+    });
+    return contacts;
+  }
+
   private setCurrentNetwork(): void {
     if (!this.currentProfile) { return; }
 
@@ -307,8 +282,8 @@ export class UserDataProvider {
   }
 
   private loadAllData() {
-    this.loadProfiles().subscribe((data) => this.profiles = data);
-    this.loadNetworks().subscribe((data) => this.networks = data);
+    this.loadProfiles().subscribe(profiles => this.profiles = profiles);
+    this.loadNetworks().subscribe(networks => this.networks = networks);
   }
 
   private onLogin() {

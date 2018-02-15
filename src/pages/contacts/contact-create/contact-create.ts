@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { ContactsService } from '@providers/contacts/contacts.service';
 
 import { Contact, QRCodeScheme } from '@models/model';
 import { PublicKey } from 'ark-ts/core';
@@ -10,6 +11,8 @@ import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';
 
 import lodash from 'lodash';
 import { ToastProvider } from '@providers/toast/toast';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslatableObject } from '@models/translate';
 
 @IonicPage()
 @Component({
@@ -22,7 +25,6 @@ export class ContactCreatePage {
 
   public isNew: boolean;
 
-  public contact: Contact;
   public address: string;
   public contactName: string;
 
@@ -32,14 +34,20 @@ export class ContactCreatePage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private userDataProvider: UserDataProvider,
+    private contactsService: ContactsService,
+    private translateService: TranslateService,
+    private alertCtrl: AlertController,
     private toastProvider: ToastProvider
   ) {
-    const param = this.navParams.get('contact');
+    const contact = this.navParams.get('contact') as Contact;
     this.address = this.navParams.get('address');
 
-    this.isNew = lodash.isEmpty(param);
-    this.contact = this.isNew ? new Contact() : param;
-    this.contactName = this.contact.name;
+    this.isNew = lodash.isEmpty(contact);
+    if (!this.isNew) {
+      this.contactName = contact.name;
+      this.address = contact.address;
+    }
+
     this.currentNetwork = this.userDataProvider.currentNetwork;
   }
 
@@ -56,20 +64,38 @@ export class ContactCreatePage {
       return;
     }
 
-    this.contact.name = this.contactName;
     if (this.isNew) {
-      this.userDataProvider.addContact(this.address, this.contact);
+      const existingContact = this.contactsService.getContactByAddress(this.address);
+      if (existingContact) {
+        this.showConfirmation('CONTACTS_PAGE.OVERWRITE_CONTACT',
+                              {name: existingContact.name, newName: this.contactName})
+            .then(() => this.contactsService
+                            .editContact(existingContact.address, this.contactName)
+                            .subscribe(this.closeAndLoadContactList, this.showErrorMessage));
+      } else {
+        this.contactsService
+            .addContact(this.address, this.contactName)
+            .subscribe(this.closeAndLoadContactList, this.showErrorMessage);
+      }
     } else {
-      this.userDataProvider.editContact(this.address, this.contact);
+      this.contactsService
+          .editContact(this.address, this.contactName)
+          .subscribe(this.closeAndLoadContactList, this.showErrorMessage);
     }
+  }
 
+  private closeAndLoadContactList = (): void => {
     this.navCtrl.push('ContactListPage')
       .then(() => {
         this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1).then(() => {
           this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1);
         });
       });
-  }
+  };
+
+  private showErrorMessage = (error: TranslatableObject): void => {
+    this.toastProvider.error(error, 5000);
+  };
 
   scanQRCode() {
     this.qrScanner.open(true);
@@ -84,4 +110,25 @@ export class ContactCreatePage {
     }
   }
 
+  private showConfirmation(titleKey: string, stringParams: Object): Promise<void> {
+    return new Promise((resolve) => {
+      this.translateService.get([titleKey, 'NO', 'YES'], stringParams).subscribe((translation) => {
+        const alert = this.alertCtrl.create({
+          subTitle: translation[titleKey],
+          buttons: [
+            {
+              text: translation.NO,
+              role: 'cancel',
+              handler: () => {}
+            },
+            {
+              text: translation.YES,
+              handler: () => resolve()
+            }
+          ]
+        });
+        alert.present();
+      });
+    });
+  }
 }
