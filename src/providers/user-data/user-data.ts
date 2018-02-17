@@ -206,8 +206,10 @@ export class UserDataProvider {
       .map(profiles => {
         // we have to create "real" contacts here, because the "address" property was not on the contact object
         // in the first versions of the app
-        Object.keys(profiles || {}).forEach(id => UserDataProvider.mapContacts(profiles[id].contacts));
-        return profiles;
+        return lodash.mapValues(profiles, profile => {
+          profile.contacts = lodash.transform(profile.contacts, UserDataProvider.mapContact, {});
+          return profile;
+        });
       });
   }
 
@@ -252,12 +254,10 @@ export class UserDataProvider {
   }
 
   // this method is required to "migrate" contacts, in the first version of the app the contact's didnt't include an address property
-  private static mapContacts(contacts: {[address: string]: Contact}): {[address: string]: Contact} {
-    Object.keys(contacts || {}).forEach(address => {
-      contacts[address].address = address;
-    });
-    return contacts;
-  }
+  private static mapContact = (contacts: { [address: string]: Contact }, contact: Contact, address: string): void => {
+    contact.address = address;
+    contacts[address] = contact;
+  };
 
   private setCurrentNetwork(): void {
     if (!this.currentProfile) { return; }
