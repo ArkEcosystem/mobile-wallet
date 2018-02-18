@@ -128,26 +128,13 @@ export class TransactionSendPage implements OnInit {
   }
 
   public onSearchInput(input: string): void {
-    const contact = this.contactsProvider.getContactByAddress(input);
-    if (contact) {
-      this.isExistingContact = true;
-      this.transaction.recipientName = contact.name;
-    } else {
-      this.isExistingContact = false;
-    }
-
     // this check is needed because clicking into the field, also triggers this method
-    // an then the recipientName is set to null, even though nothing has changed
+    // and then the recipientName is set to null, even though nothing has changed
     if (input === this.currentAutoCompleteFieldValue) {
       return;
     }
 
-    if (this.isRecipientNameAutoSet) {
-      this.transaction.recipientName = null;
-    }
-
-    this.currentAutoCompleteFieldValue = input;
-    this.transaction.recipientAddress = input;
+    this.setRecipientByAddress(input);
   }
 
   private validAddress(): boolean {
@@ -253,17 +240,29 @@ export class TransactionSendPage implements OnInit {
   }
 
   private setFormValuesFromAddress(address: string): void {
-    this.transaction.recipientAddress = address;
-    this.sendForm.patchValue({recipientAddress: address});
-    this.isRecipientNameAutoSet = true;
+    if (!address) {
+      return;
+    }
 
-    const contact: Contact = this.contactsProvider.getContactByAddress(address);
-    if (contact) {
+    this.sendForm.patchValue({recipientAddress: address});
+    this.setRecipientByAddress(address);
+  }
+
+  private setRecipientByAddress(input: string): void {
+    this.currentAutoCompleteFieldValue = input;
+    this.transaction.recipientAddress = input;
+
+    const contactOrLabel: Contact | string = this.contactsProvider.getContactByAddress(input)
+                                             || this.userDataProvider.getWalletLabel(input);
+    if (contactOrLabel && contactOrLabel !== input) {
       this.isExistingContact = true;
-      this.transaction.recipientName = contact.name;
+      this.isRecipientNameAutoSet = true;
+      this.transaction.recipientName = typeof contactOrLabel === 'string' ? contactOrLabel : contactOrLabel.name;
     } else {
       this.isExistingContact = false;
-      this.transaction.recipientName = null;
+      if (this.isRecipientNameAutoSet) {
+        this.transaction.recipientName = null;
+      }
     }
   }
 }

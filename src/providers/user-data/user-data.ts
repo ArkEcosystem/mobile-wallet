@@ -159,8 +159,18 @@ export class UserDataProvider {
     this.saveProfiles();
   }
 
+  setWalletDelegate(wallet: Wallet, username: string): void {
+    if (!wallet || !username) {
+      return;
+    }
+
+    wallet.isDelegate = true;
+    wallet.username = username;
+    this.saveWallet(wallet, undefined, true);
+  }
+
   getWalletByAddress(address: string, profileId: string = this.authProvider.loggedProfileId): Wallet {
-    if (lodash.isUndefined(profileId)) { return; }
+    if (!address || lodash.isUndefined(profileId)) { return; }
 
     const profile = this.getProfileById(profileId);
     let wallet = new Wallet();
@@ -186,6 +196,21 @@ export class UserDataProvider {
     if (notificate) { this.onUpdateWallet$.next(wallet); }
 
     return this.saveProfiles();
+  }
+
+  public getWalletLabel(walletOrAddress: Wallet | string): string {
+    let wallet: Wallet;
+    if (typeof walletOrAddress === 'string') {
+      wallet = this.getWalletByAddress(walletOrAddress);
+    } else {
+      wallet = walletOrAddress;
+    }
+
+    if (!wallet) {
+      return null;
+    }
+
+    return wallet.username || wallet.label || wallet.address;
   }
 
   setCurrentWallet(wallet: Wallet) {

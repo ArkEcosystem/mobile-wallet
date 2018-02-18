@@ -23,6 +23,7 @@ import { Profile } from '@models/model';
 import * as arkts from 'ark-ts';
 import * as constants from '@app/app.constants';
 import moment from 'moment';
+import { Wallet } from '@models/wallet';
 
 @Component({
   templateUrl: 'app.html',
@@ -225,10 +226,7 @@ export class MyApp implements OnInit, OnDestroy {
       const find = lodash.find(delegates, { address: wallet['address'] });
 
       if (find) {
-        wallet['isDelegate'] = true;
-        wallet['username'] = find.username;
-
-        this.userDataProvider.saveWallet(wallet, undefined, true);
+        this.userDataProvider.setWalletDelegate(wallet, find.username);
       }
     });
   }
@@ -238,8 +236,14 @@ export class MyApp implements OnInit, OnDestroy {
     return this.userDataProvider.onCreateWallet$
       .takeUntil(this.unsubscriber$)
       .debounceTime(500)
-      .subscribe(() => {
-        this.arkApiProvider.delegates.subscribe((delegates) => this.onUpdateDelegates(delegates));
+      .subscribe((wallet: Wallet) => {
+        this.arkApiProvider.getDelegateByPublicKey(wallet.publicKey).subscribe(delegate => {
+          if (!delegate) {
+            return;
+          }
+
+          this.onUpdateDelegates([delegate]);
+        });
       });
   }
 

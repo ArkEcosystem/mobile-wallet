@@ -17,6 +17,7 @@ import lodash from 'lodash';
 import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
+import { Delegate } from 'ark-ts';
 
 @Injectable()
 export class ArkApiProvider {
@@ -223,6 +224,17 @@ export class ArkApiProvider {
       }, (error) => observer.error(error));
     });
 
+  }
+
+  public getDelegateByPublicKey(publicKey: string): Observable<Delegate> {
+    if (!publicKey) {
+      return Observable.of(null);
+    }
+
+    return this.api
+               .delegate
+               .get({publicKey: publicKey})
+               .map(response => response && response.success ? response.delegate : null);
   }
 
   private broadcastTransaction(transaction: arkts.Transaction) {

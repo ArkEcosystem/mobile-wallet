@@ -1,4 +1,4 @@
-import {Component, NgZone, OnDestroy, ViewChild} from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   IonicPage,
   NavController,
@@ -23,7 +23,7 @@ import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 
 import lodash from 'lodash';
-import { Network, Fees, TransactionDelegate, PrivateKey  } from 'ark-ts';
+import { Network, Fees, TransactionDelegate, PrivateKey, TransactionType } from 'ark-ts';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -39,7 +39,8 @@ import { ToastProvider } from '@providers/toast/toast';
   templateUrl: 'wallet-dashboard.html',
   providers: [Clipboard],
 })
-export class WalletDashboardPage implements OnDestroy {
+export class WalletDashboardPage implements OnInit, OnDestroy {
+
   @ViewChild(Content) content: Content;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
@@ -93,6 +94,10 @@ export class WalletDashboardPage implements OnDestroy {
     this.wallet = this.userDataProvider.getWalletByAddress(this.address);
   }
 
+  ngOnInit(): void {
+    this.confirmTransaction.onConfirm.takeUntil(this.unsubscriber$).subscribe(this.onTransactionConfirm);
+  }
+
   copyAddress() {
     this.clipboard.copy(this.address).then(() => this.toastProvider.success('COPIED_CLIPBOARD'), (err) => this.toastProvider.error(err));
   }
@@ -126,13 +131,6 @@ export class WalletDashboardPage implements OnDestroy {
 
       const buttons = [
         {
-          text: translation['WALLETS_PAGE.LABEL'],
-          role: 'label',
-          icon: !this.platform.is('ios') ? 'ios-bookmark-outline' : '',
-          handler: () => {
-            this.presentLabelModal();
-          },
-        }, {
           text: translation['WALLETS_PAGE.REMOVE_WALLET'],
           role: 'delete',
           icon: !this.platform.is('ios') ? 'ios-trash-outline' : '',
@@ -141,6 +139,18 @@ export class WalletDashboardPage implements OnDestroy {
           }
         }
       ];
+
+      // if the user is a delegate there's no need to show the create label page
+      if (!this.wallet.username) {
+        buttons.unshift({
+          text: translation['WALLETS_PAGE.LABEL'],
+          role: 'label',
+          icon: !this.platform.is('ios') ? 'ios-bookmark-outline' : '',
+          handler: () => {
+            this.presentLabelModal();
+          },
+        });
+      }
 
       const backupItem = {
         text: translation['SETTINGS_PAGE.WALLET_BACKUP'],
@@ -314,6 +324,15 @@ export class WalletDashboardPage implements OnDestroy {
         this.confirmTransaction.open(data, keys);
       });
   }
+
+  private onTransactionConfirm = (tx: Transaction): void =>  {
+    switch (tx.type) {
+      case TransactionType.CreateDelegate:
+        const userName = tx.asset && tx.asset['delegate'] ? tx.asset['delegate'].username : null;
+        this.userDataProvider.setWalletDelegate(this.wallet, userName);
+        break;
+    }
+  };
 
   private createSignature(keys: WalletKeys) {
     keys.secondPassphrase = this.newSecondPassphrase;
