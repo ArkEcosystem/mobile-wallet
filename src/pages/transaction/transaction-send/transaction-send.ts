@@ -5,13 +5,13 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Contact, Wallet, MarketTicker, MarketCurrency, SendTransactionForm, WalletKeys } from '@models/model';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { ContactsService } from '@providers/contacts/contacts.service';
+import { ContactsProvider } from '@providers/contacts/contacts';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
 
-import { ContactsAutoCompleteService } from '@providers/auto-complete/contacts-auto-complete.service';
+import { ContactsAutoCompleteService } from '@providers/contacts-auto-complete/contacts-auto-complete';
 
 import { PublicKey } from 'ark-ts/core';
 import { Network, Fees } from 'ark-ts/model';
@@ -63,7 +63,7 @@ export class TransactionSendPage implements OnInit {
     public navCtrl: NavController,
     public navParams: NavParams,
     private userDataProvider: UserDataProvider,
-    private contactsService: ContactsService,
+    private contactsProvider: ContactsProvider,
     private arkApiProvider: ArkApiProvider,
     private marketDataProvider: MarketDataProvider,
     private settingsDataProvider: SettingsDataProvider,
@@ -128,7 +128,7 @@ export class TransactionSendPage implements OnInit {
   }
 
   public onSearchInput(input: string): void {
-    const contact = this.contactsService.getContactByAddress(input);
+    const contact = this.contactsProvider.getContactByAddress(input);
     if (contact) {
       this.isExistingContact = true;
       this.transaction.recipientName = contact.name;
@@ -184,7 +184,7 @@ export class TransactionSendPage implements OnInit {
       validName = new RegExp('^[a-zA-Z0-9]+[a-zA-Z0-9- ]+$').test(this.transaction.recipientName);
     }
     if (validAddress && validName) {
-      this.contactsService.addContact(this.transaction.recipientName, this.transaction.recipientAddress);
+      this.contactsProvider.addContact(this.transaction.recipientName, this.transaction.recipientAddress);
     }
   }
 
@@ -257,7 +257,7 @@ export class TransactionSendPage implements OnInit {
     this.sendForm.patchValue({recipientAddress: address});
     this.isRecipientNameAutoSet = true;
 
-    const contact: Contact = this.contactsService.getContactByAddress(address);
+    const contact: Contact = this.contactsProvider.getContactByAddress(address);
     if (contact) {
       this.isExistingContact = true;
       this.transaction.recipientName = contact.name;

@@ -4,7 +4,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { Transaction } from '@models/transaction';
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { ContactsService } from '@providers/contacts/contacts.service';
+import { ContactsProvider } from '@providers/contacts/contacts';
 import { Network } from 'ark-ts/model';
 import { TranslateService } from '@ngx-translate/core';
 import { TruncateMiddlePipe } from '@pipes/truncate-middle/truncate-middle';
@@ -31,7 +31,7 @@ export class TransactionShowPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private userDataProvider: UserDataProvider,
-    private contactsService: ContactsService,
+    private contactsProvider: ContactsProvider,
     private inAppBrowser: InAppBrowser,
     private actionSheetCtrl: ActionSheetController,
     private translateService: TranslateService,
@@ -59,7 +59,7 @@ export class TransactionShowPage {
   presentOptions() {
     const address = this.transaction.getAppropriateAddress();
     const addressTruncated = this.truncateMiddlePipe.transform(address, 10, null);
-    const contact = this.contactsService.getContactByAddress(address);
+    const contact = this.contactsProvider.getContactByAddress(address);
     const contactOrAddress = contact ? contact['name'] : addressTruncated;
 
     this.translateService.get([
@@ -104,7 +104,7 @@ export class TransactionShowPage {
 
   private shouldShowOptions() {
     if (this.transaction.isTransfer()) {
-      const contact = this.contactsService.getContactByAddress(this.transaction.getAppropriateAddress());
+      const contact = this.contactsProvider.getContactByAddress(this.transaction.getAppropriateAddress());
       if (!contact || !this.currentWallet.isWatchOnly) { return this.showOptions = true; }
     }
   }

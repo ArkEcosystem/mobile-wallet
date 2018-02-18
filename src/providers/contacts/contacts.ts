@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { NetworkService } from '@providers/network/network.service';
+import { NetworkProvider } from '@providers/network/network';
 import lodash from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Contact } from '@models/contact';
@@ -8,13 +8,13 @@ import { Profile } from '@models/profile';
 import { TranslatableObject } from '@models/model';
 
 @Injectable()
-export class ContactsService {
+export class ContactsProvider {
 
-  public constructor(private userDataProvider: UserDataProvider, private networkService: NetworkService) {
+  public constructor(private userDataProvider: UserDataProvider, private networkProvider: NetworkProvider) {
   }
 
   public addContact(address: string, name: string): Observable<any> {
-    if (!this.networkService.isValidAddress(address)) {
+    if (!this.networkProvider.isValidAddress(address)) {
       return Observable.throw({key: 'CONTACTS_PAGE.INVALID_ADDRESS', parameters: {address}} as TranslatableObject);
     }
 

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { PublicKey } from 'ark-ts/core';
 
 @Injectable()
-export class NetworkService {
+export class NetworkProvider {
 
   public constructor(private userDataProvider: UserDataProvider) {
   }

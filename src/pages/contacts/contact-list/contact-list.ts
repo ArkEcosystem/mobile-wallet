@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Platform, IonicPage, NavController, AlertController, ActionSheetController } from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { ContactsService } from '@providers/contacts/contacts.service';
+import { ContactsProvider } from '@providers/contacts/contacts';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -29,7 +29,7 @@ export class ContactListPage {
     private platform: Platform,
     private navCtrl: NavController,
     private userDataProvider: UserDataProvider,
-    private contactsService: ContactsService,
+    private contactsProvider: ContactsProvider,
     private translateService: TranslateService,
     private alertCtrl: AlertController,
     private actionSheetCtrl: ActionSheetController,
@@ -90,12 +90,12 @@ export class ContactListPage {
   }
 
   delete(address) {
-    this.contactsService.removeContactByAddress(address);
+    this.contactsProvider.removeContactByAddress(address);
     this._load();
   }
 
   openEditPage(address) {
-    const contact = this.contactsService.getContactByAddress(address);
+    const contact = this.contactsProvider.getContactByAddress(address);
     return this.navCtrl.push('ContactCreatePage', {contact});
   }
 

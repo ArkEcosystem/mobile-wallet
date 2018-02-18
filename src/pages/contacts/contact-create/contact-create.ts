@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { ContactsService } from '@providers/contacts/contacts.service';
+import { ContactsProvider } from '@providers/contacts/contacts';
 
 import { Contact, QRCodeScheme } from '@models/model';
 import { PublicKey } from 'ark-ts/core';
@@ -34,7 +34,7 @@ export class ContactCreatePage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private userDataProvider: UserDataProvider,
-    private contactsService: ContactsService,
+    private contactsProvider: ContactsProvider,
     private translateService: TranslateService,
     private alertCtrl: AlertController,
     private toastProvider: ToastProvider
@@ -65,20 +65,20 @@ export class ContactCreatePage {
     }
 
     if (this.isNew) {
-      const existingContact = this.contactsService.getContactByAddress(this.address);
+      const existingContact = this.contactsProvider.getContactByAddress(this.address);
       if (existingContact) {
         this.showConfirmation('CONTACTS_PAGE.OVERWRITE_CONTACT',
                               {name: existingContact.name, newName: this.contactName})
-            .then(() => this.contactsService
+            .then(() => this.contactsProvider
                             .editContact(existingContact.address, this.contactName)
                             .subscribe(this.closeAndLoadContactList, this.showErrorMessage));
       } else {
-        this.contactsService
+        this.contactsProvider
             .addContact(this.address, this.contactName)
             .subscribe(this.closeAndLoadContactList, this.showErrorMessage);
       }
     } else {
-      this.contactsService
+      this.contactsProvider
           .editContact(this.address, this.contactName)
           .subscribe(this.closeAndLoadContactList, this.showErrorMessage);
     }
