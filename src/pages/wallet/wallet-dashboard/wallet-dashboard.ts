@@ -152,6 +152,17 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         });
       }
 
+      if (!this.wallet.isWatchOnly && !this.wallet.secondSignature) {
+        buttons.unshift({
+          text: translation['WALLETS_PAGE.SECOND_PASSPHRASE'],
+          role: 'label',
+          icon: !this.platform.is('ios') ? 'ios-lock-outline' : '',
+          handler: () => {
+            this.presentRegisterSecondPassphraseModal();
+          },
+        });
+      }
+
       const backupItem = {
         text: translation['SETTINGS_PAGE.WALLET_BACKUP'],
         role: 'label',
@@ -161,8 +172,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         }
       };
 
-      // DEPRECATED:
-      // if (!this.wallet.isWatchOnly && !this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
       if (!this.wallet.isWatchOnly) { buttons.unshift(delegatesItem); } // "Watch Only" address can't vote
       if (!this.wallet.isWatchOnly && !this.wallet.isDelegate) { buttons.unshift(delegateItem); }
       if (!this.wallet.isWatchOnly) { buttons.splice(buttons.length - 1, 0, backupItem); }
@@ -341,6 +350,10 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     .createSignature(keys.key, keys.secondPassphrase)
     .takeUntil(this.unsubscriber$)
     .subscribe((data) => {
+      // for the creation of the second signature we are not allowed to send the second key with it already
+      // if we do that we will get the exception 'Sender does not have a second signature'
+      keys.secondPassphrase = null;
+      keys.secondKey = null;
       this.confirmTransaction.open(data, keys);
     });
   }
