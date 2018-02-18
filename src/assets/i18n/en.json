@@ -14,7 +14,13 @@
   "CONTACTS_PAGE": {
     "ADD_CONTACT_TEXT": "Click on the button below to add a contact",
     "CONTACT": "Contact",
-    "CONTACTS": "Contacts"
+    "CONTACTS": "Contacts",
+    "INVALID_ADDRESS": "The address '{{ address }}' is invalid!",
+    "CONTACT_NAME_EMPTY": "The contact name is empty!",
+    "CONTACT_EXISTS_ADDRESS": "There is already a contact with the address '{{ address }}'!",
+    "CONTACT_NOT_EXISTS_ADDRESS": "A contact with the address '{{ address }}' doesn't exist!",
+    "CONTACT_EXISTS_NAME": "There is already a contact with the name '{{ name }}'!",
+    "OVERWRITE_CONTACT": "There is already a contact named '{{ name }}' with this address. Do you want to overwrite it's name with '{{ newName }}'?"
   },
   "COPIED_CLIPBOARD": "Copied to clipboard",
   "COPY": "Copy",

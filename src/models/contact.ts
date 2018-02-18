@@ -11,7 +11,8 @@ export interface AutoCompleteContact {
   iconName: string;
 }
 
-export class Contact {
+export interface Contact {
+  address: string;
   name: string;
   description?: string;
 }
