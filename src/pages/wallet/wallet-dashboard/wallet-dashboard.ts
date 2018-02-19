@@ -329,7 +329,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     switch (tx.type) {
       case TransactionType.CreateDelegate:
         const userName = tx.asset && tx.asset['delegate'] ? tx.asset['delegate'].username : null;
-        this.userDataProvider.setWalletDelegate(this.wallet, userName);
+        this.userDataProvider.ensureWalletDelegateProperties(this.wallet, userName);
         break;
     }
   };
@@ -381,17 +381,19 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.marketDataProvider.refreshPrice();
   }
 
-  private refreshAccount(save: boolean = true) {
-    this.arkApiProvider.api.account.get({ address: this.address }).takeUntil(this.unsubscriber$).subscribe((response) => {
+  private refreshAccount() {
+    this.arkApiProvider.api.account.get({address: this.address}).takeUntil(this.unsubscriber$).subscribe((response) => {
       if (response.success) {
         this.wallet.deserialize(response.account);
-        if (save) { this.saveWallet(); }
+        this.arkApiProvider
+            .getDelegateByPublicKey(this.wallet.publicKey)
+            .subscribe(delegate => this.userDataProvider.ensureWalletDelegateProperties(this.wallet, delegate));
       }
     });
   }
 
   private refreshAllData() {
-    this.refreshAccount(false);
+    this.refreshAccount();
     this.refreshTransactions(false);
     this.saveWallet();
   }

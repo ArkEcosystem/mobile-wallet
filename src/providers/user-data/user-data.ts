@@ -14,6 +14,7 @@ import { v4 as uuid } from 'uuid';
 import { Network, NetworkType } from 'ark-ts/model';
 
 import * as constants from '@app/app.constants';
+import { Delegate } from 'ark-ts';
 
 @Injectable()
 export class UserDataProvider {
@@ -159,13 +160,28 @@ export class UserDataProvider {
     this.saveProfiles();
   }
 
-  setWalletDelegate(wallet: Wallet, username: string): void {
-    if (!wallet || !username) {
+  ensureWalletDelegateProperties(wallet: Wallet, delegateOrUserName: string | Delegate): void {
+    if (!wallet) {
+      return;
+    }
+
+    const userName: string = !delegateOrUserName || typeof delegateOrUserName === 'string'
+                               ? delegateOrUserName as string
+                               : delegateOrUserName.username;
+
+    if (!userName && (wallet.isDelegate || wallet.username)) {
+      wallet.isDelegate = false;
+      wallet.username = null;
+      this.saveWallet(wallet, undefined, true);
+      return;
+    }
+
+    if (!userName || (wallet.isDelegate && wallet.username === userName)) {
       return;
     }
 
     wallet.isDelegate = true;
-    wallet.username = username;
+    wallet.username = userName;
     this.saveWallet(wallet, undefined, true);
   }
 
