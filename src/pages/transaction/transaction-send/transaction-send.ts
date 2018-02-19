@@ -104,7 +104,7 @@ export class TransactionSendPage implements OnInit {
       this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_ADDRESS_ERROR');
     } else {
       this.createContact();
-      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
+      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
     }
   }
 
@@ -194,7 +194,6 @@ export class TransactionSendPage implements OnInit {
       amount: amount.times(constants.WALLET_UNIT_TO_SATOSHI).toNumber(),
       vendorField: this.transaction.smartBridge,
       passphrase: keys.key,
-      secondPassphrase: keys.secondKey,
       recipientId: this.transaction.recipientAddress,
     };
 
