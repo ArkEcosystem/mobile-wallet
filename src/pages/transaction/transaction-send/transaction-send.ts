@@ -194,6 +194,7 @@ export class TransactionSendPage implements OnInit {
       amount: amount.times(constants.WALLET_UNIT_TO_SATOSHI).toNumber(),
       vendorField: this.transaction.smartBridge,
       passphrase: keys.key,
+      secondPassphrase: keys.secondKey,
       recipientId: this.transaction.recipientAddress,
     };
 
