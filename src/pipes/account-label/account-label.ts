@@ -7,8 +7,7 @@ import { ContactsProvider } from '@providers/contacts/contacts';
 })
 export class AccountLabelPipe implements PipeTransform {
 
-  constructor(public userDataProvider: UserDataProvider, private contactsProvider: ContactsProvider) {
-
+  constructor(private userDataProvider: UserDataProvider, private contactsProvider: ContactsProvider) {
   }
 
   transform(value: string, defaultText: string, ...args) {
