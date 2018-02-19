@@ -14,8 +14,9 @@ page-transaction-show {
     ion-row {
       padding: 1em 0;
     }
-    .block-span {
+    .account-label {
       display: block;
+      font-weight: bold;
     }
   }
 }

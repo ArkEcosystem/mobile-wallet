@@ -29,8 +29,10 @@ modal-confirm-transaction {
   }
 
   h6 {
-    span {
-      display: block;
-    }
+		.account-label {
+			display: block;
+			font-weight: bold;
+		}
   }
+
 }
