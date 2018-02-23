@@ -101,7 +101,7 @@
       "DEFAULT_MESSAGE": "Digite seu PIN",
       "WRONG_PIN_MANY_TIMES": "Você informou um PIN por varias vezes!",
       "WAIT_TO_TRY": "Por favor espere {{ time }} e tente novamente",
-      "LOGIN_ERROR": "Houve um problema ao iniciar sessão com seu PIN",  
+      "LOGIN_ERROR": "Houve um problema ao iniciar sessão com seu PIN",
       "PIN_CREATED_ERROR_TEXT": " Houve um problema para criar seu PIN",
       "PIN_CREATED_TEXT": "O seu PIN foi criado com sucesso",
       "PIN_UPDATED_ERROR_TEXT": "Houve um problema ao tentar atualizar o seu PIN",
@@ -211,7 +211,6 @@
       "MY_WALLET": "Minha carteira",
       "NEW_WALLET_NAME": "Novo nome da carteira",
       "NO_TRANSACTIONS": "Nenhuma transação disponível",
-      "OR_TYPE": "or type",
       "PASSPHRASE": "Passphrase",
       "PASSPHRASE_NOT_MATCH": "O passphrase insirido não corresponde ao que você acabou de obter.",
       "PUBLIC_ADDRESS": "Endereço público",
@@ -246,4 +245,4 @@
     "WORD": "Palavra",
     "YES": "Sim"
   }
-  
+

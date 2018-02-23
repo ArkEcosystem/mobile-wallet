@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { WalletImportPassphrasePage } from './wallet-import-passphrase';
+import { WalletManualImportPage } from './wallet-import-manual';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { DirectivesModule } from '@directives/directives.module';
 
 @NgModule({
   declarations: [
-    WalletImportPassphrasePage,
+    WalletManualImportPage,
   ],
   imports: [
-    IonicPageModule.forChild(WalletImportPassphrasePage),
+    IonicPageModule.forChild(WalletManualImportPage),
     TranslateModule,
     DirectivesModule,
   ],
 })
-export class WalletImportPassphrasePageModule {}
+export class WalletManualImportPageModule {}
