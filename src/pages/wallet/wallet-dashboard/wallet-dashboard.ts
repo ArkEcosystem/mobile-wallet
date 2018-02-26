@@ -385,6 +385,10 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.arkApiProvider.api.account.get({address: this.address}).takeUntil(this.unsubscriber$).subscribe((response) => {
       if (response.success) {
         this.wallet.deserialize(response.account);
+        if (this.wallet.isDelegate) {
+          return;
+        }
+
         this.arkApiProvider
             .getDelegateByPublicKey(this.wallet.publicKey)
             .subscribe(delegate => this.userDataProvider.ensureWalletDelegateProperties(this.wallet, delegate));

@@ -169,13 +169,6 @@ export class UserDataProvider {
                                ? delegateOrUserName as string
                                : delegateOrUserName.username;
 
-    if (!userName && (wallet.isDelegate || wallet.username)) {
-      wallet.isDelegate = false;
-      wallet.username = null;
-      this.saveWallet(wallet, undefined, true);
-      return;
-    }
-
     if (!userName || (wallet.isDelegate && wallet.username === userName)) {
       return;
     }
