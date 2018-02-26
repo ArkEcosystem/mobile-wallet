@@ -28,11 +28,14 @@ modal-confirm-transaction {
     }
   }
 
-  h6 {
+  h6.account {
 		.account-label {
+			font-weight: 500;
 			display: block;
-			font-weight: bold;
-		}
+    }
+    span:not(.account-label) {
+      font-size: .9em;
+    }
   }
 
 }
