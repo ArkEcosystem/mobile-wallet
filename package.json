@@ -150,7 +150,8 @@
             "cordova-plugin-inappbrowser": {},
             "cordova-plugin-network-information": {},
             "cordova-plugin-splashscreen": {},
-            "cordova-plugin-vibration": {}
+            "cordova-plugin-vibration": {},
+            "cordova-plugin-screen-orientation": {}
         },
         "platforms": [
             "browser",
