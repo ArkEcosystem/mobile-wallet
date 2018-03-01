@@ -39,11 +39,14 @@ export class PinCodeModal implements OnDestroy {
   private outputPassword = false;
   // Check if the entered password is correct
   private validatePassword = false;
+  // ProfileId to authenticate by touchId
+  private profileId;
 
   private length = 6;
   private attempts = 0;
 
   public isTouchIdAvailable = false;
+  public isTouchIdEnabled = false;
   public currentSettings: UserSettings;
 
   constructor(
@@ -62,12 +65,15 @@ export class PinCodeModal implements OnDestroy {
     this.expectedPassword = this.navParams.get('expectedPassword');
     this.outputPassword = this.navParams.get('outputPassword') || false;
     this.validatePassword = this.navParams.get('validatePassword') || false;
+    this.profileId = this.navParams.get('profileId');
 
     this.settingsDataProvider.settings.subscribe(settings => this.currentSettings = settings);
 
     if (this.platform.is('cordova')) {
       this.touchId.isAvailable().then(() => this.isTouchIdAvailable = true);
     }
+
+    this.isTouchIdEnabled = this.currentSettings.touchId && this.profileId;
   }
 
   add(value: number) {
@@ -112,11 +118,14 @@ export class PinCodeModal implements OnDestroy {
   }
 
   authByTouch () {
+    if (!this.profileId) {
+      return;
+    }
+
     this.translateService.get('PIN_CODE.USE_FINGERPRINT').subscribe(translation => {
       this.touchId.verifyFingerprintWithCustomPasswordFallback(translation).then(
-        // TODO:
-        (res) => console.log(res),
-        (err) => console.error('err', err)
+        (res) => this.authProvider.login(this.profileId),
+        (err) => this.dismiss(false)
       );
     });
   }
