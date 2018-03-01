@@ -24,7 +24,17 @@
           </ion-row>
           <ion-row>
             <ion-col>
-              <p>{{ 'WALLETS_PAGE.OR_TYPE' | translate }} <a (click)="openWalletImportPassphrase()" tappable>{{ 'WALLETS_PAGE.SECRET_PASSPHRASE' | translate }}</a></p>
+              <p>
+                {{ 'WALLETS_PAGE.TYPE_PASSPHRASE_OR_ADDRESS' | translate | translateCut:0 }}
+                <a (click)="openManualImportPage('passphrase')" tappable>
+                  {{ 'WALLETS_PAGE.TYPE_PASSPHRASE_OR_ADDRESS' | translate | translateCut:1 }}
+                </a>
+                {{ 'WALLETS_PAGE.TYPE_PASSPHRASE_OR_ADDRESS' | translate | translateCut:2 }}
+                <a (click)="openManualImportPage('address')" tappable>
+                  {{ 'WALLETS_PAGE.TYPE_PASSPHRASE_OR_ADDRESS' | translate | translateCut:3 }}
+                </a>
+                {{ 'WALLETS_PAGE.TYPE_PASSPHRASE_OR_ADDRESS' | translate | translateCut:4 }}
+              </p>
             </ion-col>
           </ion-row>
         </ion-grid>

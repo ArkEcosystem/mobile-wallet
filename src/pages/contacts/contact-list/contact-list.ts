@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Platform, IonicPage, NavController, AlertController, ActionSheetController } from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { ContactsProvider } from '@providers/contacts/contacts';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -9,6 +10,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
 import lodash from 'lodash';
+import { AddressMap } from '@models/contact';
 
 @IonicPage()
 @Component({
@@ -19,8 +21,7 @@ export class ContactListPage {
 
   public profile;
   public network;
-  public contacts = [];
-  public addresses: any;
+  public addresses: AddressMap[];
 
   private unsubscriber$: Subject<void> = new Subject<void>();
 
@@ -28,6 +29,7 @@ export class ContactListPage {
     private platform: Platform,
     private navCtrl: NavController,
     private userDataProvider: UserDataProvider,
+    private contactsProvider: ContactsProvider,
     private translateService: TranslateService,
     private alertCtrl: AlertController,
     private actionSheetCtrl: ActionSheetController,
@@ -84,17 +86,17 @@ export class ContactListPage {
   }
 
   isEmpty() {
-    return lodash.isEmpty(this.contacts);
+    return lodash.isEmpty(this.addresses);
   }
 
   delete(address) {
-    this.userDataProvider.removeContactByAddress(address);
+    this.contactsProvider.removeContactByAddress(address);
     this._load();
   }
 
   openEditPage(address) {
-    const contact = this.contacts[address];
-    return this.navCtrl.push('ContactCreatePage', { address, contact });
+    const contact = this.contactsProvider.getContactByAddress(address);
+    return this.navCtrl.push('ContactCreatePage', {contact});
   }
 
   openCreatePage() {
@@ -105,8 +107,7 @@ export class ContactListPage {
     this.profile = this.userDataProvider.currentProfile;
     this.network = this.userDataProvider.currentNetwork;
 
-    this.contacts = this.profile.contacts;
-    this.addresses = lodash(this.contacts).mapValues('name').transform((result, key, value) => {
+    this.addresses = lodash(this.profile.contacts).mapValues('name').transform((result, key, value) => {
       result.push({ index: value, value, key });
     }, []).value();
   }

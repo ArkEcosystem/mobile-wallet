@@ -26,7 +26,8 @@ export class SettingsDataProvider {
       'nl': 'Nederlands',
       'sv': 'Svenska',
       'ru': 'Русский',
-      'gr': 'Ελληνικά'
+      'gr': 'Ελληνικά',
+      'pt-br': 'Português'
     },
     currencies: {
       'btc': 'Bitcoin',
@@ -66,7 +67,9 @@ export class SettingsDataProvider {
   public getDefaults(): UserSettings {
     const cultureLang = this.translateService.getBrowserCultureLang();
     const browserLang = this.translateService.getBrowserLang();
-    const appLang = this.AVALIABLE_OPTIONS.languages[cultureLang] || this.AVALIABLE_OPTIONS.languages[browserLang] || 'en';
+    const appLang = this.AVALIABLE_OPTIONS.languages[cultureLang] ? cultureLang
+      : this.AVALIABLE_OPTIONS.languages[browserLang] ? browserLang
+      : 'en';
 
     return UserSettings.defaults(appLang);
   }

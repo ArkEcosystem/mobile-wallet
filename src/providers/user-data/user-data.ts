@@ -14,6 +14,7 @@ import { v4 as uuid } from 'uuid';
 import { Network, NetworkType } from 'ark-ts/model';
 
 import * as constants from '@app/app.constants';
+import { Delegate } from 'ark-ts';
 
 @Injectable()
 export class UserDataProvider {
@@ -43,50 +44,6 @@ export class UserDataProvider {
 
     this.onLogin();
     this.onClearStorage();
-  }
-
-  addContact(address: string, contact: Contact, profileId: string = this.authProvider.loggedProfileId) {
-    if (lodash.isNil(this.profiles)) { return; }
-
-    const contacts = this.profiles[profileId].contacts || {};
-    contacts[address] = contact;
-
-    this.profiles[profileId]['contacts'] = contacts;
-
-    return this.saveProfiles();
-  }
-
-  editContact(address: string, contact: Contact) {
-    if (lodash.isNil(this.profiles)) { return; }
-
-    lodash.forEach(this.profiles, (item, id) => {
-      if (item['contacts'][address]) {
-        this.profiles[id]['contacts'][address] = contact;
-      }
-    });
-
-    return this.saveProfiles();
-  }
-
-  getContactByAddress(address: string): Contact {
-    if (lodash.isNil(this.profiles) || !address) { return; }
-
-    const contacts = lodash.map(this.profiles, (p) => p['contacts']);
-    const merged = Object.assign({}, ...contacts);
-
-    if (lodash.isNil(merged)) { return; }
-
-    return <Contact>merged[address];
-  }
-
-  removeContactByAddress(address: string) {
-    if (lodash.isNil(this.profiles)) { return; }
-
-    lodash.forEach(this.profiles, (item, id) => {
-      this.profiles[id]['contacts'] = lodash.omit(item['contacts'], [address]);
-    });
-
-    return this.saveProfiles();
   }
 
   addNetwork(network: Network) {
@@ -203,8 +160,26 @@ export class UserDataProvider {
     this.saveProfiles();
   }
 
+  ensureWalletDelegateProperties(wallet: Wallet, delegateOrUserName: string | Delegate): void {
+    if (!wallet) {
+      return;
+    }
+
+    const userName: string = !delegateOrUserName || typeof delegateOrUserName === 'string'
+                               ? delegateOrUserName as string
+                               : delegateOrUserName.username;
+
+    if (!userName || (wallet.isDelegate && wallet.username === userName)) {
+      return;
+    }
+
+    wallet.isDelegate = true;
+    wallet.username = userName;
+    this.saveWallet(wallet, undefined, true);
+  }
+
   getWalletByAddress(address: string, profileId: string = this.authProvider.loggedProfileId): Wallet {
-    if (lodash.isUndefined(profileId)) { return; }
+    if (!address || lodash.isUndefined(profileId)) { return; }
 
     const profile = this.getProfileById(profileId);
     let wallet = new Wallet();
@@ -232,6 +207,21 @@ export class UserDataProvider {
     return this.saveProfiles();
   }
 
+  public getWalletLabel(walletOrAddress: Wallet | string): string {
+    let wallet: Wallet;
+    if (typeof walletOrAddress === 'string') {
+      wallet = this.getWalletByAddress(walletOrAddress);
+    } else {
+      wallet = walletOrAddress;
+    }
+
+    if (!wallet) {
+      return null;
+    }
+
+    return wallet.username || wallet.label || wallet.address;
+  }
+
   setCurrentWallet(wallet: Wallet) {
     this.currentWallet = wallet;
   }
@@ -240,8 +230,21 @@ export class UserDataProvider {
     this.currentWallet = undefined;
   }
 
+  public getCurrentProfile(): Profile {
+    return this.profiles[this.authProvider.loggedProfileId];
+  }
+
   loadProfiles() {
-    return this.storageProvider.getObject(constants.STORAGE_PROFILES);
+    return this.storageProvider
+      .getObject(constants.STORAGE_PROFILES)
+      .map(profiles => {
+        // we have to create "real" contacts here, because the "address" property was not on the contact object
+        // in the first versions of the app
+        return lodash.mapValues(profiles, profile => {
+          profile.contacts = lodash.transform(profile.contacts, UserDataProvider.mapContact, {});
+          return profile;
+        });
+      });
   }
 
   loadNetworks() {
@@ -284,6 +287,12 @@ export class UserDataProvider {
     return keys;
   }
 
+  // this method is required to "migrate" contacts, in the first version of the app the contact's didnt't include an address property
+  private static mapContact = (contacts: { [address: string]: Contact }, contact: Contact, address: string): void => {
+    contact.address = address;
+    contacts[address] = contact;
+  };
+
   private setCurrentNetwork(): void {
     if (!this.currentProfile) { return; }
 
@@ -307,8 +316,8 @@ export class UserDataProvider {
   }
 
   private loadAllData() {
-    this.loadProfiles().subscribe((data) => this.profiles = data);
-    this.loadNetworks().subscribe((data) => this.networks = data);
+    this.loadProfiles().subscribe(profiles => this.profiles = profiles);
+    this.loadNetworks().subscribe(networks => this.networks = networks);
   }
 
   private onLogin() {

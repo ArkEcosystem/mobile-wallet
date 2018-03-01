@@ -5,7 +5,8 @@ import lodash from 'lodash';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { PublicKey } from 'ark-ts/core';
-import { AutoCompleteContact } from '@models/contact';
+import {AutoCompleteContact, Contact} from '@models/contact';
+import { Wallet } from '@models/wallet';
 
 @Injectable()
 export class ContactsAutoCompleteService implements AutoCompleteService {
@@ -20,23 +21,21 @@ export class ContactsAutoCompleteService implements AutoCompleteService {
   getResults(keyword: string): AutoCompleteContact[] {
     keyword = keyword.toLowerCase();
 
-    const contacts: AutoCompleteContact[] = lodash.map(this.userDataProvider.currentProfile.contacts, (value, key) => {
-      if (value['name']) {
-        return {
-          address: key.toString(),
-          name: value['name'].toString(),
-          iconName: 'ios-contacts-outline'
-        } as AutoCompleteContact;
-      }
+    const contacts: AutoCompleteContact[] = lodash.map(this.userDataProvider.currentProfile.contacts, (contact: Contact) => {
+      return {
+        address: contact.address,
+        name: contact.name,
+        iconName: 'ios-contacts-outline'
+      } as AutoCompleteContact;
     });
 
-    const wallets: AutoCompleteContact[] = lodash.map(this.userDataProvider.currentProfile.wallets, (value) => {
-      const address = value['address'];
-      const label = value['label'] || value['address'];
+    const wallets: AutoCompleteContact[] = lodash.map(this.userDataProvider.currentProfile.wallets, (wallet: Wallet) => {
+      const address = wallet.address;
+      const label = this.userDataProvider.getWalletLabel(wallet);
       if (address) {
         return {
-          address: address.toString(),
-          name: label.toString(),
+          address: address,
+          name: label,
           iconName: 'ios-cash-outline'
         } as AutoCompleteContact;
       }

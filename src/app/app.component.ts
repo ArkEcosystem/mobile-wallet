@@ -14,15 +14,12 @@ import { ToastProvider } from '@providers/toast/toast';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import lodash from 'lodash';
-
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 
-import { Profile } from '@models/model';
-import * as arkts from 'ark-ts';
 import * as constants from '@app/app.constants';
 import moment from 'moment';
+import { Wallet } from '@models/wallet';
 
 @Component({
   templateUrl: 'app.html',
@@ -216,30 +213,15 @@ export class MyApp implements OnInit, OnDestroy {
     });
   }
 
-  // Verify if any account registered is a delegate
-  private onUpdateDelegates(delegates: arkts.Delegate[]) {
-    lodash.flatMap(this.userDataProvider.profiles, (profile: Profile) => {
-      const wallets = lodash.values(profile.wallets);
-      return lodash.filter(wallets, { isDelegate: false });
-    }).forEach((wallet: any) => {
-      const find = lodash.find(delegates, { address: wallet['address'] });
-
-      if (find) {
-        wallet['isDelegate'] = true;
-        wallet['username'] = find.username;
-
-        this.userDataProvider.saveWallet(wallet, undefined, true);
-      }
-    });
-  }
-
   // Verify if new wallet is a delegate
   private onCreateWallet() {
     return this.userDataProvider.onCreateWallet$
       .takeUntil(this.unsubscriber$)
       .debounceTime(500)
-      .subscribe(() => {
-        this.arkApiProvider.delegates.subscribe((delegates) => this.onUpdateDelegates(delegates));
+      .subscribe((wallet: Wallet) => {
+        this.arkApiProvider
+            .getDelegateByPublicKey(wallet.publicKey)
+            .subscribe(delegate => this.userDataProvider.ensureWalletDelegateProperties(wallet, delegate));
       });
   }
 
@@ -278,11 +260,6 @@ export class MyApp implements OnInit, OnDestroy {
     this.verifyNetwork();
 
     this.onCreateWallet();
-    this.arkApiProvider.onUpdateDelegates$
-      .do((delegates) => this.onUpdateDelegates(delegates))
-      .takeUntil(this.unsubscriber$)
-      .subscribe();
-
   }
 
   ngOnDestroy() {

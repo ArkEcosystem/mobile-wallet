@@ -13,8 +13,11 @@
           <ion-item no-lines text-wrap>
             <ion-label stacked>
               <p>{{ 'TRANSACTIONS_PAGE.FROM' | translate }}</p>
-              <h6 ion-content>{{ address | accountLabel }}
-                <span *ngIf="(address | accountLabel) != address">
+              <h6 ion-content class="account">
+                <span *ngIf="address | hasAccountLabel" class="account-label">
+                  {{ address | accountLabel }}
+                </span>
+                <span>
                   {{address}}
                 </span>
               </h6>
@@ -24,8 +27,11 @@
           <ion-item no-lines text-wrap *ngIf="transaction?.type == 0">
             <ion-label stacked>
               <p>{{ 'TRANSACTIONS_PAGE.RECIPIENT' | translate }}</p>
-              <h6 ion-content>{{ transaction?.recipientId | accountLabel }}
-                <span *ngIf="(transaction?.recipientId  | accountLabel) != transaction?.recipientId">
+              <h6 ion-content class="account">
+                <span *ngIf="transaction?.recipientId | hasAccountLabel" class="account-label">
+                  {{ transaction?.recipientId | accountLabel }}
+                </span>
+                <span>
                   {{transaction?.recipientId}}
                 </span>
               </h6>

@@ -6,7 +6,7 @@
 
 </ion-header>
 
-<ion-content padding class="full-height">
+<ion-content padding class="full-height" #content>
   <form #createProfileForm="ngForm" class="full-height">
     <ion-grid class="full-height">
       <ion-row class="create-field">
@@ -53,6 +53,6 @@
   </form>
 </ion-content>
 
-<ion-footer padding no-shadow no-border keyboard-attach>
+<ion-footer padding no-shadow no-border [keyboard-attach]="content">
   <button ion-button class="button-continue" [disabled]="!createProfileForm.form.valid" (click)="submitForm()">{{ 'NEXT' | translate }}</button>
 </ion-footer>
