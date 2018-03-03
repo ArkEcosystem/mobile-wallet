@@ -48,7 +48,6 @@
   "DELETE": "Verwijderen",
   "DONE": "Klaar",
   "EDIT": "Bewerken",
-  "EXIT": "Verlaten",
   "EXIT_APP_TEXT": "App Verlaten?",
   "FAILED": "Mislukt",
   "GENERAL": "Algemeen",
@@ -63,12 +62,12 @@
     "TEXT_3": "Veeg tussen profielen en wallets, controleer je saldo, verzend en ontvang saldo en nog veel meer",
     "WELCOME": "Welkom aan boord"
   },
-  "LOGIN_PAGE": {
+  "SIGN_IN_PAGE": {
     "ARK_WALLET": "ARK Wallet",
     "CREATE_PROFILE": "Account aanmaken",
     "SLOGAN": "Welkom bij het ARK Ecosysteem"
   },
-  "LOGOUT_PROFILE_TEXT": "Uitloggen bij profiel?",
+  "SIGN_OUT_PROFILE_TEXT": "Uitloggen bij profiel?",
   "MARKETS_PAGE": {
     "MARKET_CAP": "Market Cap.",
     "MARKET_DATA": "Marktdata",
@@ -101,7 +100,7 @@
     "DEFAULT_MESSAGE": "Type je pincode",
     "WRONG_PIN_MANY_TIMES": "Je hebt te vaak een verkeerde pincode ingevuld!",
     "WAIT_TO_TRY": "Wacht {{ time }} en probeer het nogmaals",
-    "LOGIN_ERROR": "Er was een probleem tijdens inloggen met je pincode",
+    "SIGN_IN_ERROR": "Er was een probleem tijdens inloggen met je pincode",
     "PIN_CREATED_ERROR_TEXT": "Er was een probleem tijdens het aanmaken van je pincode",
     "PIN_CREATED_TEXT": "Je pincode is aangemaakt",
     "PIN_UPDATED_ERROR_TEXT": "Er was een probleem bij het updaten van je pincode",

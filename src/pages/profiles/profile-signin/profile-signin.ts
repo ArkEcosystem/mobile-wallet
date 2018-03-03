@@ -112,7 +112,7 @@ export class ProfileSigninPage implements OnDestroy {
   }
 
   error() {
-    this.toastProvider.error('PIN_CODE.LOGIN_ERROR');
+    this.toastProvider.error('PIN_CODE.SIGN_IN_ERROR');
   }
 
   load() {

@@ -33,7 +33,7 @@ export class MyApp implements OnInit, OnDestroy {
 
   private unsubscriber$: Subject<void> = new Subject<void>();
   private exitText = null;
-  private logoutText = null;
+  private signOutText = null;
 
   private lastPauseTimestamp: Date;
 
@@ -104,7 +104,7 @@ export class MyApp implements OnInit, OnDestroy {
             this.platform.exitApp();
           });
         } else {
-          this.showConfirmation(this.logoutText).then(() => {
+          this.showConfirmation(this.signOutText).then(() => {
             this.logout();
           });
         }
@@ -170,14 +170,10 @@ export class MyApp implements OnInit, OnDestroy {
     this.settingsDataProvider.settings.subscribe(settings => {
       this.translateService.use(settings.language); // Set your language here
 
-      this.translateService.get('BACK_BUTTON_TEXT').subscribe(translate => {
-        this.config.set('ios', 'backButtonText', translate);
-      });
-      this.translateService.get('EXIT_APP_TEXT').subscribe(translate => {
-        this.exitText = translate;
-      });
-      this.translateService.get('LOGOUT_PROFILE_TEXT').subscribe(translate => {
-        this.logoutText = translate;
+      this.translateService.get(['BACK_BUTTON_TEXT', 'EXIT_APP_TEXT', 'SIGN_OUT_PROFILE_TEXT']).subscribe(translations => {
+        this.config.set('ios', 'backButtonText', translations['BACK_BUTTON_TEXT']);
+        this.exitText = translations['EXIT_APP_TEXT'];
+        this.signOutText = translations['SIGN_OUT_PROFILE_TEXT'];
       });
     });
   }
