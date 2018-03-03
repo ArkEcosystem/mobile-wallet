@@ -390,7 +390,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   private refreshPrice() {
-    this.marketDataProvider.refreshPrice();
+    this.marketDataProvider.refreshTicker();
   }
 
   private refreshAccount() {
@@ -437,7 +437,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   private load() {
 
     this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);
-    this.marketDataProvider.ticker.subscribe((ticker) => this.setTicker(ticker));
+    if (this.marketDataProvider.cachedTicker) {
+      this.setTicker(this.marketDataProvider.cachedTicker);
+    }
     this.marketDataProvider.history.subscribe((history) => this.marketHistory = history);
 
     if (lodash.isEmpty(this.wallet)) {

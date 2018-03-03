@@ -76,7 +76,7 @@ export class ConfirmTransactionModal implements OnDestroy {
 
   ionViewDidLoad() {
     this.onUpdateTicker();
-    this.marketDataProvider.refreshPrice();
+    this.marketDataProvider.refreshTicker();
   }
 
   ngOnDestroy() {

@@ -37,7 +37,6 @@ export class WalletListPage implements OnDestroy {
 
   public btcCurrency: MarketCurrency;
   public fiatCurrency: MarketCurrency;
-  public marketHistory: MarketHistory;
   public marketTicker: MarketTicker;
 
   public chartOptions: any;
@@ -197,7 +196,7 @@ export class WalletListPage implements OnDestroy {
       .subscribe(() => this.loadWallets());
   }
 
-  private setMarketHistory() {
+  private initMarketHistory() {
     this.translateService.get([
       'WEEK_DAY.SUNDAY',
       'WEEK_DAY.MONDAY',
@@ -212,83 +211,93 @@ export class WalletListPage implements OnDestroy {
       const days = lodash.values(translation);
 
       this.settingsDataProvider.settings.subscribe((settings) => {
-        this.marketDataProvider.history.subscribe();
-        this.marketDataProvider.onUpdateHistory$.takeUntil(this.unsubscriber$).subscribe((history) => {
-          if (!history) { return; }
+        if (this.marketDataProvider.cachedHistory) {
+          this.setChartData(settings, days, this.marketDataProvider.cachedHistory);
+        }
 
-          const currency = (!settings || !settings.currency) ? this.settingsDataProvider.getDefaults().currency : settings.currency;
-
-          const fiatHistory = history.getLastWeekPrice(currency.toUpperCase());
-          const btcHistory = history.getLastWeekPrice('BTC');
-
-          this.chartLabels = null;
-
-          this.chartData = [{
-            yAxisID : 'A',
-            fill: false,
-            data: fiatHistory.prices,
-          }, {
-            yAxisID : 'B',
-            fill: false,
-            data: btcHistory.prices,
-          }];
-
-          this.chartOptions = {
-            maintainAspectRatio: false,
-            response: true,
-            legend: {
-              display: false,
-            },
-            tooltips: {
-              enabled: false,
-            },
-            scales: {
-              xAxes: [{
-                gridLines: {
-                  drawBorder: false,
-                  display: true,
-                  color: '#e1e4ea',
-                }
-              }],
-              yAxes: [{
-                gridLines: {
-                  drawBorder: false,
-                  display: true,
-                },
-                display: false,
-                id: 'A',
-                type: 'linear',
-                position: 'left',
-                ticks: {
-                  max: Number(lodash.max(fiatHistory.prices)) * 1.1,
-                  min: Number(lodash.min(fiatHistory.prices))
-                }
-              }, {
-                display: false,
-                id: 'B',
-                type: 'linear',
-                position: 'right',
-                ticks: {
-                  max: Number(lodash.max(btcHistory.prices)) * 1.1,
-                  min: Number(lodash.min(btcHistory.prices)),
-                }
-              }]
-            }
-          };
-
-          if (currency === 'btc') {
-            this.chartData[0].data = [];
-          }
-
-          setTimeout(() => this.chartLabels = lodash.map(fiatHistory.dates, (d: Date) => days[d.getDay()]), 0);
-          if (this.chart && this.chart.chart) {
-            this.chart.chart.update();
-          }
-
-        });
+        this.marketDataProvider
+          .onUpdateHistory$
+          .takeUntil(this.unsubscriber$)
+          .subscribe((updatedHistory) => this.setChartData(settings, days, updatedHistory));
+        this.marketDataProvider.fetchHistory().subscribe();
       });
     });
   }
+
+  private setChartData = (settings: any, days: string[], history: MarketHistory): void => {
+    if (!history) {
+      return;
+    }
+
+    const currency = (!settings || !settings.currency) ? this.settingsDataProvider.getDefaults().currency : settings.currency;
+
+    const fiatHistory = history.getLastWeekPrice(currency.toUpperCase());
+    const btcHistory = history.getLastWeekPrice('BTC');
+
+    this.chartLabels = null;
+
+    this.chartData = [{
+      yAxisID: 'A',
+      fill: false,
+      data: fiatHistory.prices,
+    }, {
+      yAxisID: 'B',
+      fill: false,
+      data: btcHistory.prices,
+    }];
+
+    this.chartOptions = {
+      maintainAspectRatio: false,
+      response: true,
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
+      },
+      scales: {
+        xAxes: [{
+          gridLines: {
+            drawBorder: false,
+            display: true,
+            color: '#e1e4ea',
+          }
+        }],
+        yAxes: [{
+          gridLines: {
+            drawBorder: false,
+            display: true,
+          },
+          display: false,
+          id: 'A',
+          type: 'linear',
+          position: 'left',
+          ticks: {
+            max: Number(lodash.max(fiatHistory.prices)) * 1.1,
+            min: Number(lodash.min(fiatHistory.prices))
+          }
+        }, {
+          display: false,
+          id: 'B',
+          type: 'linear',
+          position: 'right',
+          ticks: {
+            max: Number(lodash.max(btcHistory.prices)) * 1.1,
+            min: Number(lodash.min(btcHistory.prices)),
+          }
+        }]
+      }
+    };
+
+    if (currency === 'btc') {
+      this.chartData[0].data = [];
+    }
+
+    setTimeout(() => this.chartLabels = lodash.map(fiatHistory.dates, (d: Date) => days[d.getDay()]), 0);
+    if (this.chart && this.chart.chart) {
+      this.chart.chart.update();
+    }
+  };
 
   private setTicker(ticker) {
     this.marketTicker = ticker;
@@ -302,27 +311,30 @@ export class WalletListPage implements OnDestroy {
     });
   }
 
-
   ionViewDidEnter() {
     this.loadWallets();
     this.onCreateUpdateWallet();
-    this.setMarketHistory();
-
-    // Fetch from api or get from storage
-    this.marketDataProvider.ticker.subscribe((ticker) => this.setTicker(ticker));
-
-    // On refresh price
-    this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).subscribe((ticker) => this.setTicker(ticker));
-
-    this.marketDataProvider.refreshPrice();
-    setInterval(() => this.marketDataProvider.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
-
-    // Fetch from api or get from storage
-    this.marketDataProvider.fetchHistory().subscribe((history) => {
-      this.marketHistory = history;
-    }, () => this.marketDataProvider.history.subscribe((history) => this.marketHistory = history));
+    this.initMarketHistory();
+    this.initTicker();
 
     this.content.resize();
+  }
+
+  private initTicker() {
+    // just set the data from cache first
+    if (this.marketDataProvider.cachedTicker) {
+      this.setTicker(this.marketDataProvider.cachedTicker);
+    }
+
+    // now let's subscribe for any future changes
+    this.marketDataProvider
+      .onUpdateTicker$
+      .takeUntil(this.unsubscriber$)
+      .subscribe((updatedTicker) => this.setTicker(updatedTicker));
+    // let's get the up-to-date data from the internet now
+    this.marketDataProvider.refreshTicker();
+    // finally update the data in a regular interval
+    setInterval(() => this.marketDataProvider.refreshTicker(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
   }
 
   ngOnDestroy() {
