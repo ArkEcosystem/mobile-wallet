@@ -14,7 +14,13 @@
   "CONTACTS_PAGE": {
     "ADD_CONTACT_TEXT": "Klik op de knop hieronder om een contact toe te voegen",
     "CONTACT": "Contact",
-    "CONTACTS": "Contacten"
+    "CONTACTS": "Contacten",
+    "INVALID_ADDRESS": "Het adres '{{ address }}' is ongeldig!",
+    "CONTACT_NAME_EMPTY": "De contactnaam is leeg!",
+    "CONTACT_EXISTS_ADDRESS": "Er bestaat al een contact met adres '{{ address }}'!",
+    "CONTACT_NOT_EXISTS_ADDRESS": "Een contact met adres '{{ address }}' bestaat niet!",
+    "CONTACT_EXISTS_NAME": "Er bestaat al een contact met de naam '{{ name }}'!",
+    "OVERWRITE_CONTACT": "Er bestaat al een contact genaamd '{{ name }}' met dit adres. Wil je de naam vervangen door '{{ newName }}'?"
   },
   "COPIED_CLIPBOARD": "Gekopieerd naar klembord",
   "COPY": "Kopieer",
@@ -198,8 +204,10 @@
     "BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT": "Je kunt je wachtwoord naar jouw keuze aanpassen. Vergeet hem niet veilig op te slaan, je zal hem opnieuw moeten typen ter bevestiging.",
     "BALANCE": "Saldo",
     "BIP38_SEED": "BIP23 Seed",
+    "CONVERT_TO_FULL_WALLET": "Converteren naar volledige wallet",
     "CREATE_WALLET": "Wallet Aanmaken",
     "ENTER_SECRET_PASSPHRASE": "Vul je geheime passphrase in",
+    "ENTER_ADDRESS": "Vul je adres in",
     "ENTROPY": "Entropie",
     "ENTROPY_RANDOM_BYTES": "Veeg om willekeurige bytes te genereren",
     "GENERATE_ENTROPY": "Genereer Entropie",
@@ -211,6 +219,7 @@
     "NEW_WALLET_NAME": "Nieuwe wallet naam",
     "NO_TRANSACTIONS": "Geen transacties beschikbaar",
     "PASSPHRASE": "Passphrase",
+    "PASSPHRASE_NOT_BELONG_TO_ADDRESS": "De ingevulde passphrase hoort niet bij het adres '{{ address }}'!",
     "PASSPHRASE_NOT_MATCH": "De ingevulde passphrase komt niet overeen met degene die je zojuist had gekregen.",
     "PUBLIC_ADDRESS": "Openbaar Adres",
     "PUBLIC_ADDRESS_SHARE": "Openbaar Adres (DEEL)",
@@ -227,6 +236,7 @@
     "SECRET_PASSPHRASE_KEEP_SAFE": "Geheime Passphrase (BEWAAR VEILIG)",
     "SEED": "Seed",
     "TOTAL_BALANCE": "Totaal Saldo",
+    "TYPE_PASSPHRASE_OR_ADDRESS": "of type je | geheime passphrase | of | adres | handmatig.",
     "USERNAME": "Gebruikersnaam",
     "WALLETS": "Wallets",
     "WIF": "WIF"
