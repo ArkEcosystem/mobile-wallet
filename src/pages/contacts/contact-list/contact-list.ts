@@ -107,22 +107,9 @@ export class ContactListPage {
     this.profile = this.userDataProvider.currentProfile;
     this.network = this.userDataProvider.currentNetwork;
 
-    this.addresses = this.sortByName(lodash(this.profile.contacts).mapValues('name').transform((result, key, value) => {
+    this.addresses = lodash(this.profile.contacts).mapValues('name').transform((result, key, value) => {
       result.push({ index: value, value, key });
-    }, []).value());
-  }
-
-  sortByName(contacts) {
-    const byName = function(a, b) {
-      if (a.key < b.key) {
-        return -1;
-      }
-      if (a.key > b.key) {
-        return 1;
-      }
-      return 0;
-    };
-    return contacts.sort(byName);
+    }, []).value().sort((a, b) => a.key.localeCompare(b.key));
   }
 
   ionViewDidLoad() {
