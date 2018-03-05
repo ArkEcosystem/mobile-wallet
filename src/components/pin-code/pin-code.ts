@@ -29,7 +29,7 @@ export class PinCodeComponent {
   ) {
   }
 
-  open(message: string, outputPassword: boolean, verifySecondPassphrase: boolean = false) {
+  open(message: string, outputPassword: boolean, verifySecondPassphrase: boolean = false, onSuccess?: (keys: WalletKeys) => void) {
     if (outputPassword && !this.wallet) { return false; }
 
     const modal = this.modalCtrl.create('PinCodeModal', {
@@ -51,7 +51,7 @@ export class PinCodeComponent {
 
       if (!outputPassword) {
         loader.dismiss();
-        return this.onSuccess.emit();
+        return this.executeOnSuccess(onSuccess);
       }
 
       const passphrases = this.userDataProvider.getKeysByWallet(this.wallet, password);
@@ -59,15 +59,14 @@ export class PinCodeComponent {
 
       if (lodash.isEmpty(passphrases) || lodash.isNil(passphrases)) { return this.onWrong.emit(); }
 
-      if (verifySecondPassphrase) { return this.requestSecondPassphrase(passphrases); }
-
-      return this.onSuccess.emit(passphrases);
+      if (verifySecondPassphrase) { return this.requestSecondPassphrase(passphrases, onSuccess); }
+      return this.executeOnSuccess(onSuccess, passphrases);
     });
 
     modal.present();
   }
 
-  private requestSecondPassphrase(passphrases: WalletKeys) {
+  private requestSecondPassphrase(passphrases: WalletKeys, onSuccess: (keys: WalletKeys) => void) {
     if (this.wallet.secondSignature && !this.wallet.cipherSecondKey) {
       const modal = this.modalCtrl.create('EnterSecondPassphraseModal', null, { cssClass: 'inset-modal' });
 
@@ -78,12 +77,12 @@ export class PinCodeComponent {
         }
 
         passphrases.secondPassphrase = passphrase;
-        this.onSuccess.emit(passphrases);
+        return this.executeOnSuccess(onSuccess, passphrases);
       });
 
       modal.present();
     } else {
-      this.onSuccess.emit(passphrases);
+      return this.executeOnSuccess(onSuccess, passphrases);
     }
   }
 
@@ -135,4 +134,10 @@ export class PinCodeComponent {
     }
   }
 
+  private executeOnSuccess(onSuccess: (keys: WalletKeys) => any, keys?: WalletKeys): void {
+    if (onSuccess) {
+      onSuccess(keys);
+    }
+    return this.onSuccess.emit();
+  }
 }

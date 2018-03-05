@@ -29,12 +29,30 @@ modal-confirm-transaction {
   }
 
   h6.account {
-		.account-label {
-			font-weight: 500;
-			display: block;
+    .account-label {
+      font-weight: 500;
+      display: block;
     }
     span:not(.account-label) {
       font-size: .9em;
+    }
+  }
+
+  .address-checker {
+    display: flex;
+    align-items: center;
+    font-style: italic;
+    padding-top: 5px;
+
+    ion-icon {
+      display: block;
+      vertical-align: middle;
+      font-size: 20px;
+    }
+
+    > span {
+      display: block;
+      padding-left: 7px;
     }
   }
 

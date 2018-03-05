@@ -30,6 +30,8 @@ import { MyApp } from './app.component';
 
 import '@root/node_modules/chart.js/src/chart.js';
 import { AutoCompleteModule } from 'ionic2-auto-complete';
+import { NeoApiProvider } from '@providers/neo-api/neo-api';
+import { AddressCheckerProvider } from '@providers/address-checker/address-checker';
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -76,7 +78,9 @@ export function httpLoaderFactory(http: HttpClient) {
     SettingsDataProvider,
     ForgeProvider,
     ToastProvider,
-    ContactsAutoCompleteService
+    ContactsAutoCompleteService,
+    NeoApiProvider,
+    AddressCheckerProvider
   ]
 })
 export class AppModule {}

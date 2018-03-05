@@ -193,6 +193,12 @@
     "TRANSACTION": "Transaktion"
   },
   "TYPE": "Typ",
+  "VALIDATION": {
+    "INVALID_ADDRESS": "Diese Adresse ist ungültig!",
+    "IS_OWN_ADDRESS": "Dies ist deine eigene Adresse. Bist du sicher, dass du an deine eigene Adresse senden möchtest?",
+    "NO_TRANSACTIONS": "Es scheint so als hätte diese Adresse keine Transaktionen. Bist du sicher, dass sie korrekt ist?",
+    "IS_NEO_ADDRESS": "Es sieht so aus, als wäre dies eine 'NEO' Adresse. Bist du sicher, dass sie korrekt ist?"
+  },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "Konnte Wallet nicht hinzufügen",
     "ADD_WALLET_TEXT": "Um ein Wallet zu importieren oder hinzuzufügen, klicke den nachfolgenden Button",

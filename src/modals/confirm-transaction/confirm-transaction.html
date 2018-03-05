@@ -34,6 +34,12 @@
                 <span>
                   {{transaction?.recipientId}}
                 </span>
+                <span *ngIf="addressCheckResult && addressCheckResult.message" class="address-checker">
+                  <ion-icon [name]="addressCheckResult.icon"></ion-icon>
+                  <span>
+                    {{ addressCheckResult.message.key | translate:addressCheckResult.message.parameters }}
+                  </span>
+                </span>
               </h6>
             </ion-label>
           </ion-item>
@@ -72,5 +78,10 @@
 </ion-content>
 
 <ion-footer text-center padding>
-  <button ion-button color="primary" class="button-continue" (click)="broadcast()">{{ 'TRANSACTIONS_PAGE.SEND' | translate }}</button>
+  <button ion-button color="primary"
+          class="button-continue"
+          (click)="broadcast()"
+          [disabled]="addressCheckResult.type === checkTypes.Error">
+    {{ 'TRANSACTIONS_PAGE.SEND' | translate }}
+  </button>
 </ion-footer>
