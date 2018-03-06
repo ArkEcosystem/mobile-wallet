@@ -59,7 +59,7 @@ export class TransactionResponsePage {
 
   openInExplorer() {
     const url = `${this.currentNetwork.explorer}/tx/${this.transaction.id}`;
-    return this.iab.create(url);
+    return this.iab.create(url, '_system');
   }
 
   presentEncryptedAlert() {
