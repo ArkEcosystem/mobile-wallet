@@ -47,13 +47,21 @@ export class MarketDataProvider {
     return this.fetchHistory();
   }
 
+  get cachedHistory(): model.MarketHistory {
+     return this.marketHistory;
+  }
+
   get ticker(): Observable<model.MarketTicker> {
     if (this.marketTicker) { return Observable.of(this.marketTicker); }
 
     return this.fetchTicker();
   }
 
-  refreshPrice(): void {
+  get cachedTicker(): model.MarketTicker {
+     return this.marketTicker;
+  }
+
+  refreshTicker(): void {
     this.fetchTicker().subscribe((ticker) => {
       this.onUpdateTicker$.next(ticker);
     });
