@@ -1,6 +1,7 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { IonicPage, NavController, AlertController, ModalController } from 'ionic-angular';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Platform, IonicPage, NavController, AlertController, ModalController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { TouchID } from '@ionic-native/touch-id';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -18,7 +19,7 @@ const packageJson = require('@root/package.json');
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
-  providers: [InAppBrowser],
+  providers: [InAppBrowser, TouchID],
 })
 export class SettingsPage implements OnInit, OnDestroy {
   @ViewChild('pinCode') pinCode: PinCodeComponent;
@@ -30,17 +31,25 @@ export class SettingsPage implements OnInit, OnDestroy {
   public onEnterPinCode;
   public appVersion: number = packageJson.version;
 
+  public touchIdAvailable = false;
+
   private unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(
+    private platform: Platform,
     private navCtrl: NavController,
     private settingsDataProvider: SettingsDataProvider,
     private alertCtrl: AlertController,
     private translateService: TranslateService,
     private modalCtrl: ModalController,
-    private inAppBrowser: InAppBrowser
+    private inAppBrowser: InAppBrowser,
+    private touchId: TouchID,
   ) {
     this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
+
+    if (this.platform.is('cordova')) {
+      this.touchId.isAvailable().then(() => this.touchIdAvailable = true);
+    }
   }
 
   openChangePinPage() {

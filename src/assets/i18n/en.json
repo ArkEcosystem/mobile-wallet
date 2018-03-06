@@ -114,6 +114,7 @@
     "PIN_UPDATED_TEXT": "Your PIN has been updated",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type your PIN to encrypt passphrase",
     "TYPE_PIN_SIGN_TRANSACTION": "Type your PIN to sign transaction",
+    "USE_FINGERPRINT": "Use your fingerprint to proceed",
     "WRONG": "Please enter the correct PIN"
   },
   "PROFILES_PAGE": {
@@ -148,6 +149,7 @@
     "SECURITY": "Security",
     "NOT_AVAILABLE_WATCH_ONLY": "Not available for watch only address",
     "SETTINGS": "Settings",
+    "TOUCH_ID": "Touch ID",
     "VERSION": "Version",
     "WALLET_BACKUP": "Wallet Backup"
   },

@@ -105,7 +105,7 @@ export class MyApp implements OnInit, OnDestroy {
           });
         } else {
           this.showConfirmation(this.logoutText).then(() => {
-            this.logout();
+            this.authProvider.logout();
           });
         }
       }
@@ -152,7 +152,7 @@ export class MyApp implements OnInit, OnDestroy {
             this.menuCtrl.close();
           }
           this.app.navPop();
-          this.logout();
+          this.authProvider.logout(true, false);
         }
       });
 
@@ -188,10 +188,6 @@ export class MyApp implements OnInit, OnDestroy {
     } else {
       this.nav.push(p);
     }
-  }
-
-  logout() {
-    this.authProvider.logout();
   }
 
   // Redirect user when login or logout

@@ -4,6 +4,7 @@ export class UserSettings {
   public currency: string;
   public darkMode: boolean;
   public notification: boolean;
+  public touchId: boolean;
 
   constructor() {}
 
@@ -13,6 +14,7 @@ export class UserSettings {
     settings.currency = 'usd';
     settings.darkMode = false;
     settings.notification = false;
+    settings.touchId = false;
 
     return settings;
   }

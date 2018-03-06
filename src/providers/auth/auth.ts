@@ -35,9 +35,11 @@ export class AuthProvider {
     });
   }
 
-  logout(broadcast: boolean = true): void {
+  logout(broadcast: boolean = true, keepActiveProfile: boolean = false): void {
+    if (!keepActiveProfile) {
+      this.storage.set(constants.STORAGE_ACTIVE_PROFILE, undefined);
+    }
     this.storage.set(constants.STORAGE_LOGIN, false);
-    this.storage.set(constants.STORAGE_ACTIVE_PROFILE, undefined);
     this.loggedProfileId = undefined;
 
     if (broadcast) { this.onLogout$.next(false); }
