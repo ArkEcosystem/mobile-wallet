@@ -50,7 +50,7 @@ export class MarketNumberPipe implements PipeTransform, OnDestroy {
       decimalPlaces = 8;
     }
 
-    return Number(trueValue.toFixed(decimalPlaces));
+    return trueValue.toNumber().toFixed(decimalPlaces);
   }
 
   ngOnDestroy() {
