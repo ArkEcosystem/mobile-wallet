@@ -54,7 +54,7 @@
   "DELETE": "Löschen",
   "DONE": "Fertig",
   "EDIT": "Bearbeiten",
-  "EXIT": "Beenden",
+  "SIGN_OUT": "Ausloggen",
   "EXIT_APP_TEXT": "App beenden?",
   "FAILED": "Fehlgeschlagen",
   "GENERAL": "Generell",
@@ -69,12 +69,12 @@
     "TEXT_3": "Wechsle zwischen Profilen und Wallets, prüfe deinen Kontostand, sende und empfange Guthaben und vieles mehr",
     "WELCOME": "Willkommen an Board"
   },
-  "LOGIN_PAGE": {
+  "SIGN_IN_PAGE": {
     "ARK_WALLET": "ARK Wallet",
     "CREATE_PROFILE": "Erstelle ein Profil",
     "SLOGAN": "Willkommen beim ARK Ecosystem"
   },
-  "LOGOUT_PROFILE_TEXT": "Ausloggen?",
+  "SIGN_OUT_PROFILE_TEXT": "Ausloggen?",
   "MARKETS_PAGE": {
     "MARKET_CAP": "Markt Cap.",
     "MARKET_DATA": "Markt Daten",
@@ -107,7 +107,7 @@
     "DEFAULT_MESSAGE": "Gib deinen PIN ein",
     "WRONG_PIN_MANY_TIMES": "Du hast zu viele Male einen falschen PIN eingegeben.",
     "WAIT_TO_TRY": "Bitte warte {{ time }} und versuche es noch einmal",
-    "LOGIN_ERROR": "Es gab ein Problem beim Einloggen mit deinem PIN",
+    "SIGN_IN_ERROR": "Es gab ein Problem beim Einloggen mit deinem PIN",
     "PIN_CREATED_ERROR_TEXT": "Es gab ein Problem beim Erstellen deines PINs",
     "PIN_CREATED_TEXT": "Dein PIN wurde erstellt",
     "PIN_UPDATED_ERROR_TEXT": "Es gab ein Problem beim Aktualisieren deines PINs",
