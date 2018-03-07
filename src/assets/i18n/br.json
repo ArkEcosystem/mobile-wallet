@@ -48,7 +48,6 @@
     "DELETE": "Delete",
     "DONE": "Feito",
     "EDIT": "Editar",
-    "EXIT": "Sair",
     "EXIT_APP_TEXT": "Sair do App?",
     "FAILED": "Falhou",
     "GENERAL": "Geral",
@@ -63,12 +62,12 @@
       "TEXT_3": "Deslize entre perfis e carteiras, verifique seus saldos, envie e receba fundos e muito mais",
       "WELCOME": "Bem vindo a bordo"
     },
-    "LOGIN_PAGE": {
+    "SIGN_IN_PAGE": {
       "ARK_WALLET": "Carteira ARK",
       "CREATE_PROFILE": "Criar um perfil",
       "SLOGAN": "Bem vindo ao ecosistema ARK"
     },
-    "LOGOUT_PROFILE_TEXT": "Sair do perfil?",
+    "SIGN_OUT_PROFILE_TEXT": "Sair do perfil?",
     "MARKETS_PAGE": {
       "MARKET_CAP": "Market Cap.",
       "MARKET_DATA": "Market Data",
@@ -101,7 +100,7 @@
       "DEFAULT_MESSAGE": "Digite seu PIN",
       "WRONG_PIN_MANY_TIMES": "Você informou um PIN por varias vezes!",
       "WAIT_TO_TRY": "Por favor espere {{ time }} e tente novamente",
-      "LOGIN_ERROR": "Houve um problema ao iniciar sessão com seu PIN",  
+      "SIGN_IN_ERROR": "Houve um problema ao iniciar sessão com seu PIN",
       "PIN_CREATED_ERROR_TEXT": " Houve um problema para criar seu PIN",
       "PIN_CREATED_TEXT": "O seu PIN foi criado com sucesso",
       "PIN_UPDATED_ERROR_TEXT": "Houve um problema ao tentar atualizar o seu PIN",
@@ -211,7 +210,6 @@
       "MY_WALLET": "Minha carteira",
       "NEW_WALLET_NAME": "Novo nome da carteira",
       "NO_TRANSACTIONS": "Nenhuma transação disponível",
-      "OR_TYPE": "or type",
       "PASSPHRASE": "Passphrase",
       "PASSPHRASE_NOT_MATCH": "O passphrase insirido não corresponde ao que você acabou de obter.",
       "PUBLIC_ADDRESS": "Endereço público",
@@ -246,4 +244,4 @@
     "WORD": "Palavra",
     "YES": "Sim"
   }
-  
+

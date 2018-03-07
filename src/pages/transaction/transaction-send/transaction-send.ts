@@ -5,12 +5,13 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { Contact, Wallet, MarketTicker, MarketCurrency, SendTransactionForm, WalletKeys } from '@models/model';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { ContactsProvider } from '@providers/contacts/contacts';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
 
-import { ContactsAutoCompleteService } from '@providers/auto-complete/contacts-service';
+import { ContactsAutoCompleteService } from '@providers/contacts-auto-complete/contacts-auto-complete';
 
 import { PublicKey } from 'ark-ts/core';
 import { Network, Fees } from 'ark-ts/model';
@@ -25,6 +26,7 @@ import { TransactionSend } from 'ark-ts';
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
 import { AutoCompleteContact } from '@models/contact';
 import { TranslatableObject } from '@models/translate';
+import { QRCodeScheme } from '@models/model';
 import { BigNumber } from 'bignumber.js';
 import { ArkUtility } from '../../../utils/ark-utility';
 
@@ -61,6 +63,7 @@ export class TransactionSendPage implements OnInit {
     public navCtrl: NavController,
     public navParams: NavParams,
     private userDataProvider: UserDataProvider,
+    private contactsProvider: ContactsProvider,
     private arkApiProvider: ArkApiProvider,
     private marketDataProvider: MarketDataProvider,
     private settingsDataProvider: SettingsDataProvider,
@@ -101,7 +104,7 @@ export class TransactionSendPage implements OnInit {
       this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_ADDRESS_ERROR');
     } else {
       this.createContact();
-      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
+      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
     }
   }
 
@@ -126,18 +129,12 @@ export class TransactionSendPage implements OnInit {
 
   public onSearchInput(input: string): void {
     // this check is needed because clicking into the field, also triggers this method
-    // an then the recipientName is set to null, even though nothing has changed
+    // and then the recipientName is set to null, even though nothing has changed
     if (input === this.currentAutoCompleteFieldValue) {
       return;
     }
 
-    if (this.isRecipientNameAutoSet) {
-      this.transaction.recipientName = null;
-    }
-
-    this.isExistingContact = false;
-    this.currentAutoCompleteFieldValue = input;
-    this.transaction.recipientAddress = input;
+    this.setRecipientByAddress(input);
   }
 
   private validAddress(): boolean {
@@ -174,9 +171,7 @@ export class TransactionSendPage implements OnInit {
       validName = new RegExp('^[a-zA-Z0-9]+[a-zA-Z0-9- ]+$').test(this.transaction.recipientName);
     }
     if (validAddress && validName) {
-      const contact = new Contact();
-      contact.name = this.transaction.recipientName;
-      this.userDataProvider.addContact(this.transaction.recipientAddress, contact);
+      this.contactsProvider.addContact(this.transaction.recipientName, this.transaction.recipientAddress);
     }
   }
 
@@ -210,10 +205,9 @@ export class TransactionSendPage implements OnInit {
     });
   }
 
-  onScanQRCode(qrCode: object) {
-    const address = qrCode['a'];
-    if (address) {
-      this.setFormValuesFromAddress(address);
+  onScanQRCode(qrCode: QRCodeScheme) {
+    if (qrCode.address) {
+      this.setFormValuesFromAddress(qrCode.address);
     } else {
       this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }
@@ -246,16 +240,29 @@ export class TransactionSendPage implements OnInit {
   }
 
   private setFormValuesFromAddress(address: string): void {
-    this.sendForm.patchValue({recipientAddress: address});
-    this.isRecipientNameAutoSet = true;
+    if (!address) {
+      return;
+    }
 
-    const contact: Contact = this.userDataProvider.getContactByAddress(address);
-    if (contact) {
+    this.sendForm.patchValue({recipientAddress: address});
+    this.setRecipientByAddress(address);
+  }
+
+  private setRecipientByAddress(input: string): void {
+    this.currentAutoCompleteFieldValue = input;
+    this.transaction.recipientAddress = input;
+
+    const contactOrLabel: Contact | string = this.contactsProvider.getContactByAddress(input)
+                                             || this.userDataProvider.getWalletLabel(input);
+    if (contactOrLabel && contactOrLabel !== input) {
       this.isExistingContact = true;
-      this.transaction.recipientName = contact.name;
+      this.isRecipientNameAutoSet = true;
+      this.transaction.recipientName = typeof contactOrLabel === 'string' ? contactOrLabel : contactOrLabel.name;
     } else {
       this.isExistingContact = false;
-      this.transaction.recipientName = null;
+      if (this.isRecipientNameAutoSet) {
+        this.transaction.recipientName = null;
+      }
     }
   }
 }

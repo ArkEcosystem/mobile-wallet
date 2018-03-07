@@ -48,7 +48,6 @@
   "DELETE": "Elimina",
   "DONE": "Fatto",
   "EDIT": "Modifica",
-  "EXIT": "Esci",
   "EXIT_APP_TEXT": "Esci dall'applicazione?",
   "FAILED": "Fallito",
   "GENERAL": "Generale",
@@ -63,12 +62,12 @@
     "TEXT_3": "Scorri tra i profili e i portafogli, controlla i tuoi saldi, invia e ricevi fondi e molto altro ancora",
     "WELCOME": "Benvenuto a bordo"
   },
-  "LOGIN_PAGE": {
+  "SIGN_IN_PAGE": {
     "ARK_WALLET": "ARK  Wallet",
     "CREATE_PROFILE": "Crea un profilo",
     "SLOGAN": "Benvenuto nel mondo ARK "
   },
-  "LOGOUT_PROFILE_TEXT": "Uscire dal Profilo?",
+  "SIGN_OUT_PROFILE_TEXT": "Uscire dal Profilo?",
   "MARKETS_PAGE": {
     "MARKET_CAP": "Market Cap.",
     "MARKET_DATA": "Market Data",
@@ -101,7 +100,7 @@
     "DEFAULT_MESSAGE": "Immetti il tuo PIN",
     "WRONG_PIN_MANY_TIMES": "Hai inserito il codice PIN sbagliato troppe volte!",
     "WAIT_TO_TRY": "Si prega di attendere {{ time }} e riprovare",
-    "LOGIN_ERROR": "Si è verificato un problema durante l'accesso con il tuo PIN",
+    "SIGN_IN_ERROR": "Si è verificato un problema durante l'accesso con il tuo PIN",
     "PIN_CREATED_ERROR_TEXT": "Si è verificato un problema creando il tuo PIN",
     "PIN_CREATED_TEXT": "Il tuo PIN è stato creato",
     "PIN_UPDATED_ERROR_TEXT": "Si è verificato un problema aggiornando il tuo PIN",
@@ -140,7 +139,6 @@
     "LANGUAGE": "Lingua",
     "PRIVACY_POLICY": "Politica sulla Riservatezza",
     "SECURITY": "Sicurezza",
-    "SELECT_WALLET_FIRST_TEXT": "Prima seleziona un Portafoglio dalla pagina dei portafogli",
     "NOT_AVAILABLE_WATCH_ONLY": "Non disponibile per la sola consultazione dell'indirizzo",
     "SETTINGS": "Impostazioni",
     "VERSION": "Versione",

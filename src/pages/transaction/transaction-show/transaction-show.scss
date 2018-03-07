@@ -14,5 +14,11 @@ page-transaction-show {
     ion-row {
       padding: 1em 0;
     }
+    h4 {
+      span.account-label {
+        display: block;
+        font-weight: 500;
+      }
+    }
   }
 }

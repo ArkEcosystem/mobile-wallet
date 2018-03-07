@@ -14,7 +14,13 @@
   "CONTACTS_PAGE": {
     "ADD_CONTACT_TEXT": "Click on the button below to add a contact",
     "CONTACT": "Contact",
-    "CONTACTS": "Contacts"
+    "CONTACTS": "Contacts",
+    "INVALID_ADDRESS": "The address '{{ address }}' is invalid!",
+    "CONTACT_NAME_EMPTY": "The contact name is empty!",
+    "CONTACT_EXISTS_ADDRESS": "There is already a contact with the address '{{ address }}'!",
+    "CONTACT_NOT_EXISTS_ADDRESS": "A contact with the address '{{ address }}' doesn't exist!",
+    "CONTACT_EXISTS_NAME": "There is already a contact with the name '{{ name }}'!",
+    "OVERWRITE_CONTACT": "There is already a contact named '{{ name }}' with this address. Do you want to overwrite it's name with '{{ newName }}'?"
   },
   "COPIED_CLIPBOARD": "Copied to clipboard",
   "COPY": "Copy",
@@ -48,7 +54,7 @@
   "DELETE": "Delete",
   "DONE": "Done",
   "EDIT": "Edit",
-  "EXIT": "Exit",
+  "SIGN_OUT": "Sign out",
   "EXIT_APP_TEXT": "Exit App?",
   "FAILED": "Failed",
   "GENERAL": "General",
@@ -63,12 +69,12 @@
     "TEXT_3": "Swipe between profiles and wallets, check your balances, send and receive funds and much more",
     "WELCOME": "Welcome Aboard"
   },
-  "LOGIN_PAGE": {
+  "SIGN_IN_PAGE": {
     "ARK_WALLET": "ARK Wallet",
     "CREATE_PROFILE": "Create a profile",
     "SLOGAN": "Welcome to the ARK Ecosystem"
   },
-  "LOGOUT_PROFILE_TEXT": "Logout of Profile?",
+  "SIGN_OUT_PROFILE_TEXT": "Sign out of Profile?",
   "MARKETS_PAGE": {
     "MARKET_CAP": "Market Cap.",
     "MARKET_DATA": "Market Data",
@@ -101,14 +107,16 @@
     "DEFAULT_MESSAGE": "Type your PIN",
     "WRONG_PIN_MANY_TIMES": "You entered a wrong PIN too many times!",
     "WAIT_TO_TRY": "Please wait {{ time }} and try again",
-    "LOGIN_ERROR": "There was a problem signing in with your PIN",
+    "SIGN_IN_ERROR": "There was a problem signing in with your PIN",
     "PIN_CREATED_ERROR_TEXT": "There was a problem creating your PIN",
     "PIN_CREATED_TEXT": "Your PIN has been created",
     "PIN_UPDATED_ERROR_TEXT": "There was a problem updating your PIN",
     "PIN_UPDATED_TEXT": "Your PIN has been updated",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type your PIN to encrypt passphrase",
     "TYPE_PIN_SIGN_TRANSACTION": "Type your PIN to sign transaction",
-    "WRONG": "Please enter the correct PIN"
+    "WRONG": "Please enter the correct PIN",
+    "WEAK_PIN": "Weak PIN",
+    "WEAK_PIN_DETAIL": "The PIN you entered is considered weak and easy to guess. Are you sure you want to use it?"
   },
   "PROFILES_PAGE": {
     "ADD_PROFILE_ERROR": "Could not add profile",
@@ -140,7 +148,6 @@
     "LANGUAGE": "Language",
     "PRIVACY_POLICY": "Privacy Policy",
     "SECURITY": "Security",
-    "SELECT_WALLET_FIRST_TEXT": "Select a wallet first on the wallets page",
     "NOT_AVAILABLE_WATCH_ONLY": "Not available for watch only address",
     "SETTINGS": "Settings",
     "VERSION": "Version",
@@ -199,8 +206,10 @@
     "BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT": "You can edit for a password of your choice. Remember to backup safely, you will need to re-type for validation.",
     "BALANCE": "Balance",
     "BIP38_SEED": "BIP38 Seed",
+    "CONVERT_TO_FULL_WALLET": "Convert to full wallet",
     "CREATE_WALLET": "Create Wallet",
     "ENTER_SECRET_PASSPHRASE": "Enter your secret passphrase",
+    "ENTER_ADDRESS": "Enter your address",
     "ENTROPY": "Entropy",
     "ENTROPY_RANDOM_BYTES": "Swipe to generate random bytes",
     "GENERATE_ENTROPY": "Generate Entropy",
@@ -211,12 +220,13 @@
     "MY_WALLET": "My Wallet",
     "NEW_WALLET_NAME": "New wallet name",
     "NO_TRANSACTIONS": "No transactions available",
-    "OR_TYPE": "or type",
+    "TYPE_PASSPHRASE_OR_ADDRESS": "or type your | secret passphrase | or your | address | manually.",
     "PASSPHRASE": "Passphrase",
     "PASSPHRASE_NOT_MATCH": "The passphrase entered does not match the one you just got.",
     "PUBLIC_ADDRESS": "Public Address",
     "PUBLIC_ADDRESS_SHARE": "Public Address (SHARE)",
     "PUBLIC_KEY": "Public Key",
+    "PASSPHRASE_NOT_BELONG_TO_ADDRESS": "The entered passphrase doesn't belong to the address '{{ address }}'!",
     "RE_ENTER_PASSPHRASE": "Re-enter your passphrase",
     "REMOVE_WALLET": "Remove Wallet",
     "REMOVE_WALLET_TEXT": "Your account will be removed. Make sure you have backed up, you will need the original passphrase to restore.",

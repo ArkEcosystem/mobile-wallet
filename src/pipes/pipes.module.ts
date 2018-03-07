@@ -3,6 +3,8 @@ import { TruncateMiddlePipe } from './../pipes/truncate-middle/truncate-middle';
 import { UnitsSatoshiPipe } from './../pipes/units-satoshi/units-satoshi';
 import { MarketNumberPipe } from './../pipes/market-number/market-number';
 import { AccountLabelPipe } from './../pipes/account-label/account-label';
+import { HasAccountLabelPipe } from './../pipes/has-account-label/has-account-label';
+import { TranslateCutPipe } from './../pipes/translate-cut/translate-cut';
 import { TimestampHumanPipe } from './timestamp-human/timestamp-human';
 import { TimezonePipe } from './timezone/timezone';
 import { SecondsToTimePipe } from './seconds-to-time/seconds-to-time';
@@ -12,16 +14,20 @@ import { SecondsToTimePipe } from './seconds-to-time/seconds-to-time';
     UnitsSatoshiPipe,
     MarketNumberPipe,
     AccountLabelPipe,
+    HasAccountLabelPipe,
     TimestampHumanPipe,
     TimezonePipe,
-    SecondsToTimePipe],
+    SecondsToTimePipe,
+    TranslateCutPipe],
   imports: [],
   exports: [TruncateMiddlePipe,
     UnitsSatoshiPipe,
     MarketNumberPipe,
     AccountLabelPipe,
+    HasAccountLabelPipe,
     TimestampHumanPipe,
     TimezonePipe,
-    SecondsToTimePipe]
+    SecondsToTimePipe,
+    TranslateCutPipe]
 })
 export class PipesModule {}

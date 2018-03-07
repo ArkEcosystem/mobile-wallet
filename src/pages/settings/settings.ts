@@ -7,9 +7,7 @@ import 'rxjs/add/operator/takeUntil';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { Wallet, WalletKeys } from '@models/model';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
-import { UserDataProvider } from '@providers/user-data/user-data';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
 
 import * as constants from '@app/app.constants';
@@ -33,7 +31,6 @@ export class SettingsPage implements OnInit, OnDestroy {
   public appVersion: number = packageJson.version;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
-  private currentWallet: Wallet;
 
   constructor(
     private navCtrl: NavController,
@@ -41,11 +38,9 @@ export class SettingsPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private translateService: TranslateService,
     private modalCtrl: ModalController,
-    private userDataProvider: UserDataProvider,
-    private inAppBrowser: InAppBrowser,
+    private inAppBrowser: InAppBrowser
   ) {
     this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
-    this.currentWallet = this.userDataProvider.currentWallet;
   }
 
   openChangePinPage() {
@@ -61,13 +56,6 @@ export class SettingsPage implements OnInit, OnDestroy {
         this.pinCode.createUpdatePinCode(null, password);
       }
     });
-  }
-
-  openWalletBackupPage() {
-    if (!this.currentWallet || this.currentWallet.isWatchOnly) { return this.presentSelectWallet(); }
-
-    this.onEnterPinCode = this.showBackup;
-    this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', true);
   }
 
   openPrivacyPolicy() {
@@ -102,40 +90,9 @@ export class SettingsPage implements OnInit, OnDestroy {
     });
   }
 
-  private presentSelectWallet() {
-    this.translateService.get([
-      'SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT',
-      'SETTINGS_PAGE.NOT_AVAILABLE_WATCH_ONLY',
-    ]).subscribe((translation) => {
-      const message = this.currentWallet && this.currentWallet.isWatchOnly
-        ? translation['SETTINGS_PAGE.NOT_AVAILABLE_WATCH_ONLY']
-        : translation['SETTINGS_PAGE.SELECT_WALLET_FIRST_TEXT'];
-
-      const alert = this.alertCtrl.create({
-        message,
-        buttons: [{
-          text: 'Ok'
-        }]
-      });
-
-      alert.present();
-    });
-  }
-
   private clearData() {
     this.settingsDataProvider.clearData();
     this.navCtrl.setRoot('IntroPage');
-  }
-
-  private showBackup(keys: WalletKeys) {
-    if (!keys) { return; }
-
-    const modal = this.modalCtrl.create('WalletBackupModal', {
-      title: 'SETTINGS_PAGE.WALLET_BACKUP',
-      keys,
-    });
-
-    modal.present();
   }
 
   onUpdate() {

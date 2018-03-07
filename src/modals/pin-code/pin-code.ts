@@ -1,5 +1,5 @@
 import { Component, NgZone, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Vibration } from '@ionic-native/vibration';
 import { AuthProvider } from '@providers/auth/auth';
 
@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/takeWhile';
+
+import { TranslateService } from '@ngx-translate/core';
 
 import moment from 'moment';
 import lodash from 'lodash';
@@ -45,6 +47,8 @@ export class PinCodeModal implements OnDestroy {
     private authProvider: AuthProvider,
     private zone: NgZone,
     private vibration: Vibration,
+    private alertCtrl: AlertController,
+    private translateService: TranslateService,
   ) {
     this.password = '';
     this.message = this.navParams.get('message');
@@ -68,7 +72,34 @@ export class PinCodeModal implements OnDestroy {
 
         // New password
         if (!this.expectedPassword && !this.validatePassword) {
-          return this.dismiss(true);
+          if (this.authProvider.isWeakPassword(this.password) ) {
+            // Show message about weak PIN
+            this.translateService.get([
+                'PIN_CODE.WEAK_PIN',
+                'PIN_CODE.WEAK_PIN_DETAIL',
+                'NO',
+                'YES'
+              ]).subscribe((translation) => {
+                const alert = this.alertCtrl.create({
+                  title: translation['PIN_CODE.WEAK_PIN'],
+                  message: translation['PIN_CODE.WEAK_PIN_DETAIL'],
+                  buttons: [{
+                    text: translation.NO,
+                    handler: () => {
+                      this.password = '';
+                    }
+                  }, {
+                    text: translation.YES,
+                    handler: () => {
+                      this.dismiss(true);
+                    }
+                  }]
+                });
+                alert.present();
+              });
+          } else {
+            return this.dismiss(true);
+          }
         }
 
         // Confirm with the previous entered password (validate new password)

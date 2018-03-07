@@ -30,7 +30,10 @@
             <ion-label stacked>
               <p ion-text>{{ 'TRANSACTIONS_PAGE.TO' | translate }}</p>
               <h4 item-content class="content">
-                {{ transaction?.recipientId | accountLabel }}
+                <span *ngIf="transaction?.recipientId | hasAccountLabel" class="account-label">
+                  {{ transaction?.recipientId | accountLabel }}
+                </span>
+                {{ transaction?.recipientId }}
               </h4>
             </ion-label>
           </ion-item>
@@ -38,7 +41,10 @@
             <ion-label stacked>
               <p ion-text>{{ 'TRANSACTIONS_PAGE.FROM' | translate }}</p>
               <h4 item-content class="content">
-                {{ transaction?.senderId | accountLabel }}
+                <span *ngIf="transaction?.senderId | hasAccountLabel" class="account-label">
+                  {{ transaction?.senderId | accountLabel }}
+                </span>
+                {{ transaction?.senderId }}
               </h4>
             </ion-label>
           </ion-item>

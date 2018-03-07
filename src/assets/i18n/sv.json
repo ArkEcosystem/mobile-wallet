@@ -48,7 +48,6 @@
   "DELETE": "Ta bort",
   "DONE": "Klar",
   "EDIT": "Redigera",
-  "EXIT": "Avsluta",
   "EXIT_APP_TEXT": "Avsluta App?",
   "FAILED": "Misslyckad",
   "GENERAL": "Allmänt",
@@ -63,12 +62,12 @@
     "TEXT_3": "Svep mellan profiler och plånböcker, kolla dina saldon, skicka och ta emot tillgångar och mycket mera",
     "WELCOME": "Välkommen ombord"
   },
-  "LOGIN_PAGE": {
+  "SIGN_IN_PAGE": {
     "ARK_WALLET": "ARK Plånbok",
     "CREATE_PROFILE": "Skapa en profil",
     "SLOGAN": "Välkommen till ARK-Ekosystemet"
   },
-  "LOGOUT_PROFILE_TEXT": "Logga ut från Profilen?",
+  "SIGN_OUT_PROFILE_TEXT": "Logga ut från Profilen?",
   "MARKETS_PAGE": {
     "MARKET_CAP": "Börsvärde",
     "MARKET_DATA": "Marknadsdata",
@@ -100,7 +99,7 @@
     "CREATE": "Skapa din PIN",
     "DEFAULT_MESSAGE": "Skriv in din PIN",
     "WRONG_PIN_MANY_TIMES": "Du skrev in en felaktig PIN för många gånger!",
-    "LOGIN_ERROR": "Problem att logga in med din PIN",
+    "SIGN_IN_ERROR": "Problem att logga in med din PIN",
     "PIN_CREATED_ERROR_TEXT": "Problem att skapa din PIN",
     "PIN_CREATED_TEXT": "Din PIN har skapats",
     "PIN_UPDATED_ERROR_TEXT": "Problem att uppdatera din PIN",
@@ -140,7 +139,6 @@
     "LANGUAGE": "Språk",
     "PRIVACY_POLICY": "Integritetspolicy",
     "SECURITY": "Säkerhet",
-    "SELECT_WALLET_FIRST_TEXT": "Välj först en plånbok på plånbokssidan",
     "NOT_AVAILABLE_WATCH_ONLY": "Ej tillgänglig för endast läsbara adresser",
     "SETTINGS": "Inställningar",
     "VERSION": "Version",

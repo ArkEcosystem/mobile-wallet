@@ -10,12 +10,14 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { StorageProvider } from '@providers/storage/storage';
 import { AuthProvider } from '@providers/auth/auth';
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { NetworkProvider } from '@providers/network/network';
+import { ContactsProvider } from '@providers/contacts/contacts';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ToastProvider } from '@providers/toast/toast';
 import { ForgeProvider } from '@providers/forge/forge';
-import { ContactsAutoCompleteService } from '@providers/auto-complete/contacts-service';
+import { ContactsAutoCompleteService } from '@providers/contacts-auto-complete/contacts-auto-complete';
 
 // Ionic native
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -67,12 +69,14 @@ export function httpLoaderFactory(http: HttpClient) {
     {provide: StorageProvider, useClass: StorageProvider, deps: [Storage]},
     {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},
     UserDataProvider,
+    NetworkProvider,
+    ContactsProvider,
     ArkApiProvider,
     MarketDataProvider,
     SettingsDataProvider,
     ForgeProvider,
     ToastProvider,
-    ContactsAutoCompleteService,
+    ContactsAutoCompleteService
   ]
 })
 export class AppModule {}

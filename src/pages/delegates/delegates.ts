@@ -60,16 +60,16 @@ export class DelegatesPage implements OnDestroy {
   ) { }
 
   openDetailModal(delegate: Delegate) {
-    this.selectedDelegate = delegate;
 
     const modal = this.modalCtrl.create('DelegateDetailPage', {
       delegate,
       vote: this.walletVote,
     }, { cssClass: 'inset-modal-large', showBackdrop: false, enableBackdropDismiss: true });
 
-    modal.onDidDismiss((voter) => {
-      if (!voter) { return; }
+    modal.onDidDismiss((delegateVote) => {
+      if (!delegateVote) { return; }
 
+      this.selectedDelegate = delegateVote; // Save the delegate that we want to vote for
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
     });
@@ -107,7 +107,7 @@ export class DelegatesPage implements OnDestroy {
   generateTransaction(keys: WalletKeys) {
     let type = VoteType.Add;
 
-    if (this.walletVote && this.walletVote.publicKey === this.selectedDelegate.publicKey) { type = VoteType.Remove; }
+    if (this.walletVote && this.walletVote.publicKey === this.selectedDelegate.publicKey ) { type = VoteType.Remove; }
 
     const data: TransactionVote = {
       delegatePublicKey: this.selectedDelegate.publicKey,
