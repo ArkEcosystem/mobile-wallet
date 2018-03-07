@@ -6,7 +6,7 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content padding #content>
   <form #createContactForm="ngForm">
     <ion-item>
       <ion-label floating>{{ 'NAME' | translate }}</ion-label>
@@ -23,7 +23,7 @@
   </form>
 </ion-content>
 
-<ion-footer no-border no-shadow padding>
+<ion-footer padding no-shadow no-border [keyboard-attach]="content">
   <button ion-button class="button-continue" [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'SAVE' | translate }}</button>
 </ion-footer>
 

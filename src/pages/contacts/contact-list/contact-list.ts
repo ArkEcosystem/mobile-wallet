@@ -109,7 +109,7 @@ export class ContactListPage {
 
     this.addresses = lodash(this.profile.contacts).mapValues('name').transform((result, key, value) => {
       result.push({ index: value, value, key });
-    }, []).value();
+    }, []).value().sort((a, b) => a.key.localeCompare(b.key));
   }
 
   ionViewDidLoad() {
