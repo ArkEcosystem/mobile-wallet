@@ -113,7 +113,9 @@
     "PIN_UPDATED_TEXT": "Je pincode is geüpdatet",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type pincode om passphrase te versleutelen",
     "TYPE_PIN_SIGN_TRANSACTION": "Type pincode om transactie te ondertekenen",
-    "WRONG": "Vul a.u.b. de juiste pincode in"
+    "WRONG": "Vul a.u.b. de juiste pincode in",
+    "WEAK_PIN": "Zwakke pincode",
+    "WEAK_PIN_DETAIL": "De opgegeven pincode is zwak en makkelijk te raden. Weet je zeker dat je deze wilt gebruiken?"
   },
   "PROFILES_PAGE": {
     "ADD_PROFILE_ERROR": "Kon profiel niet toevoegen",

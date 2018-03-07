@@ -79,6 +79,17 @@ export class AuthProvider {
     });
   }
 
+  isWeakPassword(password: string): boolean {
+    const weakPasswords = [
+      '000000', '111111', '222222', '333333', '444444',
+      '555555', '666666', '777777', '888888', '999999',
+      '012345', '123456', '234567', '345678', '456789',
+      '567890', '543210', '654321', '765432', '876543',
+      '987654', '098765'
+    ];
+    return weakPasswords.indexOf(password) > -1;
+  }
+
   getUnlockTimestamp() {
     return this.storage.getObject(constants.STORAGE_AUTH_UNLOCK_TIMESTAMP);
   }
