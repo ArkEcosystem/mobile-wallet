@@ -175,7 +175,7 @@
     "INVALID_FORM_ERROR": "Invalid Form Data",
     "MULTISIGNATURE_CREATION": "Multisignature Creation",
     "OPEN_EXPLORER": "Open in Explorer",
-    "QRCODE_COPY": "Tap on address to copy it to clipboard or click on icon to share QR code.",
+    "QRCODE_COPY": "Tap on the address to copy it to clipboard or click on the icon to share the QR code. Optionally you can also enter an amount, which will then be included in the QR code.",
     "RECEIVE": "Receive",
     "RECEIVE_TOKEN": "Receive {{ Token }}",
     "RECEIVED": "Received",
