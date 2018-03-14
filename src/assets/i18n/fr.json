@@ -42,7 +42,7 @@
     "STANDBY": "En attente",
     "SUPPLY": "Supply",
     "TOTAL_FORGED": "Total forgé",
-    "UNVOTE": "Unvote",
+    "UNVOTE": "Annuler le vote",
     "UNVOTE_CURRENT_DELEGATE": "Vous avez déjà un délégué, voulez-vous annuler votre vote pour {{ delegate }} ?",
     "UPDATING": "Mise à jour",
     "UPTIME": "Durée de fonctionnement",
@@ -72,7 +72,7 @@
   "SIGN_IN_PAGE": {
     "ARK_WALLET": "Portefeuille ARK",
     "CREATE_PROFILE": "Créer un profile",
-    "SLOGAN": "Bienvenue dans l'Exosystème ARK"
+    "SLOGAN": "Bienvenue dans l'Ecosystème ARK"
   },
   "SIGN_OUT_PROFILE_TEXT": "Se déconnecter du profile ?",
   "MARKETS_PAGE": {
@@ -106,7 +106,7 @@
     "CREATE": "Créer votre PIN",
     "DEFAULT_MESSAGE": "Entrer votre PIN",
     "WRONG_PIN_MANY_TIMES": "Vous avez entré un mauvais code PIN trop de fois !",
-    "WAIT_TO_TRY": "Attendez {{ time }} et rééssayez",
+    "WAIT_TO_TRY": "Attendez {{ time }} et réessayez",
     "SIGN_IN_ERROR": "Un problème est survenu lors de la connexion avec votre code PIN",
     "PIN_CREATED_ERROR_TEXT": "Un problème est survenu lors de la création de votre code PIN",
     "PIN_CREATED_TEXT": "Votre code PIN a été créé",
@@ -148,14 +148,14 @@
     "LANGUAGE": "Langue",
     "PRIVACY_POLICY": "Politique de confidentialité",
     "SECURITY": "Sécurité",
-    "NOT_AVAILABLE_WATCH_ONLY": "Non disponible, addresse en lecture seule uniquement",
+    "NOT_AVAILABLE_WATCH_ONLY": "Non disponible, adresse en lecture seule uniquement",
     "SETTINGS": "Paramètres",
     "VERSION": "Version",
     "WALLET_BACKUP": "Sauvegarde du portefeuille"
   },
   "SHOW_ADVANCED": "Afficher les paramètres avancés",
   "SKIP": "Passer",
-  "STATUS": "Status",
+  "STATUS": "Statut",
   "TRANSACTIONS_PAGE": {
     "2ND_SIGNATURE_CREATION": "Création de 2ème signature",
     "ADD_ADDRESS_TO_CONTACTS": "Ajouter {{adresse}} aux contacts",
@@ -163,7 +163,7 @@
     "CONFIRMATIONS": "Confirmations",
     "CONTACT_NAME": "Nom du nouveau contact (facultatif)",
     "COPY_TXID": "Copier TXID",
-    "CREATE_TRANSACTION_ERROR": "Impossible de créer une transaction. Vérifiez la connection Internet",
+    "CREATE_TRANSACTION_ERROR": "Impossible de créer une transaction. Vérifiez la connexion Internet",
     "DELEGATE_REGISTRATION": "Enregistrement de délégué",
     "ENCRYPT_SAVE_SECOND_PASSPHRASE": "Voulez-vous crypter et enregistrer votre deuxième mot de passe ?",
     "FEE": "Frais",
@@ -173,7 +173,7 @@
     "INVALID_ADDRESS_ERROR": "Adresse non valide",
     "INVALID_CONTACT_ERROR": "Contact invalide",
     "INVALID_FORM_ERROR": "Données de formulaire non valides",
-    "MULTISIGNATURE_CREATION": "Création de multisignature",
+    "MULTISIGNATURE_CREATION": "Création de multi-signature",
     "OPEN_EXPLORER": "Ouvrir dans l'explorer",
     "QRCODE_COPY": "Tapez sur l'adresse pour la copier dans le presse-papiers ou cliquez sur l'icône pour partager le QR code.",
     "RECEIVE": "Recevoir",
