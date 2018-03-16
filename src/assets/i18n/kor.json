@@ -1,16 +1,16 @@
 {
   "API": {
-    "BALANCE_TOO_LOW": "Balance too low for transaction",
-    "BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} on your account! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your account balance is only {{ balance }}!",
-    "DESTINATION_ADDRESS_ERROR": "The destination address '{{ address }}' is erroneous",
-    "PEER_LIST_ERROR": "Could not get list of peers",
-    "TRANSACTION_FAILED": "Transaction failed",
-    "TRANSACTION_SENT": "Transaction was sent"
+    "BALANCE_TOO_LOW": "잔액이 부족합니다.",
+    "BALANCE_TOO_LOW_DETAIL": "{{ token }} 의 잔액이 부족합니다! 트랜잭션 비용은 : {{ totalAmount }} ({{ amount }} + {{ fee }} fee) 입니다. 현재 잔고는 {{ balance }} 입니다!",
+    "DESTINATION_ADDRESS_ERROR": "받을 주소 '{{ address }}' 가 잘못 되었습니다.",
+    "PEER_LIST_ERROR": "피어 목록을 받지 못했습니다.",
+    "TRANSACTION_FAILED": "트랜잭션 실패",
+    "TRANSACTION_SENT": "트랜잭션 성공"
   },
-  "ARE_YOU_SURE": "Are you sure?",
-  "BACK_BUTTON_TEXT": "Back",
-  "CANCEL": "Cancel",
-  "CONFIRM": "Confirm",
+  "ARE_YOU_SURE": "정말 입니까?",
+  "BACK_BUTTON_TEXT": "뒤로가기",
+  "CANCEL": "취소",
+  "CONFIRM": "확인",
   "CONTACTS_PAGE": {
     "ADD_CONTACT_TEXT": "Click on the button below to add a contact",
     "CONTACT": "Contact",
