@@ -82,7 +82,7 @@ export class WalletBackupModal {
         const randomWord: string = words[randomIndex];
         randomWords.push(new PassphraseWord(randomWord,
                                             randomIndex + 1,
-                                            this.userDataProvider.isDevNet ? randomWord : null));
+                                            null));
       }
     }
 
