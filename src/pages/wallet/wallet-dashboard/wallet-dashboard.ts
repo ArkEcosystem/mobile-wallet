@@ -32,6 +32,7 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
 import { Clipboard } from '@ionic-native/clipboard';
 import { ToastProvider } from '@providers/toast/toast';
+import { TranslatableObject } from '@models/translate';
 
 @IonicPage()
 @Component({
@@ -255,13 +256,13 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   presentLabelModal() {
-    const modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label }, { cssClass: 'inset-modal-tiny' });
+    const modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label}, {cssClass: 'inset-modal-tiny'});
 
-    modal.onDidDismiss((data) => {
-      if (lodash.isEmpty(data)) { return; }
-
-      this.zone.run(() => this.wallet.label = data);
-      this.saveWallet();
+    modal.onDidDismiss((label) => {
+      const labelExists = this.userDataProvider.setWalletLabel(this.wallet, label);
+      if (labelExists) {
+        this.toastProvider.error({key: 'WALLETS_PAGE.LABEL_EXISTS', parameters: {label: label}} as TranslatableObject, 3000);
+      }
     });
 
     modal.present();

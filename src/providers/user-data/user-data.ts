@@ -207,6 +207,21 @@ export class UserDataProvider {
     return this.saveProfiles();
   }
 
+  public setWalletLabel(wallet: Wallet, label: string): boolean {
+    if (!wallet || wallet.label === label) {
+      return;
+    }
+
+    const exists = lodash.some(this.currentProfile.wallets, w => label && w.label && w.label.toLowerCase() === label.toLowerCase());
+
+    if (exists) {
+      return true;
+    }
+
+    wallet.label = label;
+    this.saveWallet(wallet);
+  }
+
   public getWalletLabel(walletOrAddress: Wallet | string): string {
     let wallet: Wallet;
     if (typeof walletOrAddress === 'string') {
@@ -219,7 +234,7 @@ export class UserDataProvider {
       return null;
     }
 
-    return wallet.username || wallet.label || wallet.address;
+    return wallet.username || wallet.label;
   }
 
   setCurrentWallet(wallet: Wallet) {
