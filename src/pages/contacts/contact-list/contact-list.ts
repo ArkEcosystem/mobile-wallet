@@ -61,13 +61,17 @@ export class ContactListPage {
   }
 
   showDeleteConfirm(address) {
+    const contactName = this.contactsProvider.getContactByAddress(address).name
     this.translateService.get([
       'CANCEL',
       'CONFIRM',
       'ARE_YOU_SURE',
-    ]).subscribe((translation) => {
+      'CONTACTS_PAGE.DELETE_CONTACT'
+    ], {name: contactName}).subscribe((translation) => {
+      console.log(JSON.stringify(translation))
       const alert = this.alertCtrl.create({
         title: translation.ARE_YOU_SURE,
+        message: translation["CONTACTS_PAGE.DELETE_CONTACT"],
         buttons: [
           {
             text: translation.CANCEL

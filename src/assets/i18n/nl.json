@@ -20,6 +20,7 @@
     "CONTACT_EXISTS_ADDRESS": "Er bestaat al een contact met adres '{{ address }}'!",
     "CONTACT_NOT_EXISTS_ADDRESS": "Een contact met adres '{{ address }}' bestaat niet!",
     "CONTACT_EXISTS_NAME": "Er bestaat al een contact met de naam '{{ name }}'!",
+    "DELETE_CONTACT": "Weet je zeker dat je contact '{{ name }}' wilt verwijderen?",
     "OVERWRITE_CONTACT": "Er bestaat al een contact genaamd '{{ name }}' met dit adres. Wil je de naam vervangen door '{{ newName }}'?"
   },
   "COPIED_CLIPBOARD": "Gekopieerd naar klembord",
@@ -54,6 +55,7 @@
   "DELETE": "Verwijderen",
   "DONE": "Klaar",
   "EDIT": "Bewerken",
+  "SIGN_OUT": "Uitloggen",
   "EXIT_APP_TEXT": "App Verlaten?",
   "FAILED": "Mislukt",
   "GENERAL": "Algemeen",
