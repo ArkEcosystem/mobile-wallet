@@ -42,7 +42,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
                 this.useAddress ? null : this.addressOrPassphrase,
                 !this.nonBIP39Passphrase);
   }
-  
+
   openBIP39DocURL() {
     return this.inAppBrowser.create(constants.BIP39_DOCUMENTATION_URL, '_system');
   }

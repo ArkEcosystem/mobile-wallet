@@ -25,7 +25,7 @@ export abstract class BaseWalletImport {
   protected import(address?: string, passphrase?: string, checkBIP39Passphrase?: boolean): void {
     let privateKey;
     let publicKey;
-    let bip39 = require('bip39');
+    const bip39 = require('bip39');
 
     if (address) {
       if (!this.networkProvider.isValidAddress(address)) {
