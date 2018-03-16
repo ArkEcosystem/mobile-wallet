@@ -11,7 +11,7 @@
   <ion-list>
 
     <ion-item-group>
-      <ion-item detail-push>
+      <ion-item>
         <ion-icon name="ios-globe-outline" color="primary" item-start></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.LANGUAGE' | translate }}</ion-label>
         <ion-select [(ngModel)]="currentSettings.language" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
@@ -21,7 +21,7 @@
         </ion-select>
       </ion-item>
 
-      <ion-item detail-push>
+      <ion-item>
         <ion-icon name="ios-cash-outline" color="primary" item-start></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.CURRENCY' | translate }}</ion-label>
         <ion-select [(ngModel)]="currentSettings.currency" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
