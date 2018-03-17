@@ -17,6 +17,10 @@
             </ion-label>
             <ion-textarea name="addressOrPassphrase" rows="2" [(ngModel)]="addressOrPassphrase" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required></ion-textarea>
           </ion-item>
+          <ion-item *ngIf="!useAddress" no-padding no-lines style="background-color:transparent">
+          <ion-label>Custom (non <a (click)="openBIP39DocURL()">BIP39</a>) passphrase</ion-label>
+          <ion-toggle name="nonBIP39Passphrase" [(ngModel)]="nonBIP39Passphrase"></ion-toggle>
+        </ion-item>
         </form>
       </ion-col>
     </ion-row>
