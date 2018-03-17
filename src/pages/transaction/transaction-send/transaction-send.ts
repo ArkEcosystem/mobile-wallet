@@ -16,6 +16,7 @@ import { ContactsAutoCompleteService } from '@providers/contacts-auto-complete/c
 import { PublicKey } from 'ark-ts/core';
 import { Network, Fees } from 'ark-ts/model';
 
+import { TruncateMiddlePipe } from '@pipes/truncate-middle/truncate-middle';
 import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
@@ -34,7 +35,7 @@ import { ArkUtility } from '../../../utils/ark-utility';
 @Component({
   selector: 'page-transaction-send',
   templateUrl: 'transaction-send.html',
-  providers: [UnitsSatoshiPipe],
+  providers: [UnitsSatoshiPipe, TruncateMiddlePipe],
 })
 export class TransactionSendPage implements OnInit {
   @ViewChild('sendTransactionForm') sendTransactionHTMLForm: HTMLFormElement;
@@ -70,6 +71,7 @@ export class TransactionSendPage implements OnInit {
     private toastProvider: ToastProvider,
     public contactsAutoCompleteService: ContactsAutoCompleteService,
     private unitsSatoshiPipe: UnitsSatoshiPipe,
+    private truncateMiddlePipe: TruncateMiddlePipe,
   ) {
     this.currentWallet = this.userDataProvider.currentWallet;
     this.currentNetwork = this.userDataProvider.currentNetwork;
@@ -145,11 +147,7 @@ export class TransactionSendPage implements OnInit {
   public onBlur(): void {
     // When field loses focus, use ellipses to show beginning and end of address
     const addressString = this.transaction.recipientAddress;
-    if (addressString.length > constants.ADDRESS_CUTOFF_THRESHOLD) {
-      const firstPart = addressString.substr(0, constants.ADDRESS_SEGMENT_SIZE);
-      const lastPart = addressString.slice(-constants.ADDRESS_SEGMENT_SIZE);
-      this.searchBar.setValue(firstPart + '...' + lastPart);
-    } // Otherwise leave it as is, as it is not a large string
+    this.searchBar.setValue(this.truncateMiddlePipe.transform(addressString, constants.TRANSACTION_ADDRESS_SIZE, addressString));
   }
 
   private validAddress(): boolean {
