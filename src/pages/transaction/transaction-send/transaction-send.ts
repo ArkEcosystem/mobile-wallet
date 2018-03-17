@@ -223,6 +223,7 @@ export class TransactionSendPage implements OnInit {
   onScanQRCode(qrCode: QRCodeScheme) {
     if (qrCode.address) {
       this.setFormValuesFromAddress(qrCode.address);
+      this.onBlur();
     } else {
       this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }
