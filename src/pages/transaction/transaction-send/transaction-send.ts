@@ -137,6 +137,21 @@ export class TransactionSendPage implements OnInit {
     this.setRecipientByAddress(input);
   }
 
+  public onFocus(): void {
+    // When field has focus, show full address
+    this.searchBar.setValue(this.transaction.recipientAddress);
+  }
+
+  public onBlur(): void {
+    // When field loses focus, use ellipses to show beginning and end of address
+    const addressString = this.transaction.recipientAddress;
+    if (addressString.length > constants.ADDRESS_CUTOFF_THRESHOLD) {
+      const firstPart = addressString.substr(0, constants.ADDRESS_SEGMENT_SIZE);
+      const lastPart = addressString.slice(-constants.ADDRESS_SEGMENT_SIZE);
+      this.searchBar.setValue(firstPart + '...' + lastPart);
+    } // Otherwise leave it as is, as it is not a large string
+  }
+
   private validAddress(): boolean {
     const isValid = PublicKey.validateAddress(this.transaction.recipientAddress, this.currentNetwork);
     this.sendTransactionHTMLForm.form.controls['recipientAddress'].setErrors({ incorrect: !isValid });
@@ -249,19 +264,21 @@ export class TransactionSendPage implements OnInit {
   }
 
   private setRecipientByAddress(input: string): void {
-    this.currentAutoCompleteFieldValue = input;
-    this.transaction.recipientAddress = input;
+    if (input.indexOf('...') === -1) { // Don't set our shortened '...' address as actual address
+      this.currentAutoCompleteFieldValue = input;
+      this.transaction.recipientAddress = input;
 
-    const contactOrLabel: Contact | string = this.contactsProvider.getContactByAddress(input)
-                                             || this.userDataProvider.getWalletLabel(input);
-    if (contactOrLabel && contactOrLabel !== input) {
-      this.isExistingContact = true;
-      this.isRecipientNameAutoSet = true;
-      this.transaction.recipientName = typeof contactOrLabel === 'string' ? contactOrLabel : contactOrLabel.name;
-    } else {
-      this.isExistingContact = false;
-      if (this.isRecipientNameAutoSet) {
-        this.transaction.recipientName = null;
+      const contactOrLabel: Contact | string = this.contactsProvider.getContactByAddress(input)
+                                               || this.userDataProvider.getWalletLabel(input);
+      if (contactOrLabel && contactOrLabel !== input) {
+        this.isExistingContact = true;
+        this.isRecipientNameAutoSet = true;
+        this.transaction.recipientName = typeof contactOrLabel === 'string' ? contactOrLabel : contactOrLabel.name;
+      } else {
+        this.isExistingContact = false;
+        if (this.isRecipientNameAutoSet) {
+          this.transaction.recipientName = null;
+        }
       }
     }
   }
