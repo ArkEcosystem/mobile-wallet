@@ -22,9 +22,10 @@ export abstract class BaseWalletImport {
     this.existingAddress = navParams.get('address');
   }
 
-  protected import(address?: string, passphrase?: string): void {
+  protected import(address?: string, passphrase?: string, checkBIP39Passphrase?: boolean): void {
     let privateKey;
     let publicKey;
+    const bip39 = require('bip39');
 
     if (address) {
       if (!this.networkProvider.isValidAddress(address)) {
@@ -34,6 +35,12 @@ export abstract class BaseWalletImport {
       publicKey = PublicKey.fromAddress(address);
       publicKey.setNetwork(this.networkProvider.currentNetwork);
     } else {
+      // test: import from passphrase here
+      if (checkBIP39Passphrase && !bip39.validateMnemonic(passphrase)) {
+        // passphrase is not a valid BIP39 mnemonic
+        this.toastProvider.error('WALLETS_PAGE.PASSPHRASE_NOT_BIP39');
+        return;
+      }
       privateKey = PrivateKey.fromSeed(passphrase, this.networkProvider.currentNetwork);
       publicKey = privateKey.getPublicKey();
       address = publicKey.getAddress();
