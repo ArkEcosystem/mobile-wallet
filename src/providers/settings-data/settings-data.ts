@@ -28,7 +28,7 @@ export class SettingsDataProvider {
       'ru': 'Русский',
       'gr': 'Ελληνικά',
       'pt-br': 'Português',
-      'cs': 'Čeština'
+      'cs': 'Čeština',
       'kor': '한국어',
       'bg': 'Български'
     },

@@ -227,6 +227,7 @@
     "PUBLIC_ADDRESS_SHARE": "Veřejná adresa (SHARE)",
     "PUBLIC_KEY": "Veřejný klíč",
     "PASSPHRASE_NOT_BELONG_TO_ADDRESS": "Zadaná kontrolní fráze nepatří k adrese '{{ address }}'!",
+    "PASSPHRASE_NOT_BIP39": "Zadali jste BIP39 nevalidní kontrolní frázi",
     "RE_ENTER_PASSPHRASE": "Znovu zadej svou kontrolní frázi",
     "REMOVE_WALLET": "Odstranit peněženku",
     "REMOVE_WALLET_TEXT": "Tvůj účet bude smazán. Ujisti se, že máš vše zálohované, protože pro obnovení budeš potřebovat původní kontrolní frázi.",
