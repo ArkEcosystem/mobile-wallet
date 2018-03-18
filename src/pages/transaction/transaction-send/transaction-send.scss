@@ -107,4 +107,12 @@ page-transaction-send {
       margin-right: 1em;
     }
   }
+
+  .content .scroll-content {
+    overflow-y: auto;
+  }
+  
+  .content-ios .scroll-content {
+    overflow-y: scroll;
+  }
 }
