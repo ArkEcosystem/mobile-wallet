@@ -27,7 +27,8 @@ export class SettingsDataProvider {
       'sv': 'Svenska',
       'ru': 'Русский',
       'gr': 'Ελληνικά',
-      'pt-br': 'Português'
+      'pt-br': 'Português',
+      'cs': 'Čeština'
     },
     currencies: {
       'btc': 'Bitcoin',
@@ -46,6 +47,7 @@ export class SettingsDataProvider {
       'hkd': 'Hong Kong Dollar',
       'idr': 'Indonesian Rupiah',
       'mxn': 'Mexican Peso',
+      'czk': 'Česká koruna'
     },
   };
 
