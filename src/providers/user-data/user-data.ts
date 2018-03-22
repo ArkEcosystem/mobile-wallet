@@ -198,6 +198,12 @@ export class UserDataProvider {
 
     const profile = this.getProfileById(profileId);
     wallet.lastUpdate = new Date().getTime();
+
+    const existingWallet = profile.wallets[wallet.address];
+    if (existingWallet && existingWallet.label) {
+      wallet.label = existingWallet.label;
+    }
+
     profile.wallets[wallet.address] = wallet;
 
     this.profiles[profileId] = profile;
