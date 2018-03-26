@@ -80,9 +80,9 @@ export class QRScannerModal {
       if (status.showing) {
         this.hideCamera();
       }
+      this.ionApp.classList.remove('transparent');
     });
 
-    this.ionApp.classList.remove('transparent');
     this.viewCtrl.dismiss(qrCode);
   }
 
