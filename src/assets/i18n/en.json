@@ -20,6 +20,7 @@
     "CONTACT_EXISTS_ADDRESS": "There is already a contact with the address '{{ address }}'!",
     "CONTACT_NOT_EXISTS_ADDRESS": "A contact with the address '{{ address }}' doesn't exist!",
     "CONTACT_EXISTS_NAME": "There is already a contact with the name '{{ name }}'!",
+    "DELETE_CONTACT": "Are you sure you want to delete contact '{{ name }}'?",
     "OVERWRITE_CONTACT": "There is already a contact named '{{ name }}' with this address. Do you want to overwrite it's name with '{{ newName }}'?"
   },
   "COPIED_CLIPBOARD": "Copied to clipboard",
