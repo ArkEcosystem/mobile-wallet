@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
-import { Contact, Wallet, MarketTicker, MarketCurrency, SendTransactionForm, WalletKeys } from '@models/model';
+import { Contact, Wallet, SendTransactionForm, WalletKeys } from '@models/model';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ContactsProvider } from '@providers/contacts/contacts';
-import { MarketDataProvider } from '@providers/market-data/market-data';
-import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
 
@@ -29,6 +27,8 @@ import { TranslatableObject } from '@models/translate';
 import { QRCodeScheme } from '@models/model';
 import { BigNumber } from 'bignumber.js';
 import { ArkUtility } from '../../../utils/ark-utility';
+import { AmountComponent } from '@components/amount/amount';
+import { Amount } from '@components/amount/amount.model';
 
 @IonicPage()
 @Component({
@@ -42,31 +42,24 @@ export class TransactionSendPage implements OnInit {
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
   @ViewChild('qrScanner') qrScanner: QRScannerComponent;
   @ViewChild('searchBar') searchBar: AutoCompleteComponent;
+  @ViewChild(AmountComponent) private amountComponent: AmountComponent;
 
   sendForm: FormGroup;
   transaction: SendTransactionForm = {};
 
   currentWallet: Wallet;
   currentNetwork: Network;
-  marketTicker: MarketTicker;
-  marketCurrency: MarketCurrency;
   fees: Fees;
   isExistingContact = true;
   isRecipientNameAutoSet: boolean;
 
-  tokenPlaceholder = 100;
-  fiatPlaceholder: number;
-
   private currentAutoCompleteFieldValue: string;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
+    private navParams: NavParams,
     private userDataProvider: UserDataProvider,
     private contactsProvider: ContactsProvider,
     private arkApiProvider: ArkApiProvider,
-    private marketDataProvider: MarketDataProvider,
-    private settingsDataProvider: SettingsDataProvider,
     private toastProvider: ToastProvider,
     public contactsAutoCompleteService: ContactsAutoCompleteService,
     private unitsSatoshiPipe: UnitsSatoshiPipe,
@@ -94,7 +87,7 @@ export class TransactionSendPage implements OnInit {
     }
 
     this.transaction.amount = this.unitsSatoshiPipe.transform(sendableAmount, true);
-    this.onInputToken();
+    this.amountComponent.setAmount(this.transaction.amount);
   }
 
   send() {
@@ -179,15 +172,6 @@ export class TransactionSendPage implements OnInit {
     this.qrScanner.open(true);
   }
 
-  onInputToken() {
-    const precision = this.marketCurrency.code === 'btc' ? 8 : 2;
-    this.transaction.amountEquivalent = +(this.transaction.amount * this.marketCurrency.price).toFixed(precision);
-  }
-
-  onInputFiat() {
-    this.transaction.amount = +(this.transaction.amountEquivalent / this.marketCurrency.price).toFixed(8);
-  }
-
   onEnterPinCode(keys: WalletKeys) {
     const amount = new BigNumber(this.transaction.amount);
     const data: TransactionSend = {
@@ -215,14 +199,6 @@ export class TransactionSendPage implements OnInit {
 
   ionViewDidLoad() {
     this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);
-    this.marketDataProvider.ticker.subscribe((ticker) => {
-      this.marketTicker = ticker;
-
-      this.settingsDataProvider.settings.subscribe((settings) => {
-        this.marketCurrency = ticker.getCurrency({ code: settings.currency });
-        this.fiatPlaceholder = +(this.tokenPlaceholder * this.marketCurrency.price).toFixed(2);
-      });
-    });
   }
 
   ngOnInit(): void {
@@ -237,6 +213,11 @@ export class TransactionSendPage implements OnInit {
     });
 
     this.setFormValuesFromAddress(this.navParams.get('address') || '');
+  }
+
+  public onAmountChange(newAmounts: Amount) {
+    this.transaction.amount = newAmounts.amount;
+    this.transaction.amountEquivalent = newAmounts.amountEquivalent;
   }
 
   private setFormValuesFromAddress(address: string): void {
