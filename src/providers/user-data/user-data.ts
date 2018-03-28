@@ -215,11 +215,12 @@ export class UserDataProvider {
     const exists = lodash.some(this.currentProfile.wallets, w => label && w.label && w.label.toLowerCase() === label.toLowerCase());
 
     if (exists) {
-      return true;
+      return false;
     }
 
     wallet.label = label;
     this.saveWallet(wallet);
+    return true;
   }
 
   public getWalletLabel(walletOrAddress: Wallet | string): string {

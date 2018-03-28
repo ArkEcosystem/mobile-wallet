@@ -259,8 +259,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     const modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label}, {cssClass: 'inset-modal-tiny'});
 
     modal.onDidDismiss((label) => {
-      const labelExists = this.userDataProvider.setWalletLabel(this.wallet, label);
-      if (labelExists) {
+      const isLabelUnique = this.userDataProvider.setWalletLabel(this.wallet, label);
+      if (isLabelUnique === false) {
         this.toastProvider.error({key: 'WALLETS_PAGE.LABEL_EXISTS', parameters: {label: label}} as TranslatableObject, 3000);
       }
     });
