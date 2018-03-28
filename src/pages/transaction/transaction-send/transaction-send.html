@@ -20,8 +20,8 @@
               <span class="auto-complete-row">
                 <ion-icon [name]="attrs.data.iconName" item-start></ion-icon>
                 <span>
-                  <span [innerHTML]="attrs.data.name | boldprefix:attrs.keyword"></span>
-                  <span class="autocomplete-second-line" [innerHTML]="attrs.data.address | boldprefix:attrs.keyword"></span>
+                  <span [innerHTML]="attrs.data.name | escapeHTML | boldprefix:attrs.keyword"></span>
+                  <span class="autocomplete-second-line" [innerHTML]="attrs.data.address | escapeHTML | boldprefix:attrs.keyword"></span>
                 </span>
                 </span>
             </ng-template>
