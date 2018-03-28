@@ -139,12 +139,12 @@ export class TransactionSendPage implements OnInit {
     this.setRecipientByAddress(input);
   }
 
-  public onFocus(): void {
+  public showFullAddress(): void {
     // When field has focus, show full address
     this.searchBar.setValue(this.transaction.recipientAddress);
   }
 
-  public onBlur(): void {
+  public truncateAddressMiddle(): void {
     // When field loses focus, use ellipses to show beginning and end of address
     const addressString = this.transaction.recipientAddress;
     this.searchBar.setValue(this.truncateMiddlePipe.transform(addressString, constants.TRANSACTION_ADDRESS_SIZE, addressString));
@@ -221,7 +221,7 @@ export class TransactionSendPage implements OnInit {
   onScanQRCode(qrCode: QRCodeScheme) {
     if (qrCode.address) {
       this.setFormValuesFromAddress(qrCode.address);
-      this.onBlur();
+      this.truncateAddressMiddle();
     } else {
       this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }
