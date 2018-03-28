@@ -217,3 +217,11 @@ ion-fab.pull-footer {
 .platform-ios modal-pin-code close-popup .button {
   top: 1.5em;
 }
+
+.content .scroll-content {
+  overflow-y: auto;
+}
+
+.content-ios .scroll-content {
+  overflow-y: scroll;
+}
