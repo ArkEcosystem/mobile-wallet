@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { NetworkProvider } from '@providers/network/network';
 import { Observable } from 'rxjs/Observable';
 
-interface NeoUnclaimedResult {
+interface BalanceResult {
   unclaimed: any;
+  balance: any;
   address: string;
 }
 
@@ -20,14 +21,14 @@ export class NeoApiProvider {
       return Observable.of(false);
     }
 
-    // we use the getUnClaimed call, because it's fast, if the address exists (i.e. has any transactions), the address is returned
+    // we use the getBalance call, because it's fast, if the address exists (i.e. has any transactions), the address is returned
     // we check if it's a real address (and not "not found") and return the result
-    return this.getUnClaimed(address)
-      .map((r: NeoUnclaimedResult) => this.isValidAddress(r.address));
+    return this.getBalance(address)
+      .map((r: BalanceResult) => this.isValidAddress(r.address));
   }
 
-  private getUnClaimed(address: string): Observable<NeoUnclaimedResult> {
-    return this.http.get<NeoUnclaimedResult>(`${NeoApiProvider.baseUrl}/get_unclaimed/${address}`);
+  private getBalance(address: string): Observable<BalanceResult> {
+    return this.http.get<BalanceResult>(`${NeoApiProvider.baseUrl}/get_balance/${address}`);
   }
 
   private isValidAddress(address): boolean {

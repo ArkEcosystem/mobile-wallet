@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavParams } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Contact, Wallet, SendTransactionForm, WalletKeys } from '@models/model';
@@ -32,12 +32,17 @@ import { AddressCheckerProvider} from '@providers/address-checker/address-checke
 import { AddressCheckResult } from '@providers/address-checker/address-check-result';
 import { AmountComponent } from '@components/amount/amount';
 import { Amount } from '@components/amount/amount.model';
+import { Loading } from 'ionic-angular/components/loading/loading';
+import { TranslateService } from '@ngx-translate/core';
 
-interface CombinedResult {
-  checkerDone: boolean;
-  checkerResult: AddressCheckResult;
-  pinCodeDone: boolean;
-  keys: WalletKeys;
+class CombinedResult {
+  public checkerDone: boolean;
+  public checkerResult: AddressCheckResult;
+  public pinCodeDone: boolean;
+  public keys: WalletKeys;
+
+  public constructor(public loader: Loading) {
+  }
 }
 
 @IonicPage()
@@ -74,7 +79,9 @@ export class TransactionSendPage implements OnInit {
     public contactsAutoCompleteService: ContactsAutoCompleteService,
     private unitsSatoshiPipe: UnitsSatoshiPipe,
     private truncateMiddlePipe: TruncateMiddlePipe,
-    private addressChecker: AddressCheckerProvider
+    private addressChecker: AddressCheckerProvider,
+    private loadingCtrl: LoadingController,
+    private translateService: TranslateService
   ) {
     this.currentWallet = this.userDataProvider.currentWallet;
     this.currentNetwork = this.userDataProvider.currentNetwork;
@@ -110,16 +117,19 @@ export class TransactionSendPage implements OnInit {
     } else {
       this.createContact();
 
-      const combinedResult: CombinedResult = {checkerDone: false, checkerResult: null, pinCodeDone: false, keys: null};
-      this.addressChecker.checkAddress(this.transaction.recipientAddress).subscribe(checkerResult => {
-        combinedResult.checkerDone = true;
-        combinedResult.checkerResult = checkerResult;
-        this.createTransactionAndShowConfirm(combinedResult);
-      });
-      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true, (keys: WalletKeys) => {
-        combinedResult.pinCodeDone = true;
-        combinedResult.keys = keys;
-        this.createTransactionAndShowConfirm(combinedResult);
+      this.translateService.get('TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS').subscribe(translation => {
+        const loader = this.loadingCtrl.create({content: translation});
+        const combinedResult: CombinedResult = new CombinedResult(loader);
+        this.addressChecker.checkAddress(this.transaction.recipientAddress).subscribe(checkerResult => {
+          combinedResult.checkerDone = true;
+          combinedResult.checkerResult = checkerResult;
+          this.createTransactionAndShowConfirm(combinedResult);
+        });
+        this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true, (keys: WalletKeys) => {
+          combinedResult.pinCodeDone = true;
+          combinedResult.keys = keys;
+          this.createTransactionAndShowConfirm(combinedResult);
+        });
       });
     }
   }
@@ -208,9 +218,16 @@ export class TransactionSendPage implements OnInit {
 
 
   private createTransactionAndShowConfirm(result: CombinedResult) {
-    if (!result.checkerDone || !result.pinCodeDone) {
+    if (!result.pinCodeDone) {
       return;
     }
+
+    if (!result.checkerDone) {
+      result.loader.present();
+      return;
+    }
+
+    result.loader.dismiss();
 
     const amount = new BigNumber(this.transaction.amount);
     const data: TransactionSend = {
