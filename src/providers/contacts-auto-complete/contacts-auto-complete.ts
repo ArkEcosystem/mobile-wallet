@@ -31,7 +31,7 @@ export class ContactsAutoCompleteService implements AutoCompleteService {
 
     const wallets: AutoCompleteContact[] = lodash.map(this.userDataProvider.currentProfile.wallets, (wallet: Wallet) => {
       const address = wallet.address;
-      const label = this.userDataProvider.getWalletLabel(wallet);
+      const label = this.userDataProvider.getWalletLabel(wallet) || wallet.address;
       if (address) {
         return {
           address: address,

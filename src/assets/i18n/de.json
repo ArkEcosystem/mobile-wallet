@@ -215,6 +215,7 @@
     "IMPORT_WALLET": "Importiere Wallet",
     "KEEP_SAFE": "Sichere es",
     "LABEL": "Bezeichnung",
+    "LABEL_EXISTS": "Es existiert bereits ein Wallet mit der Bezeichnung '{{ label }}'!",
     "MY_WALLET": "Mein Wallet",
     "NEW_WALLET_NAME": "Neuer Wallet Name",
     "NO_TRANSACTIONS": "Keine Transaktionen verfügbar",
