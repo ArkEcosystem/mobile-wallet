@@ -34,7 +34,7 @@ ARK’s mobile wallet is a hybrid application (using the same codebase for Andro
 First follow the steps below to install the dependencies:
 
 ```bash
-$ npm install -g ionic cordova
+$ npm install -g ionic cordova@7.1.0
 $ npm install
 $ ionic cordova prepare
 ```
