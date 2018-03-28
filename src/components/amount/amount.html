@@ -1,0 +1,39 @@
+<form [formGroup]="formGroup">
+  <ion-row>
+    <ion-col>
+      <ion-grid no-padding class="amount-container">
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>{{ currentNetwork?.token }}</ion-label>
+              <ion-input type="number"
+                         formControlName="amount"
+                         step="0.00000001"
+                         min="0.00000001"
+                         max="10000000000"
+                         name="amount"
+                         [(ngModel)]="amount"
+                         (input)="onInputToken()"
+                         [placeholder]="tokenPlaceholder">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col appMainnetOnly>
+            <ion-item>
+              <ion-label stacked>{{ marketCurrency?.code | uppercase }}</ion-label>
+              <ion-input type="number"
+                         formControlName="amountEquivalent"
+                         step="0.01" min="0.00000001"
+                         max="10000000000"
+                         name="amountEquivalent"
+                         [(ngModel)]="amountEquivalent"
+                         (input)="onInputFiat()"
+                         [placeholder]="fiatPlaceholder">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-col>
+  </ion-row>
+</form>

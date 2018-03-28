@@ -22,12 +22,14 @@ export class SettingsDataProvider {
     languages: {
       'en': 'English',
       'de': 'Deutsch',
+      'fr': 'French',
       'it': 'Italiano',
       'nl': 'Nederlands',
       'sv': 'Svenska',
       'ru': 'Русский',
       'gr': 'Ελληνικά',
       'pt-br': 'Português',
+      'cs': 'Čeština',
       'kor': '한국어',
       'bg': 'Български'
     },
@@ -48,6 +50,7 @@ export class SettingsDataProvider {
       'hkd': 'Hong Kong Dollar',
       'idr': 'Indonesian Rupiah',
       'mxn': 'Mexican Peso',
+      'czk': 'Česká koruna'
     },
   };
 

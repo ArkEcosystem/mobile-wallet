@@ -20,6 +20,7 @@
     "CONTACT_EXISTS_ADDRESS": "There is already a contact with the address '{{ address }}'!",
     "CONTACT_NOT_EXISTS_ADDRESS": "A contact with the address '{{ address }}' doesn't exist!",
     "CONTACT_EXISTS_NAME": "There is already a contact with the name '{{ name }}'!",
+    "DELETE_CONTACT": "Are you sure you want to delete contact '{{ name }}'?",
     "OVERWRITE_CONTACT": "There is already a contact named '{{ name }}' with this address. Do you want to overwrite it's name with '{{ newName }}'?"
   },
   "COPIED_CLIPBOARD": "Copied to clipboard",
@@ -175,7 +176,7 @@
     "INVALID_FORM_ERROR": "Invalid Form Data",
     "MULTISIGNATURE_CREATION": "Multisignature Creation",
     "OPEN_EXPLORER": "Open in Explorer",
-    "QRCODE_COPY": "Tap on address to copy it to clipboard or click on icon to share QR code.",
+    "QRCODE_COPY": "Tap on the address to copy it to clipboard or click on the icon to share the QR code. Optionally you can also enter an amount, which will then be included in the QR code.",
     "RECEIVE": "Receive",
     "RECEIVE_TOKEN": "Receive {{ Token }}",
     "RECEIVED": "Received",

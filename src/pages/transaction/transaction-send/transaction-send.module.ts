@@ -11,6 +11,7 @@ import { QRScannerComponentModule } from '@components/qr-scanner/qr-scanner.modu
 import { DirectivesModule } from '@directives/directives.module';
 
 import { AutoCompleteModule } from 'ionic2-auto-complete';
+import { AmountComponentModule } from '@components/amount/amount.module';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AutoCompleteModule } from 'ionic2-auto-complete';
     QRScannerComponentModule,
     DirectivesModule,
     AutoCompleteModule,
+    AmountComponentModule
   ],
 })
 export class TransactionSendPageModule {}
