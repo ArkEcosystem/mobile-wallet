@@ -61,6 +61,12 @@ export abstract class BaseWalletImport {
         if (!privateKey) {
           this.addWallet(newWallet);
         } else {
+          // if we are converting watch-only to full wallet, keep label from existing watch-only wallet
+          const existingWallet = this.userDataProvider.getWalletByAddress(address);
+          if (existingWallet && existingWallet.label) {
+            newWallet.label = existingWallet.label;
+          }
+
           this.verifyWithPinCode(newWallet, passphrase);
         }
       })
