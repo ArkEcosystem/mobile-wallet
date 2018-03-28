@@ -14,6 +14,7 @@ import { ContactsAutoCompleteService } from '@providers/contacts-auto-complete/c
 import { PublicKey } from 'ark-ts/core';
 import { Network, Fees } from 'ark-ts/model';
 
+import { TruncateMiddlePipe } from '@pipes/truncate-middle/truncate-middle';
 import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
@@ -34,7 +35,7 @@ import { Amount } from '@components/amount/amount.model';
 @Component({
   selector: 'page-transaction-send',
   templateUrl: 'transaction-send.html',
-  providers: [UnitsSatoshiPipe],
+  providers: [UnitsSatoshiPipe, TruncateMiddlePipe],
 })
 export class TransactionSendPage implements OnInit {
   @ViewChild('sendTransactionForm') sendTransactionHTMLForm: HTMLFormElement;
@@ -63,6 +64,7 @@ export class TransactionSendPage implements OnInit {
     private toastProvider: ToastProvider,
     public contactsAutoCompleteService: ContactsAutoCompleteService,
     private unitsSatoshiPipe: UnitsSatoshiPipe,
+    private truncateMiddlePipe: TruncateMiddlePipe,
   ) {
     this.currentWallet = this.userDataProvider.currentWallet;
     this.currentNetwork = this.userDataProvider.currentNetwork;
@@ -130,6 +132,17 @@ export class TransactionSendPage implements OnInit {
     this.setRecipientByAddress(input);
   }
 
+  public showFullAddress(): void {
+    // When field has focus, show full address
+    this.searchBar.setValue(this.transaction.recipientAddress);
+  }
+
+  public truncateAddressMiddle(): void {
+    // When field loses focus, use ellipses to show beginning and end of address
+    const addressString = this.transaction.recipientAddress;
+    this.searchBar.setValue(this.truncateMiddlePipe.transform(addressString, constants.TRANSACTION_ADDRESS_SIZE, addressString));
+  }
+
   private validAddress(): boolean {
     const isValid = PublicKey.validateAddress(this.transaction.recipientAddress, this.currentNetwork);
     this.sendTransactionHTMLForm.form.controls['recipientAddress'].setErrors({ incorrect: !isValid });
@@ -192,6 +205,7 @@ export class TransactionSendPage implements OnInit {
   onScanQRCode(qrCode: QRCodeScheme) {
     if (qrCode.address) {
       this.setFormValuesFromAddress(qrCode.address);
+      this.truncateAddressMiddle();
     } else {
       this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }
@@ -230,19 +244,21 @@ export class TransactionSendPage implements OnInit {
   }
 
   private setRecipientByAddress(input: string): void {
-    this.currentAutoCompleteFieldValue = input;
-    this.transaction.recipientAddress = input;
+    if (input.indexOf('...') === -1) { // Don't set our shortened '...' address as actual address
+      this.currentAutoCompleteFieldValue = input;
+      this.transaction.recipientAddress = input;
 
-    const contactOrLabel: Contact | string = this.contactsProvider.getContactByAddress(input)
-                                             || this.userDataProvider.getWalletLabel(input);
-    if (contactOrLabel && contactOrLabel !== input) {
-      this.isExistingContact = true;
-      this.isRecipientNameAutoSet = true;
-      this.transaction.recipientName = typeof contactOrLabel === 'string' ? contactOrLabel : contactOrLabel.name;
-    } else {
-      this.isExistingContact = false;
-      if (this.isRecipientNameAutoSet) {
-        this.transaction.recipientName = null;
+      const contactOrLabel: Contact | string = this.contactsProvider.getContactByAddress(input)
+                                               || this.userDataProvider.getWalletLabel(input);
+      if (contactOrLabel && contactOrLabel !== input) {
+        this.isExistingContact = true;
+        this.isRecipientNameAutoSet = true;
+        this.transaction.recipientName = typeof contactOrLabel === 'string' ? contactOrLabel : contactOrLabel.name;
+      } else {
+        this.isExistingContact = false;
+        if (this.isRecipientNameAutoSet) {
+          this.transaction.recipientName = null;
+        }
       }
     }
   }

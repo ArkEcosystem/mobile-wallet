@@ -32,6 +32,8 @@
                                formControlName="recipientAddress"
                                (itemSelected)="onSearchItem($event)"
                                (ionAutoInput)="onSearchInput($event)"
+                               (autoFocus)="showFullAddress($event)"
+                               (autoBlur)="truncateAddressMiddle($event)"
                                [template]="contactsTemplate"
                                #searchBar>
             </ion-auto-complete>
