@@ -3,15 +3,7 @@ page-network-status {
     display: flex;
     flex-direction: column;
   }
-
-  .content .scroll-content {
-    overflow-y: auto;
-  }
   
-  .content-ios .scroll-content {
-    overflow-y: scroll;
-  }
-
   ion-grid {
     padding: 0;
     height: 100%;
