@@ -5,10 +5,16 @@ export interface AddressMap {
   highlight?: boolean;
 }
 
-export interface AutoCompleteContact {
+export enum AutoCompleteAccountType {
+  Wallet,
+  Contact
+}
+
+export interface AutoCompleteAccount {
   address: string;
   name: string;
   iconName: string;
+  type: AutoCompleteAccountType;
 }
 
 export interface Contact {

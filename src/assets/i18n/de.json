@@ -164,7 +164,10 @@
     "ADD_ADDRESS_TO_CONTACTS": "Füge {{ address }} zu Kontakten hinzu",
     "AMOUNT": "Anzahl",
     "CONFIRMATIONS": "Bestätigungen",
-    "CONTACT_NAME": "Neuer Kontakt Name (optional)",
+    "NEW_CONTACT_NAME": "Neuer Kontakt Name (optional)",
+    "NEW_WALLET_LABEL": "Wallet Bezeichnung (optional)",
+    "EXISTING_WALLET": "Wallet",
+    "EXISTING_CONTACT": "Kontakt",
     "COPY_TXID": "Kopiere TXID",
     "CREATE_TRANSACTION_ERROR": "Konnte Transaktion nicht erstellen, prüfe die Internetverbindung",
     "DELEGATE_REGISTRATION": "Delegate Registration",
@@ -203,7 +206,9 @@
     "INVALID_ADDRESS": "Diese Adresse ist ungültig!",
     "IS_OWN_ADDRESS": "Dies ist deine eigene Adresse. Bist du sicher, dass du an deine eigene Adresse senden möchtest?",
     "NO_TRANSACTIONS": "Es scheint so als hätte diese Adresse keine Transaktionen. Bist du sicher, dass sie korrekt ist?",
-    "IS_NEO_ADDRESS": "Es sieht so aus, als wäre dies eine 'NEO' Adresse. Bist du sicher, dass sie korrekt ist?"
+    "IS_NEO_ADDRESS": "Es sieht so aus, als wäre dies eine 'NEO' Adresse. Bist du sicher, dass sie korrekt ist?",
+    "LABEL_EXISTS": "Es existiert bereits ein Wallet mit der Bezeichnung '{{ label }}'!",
+    "INVALID_WALLET": "Das Wallet ist ungültig!"
   },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "Konnte Wallet nicht hinzufügen",
@@ -227,7 +232,6 @@
     "IMPORT_WALLET": "Importiere Wallet",
     "KEEP_SAFE": "Sichere es",
     "LABEL": "Bezeichnung",
-    "LABEL_EXISTS": "Es existiert bereits ein Wallet mit der Bezeichnung '{{ label }}'!",
     "MY_WALLET": "Mein Wallet",
     "NEW_WALLET_NAME": "Neuer Wallet Name",
     "NO_TRANSACTIONS": "Keine Transaktionen verfügbar",

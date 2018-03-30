@@ -17,7 +17,7 @@ import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ToastProvider } from '@providers/toast/toast';
 import { ForgeProvider } from '@providers/forge/forge';
-import { ContactsAutoCompleteService } from '@providers/contacts-auto-complete/contacts-auto-complete';
+import { AccountAutoCompleteService } from '@providers/account-auto-complete/account-auto-complete';
 
 // Ionic native
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -78,7 +78,7 @@ export function httpLoaderFactory(http: HttpClient) {
     SettingsDataProvider,
     ForgeProvider,
     ToastProvider,
-    ContactsAutoCompleteService,
+    AccountAutoCompleteService,
     NeoApiProvider,
     AddressCheckerProvider
   ]

@@ -153,7 +153,7 @@
       "ADD_ADDRESS_TO_CONTACTS": "Adicionar {{ address }} aos contatos",
       "AMOUNT": "Montante",
       "CONFIRMATIONS": "Confirmações",
-      "CONTACT_NAME": "Novo nome do contato (optional)",
+      "NEW_CONTACT_NAME": "Novo nome do contato (optional)",
       "COPY_TXID": "Copiar TXID",
       "CREATE_TRANSACTION_ERROR": "Não foi possível criar transações. Verifique a conexão com a internet.",
       "DELEGATE_REGISTRATION": "Delegado registrado",

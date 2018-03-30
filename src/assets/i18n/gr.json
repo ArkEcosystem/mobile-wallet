@@ -152,7 +152,7 @@
     "ADD_ADDRESS_TO_CONTACTS": "Πρόσθεση {{ address }} στις επαφές",
     "AMOUNT": "Ποσό",
     "CONFIRMATIONS": "Επιβεβαιώσεις",
-    "CONTACT_NAME": "Όνομα νέας επαφής (προαιρετικό)",
+    "NEW_CONTACT_NAME": "Όνομα νέας επαφής (προαιρετικό)",
     "COPY_TXID": "Αντιγραφή TXID",
     "CREATE_TRANSACTION_ERROR": "Αδυναμία δημιουργίας συναλλαγής, ελέγξτε την σύνδεσή σας στο δίκτυο",
     "DELEGATE_REGISTRATION": "Καταχώρηση Αντιπροσώπου",

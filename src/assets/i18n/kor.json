@@ -163,7 +163,7 @@
     "ADD_ADDRESS_TO_CONTACTS": "{{ address }} 를 연락처에 추가",
     "AMOUNT": "수량",
     "CONFIRMATIONS": "컨펌",
-    "CONTACT_NAME": "새로운 연락처 이름 (선택)",
+    "NEW_CONTACT_NAME": "새로운 연락처 이름 (선택)",
     "COPY_TXID": "트랜잭션ID 복사",
     "CREATE_TRANSACTION_ERROR": "트랜잭션을 생성하지 못했습니다. 인터넷 연결을 확인하세요.",
     "DELEGATE_REGISTRATION": "대표자 등록",
