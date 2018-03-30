@@ -5,6 +5,7 @@ import { Wallet, WalletKeys, Transaction, TranslatableObject } from '@models/mod
 import { TranslateService } from '@ngx-translate/core';
 
 import lodash from 'lodash';
+import { AddressCheckResult } from '@providers/address-checker/address-check-result';
 
 @Component({
   selector: 'confirm-transaction',
@@ -24,13 +25,14 @@ export class ConfirmTransactionComponent {
     private translateService: TranslateService
   ) { }
 
-  open(transaction: any, keys: WalletKeys) {
+  open(transaction: any, keys: WalletKeys, addressCheckResult?: AddressCheckResult) {
     transaction = new Transaction(this.wallet.address).deserialize(transaction);
 
     this.arkApiProvider.createTransaction(transaction, keys.key, keys.secondKey, keys.secondPassphrase)
       .subscribe((tx) => {
         const modal = this.modalCtrl.create('ConfirmTransactionModal', {
-          transaction: tx
+          transaction: tx,
+          addressCheckResult: addressCheckResult
         }, { cssClass: 'inset-modal-send', enableBackdropDismiss: true });
 
         modal.onDidDismiss((result) => {

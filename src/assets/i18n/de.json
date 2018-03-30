@@ -172,7 +172,8 @@
     "INVALID_CONTACT_ERROR": "Ungültiger Kontakt",
     "INVALID_FORM_ERROR": "Ungültige Daten",
     "MULTISIGNATURE_CREATION": "Multisignatur erzeugen",
-    "OPEN_EXPLORER": "Öffnen in Explorer",
+    "OPEN_EXPLORER": "In Explorer öffnen",
+    "PERFORMING_DESTINATION_ADDRESS_CHECKS": "Zieladresse wird überprüft...",
     "QRCODE_COPY": "Klicke auf die Adresse, um sie zu kopieren oder klicke auf das Icon um den QR Code zu teilen. Optional kannst du auch ein Betrag eingeben, der direkt im QR Code integriert wird.",
     "RECEIVE": "Empfangen",
     "RECEIVE_TOKEN": "{{ Token }} Empfangen",
@@ -193,6 +194,12 @@
     "TRANSACTION": "Transaktion"
   },
   "TYPE": "Typ",
+  "VALIDATION": {
+    "INVALID_ADDRESS": "Diese Adresse ist ungültig!",
+    "IS_OWN_ADDRESS": "Dies ist deine eigene Adresse. Bist du sicher, dass du an deine eigene Adresse senden möchtest?",
+    "NO_TRANSACTIONS": "Es scheint so als hätte diese Adresse keine Transaktionen. Bist du sicher, dass sie korrekt ist?",
+    "IS_NEO_ADDRESS": "Es sieht so aus, als wäre dies eine 'NEO' Adresse. Bist du sicher, dass sie korrekt ist?"
+  },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "Konnte Wallet nicht hinzufügen",
     "ADD_WALLET_TEXT": "Um ein Wallet zu importieren oder hinzuzufügen, klicke den nachfolgenden Button",

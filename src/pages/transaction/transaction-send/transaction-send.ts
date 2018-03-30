@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavParams } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Contact, Wallet, SendTransactionForm, WalletKeys } from '@models/model';
@@ -28,8 +28,22 @@ import { TranslatableObject } from '@models/translate';
 import { QRCodeScheme } from '@models/model';
 import { BigNumber } from 'bignumber.js';
 import { ArkUtility } from '../../../utils/ark-utility';
+import { AddressCheckerProvider} from '@providers/address-checker/address-checker';
+import { AddressCheckResult } from '@providers/address-checker/address-check-result';
 import { AmountComponent } from '@components/amount/amount';
 import { Amount } from '@components/amount/amount.model';
+import { Loading } from 'ionic-angular/components/loading/loading';
+import { TranslateService } from '@ngx-translate/core';
+
+class CombinedResult {
+  public checkerDone: boolean;
+  public checkerResult: AddressCheckResult;
+  public pinCodeDone: boolean;
+  public keys: WalletKeys;
+
+  public constructor(public loader: Loading) {
+  }
+}
 
 @IonicPage()
 @Component({
@@ -65,6 +79,9 @@ export class TransactionSendPage implements OnInit {
     public contactsAutoCompleteService: ContactsAutoCompleteService,
     private unitsSatoshiPipe: UnitsSatoshiPipe,
     private truncateMiddlePipe: TruncateMiddlePipe,
+    private addressChecker: AddressCheckerProvider,
+    private loadingCtrl: LoadingController,
+    private translateService: TranslateService
   ) {
     this.currentWallet = this.userDataProvider.currentWallet;
     this.currentNetwork = this.userDataProvider.currentNetwork;
@@ -99,7 +116,21 @@ export class TransactionSendPage implements OnInit {
       this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_ADDRESS_ERROR');
     } else {
       this.createContact();
-      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
+
+      this.translateService.get('TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS').subscribe(translation => {
+        const loader = this.loadingCtrl.create({content: translation});
+        const combinedResult: CombinedResult = new CombinedResult(loader);
+        this.addressChecker.checkAddress(this.transaction.recipientAddress).subscribe(checkerResult => {
+          combinedResult.checkerDone = true;
+          combinedResult.checkerResult = checkerResult;
+          this.createTransactionAndShowConfirm(combinedResult);
+        });
+        this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true, (keys: WalletKeys) => {
+          combinedResult.pinCodeDone = true;
+          combinedResult.keys = keys;
+          this.createTransactionAndShowConfirm(combinedResult);
+        });
+      });
     }
   }
 
@@ -185,18 +216,30 @@ export class TransactionSendPage implements OnInit {
     this.qrScanner.open(true);
   }
 
-  onEnterPinCode(keys: WalletKeys) {
+
+  private createTransactionAndShowConfirm(result: CombinedResult) {
+    if (!result.pinCodeDone) {
+      return;
+    }
+
+    if (!result.checkerDone) {
+      result.loader.present();
+      return;
+    }
+
+    result.loader.dismiss();
+
     const amount = new BigNumber(this.transaction.amount);
     const data: TransactionSend = {
       amount: amount.times(constants.WALLET_UNIT_TO_SATOSHI).toNumber(),
       vendorField: this.transaction.smartBridge,
-      passphrase: keys.key,
-      secondPassphrase: keys.secondKey,
+      passphrase: result.keys.key,
+      secondPassphrase: result.keys.secondKey,
       recipientId: this.transaction.recipientAddress,
     };
 
     this.arkApiProvider.api.transaction.createTransaction(data).subscribe((transaction) => {
-      this.confirmTransaction.open(transaction, keys);
+      this.confirmTransaction.open(transaction, result.keys, result.checkerResult);
     }, () => {
       this.toastProvider.error('TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR');
     });
@@ -245,21 +288,21 @@ export class TransactionSendPage implements OnInit {
 
   private setRecipientByAddress(input: string): void {
     if (input.indexOf('...') === -1) { // Don't set our shortened '...' address as actual address
-      this.currentAutoCompleteFieldValue = input;
-      this.transaction.recipientAddress = input;
+    this.currentAutoCompleteFieldValue = input;
+    this.transaction.recipientAddress = input;
 
-      const contactOrLabel: Contact | string = this.contactsProvider.getContactByAddress(input)
-                                               || this.userDataProvider.getWalletLabel(input);
-      if (contactOrLabel && contactOrLabel !== input) {
-        this.isExistingContact = true;
-        this.isRecipientNameAutoSet = true;
-        this.transaction.recipientName = typeof contactOrLabel === 'string' ? contactOrLabel : contactOrLabel.name;
-      } else {
-        this.isExistingContact = false;
-        if (this.isRecipientNameAutoSet) {
-          this.transaction.recipientName = null;
-        }
+    const contactOrLabel: Contact | string = this.contactsProvider.getContactByAddress(input)
+                                             || this.userDataProvider.getWalletLabel(input);
+    if (contactOrLabel && contactOrLabel !== input) {
+      this.isExistingContact = true;
+      this.isRecipientNameAutoSet = true;
+      this.transaction.recipientName = typeof contactOrLabel === 'string' ? contactOrLabel : contactOrLabel.name;
+    } else {
+      this.isExistingContact = false;
+      if (this.isRecipientNameAutoSet) {
+        this.transaction.recipientName = null;
       }
     }
   }
+}
 }

@@ -177,6 +177,7 @@
     "INVALID_FORM_ERROR": "Invalid Form Data",
     "MULTISIGNATURE_CREATION": "Multisignature Creation",
     "OPEN_EXPLORER": "Open in Explorer",
+    "PERFORMING_DESTINATION_ADDRESS_CHECKS": "Performing destination address checks...",
     "QRCODE_COPY": "Tap on the address to copy it to clipboard or click on the icon to share the QR code. Optionally you can also enter an amount, which will then be included in the QR code.",
     "RECEIVE": "Receive",
     "RECEIVE_TOKEN": "Receive {{ Token }}",
@@ -197,6 +198,12 @@
     "TRANSACTION": "Transaction"
   },
   "TYPE": "Type",
+  "VALIDATION": {
+    "INVALID_ADDRESS": "This address is invalid!",
+    "IS_OWN_ADDRESS": "This is your own address. Are you sure you want to send to your own address?",
+    "NO_TRANSACTIONS": "It appears the address doesn't have any transactions. Are you sure it's correct?",
+    "IS_NEO_ADDRESS": "It looks like this is a 'NEO' address. Are you sure it's correct?"
+  },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "Could not add wallet",
     "ADD_WALLET_TEXT": "To import or create wallet click on the button below",
