@@ -50,23 +50,17 @@
           <ion-row nowrap justify-content-center align-items-baseline>
             <ion-col text-left *ngIf="fiatCurrency?.code !== 'btc'">
               <p>{{ fiatCurrency?.code | uppercase }} <span class="fiat-bullet"></span></p>
-            </ion-col>
-            <ion-col text-left>
-              <p>{{ btcCurrency?.code | uppercase }} <span class="btc-bullet"></span></p>
-            </ion-col>
-            <ion-col text-left>
-              <p>{{ 'MARKETS_PAGE.PERCENTAGE_CHANGE' | translate }} ({{ currentNetwork?.token }} - {{ btcCurrency?.code | uppercase }})</p>
-            </ion-col>
-          </ion-row>
-          <ion-row nowrap justify-content-center align-items-baseline>
-            <ion-col text-left *ngIf="fiatCurrency?.code !== 'btc'">
               <h6>{{ fiatCurrency?.symbol }}{{ fiatCurrency?.price | marketNumber }}</h6>
             </ion-col>
             <ion-col text-left>
-              <h6>{{ btcCurrency?.price | marketNumber: btcCurrency }}</h6>
-            </ion-col>
-            <ion-col text-left>
-              <h6 ion-text [color]="btcCurrency?.change24h < 0 ? 'danger' : 'secondary'">{{ btcCurrency?.change24h | number: '1.2-2' }}%</h6>
+              <p>
+                {{ btcCurrency?.code | uppercase }} ({{ 'MARKETS_PAGE.PERCENTAGE_CHANGE' | translate }})
+                <span class="btc-bullet"></span>
+              </p>
+              <h6>
+                {{ btcCurrency?.price | marketNumber: btcCurrency }}
+                (<span ion-text [color]="btcCurrency?.change24h < 0 ? 'danger' : 'secondary'">{{ btcCurrency?.change24h | number: '1.2-2' }}%</span>)
+              </h6>
             </ion-col>
           </ion-row>
         </ion-grid>
