@@ -366,7 +366,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   private deleteWallet() {
-    this.pinCode.open('PIN_CODE.TYPE_PIN_REMOVE_WALLET', true, false, (keys: WalletKeys) => {
+    this.pinCode.open('PIN_CODE.TYPE_PIN_REMOVE_WALLET', true, false, () => {
         this.userDataProvider.removeWalletByAddress(this.wallet.address);
         this.navCtrl.setRoot('WalletListPage');
       });
