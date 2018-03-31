@@ -116,6 +116,7 @@
     "PIN_UPDATED_TEXT": "Your PIN has been updated",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type your PIN to encrypt passphrase",
     "TYPE_PIN_SIGN_TRANSACTION": "Type your PIN to sign transaction",
+    "UPDATING": "Updating PIN code for all profiles and wallets...",
     "WRONG": "Please enter the correct PIN",
     "WEAK_PIN": "Weak PIN",
     "WEAK_PIN_DETAIL": "The PIN you entered is considered weak and easy to guess. Are you sure you want to use it?"
