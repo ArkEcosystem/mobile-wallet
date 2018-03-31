@@ -40,6 +40,15 @@
       </button>
     </ion-item-group>
 
+    <ion-item-group>
+      <ion-item-divider color="primary-background"></ion-item-divider>
+      <ion-item ion-item>
+        <ion-icon name="ios-notifications-outline" color="primary" item-start></ion-icon>
+        <ion-label>{{ 'SETTINGS_PAGE.NOTIFICATIONS' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="currentSettings.notification" (ngModelChange)="onUpdate()"></ion-toggle>
+      </ion-item>
+    </ion-item-group>
+
     <ion-item-group [hidden]="true">
       <ion-item-divider color="primary-background"></ion-item-divider>
       <ion-item ion-item>
