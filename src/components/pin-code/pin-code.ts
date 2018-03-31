@@ -138,6 +138,6 @@ export class PinCodeComponent {
     if (onSuccess) {
       onSuccess(keys);
     }
-    return this.onSuccess.emit();
+    return this.onSuccess.emit(keys);
   }
 }

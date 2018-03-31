@@ -187,9 +187,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   presentWalletBackupPage() {
-    this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', true, false, (keys: WalletKeys) => {
-      this.showBackup(keys);
-    });
+    this.onEnterPinCode = this.showBackup;
+    this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', true);
   }
 
   private showBackup(keys: WalletKeys) {
@@ -276,9 +275,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       if (lodash.isEmpty(name)) { return; }
 
       this.newDelegateName = name;
-      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true, (keys: WalletKeys) => {
-        this.createDelegate(keys);
-      });
+      this.onEnterPinCode = this.createDelegate;
+      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
     });
 
@@ -292,9 +290,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       if (lodash.isEmpty(newSecondPassphrase)) { return; }
 
       this.newSecondPassphrase = newSecondPassphrase;
-      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, false, (keys: WalletKeys) => {
-        this.createSignature(keys);
-      });
+      this.onEnterPinCode = this.createSignature;
+      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
 
     });
 

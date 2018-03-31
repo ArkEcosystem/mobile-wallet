@@ -62,5 +62,5 @@
   </ion-grid>
 </ion-content>
 
-<pin-code [wallet]="wallet" #pinCode></pin-code>
+<pin-code [wallet]="wallet" (onSuccess)="onEnterPinCode($event)" #pinCode></pin-code>
 <confirm-transaction [wallet]="wallet" #confirmTransaction></confirm-transaction>

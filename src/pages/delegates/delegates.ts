@@ -70,9 +70,7 @@ export class DelegatesPage implements OnDestroy {
       if (!delegateVote) { return; }
 
       this.selectedDelegate = delegateVote; // Save the delegate that we want to vote for
-      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true, (keys: WalletKeys) => {
-          this.generateTransaction(keys);
-        });
+      this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
     });
 
