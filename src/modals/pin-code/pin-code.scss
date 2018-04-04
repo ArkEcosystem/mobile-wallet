@@ -3,19 +3,19 @@ modal-pin-code {
     display: flex;
     flex-direction: column;
   }
-  ion-grid {
-    height: 100%;
-  }
 
+  .pin-code-header {
+    font-weight: 500;
+    font-size: 17px;
+    opacity: 0.7;
+  }
   .grid-password {
     max-width: 200px;
-    margin: 1em auto;
     position: relative;
     display: block;
   }
 
   .password-char {
-
     span {
       height: 20px;
       width: 20px;
