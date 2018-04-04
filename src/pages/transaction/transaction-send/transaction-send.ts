@@ -208,14 +208,13 @@ export class TransactionSendPage implements OnInit {
       validName = new RegExp('^[a-zA-Z0-9]+[a-zA-Z0-9- ]+$').test(this.transaction.recipientName);
     }
     if (validAddress && validName) {
-      this.contactsProvider.addContact(this.transaction.recipientName, this.transaction.recipientAddress);
+      this.contactsProvider.addContact(this.transaction.recipientAddress, this.transaction.recipientName);
     }
   }
 
   scanQRCode() {
     this.qrScanner.open(true);
   }
-
 
   private createTransactionAndShowConfirm(result: CombinedResult) {
     if (!result.pinCodeDone) {
@@ -247,8 +246,14 @@ export class TransactionSendPage implements OnInit {
 
   onScanQRCode(qrCode: QRCodeScheme) {
     if (qrCode.address) {
-      this.setFormValuesFromAddress(qrCode.address);
-      this.truncateAddressMiddle();
+      this.setFormValuesFromAddress(qrCode.address, qrCode.label);
+      const amount = Number(qrCode.amount);
+      if (!!amount) {
+        this.amountComponent.setAmount(amount);
+      }
+      if (qrCode.vendorField) {
+        this.transaction.smartBridge = qrCode.vendorField;
+      }
     } else {
       this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }
@@ -277,17 +282,21 @@ export class TransactionSendPage implements OnInit {
     this.transaction.amountEquivalent = newAmounts.amountEquivalent;
   }
 
-  private setFormValuesFromAddress(address: string): void {
+  private setFormValuesFromAddress(address: string, alternativeRecipientName?: string): void {
     if (!address) {
       return;
     }
 
     this.sendForm.patchValue({recipientAddress: address});
-    this.setRecipientByAddress(address);
+    this.setRecipientByAddress(address, alternativeRecipientName);
+    this.truncateAddressMiddle();
   }
 
-  private setRecipientByAddress(input: string): void {
-    if (input.indexOf('...') === -1) { // Don't set our shortened '...' address as actual address
+  private setRecipientByAddress(input: string, alternativeRecipientName?: string): void {
+    if (input.indexOf('...') !== -1) {
+      return;
+    }
+
     this.currentAutoCompleteFieldValue = input;
     this.transaction.recipientAddress = input;
 
@@ -297,6 +306,10 @@ export class TransactionSendPage implements OnInit {
       this.isExistingContact = true;
       this.isRecipientNameAutoSet = true;
       this.transaction.recipientName = typeof contactOrLabel === 'string' ? contactOrLabel : contactOrLabel.name;
+    } else if (alternativeRecipientName) {
+      this.isExistingContact = false;
+      this.isRecipientNameAutoSet = true;
+      this.transaction.recipientName = alternativeRecipientName;
     } else {
       this.isExistingContact = false;
       if (this.isRecipientNameAutoSet) {
@@ -304,5 +317,4 @@ export class TransactionSendPage implements OnInit {
       }
     }
   }
-}
 }
