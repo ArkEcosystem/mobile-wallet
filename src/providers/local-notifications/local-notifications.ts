@@ -30,11 +30,30 @@ export class LocalNotificationsProvider {
   // Check the settings and start/stop the main task
   private prepare(settings: UserSettings) {
     if (settings.notification && !this.intervalListener) {
-      this.watch();
-      this.intervalListener = setInterval(() => this.watch(), 60000);
+      this.checkPermission().then(() => {
+        this.watch();
+        this.intervalListener = setInterval(() => this.watch(), 60000);
+      });
     } else if (!settings.notification && this.intervalListener) {
       clearInterval(this.intervalListener);
     }
+  }
+
+  // Make sure the app is allowed to show notifications
+  private checkPermission () {
+    return new Promise((resolve, reject) => {
+      this.localNotifications.hasPermission().then(status => {
+        if (status) {
+          resolve();
+        } else {
+          this.localNotifications.requestPermission().then(res => {
+            if (res) {
+              resolve();
+            }
+          });
+        }
+      });
+    });
   }
 
   // Scan each wallet and find new transactions
