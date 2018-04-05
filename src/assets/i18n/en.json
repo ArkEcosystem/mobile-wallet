@@ -230,6 +230,7 @@
     "LABEL_EXISTS": "There is already a wallet with the label '{{ label }}'!",
     "MY_WALLET": "My Wallet",
     "NEW_WALLET_NAME": "New wallet name",
+    "NEW_TRANSACTION": "New transaction in {{ profile }}",
     "NO_TRANSACTIONS": "No transactions available",
     "TYPE_PASSPHRASE_OR_ADDRESS": "or type your | secret passphrase | or your | address | manually.",
     "PASSPHRASE": "Passphrase",

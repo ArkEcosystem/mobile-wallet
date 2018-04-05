@@ -3,34 +3,41 @@ import { Injectable } from '@angular/core';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { ContactsProvider } from '@providers/contacts/contacts';
 import { UserSettings, Wallet, Transaction } from '@models/model';
-import { Subject } from 'rxjs/Subject';
-import { AccountLabelPipe } from '@pipes/account-label/account-label';
+import { TranslateService } from '@ngx-translate/core';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
+import stringHash from 'string-hash';
 
 @Injectable()
 export class LocalNotificationsProvider {
 
-  public onNewTransaction: Subject<arkts.Transaction> = new Subject();
-  private currentSettings: UserSettings;
+  private intervalListener;
 
   constructor(
     private localNotifications: LocalNotifications,
     private userDataProvider: UserDataProvider,
+    private contactsProvider: ContactsProvider,
     private settingsDataProvider: SettingsDataProvider,
-    private accountLabelPipe: AccountLabelPipe,
+    private translateService: TranslateService,
   ) {
-    this.settingsDataProvider.settings.subscribe(settings => {
-      this.currentSettings = settings;
-
-      // if (settings.notification) {
-      this.watch();
-      // }
-    });
+    this.settingsDataProvider.settings.subscribe(settings => this.prepare(settings));
+    this.settingsDataProvider.onUpdate$.subscribe(settings => this.prepare(settings)); // Watch for updates
   }
 
+  // Check the settings and start/stop the main task
+  private prepare(settings: UserSettings) {
+    if (settings.notification && !this.intervalListener) {
+      this.watch();
+      this.intervalListener = setInterval(() => this.watch(), 60000);
+    } else if (!settings.notification && this.intervalListener) {
+      clearInterval(this.intervalListener);
+    }
+  }
+
+  // Scan each wallet and find new transactions
   watchTransactions (wallets: any) {
     for (const address in wallets) {
       const wallet = wallets[address];
@@ -65,23 +72,38 @@ export class LocalNotificationsProvider {
     }
   }
 
+  // Notify each new transaction
   private notifyTransaction (transactions: Transaction[], wallet: any) {
+    const notifications = [];
+
     for (const transaction of transactions) {
       if (!transaction.isTransfer()) {
         return;
       }
 
-      const username = this.accountLabelPipe.transform(transaction.address, null);
-      const title = `New transaction in ${wallet.profileName}`;
-      const text = `${username} ${transaction.getActivityLabel()} ${transaction.getAppropriateAddress()}`;
+      const activityLabel = transaction.getActivityLabel();
+      this.translateService.get([
+        activityLabel,
+        'WALLETS_PAGE.NEW_TRANSACTION'
+      ], { profile: wallet.profileName }).subscribe((translation: String[]) => {
+        const username = this.getAccountLabel(transaction.address, wallet.profileId);
+        const recipientLabel = this.getAccountLabel(transaction.getAppropriateAddress(), wallet.profileId);
 
-      this.localNotifications.schedule({
-        title,
-        text,
+        const title = `💸 ${translation['WALLETS_PAGE.NEW_TRANSACTION']}`;
+        const text = `${username} ${translation[activityLabel].toLowerCase()} ${recipientLabel}`;
+
+        notifications.push({
+          id: stringHash(transaction.id),
+          title,
+          text,
+        });
       });
     }
+
+    this.localNotifications.schedule(notifications);
   }
 
+  // Watch all tasks
   private watch () {
     if (lodash.isEmpty(this.userDataProvider.profiles)) {
       return;
@@ -92,6 +114,7 @@ export class LocalNotificationsProvider {
     this.watchTransactions(wallets);
   }
 
+  // Transform profile list into unique wallets list
   private getAllWallets() {
     return lodash.transform(this.userDataProvider.profiles, (acc, value: any, key) => {
 
@@ -105,5 +128,16 @@ export class LocalNotificationsProvider {
 
       return acc;
     }, {});
+  }
+
+  // The pipe is not working properly
+  private getAccountLabel(address: string, profileId: string) {
+    const contact = this.contactsProvider.getContactByAddress(address, profileId);
+    if (contact) { return contact.name; }
+
+    const label = this.userDataProvider.getWalletLabel(address, profileId);
+    if (label) { return label; }
+
+    return address;
   }
 }
