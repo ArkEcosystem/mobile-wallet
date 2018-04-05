@@ -22,7 +22,10 @@ export class LocalNotificationsProvider {
     private contactsProvider: ContactsProvider,
     private settingsDataProvider: SettingsDataProvider,
     private translateService: TranslateService,
-  ) {
+  ) { }
+
+  // Start provider
+  public init () {
     this.settingsDataProvider.settings.subscribe(settings => this.prepare(settings));
     this.settingsDataProvider.onUpdate$.subscribe(settings => this.prepare(settings)); // Watch for updates
   }

@@ -64,6 +64,7 @@ export class MyApp implements OnInit, OnDestroy {
     platform.ready().then(() => {
       this.splashScreen.hide();
       menuCtrl.enable(false, 'sidebarMenu');
+      this.localNotificationsProvider.init();
 
       this.initConfig();
       this.setBackButton();
