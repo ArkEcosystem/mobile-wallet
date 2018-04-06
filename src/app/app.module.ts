@@ -26,6 +26,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 import { MyApp } from './app.component';
 
@@ -70,6 +71,7 @@ export function httpLoaderFactory(http: HttpClient) {
     QRScanner,
     SocialSharing,
     LocalNotifications,
+    BackgroundMode,
     // Custom providers
     {provide: StorageProvider, useClass: StorageProvider, deps: [Storage]},
     {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},
@@ -84,7 +86,7 @@ export function httpLoaderFactory(http: HttpClient) {
     ContactsAutoCompleteService,
     NeoApiProvider,
     AddressCheckerProvider,
-    LocalNotificationsProvider
+    LocalNotificationsProvider,
   ]
 })
 export class AppModule {}

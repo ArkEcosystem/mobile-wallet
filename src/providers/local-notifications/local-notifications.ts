@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { BackgroundMode } from '@ionic-native/background-mode';
+
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ContactsProvider } from '@providers/contacts/contacts';
@@ -22,7 +24,12 @@ export class LocalNotificationsProvider {
     private contactsProvider: ContactsProvider,
     private settingsDataProvider: SettingsDataProvider,
     private translateService: TranslateService,
-  ) { }
+    private backgroundMode: BackgroundMode,
+  ) {
+    this.backgroundMode.configure({
+      silent: true
+    });
+  }
 
   // Start provider
   public init () {
@@ -30,14 +37,16 @@ export class LocalNotificationsProvider {
     this.settingsDataProvider.onUpdate$.subscribe(settings => this.prepare(settings)); // Watch for updates
   }
 
-  // Check the settings and start/stop the main task
+  // Check the settings, configure background mode and start/stop the main task
   private prepare(settings: UserSettings) {
     if (settings.notification && !this.intervalListener) {
+      this.backgroundMode.enable();
       this.checkPermission().then(() => {
         this.watch();
         this.intervalListener = setInterval(() => this.watch(), 60000);
       });
     } else if (!settings.notification && this.intervalListener) {
+      this.backgroundMode.disable();
       clearInterval(this.intervalListener);
     }
   }
@@ -123,6 +132,7 @@ export class LocalNotificationsProvider {
     }
 
     this.localNotifications.schedule(notifications);
+    this.backgroundMode.wakeUp();
   }
 
   // Watch all tasks

@@ -42,6 +42,7 @@
     "@angular/http": "4.4.3",
     "@angular/platform-browser": "4.4.3",
     "@angular/platform-browser-dynamic": "4.4.3",
+    "@ionic-native/background-mode": "^4.6.0",
     "@ionic-native/clipboard": "^4.5.3",
     "@ionic-native/core": "^4.5.3",
     "@ionic-native/in-app-browser": "^4.5.3",
@@ -75,6 +76,7 @@
     "cordova-clipboard": "^1.1.1",
     "cordova-custom-config": "^5.0.2",
     "cordova-ios": "4.5.4",
+    "cordova-plugin-background-mode": "^0.7.2",
     "cordova-plugin-badge": "^0.8.7",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-console": "^1.1.0",
@@ -157,7 +159,8 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-vibration": {},
       "cordova-plugin-screen-orientation": {},
-      "cordova-plugin-local-notification": {}
+      "cordova-plugin-local-notification": {},
+      "cordova-plugin-background-mode": {}
     },
     "platforms": [
       "browser",
