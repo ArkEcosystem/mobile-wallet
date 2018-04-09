@@ -12,6 +12,8 @@ import { Transaction, MarketTicker, MarketCurrency } from '@models/model';
 import { Network } from 'ark-ts/model';
 
 import lodash from 'lodash';
+import { AddressCheckResult} from '@providers/address-checker/address-check-result';
+import { AddressCheckResultType } from '@providers/address-checker/address-check-result-type';
 
 @IonicPage()
 @Component({
@@ -23,9 +25,11 @@ export class ConfirmTransactionModal implements OnDestroy {
   public transaction: Transaction;
   public address: string;
 
+  public addressCheckResult: AddressCheckResult;
   public marketCurrency: MarketCurrency;
   public ticker: MarketTicker;
   public currentNetwork: Network;
+  public checkTypes = AddressCheckResultType;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
 
@@ -39,6 +43,7 @@ export class ConfirmTransactionModal implements OnDestroy {
     private loadingCtrl: LoadingController,
   ) {
     this.transaction = this.navParams.get('transaction');
+    this.addressCheckResult = this.navParams.get('addressCheckResult');
     this.address = this.transaction.address;
 
     if (!this.transaction) { this.navCtrl.pop(); }

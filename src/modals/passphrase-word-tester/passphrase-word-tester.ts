@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {PassphraseWord} from '@models/passphrase-word';
+import { UserDataProvider } from '@providers/user-data/user-data';
 
 @IonicPage()
 @Component({
@@ -10,15 +11,19 @@ import {PassphraseWord} from '@models/passphrase-word';
 export class PassphraseWordTesterModal {
 
   public words: PassphraseWord[] = [];
+  public isDevNet: boolean;
 
   public constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private viewCtrl: ViewController) {
+              private viewCtrl: ViewController,
+              private userDataProvider: UserDataProvider) {
     this.words = this.navParams.get('words') as PassphraseWord[];
 
     if (!this.words) {
       this.dismiss();
     }
+
+    this.isDevNet = this.userDataProvider.isDevNet;
   }
 
   public areAllWordsCorrect(): boolean {

@@ -32,7 +32,7 @@
             <ion-item class="wallet">
               <ion-label [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}">
                 <h2 class="amount">{{ currentNetwork?.symbol }} {{ wallet?.balance | unitsSatoshi }}</h2>
-                <p class="address">{{ wallet?.address | accountLabel | truncateMiddle: 15 }}</p>
+                <p class="address">{{ (wallet?.username || wallet?.label || wallet?.address) | truncateMiddle: 15 }}</p>
                 <ion-badge class="watch-only-badge" [color]="wallet?.isDelegate ? 'primary' : 'danger-alternative'" *ngIf="wallet.isWatchOnly">
                   {{ 'WATCH_ONLY' | translate }}
                 </ion-badge>
@@ -47,18 +47,20 @@
         <hr>
         <h4 class="market-cap-title"><ion-icon name="md-trending-up"></ion-icon> {{ 'MARKETS_PAGE.MARKET_DATA' | translate }}</h4>
         <ion-grid class="no-padding" class="price-container">
-          <ion-row nowrap justify-content-center align-items-baseline>
-            <ion-col text-left *ngIf="fiatCurrency?.code !== 'btc'">
+          <ion-row nowrap align-items-baseline>
+            <ion-col col-auto *ngIf="fiatCurrency?.code !== 'btc'" style="padding-right: 20px">
               <p>{{ fiatCurrency?.code | uppercase }} <span class="fiat-bullet"></span></p>
               <h6>{{ fiatCurrency?.symbol }}{{ fiatCurrency?.price | marketNumber }}</h6>
             </ion-col>
-            <ion-col text-left>
-              <p>{{ btcCurrency?.code | uppercase }} <span class="btc-bullet"></span></p>
-              <h6>{{ btcCurrency?.price | marketNumber: btcCurrency }}</h6>
-            </ion-col>
-            <ion-col text-left>
-              <p>{{ 'MARKETS_PAGE.PERCENTAGE_CHANGE' | translate }}</p>
-              <h6 ion-text [color]="fiatCurrency?.change24h < 0 ? 'danger' : 'secondary'">{{ fiatCurrency?.change24h | number: '1.2-2' }}%</h6>
+            <ion-col col-auto>
+              <p>
+                {{ btcCurrency?.code | uppercase }} ({{ 'MARKETS_PAGE.PERCENTAGE_CHANGE' | translate }})
+                <span class="btc-bullet"></span>
+              </p>
+              <h6>
+                {{ btcCurrency?.price | marketNumber: btcCurrency }}
+                (<span ion-text [color]="btcCurrency?.change24h < 0 ? 'danger' : 'secondary'">{{ btcCurrency?.change24h | number: '1.2-2' }}%</span>)
+              </h6>
             </ion-col>
           </ion-row>
         </ion-grid>

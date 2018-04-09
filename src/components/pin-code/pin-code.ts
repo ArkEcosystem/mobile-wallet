@@ -6,6 +6,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
 
 import lodash from 'lodash';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'pin-code',
@@ -26,10 +27,11 @@ export class PinCodeComponent {
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
+    private translateService: TranslateService
   ) {
   }
 
-  open(message: string, outputPassword: boolean, verifySecondPassphrase: boolean = false) {
+  open(message: string, outputPassword: boolean, verifySecondPassphrase: boolean = false, onSuccess?: (keys: WalletKeys) => void) {
     if (outputPassword && !this.wallet) { return false; }
 
     const modal = this.modalCtrl.create('PinCodeModal', {
@@ -51,7 +53,7 @@ export class PinCodeComponent {
 
       if (!outputPassword) {
         loader.dismiss();
-        return this.onSuccess.emit();
+        return this.executeOnSuccess(onSuccess);
       }
 
       const passphrases = this.userDataProvider.getKeysByWallet(this.wallet, password);
@@ -59,15 +61,14 @@ export class PinCodeComponent {
 
       if (lodash.isEmpty(passphrases) || lodash.isNil(passphrases)) { return this.onWrong.emit(); }
 
-      if (verifySecondPassphrase) { return this.requestSecondPassphrase(passphrases); }
-
-      return this.onSuccess.emit(passphrases);
+      if (verifySecondPassphrase) { return this.requestSecondPassphrase(passphrases, onSuccess); }
+      return this.executeOnSuccess(onSuccess, passphrases);
     });
 
     modal.present();
   }
 
-  private requestSecondPassphrase(passphrases: WalletKeys) {
+  private requestSecondPassphrase(passphrases: WalletKeys, onSuccess: (keys: WalletKeys) => void) {
     if (this.wallet.secondSignature && !this.wallet.cipherSecondKey) {
       const modal = this.modalCtrl.create('EnterSecondPassphraseModal', null, { cssClass: 'inset-modal' });
 
@@ -78,12 +79,12 @@ export class PinCodeComponent {
         }
 
         passphrases.secondPassphrase = passphrase;
-        this.onSuccess.emit(passphrases);
+        return this.executeOnSuccess(onSuccess, passphrases);
       });
 
       modal.present();
     } else {
-      this.onSuccess.emit(passphrases);
+      return this.executeOnSuccess(onSuccess, passphrases);
     }
   }
 
@@ -103,14 +104,27 @@ export class PinCodeComponent {
             });
 
             validateModal.onDidDismiss((status) => {
+              const continueWithSuccess = (successMessageKey: string) => {
+                this.toastProvider.success(successMessageKey);
+                if (nextPage) {
+                  this.navCtrl.push(nextPage);
+                }
+              };
+
               if (status) {
                 this.authProvider.saveMasterPassword(password);
                 if (oldPassword) {
-                  this.userDataProvider.updateWalletEncryption(oldPassword, password);
-                }
-                this.toastProvider.success(oldPassword ? 'PIN_CODE.PIN_UPDATED_TEXT' : 'PIN_CODE.PIN_CREATED_TEXT');
-                if (nextPage) {
-                  this.navCtrl.push(nextPage);
+                  this.translateService.get('PIN_CODE.UPDATING').subscribe(updatingText => {
+                    const loading = this.loadingCtrl.create({content: updatingText});
+                    loading.present()
+                      .then(() => {
+                        this.userDataProvider.updateWalletEncryption(oldPassword, password);
+                        loading.dismiss();
+                        continueWithSuccess('PIN_CODE.PIN_UPDATED_TEXT');
+                      });
+                  });
+                } else {
+                  continueWithSuccess('PIN_CODE.PIN_CREATED_TEXT');
                 }
               } else {
                 this.toastProvider.error(oldPassword ? 'PIN_CODE.PIN_UPDATED_ERROR_TEXT' : 'PIN_CODE.PIN_CREATED_ERROR_TEXT');
@@ -135,4 +149,10 @@ export class PinCodeComponent {
     }
   }
 
+  private executeOnSuccess(onSuccess: (keys: WalletKeys) => any, keys?: WalletKeys): void {
+    if (onSuccess) {
+      onSuccess(keys);
+    }
+    return this.onSuccess.emit(keys);
+  }
 }

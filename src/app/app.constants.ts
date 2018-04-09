@@ -7,6 +7,10 @@ export const WALLET_UNIT_TO_SATOSHI = 100000000;
 export const WALLET_REFRESH_PRICE_MILLISECONDS = 500 * 1000;
 export const WALLET_REFRESH_TRANSACTIONS_MILLISECONDS = 10 * 1000;
 export const WALLET_MIN_NUMBER_CONFIRMATIONS = 51;
+export const BIP39_DOCUMENTATION_URL = 'https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki';
+
+// TRANSACTION SEND
+export const TRANSACTION_ADDRESS_SIZE = 20;
 
 // STORAGE
 export const STORAGE_MARKET_TICKER = 'market_ticker';

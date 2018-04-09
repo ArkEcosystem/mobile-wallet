@@ -2,6 +2,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { Injectable } from '@angular/core';
 import { PublicKey } from 'ark-ts/core';
 import { Network } from 'ark-ts';
+import { isNil } from 'lodash';
 
 @Injectable()
 export class NetworkProvider {
@@ -13,9 +14,10 @@ export class NetworkProvider {
   public constructor(private userDataProvider: UserDataProvider) {
   }
 
-  public isValidAddress(address: string): boolean {
+  public isValidAddress(address: string, specificVersion?: number): boolean {
+    const network: Network = !isNil(specificVersion) ? {version: specificVersion} as any : this.currentNetwork;
     return address
-           && this.currentNetwork
-           && PublicKey.validateAddress(address, this.userDataProvider.currentNetwork);
+           && network
+           && PublicKey.validateAddress(address, network);
   }
 }

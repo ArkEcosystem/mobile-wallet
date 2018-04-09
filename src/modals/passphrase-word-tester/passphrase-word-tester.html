@@ -17,6 +17,9 @@
     <ion-row>
       <ion-col text-center>
         <p class="sole-message">{{ 'PASSPHRASE_TEST.INFO' | translate }}</p>
+        <div *ngIf="isDevNet" class="note-message-default">
+          <p>{{ 'PASSPHRASE_TEST.DEVNET_WORDS_NOTICE' | translate }}</p>
+        </div>
       </ion-col>
     </ion-row>
     <ion-row class="account-container">

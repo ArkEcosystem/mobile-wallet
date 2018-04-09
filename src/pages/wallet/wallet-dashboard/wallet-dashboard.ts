@@ -255,13 +255,12 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   presentLabelModal() {
-    const modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label }, { cssClass: 'inset-modal-tiny' });
+    const modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label}, {cssClass: 'inset-modal-tiny'});
 
-    modal.onDidDismiss((data) => {
-      if (lodash.isEmpty(data)) { return; }
-
-      this.zone.run(() => this.wallet.label = data);
-      this.saveWallet();
+    modal.onDidDismiss((label) => {
+      this.userDataProvider
+          .setWalletLabel(this.wallet, label)
+          .subscribe(null, error => this.toastProvider.error(error, 3000));
     });
 
     modal.present();
@@ -311,7 +310,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
             {
               text: translation.CONFIRM,
               handler: () => {
-                this.deleteWallet();
+                this.onEnterPinCode = this.deleteWallet;
+                this.pinCode.open('PIN_CODE.TYPE_PIN_REMOVE_WALLET', false);
               }
             }
           ]
@@ -362,8 +362,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   private deleteWallet() {
-    this.userDataProvider.removeWalletByAddress(this.wallet.address);
-    this.navCtrl.setRoot('WalletListPage');
+      this.userDataProvider.removeWalletByAddress(this.wallet.address);
+      this.navCtrl.setRoot('WalletListPage');
   }
 
   private refreshTransactions(save: boolean = true, loader?: Loading) {

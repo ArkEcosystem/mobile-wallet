@@ -15,6 +15,7 @@ import { Network, NetworkType } from 'ark-ts/model';
 
 import * as constants from '@app/app.constants';
 import { Delegate } from 'ark-ts';
+import { TranslatableObject } from '@models/translate';
 
 @Injectable()
 export class UserDataProvider {
@@ -207,6 +208,23 @@ export class UserDataProvider {
     return this.saveProfiles();
   }
 
+  public setWalletLabel(wallet: Wallet, label: string): Observable<any> {
+    if (!wallet) {
+      return Observable.throw({key: 'VALIDATION.INVALID_WALLET'} as TranslatableObject);
+    }
+
+    if (wallet.label === label) {
+      return Observable.empty();
+    }
+
+    if (lodash.some(this.currentProfile.wallets, w => label && w.label && w.label.toLowerCase() === label.toLowerCase())) {
+      return Observable.throw({key: 'VALIDATION.LABEL_EXISTS', parameters: {label: label}} as TranslatableObject);
+    }
+
+    wallet.label = label;
+    return this.saveWallet(wallet);
+  }
+
   public getWalletLabel(walletOrAddress: Wallet | string): string {
     let wallet: Wallet;
     if (typeof walletOrAddress === 'string') {
@@ -219,7 +237,7 @@ export class UserDataProvider {
       return null;
     }
 
-    return wallet.username || wallet.label || wallet.address;
+    return wallet.username || wallet.label;
   }
 
   setCurrentWallet(wallet: Wallet) {
