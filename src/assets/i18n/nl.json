@@ -164,7 +164,7 @@
     "ADD_ADDRESS_TO_CONTACTS": "Voeg {{ address }} toe aan contacten",
     "AMOUNT": "Bedrag",
     "CONFIRMATIONS": "Bevestigingen",
-    "CONTACT_NAME": "Nieuwe contact naam (Optioneel)",
+    "NEW_CONTACT_NAME": "Nieuwe contact naam (Optioneel)",
     "COPY_TXID": "Kopieer TXID",
     "CREATE_TRANSACTION_ERROR": "Kon transactie niet aanmaken. Controleer je internet verbinding",
     "DELEGATE_REGISTRATION": "Registratie Afgevaardigde",

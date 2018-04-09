@@ -9,7 +9,7 @@ import { ContactsProvider } from '@providers/contacts/contacts';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
 
-import { ContactsAutoCompleteService } from '@providers/contacts-auto-complete/contacts-auto-complete';
+import { AccountAutoCompleteService } from '@providers/account-auto-complete/account-auto-complete';
 
 import { PublicKey } from 'ark-ts/core';
 import { Network, Fees } from 'ark-ts/model';
@@ -23,7 +23,7 @@ import * as constants from '@app/app.constants';
 import { TransactionSend } from 'ark-ts';
 
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
-import { AutoCompleteContact } from '@models/contact';
+import { AutoCompleteAccount, AutoCompleteAccountType } from '@models/contact';
 import { TranslatableObject } from '@models/translate';
 import { QRCodeScheme } from '@models/model';
 import { BigNumber } from 'bignumber.js';
@@ -43,6 +43,13 @@ class CombinedResult {
 
   public constructor(public loader: Loading) {
   }
+}
+
+enum AddressType {
+  Unknown,
+  Contact,
+  WalletWithLabel,
+  WalletWithoutLabel
 }
 
 @IonicPage()
@@ -65,7 +72,8 @@ export class TransactionSendPage implements OnInit {
   currentWallet: Wallet;
   currentNetwork: Network;
   fees: Fees;
-  isExistingContact = true;
+  addressType: AddressType = AddressType.Unknown;
+  addressTypes = AddressType;
   isRecipientNameAutoSet: boolean;
 
   private currentAutoCompleteFieldValue: string;
@@ -76,7 +84,7 @@ export class TransactionSendPage implements OnInit {
     private contactsProvider: ContactsProvider,
     private arkApiProvider: ArkApiProvider,
     private toastProvider: ToastProvider,
-    public contactsAutoCompleteService: ContactsAutoCompleteService,
+    public contactsAutoCompleteService: AccountAutoCompleteService,
     private unitsSatoshiPipe: UnitsSatoshiPipe,
     private truncateMiddlePipe: TruncateMiddlePipe,
     private addressChecker: AddressCheckerProvider,
@@ -115,7 +123,7 @@ export class TransactionSendPage implements OnInit {
     } else if (!this.validAddress()) {
       this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_ADDRESS_ERROR');
     } else {
-      this.createContact();
+      this.createContactOrLabel();
 
       this.translateService.get('TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS').subscribe(translation => {
         const loader = this.loadingCtrl.create({content: translation});
@@ -134,21 +142,20 @@ export class TransactionSendPage implements OnInit {
     }
   }
 
-  public onSearchItem(contact: AutoCompleteContact): void {
-    if (!contact || !contact.address) {
+  public onSearchItem(account: AutoCompleteAccount): void {
+    if (!account || !account.address) {
       return;
     }
 
-    this.transaction.recipientAddress = contact.address;
-    this.currentAutoCompleteFieldValue = contact.name;
+    this.transaction.recipientAddress = account.address;
+    this.currentAutoCompleteFieldValue = account.name;
     this.isRecipientNameAutoSet = true;
 
-    // if we have a real contact or a wallet with a label, we don't show the field to add a new contact
-    if (contact.name !== contact.address) {
-      this.isExistingContact = true;
-      this.transaction.recipientName = contact.name;
+    if (account.name !== account.address) {
+      this.addressType = account.type === AutoCompleteAccountType.Wallet ? AddressType.WalletWithLabel : AddressType.Contact;
+      this.transaction.recipientName = account.name;
     } else {
-      this.isExistingContact = false;
+      this.addressType = account.type === AutoCompleteAccountType.Wallet ? AddressType.WalletWithoutLabel : AddressType.Unknown;
       this.transaction.recipientName = null;
     }
   }
@@ -197,18 +204,23 @@ export class TransactionSendPage implements OnInit {
     return isValid;
   }
 
-  createContact() {
-    if (this.isExistingContact || !this.transaction.recipientName) {
+  createContactOrLabel() {
+    if (this.addressType === AddressType.Contact || this.addressType === AddressType.WalletWithLabel || !this.transaction.recipientName) {
       return;
     }
 
     const validAddress = this.validAddress();
-    let validName = !!this.transaction.recipientName;
-    if (validName) {
-      validName = new RegExp('^[a-zA-Z0-9]+[a-zA-Z0-9- ]+$').test(this.transaction.recipientName);
-    }
+    const validName = new RegExp('^[a-zA-Z0-9]+[a-zA-Z0-9- ]+$').test(this.transaction.recipientName);
+
     if (validAddress && validName) {
-      this.contactsProvider.addContact(this.transaction.recipientAddress, this.transaction.recipientName);
+      if (this.addressType === AddressType.Unknown) {
+        this.contactsProvider.addContact(this.transaction.recipientAddress, this.transaction.recipientName).subscribe();
+      } else {
+        this.userDataProvider
+            .setWalletLabel(this.userDataProvider.getWalletByAddress(this.transaction.recipientAddress),
+                            this.transaction.recipientName)
+            .subscribe();
+      }
     }
   }
 
@@ -300,21 +312,31 @@ export class TransactionSendPage implements OnInit {
     this.currentAutoCompleteFieldValue = input;
     this.transaction.recipientAddress = input;
 
-    const contactOrLabel: Contact | string = this.contactsProvider.getContactByAddress(input)
-                                             || this.userDataProvider.getWalletLabel(input);
-    if (contactOrLabel && contactOrLabel !== input) {
-      this.isExistingContact = true;
+    const contact: Contact = this.contactsProvider.getContactByAddress(input);
+    if (contact) {
+      this.addressType = AddressType.Contact;
       this.isRecipientNameAutoSet = true;
-      this.transaction.recipientName = typeof contactOrLabel === 'string' ? contactOrLabel : contactOrLabel.name;
-    } else if (alternativeRecipientName) {
-      this.isExistingContact = false;
+      this.transaction.recipientName = contact.name;
+      return;
+    }
+
+    const walletLabel = this.userDataProvider.getWalletLabel(input);
+    if (walletLabel) {
+      this.addressType = AddressType.WalletWithLabel;
+      this.isRecipientNameAutoSet = true;
+      this.transaction.recipientName = walletLabel;
+      return;
+    }
+
+    this.addressType = this.userDataProvider.getWalletByAddress(input)
+                         ? AddressType.WalletWithoutLabel
+                         : AddressType.Unknown;
+
+    if (alternativeRecipientName) {
       this.isRecipientNameAutoSet = true;
       this.transaction.recipientName = alternativeRecipientName;
-    } else {
-      this.isExistingContact = false;
-      if (this.isRecipientNameAutoSet) {
-        this.transaction.recipientName = null;
-      }
+    } else if (this.isRecipientNameAutoSet) {
+      this.transaction.recipientName = null;
     }
   }
 }
