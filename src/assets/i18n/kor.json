@@ -115,7 +115,9 @@
     "PIN_UPDATED_ERROR_TEXT": "PIN번호 수정 중 문제가 발생했습니다",
     "PIN_UPDATED_TEXT": "PIN 번호가 정상적으로 수정되었습니다",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "암호문(passphrase)를 암호화 하기 위해 PIN번호를 입력하세요",
+    "TYPE_PIN_REMOVE_WALLET": "지갑을 삭제하려면 PIN번호를 입력하세요",
     "TYPE_PIN_SIGN_TRANSACTION": "트랜잭션에 서명을 하기 위해 PIN번호를 입력하세요",
+    "UPDATING": "모든 프로필 및 지갑의 PIN번호를 수정 중입니다...",
     "WRONG": "잘못된 PIN번호를 입력하셨습니다",
     "WEAK_PIN": "PIN번호가 약합니다",
     "WEAK_PIN_DETAIL": "입력하신 PIN번호는 약한것으로 보이며, 보안에 취약합니다. 정말 사용하시겠습니까?"
