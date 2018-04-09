@@ -115,6 +115,7 @@
     "PIN_UPDATED_ERROR_TEXT": "There was a problem updating your PIN",
     "PIN_UPDATED_TEXT": "Your PIN has been updated",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type your PIN to encrypt passphrase",
+    "TYPE_PIN_REMOVE_WALLET": "Type your PIN to remove the wallet",
     "TYPE_PIN_SIGN_TRANSACTION": "Type your PIN to sign transaction",
     "WRONG": "Please enter the correct PIN",
     "WEAK_PIN": "Weak PIN",

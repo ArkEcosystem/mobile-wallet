@@ -312,7 +312,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
             {
               text: translation.CONFIRM,
               handler: () => {
-                this.deleteWallet();
+                this.onEnterPinCode = this.deleteWallet;
+                this.pinCode.open('PIN_CODE.TYPE_PIN_REMOVE_WALLET', false);
               }
             }
           ]
@@ -363,8 +364,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   private deleteWallet() {
-    this.userDataProvider.removeWalletByAddress(this.wallet.address);
-    this.navCtrl.setRoot('WalletListPage');
+      this.userDataProvider.removeWalletByAddress(this.wallet.address);
+      this.navCtrl.setRoot('WalletListPage');
   }
 
   private refreshTransactions(save: boolean = true, loader?: Loading) {
