@@ -20,6 +20,7 @@
     "CONTACT_EXISTS_ADDRESS": "해당 주소로 이미 연락처가 존재합니다 '{{ address }}'!",
     "CONTACT_NOT_EXISTS_ADDRESS": "'{{ address }}' 이 주소의 연락처가 존재하지 않습니다!",
     "CONTACT_EXISTS_NAME": "동일한 연락처 이름이 있습니다. '{{ name }}'",
+    "DELETE_CONTACT": "정말 해당 연락처를 삭제하시겠습니까 '{{ name }}'?",
     "OVERWRITE_CONTACT": "이 주소로 '{{ name }}' 의 이름으로 이미 연락처가 존재합니다. '{{ newName }}' 으로 교체 하시겠습니까?"
   },
   "COPIED_CLIPBOARD": "클립보드에 복사 완료",
@@ -99,7 +100,8 @@
   "NO": "아니오",
   "PASSPHRASE_TEST": {
     "INFO": "지갑 생성을 위해 암호문(Passphrase)에서 필요한 단어를 입력하세요.",
-    "WRONG_WORD": "단어 입력이 잘못되었습니다"
+    "WRONG_WORD": "단어 입력이 잘못되었습니다",
+    "DEVNET_WORDS_NOTICE": "데브넷을 위해서 자동적으로 단어가 입력됩니다"
   },
   "PIN_CODE": {
     "CONFIRM": "PIN 번호를 확인하세요",
@@ -175,6 +177,7 @@
     "INVALID_FORM_ERROR": "데이터 인식 불가",
     "MULTISIGNATURE_CREATION": "2중 서명 생성",
     "OPEN_EXPLORER": "탐색기에서 열기",
+    "PERFORMING_DESTINATION_ADDRESS_CHECKS": "받는 주소를 확인중입니다...",
     "QRCODE_COPY": "주소를 터치하여 클립보드로 복사하거나 아이콘을 클릭해서 QR코드를 공유하세요.",
     "RECEIVE": "입금",
     "RECEIVE_TOKEN": "{{ Token }} 입금",
@@ -195,6 +198,12 @@
     "TRANSACTION": "트랜잭션"
   },
   "TYPE": "유형",
+  "VALIDATION": {
+    "INVALID_ADDRESS": "이 주소는 유효하지 않습니다!",
+    "IS_OWN_ADDRESS": "이 주소는 당신의 주소입니다. 본인에게 정말로 보내실껀가요?",
+    "NO_TRANSACTIONS": "이 주소는 거래내역이 없는 주소입니다. 정말로 보내시겠습니까?",
+    "IS_NEO_ADDRESS": "이 주소는 'NEO' 주소로 보입니다. 정말 이 주소가 맞나요?"
+  },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "지갑 추가 실패",
     "ADD_WALLET_TEXT": "지갑을 추가 하거나 생성하려면 아래 버튼을 터치하세요",
@@ -217,17 +226,18 @@
     "IMPORT_WALLET": "지갑 추가",
     "KEEP_SAFE": "안전하게 보관하세요",
     "LABEL": "라벨",
+    "LABEL_EXISTS": "같은 라벨의 지갑이 이미 존재합니다! '{{ label }}'",
     "MY_WALLET": "내 지갑",
     "NEW_WALLET_NAME": "새로운 지갑 이름",
     "NO_TRANSACTIONS": "트랜잭션이 없습니다",
-    "TYPE_PASSPHRASE_OR_ADDRESS": "혹은 or type your | secret passphrase | or your | address | manually.",
-	"TYPE_PASSPHRASE_OR_ADDRESS": "혹은 or | 암호문(passphrase)을 입력하거나 | 당신의 | 주소를 | 수동으로 입력하세요.",
+    "TYPE_PASSPHRASE_OR_ADDRESS": "혹은 | 암호문(passphrase)을 입력하거나 | 당신의 | 주소를 | 수동으로 입력하세요.",
     "PASSPHRASE": "암호문(Passphrase)",
     "PASSPHRASE_NOT_MATCH": "지금 입력하신 암호문(passphrase)은 방금 발행된 암호문과 일치하지 않습니다.",
     "PUBLIC_ADDRESS": "공개 주소",
     "PUBLIC_ADDRESS_SHARE": "공개 주소 (공유)",
     "PUBLIC_KEY": "공개 키",
     "PASSPHRASE_NOT_BELONG_TO_ADDRESS": "입력하신 암호문(passphrase)는 '{{ address }}' 의 암호문이 아닙니다!",
+    "PASSPHRASE_NOT_BIP39": "유효한 BIP-39 암호문(passphrase)을 입력하지 않으셨습니다.",
     "RE_ENTER_PASSPHRASE": "암호문(passphrase)을 재입력 하세요",
     "REMOVE_WALLET": "지갑 제거",
     "REMOVE_WALLET_TEXT": "해당 지갑이 제거됩니다. 백업을 잘 보관하였는지 확인하세요. 복원을 위해서는 암호문(passphrase)이 필요합니다.",
