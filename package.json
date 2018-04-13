@@ -109,7 +109,8 @@
     "string-hash": "^1.1.3",
     "sw-toolbox": "3.6.0",
     "wif": "^2.0.6",
-    "zone.js": "0.8.20"
+    "zone.js": "0.8.20",
+    "cordova-plugin-add-swift-support": "~1.7.2"
   },
   "devDependencies": {
     "@angular/cli": "^1.6.7",
@@ -160,7 +161,8 @@
       "cordova-plugin-vibration": {},
       "cordova-plugin-screen-orientation": {},
       "cordova-plugin-local-notification": {},
-      "cordova-plugin-background-mode": {}
+      "cordova-plugin-background-mode": {},
+      "cordova-plugin-add-swift-support": {}
     },
     "platforms": [
       "browser",

@@ -152,7 +152,7 @@
     "ADD_ADDRESS_TO_CONTACTS": "Lägg till {{ address }} till kontakter",
     "AMOUNT": "Belopp",
     "CONFIRMATIONS": "Bekräftelser",
-    "CONTACT_NAME": "Nya Kontaktens Namn (frivilligt)",
+    "NEW_CONTACT_NAME": "Nya Kontaktens Namn (frivilligt)",
     "COPY_TXID": "Kopiera TXID",
     "CREATE_TRANSACTION_ERROR": "Kunde ej skapa transaktion. Kolla din uppkoppling mot Internet",
     "DELEGATE_REGISTRATION": "Registrera Delegat",

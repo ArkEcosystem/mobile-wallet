@@ -6,6 +6,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
 
 import lodash from 'lodash';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'pin-code',
@@ -26,6 +27,7 @@ export class PinCodeComponent {
     private modalCtrl: ModalController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
+    private translateService: TranslateService
   ) {
   }
 
@@ -102,14 +104,27 @@ export class PinCodeComponent {
             });
 
             validateModal.onDidDismiss((status) => {
+              const continueWithSuccess = (successMessageKey: string) => {
+                this.toastProvider.success(successMessageKey);
+                if (nextPage) {
+                  this.navCtrl.push(nextPage);
+                }
+              };
+
               if (status) {
                 this.authProvider.saveMasterPassword(password);
                 if (oldPassword) {
-                  this.userDataProvider.updateWalletEncryption(oldPassword, password);
-                }
-                this.toastProvider.success(oldPassword ? 'PIN_CODE.PIN_UPDATED_TEXT' : 'PIN_CODE.PIN_CREATED_TEXT');
-                if (nextPage) {
-                  this.navCtrl.push(nextPage);
+                  this.translateService.get('PIN_CODE.UPDATING').subscribe(updatingText => {
+                    const loading = this.loadingCtrl.create({content: updatingText});
+                    loading.present()
+                      .then(() => {
+                        this.userDataProvider.updateWalletEncryption(oldPassword, password);
+                        loading.dismiss();
+                        continueWithSuccess('PIN_CODE.PIN_UPDATED_TEXT');
+                      });
+                  });
+                } else {
+                  continueWithSuccess('PIN_CODE.PIN_CREATED_TEXT');
                 }
               } else {
                 this.toastProvider.error(oldPassword ? 'PIN_CODE.PIN_UPDATED_ERROR_TEXT' : 'PIN_CODE.PIN_CREATED_ERROR_TEXT');
@@ -138,6 +153,6 @@ export class PinCodeComponent {
     if (onSuccess) {
       onSuccess(keys);
     }
-    return this.onSuccess.emit();
+    return this.onSuccess.emit(keys);
   }
 }

@@ -43,13 +43,19 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="!isExistingContact">
+      <ion-row *ngIf="transaction.recipientAddress">
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'TRANSACTIONS_PAGE.CONTACT_NAME' | translate }}</ion-label>
+            <ion-label stacked [ngSwitch]="addressType">
+              <ng-container *ngSwitchCase="addressTypes.Unknown">{{ 'TRANSACTIONS_PAGE.NEW_CONTACT_NAME' | translate }}</ng-container>
+              <ng-container *ngSwitchCase="addressTypes.WalletWithoutLabel">{{ 'TRANSACTIONS_PAGE.NEW_WALLET_LABEL' | translate }}</ng-container>
+              <ng-container *ngSwitchCase="addressTypes.WalletWithLabel">{{ 'TRANSACTIONS_PAGE.EXISTING_WALLET' | translate }}</ng-container>
+              <ng-container *ngSwitchCase="addressTypes.Contact">{{ 'TRANSACTIONS_PAGE.EXISTING_CONTACT' | translate }}</ng-container>
+            </ion-label>
             <ion-input type="text"
                        formControlName="recipientName"
                        name="recipientName"
+                       [disabled]="addressType === addressTypes.Contact || addressType === addressTypes.WalletWithLabel"
                        [(ngModel)]="transaction.recipientName"
                        (keyup)="isRecipientNameAutoSet = false">
             </ion-input>

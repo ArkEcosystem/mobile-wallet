@@ -161,7 +161,7 @@
     "ADD_ADDRESS_TO_CONTACTS": "Добави {{ address }} към контактите",
     "AMOUNT": "Сума",
     "CONFIRMATIONS": "Потвърждения",
-    "CONTACT_NAME": "Ново име за Контакта (не е задължително)",
+    "NEW_CONTACT_NAME": "Ново име за Контакта (не е задължително)",
     "COPY_TXID": "Копирай TXID",
     "CREATE_TRANSACTION_ERROR": "Грешка при създаването на транзакцията. Проверете връзката към Интернет",
     "DELEGATE_REGISTRATION": "Регистриране на Делегат",
