@@ -153,6 +153,7 @@
     "PRIVACY_POLICY": "Privacy Policy",
     "SECURITY": "Security",
     "NOT_AVAILABLE_WATCH_ONLY": "Not available for watch only address",
+    "NOTIFICATIONS": "Notifications",
     "SETTINGS": "Settings",
     "VERSION": "Version",
     "WALLET_BACKUP": "Wallet Backup"
@@ -235,6 +236,7 @@
     "LABEL": "Label",
     "MY_WALLET": "My Wallet",
     "NEW_WALLET_NAME": "New wallet name",
+    "NEW_TRANSACTION": "New transaction in {{ profile }}",
     "NO_TRANSACTIONS": "No transactions available",
     "TYPE_PASSPHRASE_OR_ADDRESS": "or type your | secret passphrase | or your | address | manually.",
     "PASSPHRASE": "Passphrase",

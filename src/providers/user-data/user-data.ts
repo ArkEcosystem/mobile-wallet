@@ -225,10 +225,10 @@ export class UserDataProvider {
     return this.saveWallet(wallet);
   }
 
-  public getWalletLabel(walletOrAddress: Wallet | string): string {
+  public getWalletLabel(walletOrAddress: Wallet | string, profileId?: string): string {
     let wallet: Wallet;
     if (typeof walletOrAddress === 'string') {
-      wallet = this.getWalletByAddress(walletOrAddress);
+      wallet = this.getWalletByAddress(walletOrAddress, profileId);
     } else {
       wallet = walletOrAddress;
     }

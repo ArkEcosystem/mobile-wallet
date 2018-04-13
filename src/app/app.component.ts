@@ -11,6 +11,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
+import { LocalNotificationsProvider } from '@providers/local-notifications/local-notifications';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -48,6 +49,7 @@ export class MyApp implements OnInit, OnDestroy {
     private arkApiProvider: ArkApiProvider,
     private settingsDataProvider: SettingsDataProvider,
     private toastProvider: ToastProvider,
+    private localNotificationsProvider: LocalNotificationsProvider,
     private menuCtrl: MenuController,
     private alertCtrl: AlertController,
     private config: Config,
@@ -55,13 +57,14 @@ export class MyApp implements OnInit, OnDestroy {
     private screenOrientation: ScreenOrientation,
     private app: App,
     private ionicNetwork: Network,
-    splashScreen: SplashScreen,
-    events: Events
+    private splashScreen: SplashScreen,
+    private events: Events
   ) {
 
     platform.ready().then(() => {
-      splashScreen.hide();
+      this.splashScreen.hide();
       menuCtrl.enable(false, 'sidebarMenu');
+      this.localNotificationsProvider.init();
 
       this.initConfig();
       this.setBackButton();
@@ -75,10 +78,10 @@ export class MyApp implements OnInit, OnDestroy {
         this.openPage('LoginPage');
       });
 
-      events.subscribe('qrScanner:show', () => {
+      this.events.subscribe('qrScanner:show', () => {
         this.hideNav = true;
       });
-      events.subscribe('qrScanner:hide', () => {
+      this.events.subscribe('qrScanner:hide', () => {
         this.hideNav = false;
       });
 

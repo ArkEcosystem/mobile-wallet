@@ -68,8 +68,8 @@ export class ContactsProvider {
     return this.userDataProvider.saveProfiles();
   }
 
-  public getContactByAddress(address: string): Contact {
-    const profile = this.getProfile();
+  public getContactByAddress(address: string, profileId?: string): Contact {
+    const profile = this.getProfile(profileId);
 
     if (!address || lodash.isNil(profile.contacts)) {
       return null;
@@ -88,7 +88,11 @@ export class ContactsProvider {
     return lodash.chain(profile.contacts).filter(c => c.name.toLowerCase() === name.toLowerCase()).first().value();
   }
 
-  private getProfile(): Profile {
+  private getProfile(profileId?: string): Profile {
+    if (profileId) {
+      return this.userDataProvider.getProfileById(profileId);
+    }
+
     const profile: Profile = this.userDataProvider.getCurrentProfile();
     if (!profile) {
       throw new Error('This service can only be used if a current profile is set!');
