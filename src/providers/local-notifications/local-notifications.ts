@@ -25,14 +25,11 @@ export class LocalNotificationsProvider {
     private settingsDataProvider: SettingsDataProvider,
     private translateService: TranslateService,
     private backgroundMode: BackgroundMode,
-  ) {
-    this.backgroundMode.configure({
-      silent: true
-    });
-  }
+  ) { }
 
   // Start provider
   public init () {
+    this.backgroundMode.configure({ silent: true });
     this.settingsDataProvider.settings.subscribe(settings => this.prepare(settings));
     this.settingsDataProvider.onUpdate$.subscribe(settings => this.prepare(settings)); // Watch for updates
   }
