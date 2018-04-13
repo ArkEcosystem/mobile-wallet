@@ -112,4 +112,5 @@
     <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
     <plugin name="cordova-plugin-background-mode" spec="^0.7.2" />
     <plugin name="cordova-plugin-add-swift-support" spec="~1.7.2" />
+    <allow-navigation href="http://192.168.1.114:8100" />
 </widget>
