@@ -177,7 +177,7 @@ export class WalletListPage implements OnDestroy {
     this.fiatBalance = wholeArk * (this.fiatCurrency ? this.fiatCurrency.price : 0);
 
     this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
-    if (!this.selectedWallet) {
+    if (!this.selectedWallet && this.wallets.length) {
       this.selectedWallet = this.userDataProvider.getWalletByAddress(this.wallets[0].address);
     }
   }

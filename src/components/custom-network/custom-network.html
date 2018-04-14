@@ -1,12 +1,12 @@
 <ion-grid fixed>
-  <ion-row nowrap>
+  <ion-row text-wrap>
     <ion-col >
       <ion-item>
         {{ 'CUSTOM_NETWORK.CHOOSE_EXISTING' | translate}}
       </ion-item>
     </ion-col>
   </ion-row>
-  <ion-row nowrap>
+  <ion-row>
     <ion-col >
       <ion-item>
         <ion-label>{{ 'CUSTOM_NETWORK.CUSTOM_NETWORK' | translate}}</ion-label>
@@ -16,14 +16,14 @@
       </ion-item>
     </ion-col>
   </ion-row>
-  <ion-row nowrap>
-    <ion-col >
+  <ion-row text-wrap>
+    <ion-col>
       <ion-item>
         {{ 'CUSTOM_NETWORK.OR_CREATE_NEW' | translate}}
       </ion-item>
     </ion-col>
   </ion-row>
-  <ion-row nowrap>
+  <ion-row>
     <ion-col >
       <ion-item>
         <button ion-button (click)="createNewModal()">
