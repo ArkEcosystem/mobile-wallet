@@ -141,12 +141,15 @@ export class ArkApiProvider {
   public createTransaction(transaction: Transaction, key: string, secondKey: string, secondPassphrase: string): Observable<Transaction> {
     return Observable.create((observer) => {
       const configNetwork = arktsConfig.networks[this._network.name];
-      const jsNetwork = {
-        messagePrefix: configNetwork.name,
-        bip32: configNetwork.bip32,
-        pubKeyHash: configNetwork.version,
-        wif: configNetwork.wif,
-      };
+      let jsNetwork;
+      if (configNetwork) {
+        jsNetwork = {
+          messagePrefix: configNetwork.name,
+          bip32: configNetwork.bip32,
+          pubKeyHash: configNetwork.version,
+          wif: configNetwork.wif,
+        };
+      }
 
       if (!arkts.PublicKey.validateAddress(transaction.address, this._network)) {
         observer.error({
