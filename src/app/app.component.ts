@@ -64,7 +64,6 @@ export class MyApp implements OnInit, OnDestroy {
     platform.ready().then(() => {
       this.splashScreen.hide();
       menuCtrl.enable(false, 'sidebarMenu');
-      this.localNotificationsProvider.init();
 
       this.initConfig();
       this.setBackButton();
@@ -128,6 +127,7 @@ export class MyApp implements OnInit, OnDestroy {
     this.config.set('android', 'autoFocusAssist', 'delay');
 
     if (this.platform.is('cordova')) {
+      this.localNotificationsProvider.init();
 
       if (this.platform.is('ios')) {
         this.statusBar.styleDefault();
