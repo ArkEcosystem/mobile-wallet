@@ -165,7 +165,10 @@
     "ADD_ADDRESS_TO_CONTACTS": "{{ address }} 를 연락처에 추가",
     "AMOUNT": "수량",
     "CONFIRMATIONS": "컨펌",
-    "NEW_CONTACT_NAME": "새로운 연락처 이름 (선택)",
+    "NEW_CONTACT_NAME": "새로운 연락처 명 (선택)",
+    "NEW_WALLET_LABEL": "지갑 라벨 (선택)",
+    "EXISTING_WALLET": "지갑",
+    "EXISTING_CONTACT": "연락처",
     "COPY_TXID": "트랜잭션ID 복사",
     "CREATE_TRANSACTION_ERROR": "트랜잭션을 생성하지 못했습니다. 인터넷 연결을 확인하세요.",
     "DELEGATE_REGISTRATION": "대표자 등록",
@@ -204,7 +207,9 @@
     "INVALID_ADDRESS": "이 주소는 유효하지 않습니다!",
     "IS_OWN_ADDRESS": "이 주소는 당신의 주소입니다. 본인에게 정말로 보내실껀가요?",
     "NO_TRANSACTIONS": "이 주소는 거래내역이 없는 주소입니다. 정말로 보내시겠습니까?",
-    "IS_NEO_ADDRESS": "이 주소는 'NEO' 주소로 보입니다. 정말 이 주소가 맞나요?"
+    "IS_NEO_ADDRESS": "이 주소는 'NEO' 주소로 보입니다. 정말 이 주소가 맞나요?",
+    "LABEL_EXISTS": "해당 라벨의 지갑이 이미 존재 합니다 '{{ label }}'!",
+    "INVALID_WALLET": "해당 지갑은 유효하지 않습니다!"
   },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "지갑 추가 실패",
@@ -228,7 +233,6 @@
     "IMPORT_WALLET": "지갑 추가",
     "KEEP_SAFE": "안전하게 보관하세요",
     "LABEL": "라벨",
-    "LABEL_EXISTS": "같은 라벨의 지갑이 이미 존재합니다! '{{ label }}'",
     "MY_WALLET": "내 지갑",
     "NEW_WALLET_NAME": "새로운 지갑 이름",
     "NO_TRANSACTIONS": "트랜잭션이 없습니다",
