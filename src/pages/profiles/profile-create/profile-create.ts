@@ -9,6 +9,8 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
 
 import lodash from 'lodash';
+import {Network} from 'ark-ts/model';
+import {TranslateService} from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -17,8 +19,11 @@ import lodash from 'lodash';
 })
 export class ProfileCreatePage implements OnDestroy {
 
-  public networks;
-  public networksIds;
+  public networks: {[networkId: string]: Network};
+  public networksIds: string[];
+  public networkChoices: {name: string, id?: string}[] = [];
+
+  public activeNetworkChoice: {name: string, id?: string};
 
   public newProfile = { name: '', networkId: '' };
   public showAdvancedOptions = false;
@@ -30,10 +35,12 @@ export class ProfileCreatePage implements OnDestroy {
     public navParams: NavParams,
     private userDataProvider: UserDataProvider,
     private toastProvider: ToastProvider,
+    private translateService: TranslateService
   ) { }
 
-  onSelectNetwork(networkId: string) {
-    this.newProfile.networkId = networkId;
+  onSelectNetwork(networkChoice: {name: string, id?: string}) {
+    this.activeNetworkChoice = networkChoice;
+    this.newProfile.networkId = networkChoice.id;
   }
 
   submitForm() {
@@ -49,13 +56,29 @@ export class ProfileCreatePage implements OnDestroy {
   }
 
   load() {
-    this.networks = this.userDataProvider.networks;
-    this.networksIds = lodash.keys(this.networks);
-    this.newProfile.networkId = this.networksIds[0];
+    this.translateService.get('PROFILES_PAGE.CUSTOM').subscribe(customTrans => {
+      this.networks = this.userDataProvider.networks;
+      this.networksIds = lodash.keys(this.networks);
+      this.networkChoices =
+        this.networksIds
+          .filter(id => this.userDataProvider
+                            .defaultNetworks
+                            .some(defaultNetwork => this.networks[id].nethash === defaultNetwork.nethash))
+          .map(id => {
+            return {name: this.networks[id].name, id: id};
+          });
+      this.networkChoices.push({name: customTrans, id: null});
+      this.newProfile.networkId = this.networksIds[0];
+      this.activeNetworkChoice = this.networkChoices[0];
+    });
   }
 
   toggleAdvanced() {
     this.showAdvancedOptions = !this.showAdvancedOptions;
+  }
+
+  public onCustomNetworkChange(customNetworkId: string) {
+    this.newProfile.networkId = customNetworkId;
   }
 
   ionViewDidLoad() {

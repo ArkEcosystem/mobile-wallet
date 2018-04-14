@@ -1,0 +1,145 @@
+<ion-header no-shadow no-border>
+  <ion-navbar>
+    <h6 text-center class="no-padding no-margin">{{ 'CUSTOM_NETWORK.EDIT' | translate }}</h6>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form #manageForm="ngForm">
+    <ion-grid fixed>
+      <ion-row nowrap>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.NAME' | translate }}</ion-label>
+            <ion-input type="text"
+                       required
+                       name="Name"
+                       [(ngModel)]="network.name">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row nowrap>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.TOKEN_NAME' | translate }}</ion-label>
+            <ion-input type="text"
+                       required
+                       name="Token"
+                       [(ngModel)]="network.token">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row nowrap>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.SYMBOL_NAME' | translate }}</ion-label>
+            <ion-input type="text"
+                       required
+                       name="Symbol"
+                       [(ngModel)]="network.symbol">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row nowrap>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.ADDRESS_VERSION' | translate }}</ion-label>
+            <ion-input type="text"
+                       required
+                       name="Version"
+                       [(ngModel)]="network.version">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row nowrap>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.NETHASH' | translate }}</ion-label>
+            <ion-input type="text"
+                       required
+                       name="Nethash"
+                       [(ngModel)]="network.nethash">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row nowrap>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.SEED_SERVER_IP' | translate }}</ion-label>
+            <ion-input type="text"
+                       required
+                       name="activePeerIp"
+                       [(ngModel)]="network.activePeer.ip">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.SEED_SERVER_PORT' | translate }}</ion-label>
+            <ion-input type="text"
+                       required
+                       name="activePeerPort"
+                       [(ngModel)]="network.activePeer.port">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row nowrap>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.EXPLORER' | translate }}</ion-label>
+            <ion-input type="text"
+                       name="Explorer"
+                       [(ngModel)]="network.explorer">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row nowrap>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.MARKET_SYMBOL_NAME' | translate }}</ion-label>
+            <ion-input type="text"
+                       name="CryptoCompareName"
+                       placeholder="e.g. ARK"
+                       [(ngModel)]="network.marketTickerName">
+            </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+
+<ion-footer no-border no-shadow>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <button ion-button
+                class="button-continue"
+                [disabled]="!manageForm.valid"
+                (click)="save()">
+          {{ 'SAVE' | translate }}
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button
+                class="button-continue"
+                *ngIf="networkId"
+                (click)="prepareDelete()">
+          {{ 'DELETE' | translate }}
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

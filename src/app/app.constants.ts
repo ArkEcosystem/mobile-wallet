@@ -33,8 +33,6 @@ export const TOAST_POSITION = 'bottom';
 
 // COIN MARKETCAP API
 export const API_MARKET_URL = 'https://min-api.cryptocompare.com';
-export const API_MARKET_HISTORY_ENDPOINT = 'data/histoday?fsym=ARK&allData=true&tsym=';
-export const API_MARKET_TICKER_ENDPOINT = 'data/pricemultifull?fsyms=ARK&tsyms=';
 
 // GENERIC
 export const VIBRATION_TIME_MS = 30;
