@@ -153,7 +153,7 @@
     "PRIVACY_POLICY": "개인정보 보호정책",
     "SECURITY": "보안",
     "NOT_AVAILABLE_WATCH_ONLY": "조회만 가능한 주소에서는 불가능합니다",
-	  "NOTIFICATIONS": "알림",
+    "NOTIFICATIONS": "알림",
     "SETTINGS": "설정",
     "VERSION": "버전",
     "WALLET_BACKUP": "지갑 백업"
@@ -236,7 +236,7 @@
     "LABEL": "라벨",
     "MY_WALLET": "내 지갑",
     "NEW_WALLET_NAME": "새로운 지갑 이름",
-	  "NEW_TRANSACTION": "새로운 트랜잭션이 발생했습니다 {{ profile }}",
+    "NEW_TRANSACTION": "새로운 트랜잭션이 발생했습니다 {{ profile }}",
     "NO_TRANSACTIONS": "트랜잭션이 없습니다",
     "TYPE_PASSPHRASE_OR_ADDRESS": "혹은 | 암호문(passphrase)을 입력하거나 | 당신의 | 주소를 | 수동으로 입력하세요.",
     "PASSPHRASE": "암호문(Passphrase)",
