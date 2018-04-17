@@ -52,6 +52,16 @@ export class SettingsDataProvider {
       'mxn': 'Mexican Peso',
       'czk': 'Česká koruna'
     },
+    wordlistLanguages: {
+    'english': 'English',
+    'french': 'French',
+    'spanish': 'Spanish',
+    'italian': 'Italian',
+    'japanese': 'Japanese',
+    'korean': 'Korean',
+    'chinese_simplified': 'Chinese simplified',
+    'chinese_traditional': 'Chinese traditional'
+    }
   };
 
   constructor(private _storageProvider: StorageProvider, private translateService: TranslateService) {
