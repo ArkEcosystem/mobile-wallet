@@ -11,6 +11,7 @@ import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { BaseWalletImport } from '@root/src/pages/wallet/wallet-import/wallet-import.base';
 
 import * as constants from '@app/app.constants';
+import bip39 from 'bip39';
 
 @IonicPage()
 @Component({
@@ -24,6 +25,10 @@ export class WalletManualImportPage extends BaseWalletImport  {
   public useAddress: boolean;
   public nonBIP39Passphrase: boolean;
   public wordSuggestions = [];
+
+  private wordlist;
+  private suggestLanguageFound = false;
+
   @ViewChild('inputAddressOrPassphrase') inputAddressOrPassphrase;
 
   constructor(
@@ -39,6 +44,11 @@ export class WalletManualImportPage extends BaseWalletImport  {
     super(navParams, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider, settingsDataProvider);
     this.useAddress = navParams.get('type') === 'address';
     this.nonBIP39Passphrase = false;
+
+    this.wordlist = bip39.wordlists.english;
+    if (this.wordlistLanguage && this.wordlistLanguage !== 'english') {
+      this.wordlist = bip39.wordlists[this.wordlistLanguage].concat(this.wordlist);
+    }
   }
 
   submitForm() {
@@ -55,13 +65,34 @@ export class WalletManualImportPage extends BaseWalletImport  {
     const lastAddressOrPassphrase = this.addressOrPassphrase || '';
     this.addressOrPassphrase = value;
 
-    this.suggestWord(lastAddressOrPassphrase, this.addressOrPassphrase);
+    if (!this.useAddress && !this.nonBIP39Passphrase) {
+      this.updateWordlist();
+      this.suggestWord(lastAddressOrPassphrase, this.addressOrPassphrase);
+    }
+  }
+
+  updateWordlist() {
+    if (this.suggestLanguageFound || !this.wordlistLanguage || this.wordlistLanguage === 'english') { return; }
+    const words = this.addressOrPassphrase.split(' ');
+    if (words.length < 2 ) { return; }
+
+    words.pop(); // use every word except the last one as it may being typed
+    for (const word of words) {
+      if (bip39.wordlists.english.indexOf(word) !== -1 && bip39.wordlists[this.wordlistLanguage].indexOf(word) === -1) {
+        this.wordlist = bip39.wordlists.english;
+        this.suggestLanguageFound = true;
+        return;
+      }
+      if (bip39.wordlists[this.wordlistLanguage].indexOf(word) !== -1 && bip39.wordlists.english.indexOf(word) === -1) {
+        this.wordlist = bip39.wordlists[this.wordlistLanguage];
+        this.suggestLanguageFound = true;
+        return;
+      }
+    }
   }
 
   suggestWord(lastPassphrase, passphrase) {
     this.wordSuggestions = [];
-
-    if (this.useAddress || this.nonBIP39Passphrase) { return; }
 
     const wordsLastPassphrase = lastPassphrase.split(' ');
     const wordsPassphrase = passphrase.split(' ');
@@ -75,9 +106,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
     if (Math.abs(lastWordLastPassphrase.length - lastWordPassphrase.length) === 1 && lastWordPassphrase.length > 1 &&
         (lastWordLastPassphrase.indexOf(lastWordPassphrase) !== -1 || lastWordPassphrase.indexOf(lastWordLastPassphrase) !== -1 )) {
       // we just want one letter to be different - only "manual" typing, don't suggest on copy/paste stuff
-      const bip39 = require('bip39');
-      const englishWordlist = bip39.wordlists.english;
-      this.wordSuggestions = englishWordlist.filter( word => word.indexOf(lastWordPassphrase) === 0 );
+      this.wordSuggestions = this.wordlist.filter( word => word.indexOf(lastWordPassphrase) === 0 );
     }
   }
 
