@@ -28,7 +28,7 @@ export class UserDataProvider {
   public currentNetwork: StoredNetwork;
   public currentWallet: Wallet;
 
-  public onActivateNetwork$: Subject<Network> = new Subject();
+  public onActivateNetwork$: Subject<StoredNetwork> = new Subject();
   public onCreateWallet$: Subject<Wallet> = new Subject();
   public onUpdateWallet$: Subject<Wallet> = new Subject();
   public onSelectProfile$: Subject<Profile> = new Subject();

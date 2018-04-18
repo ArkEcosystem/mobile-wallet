@@ -1,5 +1,6 @@
-import { Network } from 'ark-ts';
+import { Network, Peer } from 'ark-ts';
 
 export class StoredNetwork extends Network {
-  marketTickerName: string;
+  public marketTickerName: string;
+  public peerList: Peer[];
 }
