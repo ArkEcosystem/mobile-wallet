@@ -123,7 +123,7 @@
 
 <ion-footer no-border no-shadow>
   <ion-grid>
-    <ion-row>
+    <ion-row align-items-center>
       <ion-col>
         <button ion-button
                 class="button-continue"
@@ -132,10 +132,9 @@
           {{ 'SAVE' | translate }}
         </button>
       </ion-col>
-      <ion-col>
+      <ion-col *ngIf="networkId">
         <button ion-button
                 class="button-continue"
-                *ngIf="networkId"
                 (click)="prepareDelete()">
           {{ 'DELETE' | translate }}
         </button>
