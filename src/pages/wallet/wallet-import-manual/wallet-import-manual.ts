@@ -65,7 +65,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
     const lastAddressOrPassphrase = this.addressOrPassphrase || '';
     this.addressOrPassphrase = value;
 
-    if (!this.useAddress && !this.nonBIP39Passphrase) {
+    if (!this.useAddress && !this.nonBIP39Passphrase && this.addressOrPassphrase) {
       this.updateWordlist();
       this.suggestWord(lastAddressOrPassphrase, this.addressOrPassphrase);
     }
