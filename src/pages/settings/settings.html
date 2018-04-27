@@ -38,6 +38,11 @@
         <ion-icon name="ios-lock-outline" color="primary" item-start></ion-icon>
         {{ 'SETTINGS_PAGE.CHANGE_PIN' | translate }}
       </button>
+      <ion-item ion-item>
+        <ion-icon name="ios-notifications-outline" color="primary" item-start></ion-icon>
+        <ion-label>{{ 'SETTINGS_PAGE.NOTIFICATIONS' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="currentSettings.notification" (ngModelChange)="onUpdate()"></ion-toggle>
+      </ion-item>
     </ion-item-group>
 
     <ion-item-group [hidden]="true">

@@ -100,7 +100,8 @@
   "NO": "Nee",
   "PASSPHRASE_TEST": {
     "INFO": "Type alsjeblieft de gevraagde woorden van je passphrase om de wallet aanmaak te valideren.",
-    "WRONG_WORD": "Dit woord is niet correct"
+    "WRONG_WORD": "Dit woord is niet correct",
+    "DEVNET_WORDS_NOTICE": "De woorden zijn automatisch ingevuld voor Devnet"
   },
   "PIN_CODE": {
     "CONFIRM": "Bevestig je pincode",
@@ -114,6 +115,7 @@
     "PIN_UPDATED_ERROR_TEXT": "Er was een probleem bij het updaten van je pincode",
     "PIN_UPDATED_TEXT": "Je pincode is geüpdatet",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type pincode om passphrase te versleutelen",
+    "TYPE_PIN_REMOVE_WALLET": "Type pincode om wallet te verwijderen",
     "TYPE_PIN_SIGN_TRANSACTION": "Type pincode om transactie te ondertekenen",
     "WRONG": "Vul a.u.b. de juiste pincode in",
     "WEAK_PIN": "Zwakke pincode",
@@ -162,7 +164,7 @@
     "ADD_ADDRESS_TO_CONTACTS": "Voeg {{ address }} toe aan contacten",
     "AMOUNT": "Bedrag",
     "CONFIRMATIONS": "Bevestigingen",
-    "CONTACT_NAME": "Nieuwe contact naam (Optioneel)",
+    "NEW_CONTACT_NAME": "Nieuwe contact naam (Optioneel)",
     "COPY_TXID": "Kopieer TXID",
     "CREATE_TRANSACTION_ERROR": "Kon transactie niet aanmaken. Controleer je internet verbinding",
     "DELEGATE_REGISTRATION": "Registratie Afgevaardigde",
@@ -176,6 +178,7 @@
     "INVALID_FORM_ERROR": "Ongeldige formulier data",
     "MULTISIGNATURE_CREATION": "Multisignature aanmaken",
     "OPEN_EXPLORER": "Openen in explorer",
+    "PERFORMING_DESTINATION_ADDRESS_CHECKS": "Bezig met ontvangstadres te controleren...",
     "QRCODE_COPY": "Klik op het adres om het naar het klembord te kopiëren, of klik op pictogram om QR code te delen",
     "RECEIVE": "Ontvangen",
     "RECEIVE_TOKEN": "Ontvang {{ Token }}",
@@ -196,6 +199,12 @@
     "TRANSACTION": "Transactie"
   },
   "TYPE": "Type",
+  "VALIDATION": {
+    "INVALID_ADDRESS": "Dit adres is ongeldig!",
+    "IS_OWN_ADDRESS": "Dit is je eigen adres. Weet je zeker dat je het hier naartoe wilt sturen?",
+    "NO_TRANSACTIONS": "Het lijkt erop dat dit adres geen transacties bevat. Weet je zeker dat het correct is?",
+    "IS_NEO_ADDRESS": "Het lijkt erop dat dit een 'NEO' adres is. Weet je zeker dat het correct is?"
+  },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "Kon wallet niet toevoegen",
     "ADD_WALLET_TEXT": "Klik op de knop onderin om een wallet te importeren of aan te maken",
@@ -218,6 +227,7 @@
     "IMPORT_WALLET": "Importeer Wallet",
     "KEEP_SAFE": "Bewaar Veilig",
     "LABEL": "Label",
+    "LABEL_EXISTS": "Er bestaat al een wallet met het label '{{ label }}'!",
     "MY_WALLET": "Mijn Wallet",
     "NEW_WALLET_NAME": "Nieuwe wallet naam",
     "NO_TRANSACTIONS": "Geen transacties beschikbaar",
@@ -228,6 +238,7 @@
     "PUBLIC_ADDRESS_SHARE": "Openbaar Adres (DEEL)",
     "PUBLIC_KEY": "Public Key",
     "RE_ENTER_PASSPHRASE": "Voer opnieuw je passphrase in",
+    "PASSPHRASE_NOT_BIP39": "Je hebt geen geldige BIP-39 passphrase ingevuld.",
     "REMOVE_WALLET": "Verwijder Wallet",
     "REMOVE_WALLET_TEXT": "Je account zal worden verwijderd. Zorg ervoor dat je een backup hebt, je hebt de originele passphrase nodig om hem te herstellen.",
     "SCAN_QRCODE": "Scan QR Code",

@@ -32,7 +32,6 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
 import { Clipboard } from '@ionic-native/clipboard';
 import { ToastProvider } from '@providers/toast/toast';
-import { TranslatableObject } from '@models/translate';
 
 @IonicPage()
 @Component({
@@ -259,10 +258,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     const modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label}, {cssClass: 'inset-modal-tiny'});
 
     modal.onDidDismiss((label) => {
-      const isLabelUnique = this.userDataProvider.setWalletLabel(this.wallet, label);
-      if (isLabelUnique === false) {
-        this.toastProvider.error({key: 'WALLETS_PAGE.LABEL_EXISTS', parameters: {label: label}} as TranslatableObject, 3000);
-      }
+      this.userDataProvider
+          .setWalletLabel(this.wallet, label)
+          .subscribe(null, error => this.toastProvider.error(error, 3000));
     });
 
     modal.present();
@@ -312,7 +310,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
             {
               text: translation.CONFIRM,
               handler: () => {
-                this.deleteWallet();
+                this.onEnterPinCode = this.deleteWallet;
+                this.pinCode.open('PIN_CODE.TYPE_PIN_REMOVE_WALLET', false);
               }
             }
           ]
@@ -363,8 +362,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   private deleteWallet() {
-    this.userDataProvider.removeWalletByAddress(this.wallet.address);
-    this.navCtrl.setRoot('WalletListPage');
+      this.userDataProvider.removeWalletByAddress(this.wallet.address);
+      this.navCtrl.setRoot('WalletListPage');
   }
 
   private refreshTransactions(save: boolean = true, loader?: Loading) {
