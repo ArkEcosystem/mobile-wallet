@@ -79,14 +79,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
     }
   }
 
-  addressOrPassphraseBlur(event) {
-    if (!event.relatedTarget) { return; }
-    const relatedName = event.relatedTarget.name;
-    if (!relatedName || relatedName.indexOf('wordSuggestion') === -1) { return; }
-
-    const index = parseInt(relatedName[relatedName.length - 1]); // 0,1 or 2 from wordSuggestion0,1,2
-    if (isNaN(index)) { return; }
-
+  suggestionClick(index) {
     const wordsPassphrase = this.addressOrPassphrase.split(' ');
     wordsPassphrase[wordsPassphrase.length - 1] = this.wordSuggestions[index];
     this.addressOrPassphrase = wordsPassphrase.join(' ');

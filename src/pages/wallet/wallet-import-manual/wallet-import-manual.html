@@ -17,6 +17,11 @@
             </ion-label>
             <ion-textarea #inputAddressOrPassphrase (blur)="addressOrPassphraseBlur($event)" name="addressOrPassphrase" rows="2" [ngModel]="addressOrPassphrase" (ngModelChange)="addressOrPassphraseChange($event)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required></ion-textarea>
           </ion-item>
+          <ion-item *ngIf="wordSuggestions.length > 0" no-padding no-lines>
+            <button (click)="suggestionClick(0)" *ngIf="wordSuggestions[0]" ion-button color="light" round small name="wordSuggestion0">{{ wordSuggestions[0] }}</button>
+            <button (click)="suggestionClick(1)" *ngIf="wordSuggestions[1]" ion-button color="light" round small name="wordSuggestion1">{{ wordSuggestions[1] }}</button>
+            <button (click)="suggestionClick(2)" *ngIf="wordSuggestions[2]" ion-button color="light" round small name="wordSuggestion2">{{ wordSuggestions[2] }}</button>
+          </ion-item>
           <ion-item *ngIf="!useAddress" no-padding no-lines style="background-color:transparent">
           <ion-label>Custom (non <a (click)="openBIP39DocURL()">BIP39</a>) passphrase</ion-label>
           <ion-toggle name="nonBIP39Passphrase" [(ngModel)]="nonBIP39Passphrase"></ion-toggle>
@@ -33,8 +38,5 @@
 </ion-content>
 
 <ion-footer no-shadow no-border padding text-center [keyboard-attach]="content">
-  <button *ngIf="wordSuggestions[0]" ion-button color="light" round small name="wordSuggestion0">{{ wordSuggestions[0] }}</button>
-  <button *ngIf="wordSuggestions[1]" ion-button color="light" round small name="wordSuggestion1">{{ wordSuggestions[1] }}</button>
-  <button *ngIf="wordSuggestions[2]" ion-button color="light" round small name="wordSuggestion2">{{ wordSuggestions[2] }}</button>
   <button ion-button class="button-continue" [disabled]="!importWalletManual.form.valid" (click)="submitForm()">{{ 'IMPORT' | translate }}</button>
 </ion-footer>
