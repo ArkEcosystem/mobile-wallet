@@ -101,7 +101,9 @@ export class WalletBackupModal {
     account.mnemonic = this.keys.key;
     account.publicKey = pbKey.toHex();
     account.seed = bip39.mnemonicToSeedHex(account.mnemonic);
-    account.wif = pvKey.toWIF();
+    if (pbKey.network.wif) {
+      account.wif = pvKey.toWIF();
+    }
 
     if (this.keys.secondKey) {
       account.secondMnemonic = this.keys.secondKey;
@@ -121,7 +123,9 @@ export class WalletBackupModal {
 
     account.address = pbKey.getAddress();
     account.publicKey = pbKey.toHex();
-    account.wif = pvKey.toWIF();
+    if (pbKey.network.wif) {
+      account.wif = pvKey.toWIF();
+    }
     account.seed = bip39.mnemonicToSeedHex(account.mnemonic);
 
     this.account = account;

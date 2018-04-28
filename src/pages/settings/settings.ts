@@ -58,6 +58,11 @@ export class SettingsPage implements OnInit, OnDestroy {
     });
   }
 
+  openManageNetworksPage() {
+    const modal = this.modalCtrl.create('CustomNetworkManageModal');
+    modal.present();
+  }
+
   openPrivacyPolicy() {
     return this.inAppBrowser.create(constants.PRIVACY_POLICY_URL, '_system');
   }

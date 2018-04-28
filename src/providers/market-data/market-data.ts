@@ -14,6 +14,7 @@ import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import * as model from '@models/market';
 import { UserSettings } from '@models/settings';
 import * as constants from '@app/app.constants';
+import { UserDataProvider } from '@providers/user-data/user-data';
 
 @Injectable()
 export class MarketDataProvider {
@@ -25,10 +26,15 @@ export class MarketDataProvider {
   private marketTicker: model.MarketTicker;
   private marketHistory: model.MarketHistory;
 
+  private get marketTickerName(): string {
+    return this.userDataProvider.currentNetwork.marketTickerName || 'ARK';
+  }
+
   constructor(
     private http: HttpClient,
     private storageProvider: StorageProvider,
     private settingsDataProvider: SettingsDataProvider,
+    private userDataProvider: UserDataProvider
   ) {
     this.loadData();
     this.fetchTicker();
@@ -68,28 +74,28 @@ export class MarketDataProvider {
   }
 
   private fetchTicker(): Observable<model.MarketTicker> {
-    const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_TICKER_ENDPOINT}`;
+    const url = `${constants.API_MARKET_URL}/data/pricemultifull?fsyms=${this.marketTickerName}&tsyms=`;
 
     const currenciesList = model.CURRENCIES_LIST.map((currency) => {
       return currency.code.toUpperCase();
     }).join(',');
 
     return this.http.get(url + currenciesList).map((response) => {
-      const json = response['RAW']['ARK'];
+      const json = response['RAW'][this.marketTickerName] || response['RAW'][this.marketTickerName.toUpperCase()];
       const tickerObject = {
         symbol: json['BTC']['FROMSYMBOL'],
         currencies: json,
       };
 
       this.marketTicker = new model.MarketTicker().deserialize(tickerObject);
-      this.storageProvider.set(constants.STORAGE_MARKET_TICKER, tickerObject);
+      this.storageProvider.set(this.getKey(constants.STORAGE_MARKET_TICKER), tickerObject);
 
       return this.marketTicker;
     });
   }
 
   fetchHistory(): Observable<model.MarketHistory> {
-    const url = `${constants.API_MARKET_URL}/${constants.API_MARKET_HISTORY_ENDPOINT}`;
+    const url = `${constants.API_MARKET_URL}/data/histoday?fsym=${this.marketTickerName}&allData=true&tsym=`;
     const myCurrencyCode = ((!this.settings || !this.settings.currency)
       ? this.settingsDataProvider.getDefaults().currency
       : this.settings.currency).toUpperCase();
@@ -103,7 +109,7 @@ export class MarketDataProvider {
         const history = new model.MarketHistory().deserialize(historyData);
 
         this.marketHistory = history;
-        this.storageProvider.set(constants.STORAGE_MARKET_HISTORY, historyData);
+        this.storageProvider.set(this.getKey(constants.STORAGE_MARKET_HISTORY), historyData);
         this.onUpdateHistory$.next(history);
 
         return history;
@@ -118,16 +124,19 @@ export class MarketDataProvider {
   }
 
   private loadData() {
-    this.storageProvider.getObject(constants.STORAGE_MARKET_HISTORY).subscribe((history) => {
+    this.storageProvider.getObject(this.getKey(constants.STORAGE_MARKET_HISTORY)).subscribe((history) => {
       if (history) {
         this.marketHistory = new model.MarketHistory().deserialize(history);
       }
     });
-    this.storageProvider.getObject(constants.STORAGE_MARKET_TICKER).subscribe((ticker) => {
+    this.storageProvider.getObject(this.getKey(constants.STORAGE_MARKET_TICKER)).subscribe((ticker) => {
       if (ticker) {
         this.marketTicker = new model.MarketTicker().deserialize(ticker);
       }
     });
   }
 
+  private getKey(key: string): string {
+    return key + ':' + this.marketTickerName;
+  }
 }

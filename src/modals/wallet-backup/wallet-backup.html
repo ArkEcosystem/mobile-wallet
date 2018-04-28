@@ -60,7 +60,7 @@
             <p class="item-caption">{{ 'WALLETS_PAGE.PUBLIC_KEY' | translate }}</p>
             <h6 class="item-value text-selectable">{{ account?.publicKey }}</h6>
           </ion-item>
-          <ion-item text-wrap>
+          <ion-item text-wrap *ngIf="account?.wif">
             <p class="item-caption">{{ 'WALLETS_PAGE.WIF' | translate }}</p>
             <h6 class="item-value text-selectable">{{ account?.wif }}</h6>
           </ion-item>
