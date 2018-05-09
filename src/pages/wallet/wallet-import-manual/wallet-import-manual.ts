@@ -57,7 +57,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
   initFormValidation() {
     const validatorAddressFct = this.useAddress ? this.addressValidator.isValid.bind(this.addressValidator) : null;
     const validatorGroupFct = this.useAddress ? {} : { validator: PassphraseValidator.isValid };
-    // We use form group validator for passphrase validation as we need the 'nonBIP39Passphrase' boolean value with the actual passphrase value
+    // We use form group validator for passphrase validation as we need the 'nonBIP39Passphrase' bool value and the passphrase value
 
     this.manualImportFormGroup = this.formBuilder.group({
       controlAddressOrPassphrase: ['', validatorAddressFct],
