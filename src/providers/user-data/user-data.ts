@@ -91,6 +91,16 @@ export class UserDataProvider {
     return this.saveProfiles();
   }
 
+  getProfileByName(name: string) {
+    for (var profileId in this.profiles) {
+      if (this.profiles.hasOwnProperty(profileId)) {
+        if (name.toLowerCase() === this.profiles[profileId].name.toLowerCase()) {
+          return new Profile().deserialize(this.profiles[profileId]);
+        }
+      }
+    }
+  }
+
   getProfileById(profileId: string) {
     return new Profile().deserialize(this.profiles[profileId]);
   }
