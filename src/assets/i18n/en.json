@@ -44,6 +44,7 @@
     "NETHASH": "Nethash",
     "MANAGE_NETWORKS": "Manage Custom Networks",
     "MARKET_SYMBOL_NAME": "Market Symbol Name (for getting prices in USD, BTC, etc.)",
+    "NO_NETWORK_CONFIGURED": "No custom network has been configured yet. Click on the button below to create one.",
     "OR_CREATE_NEW": "... or create a new custom network",
     "SAVE_SUCCESSFUL": "Successfully saved network!",
     "SEED_SERVER": "Seed Server URL",
