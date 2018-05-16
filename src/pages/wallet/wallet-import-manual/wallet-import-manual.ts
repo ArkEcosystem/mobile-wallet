@@ -23,7 +23,11 @@ export class WalletManualImportPage extends BaseWalletImport  {
   public useAddress: boolean;
   public nonBIP39Passphrase: boolean;
   public wordSuggestions = [];
+  public hidePassphrase = false;
+  public passphraseHidden: string;
+
   @ViewChild('inputAddressOrPassphrase') inputAddressOrPassphrase;
+  @ViewChild('inputPassphraseHidden') inputPassphraseHidden;
 
   constructor(
     navParams: NavParams,
@@ -52,8 +56,49 @@ export class WalletManualImportPage extends BaseWalletImport  {
   addressOrPassphraseChange(value) {
     const lastAddressOrPassphrase = this.addressOrPassphrase || '';
     this.addressOrPassphrase = value;
+    this.updatePassphraseHidden();
 
     this.suggestWord(lastAddressOrPassphrase, this.addressOrPassphrase);
+  }
+
+  passphraseHiddenChange(value) {
+    const lastPassphrase = this.addressOrPassphrase;
+    const lastPassphraseHidden = this.passphraseHidden || '';
+
+    const lengthDiff = value.length - lastPassphraseHidden.length;
+    if (lengthDiff < 0) {
+      // we removed characters : make sure we removed the trailing chars
+      if (lastPassphraseHidden.slice(0, lengthDiff) === value) {
+        this.addressOrPassphrase = this.addressOrPassphrase.slice(0, lengthDiff);
+      } else {
+        // we removed some chars inside the passphrase : unsupported in the passphrase hidden mode
+        // (because if we removed asterisks, we don't know which letter was behind it and can't update the plain passphrase)
+        this.toastProvider.error('WALLETS_PAGE.PASSPHRASE_UNSUPPORTED_INPUT');
+      }
+    } else {
+      // we added characters : just check that asterisks are still there and update the non-asterisk part
+      const lastAsterisk = lastPassphraseHidden.lastIndexOf('*');
+      if (lastPassphraseHidden.slice(0, lastAsterisk + 1) === value.slice(0, lastAsterisk + 1)) {
+        this.addressOrPassphrase = this.addressOrPassphrase.slice(0, lastAsterisk + 1) + value.slice(lastAsterisk + 1);
+      } else {
+        // we added characters inside the asterisks part : unsupported (we wouldn't know how to update the plain passphrase)
+        this.toastProvider.error('WALLETS_PAGE.PASSPHRASE_UNSUPPORTED_INPUT');
+      }
+    }
+
+    this.updatePassphraseHidden();
+    this.suggestWord(lastPassphrase, this.addressOrPassphrase);
+  }
+
+  updatePassphraseHidden() {
+    const wordsPassphrase = this.addressOrPassphrase.split(' ');
+    const tmpPassphraseHidden = [];
+    wordsPassphrase.forEach((elem, index, arr) => tmpPassphraseHidden.push(index === arr.length - 1 ? elem : '*'.repeat(elem.length)));
+    this.passphraseHidden = tmpPassphraseHidden.join(' ');
+  }
+
+  showHidePassphrase() {
+    this.hidePassphrase = !this.hidePassphrase;
   }
 
   suggestWord(lastPassphrase, passphrase) {
@@ -83,8 +128,10 @@ export class WalletManualImportPage extends BaseWalletImport  {
     const wordsPassphrase = this.addressOrPassphrase.split(' ');
     wordsPassphrase[wordsPassphrase.length - 1] = this.wordSuggestions[index];
     this.addressOrPassphrase = wordsPassphrase.join(' ');
+    this.updatePassphraseHidden();
 
     this.wordSuggestions = [];
-    this.inputAddressOrPassphrase.setFocus();
+    const inputPassphrase = this.inputAddressOrPassphrase || this.inputPassphraseHidden;
+    inputPassphrase.setFocus();
   }
 }

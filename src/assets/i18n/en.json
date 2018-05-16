@@ -272,6 +272,7 @@
     "PUBLIC_KEY": "Public Key",
     "PASSPHRASE_NOT_BELONG_TO_ADDRESS": "The entered passphrase doesn't belong to the address '{{ address }}'!",
     "PASSPHRASE_NOT_BIP39": "You have not entered a valid BIP-39 passphrase",
+    "PASSPHRASE_UNSUPPORTED_INPUT": "Unsupported input in hidden mode, please change passphrase visibility.",
     "RE_ENTER_PASSPHRASE": "Re-enter your passphrase",
     "REMOVE_WALLET": "Remove Wallet",
     "REMOVE_WALLET_TEXT": "Your account will be removed. Make sure you have backed up, you will need the original passphrase to restore.",
