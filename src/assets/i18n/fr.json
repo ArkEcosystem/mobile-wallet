@@ -20,12 +20,38 @@
     "CONTACT_EXISTS_ADDRESS": "Il y a déjà un contact avec l'adresse {{ address }}'!",
     "CONTACT_NOT_EXISTS_ADDRESS": "Un contact avec l'adresse '{{ address }}' n'existe pas !",
     "CONTACT_EXISTS_NAME": "Il y a déjà un contact avec le nom '{{ name }}' !",
-    "OVERWRITE_CONTACT": "Il y a déjà un contact appelé '{{ name }}' avec cette addresse. Voulez-vous chanson son nom en '{{ newName }}' ?"
+    "DELETE_CONTACT": "Êtes-vous sûr de vouloir supprimer le contact '{{ name }}'?",
+    "OVERWRITE_CONTACT": "Il y a déjà un contact appelé '{{ name }}' avec cette addresse. Voulez-vous changer son nom en '{{ newName }}' ?"
   },
   "COPIED_CLIPBOARD": "Copié dans le presse-papier",
   "COPY": "Copier",
   "COPY_CLIPBOARD_FAILED": "Echec de la copie dans le presse-papier",
   "CREATE": "Créer",
+  "CUSTOM_NETWORK": {
+    "ADDRESS_VERSION": "Version adresse",
+    "CHOOSE_EXISTING": "Choisissez un réseau custom existant...",
+    "CONFIGURE": "Configurer",
+    "CONFIGURE_ERROR": "Erreur lors de le récupération des paramètres réseau à partir de votre serveur !",
+    "CONFIRM_DELETE": "Êtes-vous sûr de vouloir supprimer ce réseau ?",
+    "CUSTOM_NETWORK": "Réseau custom",
+    "CREATE_NEW": "Créer",
+    "CREATE_NETWORK": "Créer un Réseau Custom",
+    "DELETE_FAIL_NOT_EMPTY": "Ce réseau ne peut pas être supprimé car des profils existants l'utilisent. Supprimez-le d'abord des profils.",
+    "DELETE_SUCCESSFUL": "Réseau supprimé avec succès !",
+    "EDIT": "Modifier le réseau",
+    "EXPLORER": "Explorateur",
+    "NAME": "Nom",
+    "NETHASH": "Nethash",
+    "MANAGE_NETWORKS": "Gérer les Réseaux Custom",
+    "MARKET_SYMBOL_NAME": "Symbole (pour récupérer les prix en USD, BTC, etc.)",
+    "OR_CREATE_NEW": "... Ou créez un nouveau réseau custom",
+    "SAVE_SUCCESSFUL": "Réseau sauvegardé !",
+    "SEED_SERVER": "URL Serveur Source",
+    "SEED_SERVER_IP": "IP Serveur Source",
+    "SEED_SERVER_PORT": "Port Serveur Source",
+    "SYMBOL_NAME": "Symbole",
+    "TOKEN_NAME": "Token"
+  },
   "DATE": "Date",
   "DELEGATES_PAGE": {
     "ACTIVE": "Actif",
@@ -99,7 +125,8 @@
   "NO": "Non",
   "PASSPHRASE_TEST": {
     "INFO": "Veuillez taper les mots requis à partir de votre mot de passe pour valider la création du portefeuille.",
-    "WRONG_WORD": "Le mot tapé n'est pas correct"
+    "WRONG_WORD": "Le mot tapé n'est pas correct",
+    "DEVNET_WORDS_NOTICE": "Les mots sont automatiquement remplis sur le Devnet"
   },
   "PIN_CODE": {
     "CONFIRM": "Confirmer votre PIN",
@@ -113,7 +140,9 @@
     "PIN_UPDATED_ERROR_TEXT": "Un problème est survenu lors de la mise à jour de votre code PIN",
     "PIN_UPDATED_TEXT": "Votre code PIN a été mis à jour",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Tapez votre code PIN pour chiffrer le mot de passe",
+    "TYPE_PIN_REMOVE_WALLET": "Tapez votre code PIN pour supprimer le portefeuille",
     "TYPE_PIN_SIGN_TRANSACTION": "Saisissez votre code PIN pour signer la transaction",
+    "UPDATING": "Mise à jour du code PIN pour tous les profils et portefeuilles...",
     "WRONG": "Veuillez entrer le bon code PIN",
     "WEAK_PIN": "NIP faible",
     "WEAK_PIN_DETAIL": "Le code PIN que vous avez saisi est considéré comme faible et facile à deviner. Voulez-vous vraiment l'utiliser ?"
@@ -122,6 +151,7 @@
     "ADD_PROFILE_ERROR": "Impossible d'ajouter le profil",
     "ADD_PROFILE_TEXT": "Cliquez sur le bouton ci-dessous pour créer un profil",
     "CREATE_PROFILE": "Créer un profil",
+    "CUSTOM": "Custom",
     "DELETE_NOT_EMPTY": "Vous ne pouvez pas supprimer un profil ayant 1 ou plusieurs portefeuilles",
     "GET_STARTED": "Commencer",
     "SIGN_IN": "Se connecter"
@@ -149,6 +179,7 @@
     "PRIVACY_POLICY": "Politique de confidentialité",
     "SECURITY": "Sécurité",
     "NOT_AVAILABLE_WATCH_ONLY": "Non disponible, adresse en lecture seule uniquement",
+    "NOTIFICATIONS": "Notifications",
     "SETTINGS": "Paramètres",
     "VERSION": "Version",
     "WALLET_BACKUP": "Sauvegarde du portefeuille"
@@ -166,6 +197,8 @@
     "CREATE_TRANSACTION_ERROR": "Impossible de créer une transaction. Vérifiez la connexion Internet",
     "DELEGATE_REGISTRATION": "Enregistrement de délégué",
     "ENCRYPT_SAVE_SECOND_PASSPHRASE": "Voulez-vous crypter et enregistrer votre deuxième mot de passe ?",
+    "EXISTING_CONTACT": "Contact",
+    "EXISTING_WALLET": "Portefeuille",
     "FEE": "Frais",
     "FETCHING_TRANSACTIONS": "Récupération des transactions",
     "FROM": "De",
@@ -174,7 +207,10 @@
     "INVALID_CONTACT_ERROR": "Contact invalide",
     "INVALID_FORM_ERROR": "Données de formulaire non valides",
     "MULTISIGNATURE_CREATION": "Création de multi-signature",
+    "NEW_CONTACT_NAME": "Nom du nouveau contact (optionnel)",
+    "NEW_WALLET_LABEL": "Label du portefeuille (optionnel)",
     "OPEN_EXPLORER": "Ouvrir dans l'explorer",
+    "PERFORMING_DESTINATION_ADDRESS_CHECKS": "Vérifications adresse de destination...",
     "QRCODE_COPY": "Tapez sur l'adresse pour la copier dans le presse-papiers ou cliquez sur l'icône pour partager le QR code.",
     "RECEIVE": "Recevoir",
     "RECEIVE_TOKEN": "Recevoir {{Token}}",
@@ -195,6 +231,14 @@
     "TRANSACTION": "Transaction"
   },
   "TYPE": "Type",
+  "VALIDATION": {
+    "INVALID_ADDRESS": "Adresse invalide !",
+    "IS_OWN_ADDRESS": "Ceci est votre propre adresse. Êtes-vous sûr de vouloir envoyer à votre propre adresse ?",
+    "NO_TRANSACTIONS": "Cette adresse n'a aucune transaction. Êtes-vous sûr que c'est correct ?",
+    "IS_NEO_ADDRESS": "Cette adresse ressemble à une adresse 'NEO'. Êtes-vous sûr que c'est correct ?",
+    "LABEL_EXISTS": "Il y a déjà un portefeuille avec le label '{{ label }}' !",
+    "INVALID_WALLET": "Le portefeuille est invalide ou non défini !"
+  },
   "WATCH_ONLY": "Lecture seule",
   "WEEK_DAY": {
     "FRIDAY": "Ven",
@@ -229,6 +273,7 @@
     "LABEL": "Label",
     "MY_WALLET": "Mon portefeuille",
     "NEW_WALLET_NAME": "Nouveau nom de portefeuille",
+    "NEW_TRANSACTION": "Nouvelle transaction dans {{ profile }}",
     "NO_TRANSACTIONS": "Aucune transaction disponible",
     "TYPE_PASSPHRASE_OR_ADDRESS": "ou tapez votre phrase secrète | ou votre | adresse | manuellement",
     "PASSPHRASE": "Phrase secrète",
@@ -237,6 +282,7 @@
     "PUBLIC_ADDRESS_SHARE": "Adresse publique (partagée)",
     "PUBLIC_KEY": "Clé publique",
     "PASSPHRASE_NOT_BELONG_TO_ADDRESS": "La phrase secrète saisie n'appartient pas à l'adresse '{{address}}' !",
+    "PASSPHRASE_NOT_BIP39": "Vous n'avez pas saisi une phrase valide BIP-39",
     "RE_ENTER_PASSPHRASE": "Entrez à nouveau votre mot de passe",
     "REMOVE_WALLET": "Supprimer le portefeuille",
     "REMOVE_WALLET_TEXT": "Votre compte sera supprimé. Assurez-vous que vous l'avez sauvegardé, vous aurez besoin du mot de passe original pour le restaurer.",
