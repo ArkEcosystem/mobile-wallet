@@ -183,7 +183,8 @@
     "NOTIFICATIONS": "Notifications",
     "SETTINGS": "Settings",
     "VERSION": "Version",
-    "WALLET_BACKUP": "Wallet Backup"
+    "WALLET_BACKUP": "Wallet Backup",
+    "WORDLIST_LANGUAGE": "Passphrase language"
   },
   "SHOW_ADVANCED": "Show Advanced",
   "SKIP": "Skip",

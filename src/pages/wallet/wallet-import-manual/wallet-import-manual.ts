@@ -7,6 +7,7 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
 
 import { NetworkProvider } from '@providers/network/network';
+import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { BaseWalletImport } from '@root/src/pages/wallet/wallet-import/wallet-import.base';
 
 import * as constants from '@app/app.constants';
@@ -33,8 +34,9 @@ export class WalletManualImportPage extends BaseWalletImport  {
     toastProvider: ToastProvider,
     modalCtrl: ModalController,
     networkProvider: NetworkProvider,
+    settingsDataProvider: SettingsDataProvider,
     private inAppBrowser: InAppBrowser) {
-    super(navParams, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider);
+    super(navParams, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider, settingsDataProvider);
     this.useAddress = navParams.get('type') === 'address';
     this.nonBIP39Passphrase = false;
   }

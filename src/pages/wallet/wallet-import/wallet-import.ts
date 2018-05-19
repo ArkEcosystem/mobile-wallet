@@ -7,6 +7,7 @@ import { ToastProvider } from '@providers/toast/toast';
 import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';
 import { BaseWalletImport } from '@root/src/pages/wallet/wallet-import/wallet-import.base';
 import { NetworkProvider } from '@providers/network/network';
+import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 
 @IonicPage()
 @Component({
@@ -23,9 +24,10 @@ export class WalletImportPage extends BaseWalletImport {
     arkApiProvider: ArkApiProvider,
     toastProvider: ToastProvider,
     modalCtrl: ModalController,
-    networkProvider: NetworkProvider
+    networkProvider: NetworkProvider,
+    settingsDataProvider: SettingsDataProvider
   ) {
-    super(navParams, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider);
+    super(navParams, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider, settingsDataProvider);
   }
 
   openManualImportPage(type: string) {
