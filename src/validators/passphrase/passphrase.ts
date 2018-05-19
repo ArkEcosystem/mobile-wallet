@@ -9,7 +9,7 @@ export class PassphraseValidator {
 
       if (nonBIP39 || !passphrase) { return null; }
       const words = passphrase.split(' ');
-      if (words.length !== 12) { return { 'not12Words': true }; }
+      if (words.length % 3 !== 0) { return { 'invalidWordNumber': true }; }
 
       if (!bip39.validateMnemonic(passphrase)) { return { 'invalidMnemonic': true }; }
 

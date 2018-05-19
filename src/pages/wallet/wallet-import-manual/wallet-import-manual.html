@@ -21,7 +21,7 @@
       <ion-label color="secondary">{{ (useAddress ? 'WALLETS_PAGE.VALID_ADDRESS' : 'WALLETS_PAGE.VALID_PASSPHRASE') | translate }}</ion-label>
     </p>
     <p *ngIf="!manualImportFormGroup.valid && manualImportFormGroup.errors" style="text-align:right">
-      <ion-label *ngIf="manualImportFormGroup.errors.not12Words" color="danger">{{ 'WALLETS_PAGE.INVALID_12_WORDS_REQUIRED' | translate }}</ion-label>
+      <ion-label *ngIf="manualImportFormGroup.errors.invalidWordNumber" color="danger">{{ 'WALLETS_PAGE.INVALID_WORD_NUMBER' | translate }}</ion-label>
       <ion-label *ngIf="manualImportFormGroup.errors.invalidMnemonic" color="danger">{{ 'WALLETS_PAGE.INVALID_MNEMONIC' | translate }}</ion-label>
     </p>
     <p *ngIf="!manualImportFormGroup.controls.controlAddressOrPassphrase.valid" style="text-align:right">
