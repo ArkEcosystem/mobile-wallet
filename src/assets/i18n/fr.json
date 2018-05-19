@@ -275,7 +275,7 @@
     "NEW_WALLET_NAME": "Nouveau nom de portefeuille",
     "NEW_TRANSACTION": "Nouvelle transaction dans {{ profile }}",
     "NO_TRANSACTIONS": "Aucune transaction disponible",
-    "TYPE_PASSPHRASE_OR_ADDRESS": "ou tapez votre phrase secrète | ou votre | adresse | manuellement",
+    "TYPE_PASSPHRASE_OR_ADDRESS": "ou tapez votre | phrase secrète | ou votre | adresse | manuellement",
     "PASSPHRASE": "Phrase secrète",
     "PASSPHRASE_NOT_MATCH": "La phrase secrète entrée ne correspond pas à celle que vous venez d'obtenir.",
     "PUBLIC_ADDRESS": "Adresse publique",
