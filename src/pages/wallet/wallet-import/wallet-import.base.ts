@@ -5,10 +5,13 @@ import { ToastProvider } from '@providers/toast/toast';
 import { PrivateKey, PublicKey } from 'ark-ts';
 import { Wallet } from '@models/model';
 import { NetworkProvider } from '@providers/network/network';
+import { SettingsDataProvider } from '@providers/settings-data/settings-data';
+import bip39 from 'bip39';
 
 export abstract class BaseWalletImport {
 
   public existingAddress: string;
+  private wordlistLanguage: string;
 
   constructor(
     navParams: NavParams,
@@ -17,15 +20,16 @@ export abstract class BaseWalletImport {
     private arkApiProvider: ArkApiProvider,
     protected toastProvider: ToastProvider,
     private modalCtrl: ModalController,
-    private networkProvider: NetworkProvider
+    private networkProvider: NetworkProvider,
+    private settingsDataProvider: SettingsDataProvider
   ) {
     this.existingAddress = navParams.get('address');
+    this.settingsDataProvider.settings.subscribe((settings) => this.wordlistLanguage = settings.wordlistLanguage);
   }
 
   protected import(address?: string, passphrase?: string, checkBIP39Passphrase?: boolean): void {
     let privateKey;
     let publicKey;
-    const bip39 = require('bip39');
 
     if (address) {
       if (!this.networkProvider.isValidAddress(address)) {
@@ -36,7 +40,7 @@ export abstract class BaseWalletImport {
       publicKey.setNetwork(this.networkProvider.currentNetwork);
     } else {
       // test: import from passphrase here
-      if (checkBIP39Passphrase && !bip39.validateMnemonic(passphrase)) {
+      if (checkBIP39Passphrase && !this.validateMnemonic(passphrase)) {
         // passphrase is not a valid BIP39 mnemonic
         this.toastProvider.error('WALLETS_PAGE.PASSPHRASE_NOT_BIP39');
         return;
@@ -113,5 +117,11 @@ export abstract class BaseWalletImport {
           });
         });
     });
+  }
+
+  private validateMnemonic(passphrase: string) {
+    const wordlist = bip39.wordlists[this.wordlistLanguage || 'english'];
+    if (bip39.validateMnemonic(passphrase, wordlist) || bip39.validateMnemonic(passphrase)) { return true; }
+    return false;
   }
 }

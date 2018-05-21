@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { PrivateKey } from 'ark-ts/core';
 import bip39 from 'bip39';
 import { WalletKeys, AccountBackup, PassphraseWord } from '@models/model';
@@ -23,13 +24,15 @@ export class WalletBackupModal {
   public account: AccountBackup;
 
   private currentNetwork;
+  private wordlistLanguage: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private modalCtrl: ModalController,
-    private userDataProvider: UserDataProvider) {
+    private userDataProvider: UserDataProvider,
+    private settingsDataProvider: SettingsDataProvider) {
     this.title = this.navParams.get('title');
     this.entropy = this.navParams.get('entropy');
     this.keys = this.navParams.get('keys');
@@ -38,6 +41,7 @@ export class WalletBackupModal {
     if (!this.title || (!this.entropy && !this.keys)) { this.dismiss(); }
 
     this.currentNetwork = this.userDataProvider.currentNetwork;
+    this.settingsDataProvider.settings.subscribe((settings) => this.wordlistLanguage = settings.wordlistLanguage);
   }
 
   next() {
@@ -114,9 +118,10 @@ export class WalletBackupModal {
 
   private generateAccountFromEntropy() {
     const account: AccountBackup = {};
+    const wordlist = bip39.wordlists[this.wordlistLanguage || 'english'];
 
     account.entropy = this.entropy;
-    account.mnemonic = bip39.entropyToMnemonic(account.entropy);
+    account.mnemonic = bip39.entropyToMnemonic(account.entropy, wordlist);
 
     const pvKey = PrivateKey.fromSeed(account.mnemonic, this.currentNetwork);
     const pbKey = pvKey.getPublicKey();
