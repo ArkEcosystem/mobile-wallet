@@ -92,12 +92,9 @@ export class UserDataProvider {
   }
 
   getProfileByName(name: string) {
-    for (const profileId in this.profiles) {
-      if (this.profiles.hasOwnProperty(profileId)) {
-        if (name.toLowerCase() === this.profiles[profileId].name.toLowerCase()) {
-          return new Profile().deserialize(this.profiles[profileId]);
-        }
-      }
+    const profile = lodash.find(this.profiles, id => id.name.toLowerCase() === name.toLowerCase());
+    if (profile) {
+      return new Profile().deserialize(profile);
     }
   }
 
