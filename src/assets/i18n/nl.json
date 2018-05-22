@@ -27,6 +27,31 @@
   "COPY": "Kopieer",
   "COPY_CLIPBOARD_FAILED": "Kopiëren naar klembord mislukt",
   "CREATE": "Aanmaken",
+  "CUSTOM_NETWORK": {
+    "ADDRESS_VERSION": "Adres versie",
+    "CHOOSE_EXISTING": "Kies een bestaand netwerk, of...",
+    "CONFIGURE": "Configureer",
+    "CONFIGURE_ERROR": "Error tijdens het ophalen van netwerk instellingen van je peer server!",
+    "CONFIRM_DELETE": "Weet je zeker dat je dit netwerk wilt verwijderen?",
+    "CUSTOM_NETWORK": "Aangepast Netwerk",
+    "CREATE_NEW": "Aanmaken",
+    "CREATE_NETWORK": "Aangepast Netwerk Aanmaken",
+    "DELETE_FAIL_NOT_EMPTY": "Dit netwerk kan niet worden verwijderd, omdat er profielen zijn die er gebruik van maken. Verwijder deze profielen eerst.",
+    "DELETE_SUCCESSFUL": "Netwerk succesvol verwijderd!",
+    "EDIT": "Netwerk Aanpassen",
+    "EXPLORER": "Explorer",
+    "NAME": "Naam",
+    "NETHASH": "Nethash",
+    "MANAGE_NETWORKS": "Aangepast Netwerken Beheren",
+    "MARKET_SYMBOL_NAME": "Markt Symbool Naam (voor ophalen van prijzen in EUR, BTC, etc.)",
+    "OR_CREATE_NEW": "... of maak een nieuw aangepast netwerk",
+    "SAVE_SUCCESSFUL": "Netwerk succesvol opgeslagen!",
+    "SEED_SERVER": "Seed Server URL",
+    "SEED_SERVER_IP": "Seed Server IP",
+    "SEED_SERVER_PORT": "Seed Server Poort",
+    "SYMBOL_NAME": "Symbool naam",
+    "TOKEN_NAME": "Token naam"
+  },
   "DATE": "Datum",
   "DELEGATES_PAGE": {
     "ACTIVE": "Actief",
@@ -117,6 +142,7 @@
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type pincode om passphrase te versleutelen",
     "TYPE_PIN_REMOVE_WALLET": "Type pincode om wallet te verwijderen",
     "TYPE_PIN_SIGN_TRANSACTION": "Type pincode om transactie te ondertekenen",
+    "UPDATING": "Bezig met pincode updaten voor alle profielen en wallets...",
     "WRONG": "Vul a.u.b. de juiste pincode in",
     "WEAK_PIN": "Zwakke pincode",
     "WEAK_PIN_DETAIL": "De opgegeven pincode is zwak en makkelijk te raden. Weet je zeker dat je deze wilt gebruiken?"
@@ -125,6 +151,7 @@
     "ADD_PROFILE_ERROR": "Kon profiel niet toevoegen",
     "ADD_PROFILE_TEXT": "Klik op de knop onderin om een profiel aan te maken",
     "CREATE_PROFILE": "Profiel aanmaken",
+    "CUSTOM": "Aangepast",
     "DELETE_NOT_EMPTY": "Je kunt geen profiel verwijderen met 1 of meer wallets",
     "GET_STARTED": "Beginnen",
     "SIGN_IN": "Inloggen"
@@ -152,6 +179,7 @@
     "PRIVACY_POLICY": "Privacybeleid",
     "SECURITY": "Beveiliging",
     "NOT_AVAILABLE_WATCH_ONLY": "Niet beschikbaar voor Alleen-lezen wallets",
+    "NOTIFICATIONS": "Notificaties",
     "SETTINGS": "Instellingen",
     "VERSION": "Versie",
     "WALLET_BACKUP": "Wallet Backup"
@@ -165,6 +193,9 @@
     "AMOUNT": "Bedrag",
     "CONFIRMATIONS": "Bevestigingen",
     "NEW_CONTACT_NAME": "Nieuwe contact naam (Optioneel)",
+    "NEW_WALLET_LABEL": "Wallet label (Optioneel)",
+    "EXISTING_WALLET": "Wallet",
+    "EXISTING_CONTACT": "Contact",
     "COPY_TXID": "Kopieer TXID",
     "CREATE_TRANSACTION_ERROR": "Kon transactie niet aanmaken. Controleer je internet verbinding",
     "DELEGATE_REGISTRATION": "Registratie Afgevaardigde",
@@ -203,7 +234,9 @@
     "INVALID_ADDRESS": "Dit adres is ongeldig!",
     "IS_OWN_ADDRESS": "Dit is je eigen adres. Weet je zeker dat je het hier naartoe wilt sturen?",
     "NO_TRANSACTIONS": "Het lijkt erop dat dit adres geen transacties bevat. Weet je zeker dat het correct is?",
-    "IS_NEO_ADDRESS": "Het lijkt erop dat dit een 'NEO' adres is. Weet je zeker dat het correct is?"
+    "IS_NEO_ADDRESS": "Het lijkt erop dat dit een 'NEO' adres is. Weet je zeker dat het correct is?",
+    "LABEL_EXISTS": "Er bestaat al een wallet met het label '{{ label }}'!",
+    "INVALID_WALLET": "De wallet is ongeldig of niet ingesteld!"
   },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "Kon wallet niet toevoegen",
