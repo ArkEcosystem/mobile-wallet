@@ -149,6 +149,7 @@
     "WEAK_PIN_DETAIL": "The PIN you entered is considered weak and easy to guess. Are you sure you want to use it?"
   },
   "PROFILES_PAGE": {
+    "PROFILENAME_ALREADY_EXISTS": "There is already a profile with the name '{{ name }}'!",
     "ADD_PROFILE_ERROR": "Could not add profile",
     "ADD_PROFILE_TEXT": "Click on the button below to create a profile",
     "CREATE_PROFILE": "Create Profile",

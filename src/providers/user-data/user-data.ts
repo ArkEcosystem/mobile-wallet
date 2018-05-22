@@ -91,6 +91,13 @@ export class UserDataProvider {
     return this.saveProfiles();
   }
 
+  getProfileByName(name: string) {
+    const profile = lodash.find(this.profiles, id => id.name.toLowerCase() === name.toLowerCase());
+    if (profile) {
+      return new Profile().deserialize(profile);
+    }
+  }
+
   getProfileById(profileId: string) {
     return new Profile().deserialize(this.profiles[profileId]);
   }

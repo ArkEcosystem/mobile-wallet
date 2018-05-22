@@ -148,6 +148,7 @@
     "WEAK_PIN_DETAIL": "Der eingegebene PIN ist schwach und kann leicht erraten werden. Bist du sicher, dass du diesen verwenden willst?"
   },
   "PROFILES_PAGE": {
+    "PROFILENAME_ALREADY_EXISTS": "Es existiert bereits ein Profil mit dem Namen '{{ name }}'!",
     "ADD_PROFILE_ERROR": "Konnte Profil nicht hinzufügen",
     "ADD_PROFILE_TEXT": "Klick den nachfolgenen Button, um ein Profil zu erstellen",
     "CREATE_PROFILE": "Erstelle Profil",
