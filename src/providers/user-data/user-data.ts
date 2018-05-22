@@ -16,6 +16,7 @@ import { Network, NetworkType } from 'ark-ts/model';
 import * as constants from '@app/app.constants';
 import { Delegate } from 'ark-ts';
 import { TranslatableObject } from '@models/translate';
+import { StoredNetwork } from '@models/stored-network';
 
 @Injectable()
 export class UserDataProvider {
@@ -24,16 +25,29 @@ export class UserDataProvider {
   public networks = {};
 
   public currentProfile: Profile;
-  public currentNetwork: Network;
+  public currentNetwork: StoredNetwork;
   public currentWallet: Wallet;
 
-  public onActivateNetwork$: Subject<Network> = new Subject();
+  public onActivateNetwork$: Subject<StoredNetwork> = new Subject();
   public onCreateWallet$: Subject<Wallet> = new Subject();
   public onUpdateWallet$: Subject<Wallet> = new Subject();
   public onSelectProfile$: Subject<Profile> = new Subject();
 
   public get isDevNet(): boolean {
     return this.currentNetwork && this.currentNetwork.type === NetworkType.Devnet;
+  }
+
+  public get isMainNet(): boolean {
+    return this.currentNetwork && this.currentNetwork.type === NetworkType.Mainnet;
+  }
+
+  private _defaultNetworks: Network[];
+
+  public get defaultNetworks(): Network[] {
+    if (!this._defaultNetworks) {
+      this._defaultNetworks = Network.getAll();
+    }
+    return this._defaultNetworks;
   }
 
   constructor(
@@ -47,33 +61,41 @@ export class UserDataProvider {
     this.onClearStorage();
   }
 
-  addNetwork(network: Network) {
-    this.networks[this.generateUniqueId()] = network;
+  addOrUpdateNetwork(network: Network, networkId?: string): Observable<{ network: Network, id: string }> {
+    if (!networkId) {
+      networkId = this.generateUniqueId();
+    }
 
-    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
-  }
-
-  updateNetwork(networkId: string, network: Network) {
     this.networks[networkId] = network;
 
-    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
+    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks).map(() => {
+      return {
+        network: this.networks[networkId],
+        id: networkId
+      };
+    });
   }
 
-  getNetworkById(networkId: string) {
+  getNetworkById(networkId: string): StoredNetwork {
     return this.networks[networkId];
   }
 
   removeNetworkById(networkId: string) {
     delete this.networks[networkId];
-
-    this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
-    return this.networks;
+    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
   }
 
   addProfile(profile: Profile) {
     this.profiles[this.generateUniqueId()] = profile;
 
     return this.saveProfiles();
+  }
+
+  getProfileByName(name: string) {
+    const profile = lodash.find(this.profiles, id => id.name.toLowerCase() === name.toLowerCase());
+    if (profile) {
+      return new Profile().deserialize(profile);
+    }
   }
 
   getProfileById(profileId: string) {
@@ -266,7 +288,6 @@ export class UserDataProvider {
   }
 
   loadNetworks() {
-    const defaults = Network.getAll();
 
     return Observable.create((observer) => {
       // Return defaults networks from arkts
@@ -274,8 +295,8 @@ export class UserDataProvider {
         if (!networks || lodash.isEmpty(networks)) {
           const uniqueDefaults = {};
 
-          for (let i = 0; i < defaults.length; i++) {
-            uniqueDefaults[this.generateUniqueId()] = defaults[i];
+          for (let i = 0; i < this.defaultNetworks.length; i++) {
+            uniqueDefaults[this.generateUniqueId()] = this.defaultNetworks[i];
           }
 
           this.storageProvider.set(constants.STORAGE_NETWORKS, uniqueDefaults);
@@ -314,7 +335,7 @@ export class UserDataProvider {
   private setCurrentNetwork(): void {
     if (!this.currentProfile) { return; }
 
-    const network = new Network();
+    const network = new StoredNetwork();
 
     Object.assign(network, this.networks[this.currentProfile.networkId]);
     this.onActivateNetwork$.next(network);

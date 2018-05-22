@@ -21,7 +21,7 @@
         <p>{{ 'WALLETS_PAGE.TOTAL_BALANCE' | translate }}</p>
         <h2 class="amount">
           {{ currentNetwork?.symbol }} {{ totalBalance | unitsSatoshi }}
-          <span class="fiat" appMainnetOnly>{{ fiatCurrency?.symbol }}{{ fiatBalance | marketNumber }}</span>
+          <span class="fiat" appMarketNetOnly>{{ fiatCurrency?.symbol }}{{ fiatBalance | marketNumber }}</span>
         </h2>
       </ion-col>
     </ion-row>
@@ -42,7 +42,7 @@
         </ion-slides>
       </ion-col>
     </ion-row>
-    <ion-row padding *ngIf="wallets?.length > 0" class="marketcap-container" appMainnetOnly>
+    <ion-row padding *ngIf="wallets?.length > 0" class="marketcap-container" appMarketNetOnly>
       <ion-col>
         <hr>
         <h4 class="market-cap-title"><ion-icon name="md-trending-up"></ion-icon> {{ 'MARKETS_PAGE.MARKET_DATA' | translate }}</h4>
@@ -67,13 +67,17 @@
       </ion-col>
     </ion-row>
     <ion-row class="rowChart" *ngIf="chartLabels && wallets?.length > 0 && currentNetwork?.name != 'devnet'" [style.display]="wallets?.length > 0 ? 'block' : 'none'">
-      <canvas baseChart
+      <canvas
+        baseChart
+        appMarketNetOnly
         [datasets]="chartData"
         [labels]="chartLabels"
         [options]="chartOptions"
         [colors]="chartColors"
         [legend]="false"
-        chartType="line" #chart appMainnetOnly></canvas>
+        chartType="line"
+        #chart>
+      </canvas>
     </ion-row>
   </ion-grid>
 </ion-content>

@@ -12,7 +12,7 @@ import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
   imports: [
     IonicPageModule.forChild(SettingsPage),
     TranslateModule,
-    PinCodeComponentModule,
+    PinCodeComponentModule
   ],
 })
 export class SettingsPageModule {}

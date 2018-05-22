@@ -56,7 +56,7 @@ export class ConfirmTransactionComponent {
 
         modal.present();
       }, (error: TranslatableObject) => {
-        this.translateService.get(error.key, error.parameters)
+        this.translateService.get(error.key || (error as any).message || error as any, error.parameters)
           .subscribe((errorMessage) => {
             this.onError.emit(errorMessage);
             this.presentWrongModal({

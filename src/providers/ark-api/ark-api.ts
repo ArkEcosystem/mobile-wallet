@@ -18,6 +18,7 @@ import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
 import { Delegate } from 'ark-ts';
+import { StoredNetwork } from '@models/stored-network';
 
 @Injectable()
 export class ArkApiProvider {
@@ -26,12 +27,11 @@ export class ArkApiProvider {
   public onUpdateDelegates$: Subject<arkts.Delegate[]> = new Subject<arkts.Delegate[]>();
   public onSendTransaction$: Subject<arkts.Transaction> = new Subject<arkts.Transaction>();
 
-  private _network: arkts.Network;
+  private _network: StoredNetwork;
   private _api: arkts.Client;
 
   private _fees: arkts.Fees;
   private _delegates: arkts.Delegate[];
-  private _peers: arkts.Peer[];
 
   public arkjs = require('arkjs');
 
@@ -43,6 +43,7 @@ export class ArkApiProvider {
     this.loadData();
 
     this.userDataProvider.onActivateNetwork$.subscribe((network) => {
+
       if (lodash.isEmpty(network)) { return; }
 
       // set default peer
@@ -81,26 +82,42 @@ export class ArkApiProvider {
   public findGoodPeer(): void {
     // Get list from active peer
     this._api.peer.list().subscribe((response) => {
-      if (response) {
-        const port = +this._network.activePeer.port;
-        const filteredPeers = lodash.filter(response.peers, (peer) => {
-          return peer['status'] === 'OK' && peer['port'] === port && peer.ip !== this._network.activePeer.ip && peer.ip !== '127.0.0.1';
-        });
-        const sortHeight = lodash.orderBy(filteredPeers, ['height', 'delay'], ['desc', 'asc']);
-        this._peers = sortHeight;
-        this.updateNetwork(sortHeight[0]);
-      } else {
-        this.toastProvider.error('API.PEER_LIST_ERROR');
-      }
-    },
-    // Get list from file
-    () => {
-      return arkts.PeerApi
-        .findGoodPeer(this._network)
-        .subscribe((peer) => this.updateNetwork(peer), () => {
-          this.toastProvider.error('API.PEER_LIST_ERROR');
-        });
+        if (response && this.findGoodPeerFromList(response.peers)) {
+          return;
+        } else {
+          this.tryGetFallbackPeer();
+        }
+      },
+      () => this.tryGetFallbackPeer());
+  }
+
+  private tryGetFallbackPeer() {
+    if (this.findGoodPeerFromList(this.network.peerList)) {
+      return;
+    }
+
+    // try get a peer from the hardcoded ark-ts peerlist (only works for main and devnet)
+    arkts.PeerApi
+      .findGoodPeer(this._network)
+      .subscribe((peer) => this.updateNetwork(peer),
+        () => this.toastProvider.error('API.PEER_LIST_ERROR'));
+  }
+
+  private findGoodPeerFromList(peerList: arkts.Peer[]): boolean {
+    if (!peerList || !peerList.length) {
+      return false;
+    }
+    const port = +this._network.activePeer.port;
+    const filteredPeers = lodash.filter(peerList, (peer) => {
+      return peer['status'] === 'OK' && peer['port'] === port && peer.ip !== this._network.activePeer.ip && peer.ip !== '127.0.0.1';
     });
+    const sortedPeers = lodash.orderBy(filteredPeers, ['height', 'delay'], ['desc', 'asc']);
+    if (!sortedPeers.length) {
+      return false;
+    }
+    this._network.peerList = sortedPeers;
+    this.updateNetwork(sortedPeers[0]);
+    return true;
   }
 
   public fetchDelegates(numberDelegatesToGet: number, getAllDelegates = false): Observable<arkts.Delegate[]> {
@@ -141,12 +158,15 @@ export class ArkApiProvider {
   public createTransaction(transaction: Transaction, key: string, secondKey: string, secondPassphrase: string): Observable<Transaction> {
     return Observable.create((observer) => {
       const configNetwork = arktsConfig.networks[this._network.name];
-      const jsNetwork = {
-        messagePrefix: configNetwork.name,
-        bip32: configNetwork.bip32,
-        pubKeyHash: configNetwork.version,
-        wif: configNetwork.wif,
-      };
+      let jsNetwork;
+      if (configNetwork) {
+        jsNetwork = {
+          messagePrefix: configNetwork.name,
+          bip32: configNetwork.bip32,
+          pubKeyHash: configNetwork.version,
+          wif: configNetwork.wif,
+        };
+      }
 
       if (!arkts.PublicKey.validateAddress(transaction.address, this._network)) {
         observer.error({
@@ -240,7 +260,7 @@ export class ArkApiProvider {
   private broadcastTransaction(transaction: arkts.Transaction) {
     const max = 10;
 
-    for (const peer of this._peers.slice(0, max)) {
+    for (const peer of this.network.peerList.slice(0, max)) {
       this.postTransaction(transaction, peer, false).subscribe();
     }
   }
@@ -251,7 +271,7 @@ export class ArkApiProvider {
       this.onUpdatePeer$.next(peer);
     }
     // Save in localStorage
-    this.userDataProvider.updateNetwork(this.userDataProvider.currentProfile.networkId, this._network);
+    this.userDataProvider.addOrUpdateNetwork(this._network, this.userDataProvider.currentProfile.networkId);
     this._api = new arkts.Client(this._network);
 
     this.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2).subscribe((data) => {

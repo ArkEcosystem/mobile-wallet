@@ -6,3 +6,4 @@ export * from './settings';
 export * from './wallet';
 export * from './translate';
 export * from './passphrase-word';
+export * from './stored-network';

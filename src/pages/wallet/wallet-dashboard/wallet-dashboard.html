@@ -16,7 +16,7 @@
       <ion-row class="account-balance">
         <ion-col text-center>
           <h1>{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-8' }}</h1>
-          <h4 appMainnetOnly>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | marketNumber }}</h4>
+          <h4 appMarketNetOnly>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | marketNumber }}</h4>
           <p (click)="copyAddress()" tappable class="toolbar-address">
             <ion-icon name="ios-copy-outline" item-start></ion-icon>
             {{ wallet?.address }}

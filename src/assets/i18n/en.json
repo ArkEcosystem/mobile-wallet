@@ -27,6 +27,32 @@
   "COPY": "Copy",
   "COPY_CLIPBOARD_FAILED": "Copy to clipboard failed",
   "CREATE": "Create",
+  "CUSTOM_NETWORK": {
+    "ADDRESS_VERSION": "Address version",
+    "CHOOSE_EXISTING": "Either choose an existing custom network...",
+    "CONFIGURE": "Configure",
+    "CONFIGURE_ERROR": "Error when trying to retrieve network settings from your peer server!",
+    "CONFIRM_DELETE": "Are you sure that you want to delete this network?",
+    "CUSTOM_NETWORK": "Custom Network",
+    "CREATE_NEW": "Create",
+    "CREATE_NETWORK": "Create Custom Network",
+    "DELETE_FAIL_NOT_EMPTY": "This network cannot be deleted because there are still profiles which use this network. You have to delete these first.",
+    "DELETE_SUCCESSFUL": "Successfully deleted network!",
+    "EDIT": "Edit Network",
+    "EXPLORER": "Explorer",
+    "NAME": "Name",
+    "NETHASH": "Nethash",
+    "MANAGE_NETWORKS": "Manage Custom Networks",
+    "MARKET_SYMBOL_NAME": "Market Symbol Name (for getting prices in USD, BTC, etc.)",
+    "NO_NETWORK_CONFIGURED": "No custom network has been configured yet. Click on the button below to create one.",
+    "OR_CREATE_NEW": "... or create a new custom network",
+    "SAVE_SUCCESSFUL": "Successfully saved network!",
+    "SEED_SERVER": "Seed Server URL",
+    "SEED_SERVER_IP": "Seed Server IP",
+    "SEED_SERVER_PORT": "Seed Server Port",
+    "SYMBOL_NAME": "Symbol name",
+    "TOKEN_NAME": "Token name"
+  },
   "DATE": "Date",
   "DELEGATES_PAGE": {
     "ACTIVE": "Active",
@@ -123,9 +149,11 @@
     "WEAK_PIN_DETAIL": "The PIN you entered is considered weak and easy to guess. Are you sure you want to use it?"
   },
   "PROFILES_PAGE": {
+    "PROFILENAME_ALREADY_EXISTS": "There is already a profile with the name '{{ name }}'!",
     "ADD_PROFILE_ERROR": "Could not add profile",
     "ADD_PROFILE_TEXT": "Click on the button below to create a profile",
     "CREATE_PROFILE": "Create Profile",
+    "CUSTOM": "Custom",
     "DELETE_NOT_EMPTY": "You cannot delete a Profile that has 1 or more Wallets",
     "GET_STARTED": "Get started",
     "SIGN_IN": "Sign in"
@@ -157,7 +185,7 @@
     "SETTINGS": "Settings",
     "VERSION": "Version",
     "WALLET_BACKUP": "Wallet Backup",
-    "WORDLIST_LANGUAGE": "Wordlist language"
+    "WORDLIST_LANGUAGE": "Passphrase language"
   },
   "SHOW_ADVANCED": "Show Advanced",
   "SKIP": "Skip",
@@ -233,6 +261,9 @@
     "GENERATE_ENTROPY": "Generate Entropy",
     "IMPORT_INVALID_ADDRESS": "This address can not be imported into this profile",
     "IMPORT_WALLET": "Import Wallet",
+    "INVALID_ADDRESS": "Invalid address",
+    "INVALID_MNEMONIC": "Invalid mnemonic",
+    "INVALID_WORD_NUMBER": "Invalid number of words",
     "KEEP_SAFE": "Keep Safe",
     "LABEL": "Label",
     "MY_WALLET": "My Wallet",
@@ -260,6 +291,8 @@
     "SEED": "Seed",
     "TOTAL_BALANCE": "Total Balance",
     "USERNAME": "Username",
+    "VALID_ADDRESS": "Valid address",
+    "VALID_PASSPHRASE": "Valid passphrase",
     "WALLETS": "Wallets",
     "WIF": "WIF"
   },

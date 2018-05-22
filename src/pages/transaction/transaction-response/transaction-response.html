@@ -26,7 +26,14 @@
           </ion-row>
           <ion-row>
             <ion-col text-center align-self-center>
-              <button ion-button outline color="primary" (click)="openInExplorer()" class="open-explorer-btn">{{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate }}</button>
+              <button ion-button
+                      outline
+                      color="primary"
+                      *ngIf="currentNetwork?.explorer"
+                      (click)="openInExplorer()"
+                      class="open-explorer-btn">
+                {{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate }}
+              </button>
             </ion-col>
           </ion-row>
         </ion-grid>
