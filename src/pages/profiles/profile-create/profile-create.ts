@@ -1,5 +1,5 @@
-import {Component, OnDestroy} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -7,10 +7,9 @@ import 'rxjs/add/operator/takeUntil';
 import { Profile } from '@models/profile';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
-
 import lodash from 'lodash';
-import {Network} from 'ark-ts/model';
-import {TranslateService} from '@ngx-translate/core';
+import { Network } from 'ark-ts/model';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -18,6 +17,7 @@ import {TranslateService} from '@ngx-translate/core';
   templateUrl: 'profile-create.html',
 })
 export class ProfileCreatePage implements OnDestroy {
+  @ViewChild('createProfileForm') createProfileForm: HTMLFormElement;
 
   public networks: {[networkId: string]: Network};
   public networksIds: string[];
@@ -33,6 +33,7 @@ export class ProfileCreatePage implements OnDestroy {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private alertCtrl: AlertController,
     private userDataProvider: UserDataProvider,
     private toastProvider: ToastProvider,
     private translateService: TranslateService
@@ -44,15 +45,22 @@ export class ProfileCreatePage implements OnDestroy {
   }
 
   submitForm() {
-    const profile = new Profile();
-    profile.name = this.newProfile.name;
-    profile.networkId = this.newProfile.networkId;
+    const existingProfile = this.userDataProvider.getProfileByName(this.newProfile.name);
 
-    this.userDataProvider.addProfile(profile).takeUntil(this.unsubscriber$).subscribe(() => {
-      this.navCtrl.setRoot('ProfileSigninPage');
-    }, () => {
-      this.toastProvider.error('PROFILES_PAGE.ADD_PROFILE_ERROR');
-    });
+    if (existingProfile) {
+      this.showAlert('PROFILES_PAGE.PROFILENAME_ALREADY_EXISTS', {name: this.newProfile.name});
+      this.createProfileForm.form.controls['name'].setErrors({incorrect: !!existingProfile});
+    } else {
+      const profile = new Profile();
+      profile.name = this.newProfile.name;
+      profile.networkId = this.newProfile.networkId;
+
+      this.userDataProvider.addProfile(profile).takeUntil(this.unsubscriber$).subscribe(() => {
+        this.navCtrl.setRoot('ProfileSigninPage');
+      }, () => {
+        this.toastProvider.error('PROFILES_PAGE.ADD_PROFILE_ERROR');
+      });
+    }
   }
 
   load() {
@@ -90,4 +98,13 @@ export class ProfileCreatePage implements OnDestroy {
     this.unsubscriber$.complete();
   }
 
+  private showAlert(titleKey: string, stringParams: Object) {
+    this.translateService.get([titleKey, 'BACK_BUTTON_TEXT'], stringParams).subscribe((translation) => {
+      const alert = this.alertCtrl.create({
+        subTitle: translation[titleKey],
+        buttons: [translation.BACK_BUTTON_TEXT]
+      });
+      alert.present();
+    });
+  }
 }
