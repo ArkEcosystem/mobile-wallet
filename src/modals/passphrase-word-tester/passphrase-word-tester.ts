@@ -13,7 +13,8 @@ export class PassphraseWordTesterModal {
 
   public words: PassphraseWord[] = [];
   public isDevNet: boolean;
-  public wordSuggestions = [[], [], []];
+  public wordSuggestions = [];
+  public currentWordIndex = 0;
 
   public constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -40,21 +41,26 @@ export class PassphraseWordTesterModal {
     this.viewCtrl.dismiss(validationSuccess);
   }
 
-  wordChange(value, wordIndex) {
-    this.words[wordIndex].userValue = value;
-    this.suggestWord(value, wordIndex);
+  wordChange(value) {
+    this.words[this.currentWordIndex].userValue = value;
+    this.suggestWord(value);
+    if (this.words[this.currentWordIndex].isCorrect) {
+      this.currentWordIndex += this.currentWordIndex < this.words.length - 1 ? 1 : 0;
+      this.wordSuggestions = [];
+    }
   }
 
-  suggestWord(wordInput, wordIndex) {
-    this.wordSuggestions = [[], [], []];
+  suggestWord(wordInput) {
+    this.wordSuggestions = [];
     if (wordInput.length < 2) { return; }
 
     const wordlist = bip39.wordlists.english;
-    this.wordSuggestions[wordIndex] = wordlist.filter( word => word.indexOf(wordInput) === 0 );
+    this.wordSuggestions = wordlist.filter( word => word.indexOf(wordInput) === 0 );
   }
 
-  suggestionClick(wordIndex, suggestionIndex) {
-    this.words[wordIndex].userValue = this.wordSuggestions[wordIndex][suggestionIndex];
-    this.wordSuggestions = [[], [], []];
+  suggestionClick(suggestionIndex) {
+    this.words[this.currentWordIndex].userValue = this.wordSuggestions[suggestionIndex];
+    this.wordSuggestions = [];
+    if (this.words[this.currentWordIndex].isCorrect) { this.currentWordIndex += this.currentWordIndex < this.words.length - 1 ? 1 : 0; }
   }
 }

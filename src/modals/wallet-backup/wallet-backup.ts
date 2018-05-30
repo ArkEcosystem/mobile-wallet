@@ -50,7 +50,7 @@ export class WalletBackupModal {
     }
 
     const wordTesterModal = this.modalCtrl.create('PassphraseWordTesterModal', {
-      words: this.getRandomWords(3, this.account.mnemonic.split(' '))
+      words: this.getRandomWords(12, this.account.mnemonic.split(' '))
     });
 
     wordTesterModal.onDidDismiss(validationSuccess => {
