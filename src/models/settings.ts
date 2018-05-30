@@ -2,6 +2,7 @@
 export class UserSettings {
   public language: string;
   public currency: string;
+  public wordlistLanguage: string;
   public darkMode: boolean;
   public notification: boolean;
 
@@ -11,6 +12,7 @@ export class UserSettings {
     const settings = new UserSettings();
     settings.language = lang;
     settings.currency = 'usd';
+    settings.wordlistLanguage = 'english';
     settings.darkMode = false;
     settings.notification = false;
 
