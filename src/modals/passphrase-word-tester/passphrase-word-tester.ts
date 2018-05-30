@@ -15,12 +15,14 @@ export class PassphraseWordTesterModal {
   public isDevNet: boolean;
   public wordSuggestions = [];
   public currentWordIndex = 0;
+  public wordlistLanguage: string;
 
   public constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private viewCtrl: ViewController,
               private userDataProvider: UserDataProvider) {
     this.words = this.navParams.get('words') as PassphraseWord[];
+    this.wordlistLanguage = this.navParams.get('wordlistLanguage') || 'english';
 
     if (!this.words) {
       this.dismiss();
@@ -54,7 +56,7 @@ export class PassphraseWordTesterModal {
     this.wordSuggestions = [];
     if (wordInput.length < 2) { return; }
 
-    const wordlist = bip39.wordlists.english;
+    const wordlist = bip39.wordlists[this.wordlistLanguage];
     this.wordSuggestions = wordlist.filter( word => word.indexOf(wordInput) === 0 );
   }
 

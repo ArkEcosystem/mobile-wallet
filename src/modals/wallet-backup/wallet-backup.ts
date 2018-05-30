@@ -6,7 +6,6 @@ import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { PrivateKey } from 'ark-ts/core';
 import bip39 from 'bip39';
 import { WalletKeys, AccountBackup, PassphraseWord } from '@models/model';
-import { ArkUtility } from '../../utils/ark-utility';
 
 @IonicPage()
 @Component({
@@ -50,7 +49,8 @@ export class WalletBackupModal {
     }
 
     const wordTesterModal = this.modalCtrl.create('PassphraseWordTesterModal', {
-      words: this.getRandomWords(12, this.account.mnemonic.split(' '))
+      words: this.getWords(this.account.mnemonic.split(' ')),
+      wordlistLanguage: this.wordlistLanguage
     });
 
     wordTesterModal.onDidDismiss(validationSuccess => {
@@ -76,21 +76,15 @@ export class WalletBackupModal {
     this.generateAccountFromEntropy();
   }
 
-  private getRandomWords(numberOfWords: number, words: string[]): PassphraseWord[] {
-    numberOfWords = words.length >= numberOfWords ? numberOfWords : words.length;
-
-    const randomWords: PassphraseWord[] = [];
-    while (randomWords.length !== numberOfWords) {
-      const randomIndex: number = ArkUtility.getRandomInt(0, words.length - 1);
-      if (randomWords.every(w => w.number - 1 !== randomIndex)) {
-        const randomWord: string = words[randomIndex];
-        randomWords.push(new PassphraseWord(randomWord,
-                                            randomIndex + 1,
-                                            this.userDataProvider.isDevNet ? randomWord : null));
-      }
+  private getWords(words: string[]): PassphraseWord[] {
+    const passphraseWords = [];
+    for (const indexWord in words) {
+      passphraseWords.push(new PassphraseWord(words[indexWord],
+        indexWord + 1,
+        this.userDataProvider.isDevNet ? words[indexWord] : null));
     }
 
-    return randomWords.sort((one, two) => one.number - two.number);
+    return passphraseWords;
   }
 
   private generateAccountFromKeys() {
