@@ -10,7 +10,7 @@ ARK’s mobile wallet is a hybrid application (using the same codebase for Andro
 ## Download
 
 - [Google Play](https://play.google.com/store/apps/details?id=io.ark.wallet.mobile)
-- App Store (Waiting for approval from Apple)
+- [App Store](https://itunes.apple.com/us/app/mobile-ark/id1324625967)
 
 ## Features
 
