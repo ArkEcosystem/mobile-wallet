@@ -1,6 +1,6 @@
 ![ARK Mobile](https://i.imgur.com/0BjkC9C.png)
 
-[![Build Status](https://travis-ci.org/ArkEcosystem/ark-mobile.svg?branch=master)](https://travis-ci.org/ArkEcosystem/mobile-wallet)
+[![Build Status](https://badgen.now.sh/travis/ArkEcosystem/mobile-wallet)](https://travis-ci.org/ArkEcosystem/mobile-wallet)
 
 # Ark Mobile
 > A Wallet for Everyone
