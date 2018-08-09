@@ -172,7 +172,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
     if (Math.abs(lastWordLastPassphrase.length - lastWordPassphrase.length) === 1 && lastWordPassphrase.length > 1 &&
         (lastWordLastPassphrase.indexOf(lastWordPassphrase) !== -1 || lastWordPassphrase.indexOf(lastWordLastPassphrase) !== -1 )) {
       // we just want one letter to be different - only "manual" typing, don't suggest on copy/paste stuff
-      this.wordSuggestions = this.wordlist.filter( word => word.indexOf(lastWordPassphrase) === 0 );
+      this.wordSuggestions = this.wordlist.filter(word => word.indexOf(lastWordPassphrase) === 0 );
     }
   }
 
