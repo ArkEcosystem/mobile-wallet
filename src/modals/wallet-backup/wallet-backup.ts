@@ -49,7 +49,7 @@ export class WalletBackupModal {
     }
 
     const wordTesterModal = this.modalCtrl.create('PassphraseWordTesterModal', {
-      words: this.getWords(this.account.mnemonic.split(' ')),
+      passphrase: this.account.mnemonic,
       wordlistLanguage: this.wordlistLanguage
     });
 
@@ -74,17 +74,6 @@ export class WalletBackupModal {
     }
 
     this.generateAccountFromEntropy();
-  }
-
-  private getWords(words: string[]): PassphraseWord[] {
-    const passphraseWords = [];
-    for (const indexWord in words) {
-      passphraseWords.push(new PassphraseWord(words[indexWord],
-        indexWord + 1,
-        this.userDataProvider.isDevNet ? words[indexWord] : null));
-    }
-
-    return passphraseWords;
   }
 
   private generateAccountFromKeys() {

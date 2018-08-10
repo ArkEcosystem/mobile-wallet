@@ -18,23 +18,7 @@
     <p>{{ 'PASSPHRASE_TEST.DEVNET_WORDS_NOTICE' | translate }}</p>
   </div>
   <form #wordsForm="ngForm">
-    <ion-item>
-      <ion-label floating>{{ 'WORD' | translate }} {{currentWordIndex+1}}</ion-label>
-      <ion-input type="text"
-                name="wordTest"
-                [ngModel]="words[currentWordIndex].userValue"
-                (ngModelChange)="wordChange($event)"
-                (keyup)="words[currentWordIndex].isUserTyped = true"
-                required
-                autocapitalize="none">
-      </ion-input>
-    </ion-item>     
-    <button *ngIf="wordSuggestions[0]" (click)="suggestionClick(0)" ion-button color="light" round small name="wordSuggestion0">{{ wordSuggestions[0] }}</button>
-    <button *ngIf="wordSuggestions[1]" (click)="suggestionClick(1)" ion-button color="light" round small name="wordSuggestion1">{{ wordSuggestions[1] }}</button>
-    <button *ngIf="wordSuggestions[2]" (click)="suggestionClick(2)" ion-button color="light" round small name="wordSuggestion2">{{ wordSuggestions[2] }}</button>
-    <ion-item class="no-border">
-      <p class="error-message" *ngIf="words[currentWordIndex].hasUIError">{{ 'PASSPHRASE_TEST.WRONG_WORD' | translate }}</p>
-    </ion-item>
+    <passphrase-input [wordlistLanguage]="this.wordlistLanguage" [passphraseInit]="this.passphraseInit"></passphrase-input>
   </form>
   <div text-center>
     <button ion-button class="button-continue" (click)="next()" [disabled]="!wordsForm.valid || !areAllWordsCorrect()">
