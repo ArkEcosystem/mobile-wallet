@@ -18,7 +18,7 @@
     <p>{{ 'PASSPHRASE_TEST.DEVNET_WORDS_NOTICE' | translate }}</p>
   </div>
   <form #wordsForm="ngForm">
-    <passphrase-input [wordlistLanguage]="this.wordlistLanguage" [passphraseInit]="this.passphraseInit"></passphrase-input>
+    <passphrase-input [wordlistLanguage]="wordlistLanguage" [passphraseInit]="passphraseInit"></passphrase-input>
   </form>
   <div text-center>
     <button ion-button class="button-continue" (click)="next()" [disabled]="!wordsForm.valid || !areAllWordsCorrect()">

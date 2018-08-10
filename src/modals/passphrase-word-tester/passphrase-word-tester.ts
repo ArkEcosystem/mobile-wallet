@@ -13,6 +13,7 @@ export class PassphraseWordTesterModal {
   public passphraseReference: string;
   public passphraseInit: string;
   public wordlistLanguage: string;
+  public isDevNet: boolean;
 
   @ViewChild(PassphraseInputComponent) passphraseInput: PassphraseInputComponent;
 
@@ -27,7 +28,8 @@ export class PassphraseWordTesterModal {
       this.dismiss();
     }
 
-    if (this.userDataProvider.isDevNet) {
+    this.isDevNet = this.userDataProvider.isDevNet;
+    if (this.isDevNet) {
       this.passphraseInit = this.passphraseReference;
     }
   }
