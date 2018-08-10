@@ -5,7 +5,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { PrivateKey } from 'ark-ts/core';
 import bip39 from 'bip39';
-import { WalletKeys, AccountBackup, PassphraseWord } from '@models/model';
+import { WalletKeys, AccountBackup } from '@models/model';
 
 @IonicPage()
 @Component({

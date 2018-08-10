@@ -1,6 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {PassphraseWord} from '@models/passphrase-word';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { PassphraseInputComponent } from '@components/passphrase-input/passphrase-input';
 
@@ -34,7 +33,7 @@ export class PassphraseWordTesterModal {
   }
 
   public areAllWordsCorrect(): boolean {
-    return this.passphraseInput.validatePassphrase(this.passphraseReference)
+    return this.passphraseInput.validatePassphrase(this.passphraseReference);
   }
 
   public next(): void {
