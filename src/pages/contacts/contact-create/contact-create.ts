@@ -105,6 +105,9 @@ export class ContactCreatePage {
     if (qrCode.address) {
       this.address = qrCode.address;
       this.validateAddress();
+      if(qrCode.label) {
+        this.contactName = qrCode.label;
+      }
     } else {
       this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
     }
