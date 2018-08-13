@@ -1,6 +1,6 @@
 {
     "API": {
-      "BALANCE_TOO_LOW": "Cantidad muy baja para la transacción",
+      "BALANCE_TOO_LOW": "Saldo demasiado bajo para la transacción",
       "BALANCE_TOO_LOW_DETAIL": "{{ token }} insuficiente en su cuenta! Los costes de transacción se: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). Contudo, o saldo da sua conta é {{ balance }}!",
       "DESTINATION_ADDRESS_ERROR": "La dirección '{{ address }}' es incorrecto",
       "PEER_LIST_ERROR": "No se pudo obtener la lista de peers",
