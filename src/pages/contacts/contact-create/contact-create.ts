@@ -105,7 +105,7 @@ export class ContactCreatePage {
     if (qrCode.address) {
       this.address = qrCode.address;
       this.validateAddress();
-      if(qrCode.label) {
+      if (qrCode.label) {
         this.contactName = qrCode.label;
       }
     } else {
