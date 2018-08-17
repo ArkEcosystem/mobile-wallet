@@ -12,7 +12,7 @@
   "CANCEL": "Cancel",
   "CONFIRM": "Confirm",
   "CONTACTS_PAGE": {
-    "ADD_CONTACT_TEXT": "Click on the button below to add a contact",
+    "ADD_CONTACT_TEXT": "Tap the button below to add a contact",
     "CONTACT": "Contact",
     "CONTACTS": "Contacts",
     "INVALID_ADDRESS": "The address '{{ address }}' is invalid!",
@@ -21,7 +21,7 @@
     "CONTACT_NOT_EXISTS_ADDRESS": "A contact with the address '{{ address }}' doesn't exist!",
     "CONTACT_EXISTS_NAME": "There is already a contact with the name '{{ name }}'!",
     "DELETE_CONTACT": "Are you sure you want to delete contact '{{ name }}'?",
-    "OVERWRITE_CONTACT": "There is already a contact named '{{ name }}' with this address. Do you want to overwrite it's name with '{{ newName }}'?"
+    "OVERWRITE_CONTACT": "There is already a contact named '{{ name }}' with this address. Do you want to overwrite its name with '{{ newName }}'?"
   },
   "COPIED_CLIPBOARD": "Copied to clipboard",
   "COPY": "Copy",
@@ -44,7 +44,7 @@
     "NETHASH": "Nethash",
     "MANAGE_NETWORKS": "Manage Custom Networks",
     "MARKET_SYMBOL_NAME": "Market Symbol Name (for getting prices in USD, BTC, etc.)",
-    "NO_NETWORK_CONFIGURED": "No custom network has been configured yet. Click on the button below to create one.",
+    "NO_NETWORK_CONFIGURED": "No custom network has been configured yet. Tap the button below to create one.",
     "OR_CREATE_NEW": "... or create a new custom network",
     "SAVE_SUCCESSFUL": "Successfully saved network!",
     "SEED_SERVER": "Seed Server URL",
@@ -151,7 +151,7 @@
   "PROFILES_PAGE": {
     "PROFILENAME_ALREADY_EXISTS": "There is already a profile with the name '{{ name }}'!",
     "ADD_PROFILE_ERROR": "Could not add profile",
-    "ADD_PROFILE_TEXT": "Click on the button below to create a profile",
+    "ADD_PROFILE_TEXT": "Tap the button below to create a profile",
     "CREATE_PROFILE": "Create Profile",
     "CUSTOM": "Custom",
     "DELETE_NOT_EMPTY": "You cannot delete a Profile that has 1 or more Wallets",
@@ -213,7 +213,7 @@
     "NEW_WALLET_LABEL": "Wallet label (optional)",
     "OPEN_EXPLORER": "Open in Explorer",
     "PERFORMING_DESTINATION_ADDRESS_CHECKS": "Performing destination address checks...",
-    "QRCODE_COPY": "Tap on the address to copy it to clipboard or click on the icon to share the QR code. Optionally you can also enter an amount, which will then be included in the QR code.",
+    "QRCODE_COPY": "Tap on the address to copy it to clipboard or tap the icon to share the QR code. Optionally you can also enter an amount, which will then be included in the QR code.",
     "RECEIVE": "Receive",
     "RECEIVE_TOKEN": "Receive {{ Token }}",
     "RECEIVED": "Received",
@@ -243,7 +243,7 @@
   },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "Could not add wallet",
-    "ADD_WALLET_TEXT": "To import or create wallet click on the button below",
+    "ADD_WALLET_TEXT": "To import or create wallet tap the button below",
     "ADDRESS": "Address",
     "ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE": "The second passphrase was successfully encrypted",
     "BACKUP_ACCOUNT": "IMPORTANT! Backup this 'secret passphrase' securely, without these words you can not restore your wallet or send transactions and ALL ARK TOKENS WILL BE LOST.",
