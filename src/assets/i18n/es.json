@@ -118,7 +118,7 @@
       "SIGN_IN": "Registro"
     },
     "QR_CODE": {
-      "INVALID_QR_ERROR": "Ha habido un problema al intentar escanear el Código QR",
+      "INVALID_QR_ERROR": "Ha habido un problema al intentar escanear el codigo QR",
       "INVALID_QRCODE": "Este código QR no tiene una dirección válida o passphrase",
       "PERMISSION_DENIED": "Permiso para la cámara QR negada",
       "PERMISSION_PERMANENTLY_DENIED": "Permiso para la cámara QR permanentemente negada. Vaya a la configuración de su dispositivo para cambiar.",
