@@ -297,7 +297,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   presentDeleteWalletConfirm() {
-    this.translateService.get(['ARE_YOU_SURE', 'CONFIRM', 'CANCEL', 'WALLETS_PAGE.REMOVE_WALLET_TEXT', 'WALLETS_PAGE.REMOVE_WATCH_ONLY_WALLET_TEXT'])
+    this.translateService.get(
+        ['ARE_YOU_SURE', 'CONFIRM', 'CANCEL', 'WALLETS_PAGE.REMOVE_WALLET_TEXT', 'WALLETS_PAGE.REMOVE_WATCH_ONLY_WALLET_TEXT'])
       .takeUntil(this.unsubscriber$)
       .subscribe((translation) => {
         const confirm = this.alertCtrl.create({
