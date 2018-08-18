@@ -43,7 +43,7 @@
       "USERNAME_ALREADY_EXISTS": "Este usuario ya está siendo utilizado",
       "VOTE": "Voto",
       "VOTE_FETCH_ERROR": "No fue posible buscar el voto actual",
-      "WARNING_SELECT_WALLET_FIRST": "Usted necesita seleccionar una cartera primero para activar el proceso de voto"
+      "WARNING_SELECT_WALLET_FIRST": "Es necesario seleccionar una cartera primero para activar el proceso de voto"
     },
     "DELETE": "Eliminar",
     "DONE": "Hecho",
@@ -57,9 +57,9 @@
       "FAST_EASY": "Rápido y Fácil",
       "GET_STARTED": "Comienzo",
       "SECURITY": "Seguridad",
-      "TEXT_1": "Ofrecemos todas las herramientas que usted necesita para gestionar sus ARK, en cualquier momento, en cualquier lugar, en todo el mundo!",
-      "TEXT_2": "Todos sus datos confidenciales se almacenan de forma segura utilizando el algoritmo PBKDF2 y el cifrado AES-256 protegido por su código PIN",
-      "TEXT_3": "Deslice entre perfiles y carteras, verifique sus saldos, envíe y reciba fondos y mucho más",
+      "TEXT_1": "Ofrecemos todas las herramientas necesarias para gestionar sus ARK en cualquier momento, en cualquier lugar, en todo el mundo!",
+      "TEXT_2": "Todos sus datos confidenciales se almacenan de forma segura utilizando el algoritmo PBKDF2 y el cifrado AES-256, protegidos por su código PIN",
+      "TEXT_3": "Cambie entre perfiles y carteras, verifice su saldo, envíe y reciba fondos y mucho más",
       "WELCOME": "Bienvenido"
     },
     "SIGN_IN_PAGE": {
@@ -133,7 +133,7 @@
       "APPLICATION": "Solicitud",
       "CHANGE_PIN": "Cambiar PIN",
       "CLEAR_DATA": "Borrar datos",
-      "CLEAR_DATA_TEXT": "Todos los datos, incluidos los perfiles creados, las carteras y los contactos se eliminan de la aplicación y se restablecerá a la predeterminada.",
+      "CLEAR_DATA_TEXT": "Todos los datos, incluidos los perfiles creados, las carteras y los contactos se eliminarán de la aplicación y se reestablecerán los predeterminados",
       "CURRENCY": "Divisa",
       "DARK_MODE": "Modo nocturno",
       "LANGUAGE": "Idioma",
