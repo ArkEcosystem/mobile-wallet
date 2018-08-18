@@ -65,19 +65,19 @@
     "SIGN_IN_PAGE": {
       "ARK_WALLET": "Cartera ARK",
       "CREATE_PROFILE": "Crear un perfil",
-      "SLOGAN": "Bienvenido al Ecosistema ARK"
+      "SLOGAN": "Bienvenido a Ark Ecosystem"
     },
-    "SIGN_OUT_PROFILE_TEXT": "Salir del perfil?",
+    "SIGN_OUT_PROFILE_TEXT": "¿Cerrar el perfil?",
     "MARKETS_PAGE": {
-      "MARKET_CAP": "Valor Comercial",
+      "MARKET_CAP": "Capitalización de mercado",
       "MARKET_DATA": "Datos de mercado",
-      "PERCENTAGE_CHANGE": "Movimiento 24h",
+      "PERCENTAGE_CHANGE": "Cambio en 24h",
       "PRICE": "Precio",
       "VOLUME": "Volumen"
     },
     "NAME": "Nombre",
     "NETWORKS_PAGE": {
-      "CHANGE_PEER": "Cambiar de Peer",
+      "CHANGE_PEER": "Cambiar de par",
       "CHOOSE_ONE": "Elija uno de los tipos de red",
       "DELAY": "Retraso",
       "HEIGHT": "Altura",
