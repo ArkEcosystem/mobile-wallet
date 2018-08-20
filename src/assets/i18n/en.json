@@ -75,6 +75,7 @@
     "UPTIME": "Uptime",
     "USERNAME_ALREADY_EXISTS": "This username already exists",
     "VOTE": "Vote",
+    "VOTED": "Voted",
     "VOTE_FETCH_ERROR": "Could not fetch current vote",
     "WARNING_SELECT_WALLET_FIRST": "You need to select a wallet first to enable the voting process"
   },
@@ -254,6 +255,7 @@
     "BIP38_SEED": "BIP38 Seed",
     "CONVERT_TO_FULL_WALLET": "Convert to full wallet",
     "CREATE_WALLET": "Create Wallet",
+    "CUSTOM_PASSPHRASE": "Custom (non | BIP39 |) passphrase",
     "ENTER_SECRET_PASSPHRASE": "Enter your secret passphrase",
     "ENTER_ADDRESS": "Enter your address",
     "ENTROPY": "Entropy",

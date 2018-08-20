@@ -35,7 +35,7 @@
       <ion-label *ngIf="manualImportFormGroup.controls.controlAddressOrPassphrase.errors.invalidAddress" color="danger">{{ 'WALLETS_PAGE.INVALID_ADDRESS' | translate }}</ion-label>
     </p>
     <ion-item *ngIf="!useAddress" no-padding no-lines style="background-color:transparent">
-      <ion-label>Custom (non <a (click)="openBIP39DocURL()">BIP39</a>) passphrase</ion-label>
+      <ion-label>{{ 'WALLETS_PAGE.CUSTOM_PASSPHRASE' | translate | translateCut:0 }} <a (click)="openBIP39DocURL()">{{ 'WALLETS_PAGE.CUSTOM_PASSPHRASE' | translate | translateCut:1 }}</a> {{ 'WALLETS_PAGE.CUSTOM_PASSPHRASE' | translate | translateCut:2 }}</ion-label>
       <ion-toggle name="nonBIP39Passphrase" [(ngModel)]="nonBIP39Passphrase" formControlName="controlNonBIP39"></ion-toggle>
     </ion-item>
   </form>
