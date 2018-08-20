@@ -1,7 +1,7 @@
 {
   "API": {
     "BALANCE_TOO_LOW": "Balance too low for transaction",
-    "BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} on your account! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your account balance is only {{ balance }}!",
+    "BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} on your wallet! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your wallet balance is only {{ balance }}!",
     "DESTINATION_ADDRESS_ERROR": "The destination address '{{ address }}' is erroneous",
     "PEER_LIST_ERROR": "Could not get list of peers",
     "TRANSACTION_FAILED": "Transaction failed",
@@ -283,7 +283,8 @@
     "PASSPHRASE_UNSUPPORTED_INPUT": "Unsupported input in hidden mode, please change passphrase visibility.",
     "RE_ENTER_PASSPHRASE": "Re-enter your passphrase",
     "REMOVE_WALLET": "Remove Wallet",
-    "REMOVE_WALLET_TEXT": "Your account will be removed. Make sure you have backed up, you will need the original passphrase to restore.",
+    "REMOVE_WALLET_TEXT": "Your wallet will be removed. Make sure you have backed up, you will need the original passphrase to restore.",
+    "REMOVE_WATCH_ONLY_WALLET_TEXT": "The wallet will be removed and you will not be able to watch it anymore.",
     "SCAN_QRCODE": "Scan QR Code",
     "SCAN_QRCODE_TEXT": "Import your address or passphrase using QR Code, just point and scan!",
     "SECOND_BIP38_SEED": "Second BIP38 Seed",
