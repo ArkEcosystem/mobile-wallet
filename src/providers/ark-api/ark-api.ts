@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -9,7 +8,6 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { StorageProvider } from '@providers/storage/storage';
 import { ToastProvider } from '@providers/toast/toast';
 
-const packageJson = require('@root/package.json');
 import { Transaction, TranslatableObject } from '@models/model';
 
 import * as arkts from 'ark-ts';
@@ -38,8 +36,7 @@ export class ArkApiProvider {
   constructor(
     private userDataProvider: UserDataProvider,
     private storageProvider: StorageProvider,
-    private toastProvider: ToastProvider,
-    private http: HttpClient) {
+    private toastProvider: ToastProvider) {
     this.loadData();
 
     this.userDataProvider.onActivateNetwork$.subscribe((network) => {
@@ -219,16 +216,8 @@ export class ArkApiProvider {
 
   public postTransaction(transaction: arkts.Transaction, peer: arkts.Peer = this._network.activePeer, broadcast: boolean = true) {
     return Observable.create((observer) => {
-      let headers = new HttpHeaders().set('Content-Type', 'application/json');
-      headers = headers.append('os', 'ark-mobile');
-      headers = headers.append('version', packageJson.version);
-      headers = headers.append('port', '1');
-      headers = headers.append('nethash', this._network.nethash);
-
-      const url = `http://${peer.ip}:${peer.port}/peer/transactions`;
-      const data = JSON.stringify({ transactions: [transaction] });
-      this.http.post(url, data, { headers }).subscribe((result: arkts.TransactionPostResponse) => {
-        if (result.success) {
+      this._api.transaction.post(transaction, peer).subscribe((result: arkts.TransactionPostResponse) => {
+        if (result.data.accept.indexOf(transaction.id) !== -1) {
           this.onSendTransaction$.next(transaction);
           if (broadcast) {
             this.broadcastTransaction(transaction);
@@ -243,7 +232,6 @@ export class ArkApiProvider {
         }
       }, (error) => observer.error(error));
     });
-
   }
 
   public getDelegateByPublicKey(publicKey: string): Observable<Delegate> {
@@ -258,10 +246,11 @@ export class ArkApiProvider {
   }
 
   private broadcastTransaction(transaction: arkts.Transaction) {
-    const max = 10;
-
-    for (const peer of this.network.peerList.slice(0, max)) {
-      this.postTransaction(transaction, peer, false).subscribe();
+    for (const peer of this._network.peerList.slice(0, 10)) {
+      this.postTransaction(transaction, peer, false).subscribe(
+        null,
+        null
+      );
     }
   }
 
