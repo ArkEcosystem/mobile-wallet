@@ -44,8 +44,11 @@ export class ArkApiProvider {
       if (lodash.isEmpty(network)) { return; }
 
       // set default peer
-      if (network && !network.activePeer) {
-        network.activePeer = arkts.Network.getDefault(network.type).activePeer;
+      const activePeer = network.activePeer;
+      const apiNetwork = arkts.Network.getDefault(network.type);
+      network = Object.assign<StoredNetwork, arkts.Network>(network, apiNetwork);
+      if (activePeer) {
+        network.activePeer = activePeer;
       }
 
       this._network = network;
@@ -76,20 +79,20 @@ export class ArkApiProvider {
     return this.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2);
   }
 
-  public findGoodPeer(): void {
+  public async findGoodPeer() {
     // Get list from active peer
-    this._api.peer.list().subscribe((response) => {
-        if (response && this.findGoodPeerFromList(response.peers)) {
-          return;
-        } else {
-          this.tryGetFallbackPeer();
-        }
-      },
-      () => this.tryGetFallbackPeer());
+    this._api.peer.list().subscribe(async (response) => {
+      if (response && await this.findGoodPeerFromList(response.peers)) {
+        return;
+      } else {
+        await this.tryGetFallbackPeer();
+      }
+    },
+    async () => await this.tryGetFallbackPeer());
   }
 
-  private tryGetFallbackPeer() {
-    if (this.findGoodPeerFromList(this.network.peerList)) {
+  private async tryGetFallbackPeer() {
+    if (await this.findGoodPeerFromList(this.network.peerList)) {
       return;
     }
 
@@ -100,14 +103,80 @@ export class ArkApiProvider {
         () => this.toastProvider.error('API.PEER_LIST_ERROR'));
   }
 
-  private findGoodPeerFromList(peerList: arkts.Peer[]): boolean {
+  private async findGoodPeerFromList(peerList: arkts.Peer[]) {
     if (!peerList || !peerList.length) {
       return false;
     }
-    const port = +this._network.activePeer.port;
-    const filteredPeers = lodash.filter(peerList, (peer) => {
-      return peer['status'] === 'OK' && peer['port'] === port && peer.ip !== this._network.activePeer.ip && peer.ip !== '127.0.0.1';
+    const port = +(this._network.p2pPort || this._network.activePeer.port);
+    // Force P2P port if specified in the network
+    if (this._network.p2pPort) {
+      for (const peer of peerList) {
+        peer.port = +this._network.p2pPort;
+      }
+    }
+    const preFilteredPeers = lodash.filter(peerList, (peer) => {
+      if (peer['status'] !== 'OK') {
+        return false;
+      }
+
+      if (peer['port'] !== port) {
+        return false;
+      }
+
+      if (peer.ip === this._network.activePeer.ip || peer.ip === '127.0.0.1') {
+        return false;
+      }
+
+      return true;
     });
+
+    let filteredPeers = [];
+    if (!this._network.isV2) {
+      filteredPeers = preFilteredPeers;
+    } else {
+      const configChecks = [];
+      for (const peer of preFilteredPeers) {
+        configChecks.push(this._api.peer.getVersion2Config(peer.ip, peer.port).toPromise());
+      }
+
+      const peerConfigResponses = await Promise.all(configChecks.map(p => p.catch(e => e)));
+      for (const peerId in peerConfigResponses) {
+        const config = peerConfigResponses[peerId];
+        const apiConfig = lodash.get(config, 'data.plugins["@arkecosystem/core-api"]');
+        if (apiConfig && apiConfig.enabled && apiConfig.port) {
+          const peer = preFilteredPeers[peerId];
+          peer.port = apiConfig.port;
+          filteredPeers.push(peer);
+        }
+      }
+    }
+
+    const missingHeights = []
+    const missingHeightRequests = []
+    for (const peerId in filteredPeers) {
+      const peer = filteredPeers[peerId]
+      if (!peer.height) {
+        missingHeights.push({
+          id: peerId,
+          peer
+        })
+        missingHeightRequests.push(this._api.loader.synchronisationStatus(`http://${peer.ip}:${peer.port}`).toPromise())
+      }
+    }
+
+    if (missingHeightRequests.length) {
+      const missingHeightResponses = await Promise.all(missingHeightRequests.map(p => p.catch(e => e)));
+      for (const peerId in missingHeightResponses) {
+        const response = missingHeightResponses[peerId];
+        if (response && response.height) {
+          const missingHeight = missingHeights[peerId];
+          const peer = missingHeight.peer;
+          peer.height = response.height;
+          filteredPeers[missingHeight.peerId] = peer;
+        }
+      }
+    }
+
     const sortedPeers = lodash.orderBy(filteredPeers, ['height', 'delay'], ['desc', 'asc']);
     if (!sortedPeers.length) {
       return false;
