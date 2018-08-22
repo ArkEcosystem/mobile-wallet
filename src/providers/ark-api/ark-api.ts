@@ -151,16 +151,16 @@ export class ArkApiProvider {
       }
     }
 
-    const missingHeights = []
-    const missingHeightRequests = []
+    const missingHeights = [];
+    const missingHeightRequests = [];
     for (const peerId in filteredPeers) {
-      const peer = filteredPeers[peerId]
+      const peer = filteredPeers[peerId];
       if (!peer.height) {
         missingHeights.push({
           id: peerId,
           peer
-        })
-        missingHeightRequests.push(this._api.loader.synchronisationStatus(`http://${peer.ip}:${peer.port}`).toPromise())
+        });
+        missingHeightRequests.push(this._api.loader.synchronisationStatus(`http://${peer.ip}:${peer.port}`).toPromise());
       }
     }
 
