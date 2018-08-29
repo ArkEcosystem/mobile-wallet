@@ -286,7 +286,7 @@ export class ArkApiProvider {
   public postTransaction(transaction: arkts.Transaction, peer: arkts.Peer = this._network.activePeer, broadcast: boolean = true) {
     return Observable.create((observer) => {
       this._api.transaction.post(transaction, peer).subscribe((result: arkts.TransactionPostResponse) => {
-        if (result.transactionIds.indexOf(transaction.id) !== -1) {
+        if (result.transactionIds && result.transactionIds.indexOf(transaction.id) !== -1) {
           this.onSendTransaction$.next(transaction);
           if (broadcast) {
             this.broadcastTransaction(transaction);
