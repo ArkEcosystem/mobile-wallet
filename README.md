@@ -91,9 +91,11 @@ If you discover a security vulnerability within this application, please send an
 - [Contribute bounties](./CONTRIBUTING.md).
 - [Help translate](./TRANSLATING.md).
 
-## Authors
-- Lúcio Rubens <lucio@ark.io>
-- Alex Barnsley <alex@ark.io>
+## Credits
+
+- [Lúcio Rubens](https://github.com/luciorubeens)
+- [Alex Barnsley](https://github.com/alexbarnsley)
+- [All Contributors](../../contributors)
 
 ## License
 
