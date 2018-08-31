@@ -1,9 +1,14 @@
-![ARK Mobile](https://i.imgur.com/0BjkC9C.png)
+# Ark Mobile
+
+<p align="center">
+    <img src="./banner.png" />
+</p>
+
+> A Wallet for Everyone
 
 [![Build Status](https://badgen.now.sh/travis/ArkEcosystem/mobile-wallet)](https://travis-ci.org/ArkEcosystem/mobile-wallet)
-
-# Ark Mobile
-> A Wallet for Everyone
+[![Latest Version](https://badgen.now.sh/github/release/ArkEcosystem/mobile-wallet)](https://github.com/ArkEcosystem/mobile-wallet/releases/latest)
+[![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
 
 ARK’s mobile wallet is a hybrid application (using the same codebase for Android and iOS which helps with coordinated development). Created using Ionic framework and ARK’s [TypeScript API](https://github.com/ArkEcosystem/ark-ts) to interact with the ARK network via your mobile phone, anytime, anywhere (as long as you have an internet connection).
 
@@ -92,4 +97,4 @@ If you discover a security vulnerability within this application, please send an
 
 ## License
 
-Ark Mobile is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+[MIT](LICENSE) © [ArkEcosystem](https://ark.io)
