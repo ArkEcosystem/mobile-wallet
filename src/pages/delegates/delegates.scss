@@ -44,6 +44,25 @@ page-delegates {
         }
       }
     }
+  }
+}
 
+.dark-theme {
+  page-delegates {
+    .segment-md .segment-button {
+      color: color($darkColors, primary, base) !important;
+
+      &.segment-activated {
+        color: #fff !important;
+      }
+    }
+
+    .delegate-list .list .delegate-item {
+      border-bottom: 1px solid color($darkColors, secondary-background, base);
+
+      .rate {
+        color: lighten(color($darkColors, primary-background, base), 50%);
+      }
+    }
   }
 }

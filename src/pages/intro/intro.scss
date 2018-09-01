@@ -1,6 +1,6 @@
 page-intro {
   .content {
-    background: #edf2f5;
+    background: color($colors, primary-background, base);
   }
 
   ion-row {
@@ -28,8 +28,8 @@ page-intro {
     }
 
     .col.active span {
-      border-color: #345ff2;
-      background-color: #345ff2;
+      border-color: color($colors, primary, base);
+      background-color: color($colors, primary, base);
     }
   }
 
@@ -41,6 +41,18 @@ page-intro {
     max-height: 80%;
     max-width: 60%;
     margin: 2em 0;
+
+    &.anytime {
+      content: url('../assets/img/light/intro/anytime.png');
+    }
+
+    &.pincode {
+      content: url('../assets/img/light/intro/pincode.png');
+    }
+
+    &.fast-easy {
+      content: url('../assets/img/light/intro/fast-easy.png');
+    }
   }
 
   p {
@@ -48,5 +60,31 @@ page-intro {
     font-size: 14px;
     line-height: 1.5;
     color: #60646B;
+  }
+}
+
+.dark-theme {
+  page-intro {
+    p { 
+      color: color($darkColors, secondary, base);
+    }
+
+    .slide-image {
+      max-height: 80%;
+      max-width: 60%;
+      margin: 2em 0;
+
+      &.anytime {
+        content: url('../assets/img/dark/intro/anytime.png');
+      }
+
+      &.pincode {
+        content: url('../assets/img/dark/intro/pincode.png');
+      }
+
+      &.fast-easy {
+        content: url('../assets/img/dark/intro/fast-easy.png');
+      }
+    }
   }
 }

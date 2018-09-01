@@ -115,7 +115,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       const delegateItem =  {
         text: translation['DELEGATES_PAGE.REGISTER_DELEGATE'],
         role: 'delegate',
-        icon: !this.platform.is('ios') ? 'ios-contact-outline' : '',
+        icon: this.platform.is('ios') ? 'ios-contact-outline' : 'md-contact',
         handler: () => {
           this.presentRegisterDelegateModal();
         },
@@ -124,7 +124,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       const delegatesItem = {
           text: translation['DELEGATES_PAGE.DELEGATES'],
           role: 'label',
-          icon: !this.platform.is('ios') ? 'ios-people-outline' : '',
+          icon: this.platform.is('ios') ? 'ios-people-outline' : 'md-people',
           handler: () => {
             this.presentDelegatesModal();
           },
@@ -134,7 +134,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         {
           text: translation['WALLETS_PAGE.REMOVE_WALLET'],
           role: 'delete',
-          icon: !this.platform.is('ios') ? 'ios-trash-outline' : '',
+          icon: this.platform.is('ios') ? 'ios-trash-outline' : 'md-trash',
           handler: () => {
             this.presentDeleteWalletConfirm();
           }
@@ -146,7 +146,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         buttons.unshift({
           text: translation['WALLETS_PAGE.LABEL'],
           role: 'label',
-          icon: !this.platform.is('ios') ? 'ios-bookmark-outline' : '',
+          icon: this.platform.is('ios') ? 'ios-bookmark-outline' : 'md-bookmark',
           handler: () => {
             this.presentLabelModal();
           },
@@ -156,7 +156,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       const backupItem = {
         text: translation['SETTINGS_PAGE.WALLET_BACKUP'],
         role: 'label',
-        icon: !this.platform.is('ios') ? 'ios-briefcase-outline' : '',
+        icon: this.platform.is('ios') ? 'ios-briefcase-outline' : 'md-briefcase',
         handler: () => {
           this.presentWalletBackupPage();
         }
@@ -172,7 +172,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         buttons.unshift({
           text: translation['WALLETS_PAGE.CONVERT_TO_FULL_WALLET'],
           role: 'label',
-          icon: !this.platform.is('ios') ? 'ios-git-compare-outline' : '',
+          icon: this.platform.is('ios') ? 'ios-git-compare-outline' : 'md-git-compare',
           handler: () => {
             this.navCtrl.push('WalletImportPage', {address: this.wallet.address});
           }
@@ -209,7 +209,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
           {
             text: translation['TRANSACTIONS_PAGE.RECEIVE'],
             role: 'receive',
-            icon: !this.platform.is('ios') ? 'ios-arrow-round-down' : '',
+            icon: this.platform.is('ios') ? 'ios-arrow-round-down' : 'md-arrow-round-down',
             handler: () => {
               return this.openTransactionReceive();
             }
@@ -219,7 +219,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
           buttons.push({
             text: translation['TRANSACTIONS_PAGE.SEND'],
             role: 'send',
-            icon: !this.platform.is('ios') ? 'ios-arrow-round-up' : '',
+            icon: this.platform.is('ios') ? 'ios-arrow-round-up' : 'md-arrow-round-up',
             handler: () => {
               return this.navCtrl.push('TransactionSendPage');
             }

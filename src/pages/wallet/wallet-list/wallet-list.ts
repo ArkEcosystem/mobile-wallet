@@ -91,14 +91,14 @@ export class WalletListPage implements OnDestroy {
           {
             text: translation.GENERATE,
             role: 'generate',
-            icon: !this.platform.is('ios') ? 'ios-card-outline' : null,
+            icon: this.platform.is('ios') ? 'ios-card-outline' : 'md-card',
             handler: () => {
               this.presentWalletGenerate();
             }
           }, {
             text: translation.IMPORT,
             role: 'import',
-            icon: !this.platform.is('ios') ? 'ios-cloud-upload-outline' : null,
+            icon: this.platform.is('ios') ? 'ios-cloud-upload-outline' : 'md-cloud-upload',
             handler: () => {
               this.presentWalletImport();
             }

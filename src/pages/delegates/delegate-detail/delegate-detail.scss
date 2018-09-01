@@ -2,6 +2,7 @@ page-delegate-detail {
   .full-height {
     padding: 0;
   }
+
   .info-toolbar,
   .list-selectable {
     padding: 1em 2em;
@@ -15,6 +16,7 @@ page-delegate-detail {
     .toolbar-content {
       color: white;
     }
+
     .toolbar-background {
       background: #23074d;  /* fallback for old browsers */
       background: -webkit-linear-gradient(to right, #1a1637, #2f2832);  /* Chrome 10-25, Safari 5.1-6 */

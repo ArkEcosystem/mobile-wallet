@@ -81,3 +81,13 @@ modal-wallet-backup {
     }
   }
 }
+
+.dark-theme {
+  modal-wallet-backup {
+    .advanced-toolbar {
+      .toolbar-background {
+        background-color: darken(color($darkColors, primary-background, base), 5%);
+      }
+    }
+  }
+}
