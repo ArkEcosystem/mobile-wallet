@@ -34,8 +34,7 @@ page-transaction-response {
       }
 
       &.tx-error {
-        // content: url('../assets/img/dark/transaction/transfer-error.png');
-        content: url('../assets/img/light/transaction/transfer-error.png');
+        content: url('../assets/img/dark/transaction/transfer-error.png');
       }
     }
   }
