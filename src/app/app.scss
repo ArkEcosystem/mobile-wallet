@@ -298,7 +298,7 @@ ion-app {
       .label {
         color: color($darkColors, secondary, base);
 
-        h3 {
+        h3, h6 {
           color: #fff;
         }
 
@@ -370,6 +370,14 @@ ion-app {
       color: #fff !important;
     }
 
+    .dark-navbar {
+      button {
+        .icon {
+          color: lighten(color($darkColors, primary-background, base), 50%);
+        }
+      }
+    }
+
     .action-sheet-group {
       background-color: color($darkColors, primary-background, base);
     }
@@ -392,5 +400,32 @@ ion-app {
       .button-md-primary {
       }
     }
+  }
+
+  ion-alert {
+    .alert-wrapper {
+      background-color: color($darkColors, primary-background, base) !important;
+      color: #fff;
+
+      .alert-message {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      .alert-radio-group {
+        border-color: color($darkColors, secondary-background, base);
+
+        .alert-radio-label {
+          color: #fff;
+        }
+
+        [aria-checked=true] .alert-radio-label {
+          color: color($darkColors, primary, base);
+        }
+      }
+    }
+  }
+
+  .searchbar-input-container .searchbar-input {
+    color: #fff;
   }
 }

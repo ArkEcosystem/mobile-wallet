@@ -89,5 +89,10 @@ modal-wallet-backup {
         background-color: darken(color($darkColors, primary-background, base), 5%);
       }
     }
+
+    .advanced-container .advanced-list .item-caption,
+    .account-container .account-list .item-caption {
+      color: color($darkColors, secondary, base);
+    }
   }
 }

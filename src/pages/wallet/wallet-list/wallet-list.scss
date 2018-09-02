@@ -137,20 +137,22 @@ page-wallet-list {
 
 .dark-theme {
   page-wallet-list {
-    background-color: color($darkColors, primary-background, base);
-
     .toolbar-title,
     .bar-button-default {
       color: #fff !important;
+
+      .icon {
+        color: lighten(color($darkColors, primary-background, base), 50%);
+      }
     }
 
     .content {
       &.normal {
-        background: linear-gradient(0deg, rgba(0,0,0,0) 0%, transparentize(color($darkColors, wallet-normal-gradient, base), 0.80) 70%, color($darkColors, wallet-normal-gradient, base) 100%);
+        background: linear-gradient(0deg, color($darkColors, primary-background, base) 0%, color($darkColors, primary-background, base) 70%, color($darkColors, wallet-normal-gradient, base) 100%);
       }
 
       &.delegate {
-        background: linear-gradient(0deg, rgba(0,0,0,0) 0%, transparentize(color($darkColors, wallet-delegate-gradient, base), 0.80) 70%, color($darkColors, wallet-delegate-gradient, base) 100%);
+        background: linear-gradient(0deg, color($darkColors, primary-background, base) 0%, color($darkColors, primary-background, base) 70%, color($darkColors, wallet-delegate-gradient, base) 100%);
       }
     }
   }

@@ -20,7 +20,7 @@
         <ion-grid class="success-container">
           <ion-row>
             <ion-col text-center align-self-center>
-              <img src="./assets/img/light/transaction/transfer-success.png">
+              <img class="image tx-success">
               <h6>{{ 'TRANSACTIONS_PAGE.SENT_SUCCESS' | translate }}</h6>
             </ion-col>
           </ion-row>
@@ -39,7 +39,7 @@
         </ion-grid>
       </ion-col>
       <ion-col align-self-center *ngIf="!response?.status">
-        <img src="./assets/img/light/transaction/transfer-error.png">
+        <img class="image tx-error">
       </ion-col>
     </ion-row>
   </ion-grid>

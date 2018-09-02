@@ -49,7 +49,7 @@ export class ProfileSigninPage implements OnDestroy {
       const buttons = [{
         text: translation.DELETE,
         role: 'delete',
-        icon: !this.platform.is('ios') ? 'ios-trash-outline' : '',
+        icon: this.platform.is('ios') ? 'ios-trash-outline' : 'md-trash',
         handler: () => {
           if (!this.profileHasWallets(profileId)) {
             this.showDeleteConfirm(profileId);

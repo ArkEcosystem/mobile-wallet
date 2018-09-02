@@ -41,14 +41,14 @@ export class ContactListPage {
         {
           text: translation.EDIT,
           role: 'label',
-          icon: !this.platform.is('ios') ? 'ios-create-outline' : '',
+          icon: this.platform.is('ios') ? 'ios-create-outline' : 'md-create',
           handler: () => {
             this.openEditPage(address);
           },
         }, {
           text: translation.DELETE,
           role: 'label',
-          icon: !this.platform.is('ios') ? 'ios-trash-outline' : '',
+          icon: this.platform.is('ios') ? 'ios-trash-outline' : 'md-trash',
           handler: () => {
             this.showDeleteConfirm(address);
           },
