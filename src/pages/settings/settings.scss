@@ -31,8 +31,16 @@ page-settings {
       border-color: color($darkColors, primary-background, base);
     }
 
-    .list .item:not(.item-divider) {
-      background-color: color($darkColors, primary-background, base) !important;
+    .list {
+      .item-block {
+        &.item:not(.item-divider) {
+          background-color: color($darkColors, primary-background, base) !important;
+        }
+
+        .item-inner {
+          border-bottom-color: transparent;
+        }
+      }
     }
 
     .list .select-text,

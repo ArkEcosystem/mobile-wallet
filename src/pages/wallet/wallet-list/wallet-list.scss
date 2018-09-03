@@ -140,10 +140,6 @@ page-wallet-list {
     .toolbar-title,
     .bar-button-default {
       color: #fff !important;
-
-      .icon {
-        color: lighten(color($darkColors, primary-background, base), 50%);
-      }
     }
 
     .content {

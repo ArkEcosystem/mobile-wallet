@@ -235,7 +235,7 @@ ion-fab.pull-footer {
 }
 
 ion-app {
-  .dark-theme {
+  &.dark-theme {
     .toggle-icon {
       background-color: #0d1632;
 
