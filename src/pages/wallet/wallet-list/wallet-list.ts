@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform, Content, Slides } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
