@@ -235,7 +235,7 @@ ion-fab.pull-footer {
 }
 
 ion-app {
-  &.dark-theme {
+  .dark-theme {
     .toggle-icon {
       background-color: #0d1632;
 
@@ -400,32 +400,32 @@ ion-app {
       .button-md-primary {
       }
     }
-  }
 
-  ion-alert {
-    .alert-wrapper {
-      background-color: color($darkColors, primary-background, base) !important;
-      color: #fff;
+    ion-alert {
+      .alert-wrapper {
+        background-color: color($darkColors, primary-background, base) !important;
+        color: #fff;
 
-      .alert-message {
-        color: rgba(255, 255, 255, 0.5);
-      }
-
-      .alert-radio-group {
-        border-color: color($darkColors, secondary-background, base);
-
-        .alert-radio-label {
-          color: #fff;
+        .alert-message {
+          color: rgba(255, 255, 255, 0.5);
         }
 
-        [aria-checked=true] .alert-radio-label {
-          color: color($darkColors, primary, base);
+        .alert-radio-group {
+          border-color: color($darkColors, secondary-background, base);
+
+          .alert-radio-label {
+            color: #fff;
+          }
+
+          [aria-checked=true] .alert-radio-label {
+            color: color($darkColors, primary, base);
+          }
         }
       }
     }
-  }
 
-  .searchbar-input-container .searchbar-input {
-    color: #fff;
+    .searchbar-input-container .searchbar-input {
+      color: #fff;
+    }
   }
 }
