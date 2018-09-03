@@ -63,7 +63,7 @@
       <ion-item ion-item>
         <ion-icon [name]="platform.is('ios') ? 'ios-moon-outline' : 'ios-moon'" item-start></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.DARK_MODE' | translate }}</ion-label>
-        <ion-toggle checked="false"></ion-toggle>
+        <ion-toggle [(ngModel)]="currentSettings.darkMode" (ngModelChange)="onUpdate()"></ion-toggle>
       </ion-item>
     </ion-item-group>
 
