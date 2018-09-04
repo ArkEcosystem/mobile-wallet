@@ -55,5 +55,36 @@ modal-confirm-transaction {
       padding-left: 7px;
     }
   }
+}
 
+.dark-theme {
+  modal-confirm-transaction {
+    color: #fff;
+
+    .header-row {
+      background-color: color($darkColors, secondary-background, base) !important;
+    }
+
+    .header-toolbar:after {
+      background-image: url('../assets/img/dark/transaction/send-confirm.png');
+    }
+
+    ion-header {
+      background-color: color($darkColors, secondary-background, base) !important;
+    }
+
+    ion-content {
+      background-color: color($darkColors, primary-background, base) !important;
+
+      .scroll-content {
+        .button-clear .icon {
+          color: lighten(color($darkColors, primary-background, base), 50%);
+        }
+      }
+    }
+
+    form .item-block .item-inner {
+      border-bottom: 1px solid color($darkColors, secondary-background, base);
+    }
+  }
 }

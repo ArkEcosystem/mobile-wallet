@@ -1,5 +1,5 @@
 import { Component, NgZone, OnDestroy } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
+import { IonicPage, Platform, NavController, NavParams, ViewController, AlertController } from 'ionic-angular';
 import { Vibration } from '@ionic-native/vibration';
 import { AuthProvider } from '@providers/auth/auth';
 
@@ -41,6 +41,7 @@ export class PinCodeModal implements OnDestroy {
   private attempts = 0;
 
   constructor(
+    public platform: Platform,
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,

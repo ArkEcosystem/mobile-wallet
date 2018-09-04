@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, Renderer2, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Platform, Config, Nav, MenuController, AlertController, App, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -58,7 +58,9 @@ export class MyApp implements OnInit, OnDestroy {
     private app: App,
     private ionicNetwork: Network,
     private splashScreen: SplashScreen,
-    private events: Events
+    private events: Events,
+    public element: ElementRef,
+    private renderer: Renderer2
   ) {
 
     platform.ready().then(() => {
@@ -84,10 +86,14 @@ export class MyApp implements OnInit, OnDestroy {
         this.hideNav = false;
       });
 
-      this.settingsDataProvider.onUpdate$.subscribe(() => this.initTranslate());
+      this.settingsDataProvider.onUpdate$.subscribe(() => {
+        this.initTranslate();
+        this.initTheme();
+      });
     });
 
     this.initTranslate();
+    this.initTheme();
   }
 
   setBackButton() {
@@ -181,6 +187,16 @@ export class MyApp implements OnInit, OnDestroy {
     });
   }
 
+  initTheme() {
+    this.settingsDataProvider.settings.subscribe(settings => {
+      if (settings.darkMode) {
+        this.renderer.addClass(this.element.nativeElement.parentNode, 'dark-theme');
+      } else {
+        this.renderer.removeClass(this.element.nativeElement.parentNode, 'dark-theme');
+      }
+    });
+  }
+
   openPage(p, rootPage: boolean = true) {
     if (rootPage) {
       this.nav.setRoot(p);
@@ -266,5 +282,4 @@ export class MyApp implements OnInit, OnDestroy {
     this.unsubscriber$.complete();
     this.authProvider.logout();
   }
-
 }

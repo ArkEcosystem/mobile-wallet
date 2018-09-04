@@ -54,3 +54,13 @@ address-list {
     }
   }
 }
+
+.dark-theme {
+  address-list {
+    .address-item {
+      button.more .icon {
+        color: lighten(color($darkColors, primary-background, base), 50%);
+      }
+    }
+  }
+}

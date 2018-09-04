@@ -255,7 +255,7 @@
       "BIP38_SEED": "Seme BIP38",
       "CONVERT_TO_FULL_WALLET": "Trasforma in portafoglio completo",
       "CREATE_WALLET": "Crea portafoglio",
-      "CUSTOM_PASSPHRASE": "Frase personalizzata (non | BIP39 |)",
+      "CUSTOM_PASSPHRASE": "Frase personalizzata (non | BIP39|)",
       "ENTER_SECRET_PASSPHRASE": "Inserisci la tua frase segreta",
       "ENTER_ADDRESS": "Inserisci il tuo indirizzo",
       "ENTROPY": "Entropia",

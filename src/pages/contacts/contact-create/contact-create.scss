@@ -8,9 +8,18 @@ page-contact-create {
       height: 100%;
       padding-top: 20px;
 
-      img {
+      .image {
         width: 30px;
+        content: url('../assets/img/light/wallet/qr-code-button.png');
       }
+    }
+  }
+}
+
+.dark-theme {
+  page-contact-create {
+    ion-item.item-address .qr-container .image {
+        content: url('../assets/img/dark/wallet/qr-code-button.png');
     }
   }
 }

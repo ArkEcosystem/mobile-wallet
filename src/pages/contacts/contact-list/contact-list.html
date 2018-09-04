@@ -16,7 +16,7 @@
 
     <ion-row *ngIf="!isEmpty()">
       <ion-col>
-        <address-list [map]="addresses" icon="md-more" (onTap)="presentContactActionSheet($event)" (onPress)="presentContactActionSheet($event)" (onMore)="presentContactActionSheet($event)"></address-list>
+        <address-list [map]="addresses" [icon]="platform.is('ios') ? 'ios-more' : 'md-more'" (onTap)="presentContactActionSheet($event)" (onPress)="presentContactActionSheet($event)" (onMore)="presentContactActionSheet($event)"></address-list>
       </ion-col>
     </ion-row>
   </ion-grid>

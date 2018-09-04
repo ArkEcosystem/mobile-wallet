@@ -1,5 +1,4 @@
 page-wallet-list {
-
   .content {
     &.normal {
       background: linear-gradient(0deg, rgba(0,0,0,0) 0%, transparentize(color($colors, wallet-normal-gradient, base), 0.80) 70%, color($colors, wallet-normal-gradient, base) 100%);
@@ -110,7 +109,6 @@ page-wallet-list {
         margin-right: 0.1em;
       }
     }
-
   }
 
   .fiat-bullet,
@@ -122,9 +120,11 @@ page-wallet-list {
     margin-left: 4px;
     margin-bottom: 2px;
   }
+
   .fiat-bullet {
     background: #394cf8
   }
+
   .btc-bullet {
     background: #f3a447
   }
@@ -132,5 +132,24 @@ page-wallet-list {
   .rowChart {
     flex: 1;
     margin-bottom: .5em;
+  }
+}
+
+.dark-theme {
+  page-wallet-list {
+    .toolbar-title,
+    .bar-button-default {
+      color: #fff !important;
+    }
+
+    .content {
+      &.normal {
+        background: linear-gradient(0deg, color($darkColors, primary-background, base) 0%, color($darkColors, primary-background, base) 70%, color($darkColors, wallet-normal-gradient, base) 100%);
+      }
+
+      &.delegate {
+        background: linear-gradient(0deg, color($darkColors, primary-background, base) 0%, color($darkColors, primary-background, base) 70%, color($darkColors, wallet-delegate-gradient, base) 100%);
+      }
+    }
   }
 }

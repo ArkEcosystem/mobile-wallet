@@ -72,7 +72,7 @@ export class TransactionShowPage {
         buttons.push({
           text: translation['TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS'],
           role: 'contact',
-          icon: this.platform.is('ios') ? '' : 'ios-person-add-outline',
+          icon: this.platform.is('ios') ? 'ios-person-add-outline' : 'md-person-add',
           handler: () => {
             this.addToContacts(address);
           }
@@ -83,7 +83,7 @@ export class TransactionShowPage {
         buttons.push({
           text: translation['TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS'],
           role: 'send',
-          icon: this.platform.is('ios') ? '' : 'ios-send-outline',
+          icon: this.platform.is('ios') ? 'ios-send-outline' : 'md-send',
           handler: () => {
             this.sendToAddress(address);
           }

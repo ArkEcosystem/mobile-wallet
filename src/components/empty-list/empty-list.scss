@@ -1,5 +1,4 @@
 empty-list {
-
   .grid {
     padding: 5em 2em 2em 2em!important;
   }
@@ -12,6 +11,7 @@ empty-list {
     max-height: 100%;
     max-width: 90%;
     margin: 2em auto;
+    content: url('../assets/img/light/wallet/hand-add-button.png');
   }
 
   p {
@@ -20,3 +20,10 @@ empty-list {
   }
 }
 
+.dark-theme {
+  empty-list {
+    .image {
+      content: url('../assets/img/dark/wallet/hand-add-button.png');
+    }
+  }
+}

@@ -38,5 +38,17 @@ page-login {
       max-width: 55%;
       transform: translate(-50%, -50%);
     }
+  } 
+}
+
+.dark-theme {
+  page-login {
+    ion-content {
+      background: url('../assets/img/dark/login/login-pattern.png') repeat;
+      background-size: contain;
+      background-repeat:no-repeat;
+      background-position: top center;
+      background-color: color($darkColors, primary-background, base);
+    }
   }
 }
