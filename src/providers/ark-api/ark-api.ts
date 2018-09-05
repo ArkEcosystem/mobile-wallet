@@ -43,7 +43,7 @@ export class ArkApiProvider {
 
       if (lodash.isEmpty(network)) { return; }
 
-      this.setNetwork(network)
+      this.setNetwork(network);
     });
   }
 

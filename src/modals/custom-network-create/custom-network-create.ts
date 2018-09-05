@@ -47,7 +47,7 @@ export class CustomNetworkCreateModal {
         this.network.activePeer = new Peer();
         this.network.activePeer.ip = seedServerUrl.hostname;
         this.network.activePeer.port = Number(seedServerUrl.port);
-        this.network.type = 10
+        this.network.type = 10;
         this.dismiss(this.network);
       }, () => this.configureError());
   }
