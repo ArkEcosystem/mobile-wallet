@@ -43,19 +43,7 @@ export class ArkApiProvider {
 
       if (lodash.isEmpty(network)) { return; }
 
-      // set default peer
-      const activePeer = network.activePeer;
-      const apiNetwork = arkts.Network.getDefault(network.type);
-      network = Object.assign<StoredNetwork, arkts.Network>(network, apiNetwork);
-      if (activePeer) {
-        network.activePeer = activePeer;
-      }
-
-      this._network = network;
-      this.arkjs.crypto.setNetworkVersion(this._network.version);
-
-      this._api = new arkts.Client(this._network);
-      this.findGoodPeer();
+      this.setNetwork(network);
     });
   }
 
@@ -77,6 +65,26 @@ export class ArkApiProvider {
     if (!lodash.isEmpty(this._delegates)) { return Observable.of(this._delegates); }
 
     return this.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2);
+  }
+
+  public setNetwork(network: StoredNetwork) {
+    // set default peer
+    const activePeer = network.activePeer;
+    if (network.type !== null) {
+      const apiNetwork = arkts.Network.getDefault(network.type);
+      if (apiNetwork) {
+        network = Object.assign<StoredNetwork, arkts.Network>(network, apiNetwork);
+      }
+    }
+    if (activePeer) {
+      network.activePeer = activePeer;
+    }
+
+    this._network = network;
+    this.arkjs.crypto.setNetworkVersion(this._network.version);
+
+    this._api = new arkts.Client(this._network);
+    this.findGoodPeer();
   }
 
   public async findGoodPeer() {
