@@ -81,7 +81,7 @@
   <button ion-button
           class="button-continue"
           (click)="broadcast()"
-          [disabled]="addressCheckResult?.type === checkTypes.Error">
+          [disabled]="addressCheckResult?.type === checkTypes.Error || hasBroadcast">
     {{ 'TRANSACTIONS_PAGE.SEND' | translate }}
   </button>
 </ion-footer>
