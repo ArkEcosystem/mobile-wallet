@@ -29,6 +29,7 @@
   "CREATE": "Create",
   "CUSTOM_NETWORK": {
     "ADDRESS_VERSION": "Address version",
+    "API_SERVER_PORT": "Seed Server API Port",
     "CHOOSE_EXISTING": "Either choose an existing custom network...",
     "CONFIGURE": "Configure",
     "CONFIGURE_ERROR": "Error when trying to retrieve network settings from your peer server!",
@@ -40,6 +41,7 @@
     "DELETE_SUCCESSFUL": "Successfully deleted network!",
     "EDIT": "Edit Network",
     "EXPLORER": "Explorer",
+    "IS_VERSION_2": "Is Version 2?",
     "NAME": "Name",
     "NETHASH": "Nethash",
     "MANAGE_NETWORKS": "Manage Custom Networks",

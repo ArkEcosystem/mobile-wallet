@@ -69,15 +69,15 @@ export class ArkApiProvider {
 
   public setNetwork(network: StoredNetwork) {
     // set default peer
-    const activePeer = network.activePeer;
     if (network.type !== null) {
+      const activePeer = network.activePeer;
       const apiNetwork = arkts.Network.getDefault(network.type);
       if (apiNetwork) {
         network = Object.assign<StoredNetwork, arkts.Network>(network, apiNetwork);
       }
-    }
-    if (activePeer) {
-      network.activePeer = activePeer;
+      if (activePeer) {
+        network.activePeer = activePeer;
+      }
     }
 
     this._network = network;
