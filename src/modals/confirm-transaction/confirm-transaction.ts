@@ -30,7 +30,7 @@ export class ConfirmTransactionModal implements OnDestroy {
   public ticker: MarketTicker;
   public currentNetwork: Network;
   public checkTypes = AddressCheckResultType;
-  public hasBroadcast: boolean = false;
+  public hasBroadcast = false;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
 
