@@ -40,6 +40,7 @@
     "DELETE_SUCCESSFUL": "Successfully deleted network!",
     "EDIT": "Edit Network",
     "EXPLORER": "Explorer",
+    "IS_VERSION_2": "Is Version 2?",
     "NAME": "Name",
     "NETHASH": "Nethash",
     "MANAGE_NETWORKS": "Manage Custom Networks",

@@ -37,6 +37,16 @@
           </ion-item>
         </ion-col>
       </ion-row>
+      <ion-row nowrap>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.IS_VERSION_2' | translate }}</ion-label>
+            <ion-checkbox name="IsVersion2"
+                          [(ngModel)]="isVersion2">
+            </ion-checkbox>
+          </ion-item>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </form>
 </ion-content>
