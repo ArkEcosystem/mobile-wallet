@@ -23,6 +23,8 @@ export interface EditNetworkResult {
 export class CustomNetworkEditModal {
 
   public network: StoredNetwork = new StoredNetwork();
+  public apiPort: number;
+  public p2pPort: number;
   public networkId: string;
 
   public constructor(public navParams: NavParams,
@@ -33,10 +35,23 @@ export class CustomNetworkEditModal {
                      private toastProvider: ToastProvider) {
     this.network = this.navParams.get('network') || {};
     this.networkId = this.navParams.get('id');
+    this.apiPort = this.network.isV2 ? this.network.apiPort : this.network.activePeer.port;
+    this.p2pPort = this.network.isV2 ? this.network.p2pPort : this.network.activePeer.port;
   }
 
   dismiss(result?: EditNetworkResult) {
     this.viewCtrl.dismiss(result);
+  }
+
+  public updateApiPort() {
+    this.network.apiPort = this.apiPort;
+  }
+
+  public updateP2PPort() {
+    if (this.network.isV2) {
+      this.network.p2pPort = this.p2pPort;
+    }
+    this.network.activePeer.port = this.p2pPort;
   }
 
   public save(): void {
