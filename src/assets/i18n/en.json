@@ -29,6 +29,7 @@
   "CREATE": "Create",
   "CUSTOM_NETWORK": {
     "ADDRESS_VERSION": "Address version",
+    "API_SERVER_PORT": "Seep Server API Port",
     "CHOOSE_EXISTING": "Either choose an existing custom network...",
     "CONFIGURE": "Configure",
     "CONFIGURE_ERROR": "Error when trying to retrieve network settings from your peer server!",
