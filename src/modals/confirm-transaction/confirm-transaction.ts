@@ -30,6 +30,7 @@ export class ConfirmTransactionModal implements OnDestroy {
   public ticker: MarketTicker;
   public currentNetwork: Network;
   public checkTypes = AddressCheckResultType;
+  public hasBroadcast: boolean = false;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
 
@@ -53,6 +54,7 @@ export class ConfirmTransactionModal implements OnDestroy {
   }
 
   broadcast() {
+    this.hasBroadcast = true;
     this.arkApiProvider.postTransaction(this.transaction)
       .subscribe(() => {
         this.dismiss(true);
