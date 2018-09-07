@@ -323,6 +323,10 @@ export class ArkApiProvider {
   }
 
   private broadcastTransaction(transaction: arkts.Transaction) {
+    if (!this._network.peerList || !this._network.peerList.length) {
+      return;
+    }
+
     for (const peer of this._network.peerList.slice(0, 10)) {
       this.postTransaction(transaction, peer, false).subscribe(
         null,
