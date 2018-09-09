@@ -13,6 +13,7 @@ import { AccountAutoCompleteService } from '@providers/account-auto-complete/acc
 
 import { PublicKey } from 'ark-ts/core';
 import { Network, Fees } from 'ark-ts/model';
+import { Subject } from 'rxjs/Subject';
 
 import { TruncateMiddlePipe } from '@pipes/truncate-middle/truncate-middle';
 import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
@@ -75,8 +76,10 @@ export class TransactionSendPage implements OnInit {
   addressType: AddressType = AddressType.Unknown;
   addressTypes = AddressType;
   isRecipientNameAutoSet: boolean;
+  hasSent: boolean = false;
 
   private currentAutoCompleteFieldValue: string;
+  private unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(
     private navParams: NavParams,
@@ -123,6 +126,7 @@ export class TransactionSendPage implements OnInit {
     } else if (!this.validAddress()) {
       this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_ADDRESS_ERROR');
     } else {
+      this.hasSent = true;
       this.createContactOrLabel();
 
       this.translateService.get('TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS').subscribe(translation => {
@@ -140,6 +144,10 @@ export class TransactionSendPage implements OnInit {
         });
       });
     }
+  }
+
+  public hasNotSent(): void {
+    this.hasSent = false;
   }
 
   public onSearchItem(account: AutoCompleteAccount): void {
@@ -273,9 +281,20 @@ export class TransactionSendPage implements OnInit {
 
   ionViewDidLoad() {
     this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);
+    this.hasNotSent();
   }
 
   ngOnInit(): void {
+    this.pinCode.onClosed.takeUntil(this.unsubscriber$).subscribe(() => {
+      this.hasNotSent();
+    });
+    this.confirmTransaction.onError.takeUntil(this.unsubscriber$).subscribe(() => {
+      this.hasNotSent();
+    });
+    this.confirmTransaction.onClosed.takeUntil(this.unsubscriber$).subscribe(() => {
+      this.hasNotSent();
+    });
+
     this.sendForm = new FormGroup({
       recipientAddress: new FormControl(''),
       recipientName: new FormControl(''),
@@ -287,6 +306,11 @@ export class TransactionSendPage implements OnInit {
     });
 
     this.setFormValuesFromAddress(this.navParams.get('address') || '');
+  }
+
+  ngOnDestroy() {
+    this.unsubscriber$.next();
+    this.unsubscriber$.complete();
   }
 
   public onAmountChange(newAmounts: Amount) {
