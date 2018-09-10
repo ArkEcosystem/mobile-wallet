@@ -37,3 +37,7 @@ form {
   color: color($colors, primary, base);
   -webkit-text-stroke: .4px color($colors, primary, base);
 }
+
+ion-alert.select-alert div[ng-reflect-ng-switch] {
+  overflow-y: auto;
+}

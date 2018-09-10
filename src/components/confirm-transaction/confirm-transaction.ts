@@ -15,6 +15,7 @@ export class ConfirmTransactionComponent {
 
   @Input('wallet') wallet: Wallet;
 
+  @Output('onClosed') onClosed: EventEmitter<string> = new EventEmitter();
   @Output('onError') onError: EventEmitter<string> = new EventEmitter();
   @Output('onConfirm') onConfirm: EventEmitter<Transaction> = new EventEmitter();
 
@@ -36,9 +37,15 @@ export class ConfirmTransactionComponent {
         }, { cssClass: 'inset-modal-send', enableBackdropDismiss: true });
 
         modal.onDidDismiss((result) => {
-          if (lodash.isUndefined(result)) { return; }
+          if (lodash.isUndefined(result)) {
+            return this.onClosed.emit();
+          }
 
-          if (!result.status) { return this.presentWrongModal(result); }
+          if (!result.status) {
+            this.onClosed.emit();
+
+            return this.presentWrongModal(result);
+          }
 
           this.onConfirm.emit(tx);
 
