@@ -38,6 +38,6 @@ form {
   -webkit-text-stroke: .4px color($colors, primary, base);
 }
 
-.alert-md.select-alert div[ng-reflect-ng-switch] {
+ion-alert.select-alert div[ng-reflect-ng-switch] {
   overflow-y: auto;
 }
