@@ -76,7 +76,7 @@ export class TransactionSendPage implements OnInit {
   addressType: AddressType = AddressType.Unknown;
   addressTypes = AddressType;
   isRecipientNameAutoSet: boolean;
-  hasSent: boolean = false;
+  hasSent = false;
 
   private currentAutoCompleteFieldValue: string;
   private unsubscriber$: Subject<void> = new Subject<void>();
