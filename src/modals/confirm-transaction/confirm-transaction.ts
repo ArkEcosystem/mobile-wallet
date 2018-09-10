@@ -54,6 +54,12 @@ export class ConfirmTransactionModal implements OnDestroy {
   }
 
   broadcast() {
+    // TODO: The DOM doesn't update very quickly on a mobile device to disable the button.
+    //       This is a hack to stop the button sending multiple times.
+    if (this.hasBroadcast) {
+      return;
+    }
+
     this.hasBroadcast = true;
     this.arkApiProvider.postTransaction(this.transaction)
       .subscribe(() => {
