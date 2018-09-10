@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { IonicPage, LoadingController, NavParams } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
@@ -92,7 +92,8 @@ export class TransactionSendPage implements OnInit {
     private truncateMiddlePipe: TruncateMiddlePipe,
     private addressChecker: AddressCheckerProvider,
     private loadingCtrl: LoadingController,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private ngZone: NgZone,
   ) {
     this.currentWallet = this.userDataProvider.currentWallet;
     this.currentNetwork = this.userDataProvider.currentNetwork;
@@ -126,21 +127,23 @@ export class TransactionSendPage implements OnInit {
     } else if (!this.validAddress()) {
       this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_ADDRESS_ERROR');
     } else {
-      this.hasSent = true;
-      this.createContactOrLabel();
+      this.ngZone.run(() => {
+        this.hasSent = true;
+        this.createContactOrLabel();
 
-      this.translateService.get('TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS').subscribe(translation => {
-        const loader = this.loadingCtrl.create({content: translation});
-        const combinedResult: CombinedResult = new CombinedResult(loader);
-        this.addressChecker.checkAddress(this.transaction.recipientAddress).subscribe(checkerResult => {
-          combinedResult.checkerDone = true;
-          combinedResult.checkerResult = checkerResult;
-          this.createTransactionAndShowConfirm(combinedResult);
-        });
-        this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true, (keys: WalletKeys) => {
-          combinedResult.pinCodeDone = true;
-          combinedResult.keys = keys;
-          this.createTransactionAndShowConfirm(combinedResult);
+        this.translateService.get('TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS').subscribe(translation => {
+          const loader = this.loadingCtrl.create({content: translation});
+          const combinedResult: CombinedResult = new CombinedResult(loader);
+          this.addressChecker.checkAddress(this.transaction.recipientAddress).subscribe(checkerResult => {
+            combinedResult.checkerDone = true;
+            combinedResult.checkerResult = checkerResult;
+            this.createTransactionAndShowConfirm(combinedResult);
+          });
+          this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true, (keys: WalletKeys) => {
+            combinedResult.pinCodeDone = true;
+            combinedResult.keys = keys;
+            this.createTransactionAndShowConfirm(combinedResult);
+          });
         });
       });
     }
