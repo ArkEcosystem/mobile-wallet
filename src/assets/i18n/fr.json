@@ -97,10 +97,10 @@
   },
   "SIGN_IN_PAGE": {
     "ARK_WALLET": "Portefeuille ARK",
-    "CREATE_PROFILE": "Créer un profile",
+    "CREATE_PROFILE": "Créer un profil",
     "SLOGAN": "Bienvenue dans l'Ecosystème ARK"
   },
-  "SIGN_OUT_PROFILE_TEXT": "Se déconnecter du profile ?",
+  "SIGN_OUT_PROFILE_TEXT": "Se déconnecter du profil ?",
   "MARKETS_PAGE": {
     "MARKET_CAP": "Capitalisation",
     "MARKET_DATA": "Donnée du marché",
@@ -144,7 +144,7 @@
     "TYPE_PIN_SIGN_TRANSACTION": "Saisissez votre code PIN pour signer la transaction",
     "UPDATING": "Mise à jour du code PIN pour tous les profils et portefeuilles...",
     "WRONG": "Veuillez entrer le bon code PIN",
-    "WEAK_PIN": "NIP faible",
+    "WEAK_PIN": "Code PIN faible",
     "WEAK_PIN_DETAIL": "Le code PIN que vous avez saisi est considéré comme faible et facile à deviner. Voulez-vous vraiment l'utiliser ?"
   },
   "PROFILES_PAGE": {
