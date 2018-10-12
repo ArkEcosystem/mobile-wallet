@@ -11,7 +11,7 @@ import bip39 from 'bip39';
 export abstract class BaseWalletImport {
 
   public existingAddress: string;
-  private wordlistLanguage: string;
+  protected wordlistLanguage: string;
 
   constructor(
     navParams: NavParams,

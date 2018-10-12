@@ -34,20 +34,19 @@
           <ion-item class="network-types" no-lines>
             <span>{{ 'NETWORKS_PAGE.NETWORK_TYPE' | translate }}</span>
             <p>{{ 'NETWORKS_PAGE.CHOOSE_ONE' | translate }}.</p>
-
-            <ion-grid fixed class="button-group">
-              <ion-row nowrap>
-                <ion-col *ngFor="let networkChoice of networkChoices">
-                  <button ion-button block round
-                          [outline]="networkChoice !== activeNetworkChoice"
-                          (click)="onSelectNetwork(networkChoice)"
-                          color="primary">
-                    {{ networkChoice.name }}
-                  </button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
           </ion-item>
+          <ion-grid fixed class="button-group">
+            <ion-row nowrap>
+              <ion-col *ngFor="let networkChoice of networkChoices">
+                <button ion-button block
+                        [outline]="networkChoice !== activeNetworkChoice"
+                        (click)="onSelectNetwork(networkChoice)"
+                        color="primary">
+                  {{ networkChoice.name }}
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-col>
         <ion-col *ngIf="activeNetworkChoice && !activeNetworkChoice.id">
             <ion-item no-lines>

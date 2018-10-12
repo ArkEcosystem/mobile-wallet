@@ -1,10 +1,17 @@
 page-transaction-response {
-
-  img {
+  .image {
     display: block;
     margin: 1em auto;
     max-width: 70%;
     height: auto;
+
+    &.tx-success {
+      content: url('../assets/img/light/transaction/transfer-success.png');
+    }
+
+    &.tx-error {
+      content: url('../assets/img/light/transaction/transfer-error.png');
+    }
   }
 
   .success-container {
@@ -16,5 +23,19 @@ page-transaction-response {
   .open-explorer-btn {
     margin: 1em auto;
     display: block;
+  }
+}
+
+.dark-theme {
+  page-transaction-response {
+    .image {      
+      &.tx-success {
+        content: url('../assets/img/dark/transaction/transfer-success.png');
+      }
+
+      &.tx-error {
+        content: url('../assets/img/dark/transaction/transfer-error.png');
+      }
+    }
   }
 }

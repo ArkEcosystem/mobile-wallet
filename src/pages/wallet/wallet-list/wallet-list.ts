@@ -1,4 +1,4 @@
-import {Component, OnDestroy, ViewChild} from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform, Content, Slides } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -91,14 +91,14 @@ export class WalletListPage implements OnDestroy {
           {
             text: translation.GENERATE,
             role: 'generate',
-            icon: !this.platform.is('ios') ? 'ios-card-outline' : null,
+            icon: this.platform.is('ios') ? 'ios-card-outline' : 'md-card',
             handler: () => {
               this.presentWalletGenerate();
             }
           }, {
             text: translation.IMPORT,
             role: 'import',
-            icon: !this.platform.is('ios') ? 'ios-cloud-upload-outline' : null,
+            icon: this.platform.is('ios') ? 'ios-cloud-upload-outline' : 'md-cloud-upload',
             handler: () => {
               this.presentWalletImport();
             }
@@ -260,7 +260,10 @@ export class WalletListPage implements OnDestroy {
           gridLines: {
             drawBorder: false,
             display: true,
-            color: '#e1e4ea',
+            color: settings.darkMode ? '#12182d' : '#e1e4ea',
+          },
+          ticks: {
+            fontColor: settings.darkMode ? '#3a4566' : '#555459'
           }
         }],
         yAxes: [{

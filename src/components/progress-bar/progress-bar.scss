@@ -1,5 +1,4 @@
 progress-bar {
-
   .progress-outer {
     width: 96%;
     margin: 10px 2%;
@@ -17,5 +16,17 @@ progress-bar {
     padding: 10px;
     border-radius: 20px;
     background-color: map-get($colors, danger);
+  }
+}
+
+.dark-theme {
+  progress-bar {
+    .progress-outer {
+      background-color: #131d3b;
+    }
+
+    .progress-inner {
+      background-color: #0d67fc;
+    }
   }
 }

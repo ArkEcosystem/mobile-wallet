@@ -1,6 +1,6 @@
 <ion-content no-bounce padding>
-  <ion-grid>
-    <close-popup (onClose)="dismiss(false)" color="dark"></close-popup>
+  <ion-grid class="full-height">
+    <close-popup (onClose)="dismiss(false)"></close-popup>
 
     <ion-row nowrap>
       <ion-col text-center align-self-center>
@@ -74,7 +74,7 @@
             </ion-col>
             <ion-col col-4>
               <button ion-button round clear (click)="delete()" class="help-item" [disabled]="unlockDiff > 0">
-                <ion-icon name="ios-backspace"></ion-icon>
+                <ion-icon [name]="platform.is('ios') ? 'ios-backspace' : 'md-backspace'"></ion-icon>
               </button>
             </ion-col>
           </ion-row>

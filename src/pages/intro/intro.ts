@@ -34,17 +34,17 @@ export class IntroPage {
         this.slides = [
           {
             title: translation['INTRO_PAGE.WELCOME'],
-            image: 'assets/img/light/intro/24_7.png',
+            image: 'anytime',
             description: translation['INTRO_PAGE.TEXT_1'],
           },
           {
             title: translation['INTRO_PAGE.SECURITY'],
-            image: 'assets/img/light/intro/pincode.png',
+            image: 'pincode',
             description: translation['INTRO_PAGE.TEXT_2'],
           },
           {
             title: translation['INTRO_PAGE.FAST_EASY'],
-            image: 'assets/img/light/intro/fast_easy.png',
+            image: 'fast-easy',
             description: translation['INTRO_PAGE.TEXT_3'],
           },
         ];

@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {PassphraseWord} from '@models/passphrase-word';
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { PassphraseInputComponent } from '@components/passphrase-input/passphrase-input';
 
 @IonicPage()
 @Component({
@@ -10,24 +10,32 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 })
 export class PassphraseWordTesterModal {
 
-  public words: PassphraseWord[] = [];
+  public passphraseReference: string;
+  public passphraseInit: string;
+  public wordlistLanguage: string;
   public isDevNet: boolean;
+
+  @ViewChild(PassphraseInputComponent) passphraseInput: PassphraseInputComponent;
 
   public constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private viewCtrl: ViewController,
               private userDataProvider: UserDataProvider) {
-    this.words = this.navParams.get('words') as PassphraseWord[];
+    this.passphraseReference = this.navParams.get('passphrase');
+    this.wordlistLanguage = this.navParams.get('wordlistLanguage') || 'english';
 
-    if (!this.words) {
+    if (!this.passphraseReference) {
       this.dismiss();
     }
 
     this.isDevNet = this.userDataProvider.isDevNet;
+    if (this.isDevNet) {
+      this.passphraseInit = this.passphraseReference;
+    }
   }
 
   public areAllWordsCorrect(): boolean {
-    return this.words.every(w => w.isCorrect);
+    return this.passphraseInput.validatePassphrase(this.passphraseReference);
   }
 
   public next(): void {
@@ -37,4 +45,5 @@ export class PassphraseWordTesterModal {
   public dismiss(validationSuccess?: boolean): void {
     this.viewCtrl.dismiss(validationSuccess);
   }
+
 }

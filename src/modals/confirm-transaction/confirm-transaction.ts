@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import { Component, OnDestroy, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -30,6 +30,7 @@ export class ConfirmTransactionModal implements OnDestroy {
   public ticker: MarketTicker;
   public currentNetwork: Network;
   public checkTypes = AddressCheckResultType;
+  public hasBroadcast = false;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
 
@@ -41,6 +42,7 @@ export class ConfirmTransactionModal implements OnDestroy {
     private marketDataProvider: MarketDataProvider,
     private settingsDataProvider: SettingsDataProvider,
     private loadingCtrl: LoadingController,
+    private ngZone: NgZone,
   ) {
     this.transaction = this.navParams.get('transaction');
     this.addressCheckResult = this.navParams.get('addressCheckResult');
@@ -53,12 +55,19 @@ export class ConfirmTransactionModal implements OnDestroy {
   }
 
   broadcast() {
-    this.arkApiProvider.postTransaction(this.transaction)
-      .subscribe(() => {
-        this.dismiss(true);
-      }, (error) => {
-        this.dismiss(false, error.error);
-      });
+    if (this.hasBroadcast) {
+      return;
+    }
+
+    this.ngZone.run(() => {
+      this.hasBroadcast = true;
+      this.arkApiProvider.postTransaction(this.transaction)
+        .subscribe(() => {
+          this.dismiss(true);
+        }, (error) => {
+          this.dismiss(false, error.error);
+        });
+    });
   }
 
   dismiss(status?: boolean, message?: string) {

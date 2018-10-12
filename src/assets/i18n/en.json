@@ -1,7 +1,7 @@
 {
   "API": {
     "BALANCE_TOO_LOW": "Balance too low for transaction",
-    "BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} on your account! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your account balance is only {{ balance }}!",
+    "BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} on your wallet! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your wallet balance is only {{ balance }}!",
     "DESTINATION_ADDRESS_ERROR": "The destination address '{{ address }}' is erroneous",
     "PEER_LIST_ERROR": "Could not get list of peers",
     "TRANSACTION_FAILED": "Transaction failed",
@@ -29,6 +29,7 @@
   "CREATE": "Create",
   "CUSTOM_NETWORK": {
     "ADDRESS_VERSION": "Address version",
+    "API_SERVER_PORT": "Seed Server API Port",
     "CHOOSE_EXISTING": "Either choose an existing custom network...",
     "CONFIGURE": "Configure",
     "CONFIGURE_ERROR": "Error when trying to retrieve network settings from your peer server!",
@@ -40,6 +41,7 @@
     "DELETE_SUCCESSFUL": "Successfully deleted network!",
     "EDIT": "Edit Network",
     "EXPLORER": "Explorer",
+    "IS_VERSION_2": "Is Version 2?",
     "NAME": "Name",
     "NETHASH": "Nethash",
     "MANAGE_NETWORKS": "Manage Custom Networks",
@@ -75,6 +77,7 @@
     "UPTIME": "Uptime",
     "USERNAME_ALREADY_EXISTS": "This username already exists",
     "VOTE": "Vote",
+    "VOTED": "Voted",
     "VOTE_FETCH_ERROR": "Could not fetch current vote",
     "WARNING_SELECT_WALLET_FIRST": "You need to select a wallet first to enable the voting process"
   },
@@ -254,6 +257,7 @@
     "BIP38_SEED": "BIP38 Seed",
     "CONVERT_TO_FULL_WALLET": "Convert to full wallet",
     "CREATE_WALLET": "Create Wallet",
+    "CUSTOM_PASSPHRASE": "Custom (non | BIP39|) passphrase",
     "ENTER_SECRET_PASSPHRASE": "Enter your secret passphrase",
     "ENTER_ADDRESS": "Enter your address",
     "ENTROPY": "Entropy",
@@ -281,7 +285,8 @@
     "PASSPHRASE_UNSUPPORTED_INPUT": "Unsupported input in hidden mode, please change passphrase visibility.",
     "RE_ENTER_PASSPHRASE": "Re-enter your passphrase",
     "REMOVE_WALLET": "Remove Wallet",
-    "REMOVE_WALLET_TEXT": "Your account will be removed. Make sure you have backed up, you will need the original passphrase to restore.",
+    "REMOVE_WALLET_TEXT": "Your wallet will be removed. Make sure you have backed up, you will need the original passphrase to restore.",
+    "REMOVE_WATCH_ONLY_WALLET_TEXT": "The wallet will be removed and you will not be able to watch it anymore.",
     "SCAN_QRCODE": "Scan QR Code",
     "SCAN_QRCODE_TEXT": "Import your address or passphrase using QR Code, just point and scan!",
     "SECOND_BIP38_SEED": "Second BIP38 Seed",

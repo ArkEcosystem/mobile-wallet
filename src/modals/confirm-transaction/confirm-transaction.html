@@ -3,7 +3,7 @@
   <ion-grid class="no-padding">
     <ion-row class="header-row">
       <ion-col text-center padding align-self-end class="header-toolbar">
-        <h3 class="amount" ion-text color="primary">{{ transaction?.getAmount() | unitsSatoshi }} {{ currentNetwork?.symbol }}</h3>
+        <h3 class="amount">{{ transaction?.getAmount() | unitsSatoshi }} {{ currentNetwork?.symbol }}</h3>
         <p appMarketNetOnly>{{ marketCurrency?.symbol }}{{ transaction?.getAmountEquivalent(marketCurrency, ticker) | marketNumber }}</p>
       </ion-col>
     </ion-row>
@@ -78,10 +78,10 @@
 </ion-content>
 
 <ion-footer text-center padding>
-  <button ion-button color="primary"
+  <button ion-button
           class="button-continue"
           (click)="broadcast()"
-          [disabled]="addressCheckResult?.type === checkTypes.Error">
+          [disabled]="hasBroadcast || addressCheckResult?.type === checkTypes.Error">
     {{ 'TRANSACTIONS_PAGE.SEND' | translate }}
   </button>
 </ion-footer>

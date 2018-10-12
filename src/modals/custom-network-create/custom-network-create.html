@@ -1,6 +1,6 @@
 <ion-header no-shadow no-border>
   <ion-navbar>
-    <h6 text-center class="no-padding no-margin">{{ 'CUSTOM_NETWORK.CREATE_NETWORK' | translate }}</h6>
+    <ion-title>{{ 'CUSTOM_NETWORK.CREATE_NETWORK' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="dismiss()">
         <ion-icon name="close"></ion-icon>
@@ -34,6 +34,16 @@
                        placeholder="http://1.2.3.4:4001"
                        [(ngModel)]="seedServer">
             </ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row nowrap>
+        <ion-col>
+          <ion-item>
+            <ion-label stacked>{{ 'CUSTOM_NETWORK.IS_VERSION_2' | translate }}</ion-label>
+            <ion-checkbox name="IsVersion2"
+                          [(ngModel)]="isVersion2">
+            </ion-checkbox>
           </ion-item>
         </ion-col>
       </ion-row>

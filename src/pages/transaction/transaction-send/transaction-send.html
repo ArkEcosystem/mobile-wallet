@@ -15,7 +15,7 @@
       <ion-row class="row-contacts">
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
+            <ion-label floating stacked>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
             <ng-template #contactsTemplate let-attrs="attrs">
               <span class="auto-complete-row">
                 <ion-icon [name]="attrs.data.iconName" item-start></ion-icon>
@@ -23,7 +23,7 @@
                   <span [innerHTML]="attrs.data.name | escapeHTML | boldprefix:attrs.keyword"></span>
                   <span class="autocomplete-second-line" [innerHTML]="attrs.data.address | escapeHTML | boldprefix:attrs.keyword"></span>
                 </span>
-                </span>
+              </span>
             </ng-template>
             <ion-auto-complete item-content
                                [dataProvider]="contactsAutoCompleteService"
@@ -38,7 +38,7 @@
                                #searchBar>
             </ion-auto-complete>
             <div class="qr-container" item-right>
-              <img src="./assets/img/light/wallet/qr-code-button.png" tappable (tap)="scanQRCode()" />
+              <img class="image" tappable (tap)="scanQRCode()" />
             </div>
           </ion-item>
         </ion-col>
@@ -46,7 +46,7 @@
       <ion-row *ngIf="transaction.recipientAddress">
         <ion-col>
           <ion-item>
-            <ion-label stacked [ngSwitch]="addressType">
+            <ion-label floating stacked [ngSwitch]="addressType">
               <ng-container *ngSwitchCase="addressTypes.Unknown">{{ 'TRANSACTIONS_PAGE.NEW_CONTACT_NAME' | translate }}</ng-container>
               <ng-container *ngSwitchCase="addressTypes.WalletWithoutLabel">{{ 'TRANSACTIONS_PAGE.NEW_WALLET_LABEL' | translate }}</ng-container>
               <ng-container *ngSwitchCase="addressTypes.WalletWithLabel">{{ 'TRANSACTIONS_PAGE.EXISTING_WALLET' | translate }}</ng-container>
@@ -66,14 +66,19 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</ion-label>
+            <ion-label floating stacked>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</ion-label>
             <ion-input type="text" formControlName="smartBridge" name="smartBridge" [(ngModel)]="transaction.smartBridge" maxlength="60"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col align-self-end>
-          <button ion-button class="button-continue" (click)="send()">{{ 'TRANSACTIONS_PAGE.SEND' | translate }}</button>
+          <button ion-button
+                  class="button-continue"
+                  (click)="send()"
+                  [disabled]="hasSent">
+            {{ 'TRANSACTIONS_PAGE.SEND' | translate }}
+          </button>
         </ion-col>
       </ion-row>
     </ion-grid>
