@@ -34,7 +34,7 @@ export class ConfirmTransactionComponent {
         const modal = this.modalCtrl.create('ConfirmTransactionModal', {
           transaction: tx,
           addressCheckResult: addressCheckResult
-        }, { cssClass: 'inset-modal-send', enableBackdropDismiss: true });
+        }, { enableBackdropDismiss: true });
 
         modal.onDidDismiss((result) => {
           if (lodash.isUndefined(result)) {
@@ -77,7 +77,7 @@ export class ConfirmTransactionComponent {
   presentWrongModal(response) {
     const responseModal = this.modalCtrl.create('TransactionResponsePage', {
       response
-    }, { cssClass: 'inset-modal-small' });
+    });
 
     responseModal.present();
   }

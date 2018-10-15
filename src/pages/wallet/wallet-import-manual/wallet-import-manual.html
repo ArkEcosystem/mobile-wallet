@@ -12,9 +12,9 @@
       <ion-label floating>
         {{ (useAddress ? 'WALLETS_PAGE.ENTER_ADDRESS' : 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE') | translate }}
       </ion-label>
-      <ion-input *ngIf="useAddress || !hidePassphrase" #inputAddressOrPassphrase name="addressOrPassphrase" rows="2" [ngModel]="addressOrPassphrase" 
+      <ion-input *ngIf="useAddress || !hidePassphrase" #inputAddressOrPassphrase name="addressOrPassphrase" rows="2" [ngModel]="addressOrPassphrase"
         (ngModelChange)="addressOrPassphraseChange($event)" formControlName="controlAddressOrPassphrase" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required></ion-input>
-      <ion-input *ngIf="!useAddress && hidePassphrase" #inputPassphraseHidden name="passphraseHidden" rows="2" [ngModel]="passphraseHidden" 
+      <ion-input *ngIf="!useAddress && hidePassphrase" #inputPassphraseHidden name="passphraseHidden" rows="2" [ngModel]="passphraseHidden"
         (ngModelChange)="passphraseHiddenChange($event)" [ngModelOptions]="{standalone: true}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required></ion-input>
       <button *ngIf="!useAddress" ion-button clear item-end (click)='showHidePassphrase()' style="height:100%;">
         <ion-icon *ngIf="!hidePassphrase" name="eye" style="font-size:200%;"></ion-icon>
@@ -42,6 +42,6 @@
   <img class="hide-on-keyboard-open image">
 </ion-content>
 
-<ion-footer no-shadow no-border padding text-center [keyboard-attach]="content">
+<ion-footer no-shadow no-border padding text-center>
   <button ion-button class="button-continue" [disabled]="!importWalletManual.form.valid" (click)="submitForm()">{{ 'IMPORT' | translate }}</button>
 </ion-footer>
