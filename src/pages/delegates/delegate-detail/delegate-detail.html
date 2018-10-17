@@ -26,7 +26,7 @@
           <ion-label stacked>
             <p>{{ 'DELEGATES_PAGE.APPROVAL' | translate }}</p>
             <h4 item-content class="content">
-              {{ delegate?.approval }}%
+              {{ (delegate?.approval).toFixed(2) }}%
             </h4>
           </ion-label>
         </ion-item>
@@ -36,7 +36,7 @@
           <ion-label stacked>
             <p>{{ 'DELEGATES_PAGE.UPTIME' | translate }}</p>
             <h4 item-content class="content">
-              {{ delegate?.productivity }}%
+              {{ (delegate?.productivity).toFixed(2) }}%
             </h4>
           </ion-label>
         </ion-item>
