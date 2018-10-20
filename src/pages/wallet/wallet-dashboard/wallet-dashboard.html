@@ -31,6 +31,15 @@
 </ion-header>
 
 <ion-content header-scroller>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="{{ 'PULL_REFRESH' | translate }}"
+      refreshingSpinner="circles"
+      refreshingText="{{ 'REFRESHING' | translate }}">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <ion-fab bottom right edge>
     <button ion-fab color="primary" (click)="presentAddActionSheet()"><ion-icon  [name]="platform.is('ios') ? 'ios-add' : 'md-add'"></ion-icon></button>
   </ion-fab>
