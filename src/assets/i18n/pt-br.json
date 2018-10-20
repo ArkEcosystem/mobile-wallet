@@ -45,9 +45,10 @@
       "VOTE_FETCH_ERROR": "Não foi possível buscar o voto atual",
       "WARNING_SELECT_WALLET_FIRST": "Você precisa selecionar uma carteira primeiro para ativar o processo de voto"
     },
-    "DELETE": "Delete",
+    "DELETE": "Deletar",
     "DONE": "Feito",
     "EDIT": "Editar",
+    "SIGN_OUT": "Sair",
     "EXIT_APP_TEXT": "Deseja sair do App?",
     "FAILED": "Falhou",
     "GENERAL": "Geral",
