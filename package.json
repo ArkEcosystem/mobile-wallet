@@ -73,7 +73,7 @@
     "cordova-custom-config": "^5.0.2",
     "cordova-ios": "4.5.5",
     "cordova-plugin-add-swift-support": "^1.7.2",
-    "cordova-plugin-background-mode": "git+https://github.com/nottinhill/cordova-plugin-better-background-mode.git",
+    "cordova-plugin-background-mode": "git+https://github.com/tushe/cordova-plugin-background-mode.git",
     "cordova-plugin-badge": "^0.8.7",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-console": "^1.1.0",
@@ -163,13 +163,13 @@
       "cordova-plugin-inappbrowser": {},
       "cordova-clipboard": {},
       "cordova-plugin-x-socialsharing": {},
-      "cordova-plugin-background-mode": {},
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-background-mode": {}
     },
     "platforms": [
-      "android",
       "browser",
-      "ios"
+      "ios",
+      "android"
     ]
   }
 }
