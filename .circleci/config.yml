@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  test-node-8:
+  test-node-9:
     working_directory: ~/mobile-wallet
     docker:
       - image: circleci/node:8-browsers
@@ -16,6 +16,9 @@ jobs:
       - run:
           name: Install
           command: npm install
+      - run:
+          name: Rebuild node-sass
+          command: npm rebuild node-sass --force
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
@@ -40,8 +43,15 @@ jobs:
           when: on_success
           command: bash <(curl -s https://codecov.io/bash)
 
+  test-node-stable:
+      working_directory: ~/mobile-wallet
+      docker:
+        - image: circleci/node:latest-browsers
+      steps: *teststeps
+
 workflows:
   version: 2
   test:
     jobs:
-      - test-node-8
+      - test-node-9
+      - test-node-stable
