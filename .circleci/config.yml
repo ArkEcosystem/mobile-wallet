@@ -1,0 +1,57 @@
+version: 2
+jobs:
+  test-node-9:
+    working_directory: ~/mobile-wallet
+    docker:
+      - image: circleci/node:8-browsers
+    steps: &teststeps
+      - checkout
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "package.json" }}
+            - dependency-cache-
+      - run:
+          name : Install pre dependencies
+          command : sudo npm i -g ionic cordova@7.1.0
+      - run:
+          name: Install
+          command: npm install
+      - run:
+          name: Rebuild node-sass
+          command: npm rebuild node-sass --force
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Missing translations
+          command: npm run missing-translations
+      - run:
+          name: Lint
+          command: npm run lint --bailOnLintError true
+      - run:
+          name: Unit tests
+          command: npm run test:coverage
+      - run:
+          name: e2e tests
+          command: npm run test:e2e
+      - run:
+          name: Build
+          command: npm run build -- --prod
+      - run:
+          name: Codecov
+          when: on_success
+          command: bash <(curl -s https://codecov.io/bash)
+
+  test-node-stable:
+      working_directory: ~/mobile-wallet
+      docker:
+        - image: circleci/node:latest-browsers
+      steps: *teststeps
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test-node-9
+      - test-node-stable
