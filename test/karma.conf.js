@@ -13,7 +13,7 @@ module.exports = function (config) {
       // require('karma-jasmine-html-reporter'),
       require('karma-jasmine'),
     ],
-    basePath: '',
+    basePath: '../',
     frameworks: ['@angular/cli', 'jasmine'],
     client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser

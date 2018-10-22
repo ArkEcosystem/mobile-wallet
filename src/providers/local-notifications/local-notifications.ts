@@ -31,7 +31,6 @@ export class LocalNotificationsProvider {
   public init () {
     this.backgroundMode.setDefaults({ silent: true });
     this.backgroundMode.on('activate').subscribe(() => {
-      console.log('BACKGROUND-MODE: ACTIVATE');
       this.backgroundMode.disableWebViewOptimizations();
     });
 
@@ -41,12 +40,9 @@ export class LocalNotificationsProvider {
 
   // Check the settings, configure background mode and start/stop the main task
   private prepare(settings: UserSettings) {
-    console.log('PREPARE!!');
     if (settings.notification && !this.intervalListener) {
-      console.log('BACKGROUND-MODE: ENABLE');
       this.backgroundMode.enable();
       this.checkPermission().then(() => {
-        console.log('PERMISSION: OK!!');
         this.watch();
         this.intervalListener = setInterval(() => this.watch(), 60000);
       });
@@ -75,7 +71,6 @@ export class LocalNotificationsProvider {
 
   // Scan each wallet and find new transactions
   watchTransactions (wallets: any) {
-    console.log('WATCHING TRANSCATION');
     for (const address in wallets) {
       const wallet = wallets[address];
       // Convert object to class
@@ -111,7 +106,6 @@ export class LocalNotificationsProvider {
 
   // Notify each new transaction
   private notifyTransaction (transactions: Transaction[], wallet: any) {
-    console.log('NOTIFY TRANSCATION');
     const notifications = [];
 
     for (const transaction of transactions) {
