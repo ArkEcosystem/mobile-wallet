@@ -9,7 +9,8 @@ import {
   AlertController,
   LoadingController,
   Loading,
-  Content
+  Content,
+  Refresher
 } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -100,6 +101,10 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
   copyAddress() {
     this.clipboard.copy(this.address).then(() => this.toastProvider.success('COPIED_CLIPBOARD'), (err) => this.toastProvider.error(err));
+  }
+
+  doRefresh(refresher: Refresher) {
+    this.refreshTransactions(true, refresher);
   }
 
   presentWalletActionSheet() {
@@ -368,7 +373,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       this.navCtrl.setRoot('WalletListPage');
   }
 
-  private refreshTransactions(save: boolean = true, loader?: Loading) {
+  private refreshTransactions(save: boolean = true, loader?: Loading|Refresher) {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.api.transaction.list({
         recipientId: this.address,
@@ -376,7 +381,13 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         orderBy: 'timestamp:desc',
       })
       .finally(() => this.zone.run(() => {
-        if (loader) { loader.dismiss(); }
+        if (loader) {
+          if (loader instanceof Loading) {
+            loader.dismiss();
+          } else if (loader instanceof Refresher) {
+            loader.complete();
+          }
+        }
         this.emptyTransactions = lodash.isEmpty(this.wallet.transactions);
       }))
       .takeUntil(this.unsubscriber$)

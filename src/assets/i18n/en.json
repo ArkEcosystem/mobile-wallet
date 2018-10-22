@@ -151,6 +151,7 @@
     "WEAK_PIN": "Weak PIN",
     "WEAK_PIN_DETAIL": "The PIN you entered is considered weak and easy to guess. Are you sure you want to use it?"
   },
+  "PULL_REFRESH": "Pull to refresh",
   "PROFILES_PAGE": {
     "PROFILENAME_ALREADY_EXISTS": "There is already a profile with the name '{{ name }}'!",
     "ADD_PROFILE_ERROR": "Could not add profile",
@@ -169,6 +170,7 @@
     "PROBLEM_TEXT": "There was a problem scanning a QR Code"
   },
   "RENAME": "Rename",
+  "REFRESHING": "Refreshing",
   "SAVE": "Save",
   "SEARCH": "Search",
   "SETTINGS_PAGE": {
