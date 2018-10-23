@@ -29,9 +29,9 @@
     "missing-translations": "node missing-translations",
     "test": "ng test --single-run",
     "test:unit": "ng test",
-    "test:coverage": "ng test --single-run --code-coverage",
-    "test:e2e": "ionic-app-scripts build && protractor e2e/protractor.conf.js",
-    "postinstall": "webdriver-manager update"
+    "test:coverage": "ng test --single-run --code-coverage --watch=false --progress=false --browsers=ChromeHeadlessNoSandbox",
+    "test:e2e": "npm run webdriver-update-ci && ionic-app-scripts build && protractor e2e/protractor.conf.js",
+    "webdriver-update-ci": "webdriver-manager update --standalone false --gecko false --versions.chrome 2.43.0"
   },
   "dependencies": {
     "@angular/common": "^5.2.11",
