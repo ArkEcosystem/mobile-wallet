@@ -89,7 +89,7 @@ If you discover a security vulnerability within this application, please send an
 - If you find any bugs, submit an [issue](../../issues) or open [pull-request](../../pulls), helping us catch and fix them.
 - Engage with other users and developers on [ARK Slack](https://ark.io/slack/).
 - Join to our [gitter](https://gitter.im/ark-developers/Lobby).
-- [Contribution bounties](./CONTRIBUTING.md).
+- [Contribution bounties](https://docs.ark.io/guidebook/contribution-guidelines/contributing.html).
 - [Help translate](./TRANSLATING.md).
 
 ## Credits
