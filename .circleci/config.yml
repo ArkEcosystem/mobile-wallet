@@ -8,20 +8,20 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - npm-deps-{{ checksum "package.json" }}
+            - npm-deps-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
           name : Install pre dependencies
           command : sudo npm i -g ionic@4.x cordova@8.x
       - run:
           name: Install dependencies
           command: npm install
+      - save_cache:
+          key: npm-deps-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
       - run:
           name: Rebuild node-sass
           command: npm rebuild node-sass
-      - save_cache:
-          key: npm-deps-{{ checksum "package.json" }}
-          paths:
-            - ./node_modules
       - run:
           name: Lint
           command: npm run lint --bailOnLintError true
