@@ -8,7 +8,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - npm-deps-{{ checksum "package-lock.json" }}
+            - npm-deps-{{ checksum "package.json" }}
       - run:
           name : Install pre dependencies
           command : sudo npm i -g ionic@4.x cordova@8.x
@@ -17,9 +17,9 @@ jobs:
           command: npm install
       - run:
           name: Rebuild node-sass
-          command: npm rebuild node-sass --force
+          command: npm rebuild node-sass
       - save_cache:
-          key: npm-deps-{{ checksum "package-lock.json" }}
+          key: npm-deps-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
@@ -34,10 +34,6 @@ jobs:
       - run:
           name: Build
           command: npm run build -- --prod
-      - run:
-          name: Codecov
-          when: on_success
-          command: bash <(curl -s https://codecov.io/bash)
 
   test-node-stable:
       working_directory: ~/mobile-wallet
