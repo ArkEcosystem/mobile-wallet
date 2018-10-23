@@ -29,7 +29,7 @@
     "missing-translations": "node missing-translations",
     "test": "ng test --single-run",
     "test:unit": "ng test",
-    "test:coverage": "ng test --single-run --code-coverage",
+    "test:coverage": "ng test --single-run --code-coverage --progress=false",
     "test:e2e": "ionic-app-scripts build && protractor e2e/protractor.conf.js",
     "postinstall": "webdriver-manager update"
   },
