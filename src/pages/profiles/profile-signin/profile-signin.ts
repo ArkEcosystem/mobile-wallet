@@ -42,7 +42,7 @@ export class ProfileSigninPage implements OnDestroy {
     private toastProvider: ToastProvider,
     private alertCtrl: AlertController,
     private actionSheetCtrl: ActionSheetController,
-  ) { }
+  ) {}
 
   presentProfileActionSheet(profileId: string) {
     this.translateService.get(['EDIT', 'DELETE']).takeUntil(this.unsubscriber$).subscribe((translation) => {
