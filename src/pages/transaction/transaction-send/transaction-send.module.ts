@@ -27,6 +27,6 @@ import { AmountComponentModule } from '@components/amount/amount.module';
     DirectivesModule,
     AutoCompleteModule,
     AmountComponentModule
-  ],
+  ]
 })
 export class TransactionSendPageModule {}
