@@ -20,6 +20,6 @@ import { ConfirmTransactionComponentModule } from '@components/confirm-transacti
     FilterPipeModule,
     PinCodeComponentModule,
     ConfirmTransactionComponentModule,
-  ],
+  ]
 })
 export class DelegatesPageModule {}
