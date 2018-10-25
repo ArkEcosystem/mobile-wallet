@@ -15,6 +15,6 @@ import { AmountComponentModule } from '@components/amount/amount.module';
     TranslateModule,
     AmountComponentModule,
     QRCodeComponentModule,
-  ],
+  ]
 })
 export class WalletReceivePageModule {}
