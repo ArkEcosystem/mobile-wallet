@@ -51,7 +51,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
     private formBuilder: FormBuilder,
     private addressValidator: AddressValidator,
     settingsDataProvider: SettingsDataProvider
-    ) {
+  ) {
     super(navParams, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider, settingsDataProvider);
     this.useAddress = navParams.get('type') === 'address';
     this.nonBIP39Passphrase = false;
