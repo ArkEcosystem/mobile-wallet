@@ -21,6 +21,6 @@ import { DirectivesModule } from '@directives/directives.module';
     PinCodeComponentModule,
     ConfirmTransactionComponentModule,
     DirectivesModule,
-  ],
+  ]
 })
 export class WalletDashboardPageModule {}
