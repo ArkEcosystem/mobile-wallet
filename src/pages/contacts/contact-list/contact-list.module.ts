@@ -15,6 +15,6 @@ import { AddressListComponentModule } from '@components/address-list/address-lis
     TranslateModule,
     EmptyListComponentModule,
     AddressListComponentModule,
-  ],
+  ]
 })
 export class ContactListPageModule {}
