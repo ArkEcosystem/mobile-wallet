@@ -16,6 +16,6 @@ import { PipesModule } from '@pipes/pipes.module';
     TranslateModule,
     QRScannerComponentModule,
     PipesModule
-  ],
+  ]
 })
 export class WalletImportPageModule {}
