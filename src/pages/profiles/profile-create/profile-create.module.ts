@@ -15,6 +15,6 @@ import {CustomNetworkComponentModule} from '@components/custom-network/custom-ne
     TranslateModule,
     DirectivesModule,
     CustomNetworkComponentModule
-  ],
+  ]
 })
 export class ProfileCreatePageModule {}
