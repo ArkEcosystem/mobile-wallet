@@ -21,6 +21,6 @@ import { ChartsModule } from 'ng2-charts';
     EmptyListComponentModule,
     ChartsModule,
     DirectivesModule,
-  ],
+  ]
 })
 export class WalletListPageModule {}
