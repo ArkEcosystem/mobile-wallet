@@ -16,6 +16,6 @@ import { DirectivesModule } from '@directives/directives.module';
     TranslateModule,
     PipesModule,
     DirectivesModule,
-  ],
+  ]
 })
 export class TransactionShowPageModule {}
