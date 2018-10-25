@@ -57,7 +57,7 @@ export class DelegatesPage implements OnDestroy {
     private modalCtrl: ModalController,
     private userDataProvider: UserDataProvider,
     private toastProvider: ToastProvider,
-  ) { }
+  ) {}
 
   openDetailModal(delegate: Delegate) {
 
