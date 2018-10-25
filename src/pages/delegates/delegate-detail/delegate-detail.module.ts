@@ -17,6 +17,6 @@ import { QRCodeComponentModule } from '@components/qr-code/qr-code.module';
     QRCodeComponentModule,
     PipesModule,
     ClosePopupComponentModule,
-  ],
+  ]
 })
 export class DelegateDetailPageModule {}
