@@ -42,8 +42,7 @@ class CombinedResult {
   public pinCodeDone: boolean;
   public keys: WalletKeys;
 
-  public constructor(public loader: Loading) {
-  }
+  public constructor(public loader: Loading) {}
 }
 
 enum AddressType {
