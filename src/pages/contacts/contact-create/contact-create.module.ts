@@ -16,6 +16,6 @@ import { QRScannerComponentModule } from '@components/qr-scanner/qr-scanner.modu
     TranslateModule,
     DirectivesModule,
     QRScannerComponentModule,
-  ],
+  ]
 })
 export class ContactCreatePageModule {}
