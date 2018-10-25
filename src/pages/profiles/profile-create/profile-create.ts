@@ -37,7 +37,7 @@ export class ProfileCreatePage implements OnDestroy {
     private userDataProvider: UserDataProvider,
     private toastProvider: ToastProvider,
     private translateService: TranslateService
-  ) { }
+  ) {}
 
   onSelectNetwork(networkChoice: {name: string, id?: string}) {
     this.activeNetworkChoice = networkChoice;
