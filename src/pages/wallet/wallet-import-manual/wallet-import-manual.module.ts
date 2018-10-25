@@ -15,6 +15,6 @@ import { PipesModule } from '@pipes/pipes.module';
     TranslateModule,
     DirectivesModule,
     PipesModule
-  ],
+  ]
 })
 export class WalletManualImportPageModule {}
