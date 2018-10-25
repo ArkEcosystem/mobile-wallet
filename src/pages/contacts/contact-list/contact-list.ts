@@ -33,7 +33,7 @@ export class ContactListPage {
     private translateService: TranslateService,
     private alertCtrl: AlertController,
     private actionSheetCtrl: ActionSheetController,
-  ) { }
+  ) {}
 
   presentContactActionSheet(address) {
     this.translateService.get(['EDIT', 'DELETE']).takeUntil(this.unsubscriber$).subscribe((translation) => {
