@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { IonicPage, LoadingController, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavParams, Loading } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Contact, Wallet, SendTransactionForm, WalletKeys } from '@models/model';
@@ -33,7 +33,6 @@ import { AddressCheckerProvider} from '@providers/address-checker/address-checke
 import { AddressCheckResult } from '@providers/address-checker/address-check-result';
 import { AmountComponent } from '@components/amount/amount';
 import { Amount } from '@components/amount/amount.model';
-import { Loading } from 'ionic-angular/components/loading/loading';
 import { TranslateService } from '@ngx-translate/core';
 
 class CombinedResult {

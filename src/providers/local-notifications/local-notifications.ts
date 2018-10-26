@@ -30,7 +30,9 @@ export class LocalNotificationsProvider {
   // Start provider
   public init () {
     this.backgroundMode.setDefaults({ silent: true });
-    this.backgroundMode.on('activate').subscribe(() => this.backgroundMode.disableWebViewOptimizations());
+    this.backgroundMode.on('activate').subscribe(() => {
+      this.backgroundMode.disableWebViewOptimizations();
+    });
 
     this.settingsDataProvider.settings.subscribe(settings => this.prepare(settings));
     this.settingsDataProvider.onUpdate$.subscribe(settings => this.prepare(settings)); // Watch for updates
@@ -131,7 +133,6 @@ export class LocalNotificationsProvider {
     }
 
     this.localNotifications.schedule(notifications);
-    this.backgroundMode.wakeUp();
   }
 
   // Watch all tasks
