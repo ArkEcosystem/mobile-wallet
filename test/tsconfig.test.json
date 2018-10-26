@@ -25,12 +25,10 @@
     "sourceMap": false
   },
   "exclude": [
-    "../node_modules"
   ],
   "include": [
     "helpers.ts",
     "../src/**/*.ts",
-    "../src/**/*.spec.ts",
-    "../src/**/*.d.ts"
+    "../node_modules/ark-ts/node_modules/json-typescript-mapper/libs/utils.ts"
   ]
 }

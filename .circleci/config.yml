@@ -8,24 +8,20 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - dependency-cache-{{ checksum "package.json" }}
-            - dependency-cache-
+            - npm-deps-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
           name : Install pre dependencies
-          command : sudo npm i -g ionic cordova@7.1.0
+          command : sudo npm i -g ionic@4.x cordova@8.x
       - run:
-          name: Install
+          name: Install dependencies
           command: npm install
-      - run:
-          name: Rebuild node-sass
-          command: npm rebuild node-sass --force
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: npm-deps-{{ .Branch }}-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
-          name: Missing translations
-          command: npm run missing-translations
+          name: Rebuild node-sass
+          command: npm rebuild node-sass
       - run:
           name: Lint
           command: npm run lint --bailOnLintError true
@@ -38,10 +34,6 @@ jobs:
       - run:
           name: Build
           command: npm run build -- --prod
-      - run:
-          name: Codecov
-          when: on_success
-          command: bash <(curl -s https://codecov.io/bash)
 
   test-node-stable:
       working_directory: ~/mobile-wallet
