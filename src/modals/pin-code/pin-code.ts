@@ -159,7 +159,7 @@ export class PinCodeModal implements OnDestroy {
   }
 
   dismiss(status: boolean = true) {
-    if (this.password.length < this.length) {
+    if (!status) {
       return this.viewCtrl.dismiss();
     }
 
