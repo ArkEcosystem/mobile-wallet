@@ -260,7 +260,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   presentLabelModal() {
-    const modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label}, {cssClass: 'inset-modal-tiny'});
+    const modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label});
 
     modal.onDidDismiss((label) => {
       this.userDataProvider
@@ -272,7 +272,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   presentRegisterDelegateModal() {
-    const modal = this.modalCtrl.create('RegisterDelegatePage', null, { cssClass: 'inset-modal' });
+    const modal = this.modalCtrl.create('RegisterDelegatePage', null);
 
     modal.onDidDismiss((name) => {
       if (lodash.isEmpty(name)) { return; }
@@ -287,7 +287,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   presentRegisterSecondPassphraseModal() {
-    const modal = this.modalCtrl.create('RegisterSecondPassphrasePage', null, { cssClass: 'inset-modal-large'});
+    const modal = this.modalCtrl.create('RegisterSecondPassphrasePage', null);
 
     modal.onDidDismiss((newSecondPassphrase) => {
       if (lodash.isEmpty(newSecondPassphrase)) { return; }

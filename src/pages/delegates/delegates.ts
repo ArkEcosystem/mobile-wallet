@@ -64,7 +64,7 @@ export class DelegatesPage implements OnDestroy {
     const modal = this.modalCtrl.create('DelegateDetailPage', {
       delegate,
       vote: this.walletVote,
-    }, { cssClass: 'inset-modal-large', showBackdrop: false, enableBackdropDismiss: true });
+    }, { showBackdrop: false, enableBackdropDismiss: true });
 
     modal.onDidDismiss((delegateVote) => {
       if (!delegateVote) { return; }

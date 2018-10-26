@@ -14,8 +14,7 @@
       "main": "app/main.ts",
       "polyfills": "polyfills.ts",
       "test": "../test/helpers.ts",
-      "tsconfig": "../tsconfig.json",
-      "testTsconfig": "../test/tsconfig.test.json",
+      "tsconfig": "../test/tsconfig.test.json",
       "prefix": "app",
       "scripts": [],
       "showCircularDependencies": true

@@ -61,7 +61,7 @@ export class CustomNetworkEditModal {
   }
 
   public prepareDelete(): void {
-    if (lodash.some(this.userDataProvider.profiles, p => p.networkId === this.networkId)) {
+    if (lodash.some(this.userDataProvider.profiles, (p: any) => p.networkId === this.networkId)) {
       this.toastProvider.error('CUSTOM_NETWORK.DELETE_FAIL_NOT_EMPTY');
       return;
     }
