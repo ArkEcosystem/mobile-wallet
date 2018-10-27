@@ -25,10 +25,12 @@ export class AmountComponent implements OnInit {
   public marketCurrency: MarketCurrency;
   public currentNetwork: Network;
 
-  public constructor(userDataProvider: UserDataProvider,
-                     private marketDataProvider: MarketDataProvider,
-                     private settingsDataProvider: SettingsDataProvider,
-                     private changeDetectorRef: ChangeDetectorRef) {
+  public constructor(
+    userDataProvider: UserDataProvider,
+    private marketDataProvider: MarketDataProvider,
+    private settingsDataProvider: SettingsDataProvider,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {
     this.currentNetwork = userDataProvider.currentNetwork;
   }
 
