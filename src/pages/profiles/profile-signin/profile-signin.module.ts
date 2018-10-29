@@ -17,6 +17,6 @@ import { PinCodeComponentModule } from '@components/pin-code/pin-code.module';
     IonicPageModule.forChild(ProfileSigninPage),
     AddressListComponentModule,
     PinCodeComponentModule,
-  ]
+  ],
 })
 export class ProfileSigninPageModule {}
