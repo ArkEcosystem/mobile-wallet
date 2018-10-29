@@ -30,7 +30,7 @@
     <ion-slide class="delegate-list">
       <ion-scroll>
         <ion-list>
-          <template ngFor let-delegate [ngForOf]="activeDelegates">
+          <ng-template ngFor let-delegate [ngForOf]="activeDelegates">
             <ion-item no-lines detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngIf="delegate.username.indexOf(searchQuery.username.toLowerCase()) > -1" class="delegate-item custom-arrow">
               <ion-grid>
                 <ion-row>
