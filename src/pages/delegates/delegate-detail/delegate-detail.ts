@@ -59,7 +59,7 @@ export class DelegateDetailPage {
   }
 
   isWalletSelected() {
-    return !lodash.isNil(this.currentWallet);
+    return !lodash.isNil(this.currentWallet) && !this.currentWallet.isWatchOnly;
   }
 
   copyAddress() {
