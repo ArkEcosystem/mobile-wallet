@@ -30,46 +30,40 @@
     <ion-slide class="delegate-list">
       <ion-scroll>
         <ion-list>
-          <ion-item no-lines detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngFor="let delegate of activeDelegates | filterBy: searchQuery" class="delegate-item custom-arrow">
-            <ion-grid>
-              <ion-row>
-                <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
-                <ion-col col-8>
-                  <span class="username">{{ delegate?.username }}</span>
-                  <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTED' | translate | lowercase }}</ion-badge>
-                </ion-col>
-                <ion-col col-2 text-center><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
-              </ion-row>
-              <ion-row *ngIf="(activeDelegates | filterBy: searchQuery).length === 0">
-                <ion-col padding text-center>
-                  <h6>{{ 'DELEGATES_PAGE.NO_MATCHING_SEARCH' | translate }}</h6>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
+          <ng-template ngFor let-delegate [ngForOf]="activeDelegates">
+            <ion-item no-lines detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngIf="delegate.username.indexOf(searchQuery.username.toLowerCase()) > -1" class="delegate-item custom-arrow">
+              <ion-grid>
+                <ion-row>
+                  <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
+                  <ion-col col-8>
+                    <span class="username">{{ delegate?.username }}</span>
+                    <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTED' | translate | lowercase }}</ion-badge>
+                  </ion-col>
+                  <ion-col col-2 text-center><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ng-template>
         </ion-list>
       </ion-scroll>
     </ion-slide>
     <ion-slide class="delegate-list">
       <ion-scroll>
         <ion-list>
-          <ion-item no-lines detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngFor="let delegate of standByDelegates | filterBy: searchQuery" class="delegate-item custom-arrow">
-            <ion-grid>
-              <ion-row>
-                <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
-                <ion-col col-8>
-                  <span class="username">{{ delegate?.username }}</span>
-                  <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTED' | translate | lowercase }}</ion-badge>
-                </ion-col>
-                <ion-col col-2 text-center><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
-              </ion-row>
-              <ion-row *ngIf="(activeDelegates | filterBy: searchQuery).length === 0">
-                <ion-col padding text-center>
-                  <h6>{{ 'DELEGATES_PAGE.NO_MATCHING_SEARCH' | translate }}</h6>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
+          <ng-template ngFor let-delegate [ngForOf]="standByDelegates">
+            <ion-item no-lines detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngIf="delegate.username.indexOf(searchQuery.username.toLowerCase()) > -1" class="delegate-item custom-arrow">
+              <ion-grid>
+                <ion-row>
+                  <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
+                  <ion-col col-8>
+                    <span class="username">{{ delegate?.username }}</span>
+                    <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTED' | translate | lowercase }}</ion-badge>
+                  </ion-col>
+                  <ion-col col-2 text-center><span class="percentage">{{ delegate?.productivity | number:0 }}%</span></ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+          </ng-template>
         </ion-list>
       </ion-scroll>
     </ion-slide>
