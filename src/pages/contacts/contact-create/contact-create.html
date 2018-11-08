@@ -23,7 +23,7 @@
   </form>
 </ion-content>
 
-<ion-footer padding no-shadow no-border>
+<ion-footer padding no-shadow no-border [keyboard-attach]="content">
   <button ion-button class="button-continue" [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'SAVE' | translate }}</button>
 </ion-footer>
 

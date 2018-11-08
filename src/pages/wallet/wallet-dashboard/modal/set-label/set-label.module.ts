@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { SetLabelPage } from './set-label';
 
 import { TranslateModule } from '@ngx-translate/core';
+import { DirectivesModule } from '@directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   imports: [
     IonicPageModule.forChild(SetLabelPage),
+    DirectivesModule,
     TranslateModule,
   ],
 })

@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding #content>
   <form #manageForm="ngForm">
     <ion-grid fixed>
       <ion-row nowrap>
@@ -138,7 +138,7 @@
   </form>
 </ion-content>
 
-<ion-footer no-border no-shadow>
+<ion-footer no-border no-shadow [keyboard-attach]="content">
   <ion-grid>
     <ion-row align-items-center>
       <ion-col>

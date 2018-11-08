@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 import { RegisterDelegatePage } from './register-delegate';
 
 import { TranslateModule } from '@ngx-translate/core';
+import { DirectivesModule } from '@directives/directives.module';
 import { PipesModule } from '@pipes/pipes.module';
 
 @NgModule({
@@ -11,6 +12,7 @@ import { PipesModule } from '@pipes/pipes.module';
   ],
   imports: [
     IonicPageModule.forChild(RegisterDelegatePage),
+    DirectivesModule,
     TranslateModule,
     PipesModule,
   ],

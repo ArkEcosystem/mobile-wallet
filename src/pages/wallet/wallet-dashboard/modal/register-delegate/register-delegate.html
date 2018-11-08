@@ -11,7 +11,7 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content padding #content>
   <ion-grid>
     <ion-row>
       <ion-col align-self-center>
@@ -34,7 +34,7 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="note-toolbar no-padding">
+<ion-footer class="note-toolbar no-padding" [keyboard-attach]="content">
   <ion-grid no-padding>
     <ion-row>
       <ion-col text-center no-padding>
