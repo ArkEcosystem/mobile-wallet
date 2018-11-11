@@ -28,7 +28,7 @@ export class LocalNotificationsProvider {
   ) { }
 
   // Start provider
-  public init () {
+  public init() {
     this.backgroundMode.setDefaults({ silent: true });
     this.backgroundMode.on('activate').subscribe(() => {
       this.backgroundMode.disableWebViewOptimizations();
@@ -53,7 +53,7 @@ export class LocalNotificationsProvider {
   }
 
   // Make sure the app is allowed to show notifications
-  private checkPermission () {
+  private checkPermission() {
     return new Promise((resolve, reject) => {
       this.localNotifications.hasPermission().then(status => {
         if (status) {
@@ -70,7 +70,7 @@ export class LocalNotificationsProvider {
   }
 
   // Scan each wallet and find new transactions
-  watchTransactions (wallets: any) {
+  watchTransactions(wallets: any) {
     for (const address in wallets) {
       const wallet = wallets[address];
       // Convert object to class
@@ -105,7 +105,7 @@ export class LocalNotificationsProvider {
   }
 
   // Notify each new transaction
-  private notifyTransaction (transactions: Transaction[], wallet: any) {
+  private notifyTransaction(transactions: Transaction[], wallet: any) {
     const notifications = [];
 
     for (const transaction of transactions) {
@@ -136,7 +136,7 @@ export class LocalNotificationsProvider {
   }
 
   // Watch all tasks
-  private watch () {
+  private watch() {
     if (lodash.isEmpty(this.userDataProvider.profiles)) {
       return;
     }
