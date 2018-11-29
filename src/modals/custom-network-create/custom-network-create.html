@@ -9,7 +9,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding #content>
   <form #createForm="ngForm">
     <ion-grid fixed>
       <ion-row nowrap>
@@ -49,7 +49,7 @@
   </form>
 </ion-content>
 
-<ion-footer padding text-center no-shadow no-border>
+<ion-footer padding text-center no-shadow no-border [keyboard-attach]="content">
   <button ion-button
           class="button-continue"
           [disabled]="!createForm.valid || !getSeedServerUrl()"

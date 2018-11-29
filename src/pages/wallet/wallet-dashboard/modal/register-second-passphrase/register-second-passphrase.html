@@ -11,7 +11,7 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content padding #content>
   <ion-grid class="full-height" *ngIf="step == 1">
     <ion-row>
       <ion-col>
@@ -55,7 +55,7 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="note-toolbar" hide-on-keyboard-open no-shadow no-border>
+<ion-footer class="note-toolbar" hide-on-keyboard-open no-shadow no-border [keyboard-attach]="content">
   <p *ngIf="step == 1">{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT' | translate }}</p>
   <p *ngIf="step == 2">{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE' | translate }}</p>
 </ion-footer>

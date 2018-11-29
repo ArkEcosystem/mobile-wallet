@@ -11,7 +11,7 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content padding #content>
   <form #ngForm="ngForm">
     <ion-item>
       <ion-label stacked>{{ 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE' | translate }}</ion-label>
@@ -20,6 +20,6 @@
   </form>
 </ion-content>
 
-<ion-footer padding text-center no-shadow no-border>
+<ion-footer padding text-center no-shadow no-border [keyboard-attach]="content">
   <button ion-button class="button-continue" (click)="submit()" [disabled]="!ngForm.form.valid">{{ 'CONFIRM' | translate }}</button>
 </ion-footer>

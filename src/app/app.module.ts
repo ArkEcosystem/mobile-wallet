@@ -25,8 +25,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Keyboard } from '@ionic-native/keyboard';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { LocalNotifications } from '@ionic-native/local-notifications';
-import { BackgroundMode } from '@ionic-native/background-mode';
+// import { LocalNotifications } from '@ionic-native/local-notifications';
+// import { BackgroundMode } from '@ionic-native/background-mode';
 
 import { MyApp } from './app.component';
 
@@ -34,7 +34,7 @@ import '@root/node_modules/chart.js/src/chart.js';
 import { AutoCompleteModule } from 'ionic2-auto-complete';
 import { NeoApiProvider } from '@providers/neo-api/neo-api';
 import { AddressCheckerProvider } from '@providers/address-checker/address-checker';
-import { LocalNotificationsProvider } from '../providers/local-notifications/local-notifications';
+// import { LocalNotificationsProvider } from '../providers/local-notifications/local-notifications';
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -70,8 +70,8 @@ export function httpLoaderFactory(http: HttpClient) {
     Keyboard,
     QRScanner,
     SocialSharing,
-    LocalNotifications,
-    BackgroundMode,
+    // LocalNotifications,
+    // BackgroundMode,
     // Custom providers
     {provide: StorageProvider, useClass: StorageProvider, deps: [Storage]},
     {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},
@@ -86,7 +86,7 @@ export function httpLoaderFactory(http: HttpClient) {
     AccountAutoCompleteService,
     NeoApiProvider,
     AddressCheckerProvider,
-    LocalNotificationsProvider,
+    // LocalNotificationsProvider,
   ]
 })
 export class AppModule {}

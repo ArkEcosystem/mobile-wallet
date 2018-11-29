@@ -11,7 +11,7 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ToastProvider } from '@providers/toast/toast';
-import { LocalNotificationsProvider } from '@providers/local-notifications/local-notifications';
+// import { LocalNotificationsProvider } from '@providers/local-notifications/local-notifications';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -49,7 +49,7 @@ export class MyApp implements OnInit, OnDestroy {
     private arkApiProvider: ArkApiProvider,
     private settingsDataProvider: SettingsDataProvider,
     private toastProvider: ToastProvider,
-    private localNotificationsProvider: LocalNotificationsProvider,
+    // private localNotificationsProvider: LocalNotificationsProvider,
     private menuCtrl: MenuController,
     private alertCtrl: AlertController,
     private config: Config,
@@ -133,7 +133,7 @@ export class MyApp implements OnInit, OnDestroy {
     this.config.set('android', 'autoFocusAssist', 'delay');
 
     if (this.platform.is('cordova')) {
-      this.localNotificationsProvider.init();
+      // this.localNotificationsProvider.init();
 
       if (this.platform.is('ios')) {
         this.statusBar.styleDefault();

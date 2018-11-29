@@ -11,10 +11,10 @@
 
 </ion-header>
 
-<ion-content padding class="column-mode" no-bounce>
+<ion-content padding class="column-mode" no-bounce #content>
   <ion-grid class="full-height">
     <ion-row>
-      <ion-col text-center align-self-center>
+      <ion-col text-center>
         <form #labelForm="ngForm">
           <ion-item>
             <ion-label floating stacked>{{ 'WALLETS_PAGE.NEW_WALLET_NAME' | translate }}</ion-label>
@@ -23,10 +23,11 @@
         </form>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col text-center align-self-end>
-        <button ion-button class="button-continue" color="primary" [disabled]="!labelForm.form.valid" (click)="submitForm()">{{ 'RENAME' | translate }}</button>
-      </ion-col>
-    </ion-row>
   </ion-grid>
 </ion-content>
+
+<ion-footer no-shadow no-border padding text-center [keyboard-attach]="content">
+  <button ion-button class="button-continue" color="primary" [disabled]="!labelForm.form.valid" (click)="submitForm()">
+    {{ 'RENAME' | translate }}
+  </button>
+</ion-footer>

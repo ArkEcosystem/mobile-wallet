@@ -21,7 +21,7 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="5000" />
     <preference name="SplashScreenSpinnerColor" value="#0000ff" />
-    <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+    <preference name="CordovaWebViewEngine" value="CDVUIWebViewEngine" />
     <preference name="WKSuspendInBackground" value="false" />
     <preference name="KeyboardResizeMode" value="native" />
     <platform name="android">
@@ -97,20 +97,15 @@
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
-    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
     <plugin name="cordova-plugin-add-swift-support" spec="^1.7.2" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
     <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
-    <plugin name="cordova-plugin-ionic-webview" spec="^2.2.0">
-        <variable name="ANDROID_SUPPORT_ANNOTATIONS_VERSION" value="27.+" />
-    </plugin>
     <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
     <plugin name="cordova-clipboard" spec="^1.2.1" />
     <plugin name="cordova-plugin-x-socialsharing" spec="^5.4.1" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.1.3" />
-    <plugin name="cordova-plugin-background-mode" spec="https://github.com/tushe/cordova-plugin-background-mode.git" />
     <engine name="browser" spec="5.0.4" />
     <engine name="ios" spec="4.5.5" />
-    <engine name="android" spec="7.1.1" />
+    <engine name="android" spec="7.1.2" />
 </widget>
