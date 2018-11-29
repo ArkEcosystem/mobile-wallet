@@ -271,7 +271,6 @@ export class ArkApiProvider {
       }
 
       transaction.signature = null;
-      transaction.signSignature = null;
       transaction.id = null;
 
       const keys = this.arkjs.crypto.getKeys(key, jsNetwork);
@@ -293,7 +292,8 @@ export class ArkApiProvider {
 
   public postTransaction(transaction: arkts.Transaction, peer: arkts.Peer = this._network.activePeer, broadcast: boolean = true) {
     return Observable.create((observer) => {
-      this._api.transaction.post(transaction, peer).subscribe((result: arkts.TransactionPostResponse) => {
+      const compressTransaction = JSON.parse(JSON.stringify(transaction));
+      this._api.transaction.post(compressTransaction, peer).subscribe((result: arkts.TransactionPostResponse) => {
         if (result.transactionIds && result.transactionIds.indexOf(transaction.id) !== -1) {
           this.onSendTransaction$.next(transaction);
           if (broadcast) {
