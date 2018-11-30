@@ -297,7 +297,9 @@ export class ArkApiProvider {
         if (result.transactionIds && result.transactionIds.indexOf(transaction.id) !== -1) {
           this.onSendTransaction$.next(transaction);
           if (broadcast) {
-            this.broadcastTransaction(transaction);
+            if (!this._network.isV2) {
+              this.broadcastTransaction(transaction);
+            }
             this.toastProvider.success('API.TRANSACTION_SENT');
           }
           observer.next(transaction);
