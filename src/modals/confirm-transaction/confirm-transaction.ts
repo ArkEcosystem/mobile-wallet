@@ -65,7 +65,7 @@ export class ConfirmTransactionModal implements OnDestroy {
         .subscribe(() => {
           this.dismiss(true);
         }, (error) => {
-          this.dismiss(false, error.error);
+          this.dismiss(false, error.message);
         });
     });
   }
