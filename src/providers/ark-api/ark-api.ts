@@ -294,7 +294,14 @@ export class ArkApiProvider {
     return Observable.create((observer) => {
       const compressTransaction = JSON.parse(JSON.stringify(transaction));
       this._api.transaction.post(compressTransaction, peer).subscribe((result: arkts.TransactionPostResponse) => {
-        if (result.transactionIds && result.transactionIds.indexOf(transaction.id) !== -1) {
+        let successful = false;
+        if (this._network.isV2) {
+          successful = result.data.accept && result.data.accept.indexOf(transaction.id) !== -1;
+        } else {
+          successful = result.transactionIds && result.transactionIds.indexOf(transaction.id) !== -1;
+        }
+
+        if (successful) {
           this.onSendTransaction$.next(transaction);
           if (broadcast) {
             if (!this._network.isV2) {
