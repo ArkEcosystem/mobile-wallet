@@ -201,7 +201,8 @@ export class TransactionSendPage implements OnInit {
   private validForm(): boolean {
     let isValid = true;
     if (
-      this.sendTransactionHTMLForm.form.controls['amount'].value <= 0
+      !this.sendTransactionHTMLForm.form.controls['amount'].value
+      || this.sendTransactionHTMLForm.form.controls['amount'].value <= 0
       || this.sendTransactionHTMLForm.form.controls['smartBridge'].length > 64
     ) {
       isValid = false;
