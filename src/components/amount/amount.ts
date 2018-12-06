@@ -50,6 +50,7 @@ export class AmountComponent implements OnInit {
 
   public onInputToken() {
     const precision = this.marketCurrency.code === 'btc' ? 8 : 2;
+    this.amount = +(1.0 * this.amount).toFixed(8);
     this.amountEquivalent = +(this.amount * this.marketCurrency.price).toFixed(precision);
     this.hasChanged();
   }
