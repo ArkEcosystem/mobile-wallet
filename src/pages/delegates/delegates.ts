@@ -22,7 +22,7 @@ export class DelegatesPage implements OnDestroy {
   @ViewChild('delegateSlider') slider: Slides;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
-  @ViewChild('searchbar') searchbar:Searchbar;
+  @ViewChild('searchbar') searchbar: Searchbar;
 
   public isSearch = false;
   public searchQuery: any = { username: ''};
@@ -81,7 +81,7 @@ export class DelegatesPage implements OnDestroy {
   toggleSearchBar() {
     this.searchQuery.username = '';
     this.isSearch = !this.isSearch;
-    if(this.isSearch) {
+    if (this.isSearch) {
       setTimeout(() => {
         this.searchbar.setFocus();
       }, 100);
