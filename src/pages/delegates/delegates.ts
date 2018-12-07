@@ -24,7 +24,7 @@ export class DelegatesPage implements OnDestroy {
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
 
   public isSearch = false;
-  public searchQuery = "";
+  public searchQuery = '';
 
   public delegates: Delegate[];
   public activeDelegates: Delegate[];
