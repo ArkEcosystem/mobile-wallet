@@ -1,8 +1,8 @@
 {
   "API": {
     "BALANCE_TOO_LOW": "Balance too low for transaction",
-    "BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} on your wallet! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your wallet balance is only {{ balance }}!",
-    "DESTINATION_ADDRESS_ERROR": "The destination address '{{ address }}' is erroneous",
+    "BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} in your wallet! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your wallet balance is only {{ balance }}!",
+    "DESTINATION_ADDRESS_ERROR": "The destination address '{{ address }}' is incorrect",
     "PEER_LIST_ERROR": "Could not get list of peers",
     "TRANSACTION_FAILED": "Transaction failed",
     "TRANSACTION_SENT": "Transaction was sent"
@@ -37,7 +37,7 @@
     "CUSTOM_NETWORK": "Custom Network",
     "CREATE_NEW": "Create",
     "CREATE_NETWORK": "Create Custom Network",
-    "DELETE_FAIL_NOT_EMPTY": "This network cannot be deleted because there are still profiles which use this network. You have to delete these first.",
+    "DELETE_FAIL_NOT_EMPTY": "This network cannot be deleted because there are still profiles which use this network. You have to delete them first.",
     "DELETE_SUCCESSFUL": "Successfully deleted network!",
     "EDIT": "Edit Network",
     "EXPLORER": "Explorer",
