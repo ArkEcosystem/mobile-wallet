@@ -94,5 +94,10 @@ page-wallet-dashboard {
     .tx {
       border-bottom: 1px solid color($darkColors, secondary-background, base);
     }
+    
+    ion-refresher * {
+      color: #fff;
+      stroke: #fff;
+    }
   }
 }
