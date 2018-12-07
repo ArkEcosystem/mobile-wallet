@@ -78,7 +78,7 @@ export class DelegatesPage implements OnDestroy {
   }
 
   toggleSearchBar() {
-    this.searchQuery.username = '';
+    this.searchQuery = '';
     this.isSearch = !this.isSearch;
   }
 
