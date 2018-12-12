@@ -87,7 +87,8 @@
       "NETWORK_STATUS": "Status de Rede",
       "NETWORK_TYPE": "Tipo de Rede",
       "INTERNET_DESCONNECTED": "Não foi possível conectar-se à Internet",
-      "PEER": "Peer"
+      "PEER": "Peer",
+      "VERSION": "Versão"
     },
     "NEXT": "Próximo",
     "NO": "Não",
