@@ -12,6 +12,7 @@ export class PassphraseInputComponent implements OnInit {
   public passphrase: string;
   public wordSuggestions = [];
   public hidePassphrase = false;
+  public typeInput = 'text';
   public passphraseHidden: string;
 
   @ViewChild('inputPassphrase') inputPassphrase;
@@ -78,6 +79,7 @@ export class PassphraseInputComponent implements OnInit {
 
   showHidePassphrase() {
     this.hidePassphrase = !this.hidePassphrase;
+    this.typeInput = this.hidePassphrase ? 'text' : 'password';
   }
 
   suggestWord(lastPassphrase, passphrase) {
