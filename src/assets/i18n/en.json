@@ -123,7 +123,8 @@
     "NETWORK_STATUS": "Network Status",
     "NETWORK_TYPE": "Network Type",
     "INTERNET_DESCONNECTED": "Unable to connect to the Internet!",
-    "PEER": "Peer"
+    "PEER": "Peer",
+    "VERSION": "Version"
   },
   "NEXT": "Next",
   "NO": "No",
