@@ -1,5 +1,5 @@
 import { Component, NgZone, OnDestroy, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Platform, Slides } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Platform, Slides, Searchbar } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
@@ -22,6 +22,7 @@ export class DelegatesPage implements OnDestroy {
   @ViewChild('delegateSlider') slider: Slides;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
+  @ViewChild('searchbar') searchbar: Searchbar;
 
   public isSearch = false;
   public searchQuery = '';
@@ -80,6 +81,11 @@ export class DelegatesPage implements OnDestroy {
   toggleSearchBar() {
     this.searchQuery = '';
     this.isSearch = !this.isSearch;
+    if (this.isSearch) {
+      setTimeout(() => {
+        this.searchbar.setFocus();
+      }, 100);
+    }
   }
 
   onSlideChanged(slider) {
