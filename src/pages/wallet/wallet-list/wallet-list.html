@@ -21,7 +21,7 @@
         <p>{{ 'WALLETS_PAGE.TOTAL_BALANCE' | translate }}</p>
         <h2 class="amount">
           {{ currentNetwork?.symbol }} {{ totalBalance | unitsSatoshi }}
-          <span class="fiat" appMarketNetOnly>{{ fiatCurrency?.symbol }}{{ fiatBalance | marketNumber }}</span>
+          <span *ngIf="totalBalance" class="fiat" appMarketNetOnly>{{ fiatCurrency?.symbol }}{{ fiatBalance | marketNumber }}</span>
         </h2>
       </ion-col>
     </ion-row>

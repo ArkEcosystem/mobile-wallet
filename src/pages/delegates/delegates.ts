@@ -25,7 +25,7 @@ export class DelegatesPage implements OnDestroy {
   @ViewChild('searchbar') searchbar: Searchbar;
 
   public isSearch = false;
-  public searchQuery: any = { username: ''};
+  public searchQuery = '';
 
   public delegates: Delegate[];
   public activeDelegates: Delegate[];
@@ -79,7 +79,7 @@ export class DelegatesPage implements OnDestroy {
   }
 
   toggleSearchBar() {
-    this.searchQuery.username = '';
+    this.searchQuery = '';
     this.isSearch = !this.isSearch;
     if (this.isSearch) {
       setTimeout(() => {
