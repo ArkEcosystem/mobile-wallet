@@ -62,6 +62,6 @@
   </form>
 </ion-content>
 
-<ion-footer padding no-shadow no-border [keyboard-attach]="content">
+<ion-footer padding no-shadow no-border>
   <button ion-button class="button-continue" [disabled]="!createProfileForm.form.valid || !newProfile.networkId" (click)="submitForm()">{{ 'NEXT' | translate }}</button>
 </ion-footer>
