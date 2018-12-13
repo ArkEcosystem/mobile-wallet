@@ -199,16 +199,13 @@ export class TransactionSendPage implements OnInit {
   }
 
   private validForm(): boolean {
-    let isValid: boolean;
-    for (const name in this.sendTransactionHTMLForm.form.controls) {
-      if (name === 'recipientAddress') {
-        continue;
-      }
-      const control = this.sendTransactionHTMLForm.form.controls[name];
-      isValid = control.valid;
-      if (!isValid) {
-        break;
-      }
+    let isValid = true;
+    if (
+      !this.sendTransactionHTMLForm.form.controls['amount'].value
+      || this.sendTransactionHTMLForm.form.controls['amount'].value <= 0
+      || this.sendTransactionHTMLForm.form.controls['smartBridge'].length > 64
+    ) {
+      isValid = false;
     }
 
     return isValid;
