@@ -9,6 +9,8 @@ import { IonicPage, ViewController } from 'ionic-angular';
 export class EnterSecondPassphraseModal {
 
   public passphrase: string;
+  public displayType = 'text';
+  public iconName = 'eye';
 
   constructor(
     private viewCtrl: ViewController,
@@ -17,6 +19,11 @@ export class EnterSecondPassphraseModal {
 
   submit() {
     this.dismiss(this.passphrase);
+  }
+
+  hideShow() {
+    this.displayType = this.displayType === 'text' ? 'password' : 'text';
+    this.iconName = this.iconName === 'eye-off' ? 'eye' : 'eye-off';
   }
 
   dismiss(passphrase?: string) {
