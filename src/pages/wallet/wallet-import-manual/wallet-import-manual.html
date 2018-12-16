@@ -43,5 +43,5 @@
 </ion-content>
 
 <ion-footer no-shadow no-border padding text-center [keyboard-attach]="content">
-  <button ion-button class="button-continue" [disabled]="!importWalletManual.form.valid" (click)="submitForm()">{{ 'IMPORT' | translate }}</button>
+  <button ion-button class="button-continue" [disabled]="!importWalletManual.form.valid || submitted" (click)="submitForm()">{{ 'IMPORT' | translate }}</button>
 </ion-footer>
