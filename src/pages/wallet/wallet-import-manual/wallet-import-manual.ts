@@ -32,6 +32,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
   public hidePassphrase = false;
   public passphraseHidden: string;
   public manualImportFormGroup: FormGroup;
+  public submitted = false;
 
   private wordlist;
   private suggestLanguageFound = false;
@@ -65,6 +66,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
   }
 
   submitForm() {
+    this.submitted = true;
     this.import(this.useAddress ? this.addressOrPassphrase : null,
                 this.useAddress ? null : this.addressOrPassphrase,
                 !this.nonBIP39Passphrase);
