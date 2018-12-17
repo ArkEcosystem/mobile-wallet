@@ -260,6 +260,7 @@ export class TransactionSendPage implements OnInit {
       this.confirmTransaction.open(transaction, result.keys, result.checkerResult);
     }, () => {
       this.toastProvider.error('TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR');
+      this.hasNotSent();
     });
   }
 
