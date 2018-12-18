@@ -17,11 +17,11 @@ export class NeoApiProvider {
 
     // we use the getBalance call, because it's fast, if the address exists (i.e. has any transactions), the address is returned
     // we check if it's a real address (and not "not found") and return the result
-    return this.getBalance(address).map(res => res.length > 0)
+    return this.getBalance(address).map(res => res.length > 0);
   }
 
   private getBalance(address: string): Observable<Object[]> {
-    return this.http.get<Object[]>(`${NeoApiProvider.baseUrl}/get_last_transactions_by_address/${address}`)
+    return this.http.get<Object[]>(`${NeoApiProvider.baseUrl}/get_last_transactions_by_address/${address}`);
   }
 
   private isValidAddress(address): boolean {
