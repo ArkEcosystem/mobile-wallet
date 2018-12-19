@@ -87,8 +87,7 @@
     "cordova-plugin-swift-support": "^3.1.1",
     "cordova-plugin-vibration": "^3.1.0",
     "cordova-plugin-whitelist": "^1.3.3",
-    "cordova-plugin-x-socialsharing": "^5.4.1",
-    "cordova-sqlite-storage": "^2.5.1",
+    "cordova-plugin-x-socialsharing": "^5.4.3",
     "es6-promise-plugin": "^4.2.2",
     "iod": "^1.1.1",
     "ionic-angular": "^3.9.2",
@@ -142,7 +141,6 @@
     "plugins": {
       "cordova-plugin-whitelist": {},
       "cordova-plugin-qrscanner": {},
-      "cordova-sqlite-storage": {},
       "cordova-custom-config": {},
       "cordova-plugin-console": {},
       "cordova-plugin-network-information": {},

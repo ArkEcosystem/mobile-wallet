@@ -92,7 +92,6 @@
     <allow-navigation href="http://localhost:8080/*" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="cordova-plugin-qrscanner" spec="^2.6.0" />
-    <plugin name="cordova-sqlite-storage" spec="^2.5.0" />
     <plugin name="cordova-custom-config" spec="^5.0.2" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
