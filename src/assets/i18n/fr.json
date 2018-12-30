@@ -182,7 +182,8 @@
     "NOTIFICATIONS": "Notifications",
     "SETTINGS": "Paramètres",
     "VERSION": "Version",
-    "WALLET_BACKUP": "Sauvegarde du portefeuille"
+    "WALLET_BACKUP": "Sauvegarde du portefeuille",
+    "WORDLIST_LANGUAGE": "Langue de phrase secrète"
   },
   "SHOW_ADVANCED": "Afficher les paramètres avancés",
   "SKIP": "Passer",
