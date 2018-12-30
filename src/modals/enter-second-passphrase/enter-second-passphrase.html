@@ -15,7 +15,8 @@
   <form #ngForm="ngForm">
     <ion-item>
       <ion-label stacked>{{ 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE' | translate }}</ion-label>
-      <ion-textarea autocapitalize="off" rows="2" name="secondPassphrase" [(ngModel)]="passphrase"></ion-textarea>
+      <ion-input autocapitalize="off" name="secondPassphrase" [type]="displayType" [(ngModel)]="passphrase"></ion-input>
+      <ion-icon item-end [name]="iconName" (click)='hideShow()'></ion-icon>
     </ion-item>
   </form>
 </ion-content>
