@@ -23,6 +23,7 @@ export class SettingsDataProvider {
       'en': 'English',
       'de': 'Deutsch',
       'fr': 'French',
+      'id': 'Indonesia',
       'it': 'Italiano',
       'nl': 'Nederlands',
       'sv': 'Svenska',
