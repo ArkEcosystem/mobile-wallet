@@ -23,7 +23,7 @@ export class SetLabelPage {
   }
 
   submitForm() {
-    this.viewCtrl.dismiss(this.label);
+    this.viewCtrl.dismiss(this.label, 'submit');
   }
 
 }
