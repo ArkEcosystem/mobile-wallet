@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -16,7 +17,13 @@ import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
 import { Delegate } from 'ark-ts';
-import { StoredNetwork } from '@models/stored-network';
+import { StoredNetwork, FeeStatistic } from '@models/stored-network';
+
+interface NodeConfigurationResponse {
+  data: {
+    feeStatistics: FeeStatistic[]
+  }
+}
 
 @Injectable()
 export class ArkApiProvider {
@@ -34,6 +41,7 @@ export class ArkApiProvider {
   public arkjs = require('arkjs');
 
   constructor(
+    private httpClient: HttpClient,
     private userDataProvider: UserDataProvider,
     private storageProvider: StorageProvider,
     private toastProvider: ToastProvider) {
@@ -358,6 +366,18 @@ export class ArkApiProvider {
     });
 
     this.fetchFees().subscribe();
+    this.fetchFeeStatistics();
+  }
+
+  private fetchFeeStatistics() {
+    if (!this._network || !this._network.isV2) {
+      return;
+    }
+
+    this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/v2/node/configuration`).subscribe((response: NodeConfigurationResponse) => {
+      const data = response.data;
+      this._network.feeStatistics = data.feeStatistics;
+    });
   }
 
   private fetchFees(): Observable<arkts.Fees> {
