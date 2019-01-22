@@ -1,11 +1,11 @@
 import { Network, Peer } from 'ark-ts';
 
 export interface FeeStatistic {
-  type: Number;
+  type: number;
   fees: {
-    minFee: Number,
-    maxFee: Number,
-    avgFee: Number,
+    minFee: number,
+    maxFee: number,
+    avgFee: number,
   };
 }
 

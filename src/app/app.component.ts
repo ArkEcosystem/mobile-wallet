@@ -212,7 +212,6 @@ export class MyApp implements OnInit, OnDestroy {
     this.authProvider.onLogin$.takeUntil(this.unsubscriber$).subscribe(() => {
       this.profile = this.userDataProvider.currentProfile;
       this.network = this.userDataProvider.currentNetwork;
-      this.arkApiProvider.fetchFeeStatistics();
 
       return this.menuCtrl.enable(true, 'sidebarMenu');
     });

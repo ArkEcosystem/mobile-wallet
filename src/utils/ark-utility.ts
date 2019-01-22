@@ -6,8 +6,8 @@ export class ArkUtility {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  public static arktoshiToArk(ark: number, returnRaw: boolean = false): number {
-    let result: number = ark / constants.WALLET_UNIT_TO_SATOSHI;
+  public static arktoshiToArk(arktoshi: number, returnRaw: boolean = false): number {
+    let result: number = arktoshi / constants.WALLET_UNIT_TO_SATOSHI;
 
     if (!returnRaw) {
       result = Number((new BigNumber(result.toString())).toFixed(constants.ARKTOSHI_DP));

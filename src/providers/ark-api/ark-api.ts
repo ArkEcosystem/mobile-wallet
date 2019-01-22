@@ -63,6 +63,12 @@ export class ArkApiProvider {
     return this._api;
   }
 
+  public get feeStatistics () {
+    if (!lodash.isUndefined(this._network.feeStatistics)) { return Observable.of(this._network.feeStatistics); }
+
+    return this.fetchFeeStatistics();
+  }
+
   public get fees() {
     if (!lodash.isUndefined(this._fees)) { return Observable.of(this._fees); }
 
@@ -366,17 +372,20 @@ export class ArkApiProvider {
     });
 
     this.fetchFees().subscribe();
-    this.fetchFeeStatistics();
+    this.fetchFeeStatistics().subscribe();
   }
 
-  private fetchFeeStatistics() {
+  private fetchFeeStatistics(): Observable<FeeStatistic[]> {
     if (!this._network || !this._network.isV2) {
       return;
     }
 
-    this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/v2/node/configuration`).subscribe((response: NodeConfigurationResponse) => {
-      const data = response.data;
-      this._network.feeStatistics = data.feeStatistics;
+    return Observable.create((observer) => {
+      this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/v2/node/configuration`).subscribe((response: NodeConfigurationResponse) => {
+        const data = response.data;
+        this._network.feeStatistics = data.feeStatistics;
+        observer.next(this._network.feeStatistics);
+      }, e => observer.error(e));
     });
   }
 
