@@ -308,22 +308,20 @@ export class ArkApiProvider {
     return Observable.create((observer) => {
       const compressTransaction = JSON.parse(JSON.stringify(transaction));
       this._api.transaction.post(compressTransaction, peer).subscribe((result: arkts.TransactionPostResponse) => {
-        let successful = false;
-        if (this._network.isV2) {
-          successful = result.data.accept && result.data.accept.indexOf(transaction.id) !== -1;
-        } else {
-          successful = result.transactionIds && result.transactionIds.indexOf(transaction.id) !== -1;
-        }
-
-        if (successful) {
+        if (this.isSuccessfulResponse(result)) {
           this.onSendTransaction$.next(transaction);
+
           if (broadcast) {
             if (!this._network.isV2) {
               this.broadcastTransaction(transaction);
             }
-            this.toastProvider.success('API.TRANSACTION_SENT');
           }
+
           observer.next(transaction);
+
+          if (this._network.isV2 && !result.data.accept.length && result.data.broadcast.length) {
+            this.toastProvider.warn('TRANSACTIONS_PAGE.WARNING.BROADCAST');
+          }
         } else {
           if (broadcast) {
             this.toastProvider.error('API.TRANSACTION_FAILED');
@@ -343,6 +341,17 @@ export class ArkApiProvider {
                .delegate
                .get({publicKey: publicKey})
                .map(response => response && response.success ? response.delegate : null);
+  }
+
+
+  private isSuccessfulResponse (response) {
+    console.log(response);
+    if (!this._network.isV2) {
+      return response.success && response.transactionIds
+    } else {
+      const { data, errors } = response
+      return data && data.invalid.length === 0 && errors === null
+    }
   }
 
   private broadcastTransaction(transaction: arkts.Transaction) {

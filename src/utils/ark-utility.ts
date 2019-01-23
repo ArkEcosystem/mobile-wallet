@@ -15,4 +15,20 @@ export class ArkUtility {
 
     return result;
   }
+
+  public static subToUnit(value: number|string) {
+    if (!value) {
+      return '';
+    }
+
+    return new BigNumber(value.toString()).dividedBy(constants.WALLET_UNIT_TO_SATOSHI).toString();
+  }
+
+  public static unitToSub(value: number|string) {
+    if (!value) {
+      return '';
+    }
+
+    return new BigNumber(value.toString()).multipliedBy(constants.WALLET_UNIT_TO_SATOSHI).toString();
+  }
 }

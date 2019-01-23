@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { IonicPage, LoadingController, NavParams, Loading } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
-import { Contact, Wallet, SendTransactionForm, WalletKeys } from '@models/model';
+import { Contact, Wallet, SendTransactionForm, SendTransactionData, WalletKeys, QRCodeScheme } from '@models/model';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ContactsProvider } from '@providers/contacts/contacts';
@@ -26,7 +26,6 @@ import { TransactionSend } from 'ark-ts';
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
 import { AutoCompleteAccount, AutoCompleteAccountType } from '@models/contact';
 import { TranslatableObject } from '@models/translate';
-import { QRCodeScheme } from '@models/model';
 import { BigNumber } from 'bignumber.js';
 import { ArkUtility } from '../../../utils/ark-utility';
 import { AddressCheckerProvider} from '@providers/address-checker/address-checker';
@@ -71,11 +70,12 @@ export class TransactionSendPage implements OnInit {
 
   currentWallet: Wallet;
   currentNetwork: Network;
-  fees: Fees;
+  fee: number;
   addressType: AddressType = AddressType.Unknown;
   addressTypes = AddressType;
   isRecipientNameAutoSet: boolean;
   hasSent = false;
+  sendAllEnabled = false;
 
   private currentAutoCompleteFieldValue: string;
   private unsubscriber$: Subject<void> = new Subject<void>();
@@ -98,17 +98,26 @@ export class TransactionSendPage implements OnInit {
     this.currentNetwork = this.userDataProvider.currentNetwork;
   }
 
+  toggleSendAll () {
+    this.sendAllEnabled = !this.sendAllEnabled;
+
+    if (this.sendAllEnabled) {
+      this.sendAll();
+    }
+  }
+
   sendAll() {
     const balance = Number(this.currentWallet.balance);
-    const sendableAmount = balance - this.fees.send;
+    const sendableAmount = balance - this.fee;
+
     if (sendableAmount <= 0) {
       this.toastProvider.error({
           key: 'API.BALANCE_TOO_LOW_DETAIL',
           parameters: {
             token: this.currentNetwork.token,
-            fee: ArkUtility.arktoshiToArk(this.fees.send),
+            fee: ArkUtility.arktoshiToArk(this.fee),
             amount: ArkUtility.arktoshiToArk(balance),
-            totalAmount: ArkUtility.arktoshiToArk(balance + this.fees.send),
+            totalAmount: ArkUtility.arktoshiToArk(balance + this.fee),
             balance: ArkUtility.arktoshiToArk(balance)
           }
         } as TranslatableObject,
@@ -257,6 +266,8 @@ export class TransactionSendPage implements OnInit {
     };
 
     this.arkApiProvider.api.transaction.createTransaction(data).subscribe((transaction) => {
+      // The transaction will be signed again;
+      transaction.fee = this.fee;
       this.confirmTransaction.open(transaction, result.keys, result.checkerResult);
     }, () => {
       this.toastProvider.error('TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR');
@@ -280,7 +291,6 @@ export class TransactionSendPage implements OnInit {
   }
 
   ionViewDidLoad() {
-    this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);
     this.hasNotSent();
   }
 
@@ -316,6 +326,14 @@ export class TransactionSendPage implements OnInit {
   public onAmountChange(newAmounts: Amount) {
     this.transaction.amount = newAmounts.amount;
     this.transaction.amountEquivalent = newAmounts.amountEquivalent;
+  }
+
+  public onFeeChange(newFee: number) {
+    this.fee = newFee;
+
+    if (this.sendAllEnabled) {
+      this.sendAll();
+    }
   }
 
   private setFormValuesFromAddress(address: string, alternativeRecipientName?: string): void {

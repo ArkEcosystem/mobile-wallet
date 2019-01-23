@@ -32,3 +32,13 @@
 .input-fee__input {
   margin-bottom: 20px;
 }
+
+.input-fee--low .input-fee__label {
+  color: color($colors, danger, base);
+}
+
+.input-fee__helper {
+  padding-top: 2px;
+  padding-bottom: 5px;
+  color: color($colors, danger, base);
+}

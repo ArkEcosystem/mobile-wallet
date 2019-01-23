@@ -1,4 +1,4 @@
-import { Transaction as TransactionModel, TransactionType } from 'ark-ts/model';
+import { Transaction as TransactionModel, TransactionType, TransactionSend } from 'ark-ts/model';
 import arkConfig from 'ark-ts/config';
 
 import { MarketCurrency, MarketHistory, MarketTicker } from '@models/market';
@@ -24,9 +24,14 @@ const TX_TYPES_ACTIVITY = {
 export interface SendTransactionForm {
   amount?: number;
   amountEquivalent?: number;
+  fee?: number;
   recipientAddress?: string;
   recipientName?: string;
   smartBridge?: string;
+}
+
+export class SendTransactionData extends TransactionSend {
+  public fee: number;
 }
 
 export class Transaction extends TransactionModel {
