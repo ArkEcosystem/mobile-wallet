@@ -22,7 +22,7 @@ import { StoredNetwork, FeeStatistic } from '@models/stored-network';
 interface NodeConfigurationResponse {
   data: {
     feeStatistics: FeeStatistic[]
-  }
+  };
 }
 
 @Injectable()
@@ -345,12 +345,11 @@ export class ArkApiProvider {
 
 
   private isSuccessfulResponse (response) {
-    console.log(response);
     if (!this._network.isV2) {
-      return response.success && response.transactionIds
+      return response.success && response.transactionIds;
     } else {
-      const { data, errors } = response
-      return data && data.invalid.length === 0 && errors === null
+      const { data, errors } = response;
+      return data && data.invalid.length === 0 && errors === null;
     }
   }
 
@@ -386,7 +385,7 @@ export class ArkApiProvider {
 
   private fetchFeeStatistics(): Observable<FeeStatistic[]> {
     if (!this._network || !this._network.isV2) {
-      return;
+      return Observable.empty();
     }
 
     return Observable.create((observer) => {

@@ -42,6 +42,7 @@ export class DelegatesPage implements OnDestroy {
   ];
 
   private selectedDelegate: Delegate;
+  private selectedFee: number;
 
   private currentWallet: Wallet;
   private walletVote: Delegate;
@@ -67,9 +68,10 @@ export class DelegatesPage implements OnDestroy {
       vote: this.walletVote,
     }, { showBackdrop: false, enableBackdropDismiss: true });
 
-    modal.onDidDismiss((delegateVote) => {
+    modal.onDidDismiss(({ delegateVote, fee }) => {
       if (!delegateVote) { return; }
 
+      this.selectedFee = fee;
       this.selectedDelegate = delegateVote; // Save the delegate that we want to vote for
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
@@ -123,6 +125,7 @@ export class DelegatesPage implements OnDestroy {
     };
 
     this.arkApiProvider.api.transaction.createVote(data).subscribe((transaction) => {
+      transaction.fee = this.selectedFee; // The transaction will be re-signed
       this.confirmTransaction.open(transaction, keys);
     });
   }

@@ -1,3 +1,6 @@
+.input-fee .item {
+  padding-left: 0;
+}
 
 .input-fee__wrapper {
   position: relative;
@@ -6,6 +9,7 @@
 .input-fee__range {
   position: absolute;
   bottom: 0;
+  background: transparent;
 }
 
 .input-fee__range .range {
@@ -30,7 +34,7 @@
 }
 
 .input-fee__input {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 .input-fee--low .input-fee__label {

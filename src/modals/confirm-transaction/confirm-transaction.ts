@@ -63,7 +63,6 @@ export class ConfirmTransactionModal implements OnDestroy {
     }
 
     this.ngZone.run(() => {
-      console.log(this.transaction);
       this.hasBroadcast = true;
       this.arkApiProvider.postTransaction(this.transaction).subscribe(() => {
         this.dismiss(true);

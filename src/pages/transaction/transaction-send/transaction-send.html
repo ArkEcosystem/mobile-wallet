@@ -73,7 +73,7 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <input-fee transactionType="0" (onChange)="onFeeChange($event)"></input-fee>
+          <input-fee [transactionType]="transactionType" (onChange)="onFeeChange($event)"></input-fee>
         </ion-col>
       </ion-row>
       <ion-row>

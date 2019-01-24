@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { IonicPage, LoadingController, NavParams, Loading } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
-import { Contact, Wallet, SendTransactionForm, SendTransactionData, WalletKeys, QRCodeScheme } from '@models/model';
+import { Contact, Wallet, SendTransactionForm, WalletKeys, QRCodeScheme } from '@models/model';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ContactsProvider } from '@providers/contacts/contacts';
@@ -21,7 +21,7 @@ import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
 import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';
 import * as constants from '@app/app.constants';
-import { TransactionSend } from 'ark-ts';
+import { TransactionSend, TransactionType } from 'ark-ts';
 
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
 import { AutoCompleteAccount, AutoCompleteAccountType } from '@models/contact';
@@ -76,6 +76,7 @@ export class TransactionSendPage implements OnInit {
   isRecipientNameAutoSet: boolean;
   hasSent = false;
   sendAllEnabled = false;
+  transactionType = TransactionType.SendArk;
 
   private currentAutoCompleteFieldValue: string;
   private unsubscriber$: Subject<void> = new Subject<void>();

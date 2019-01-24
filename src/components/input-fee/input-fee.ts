@@ -1,15 +1,18 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { TransactionType } from 'ark-ts';
 
 import { FeeStatistic } from '@models/stored-network';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { ArkUtility } from '../../utils/ark-utility';
 
+import 'rxjs/add/operator/switchMap';
+import { Subscription } from 'rxjs/Subscription';
+
 @Component({
   selector: 'input-fee',
   templateUrl: 'input-fee.html'
 })
-export class InputFeeComponent implements OnInit {
+export class InputFeeComponent implements OnInit, OnDestroy {
   @Input()
   public transactionType: number;
 
@@ -26,6 +29,7 @@ export class InputFeeComponent implements OnInit {
   public avg: number;
   public symbol: string;
   public isFeeLow = false;
+  public subscription: Subscription;
 
   constructor(
     private arkApiProvider: ArkApiProvider
@@ -40,7 +44,7 @@ export class InputFeeComponent implements OnInit {
   }
 
   public prepareFeeStatistics() {
-    this.arkApiProvider.fees.subscribe(fees => {
+    this.subscription = this.arkApiProvider.fees.switchMap(fees => {
       switch (Number(this.transactionType)) {
         case TransactionType.SendArk:
           this.v1Fee = fees.send;
@@ -49,18 +53,20 @@ export class InputFeeComponent implements OnInit {
           this.v1Fee = fees.vote;
           break;
       }
-      this.max = this.v1Fee;
-      if (!this.avg) {
-        this.avg = this.max / 2;
-        this.setRangeFee(this.avg);
-      }
-    });
 
-    this.arkApiProvider.feeStatistics.subscribe(fees => {
+      this.max = this.v1Fee;
+      this.avg = this.max / 2;
+      this.setRangeFee(this.avg);
+
+      return this.arkApiProvider.feeStatistics;
+    }).subscribe(fees => {
       this.v2Fee = fees.find(fee => fee.type === Number(this.transactionType));
+      if (this.v2Fee.fees.maxFee > this.max) {
+        this.max = this.v2Fee.fees.maxFee;
+      }
       this.avg = this.v2Fee.fees.avgFee;
       this.setRangeFee(this.avg);
-    })
+    });
   }
 
   public setRangeFee(value: number) {
@@ -95,4 +101,9 @@ export class InputFeeComponent implements OnInit {
   public emitChange() {
     this.onChange.next(this.rangeFee);
   }
+
+  ngOnDestroy () {
+    this.subscription.unsubscribe();
+  }
+
 }
