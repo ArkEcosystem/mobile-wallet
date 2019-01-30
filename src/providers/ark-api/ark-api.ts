@@ -150,8 +150,8 @@ export class ArkApiProvider {
       const peerConfigResponses = await Promise.all(configChecks.map(p => p.catch(e => e)));
       for (const peerId in peerConfigResponses) {
         const config = peerConfigResponses[peerId];
-        const apiConfig = lodash.get(config, 'data.plugins["@arkecosystem/core-api"]');
-        if (apiConfig && apiConfig.enabled && apiConfig.port) {
+        const apiConfig: any = lodash.find(config.data.plugins, (_, key) => key.includes('core-api'));
+        if (config && apiConfig && apiConfig.enabled && apiConfig.port) {
           const peer = preFilteredPeers[peerId];
           peer.port = apiConfig.port;
           filteredPeers.push(peer);
