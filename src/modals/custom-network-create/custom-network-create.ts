@@ -83,7 +83,7 @@ export class CustomNetworkCreateModal {
         this.network.activePeer.port = Number(seedServerUrl.port);
         this.network.type = null;
 
-        const apiConfig: any = lodash.find(r.data.plugins, (_, key) => key.includes('core-api'));
+        const apiConfig: any = lodash.find(r.data.plugins, (_, key) => key.split('/').reverse()[0] === 'core-api');
         if (!r.data.plugins || !apiConfig || !apiConfig.enabled || !apiConfig.port) {
           this.configureError();
           return;
