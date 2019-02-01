@@ -7,7 +7,7 @@ import { Clipboard } from '@ionic-native/clipboard';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
 
-import { Transaction, Wallet, WalletKeys } from '@models/model';
+import { Transaction, Wallet, WalletKeys, StoredNetwork } from '@models/model';
 import { TransactionType, Network } from 'ark-ts';
 
 @IonicPage()
@@ -25,7 +25,7 @@ export class TransactionResponsePage {
   public response: any = { status: false, message: '' };
 
   public showKeepSecondPassphrase = true;
-  public currentNetwork: Network;
+  public currentNetwork: StoredNetwork;
 
   constructor(
     public navCtrl: NavController,
@@ -46,7 +46,7 @@ export class TransactionResponsePage {
     if (!this.response) { this.navCtrl.pop(); }
 
     this.currentNetwork = this.userDataProvider.currentNetwork;
-    if (transaction) { this.transaction = new Transaction(this.wallet.address).deserialize(transaction); }
+    if (transaction) { this.transaction = new Transaction(this.wallet.address, this.currentNetwork).deserialize(transaction); }
 
     this.verifySecondPassphrasHasEncrypted();
   }
@@ -58,7 +58,7 @@ export class TransactionResponsePage {
   }
 
   openInExplorer() {
-    const url = `${this.currentNetwork.explorer}/tx/${this.transaction.id}`;
+    const url = `${this.currentNetwork.explorer}/transaction/${this.transaction.id}`;
     return this.iab.create(url, '_system');
   }
 

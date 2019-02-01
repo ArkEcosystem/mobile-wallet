@@ -27,7 +27,7 @@ export class ConfirmTransactionComponent {
   ) { }
 
   open(transaction: any, keys: WalletKeys, addressCheckResult?: AddressCheckResult) {
-    transaction = new Transaction(this.wallet.address).deserialize(transaction);
+    transaction = new Transaction(this.wallet.address, this.arkApiProvider.network).deserialize(transaction);
 
     this.arkApiProvider.createTransaction(transaction, keys.key, keys.secondKey, keys.secondPassphrase)
       .subscribe((tx) => {

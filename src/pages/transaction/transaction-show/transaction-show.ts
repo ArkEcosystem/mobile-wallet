@@ -8,7 +8,7 @@ import { ContactsProvider } from '@providers/contacts/contacts';
 import { Network } from 'ark-ts/model';
 import { TranslateService } from '@ngx-translate/core';
 import { TruncateMiddlePipe } from '@pipes/truncate-middle/truncate-middle';
-import { Wallet } from '@models/model';
+import { Wallet, StoredNetwork } from '@models/model';
 
 @IonicPage()
 @Component({
@@ -19,12 +19,11 @@ import { Wallet } from '@models/model';
 export class TransactionShowPage {
 
   public transaction: Transaction;
-  public currentNetwork: Network;
   public equivalentAmount = 0;
   public equivalentSymbol: string;
 
   public showOptions = false;
-
+  private currentNetwork: StoredNetwork;
   private currentWallet: Wallet;
 
   constructor(
@@ -47,12 +46,12 @@ export class TransactionShowPage {
 
     if (!transaction) { this.navCtrl.popToRoot(); }
 
-    this.transaction = new Transaction(transaction.address).deserialize(transaction);
+    this.transaction = new Transaction(transaction.address, this.currentNetwork).deserialize(transaction);
     this.shouldShowOptions();
   }
 
   openInExplorer() {
-    const url = `${this.currentNetwork.explorer}/tx/${this.transaction.id}`;
+    const url = `${this.currentNetwork.explorer}/transaction/${this.transaction.id}`;
     return this.inAppBrowser.create(url, '_system');
   }
 
