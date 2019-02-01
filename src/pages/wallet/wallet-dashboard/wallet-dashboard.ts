@@ -104,6 +104,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   doRefresh(refresher: Refresher) {
+    this.refreshAccount();
     this.refreshTransactions(true, refresher);
   }
 
@@ -410,6 +411,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.arkApiProvider.api.account.get({address: this.address}).takeUntil(this.unsubscriber$).subscribe((response) => {
       if (response.success) {
         this.wallet.deserialize(response.account);
+        this.saveWallet();
         if (this.wallet.isDelegate) {
           return;
         }
@@ -423,8 +425,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
   private refreshAllData() {
     this.refreshAccount();
-    this.refreshTransactions(false);
-    this.saveWallet();
+    this.refreshTransactions();
   }
 
   private onUpdateMarket() {
