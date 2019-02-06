@@ -1,4 +1,4 @@
-import { Network, Peer } from ‘ark-ts’;
+import { Network, Peer } from 'ark-ts';
 
 export interface FeeStatistic {
   type: number;
