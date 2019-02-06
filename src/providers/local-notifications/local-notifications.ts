@@ -6,6 +6,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ContactsProvider } from '@providers/contacts/contacts';
+import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { UserSettings, Wallet, Transaction } from '@models/model';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -25,6 +26,7 @@ export class LocalNotificationsProvider {
     private settingsDataProvider: SettingsDataProvider,
     private translateService: TranslateService,
     private backgroundMode: BackgroundMode,
+    private arkApiProvider: ArkApiProvider,
   ) { }
 
   // Start provider
@@ -92,7 +94,7 @@ export class LocalNotificationsProvider {
             const w = new Wallet();
             Object.assign(w, wallet);
 
-            w.loadTransactions(response.transactions);
+            w.loadTransactions(response.transactions, this.arkApiProvider.network);
 
             this.userDataProvider.saveWallet(w, wallet.profileId);
 

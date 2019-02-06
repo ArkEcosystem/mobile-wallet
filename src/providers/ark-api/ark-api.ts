@@ -9,10 +9,11 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { StorageProvider } from '@providers/storage/storage';
 import { ToastProvider } from '@providers/toast/toast';
 
-import { Transaction, TranslatableObject } from '@models/model';
+import { Transaction, TranslatableObject, BlocksEpochResponse } from '@models/model';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
+import moment from 'moment';
 import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
@@ -99,6 +100,13 @@ export class ArkApiProvider {
 
     this._api = new arkts.Client(this._network);
     this.findGoodPeer();
+
+    // Fallback if the fetchEpoch fail
+    this._network.epoch = arktsConfig.blockchain.date;
+    this.userDataProvider.onUpdateNetwork$.next(this._network);
+
+    this.fetchFees().subscribe();
+    this.fetchEpoch().subscribe();
   }
 
   public async findGoodPeer() {
@@ -115,6 +123,11 @@ export class ArkApiProvider {
 
   private async tryGetFallbackPeer() {
     if (await this.findGoodPeerFromList(this.network.peerList)) {
+      return;
+    }
+
+    // Custom network
+    if (!this.network.type) {
       return;
     }
 
@@ -164,11 +177,13 @@ export class ArkApiProvider {
       const peerConfigResponses = await Promise.all(configChecks.map(p => p.catch(e => e)));
       for (const peerId in peerConfigResponses) {
         const config = peerConfigResponses[peerId];
-        const apiConfig = lodash.get(config, 'data.plugins["@arkecosystem/core-api"]');
-        if (apiConfig && apiConfig.enabled && apiConfig.port) {
-          const peer = preFilteredPeers[peerId];
-          peer.port = apiConfig.port;
-          filteredPeers.push(peer);
+        if (config && config.data) {
+          const apiConfig: any = lodash.find(config.data.plugins, (_, key) => key.split('/').reverse()[0] === 'core-api');
+          if (apiConfig && apiConfig.enabled && apiConfig.port) {
+            const peer = preFilteredPeers[peerId];
+            peer.port = apiConfig.port;
+            filteredPeers.push(peer);
+          }
         }
       }
     }
@@ -284,6 +299,10 @@ export class ArkApiProvider {
         return observer.complete();
       }
 
+      const epochTime = moment(this._network.epoch).utc().valueOf();
+      const now = moment().valueOf();
+      transaction.timestamp = Math.floor((now - epochTime) / 1000);
+
       transaction.signature = null;
       transaction.id = null;
 
@@ -394,6 +413,14 @@ export class ArkApiProvider {
         this._network.feeStatistics = data.feeStatistics;
         observer.next(this._network.feeStatistics);
       }, e => observer.error(e));
+    });
+  }
+
+  private fetchEpoch(): Observable<BlocksEpochResponse> {
+    return this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/blocks/getEpoch`).map((response: BlocksEpochResponse) => {
+      this._network.epoch = new Date(response.epoch);
+      this.userDataProvider.onUpdateNetwork$.next(this._network);
+      return response;
     });
   }
 
