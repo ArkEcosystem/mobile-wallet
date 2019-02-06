@@ -263,10 +263,12 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   presentLabelModal() {
     const modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label});
 
-    modal.onDidDismiss((label) => {
-      this.userDataProvider
+    modal.onDidDismiss((label, role) => {
+      if (role === 'submit') {
+        this.userDataProvider
           .setWalletLabel(this.wallet, label)
           .subscribe(null, error => this.toastProvider.error(error, 3000));
+      }
     });
 
     modal.present();
