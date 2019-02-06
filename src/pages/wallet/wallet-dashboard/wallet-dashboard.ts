@@ -396,7 +396,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       .takeUntil(this.unsubscriber$)
       .subscribe((response) => {
         if (response && response.success) {
-          this.wallet.loadTransactions(response.transactions);
+          this.wallet.loadTransactions(response.transactions, this.arkApiProvider.network);
           this.wallet.lastUpdate = new Date().getTime();
           this.wallet.isCold = lodash.isEmpty(response.transactions);
           if (save) { this.saveWallet(); }

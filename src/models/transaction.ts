@@ -4,6 +4,7 @@ import arkConfig from 'ark-ts/config';
 import { MarketCurrency, MarketHistory, MarketTicker } from '@models/market';
 
 import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
+import { StoredNetwork } from './stored-network';
 
 const TX_TYPES = {
   0: 'TRANSACTIONS_PAGE.SENT',
@@ -33,7 +34,7 @@ export class Transaction extends TransactionModel {
 
   public date: Date;
 
-  constructor(public address: string) {
+  constructor(public address: string, public network: StoredNetwork) {
     super();
   }
 
@@ -75,8 +76,7 @@ export class Transaction extends TransactionModel {
   }
 
   getTimestamp() {
-    const blockchainDate = arkConfig.blockchain.date;
-    const blockchainTime = blockchainDate.getTime() / 1000;
+    const blockchainTime = new Date(this.network.epoch).getTime() / 1000;
 
     return this.timestamp + blockchainTime;
   }
