@@ -35,7 +35,7 @@ export class Transaction extends TransactionModel {
 
   public date: Date;
 
-  constructor(public address: string, public network: StoredNetwork) {
+  constructor(public address: string, private network: StoredNetwork) {
     super();
   }
 
@@ -47,6 +47,7 @@ export class Transaction extends TransactionModel {
     }
 
     this.date = new Date(this.getTimestamp() * 1000);
+    delete self.network;
 
     return self;
   }

@@ -337,7 +337,6 @@ export class ArkApiProvider {
           }
 
           observer.next(transaction);
-
           if (this._network.isV2 && !result.data.accept.length && result.data.broadcast.length) {
             this.toastProvider.warn('TRANSACTIONS_PAGE.WARNING.BROADCAST');
           }
