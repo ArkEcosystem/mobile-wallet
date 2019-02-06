@@ -4,6 +4,7 @@ import { MarketCurrency } from '@models/market';
 import { Transaction } from '@models/transaction';
 
 import * as constants from '@app/app.constants';
+import { StoredNetwork } from './stored-network';
 
 export interface QRCodeScheme {
   address?: string;
@@ -76,13 +77,13 @@ export class Wallet extends Account {
     this.isCold = false;
   }
 
-  loadTransactions(transactions: any) {
+  loadTransactions(transactions: any, network: StoredNetwork) {
     if (!Array.isArray(transactions) || transactions.length <= 0) { return; }
 
     this.transactions = [];
 
     for (const tx of transactions) {
-      const transaction = new Transaction(this.address);
+      const transaction = new Transaction(this.address, network);
       transaction.deserialize(tx);
 
       this.transactions.push(transaction);

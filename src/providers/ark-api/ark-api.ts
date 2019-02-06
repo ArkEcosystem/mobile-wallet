@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -8,10 +9,11 @@ import { UserDataProvider } from '@providers/user-data/user-data';
 import { StorageProvider } from '@providers/storage/storage';
 import { ToastProvider } from '@providers/toast/toast';
 
-import { Transaction, TranslatableObject } from '@models/model';
+import { Transaction, TranslatableObject, BlocksEpochResponse } from '@models/model';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
+import moment from 'moment';
 import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
@@ -34,6 +36,7 @@ export class ArkApiProvider {
   public arkjs = require('arkjs');
 
   constructor(
+    private httpClient: HttpClient,
     private userDataProvider: UserDataProvider,
     private storageProvider: StorageProvider,
     private toastProvider: ToastProvider) {
@@ -85,6 +88,13 @@ export class ArkApiProvider {
 
     this._api = new arkts.Client(this._network);
     this.findGoodPeer();
+
+    // Fallback if the fetchEpoch fail
+    this._network.epoch = arktsConfig.blockchain.date;
+    this.userDataProvider.onUpdateNetwork$.next(this._network);
+
+    this.fetchFees().subscribe();
+    this.fetchEpoch().subscribe();
   }
 
   public async findGoodPeer() {
@@ -101,6 +111,11 @@ export class ArkApiProvider {
 
   private async tryGetFallbackPeer() {
     if (await this.findGoodPeerFromList(this.network.peerList)) {
+      return;
+    }
+
+    // Custom network
+    if (!this.network.type) {
       return;
     }
 
@@ -272,6 +287,10 @@ export class ArkApiProvider {
         return observer.complete();
       }
 
+      const epochTime = moment(this._network.epoch).utc().valueOf();
+      const now = moment().valueOf();
+      transaction.timestamp = Math.floor((now - epochTime) / 1000);
+
       transaction.signature = null;
       transaction.id = null;
 
@@ -360,6 +379,14 @@ export class ArkApiProvider {
     });
 
     this.fetchFees().subscribe();
+  }
+
+  private fetchEpoch(): Observable<BlocksEpochResponse> {
+    return this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/blocks/getEpoch`).map((response: BlocksEpochResponse) => {
+      this._network.epoch = new Date(response.epoch);
+      this.userDataProvider.onUpdateNetwork$.next(this._network);
+      return response;
+    });
   }
 
   private fetchFees(): Observable<arkts.Fees> {
