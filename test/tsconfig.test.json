@@ -29,6 +29,7 @@
   "include": [
     "helpers.ts",
     "../src/**/*.ts",
-    "../node_modules/ark-ts/node_modules/json-typescript-mapper/libs/utils.ts"
+    "../node_modules/ark-ts/node_modules/json-typescript-mapper/libs/utils.ts",
+    "../node_modules/json-typescript-mapper/libs/utils.ts",
   ]
 }
