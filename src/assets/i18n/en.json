@@ -236,7 +236,15 @@
     "SENT_SUCCESS": "Transaction sent with success!",
     "SMART_BRIDGE": "SmartBridge (optional)",
     "TO": "To",
-    "TRANSACTION": "Transaction"
+    "TRANSACTION": "Transaction",
+    "WARNING": {
+      "BROADCAST": "Transaction was broadcasted to other peers. It may not be accepted by them",
+      "FEE_TO_LOW": "Transactions with low fees may never get confirmed"
+    },
+    "ERROR": {
+      "NOTHING_SENT": "The transaction could not be sent. Please check your network connection or change peer",
+      "FEE_TOO_LOW": "Transaction could not be sent because the fee ({{ fee }}) is too low"
+    }
   },
   "TYPE": "Type",
   "VALIDATION": {

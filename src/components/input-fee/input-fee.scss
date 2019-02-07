@@ -1,0 +1,48 @@
+.input-fee .item {
+  padding-left: 0;
+}
+
+.input-fee__wrapper {
+  position: relative;
+}
+
+.input-fee__range {
+  position: absolute;
+  bottom: 0;
+  background: transparent;
+}
+
+.input-fee__range .range {
+  padding: 0 12px;
+}
+
+.input-fee__input .label,
+.input-fee__label {
+  margin-bottom: 0!important;
+}
+
+.input-fee__input .label {
+  margin-top: 0!important;
+}
+
+.input-fee__input .item-inner {
+  box-shadow: none!important;
+}
+
+.input-fee__input .text-input {
+  margin-left: 0px!important;
+}
+
+.input-fee__input {
+  margin-bottom: 25px;
+}
+
+.input-fee--low .input-fee__label {
+  color: color($colors, danger, base);
+}
+
+.input-fee__helper {
+  padding-top: 2px;
+  padding-bottom: 5px;
+  color: color($colors, danger, base);
+}

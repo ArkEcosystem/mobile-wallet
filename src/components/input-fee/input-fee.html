@@ -1,0 +1,39 @@
+<ion-grid class="input-fee" [ngClass]="isFeeLow ? 'input-fee--low' : ''">
+  <ion-row class="input-fee__wrapper">
+    <ion-label stacked class="input-fee__label">Fee</ion-label>
+    <ion-item no-lines class="input-fee__input">
+      <ion-label>{{ symbol }}</ion-label>
+      <ion-input [(ngModel)]="inputFee" name="fee-input" [step]="step" [min]="min" [max]="max" (ionChange)="onInputText()" type="string">
+      </ion-input>
+    </ion-item>
+    <ion-item no-lines class="input-fee__range">
+      <ion-range [(ngModel)]="rangeFee" name="fee-range" [step]="step" [min]="min" [max]="max" (ionChange)="onInputRange()">
+      </ion-range>
+    </ion-item>
+  </ion-row>
+
+  <ion-label *ngIf="isFeeLow" class="input-fee__helper no-margin">
+    {{ 'TRANSACTIONS_PAGE.WARNING.FEE_TO_LOW' | translate }}
+  </ion-label>
+
+  <ion-grid fixed class="button-group no-padding">
+    <ion-row nowrap class="no-padding">
+      <ion-col>
+        <button ion-button block [outline]="min !== rangeFee" color="primary" (click)="setRangeFee(min)">
+          Min
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button block [outline]="avg !== rangeFee" color="primary" (click)="setRangeFee(avg)">
+          Average
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button block [outline]="max !== rangeFee" color="primary" (click)="setRangeFee(max)">
+          Max
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-grid>

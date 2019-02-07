@@ -3,7 +3,7 @@
   <ion-navbar>
     <h6 class="no-padding no-margin" text-center>{{ 'TRANSACTIONS_PAGE.SEND_TRANSACTION' | translate }}</h6>
     <ion-buttons end>
-      <button ion-button clear (click)="sendAll()" color="primary">{{ 'TRANSACTIONS_PAGE.SEND_ALL' | translate }}</button>
+      <button ion-button clear (click)="toggleSendAll()" color="primary">{{ 'TRANSACTIONS_PAGE.SEND_ALL' | translate }}</button>
     </ion-buttons>
   </ion-navbar>
 
@@ -69,6 +69,11 @@
             <ion-label floating stacked>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</ion-label>
             <ion-input type="text" formControlName="smartBridge" name="smartBridge" [(ngModel)]="transaction.smartBridge" maxlength="64"></ion-input>
           </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <input-fee [transactionType]="transactionType" (onChange)="onFeeChange($event)"></input-fee>
         </ion-col>
       </ion-row>
       <ion-row>
