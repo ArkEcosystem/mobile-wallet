@@ -16,7 +16,6 @@ import { Network, Fees } from 'ark-ts/model';
 import { Subject } from 'rxjs/Subject';
 
 import { TruncateMiddlePipe } from '@pipes/truncate-middle/truncate-middle';
-import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@components/confirm-transaction/confirm-transaction';
 import { QRScannerComponent } from '@components/qr-scanner/qr-scanner';
@@ -55,7 +54,7 @@ enum AddressType {
 @Component({
   selector: 'page-transaction-send',
   templateUrl: 'transaction-send.html',
-  providers: [UnitsSatoshiPipe, TruncateMiddlePipe],
+  providers: [TruncateMiddlePipe],
 })
 export class TransactionSendPage implements OnInit {
   @ViewChild('sendTransactionForm') sendTransactionHTMLForm: HTMLFormElement;
@@ -88,7 +87,6 @@ export class TransactionSendPage implements OnInit {
     private arkApiProvider: ArkApiProvider,
     private toastProvider: ToastProvider,
     public contactsAutoCompleteService: AccountAutoCompleteService,
-    private unitsSatoshiPipe: UnitsSatoshiPipe,
     private truncateMiddlePipe: TruncateMiddlePipe,
     private addressChecker: AddressCheckerProvider,
     private loadingCtrl: LoadingController,
@@ -126,7 +124,7 @@ export class TransactionSendPage implements OnInit {
       return;
     }
 
-    this.transaction.amount = this.unitsSatoshiPipe.transform(sendableAmount, true);
+    this.transaction.amount = ArkUtility.arktoshiToArk(sendableAmount, true);
     this.amountComponent.setAmount(this.transaction.amount);
   }
 

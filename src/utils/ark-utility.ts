@@ -16,12 +16,22 @@ export class ArkUtility {
     return result;
   }
 
-  public static subToUnit(value: number|string) {
+  public static subToUnit(value: number | string, parseScientificNotation: boolean = true) {
     if (!value) {
       return '';
     }
 
-    return new BigNumber(value.toString()).dividedBy(constants.WALLET_UNIT_TO_SATOSHI).toString();
+    let amount = new BigNumber(value.toString()).dividedBy(constants.WALLET_UNIT_TO_SATOSHI).toString();
+
+    // Convert the fee to String to not use the exponential notation
+    if (parseScientificNotation) {
+      const parts = amount.split('e-');
+      if (parts.length > 1) {
+        amount = parseFloat(amount).toFixed(parseInt(parts[1]));
+      }
+    }
+
+    return amount;
   }
 
   public static unitToSub(value: number|string) {

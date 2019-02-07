@@ -79,13 +79,7 @@ export class InputFeeComponent implements OnInit, OnDestroy {
   }
 
   public onInputRange() {
-    let fee = ArkUtility.subToUnit(this.rangeFee);
-
-    // Convert the fee to String to not use the exponential notation
-    const parts = fee.split('e-');
-    if (parts.length > 1) {
-      fee = parseFloat(fee).toFixed(parseInt(parts[1]));
-    }
+    const fee = ArkUtility.subToUnit(this.rangeFee);
 
     this.isFeeLow = this.avg > this.rangeFee;
     this.inputFee = fee;
