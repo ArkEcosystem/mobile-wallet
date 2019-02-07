@@ -3,8 +3,8 @@ import arkConfig from 'ark-ts/config';
 
 import { MarketCurrency, MarketHistory, MarketTicker } from '@models/market';
 
-import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
 import { StoredNetwork } from './stored-network';
+import { ArkUtility } from '../utils/ark-utility';
 
 const TX_TYPES = {
   0: 'TRANSACTIONS_PAGE.SENT',
@@ -71,8 +71,7 @@ export class Transaction extends TransactionModel {
       price = market.getPriceByDate(marketCurrency.code, this.date);
     }
 
-    const unitsSatoshiPipe = new UnitsSatoshiPipe();
-    const amount = unitsSatoshiPipe.transform(this.getAmount(), true);
+    const amount = ArkUtility.arktoshiToArk(this.getAmount(), true);
 
     return amount * price;
   }
