@@ -52,6 +52,9 @@ export class InputFeeComponent implements OnInit, OnDestroy {
         case TransactionType.Vote:
           this.v1Fee = fees.vote;
           break;
+        case TransactionType.CreateDelegate:
+          this.v1Fee = fees.delegate;
+          break;
       }
 
       this.max = this.v1Fee;

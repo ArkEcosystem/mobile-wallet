@@ -59,6 +59,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
   public onEnterPinCode;
   private newDelegateName: string;
+  private newDelegateFee: number;
   private newSecondPassphrase: string;
 
   public emptyTransactions = false;
@@ -277,10 +278,11 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   presentRegisterDelegateModal() {
     const modal = this.modalCtrl.create('RegisterDelegatePage', null);
 
-    modal.onDidDismiss((name) => {
+    modal.onDidDismiss(({ name, fee }) => {
       if (lodash.isEmpty(name)) { return; }
 
       this.newDelegateName = name;
+      this.newDelegateFee = fee;
       this.onEnterPinCode = this.createDelegate;
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
@@ -343,6 +345,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.arkApiProvider.api.transaction.createDelegate(transaction)
       .takeUntil(this.unsubscriber$)
       .subscribe((data) => {
+        data.fee = this.newDelegateFee;
         this.confirmTransaction.open(data, keys);
       });
   }

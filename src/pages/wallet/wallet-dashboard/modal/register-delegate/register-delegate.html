@@ -25,8 +25,14 @@
           </ion-item>
         </form>
         <ion-row>
+          <ion-col>
+            <input-fee [transactionType]="transactionType" (onChange)="onFeeChange($event)"></input-fee>
+          </ion-col>
+        </ion-row>
+        <ion-row>
           <ion-col text-center>
-            <button ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid || isExists" (click)="submitForm()">{{ 'CREATE' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+            <button ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid || isExists"
+              (click)="submitForm()">{{ 'CREATE' | translate }}</button>
           </ion-col>
         </ion-row>
       </ion-col>
@@ -34,12 +40,3 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="note-toolbar no-padding" [keyboard-attach]="content">
-  <ion-grid no-padding>
-    <ion-row>
-      <ion-col text-center no-padding>
-        <p>{{ 'DELEGATES_PAGE.NOTE_COST_TEXT' | translate }} {{ symbol }}{{ fee | unitsSatoshi }}!</p>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-footer>
