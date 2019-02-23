@@ -36,7 +36,8 @@
         </ion-toolbar>
       </ion-col>
     </ion-row>
-
+    
+    <form #voteForm="ngForm">
     <ion-row *ngIf="isWalletSelected()" class="vote-wrapper" padding>
       <ion-row class="vote-wrapper__slider">
         <input-fee [transactionType]="transactionType" (onChange)="onInputFee($event)"></input-fee>
@@ -49,6 +50,7 @@
         </ion-col>
       </ion-row>
     </ion-row>
+  </form>
   </ion-grid>
 </ion-content>
 
