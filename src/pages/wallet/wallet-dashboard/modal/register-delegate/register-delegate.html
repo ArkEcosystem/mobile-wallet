@@ -23,12 +23,12 @@
           <ion-item class="no-border">
             <p class="error-message" *ngIf="isExists">{{ 'DELEGATES_PAGE.USERNAME_ALREADY_EXISTS' | translate }}</p>
           </ion-item>
-        </form>
         <ion-row>
           <ion-col>
             <input-fee [transactionType]="transactionType" (onChange)="onFeeChange($event)"></input-fee>
           </ion-col>
         </ion-row>
+      </form>
         <ion-row>
           <ion-col text-center>
             <button ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid || isExists"
