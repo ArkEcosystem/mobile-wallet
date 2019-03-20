@@ -70,6 +70,7 @@ export class TransactionSendPage implements OnInit {
   currentWallet: Wallet;
   currentNetwork: Network;
   fee: number;
+  hasFeeError = false;
   addressType: AddressType = AddressType.Unknown;
   addressTypes = AddressType;
   isRecipientNameAutoSet: boolean;
@@ -333,6 +334,10 @@ export class TransactionSendPage implements OnInit {
     if (this.sendAllEnabled) {
       this.sendAll();
     }
+  }
+
+  public onFeeError(hasError: boolean) {
+    this.hasFeeError = hasError;
   }
 
   private setFormValuesFromAddress(address: string, alternativeRecipientName?: string): void {
