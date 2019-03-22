@@ -51,7 +51,6 @@ export class Transaction extends TransactionModel {
     this.amount = new BigNumber(input['amount']).toNumber();
     this.fee = new BigNumber(input['fee']).toNumber();
     delete self.network;
-
     return self;
   }
 
@@ -104,6 +103,7 @@ export class Transaction extends TransactionModel {
     let type = TX_TYPES[this.type];
 
     if (this.isTransfer() && !this.isSender()) { type = 'TRANSACTIONS_PAGE.RECEIVED'; }
+    if (this.type === TransactionType.Vote && this.isUnvote()) { type = 'DELEGATES_PAGE.UNVOTE'; }
 
     return type;
   }
@@ -112,6 +112,7 @@ export class Transaction extends TransactionModel {
     let type = TX_TYPES_ACTIVITY[this.type];
 
     if (this.isTransfer() && !this.isSender()) { type = 'TRANSACTIONS_PAGE.RECEIVED_FROM'; }
+    if (this.type === TransactionType.Vote && this.isUnvote()) { type = 'DELEGATES_PAGE.UNVOTE'; }
 
     return type;
   }
@@ -126,6 +127,14 @@ export class Transaction extends TransactionModel {
 
   isReceiver(): boolean {
     return this.recipientId === this.address;
+  }
+
+  isUnvote(): boolean {
+    if (this.asset && this.asset['votes']) {
+      const vote = this.asset['votes'][0];
+      return vote.charAt(0) === '-';
+    }
+    return false;
   }
 
 }
