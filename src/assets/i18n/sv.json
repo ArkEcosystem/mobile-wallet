@@ -106,7 +106,6 @@
     "PIN_UPDATED_TEXT": "Din PIN har uppdaterats",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Skriv in din PIN för att kryptera lösenordsfrasen",
     "TYPE_PIN_SIGN_TRANSACTION": "Skriv in din PIN för att signera transaktionen",
-    "TYPE_PIN_ENCRYPT_PASSPHRASE": "Skriv in din PIN för att kryptera lösenordsfrasen",
     "WRONG": "Vänligen ange rätt PIN"
   },
   "PROFILES_PAGE": {
