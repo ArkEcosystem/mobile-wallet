@@ -32,7 +32,9 @@ export class SettingsDataProvider {
       'pt-br': 'Português',
       'cs': 'Čeština',
       'kor': '한국어',
-      'bg': 'Български'
+      'bg': 'Български',
+      'pl': 'Polish',
+      'zh': '中文'
     },
     currencies: {
       'btc': 'Bitcoin',
