@@ -35,10 +35,10 @@ jobs:
           name: Build
           command: npm run build -- --prod
 
-  test-node-stable:
+  test-node-10:
       working_directory: ~/mobile-wallet
       docker:
-        - image: circleci/node:latest-browsers
+        - image: circleci/node:10-browsers
       steps: *teststeps
 
 workflows:
@@ -46,4 +46,4 @@ workflows:
   test:
     jobs:
       - test-node-9
-      - test-node-stable
+      - test-node-10
