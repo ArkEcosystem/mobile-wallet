@@ -7,11 +7,13 @@ export class PassphraseValidator {
       const passphrase = group.controls.controlAddressOrPassphrase.value;
       const nonBIP39 = group.controls.controlNonBIP39.value;
 
+      const trimmedPassphrase = passphrase ? passphrase.trim() : passphrase;
+
       if (nonBIP39 || !passphrase) { return null; }
-      const words = passphrase.split(' ');
+      const words = trimmedPassphrase.split(' ');
       if (words.length % 3 !== 0) { return { 'invalidWordNumber': true }; }
 
-      if (!bip39.validateMnemonic(passphrase)) { return { 'invalidMnemonic': true }; }
+      if (!bip39.validateMnemonic(trimmedPassphrase)) { return { 'invalidMnemonic': true }; }
 
       return null;
   }
