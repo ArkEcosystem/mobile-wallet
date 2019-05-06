@@ -21,7 +21,7 @@ import { Delegate } from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
 
 interface NodeConfigurationConstants {
-  vendorFieldLength: number;
+  vendorFieldLength?: number;
 }
 
 interface NodeConfigurationResponse {
@@ -404,7 +404,10 @@ export class ArkApiProvider {
 
     this.fetchFees().subscribe();
     this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
-      this._network.vendorFieldLength = response.data.constants.vendorFieldLength;
+      const vendorFieldLength = response.data.constants.vendorFieldLength;
+      if (vendorFieldLength) {
+        this._network.vendorFieldLength = vendorFieldLength;
+      }
       this._network.feeStatistics = response.data.feeStatistics;
     });
   }
