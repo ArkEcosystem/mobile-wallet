@@ -19,4 +19,5 @@ export class StoredNetwork extends Network {
   public peerList: Peer[];
   public feeStatistics: FeeStatistic[];
   public epoch: Date;
+  public vendorFieldLength: number;
 }
