@@ -106,7 +106,7 @@ export class TransactionSendPage implements OnInit {
     }
   }
 
-  vendorFieldLength () {
+  get vendorFieldLength () {
     return this.currentNetwork.vendorFieldLength || 255;
   }
 
