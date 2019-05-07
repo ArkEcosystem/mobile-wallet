@@ -78,9 +78,6 @@ export class CustomNetworkCreateModal {
         this.network.symbol = lodash.get(r, 'data.network.token.symbol');
         this.network.explorer = lodash.get(r, 'data.network.explorer');
         this.network.version = lodash.get(r, 'data.network.version');
-        this.network.activePeer = new Peer();
-        this.network.activePeer.ip = seedServerUrl.hostname;
-        this.network.activePeer.port = Number(seedServerUrl.port);
         this.network.type = null;
 
         const apiConfig: any = lodash.find(r.data.plugins, (_, key) => key.split('/').reverse()[0] === 'core-api');
@@ -91,6 +88,11 @@ export class CustomNetworkCreateModal {
         this.network.apiPort = apiConfig.port;
         this.network.p2pPort = Number(seedServerUrl.port);
         this.network.p2pVersion = '2.0.0';
+
+        this.network.activePeer = new Peer();
+        this.network.activePeer.ip = seedServerUrl.hostname;
+        this.network.activePeer.port = this.network.apiPort;
+
         this.network.isV2 = true;
         this.dismiss(this.network);
       }, () => this.configureError());
