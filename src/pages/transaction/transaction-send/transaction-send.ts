@@ -106,7 +106,7 @@ export class TransactionSendPage implements OnInit {
     }
   }
 
-  vendorFieldLength () {
+  get vendorFieldLength () {
     return this.currentNetwork.vendorFieldLength || 255;
   }
 
@@ -216,7 +216,7 @@ export class TransactionSendPage implements OnInit {
     if (
       !this.sendTransactionHTMLForm.form.controls['amount'].value
       || this.sendTransactionHTMLForm.form.controls['amount'].value <= 0
-      || this.sendTransactionHTMLForm.form.controls['smartBridge'].length > this.vendorFieldLength
+      || this.sendTransactionHTMLForm.form.controls['smartBridge'].value.length > this.vendorFieldLength
     ) {
       isValid = false;
     }
