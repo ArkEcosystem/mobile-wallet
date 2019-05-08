@@ -110,6 +110,7 @@ export class ArkApiProvider {
         network.activePeer = activePeer;
       }
     }
+    this._delegates = [];
 
     this._network = network;
     this.arkjs.crypto.setNetworkVersion(this._network.version);
