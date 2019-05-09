@@ -452,7 +452,7 @@ export class ArkApiProvider {
           fees: {
             minFee: Number(item.min),
             maxFee: Number(item.max),
-            avgFee: Number(item.max),
+            avgFee: Number(item.avg),
           }
         }));
 
