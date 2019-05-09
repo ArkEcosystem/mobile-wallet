@@ -407,7 +407,7 @@ export class ArkApiProvider {
       return response.success && response.transactionIds;
     } else {
       const { data, errors } = response;
-      return data && data.invalid.length === 0 && errors === null;
+      return data && data.invalid.length === 0 && !errors;
     }
   }
 
