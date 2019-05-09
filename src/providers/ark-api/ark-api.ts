@@ -20,6 +20,17 @@ import { ArkUtility } from '../../utils/ark-utility';
 import { Delegate } from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
 
+interface NodeFees {
+  type: number;
+  min: number;
+  max: number;
+  avg: number;
+}
+
+interface NodeFeesResponse {
+  data: NodeFees[];
+}
+
 interface NodeConfigurationConstants {
   vendorFieldLength?: number;
 }
@@ -400,12 +411,12 @@ export class ArkApiProvider {
     });
 
     this.fetchFees().subscribe();
+    this.fetchFeeStatistics().subscribe();
     this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
       const vendorFieldLength = response.data.constants.vendorFieldLength;
       if (vendorFieldLength) {
         this._network.vendorFieldLength = vendorFieldLength;
       }
-      this._network.feeStatistics = response.data.feeStatistics;
     });
   }
 
@@ -427,11 +438,32 @@ export class ArkApiProvider {
     }
 
     return Observable.create((observer) => {
-      this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
+      this.httpClient.get(
+        `${this._network.getPeerAPIUrl()}/api/v2/node/fees?days=30`
+      ).subscribe((response: NodeFeesResponse) => {
         const data = response.data;
-        this._network.feeStatistics = data.feeStatistics;
-        observer.next(this._network.feeStatistics);
-      }, e => observer.error(e));
+        // Converts the new response to the old template
+        const feeStatistics: FeeStatistic[] = data.map(item => ({
+          type: Number(item.type),
+          fees: {
+            minFee: Number(item.min),
+            maxFee: Number(item.max),
+            avgFee: Number(item.avg),
+          }
+        }));
+
+        this._network.feeStatistics = feeStatistics;
+        observer.next(feeStatistics);
+      }, () => {
+        this.fetchNodeConfiguration().subscribe(
+          (response: NodeConfigurationResponse) => {
+            const data = response.data;
+            this._network.feeStatistics = data.feeStatistics;
+            observer.next(this._network.feeStatistics);
+          },
+          e => observer.error(e)
+        );
+      });
     });
   }
 
