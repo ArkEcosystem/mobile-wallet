@@ -167,10 +167,6 @@ export class ArkApiProvider {
       }
     }
     const preFilteredPeers = lodash.filter(peerList, (peer) => {
-      if (peer['status'] !== 'OK') {
-        return false;
-      }
-
       if (peer['port'] !== port) {
         return false;
       }
