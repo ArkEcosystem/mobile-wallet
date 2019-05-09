@@ -222,6 +222,9 @@ export class ArkApiProvider {
           if (apiConfig && apiConfig.enabled && apiConfig.port) {
             const peer = preFilteredPeers[peerId];
             peer.port = apiConfig.port;
+            if (config.data.version) {
+              peer.version = config.data.version;
+            }
             filteredPeers.push(peer);
           }
         }
