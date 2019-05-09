@@ -119,11 +119,13 @@
     "DELAY": "Delay",
     "HEIGHT": "Height",
     "LOOKING_GOOD_PEER": "Looking for a good peer",
+    "NO_GOOD_PEER": "No good peer could be found!",
     "PEER_SUCCESSFULLY_CHANGED": "Peer successfully changed",
     "NETWORK_STATUS": "Network Status",
     "NETWORK_TYPE": "Network Type",
     "INTERNET_DESCONNECTED": "Unable to connect to the Internet!",
     "PEER": "Peer",
+    "RESET_TO_SEED": "Reset to Seed Peer",
     "VERSION": "Version"
   },
   "NEXT": "Next",
