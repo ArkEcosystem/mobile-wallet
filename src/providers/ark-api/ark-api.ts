@@ -138,6 +138,33 @@ export class ArkApiProvider {
     async () => await this.tryGetFallbackPeer());
   }
 
+  public async findGoodSeedPeer() {
+    const configNetwork = arktsConfig.networks[this._network.name];
+    let peers;
+    if (configNetwork) {
+      peers = configNetwork.peers.map(peer => {
+        const ip = peer.match(/^(\d+\.?){4}/);
+        const port = peer.match(/:\d+$/);
+
+        return {
+          ip: ip[0],
+          port: port[0].substring(1),
+          version: configNetwork.p2pVersion
+        };
+      });
+    } else {
+      peers = this.network.peerList;
+    }
+
+    if (lodash.isEmpty(peers)) {
+      return false;
+    }
+
+    await this.findGoodPeerFromList(peers);
+
+    return true;
+  }
+
   private async tryGetFallbackPeer() {
     if (await this.findGoodPeerFromList(this.network.peerList)) {
       return;
