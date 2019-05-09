@@ -40,7 +40,7 @@
                     <span class="username">{{ delegate?.username }}</span>
                     <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTED' | translate | lowercase }}</ion-badge>
                   </ion-col>
-                  <ion-col col-2 text-center><span class="percentage">{{ (delegate?.productivity).toFixed(2) }}%</span></ion-col>
+                  <ion-col col-2 text-center><span class="percentage">{{ (delegate?.approval).toFixed(2) }}%</span></ion-col>
                 </ion-row>
               </ion-grid>
             </ion-item>
@@ -60,7 +60,7 @@
                     <span class="username">{{ delegate?.username }}</span>
                     <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTED' | translate | lowercase }}</ion-badge>
                   </ion-col>
-                  <ion-col col-2 text-center><span class="percentage">{{ (delegate?.productivity).toFixed(2) }}%</span></ion-col>
+                  <ion-col col-2 text-center><span class="percentage">{{ (delegate?.approval).toFixed(2) }}%</span></ion-col>
                 </ion-row>
               </ion-grid>
             </ion-item>

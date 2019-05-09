@@ -21,9 +21,14 @@ import { ArkUtility } from '../../utils/ark-utility';
 import {AccountResponse, Delegate} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
 
+interface NodeConfigurationConstants {
+  vendorFieldLength?: number;
+}
+
 interface NodeConfigurationResponse {
   data: {
-    feeStatistics: FeeStatistic[]
+    feeStatistics: FeeStatistic[],
+    constants: NodeConfigurationConstants
   };
 }
 
@@ -100,6 +105,7 @@ export class ArkApiProvider {
         network.activePeer = activePeer;
       }
     }
+    this._delegates = [];
 
     this._network = network;
     this.arkjs.crypto.setNetworkVersion(this._network.version);
@@ -424,7 +430,25 @@ export class ArkApiProvider {
     });
 
     this.fetchFees().subscribe();
-    this.fetchFeeStatistics().subscribe();
+    this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
+      const vendorFieldLength = response.data.constants.vendorFieldLength;
+      if (vendorFieldLength) {
+        this._network.vendorFieldLength = vendorFieldLength;
+      }
+      this._network.feeStatistics = response.data.feeStatistics;
+    });
+  }
+
+  private fetchNodeConfiguration(): Observable<NodeConfigurationResponse> {
+    if (!this._network || !this._network.isV2) {
+      return Observable.empty();
+    }
+
+    return Observable.create((observer) => {
+      this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/v2/node/configuration`).subscribe((response: NodeConfigurationResponse) => {
+        observer.next(response);
+      }, e => observer.error(e));
+    });
   }
 
   private fetchFeeStatistics(): Observable<FeeStatistic[]> {
@@ -433,7 +457,7 @@ export class ArkApiProvider {
     }
 
     return Observable.create((observer) => {
-      this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/v2/node/configuration`).subscribe((response: NodeConfigurationResponse) => {
+      this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
         const data = response.data;
         this._network.feeStatistics = data.feeStatistics;
         observer.next(this._network.feeStatistics);

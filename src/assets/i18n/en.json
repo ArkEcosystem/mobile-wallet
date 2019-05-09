@@ -152,6 +152,17 @@
     "WEAK_PIN": "Weak PIN",
     "WEAK_PIN_DETAIL": "The PIN you entered is considered weak and easy to guess. Are you sure you want to use it?"
   },
+  "INPUT_FEE": {
+    "MIN": "Min",
+    "AVERAGE": "Average",
+    "MAX": "Max",
+    "LOW_FEE_NOTICE": "Transactions with low fees may never get confirmed",
+    "ADVANCED_NOTICE": "Be careful what fee you choose as it will cost more than necessary if too high",
+    "STATIC_FEE": "The network fee has been set to the static value of {{ fee }}",
+    "ERROR": {
+      "MORE_THAN_MAXIMUM": "The maximum fee is {{ symbol }} {{ fee }}"
+    }
+  },
   "PULL_REFRESH": "Pull to refresh",
   "PROFILES_PAGE": {
     "PROFILENAME_ALREADY_EXISTS": "There is already a profile with the name '{{ name }}'!",
@@ -238,8 +249,7 @@
     "TO": "To",
     "TRANSACTION": "Transaction",
     "WARNING": {
-      "BROADCAST": "Transaction was broadcasted to other peers. It may not be accepted by them",
-      "FEE_TO_LOW": "Transactions with low fees may never get confirmed"
+      "BROADCAST": "Transaction was broadcasted to other peers. It may not be accepted by them"
     },
     "ERROR": {
       "NOTHING_SENT": "The transaction could not be sent. Please check your network connection or change peer",
