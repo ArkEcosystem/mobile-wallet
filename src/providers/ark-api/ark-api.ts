@@ -145,11 +145,12 @@ export class ArkApiProvider {
       peers = configNetwork.peers.map(peer => {
         const ip = peer.match(/^(\d+\.?){4}/);
         const port = peer.match(/:\d+$/);
+
         return {
           ip: ip[0],
           port: port[0].substring(1),
           version: configNetwork.p2pVersion
-        }
+        };
       });
     } else {
       peers = this.network.peerList;
