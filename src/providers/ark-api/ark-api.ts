@@ -21,6 +21,17 @@ import { ArkUtility } from '../../utils/ark-utility';
 import {AccountResponse, Delegate} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
 
+interface NodeFees {
+  type: number;
+  min: number;
+  max: number;
+  avg: number;
+}
+
+interface NodeFeesResponse {
+  data: NodeFees[];
+}
+
 interface NodeConfigurationConstants {
   vendorFieldLength?: number;
 }
@@ -133,6 +144,33 @@ export class ArkApiProvider {
     async () => await this.tryGetFallbackPeer());
   }
 
+  public async findGoodSeedPeer() {
+    const configNetwork = arktsConfig.networks[this._network.name];
+    let peers;
+    if (configNetwork) {
+      peers = configNetwork.peers.map(peer => {
+        const ip = peer.match(/^(\d+\.?){4}/);
+        const port = peer.match(/:\d+$/);
+
+        return {
+          ip: ip[0],
+          port: port[0].substring(1),
+          version: configNetwork.p2pVersion
+        };
+      });
+    } else {
+      peers = this.network.peerList;
+    }
+
+    if (lodash.isEmpty(peers)) {
+      return false;
+    }
+
+    await this.findGoodPeerFromList(peers);
+
+    return true;
+  }
+
   private async tryGetFallbackPeer() {
     if (await this.findGoodPeerFromList(this.network.peerList)) {
       return;
@@ -162,10 +200,6 @@ export class ArkApiProvider {
       }
     }
     const preFilteredPeers = lodash.filter(peerList, (peer) => {
-      if (peer['status'] !== 'OK') {
-        return false;
-      }
-
       if (peer['port'] !== port) {
         return false;
       }
@@ -194,6 +228,9 @@ export class ArkApiProvider {
           if (apiConfig && apiConfig.enabled && apiConfig.port) {
             const peer = preFilteredPeers[peerId];
             peer.port = apiConfig.port;
+            if (config.data.version) {
+              peer.version = config.data.version;
+            }
             filteredPeers.push(peer);
           }
         }
@@ -399,7 +436,7 @@ export class ArkApiProvider {
       return response.success && response.transactionIds;
     } else {
       const { data, errors } = response;
-      return data && data.invalid.length === 0 && errors === null;
+      return data && data.invalid.length === 0 && !errors;
     }
   }
 
@@ -430,12 +467,12 @@ export class ArkApiProvider {
     });
 
     this.fetchFees().subscribe();
+    this.fetchFeeStatistics().subscribe();
     this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
       const vendorFieldLength = response.data.constants.vendorFieldLength;
       if (vendorFieldLength) {
         this._network.vendorFieldLength = vendorFieldLength;
       }
-      this._network.feeStatistics = response.data.feeStatistics;
     });
   }
 
@@ -457,11 +494,32 @@ export class ArkApiProvider {
     }
 
     return Observable.create((observer) => {
-      this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
+      this.httpClient.get(
+        `${this._network.getPeerAPIUrl()}/api/v2/node/fees?days=30`
+      ).subscribe((response: NodeFeesResponse) => {
         const data = response.data;
-        this._network.feeStatistics = data.feeStatistics;
-        observer.next(this._network.feeStatistics);
-      }, e => observer.error(e));
+        // Converts the new response to the old template
+        const feeStatistics: FeeStatistic[] = data.map(item => ({
+          type: Number(item.type),
+          fees: {
+            minFee: Number(item.min),
+            maxFee: Number(item.max),
+            avgFee: Number(item.avg),
+          }
+        }));
+
+        this._network.feeStatistics = feeStatistics;
+        observer.next(feeStatistics);
+      }, () => {
+        this.fetchNodeConfiguration().subscribe(
+          (response: NodeConfigurationResponse) => {
+            const data = response.data;
+            this._network.feeStatistics = data.feeStatistics;
+            observer.next(this._network.feeStatistics);
+          },
+          e => observer.error(e)
+        );
+      });
     });
   }
 
