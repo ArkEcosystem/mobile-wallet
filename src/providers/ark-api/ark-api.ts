@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -8,8 +8,9 @@ import 'rxjs/add/operator/expand';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { StorageProvider } from '@providers/storage/storage';
 import { ToastProvider } from '@providers/toast/toast';
+import { HttpUtils } from '@root/src/utils/http-utils';
 
-import { Transaction, TranslatableObject, BlocksEpochResponse } from '@models/model';
+import {Transaction, TranslatableObject, BlocksEpochResponse, Wallet} from '@models/model';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
@@ -17,7 +18,7 @@ import moment from 'moment';
 import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
-import { Delegate } from 'ark-ts';
+import {AccountResponse, Delegate} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
 
 interface NodeFees {
@@ -48,6 +49,7 @@ export class ArkApiProvider {
   public onUpdatePeer$: Subject<arkts.Peer> = new Subject<arkts.Peer>();
   public onUpdateDelegates$: Subject<arkts.Delegate[]> = new Subject<arkts.Delegate[]>();
   public onSendTransaction$: Subject<arkts.Transaction> = new Subject<arkts.Transaction>();
+  public onUpdateTopWallets$: Subject<Wallet[]> = new Subject<Wallet[]>();
 
   private _network: StoredNetwork;
   private _api: arkts.Client;
@@ -96,6 +98,10 @@ export class ArkApiProvider {
     if (!lodash.isEmpty(this._delegates)) { return Observable.of(this._delegates); }
 
     return this.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2);
+  }
+
+  public get topWallets(): Observable<Wallet[]> {
+    return this.fetchTopWallets(constants.TOP_WALLETS_TO_FETCH);
   }
 
   public setNetwork(network: StoredNetwork) {
@@ -299,6 +305,26 @@ export class ArkApiProvider {
       });
     });
 
+  }
+
+  fetchTopWallets(numberWalletsToGet: number, page?: number): Observable<Wallet[]> {
+    if (!this._network || !this._network.isV2) {
+      return Observable.empty();
+    }
+
+    let topWallets: Wallet[] = [];
+
+    const queryParams: HttpParams = HttpUtils.buildQueryParams({ limit : numberWalletsToGet, page: page});
+
+    return Observable.create((observer) => {
+      this.httpClient.get<{ data: Wallet[], meta: any }>(`${this._network.getPeerAPIUrl()}/api/v2/wallets/top`, { params: queryParams })
+        .subscribe((response) => {
+          topWallets = response.data;
+          this.onUpdateTopWallets$.next(topWallets);
+          observer.next(topWallets);
+        });
+      }
+    );
   }
 
   public createTransaction(transaction: Transaction, key: string, secondKey: string, secondPassphrase: string): Observable<Transaction> {
