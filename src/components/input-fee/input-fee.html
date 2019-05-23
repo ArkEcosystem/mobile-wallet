@@ -1,36 +1,47 @@
-<ion-grid class="input-fee" [ngClass]="isFeeLow ? 'input-fee--low' : ''">
+<ion-grid class="input-fee" [ngClass]="{'input-fee--warning': !!warningMessage, 'input-fee--danger': !!errorMessage}">
   <ion-row class="input-fee__wrapper">
-    <ion-label stacked class="input-fee__label">Fee</ion-label>
+    <ion-label stacked class="input-fee__label" color="">Fee</ion-label>
     <ion-item no-lines class="input-fee__input">
       <ion-label>{{ symbol }}</ion-label>
-      <ion-input [(ngModel)]="inputFee" name="fee-input" [step]="step" [min]="min" [max]="max" (ionChange)="onInputText()" type="string">
+      <ion-input [(ngModel)]="inputFee" name="fee-input" [step]="step" [min]="min" [max]="max"
+        (ionChange)="onInputText()" type="string">
       </ion-input>
     </ion-item>
     <ion-item no-lines class="input-fee__range">
-      <ion-range [(ngModel)]="rangeFee" name="fee-range" [step]="step" [min]="min" [max]="max" (ionChange)="onInputRange()">
+      <ion-range [(ngModel)]="rangeFee" name="fee-range" [step]="step" [min]="min" [max]="max"
+        (ionChange)="onInputRange()">
       </ion-range>
     </ion-item>
   </ion-row>
 
-  <ion-label *ngIf="isFeeLow" class="input-fee__helper no-margin">
-    {{ 'TRANSACTIONS_PAGE.WARNING.FEE_TO_LOW' | translate }}
+  <ion-label *ngIf="warningMessage" class="input-fee__helper--warning no-margin">
+    {{ warningMessage }}
+  </ion-label>
+
+  <ion-label *ngIf="errorMessage" class="input-fee__helper--danger no-margin">
+    {{ errorMessage }}
+  </ion-label>
+
+  <ion-label *ngIf="isStaticFee && !warningMessage && !errorMessage" class="input-fee__helper" translate
+    [translateParams]="{fee: maxArktoshi}">
+    INPUT_FEE.STATIC_FEE
   </ion-label>
 
   <ion-grid fixed class="button-group no-padding">
     <ion-row nowrap class="no-padding">
       <ion-col>
         <button ion-button block [outline]="min !== rangeFee" color="primary" (click)="setRangeFee(min)">
-          Min
+          {{ 'INPUT_FEE.MIN' | translate }}
         </button>
       </ion-col>
-      <ion-col>
+      <ion-col *ngIf="!isStaticFee">
         <button ion-button block [outline]="avg !== rangeFee" color="primary" (click)="setRangeFee(avg)">
-          Average
+          {{ 'INPUT_FEE.AVERAGE' | translate }}
         </button>
       </ion-col>
       <ion-col>
         <button ion-button block [outline]="max !== rangeFee" color="primary" (click)="setRangeFee(max)">
-          Max
+          {{ 'INPUT_FEE.MAX' | translate }}
         </button>
       </ion-col>
     </ion-row>

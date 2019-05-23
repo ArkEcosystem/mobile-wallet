@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
 import { IonicPage, LoadingController, NavParams, Loading } from 'ionic-angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
-import { Contact, Wallet, SendTransactionForm, WalletKeys, QRCodeScheme } from '@models/model';
+import { Contact, Wallet, SendTransactionForm, WalletKeys, QRCodeScheme, StoredNetwork } from '@models/model';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ContactsProvider } from '@providers/contacts/contacts';
@@ -68,8 +68,9 @@ export class TransactionSendPage implements OnInit {
   transaction: SendTransactionForm = {};
 
   currentWallet: Wallet;
-  currentNetwork: Network;
+  currentNetwork: StoredNetwork;
   fee: number;
+  hasFeeError = false;
   addressType: AddressType = AddressType.Unknown;
   addressTypes = AddressType;
   isRecipientNameAutoSet: boolean;
@@ -103,6 +104,10 @@ export class TransactionSendPage implements OnInit {
     if (this.sendAllEnabled) {
       this.sendAll();
     }
+  }
+
+  get vendorFieldLength () {
+    return this.currentNetwork.vendorFieldLength || 255;
   }
 
   sendAll() {
@@ -211,7 +216,7 @@ export class TransactionSendPage implements OnInit {
     if (
       !this.sendTransactionHTMLForm.form.controls['amount'].value
       || this.sendTransactionHTMLForm.form.controls['amount'].value <= 0
-      || this.sendTransactionHTMLForm.form.controls['smartBridge'].length > 64
+      || (this.sendTransactionHTMLForm.form.controls['smartBridge'].value || '').length > this.vendorFieldLength
     ) {
       isValid = false;
     }
@@ -333,6 +338,10 @@ export class TransactionSendPage implements OnInit {
     if (this.sendAllEnabled) {
       this.sendAll();
     }
+  }
+
+  public onFeeError(hasError: boolean) {
+    this.hasFeeError = hasError;
   }
 
   private setFormValuesFromAddress(address: string, alternativeRecipientName?: string): void {
