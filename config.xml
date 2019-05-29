@@ -24,6 +24,7 @@
     <preference name="SplashScreenSpinnerColor" value="#0000ff" />
     <preference name="CordovaWebViewEngine" value="CDVUIWebViewEngine" />
     <preference name="WKSuspendInBackground" value="false" />
+    <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <preference name="KeyboardResizeMode" value="native" />
     <platform name="android">
         <preference name="android-manifest/application/activity/@android:windowSoftInputMode" value="adjustPan" />
