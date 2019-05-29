@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ark.wallet.mobile" version="1.4.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ark.wallet.mobile" version="1.4.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Ark Mobile</name>
     <description>ARK</description>
     <author email="lucio@ark.io" href="http://ark.io/">Ark Ecosystem</author>
@@ -106,8 +106,8 @@
     <plugin name="cordova-clipboard" spec="^1.2.1" />
     <plugin name="cordova-plugin-x-socialsharing" spec="^5.4.3" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.1.3" />
+    <plugin name="cordova-sqlite-storage" spec="git+https://github.com/litehelpers/Cordova-sqlite-storage.git" />
     <engine name="browser" spec="5.0.4" />
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="7.1.2" />
-    <plugin name="cordova-sqlite-storage" spec="git+https://github.com/litehelpers/Cordova-sqlite-storage.git" />
 </widget>

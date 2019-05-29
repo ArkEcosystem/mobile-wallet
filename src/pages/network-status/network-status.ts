@@ -56,6 +56,23 @@ export class NetworkStatusPage implements OnDestroy {
     });
   }
 
+  resetToSeed() {
+    this.translateService.get('NETWORKS_PAGE.LOOKING_GOOD_PEER').debounceTime(500).subscribe((translation) => {
+      this.loader = this.loadingCtrl.create({
+        content: translation,
+        duration: 10000
+      });
+
+      this.arkApiProvider.findGoodSeedPeer().then(success => {
+        if (!success) {
+          this.loader.dismiss();
+          this.toastProvider.error('NETWORKS_PAGE.NO_GOOD_PEER');
+        }
+      });
+      this.loader.present();
+    });
+  }
+
   private refreshData() {
     this.arkApiProvider.api.peer.get(this.currentPeer.ip, this.currentPeer.port)
     .takeUntil(this.unsubscriber$)

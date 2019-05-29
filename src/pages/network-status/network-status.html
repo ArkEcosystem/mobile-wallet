@@ -55,6 +55,7 @@
     <ion-row>
       <ion-col text-center align-self-end>
         <button class="button-continue" ion-button (click)="changePeer()">{{ 'NETWORKS_PAGE.CHANGE_PEER' | translate }}</button>
+        <button class="button-continue" ion-button (click)="resetToSeed()" [clear]="true">{{ 'NETWORKS_PAGE.RESET_TO_SEED' | translate }}</button>
       </ion-col>
     </ion-row>
   </ion-grid>

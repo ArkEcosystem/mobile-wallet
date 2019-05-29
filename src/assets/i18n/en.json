@@ -119,11 +119,13 @@
     "DELAY": "Delay",
     "HEIGHT": "Height",
     "LOOKING_GOOD_PEER": "Looking for a good peer",
+    "NO_GOOD_PEER": "No good peer could be found!",
     "PEER_SUCCESSFULLY_CHANGED": "Peer successfully changed",
     "NETWORK_STATUS": "Network Status",
     "NETWORK_TYPE": "Network Type",
     "INTERNET_DESCONNECTED": "Unable to connect to the Internet!",
     "PEER": "Peer",
+    "RESET_TO_SEED": "Reset to Seed Peer",
     "VERSION": "Version"
   },
   "NEXT": "Next",
@@ -151,6 +153,17 @@
     "WRONG": "Please enter the correct PIN",
     "WEAK_PIN": "Weak PIN",
     "WEAK_PIN_DETAIL": "The PIN you entered is considered weak and easy to guess. Are you sure you want to use it?"
+  },
+  "INPUT_FEE": {
+    "MIN": "Min",
+    "AVERAGE": "Average",
+    "MAX": "Max",
+    "LOW_FEE_NOTICE": "Transactions with low fees may never get confirmed",
+    "ADVANCED_NOTICE": "Be careful what fee you choose as it will cost more than necessary if too high",
+    "STATIC_FEE": "The network fee has been set to the static value of {{ fee }}",
+    "ERROR": {
+      "MORE_THAN_MAXIMUM": "The maximum fee is {{ symbol }} {{ fee }}"
+    }
   },
   "PULL_REFRESH": "Pull to refresh",
   "PROFILES_PAGE": {
@@ -238,8 +251,7 @@
     "TO": "To",
     "TRANSACTION": "Transaction",
     "WARNING": {
-      "BROADCAST": "Transaction was broadcasted to other peers. It may not be accepted by them",
-      "FEE_TO_LOW": "Transactions with low fees may never get confirmed"
+      "BROADCAST": "Transaction was broadcasted to other peers. It may not be accepted by them"
     },
     "ERROR": {
       "NOTHING_SENT": "The transaction could not be sent. Please check your network connection or change peer",
@@ -306,11 +318,14 @@
     "SECRET_PASSPHRASE": "Secret Passphrase",
     "SECRET_PASSPHRASE_KEEP_SAFE": "Secret Passphrase (KEEP SAFE)",
     "SEED": "Seed",
+    "TOP_WALLETS": "Top Wallets",
+    "TOP_WALLET_RANK": "Rank",
     "TOTAL_BALANCE": "Total Balance",
     "USERNAME": "Username",
     "VALID_ADDRESS": "Valid address",
     "VALID_PASSPHRASE": "Valid passphrase",
     "WALLETS": "Wallets",
+    "WARNING_SELECT_WALLET_TRANSACTION_LOOKUP": "You need to select a wallet first to look-up transactions",
     "WIF": "WIF"
   },
   "WATCH_ONLY": "Watch Only",

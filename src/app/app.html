@@ -12,6 +12,10 @@
         <ion-icon [name]="platform.is('ios') ? 'ios-cash-outline' : 'md-cash'" item-start></ion-icon>
         {{ 'WALLETS_PAGE.WALLETS' | translate }}
       </button>
+      <button menuClose ion-item (click)="openPage('WalletTopListPage', false)" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-filing-outline' : 'md-filing'" item-start></ion-icon>
+        {{ 'WALLETS_PAGE.TOP_WALLETS' | translate }}
+      </button>
       <button menuClose ion-item (click)="openPage('DelegatesPage', false)" class="custom-arrow">
         <ion-icon [name]="platform.is('ios') ? 'ios-people-outline' : 'md-people'" item-start></ion-icon>
         {{ 'DELEGATES_PAGE.DELEGATES' | translate }}
