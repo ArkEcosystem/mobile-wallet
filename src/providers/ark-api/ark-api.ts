@@ -34,6 +34,7 @@ interface NodeFeesResponse {
 
 interface NodeConfigurationConstants {
   vendorFieldLength?: number;
+  activeDelegates?: number;
 }
 
 interface NodeConfigurationResponse {
@@ -97,7 +98,7 @@ export class ArkApiProvider {
   public get delegates(): Observable<arkts.Delegate[]> {
     if (!lodash.isEmpty(this._delegates)) { return Observable.of(this._delegates); }
 
-    return this.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2);
+    return this.fetchDelegates(this._network.activeDelegates * 2);
   }
 
   public get topWallets(): Observable<Wallet[]> {
@@ -126,6 +127,8 @@ export class ArkApiProvider {
 
     // Fallback if the fetchEpoch fail
     this._network.epoch = arktsConfig.blockchain.date;
+    // Fallback if the fetchNodeConfiguration fail
+    this._network.activeDelegates = constants.NUM_ACTIVE_DELEGATES;
     this.userDataProvider.onUpdateNetwork$.next(this._network);
 
     this.fetchFees().subscribe();
@@ -274,7 +277,7 @@ export class ArkApiProvider {
 
   public fetchDelegates(numberDelegatesToGet: number, getAllDelegates = false): Observable<arkts.Delegate[]> {
     if (!this._api) { return; }
-    const limit = 51;
+    const limit = this._network.activeDelegates;
 
     const totalCount = limit;
     let offset, currentPage;
@@ -462,16 +465,20 @@ export class ArkApiProvider {
     this.userDataProvider.addOrUpdateNetwork(this._network, this.userDataProvider.currentProfile.networkId);
     this._api = new arkts.Client(this._network);
 
-    this.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2).subscribe((data) => {
+    this.fetchDelegates(this._network.activeDelegates * 2).subscribe((data) => {
       this._delegates = data;
     });
 
     this.fetchFees().subscribe();
     this.fetchFeeStatistics().subscribe();
     this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
-      const vendorFieldLength = response.data.constants.vendorFieldLength;
+      const { vendorFieldLength, activeDelegates } = response.data && response.data.constants || {} as NodeConfigurationConstants;
+
       if (vendorFieldLength) {
         this._network.vendorFieldLength = vendorFieldLength;
+      }
+      if (activeDelegates) {
+        this._network.activeDelegates = activeDelegates;
       }
     });
   }
