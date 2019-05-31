@@ -34,7 +34,7 @@ interface NodeFeesResponse {
 
 interface NodeConfigurationConstants {
   vendorFieldLength?: number;
-  activeDelegates: number;
+  activeDelegates?: number;
 }
 
 interface NodeConfigurationResponse {
@@ -472,7 +472,8 @@ export class ArkApiProvider {
     this.fetchFees().subscribe();
     this.fetchFeeStatistics().subscribe();
     this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
-      const { vendorFieldLength, activeDelegates } = (response.data && response.data.constants) || {};
+      const { vendorFieldLength, activeDelegates } = response.data && response.data.constants || {} as NodeConfigurationConstants;
+      
       if (vendorFieldLength) {
         this._network.vendorFieldLength = vendorFieldLength;
       }
