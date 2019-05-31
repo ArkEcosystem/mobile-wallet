@@ -127,13 +127,12 @@ export class ArkApiProvider {
 
     // Fallback if the fetchEpoch fail
     this._network.epoch = arktsConfig.blockchain.date;
-    // Fallback if the fetchActiveDelegates fail
-    this._network.activeDelegates = 51;
+    // Fallback if the fetchNodeConfiguration fail
+    this._network.activeDelegates = constants.NUM_ACTIVE_DELEGATES;
     this.userDataProvider.onUpdateNetwork$.next(this._network);
 
     this.fetchFees().subscribe();
     this.fetchEpoch().subscribe();
-    this.fetchActiveDelegates().subscribe();
   }
 
   public async findGoodPeer() {
@@ -530,14 +529,6 @@ export class ArkApiProvider {
   private fetchEpoch(): Observable<BlocksEpochResponse> {
     return this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/blocks/getEpoch`).map((response: BlocksEpochResponse) => {
       this._network.epoch = new Date(response.epoch);
-      this.userDataProvider.onUpdateNetwork$.next(this._network);
-      return response;
-    });
-  }
-
-  private fetchActiveDelegates(): Observable<NodeConfigurationResponse> {
-    return this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/v2/node/configuration`).map((response: NodeConfigurationResponse) => {
-      this._network.activeDelegates = response.data.constants.activeDelegates;
       this.userDataProvider.onUpdateNetwork$.next(this._network);
       return response;
     });
