@@ -473,7 +473,7 @@ export class ArkApiProvider {
     this.fetchFeeStatistics().subscribe();
     this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
       const { vendorFieldLength, activeDelegates } = response.data && response.data.constants || {} as NodeConfigurationConstants;
-      
+
       if (vendorFieldLength) {
         this._network.vendorFieldLength = vendorFieldLength;
       }
