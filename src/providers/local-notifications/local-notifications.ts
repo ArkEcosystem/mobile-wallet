@@ -96,7 +96,7 @@ export class LocalNotificationsProvider {
 
             w.loadTransactions(response.transactions, this.arkApiProvider.network);
 
-            this.userDataProvider.saveWallet(w, wallet.profileId);
+            this.userDataProvider.updateWallet(w, wallet.profileId);
 
             // Get only the new transaction and notify the user
             const newTransactions = lodash.drop(w.transactions, localLength);

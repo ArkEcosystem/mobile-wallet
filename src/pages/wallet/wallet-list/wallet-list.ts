@@ -74,7 +74,7 @@ export class WalletListPage implements OnDestroy {
     this.navCtrl.push('WalletDashboardPage', {
       address: wallet.address
     }).then(() => {
-      this.userDataProvider.saveWallet(wallet).subscribe(() => {
+      this.userDataProvider.updateWallet(wallet, this.currentProfile.profileId).subscribe(() => {
         this.loadWallets();
         this.slider.slideTo(0);
       });
