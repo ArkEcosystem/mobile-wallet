@@ -2,6 +2,7 @@ export class Profile {
   contacts: any = {};
   name: string;
   networkId: string;
+  profileId?: string;
   wallets: any = {};
 
   deserialize(input: any): Profile {

@@ -386,7 +386,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   private saveWallet() {
-    this.userDataProvider.saveWallet(this.wallet);
+    this.userDataProvider.updateWallet(this.wallet, this.profile.profileId);
   }
 
   private deleteWallet() {
