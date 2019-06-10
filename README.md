@@ -29,8 +29,8 @@ ARK’s mobile wallet is a hybrid application (using the same codebase for Andro
 - Option to add contacts and easily transact with them.
 - Total balance of your combined ARK addresses.
 - Wallet backup - input your selected PIN to decrypt your wallet and gain view of your private data.
-- Change PIN - if you want to change your encryption/decryption PIN you can easily do so..
-- Clear Data — you can clear all your data from the phone.
+- Change PIN - if you want to change your encryption/decryption PIN you can easily do so.
+- Clear Data - you can clear all your data from the phone.
 - Overview of network status with an option to change peer.
 - Current market value, along with weekly movements.
 - Support for showing data in different FIAT currencies.
