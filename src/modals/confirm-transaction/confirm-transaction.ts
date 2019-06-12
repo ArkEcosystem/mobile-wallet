@@ -82,7 +82,12 @@ export class ConfirmTransactionModal implements OnDestroy {
               if (anyLowFee) {
                 message = translations['TRANSACTIONS_PAGE.ERROR.FEE_TOO_LOW'];
               } else {
-                message = translations['TRANSACTIONS_PAGE.ERROR.NOTHING_SENT'];
+                const remoteMessage = lodash(errors).values().get('[0][0].message');
+                if (remoteMessage) {
+                  message = remoteMessage;
+                } else {
+                  message = translations['TRANSACTIONS_PAGE.ERROR.NOTHING_SENT'];
+                }
               }
             }
 
