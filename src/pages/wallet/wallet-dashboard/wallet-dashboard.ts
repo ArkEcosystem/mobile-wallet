@@ -1,4 +1,4 @@
-import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import {
   IonicPage,
   NavController,
@@ -40,7 +40,7 @@ import { ToastProvider } from '@providers/toast/toast';
   templateUrl: 'wallet-dashboard.html',
   providers: [Clipboard],
 })
-export class WalletDashboardPage implements OnInit, OnDestroy {
+export class WalletDashboardPage implements OnInit {
 
   @ViewChild(Content) content: Content;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
@@ -98,6 +98,12 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.confirmTransaction.onConfirm.takeUntil(this.unsubscriber$).subscribe(this.onTransactionConfirm);
+    this.load();
+    this.refreshAllData();
+    this.refreshPrice();
+    this.onUpdateWallet();
+    this.onUpdateMarket();
+    this.content.resize();
   }
 
   copyAddress() {
@@ -501,21 +507,11 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   ionViewDidEnter() {
-    this.load();
-
-    this.refreshAllData();
-    this.refreshPrice();
-
     this.refreshDataIntervalListener = setInterval(() => this.refreshAllData(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
     this.refreshTickerIntervalListener = setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);
-
-    this.onUpdateWallet();
-    this.onUpdateMarket();
-
-    this.content.resize();
   }
 
-  ngOnDestroy() {
+  ionViewDidLeave() {
     clearInterval(this.refreshDataIntervalListener);
     clearInterval(this.refreshTickerIntervalListener);
 
