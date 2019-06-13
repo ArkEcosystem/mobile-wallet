@@ -502,7 +502,7 @@ export class ArkApiProvider {
 
     return Observable.create((observer) => {
       this.httpClient.get(
-        `${this._network.getPeerAPIUrl()}/api/v2/node/fees?days=30`
+        `${this._network.getPeerAPIUrl()}/api/v2/node/fees?days=7`
       ).subscribe((response: NodeFeesResponse) => {
         const data = response.data;
         // Converts the new response to the old template
