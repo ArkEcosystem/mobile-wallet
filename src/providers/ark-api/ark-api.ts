@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
@@ -62,6 +62,7 @@ export class ArkApiProvider {
 
   constructor(
     private httpClient: HttpClient,
+    private zone: NgZone,
     private userDataProvider: UserDataProvider,
     private storageProvider: StorageProvider,
     private toastProvider: ToastProvider) {
@@ -202,7 +203,8 @@ export class ArkApiProvider {
         peer.port = +this._network.p2pPort;
       }
     }
-    const preFilteredPeers = lodash.filter(peerList, (peer) => {
+    const peersListSample = peerList.slice(0, 10);
+    const preFilteredPeers = lodash.filter(peersListSample, (peer) => {
       if (peer['port'] !== port) {
         return false;
       }
@@ -220,7 +222,9 @@ export class ArkApiProvider {
     } else {
       const configChecks = [];
       for (const peer of preFilteredPeers) {
-        configChecks.push(this._api.peer.getVersion2Config(peer.ip, peer.port).toPromise());
+        configChecks.push(this.zone.runOutsideAngular(() =>
+          this._api.peer.getVersion2Config(peer.ip, peer.port).toPromise()
+        ));
       }
 
       const peerConfigResponses = await Promise.all(configChecks.map(p => p.catch(e => e)));
