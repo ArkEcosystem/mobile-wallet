@@ -103,7 +103,7 @@ export class TopWalletDetailsPage implements OnDestroy {
 
   private refreshTransactions(loader?: Loading|Refresher) {
     this.zone.runOutsideAngular(() => {
-      this.arkApiProvider.api.transaction.list({
+      this.arkApiProvider.client.getTransactionList({
         recipientId: this.address,
         senderId: this.address,
         orderBy: 'timestamp:desc',

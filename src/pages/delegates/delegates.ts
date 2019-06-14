@@ -124,7 +124,7 @@ export class DelegatesPage implements OnDestroy {
       type,
     };
 
-    this.arkApiProvider.api.transaction.createVote(data).subscribe((transaction) => {
+    this.arkApiProvider.transactionBuilder.createVote(data).subscribe((transaction) => {
       transaction.fee = this.selectedFee; // The transaction will be re-signed
       this.confirmTransaction.open(transaction, keys);
     });
@@ -133,8 +133,7 @@ export class DelegatesPage implements OnDestroy {
   private fetchCurrentVote() {
     if (!this.currentWallet) { return; }
 
-    this.arkApiProvider.api.account
-      .votes({ address: this.currentWallet.address })
+    this.arkApiProvider.client.getWalletVotes(this.currentWallet.address)
       .takeUntil(this.unsubscriber$)
       .subscribe((data) => {
         if (data.success && data.delegates.length > 0) {

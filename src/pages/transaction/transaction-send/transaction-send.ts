@@ -269,7 +269,7 @@ export class TransactionSendPage implements OnInit {
       recipientId: this.transaction.recipientAddress,
     };
 
-    this.arkApiProvider.api.transaction.createTransaction(data).subscribe((transaction) => {
+    this.arkApiProvider.transactionBuilder.createTransaction(data).subscribe((transaction) => {
       // The transaction will be signed again;
       transaction.fee = this.fee;
       this.confirmTransaction.open(transaction, result.keys, result.checkerResult);

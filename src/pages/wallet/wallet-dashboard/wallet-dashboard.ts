@@ -353,7 +353,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       publicKey
     };
 
-    this.arkApiProvider.api.transaction.createDelegate(transaction)
+    this.arkApiProvider.transactionBuilder.createDelegate(transaction)
       .takeUntil(this.unsubscriber$)
       .subscribe((data) => {
         data.fee = this.newDelegateFee;
@@ -373,7 +373,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   private createSignature(keys: WalletKeys) {
     keys.secondPassphrase = this.newSecondPassphrase;
 
-    this.arkApiProvider.api.transaction
+    this.arkApiProvider.transactionBuilder
     .createSignature(keys.key, keys.secondPassphrase)
     .takeUntil(this.unsubscriber$)
     .subscribe((data) => {
@@ -392,7 +392,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
   private refreshTransactions(save: boolean = true, loader?: Loading|Refresher) {
     this.zone.runOutsideAngular(() => {
-      this.arkApiProvider.api.transaction.list({
+      this.arkApiProvider.client.getTransactionList({
         recipientId: this.address,
         senderId: this.address,
         orderBy: 'timestamp:desc',
@@ -424,7 +424,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   private refreshAccount() {
-    this.arkApiProvider.api.account.get({address: this.address}).takeUntil(this.unsubscriber$).subscribe((response) => {
+    this.arkApiProvider.client.getWallet(this.address).takeUntil(this.unsubscriber$).subscribe((response) => {
       if (response.success) {
         this.wallet.deserialize(response.account);
         this.saveWallet();

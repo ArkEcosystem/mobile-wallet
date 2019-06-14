@@ -59,7 +59,7 @@ export class AddressCheckerProvider {
   }
 
   public hasTransactions(address: string): Observable<boolean> {
-    return this.arkApiProvider.api.transaction.list({
+    return this.arkApiProvider.client.getTransactionList({
       senderId: address,
       recipientId: address,
       limit: 1
