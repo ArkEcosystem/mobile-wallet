@@ -20,6 +20,7 @@ import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
 import {AccountResponse, Delegate} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
+import ArkClient from '../../utils/ark-client';
 
 interface NodeFees {
   type: number;
@@ -35,6 +36,7 @@ interface NodeFeesResponse {
 interface NodeConfigurationConstants {
   vendorFieldLength?: number;
   activeDelegates?: number;
+  epoch?: Date;
 }
 
 interface NodeConfigurationResponse {
@@ -54,6 +56,7 @@ export class ArkApiProvider {
 
   private _network: StoredNetwork;
   private _api: arkts.Client;
+  private _client: ArkClient;
 
   private _fees: arkts.Fees;
   private _delegates: arkts.Delegate[];
@@ -80,8 +83,12 @@ export class ArkApiProvider {
     return this._network;
   }
 
-  public get api() {
-    return this._api;
+  public get client() {
+    return this._client;
+  }
+
+  public get transactionBuilder() {
+    return this._api.transaction;
   }
 
   public get feeStatistics () {
@@ -124,6 +131,7 @@ export class ArkApiProvider {
     this.arkjs.crypto.setNetworkVersion(this._network.version);
 
     this._api = new arkts.Client(this._network);
+    this._client = new ArkClient(this.network.getPeerAPIUrl(), this.httpClient);
     this.findGoodPeer();
 
     // Fallback if the fetchEpoch fail
@@ -133,12 +141,11 @@ export class ArkApiProvider {
     this.userDataProvider.onUpdateNetwork$.next(this._network);
 
     this.fetchFees().subscribe();
-    this.fetchEpoch().subscribe();
   }
 
   public async findGoodPeer() {
     // Get list from active peer
-    this._api.peer.list().subscribe(async (response) => {
+    this.client.getPeerList().subscribe(async (response) => {
       if (response && await this.findGoodPeerFromList(response.peers)) {
         return;
       } else {
@@ -223,7 +230,7 @@ export class ArkApiProvider {
       const configChecks = [];
       for (const peer of preFilteredPeers) {
         configChecks.push(this.zone.runOutsideAngular(() =>
-          this._api.peer.getVersion2Config(peer.ip, peer.port).toPromise()
+          this.client.getPeerConfig(peer.ip, peer.port).toPromise()
         ));
       }
 
@@ -253,7 +260,7 @@ export class ArkApiProvider {
           id: peerId,
           peer
         });
-        missingHeightRequests.push(this._api.loader.synchronisationStatus(`http://${peer.ip}:${peer.port}`).toPromise());
+        missingHeightRequests.push(this.client.getPeerSyncing(`http://${peer.ip}:${peer.port}`).toPromise());
       }
     }
 
@@ -284,8 +291,7 @@ export class ArkApiProvider {
     const limit = this._network.activeDelegates;
 
     const totalCount = limit;
-    let offset, currentPage;
-    offset = currentPage = 0;
+    let page = 1;
 
     let totalPages = totalCount / limit;
 
@@ -293,14 +299,13 @@ export class ArkApiProvider {
 
     return Observable.create((observer) => {
 
-      this._api.delegate.list({ limit, offset }).expand(() => {
-        const req = this._api.delegate.list({ limit, offset });
-        return currentPage < totalPages ? req : Observable.empty();
+      this.client.getDelegateList({ limit, page }).expand(() => {
+        const next = this.client.getDelegateList({ limit, page });
+        return (page - 1) < totalPages ? next : Observable.empty();
       }).do((response) => {
-        offset += limit;
         if (response.success && getAllDelegates) { numberDelegatesToGet = response.totalCount; }
         totalPages = Math.ceil(numberDelegatesToGet / limit);
-        currentPage++;
+        page++;
       }).finally(() => {
         this.storageProvider.set(constants.STORAGE_DELEGATES, delegates);
         this.onUpdateDelegates$.next(delegates);
@@ -402,14 +407,12 @@ export class ArkApiProvider {
   public postTransaction(transaction: arkts.Transaction, peer: arkts.Peer = this._network.activePeer, broadcast: boolean = true) {
     return Observable.create((observer) => {
       const compressTransaction = JSON.parse(JSON.stringify(transaction));
-      this._api.transaction.post(compressTransaction, peer).subscribe((result: arkts.TransactionPostResponse) => {
+      this.client.postTransaction(compressTransaction, peer).subscribe((result: arkts.TransactionPostResponse) => {
         if (this.isSuccessfulResponse(result)) {
           this.onSendTransaction$.next(transaction);
 
           if (broadcast) {
-            if (!this._network.isV2) {
-              this.broadcastTransaction(transaction);
-            }
+            this.broadcastTransaction(transaction);
           }
 
           observer.next(transaction);
@@ -422,6 +425,7 @@ export class ArkApiProvider {
           }
           observer.error(result);
         }
+        observer.complete();
       }, (error) => observer.error(error));
     });
   }
@@ -431,20 +435,22 @@ export class ArkApiProvider {
       return Observable.of(null);
     }
 
-    return this.api
-               .delegate
-               .get({publicKey: publicKey})
-               .map(response => response && response.success ? response.delegate : null);
+    return this.client.getDelegateByPublicKey(publicKey);
   }
 
 
   private isSuccessfulResponse (response) {
-    if (!this._network.isV2) {
-      return response.success && response.transactionIds;
-    } else {
-      const { data, errors } = response;
-      return data && data.invalid.length === 0 && !errors;
+    const { data, errors } = response;
+    const anyDuplicate = errors && Object.keys(errors).some(transactionId => {
+      return errors[transactionId].some(item => item.type === 'ERR_DUPLICATE');
+    });
+
+    // Ignore "Already in cache" error
+    if (anyDuplicate) {
+      return true;
     }
+
+    return data && data.invalid.length === 0 && !errors;
   }
 
   private broadcastTransaction(transaction: arkts.Transaction) {
@@ -453,10 +459,7 @@ export class ArkApiProvider {
     }
 
     for (const peer of this._network.peerList.slice(0, 10)) {
-      this.postTransaction(transaction, peer, false).subscribe(
-        null,
-        null
-      );
+      this.postTransaction(transaction, peer, false).subscribe();
     }
   }
 
@@ -468,6 +471,7 @@ export class ArkApiProvider {
     // Save in localStorage
     this.userDataProvider.addOrUpdateNetwork(this._network, this.userDataProvider.currentProfile.networkId);
     this._api = new arkts.Client(this._network);
+    this._client = new ArkClient(this._network.getPeerAPIUrl(), this.httpClient);
 
     this.fetchDelegates(this._network.activeDelegates * 2).subscribe((data) => {
       this._delegates = data;
@@ -476,13 +480,16 @@ export class ArkApiProvider {
     this.fetchFees().subscribe();
     this.fetchFeeStatistics().subscribe();
     this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
-      const { vendorFieldLength, activeDelegates } = response.data && response.data.constants || {} as NodeConfigurationConstants;
+      const { vendorFieldLength, activeDelegates, epoch } = response.data && response.data.constants || {} as NodeConfigurationConstants;
 
       if (vendorFieldLength) {
         this._network.vendorFieldLength = vendorFieldLength;
       }
       if (activeDelegates) {
         this._network.activeDelegates = activeDelegates;
+      }
+      if (epoch) {
+        this._network.epoch = new Date(epoch);
       }
     });
   }
@@ -534,17 +541,9 @@ export class ArkApiProvider {
     });
   }
 
-  private fetchEpoch(): Observable<BlocksEpochResponse> {
-    return this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/blocks/getEpoch`).map((response: BlocksEpochResponse) => {
-      this._network.epoch = new Date(response.epoch);
-      this.userDataProvider.onUpdateNetwork$.next(this._network);
-      return response;
-    });
-  }
-
   private fetchFees(): Observable<arkts.Fees> {
     return Observable.create((observer) => {
-      arkts.BlockApi.networkFees(this._network).subscribe((response) => {
+      this.client.getTransactionFees().subscribe((response) => {
         if (response && response.success) {
           this._fees = response.fees;
           this.storageProvider.set(constants.STORAGE_FEES, this._fees);

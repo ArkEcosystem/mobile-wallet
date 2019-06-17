@@ -267,11 +267,11 @@ export class TransactionSendPage implements OnInit {
       passphrase: result.keys.key,
       secondPassphrase: result.keys.secondKey,
       recipientId: this.transaction.recipientAddress,
+      fee: this.fee
     };
 
-    this.arkApiProvider.api.transaction.createTransaction(data).subscribe((transaction) => {
+    this.arkApiProvider.transactionBuilder.createTransaction(data).subscribe((transaction) => {
       // The transaction will be signed again;
-      transaction.fee = this.fee;
       this.confirmTransaction.open(transaction, result.keys, result.checkerResult);
     }, () => {
       this.toastProvider.error('TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR');
