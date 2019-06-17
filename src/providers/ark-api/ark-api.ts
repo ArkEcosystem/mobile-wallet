@@ -291,7 +291,7 @@ export class ArkApiProvider {
     const limit = this._network.activeDelegates;
 
     const totalCount = limit;
-    let currentPage = 1;
+    let page = 1;
 
     let totalPages = totalCount / limit;
 
@@ -299,13 +299,13 @@ export class ArkApiProvider {
 
     return Observable.create((observer) => {
 
-      this.client.getDelegateList({ limit, page: currentPage }).expand(() => {
-        const req = this.client.getDelegateList({ limit, page: currentPage });
-        return currentPage < totalPages ? req : Observable.empty();
+      this.client.getDelegateList({ limit, page }).expand(() => {
+        const next = this.client.getDelegateList({ limit, page });
+        return (page - 1) < totalPages ? next : Observable.empty();
       }).do((response) => {
         if (response.success && getAllDelegates) { numberDelegatesToGet = response.totalCount; }
         totalPages = Math.ceil(numberDelegatesToGet / limit);
-        currentPage++;
+        page++;
       }).finally(() => {
         this.storageProvider.set(constants.STORAGE_DELEGATES, delegates);
         this.onUpdateDelegates$.next(delegates);
@@ -412,9 +412,7 @@ export class ArkApiProvider {
           this.onSendTransaction$.next(transaction);
 
           if (broadcast) {
-            if (!this._network.isV2) {
-              this.broadcastTransaction(transaction);
-            }
+            this.broadcastTransaction(transaction);
           }
 
           observer.next(transaction);
@@ -427,6 +425,7 @@ export class ArkApiProvider {
           }
           observer.error(result);
         }
+        observer.complete();
       }, (error) => observer.error(error));
     });
   }
@@ -441,12 +440,17 @@ export class ArkApiProvider {
 
 
   private isSuccessfulResponse (response) {
-    if (!this._network.isV2) {
-      return response.success && response.transactionIds;
-    } else {
-      const { data, errors } = response;
-      return data && data.invalid.length === 0 && !errors;
+    const { data, errors } = response;
+    const anyDuplicate = errors && Object.keys(errors).some(transactionId => {
+      return errors[transactionId].some(item => item.type === 'ERR_DUPLICATE');
+    });
+
+    // Ignore "Already in cache" error
+    if (anyDuplicate) {
+      return true;
     }
+
+    return data && data.invalid.length === 0 && !errors;
   }
 
   private broadcastTransaction(transaction: arkts.Transaction) {
@@ -455,10 +459,7 @@ export class ArkApiProvider {
     }
 
     for (const peer of this._network.peerList.slice(0, 10)) {
-      this.postTransaction(transaction, peer, false).subscribe(
-        null,
-        null
-      );
+      this.postTransaction(transaction, peer, false).subscribe();
     }
   }
 

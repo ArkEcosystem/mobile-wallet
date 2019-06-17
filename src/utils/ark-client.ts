@@ -86,9 +86,11 @@ export default class ApiClient {
     });
   }
 
-  getTransactionList(options: any = {}): Observable<TransactionResponse> {
+  getTransactionList(address: string): Observable<TransactionResponse> {
     return Observable.create(observer => {
-      this.post(`transactions/search`, options).subscribe((response: any) => {
+      this.get(`wallets/${address}/transactions`, { params: {
+        orderBy: 'timestamp:desc'
+      }}).subscribe((response: any) => {
         observer.next({
           success: true,
           transactions: response.data.map(transaction => ({
@@ -180,8 +182,8 @@ export default class ApiClient {
         { transactions: [transaction] },
         { headers: this.defaultHeaders },
         `${protocol}://${peer.ip}:${peer.port}`
-      ).subscribe(({ body }: any) => {
-        observer.next(body.data);
+      ).subscribe((response: any) => {
+        observer.next(response);
         observer.complete();
       }, (error) => observer.error(error));
     });

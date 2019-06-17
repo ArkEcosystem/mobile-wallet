@@ -121,11 +121,11 @@ export class DelegatesPage implements OnDestroy {
       delegatePublicKey: this.selectedDelegate.publicKey,
       passphrase: keys.key,
       secondPassphrase: keys.secondKey,
+      fee: this.selectedFee,
       type,
     };
 
     this.arkApiProvider.transactionBuilder.createVote(data).subscribe((transaction) => {
-      transaction.fee = this.selectedFee; // The transaction will be re-signed
       this.confirmTransaction.open(transaction, keys);
     });
   }

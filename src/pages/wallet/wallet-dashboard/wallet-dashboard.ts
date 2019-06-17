@@ -350,13 +350,13 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       passphrase: keys.key,
       secondPassphrase: keys.secondKey,
       username: this.newDelegateName,
+      fee: this.newDelegateFee,
       publicKey
     };
 
     this.arkApiProvider.transactionBuilder.createDelegate(transaction)
       .takeUntil(this.unsubscriber$)
       .subscribe((data) => {
-        data.fee = this.newDelegateFee;
         this.confirmTransaction.open(data, keys);
       });
   }
@@ -374,11 +374,11 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     keys.secondPassphrase = this.newSecondPassphrase;
 
     this.arkApiProvider.transactionBuilder
-    .createSignature(keys.key, keys.secondPassphrase)
-    .takeUntil(this.unsubscriber$)
-    .subscribe((data) => {
-      this.confirmTransaction.open(data, keys);
-    });
+      .createSignature(keys.key, keys.secondPassphrase)
+      .takeUntil(this.unsubscriber$)
+      .subscribe((data) => {
+        this.confirmTransaction.open(data, keys);
+      });
   }
 
   private saveWallet() {
@@ -392,11 +392,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
   private refreshTransactions(save: boolean = true, loader?: Loading|Refresher) {
     this.zone.runOutsideAngular(() => {
-      this.arkApiProvider.client.getTransactionList({
-        recipientId: this.address,
-        senderId: this.address,
-        orderBy: 'timestamp:desc',
-      })
+      this.arkApiProvider.client.getTransactionList(this.address)
       .finally(() => this.zone.run(() => {
         if (loader) {
           if (loader instanceof Loading) {
