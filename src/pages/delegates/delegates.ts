@@ -159,14 +159,14 @@ export class DelegatesPage implements OnDestroy {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.delegates.subscribe((data) => this.zone.run(() => {
         this.delegates = data;
-        this.activeDelegates = this.delegates.slice(0, constants.NUM_ACTIVE_DELEGATES);
-        this.standByDelegates = this.delegates.slice(constants.NUM_ACTIVE_DELEGATES, this.delegates.length);
+        this.activeDelegates = this.delegates.slice(0, this.currentNetwork.activeDelegates);
+        this.standByDelegates = this.delegates.slice(this.currentNetwork.activeDelegates, this.delegates.length);
       }));
     });
 
     this.onUpdateDelegates();
     this.fetchCurrentVote();
-    this.arkApiProvider.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2).subscribe();
+    this.arkApiProvider.fetchDelegates(this.currentNetwork.activeDelegates * 2).subscribe();
   }
 
   ngOnDestroy() {
