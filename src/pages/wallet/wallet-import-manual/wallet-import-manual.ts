@@ -39,6 +39,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
 
   @ViewChild('inputAddressOrPassphrase') inputAddressOrPassphrase;
   @ViewChild('inputPassphraseHidden') inputPassphraseHidden;
+  @ViewChild('importWalletManual') importWalletManual: HTMLFormElement;
 
   constructor(
     navParams: NavParams,
@@ -63,6 +64,12 @@ export class WalletManualImportPage extends BaseWalletImport  {
     }
 
     this.initFormValidation();
+  }
+
+  handleKeyEnter() {
+    if (this.importWalletManual.form.valid && !this.submitted) {
+      this.submitForm();
+    }
   }
 
   submitForm() {
