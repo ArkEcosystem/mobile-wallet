@@ -13,9 +13,11 @@
         {{ (useAddress ? 'WALLETS_PAGE.ENTER_ADDRESS' : 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE') | translate }}
       </ion-label>
       <ion-input *ngIf="useAddress || !hidePassphrase" #inputAddressOrPassphrase name="addressOrPassphrase" rows="2" [ngModel]="addressOrPassphrase"
-        (ngModelChange)="addressOrPassphraseChange($event)" formControlName="controlAddressOrPassphrase" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required></ion-input>
+        (ngModelChange)="addressOrPassphraseChange($event)" formControlName="controlAddressOrPassphrase" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        (keyup.enter)="handleKeyEnter()" required></ion-input>
       <ion-input *ngIf="!useAddress && hidePassphrase" #inputPassphraseHidden name="passphraseHidden" rows="2" [ngModel]="passphraseHidden"
-        (ngModelChange)="passphraseHiddenChange($event)" [ngModelOptions]="{standalone: true}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required></ion-input>
+        (ngModelChange)="passphraseHiddenChange($event)" [ngModelOptions]="{standalone: true}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+        (keyup.enter)="handleKeyEnter()" required></ion-input>
       <button *ngIf="!useAddress" ion-button clear item-end (click)='showHidePassphrase()' style="height:100%;">
         <ion-icon *ngIf="!hidePassphrase" name="eye" style="font-size:200%;"></ion-icon>
         <ion-icon *ngIf="hidePassphrase" name="eye-off" style="font-size:200%;"></ion-icon>
