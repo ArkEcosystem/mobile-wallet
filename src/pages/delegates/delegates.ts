@@ -5,9 +5,10 @@ import { Subject } from 'rxjs/Subject';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
-import { Delegate, Network, VoteType, TransactionVote } from 'ark-ts';
+import { Delegate, VoteType, TransactionVote } from 'ark-ts';
 
 import { Wallet, WalletKeys } from '@models/model';
+import { StoredNetwork } from '@models/stored-network';
 
 import * as constants from '@app/app.constants';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
@@ -35,7 +36,7 @@ export class DelegatesPage implements OnDestroy {
   public preMinned: number = constants.BLOCKCHAIN_PREMINNED;
 
   public rankStatus = 'active';
-  public currentNetwork: Network;
+  public currentNetwork: StoredNetwork;
   public slides: string[] = [
     'active',
     'standBy',
@@ -159,14 +160,14 @@ export class DelegatesPage implements OnDestroy {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.delegates.subscribe((data) => this.zone.run(() => {
         this.delegates = data;
-        this.activeDelegates = this.delegates.slice(0, constants.NUM_ACTIVE_DELEGATES);
-        this.standByDelegates = this.delegates.slice(constants.NUM_ACTIVE_DELEGATES, this.delegates.length);
+        this.activeDelegates = this.delegates.slice(0, this.currentNetwork.activeDelegates);
+        this.standByDelegates = this.delegates.slice(this.currentNetwork.activeDelegates, this.delegates.length);
       }));
     });
 
     this.onUpdateDelegates();
     this.fetchCurrentVote();
-    this.arkApiProvider.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2).subscribe();
+    this.arkApiProvider.fetchDelegates(this.currentNetwork.activeDelegates * 2).subscribe();
   }
 
   ngOnDestroy() {
