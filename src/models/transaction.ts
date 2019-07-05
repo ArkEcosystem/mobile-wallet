@@ -74,7 +74,7 @@ export class Transaction extends TransactionModel {
       price = market.getPriceByDate(marketCurrency.code, this.date);
 
       if (!price) {
-        price = market.getPriceByDate(marketCurrency.code, moment(this.date).subtract(1, "d").toDate());
+        price = market.getPriceByDate(marketCurrency.code, moment(this.date).subtract(1, 'd').toDate());
       }
     }
 
