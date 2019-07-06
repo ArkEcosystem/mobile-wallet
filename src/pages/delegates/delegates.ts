@@ -33,7 +33,7 @@ export class DelegatesPage implements OnDestroy {
   public standByDelegates: Delegate[];
 
   public supply = 0;
-  public preMinned: number = constants.BLOCKCHAIN_PREMINNED;
+  public preMined: number = constants.BLOCKCHAIN_PREMINED;
 
   public rankStatus = 'active';
   public currentNetwork: StoredNetwork;
@@ -100,7 +100,7 @@ export class DelegatesPage implements OnDestroy {
   }
 
   getTotalForged() {
-    const forged = this.supply === 0 ? 0 : this.supply - this.preMinned;
+    const forged = this.supply === 0 ? 0 : this.supply - this.preMined;
 
     return forged;
   }
