@@ -1,5 +1,6 @@
+import BigNumber from 'bignumber.js';
+import moment from 'moment';
 import { Transaction as TransactionModel, TransactionType } from 'ark-ts/model';
-import arkConfig from 'ark-ts/config';
 
 import { MarketCurrency, MarketHistory, MarketTicker } from '@models/market';
 
@@ -47,6 +48,8 @@ export class Transaction extends TransactionModel {
     }
 
     this.date = new Date(this.getTimestamp() * 1000);
+    this.amount = new BigNumber(input['amount']).toNumber();
+    this.fee = new BigNumber(input['fee']).toNumber();
     delete self.network;
 
     return self;
@@ -69,11 +72,16 @@ export class Transaction extends TransactionModel {
       price = currency ? currency.price : 0;
     } else {
       price = market.getPriceByDate(marketCurrency.code, this.date);
+
+      if (!price) {
+        price = market.getPriceByDate(marketCurrency.code, moment(this.date).subtract(1, 'd').toDate());
+      }
     }
 
     const amount = ArkUtility.arktoshiToArk(this.getAmount(), true);
+    const raw = amount * price;
 
-    return amount * price;
+    return isNaN(raw) ? 0 : raw;
   }
 
   getTimestamp() {
