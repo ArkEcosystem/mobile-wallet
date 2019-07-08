@@ -53,12 +53,22 @@ export class AmountComponent implements OnInit {
   public onInputToken() {
     const precision = this.marketCurrency.code === 'btc' ? 8 : 2;
     try {
-      this.amount = Number((new BigNumber(this.amount.toString())).toFixed(constants.ARKTOSHI_DP));
-      this.amountEquivalent = +(this.amount * this.marketCurrency.price).toFixed(precision);
+      const amount = Number((new BigNumber(this.amount.toString())).toFixed(constants.ARKTOSHI_DP));
+      const amountEquivalent = +(amount * this.marketCurrency.price).toFixed(precision);
+      this.amountEquivalent = amountEquivalent;
     } catch {
       return;
     }
     this.hasChanged();
+  }
+
+  public onBlurToken() {
+    try {
+      this.amount = Number(new BigNumber(this.amount).toFixed(constants.ARKTOSHI_DP));
+    } catch {
+      this.amount = 0;
+    }
+    this.onInputToken();
   }
 
   public onInputFiat() {
