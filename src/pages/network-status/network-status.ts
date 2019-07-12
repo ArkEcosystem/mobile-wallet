@@ -10,7 +10,6 @@ import { ArkApiProvider } from '@providers/ark-api/ark-api';
 
 import { Network, Peer } from 'ark-ts';
 
-import * as constants from '@app/app.constants';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastProvider } from '@providers/toast/toast';
 
@@ -74,14 +73,25 @@ export class NetworkStatusPage implements OnDestroy {
   }
 
   private refreshData() {
-    this.arkApiProvider.api.peer.get(this.currentPeer.ip, this.currentPeer.port)
-    .takeUntil(this.unsubscriber$)
-    .do((response) => {
-      if (response.success) {
-        this.zone.run(() => this.currentPeer = response.peer);
-      }
-    })
-    .subscribe();
+    this.arkApiProvider.client.getPeerConfig(this.currentPeer.ip, this.currentNetwork.p2pPort)
+      .takeUntil(this.unsubscriber$)
+      .subscribe((response) => {
+        if (response) {
+          this.zone.run(() => {
+            this.currentPeer.version = response.data.version;
+          });
+        }
+      });
+
+    this.arkApiProvider.client.getPeerSyncing(this.getPeerUrl())
+      .takeUntil(this.unsubscriber$)
+      .subscribe((response) => {
+        if (response) {
+          this.zone.run(() => {
+            this.currentPeer.height = response.height;
+          });
+        }
+      });
   }
 
   private onUpdatePeer() {
@@ -92,6 +102,7 @@ export class NetworkStatusPage implements OnDestroy {
         this.translateService.get('NETWORKS_PAGE.PEER_SUCCESSFULLY_CHANGED')
           .subscribe((translate) => this.toastProvider.success(translate));
         this.zone.run(() => this.currentPeer = peer);
+        this.refreshData();
       }).subscribe();
   }
 
@@ -101,7 +112,7 @@ export class NetworkStatusPage implements OnDestroy {
 
     this.refreshIntervalListener = setInterval(() => {
       this.refreshData();
-    }, constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
+    }, 30 * 1000);
   }
 
   ngOnDestroy() {
