@@ -189,6 +189,7 @@ export class ArkApiProvider {
 
     // Custom network
     if (!this.network.type) {
+      this.updateNetwork();
       return;
     }
 
