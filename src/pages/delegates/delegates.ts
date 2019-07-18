@@ -127,7 +127,7 @@ export class DelegatesPage implements OnDestroy {
     };
 
     this.arkApiProvider.transactionBuilder.createVote(data).subscribe((transaction) => {
-      this.confirmTransaction.open(transaction, keys);
+      this.confirmTransaction.open(transaction, keys, null, { username: this.selectedDelegate.username });
     });
   }
 

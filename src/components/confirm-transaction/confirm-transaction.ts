@@ -26,14 +26,15 @@ export class ConfirmTransactionComponent {
     private translateService: TranslateService
   ) { }
 
-  open(transaction: any, keys: WalletKeys, addressCheckResult?: AddressCheckResult) {
+  open(transaction: any, keys: WalletKeys, addressCheckResult?: AddressCheckResult, extra = {}) {
     transaction = new Transaction(this.wallet.address, this.arkApiProvider.network).deserialize(transaction);
 
     this.arkApiProvider.createTransaction(transaction, keys.key, keys.secondKey, keys.secondPassphrase)
       .subscribe((tx) => {
         const modal = this.modalCtrl.create('ConfirmTransactionModal', {
           transaction: tx,
-          addressCheckResult: addressCheckResult
+          addressCheckResult: addressCheckResult,
+          extra: extra
         }, { enableBackdropDismiss: true });
 
         modal.onDidDismiss((result) => {
