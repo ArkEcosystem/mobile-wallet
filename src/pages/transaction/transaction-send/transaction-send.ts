@@ -201,7 +201,9 @@ export class TransactionSendPage implements OnInit {
   public truncateAddressMiddle(): void {
     // When field loses focus, use ellipses to show beginning and end of address
     const addressString = this.transaction.recipientAddress;
-    this.searchBar.setValue(this.truncateMiddlePipe.transform(addressString, constants.TRANSACTION_ADDRESS_SIZE, addressString));
+    setTimeout(() => {
+      this.searchBar.setValue(this.truncateMiddlePipe.transform(addressString, constants.TRANSACTION_ADDRESS_SIZE, addressString));
+    }, 0);
   }
 
   private validAddress(): boolean {
