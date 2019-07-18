@@ -51,10 +51,17 @@
             </ion-label>
           </ion-item>
 
+          <ion-item no-lines text-wrap *ngIf="transaction?.type == 3 && extra.username">
+            <ion-label stacked>
+              <p>{{ 'DELEGATES_PAGE.DELEGATE' | translate }}</p>
+              <h6 ion-content>{{ extra.username }}</h6>
+            </ion-label>
+          </ion-item>
+
           <ion-item no-lines text-wrap>
             <ion-label stacked>
               <p>{{ 'TRANSACTIONS_PAGE.AMOUNT' | translate }}</p>
-              <h6 ion-content>{{ transaction?.amount | unitsSatoshi }} {{ currentNetwork?.symbol }}</h6>
+              <h6 ion-content>{{ (transaction?.amount | unitsSatoshi) || 0 }} {{ currentNetwork?.symbol }}</h6>
             </ion-label>
           </ion-item>
 

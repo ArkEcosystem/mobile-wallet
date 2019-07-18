@@ -26,6 +26,7 @@ export class ConfirmTransactionModal implements OnDestroy {
 
   public transaction: Transaction;
   public address: string;
+  public extra: object;
 
   public addressCheckResult: AddressCheckResult;
   public marketCurrency: MarketCurrency;
@@ -49,6 +50,7 @@ export class ConfirmTransactionModal implements OnDestroy {
   ) {
     this.transaction = this.navParams.get('transaction');
     this.addressCheckResult = this.navParams.get('addressCheckResult');
+    this.extra = this.navParams.get('extra');
     this.address = this.transaction.address;
 
     if (!this.transaction) { this.navCtrl.pop(); }
