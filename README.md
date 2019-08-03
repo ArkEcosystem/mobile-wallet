@@ -11,6 +11,8 @@
 [![Latest Version](https://badgen.now.sh/github/release/ArkEcosystem/mobile-wallet)](https://github.com/ArkEcosystem/mobile-wallet/releases/latest)
 [![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
 
+> Lead Maintainer: [Lúcio Rubens](https://github.com/luciorubeens)
+
 ARK’s mobile wallet is a hybrid application (using the same codebase for Android and iOS which helps with coordinated development). Created using Ionic framework and ARK’s [TypeScript API](https://github.com/ArkEcosystem/ark-ts) to interact with the ARK network via your mobile phone, anytime, anywhere (as long as you have an internet connection).
 
 ## Download
@@ -80,10 +82,6 @@ To run the E2E (end to end) tests:
 $ npm run test:e2e
 ```
 
-## Security
-
-If you discover a security vulnerability within this application, please send an e-mail to security@ark.io. All security vulnerabilities will be promptly addressed.
-
 ## Contributing
 
 - If you find any bugs, submit an [issue](../../issues) or open [pull-request](../../pulls), helping us catch and fix them.
@@ -92,12 +90,14 @@ If you discover a security vulnerability within this application, please send an
 - [Contribution bounties](https://docs.ark.io/guidebook/contribution-guidelines/contributing.html).
 - [Help translate](./TRANSLATING.md).
 
+## Security
+
+If you discover a security vulnerability within this package, please send an e-mail to security@ark.io. All security vulnerabilities will be promptly addressed.
+
 ## Credits
 
-- [Lúcio Rubens](https://github.com/luciorubeens)
-- [Alex Barnsley](https://github.com/alexbarnsley)
-- [All Contributors](../../contributors)
+This project exists thanks to all the people who [contribute](../../contributors).
 
 ## License
 
-[MIT](LICENSE) © [ArkEcosystem](https://ark.io)
+[MIT](LICENSE) © [ARK Ecosystem](https://ark.io)
