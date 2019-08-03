@@ -78,7 +78,7 @@ export class TransactionShowPage {
         });
       }
 
-      if (!this.currentWallet.isWatchOnly) {
+      if (this.currentWallet && !this.currentWallet.isWatchOnly) {
         buttons.push({
           text: translation['TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS'],
           role: 'send',
@@ -104,7 +104,7 @@ export class TransactionShowPage {
   private shouldShowOptions() {
     if (this.transaction.isTransfer()) {
       const contact = this.contactsProvider.getContactByAddress(this.transaction.getAppropriateAddress());
-      if (!contact || !this.currentWallet.isWatchOnly) { return this.showOptions = true; }
+      if (!contact || (this.currentWallet && !this.currentWallet.isWatchOnly)) { return this.showOptions = true; }
     }
   }
 
