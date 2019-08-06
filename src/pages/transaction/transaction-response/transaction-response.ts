@@ -91,7 +91,7 @@ export class TransactionResponsePage {
   verifySecondPassphrasHasEncrypted() {
     if (!this.transaction) { return; }
 
-    if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondSignature && !this.wallet.cipherSecondKey)) {
+    if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondPublicKey && !this.wallet.cipherSecondKey)) {
       if (this.response.status) { return this.showKeepSecondPassphrase = true; }
     }
 
