@@ -18,8 +18,7 @@
     },
     "lib": [
       "dom",
-      "es2015",
-      "es2017"
+      "es2015"
     ],
     "module": "es2015",
     "target": "es5",
