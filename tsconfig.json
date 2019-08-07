@@ -11,18 +11,23 @@
       "@providers/*": ["src/providers/*"],
       "@models/*": ["src/models/*"],
       "@directives/*": ["src/directives/*"],
+      "@utils/*": ["src/utils/*"],
       "@pipes/*": ["src/pipes/*"],
       "@app/*": ["src/app/*"],
       "@root/*": ["./*"]
     },
     "lib": [
       "dom",
-      "es2015"
+      "es2015",
+      "es2017"
     ],
     "module": "es2015",
     "target": "es5",
     "moduleResolution": "node",
-    "sourceMap": true
+    "sourceMap": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "include": [
     "src/**/*.ts"

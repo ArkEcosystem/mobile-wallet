@@ -28,7 +28,11 @@ page-transaction-response {
 
 .dark-theme {
   page-transaction-response {
-    .image {      
+    .encrypt-message {
+      color: #fff;
+    }
+
+    .image {
       &.tx-success {
         content: url('../assets/img/dark/transaction/transfer-success.png');
       }

@@ -172,7 +172,7 @@ export class WalletListPage implements OnDestroy {
       }
     }
 
-    this.totalBalance = lodash(list).values().sumBy((w) => parseInt(w.balance));
+    this.totalBalance = lodash.chain(list).sumBy((w) => parseInt(w.balance)).value();
     const wholeArk = (this.totalBalance / constants.WALLET_UNIT_TO_SATOSHI);
     this.fiatBalance = wholeArk * (this.fiatCurrency ? this.fiatCurrency.price : 0);
 

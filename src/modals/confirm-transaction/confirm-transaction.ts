@@ -84,7 +84,7 @@ export class ConfirmTransactionModal implements OnDestroy {
               if (anyLowFee) {
                 message = translations['TRANSACTIONS_PAGE.ERROR.FEE_TOO_LOW'];
               } else {
-                const remoteMessage = lodash(errors).values().get('[0][0].message');
+                const remoteMessage = lodash.get(lodash.values(errors), '[0][0].message');
                 if (remoteMessage) {
                   message = remoteMessage;
                 } else {

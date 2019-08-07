@@ -1,9 +1,9 @@
 version: 2
 jobs:
-  test-node-9:
+  test-node-10:
     working_directory: ~/mobile-wallet
     docker:
-      - image: circleci/node:8-browsers
+      - image: circleci/node:10-browsers
     steps: &teststeps
       - checkout
       - restore_cache:
@@ -35,15 +35,15 @@ jobs:
           name: Build
           command: npm run build -- --prod
 
-  test-node-10:
+  test-node-11:
       working_directory: ~/mobile-wallet
       docker:
-        - image: circleci/node:10-browsers
+        - image: circleci/node:11-browsers
       steps: *teststeps
 
 workflows:
   version: 2
   test:
     jobs:
-      - test-node-9
       - test-node-10
+      - test-node-11
