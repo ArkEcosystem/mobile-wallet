@@ -8,6 +8,7 @@
       "@providers/*": ["providers/*"],
       "@models/*": ["models/*"],
       "@directives/*": ["directives/*"],
+      "@utils/*": ["utils/*"],
       "@pipes/*": ["pipes/*"],
       "@app/*": ["app/*"],
       "@root/*": ["../*"]
