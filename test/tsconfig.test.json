@@ -23,7 +23,8 @@
       "dom"
     ],
     "target": "es5",
-    "sourceMap": false
+    "sourceMap": false,
+    "skipLibCheck": true
   },
   "exclude": [
   ],

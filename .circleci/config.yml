@@ -11,10 +11,10 @@ jobs:
             - npm-deps-{{ .Branch }}-{{ checksum "package.json" }}
       - run:
           name : Install pre dependencies
-          command : sudo npm i -g ionic@4.x cordova@8.x
+          command : yarn global add ionic@4.x cordova@8.x
       - run:
           name: Install dependencies
-          command: npm install
+          command: yarn
       - save_cache:
           key: npm-deps-{{ .Branch }}-{{ checksum "package.json" }}
           paths:

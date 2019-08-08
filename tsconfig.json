@@ -14,7 +14,8 @@
       "@utils/*": ["src/utils/*"],
       "@pipes/*": ["src/pipes/*"],
       "@app/*": ["src/app/*"],
-      "@root/*": ["./*"]
+      "@root/*": ["./*"],
+      "*": ["./types/*"]
     },
     "lib": [
       "dom",
