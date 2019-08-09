@@ -15,7 +15,7 @@
     <preference name="fullscreen" value="false" />
     <preference name="UseSwiftLanguageVersion" value="5" />
     <preference name="android-minSdkVersion" value="19" />
-    <preference name="android-targetSdkVersion" value="28" />
+    <preference name="android-targetSdkVersion" value="26" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="BackgroundColor" value="0xffedf2f5" />
@@ -110,5 +110,5 @@
     <plugin name="cordova-sqlite-storage" spec="git+https://github.com/litehelpers/Cordova-sqlite-storage.git" />
     <engine name="ios" spec="5.0.1" />
     <engine name="browser" spec="^5.0.4" />
-    <engine name="android" spec="^8.0.0" />
+    <engine name="android" spec="7.1.2" />
 </widget>
