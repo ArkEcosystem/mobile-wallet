@@ -1,4 +1,4 @@
-import BigNumber from 'bignumber.js';
+import BigNumber from '@utils/bignumber';
 import moment from 'moment';
 import { Transaction as TransactionModel, TransactionType } from 'ark-ts/model';
 

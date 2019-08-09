@@ -25,7 +25,7 @@ import { TransactionSend, TransactionType } from 'ark-ts';
 import { AutoCompleteComponent } from 'ionic2-auto-complete';
 import { AutoCompleteAccount, AutoCompleteAccountType } from '@models/contact';
 import { TranslatableObject } from '@models/translate';
-import { BigNumber } from 'bignumber.js';
+import BigNumber from '@utils/bignumber';
 import { ArkUtility } from '../../../utils/ark-utility';
 import { AddressCheckerProvider} from '@providers/address-checker/address-checker';
 import { AddressCheckResult } from '@providers/address-checker/address-check-result';

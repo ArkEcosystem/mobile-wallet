@@ -7,7 +7,7 @@ import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { Network } from 'ark-ts/model';
 import { Amount } from '@components/amount/amount.model';
 import * as constants from '@app/app.constants';
-import BigNumber from 'bignumber.js';
+import BigNumber from '@utils/bignumber';
 
 @Component({
   selector: 'amount',
