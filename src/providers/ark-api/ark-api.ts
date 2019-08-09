@@ -21,6 +21,7 @@ import { ArkUtility } from '../../utils/ark-utility';
 import {AccountResponse, Delegate} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
 import ArkClient from '../../utils/ark-client';
+import * as ArkCrypto from '@arkecosystem/crypto';
 
 interface NodeFees {
   type: number;
@@ -342,17 +343,6 @@ export class ArkApiProvider {
 
   public createTransaction(transaction: Transaction, key: string, secondKey: string, secondPassphrase: string): Observable<Transaction> {
     return Observable.create((observer) => {
-      const configNetwork = arktsConfig.networks[this._network.name];
-      let jsNetwork;
-      if (configNetwork) {
-        jsNetwork = {
-          messagePrefix: configNetwork.name,
-          bip32: configNetwork.bip32,
-          pubKeyHash: configNetwork.version,
-          wif: configNetwork.wif,
-        };
-      }
-
       if (!arkts.PublicKey.validateAddress(transaction.address, this._network)) {
         observer.error({
           key: 'API.DESTINATION_ADDRESS_ERROR',
@@ -362,7 +352,6 @@ export class ArkApiProvider {
       }
 
       const wallet = this.userDataProvider.getWalletByAddress(transaction.address);
-      transaction.senderId = transaction.address;
 
       const totalAmount = transaction.getAmount();
       const balance = Number(wallet.balance);
@@ -384,21 +373,35 @@ export class ArkApiProvider {
       const epochTime = moment(this._network.epoch).utc().valueOf();
       const now = moment().valueOf();
       transaction.timestamp = Math.floor((now - epochTime) / 1000);
-
+      transaction.senderPublicKey = wallet.publicKey;
       transaction.signature = null;
       transaction.id = null;
 
-      const keys = this.arkjs.crypto.getKeys(key, jsNetwork);
-      this.arkjs.crypto.sign(transaction, keys);
+      const data: ArkCrypto.ITransactionData = {
+        network: this._network.version,
+        type: ArkCrypto.constants.TransactionTypes[ArkCrypto.constants.TransactionTypes[transaction.type]],
+        senderPublicKey: transaction.senderPublicKey,
+        timestamp: transaction.timestamp,
+        amount: transaction.amount,
+        fee: transaction.fee,
+        vendorField: transaction.vendorField,
+        recipientId: transaction.recipientId,
+        asset: transaction.asset
+      };
+
+      const keys = ArkCrypto.Keys.fromPassphrase(key);
+      data.signature = ArkCrypto.crypto.sign(data, keys);
 
       secondPassphrase = secondKey || secondPassphrase;
 
       if (secondPassphrase) {
-        const secondKeys = this.arkjs.crypto.getKeys(secondPassphrase, jsNetwork);
-        this.arkjs.crypto.secondSign(transaction, secondKeys);
+        const secondKeys = ArkCrypto.Keys.fromPassphrase(secondPassphrase);
+        data.secondSignature = ArkCrypto.crypto.secondSign(data, secondKeys);
       }
 
-      transaction.id = this.arkjs.crypto.getId(transaction);
+      transaction.id = ArkCrypto.crypto.getId(data);
+      transaction.signature = data.signature;
+      transaction.signSignature = data.secondSignature;
 
       observer.next(transaction);
       observer.complete();

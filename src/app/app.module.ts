@@ -30,7 +30,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 
 import { MyApp } from './app.component';
 
-import '@root/node_modules/chart.js/src/chart.js';
+import 'chart.js';
 import { AutoCompleteModule } from 'ionic2-auto-complete';
 import { NeoApiProvider } from '@providers/neo-api/neo-api';
 import { AddressCheckerProvider } from '@providers/address-checker/address-checker';
