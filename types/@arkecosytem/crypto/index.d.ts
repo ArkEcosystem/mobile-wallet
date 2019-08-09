@@ -1,1 +1,1 @@
-declare module '@arkecosystem/crypto';
+declare module "@arkecosystem/crypto";
