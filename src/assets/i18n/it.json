@@ -304,7 +304,7 @@
       "PUBLIC_ADDRESS_SHARE": "Indirizzo pubblico (CONDIVISO)",
       "PUBLIC_KEY": "Chiave pubblica",
       "PASSPHRASE_NOT_BELONG_TO_ADDRESS": "La frase segreta che hai inserito non appartiene all'indirizzo '{{ address }}'!",
-      "PASSPHRASE_NOT_BIP39": "Non hai inserito una frase segreta BIP-39 valida",
+      "PASSPHRASE_NOT_BIP39": "Non hai inserito una frase segreta BIP39 valida",
       "PASSPHRASE_UNSUPPORTED_INPUT": "Modalità di inserimento non supportata in modalità nascosta: modifica la visibilità della frase segreta.",
       "RE_ENTER_PASSPHRASE": "Inserisci nuovamente la frase segreta",
       "REMOVE_WALLET": "Rimuovi portafoglio",
