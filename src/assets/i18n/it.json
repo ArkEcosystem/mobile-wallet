@@ -254,7 +254,7 @@
         "BROADCAST": "La transazione è stata trasmessa ad altri peers. Potrebbe non essere accettata"
       },
       "ERROR": {
-        "NOTHING_SENT": "Non è stato possibile inviare la transazione. Controlla la connessione di rete o modifica il peer",
+        "NOTHING_SENT": "Non è stato possibile inviare la transazione. Controlla la connessione di rete o cambia il peer",
         "FEE_TOO_LOW": "Impossibile inviare la transazione perché la commissione ({{ fee }}) è troppo bassa"
       }
     },
