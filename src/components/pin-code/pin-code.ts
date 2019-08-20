@@ -69,7 +69,7 @@ export class PinCodeComponent {
   }
 
   private requestSecondPassphrase(passphrases: WalletKeys, onSuccess: (keys: WalletKeys) => void) {
-    if (this.wallet.secondSignature && !this.wallet.cipherSecondKey) {
+    if (this.wallet.secondPublicKey && !this.wallet.cipherSecondKey) {
       const modal = this.modalCtrl.create('EnterSecondPassphraseModal', null);
 
       modal.onDidDismiss((passphrase) => {
