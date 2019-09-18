@@ -1,16 +1,24 @@
-![ARK Mobile](https://i.imgur.com/0BjkC9C.png)
-
-[![Build Status](https://travis-ci.org/ArkEcosystem/ark-mobile.svg?branch=master)](https://travis-ci.org/ArkEcosystem/ark-mobile)
-
 # Ark Mobile
+
+<p align="center">
+    <img src="./banner.png" />
+</p>
+
 > A Wallet for Everyone
+
+[![Build Status](https://badgen.now.sh/circleci/github/ArkEcosystem/mobile-wallet)](https://circleci.com/gh/ArkEcosystem/mobile-wallet)
+[![Codecov](https://badgen.now.sh/codecov/c/github/arkecosystem/mobile-wallet)](https://codecov.io/gh/arkecosystem/mobile-wallet)
+[![Latest Version](https://badgen.now.sh/github/release/ArkEcosystem/mobile-wallet)](https://github.com/ArkEcosystem/mobile-wallet/releases/latest)
+[![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
+
+> Lead Maintainer: [Lúcio Rubens](https://github.com/luciorubeens)
 
 ARK’s mobile wallet is a hybrid application (using the same codebase for Android and iOS which helps with coordinated development). Created using Ionic framework and ARK’s [TypeScript API](https://github.com/ArkEcosystem/ark-ts) to interact with the ARK network via your mobile phone, anytime, anywhere (as long as you have an internet connection).
 
 ## Download
 
 - [Google Play](https://play.google.com/store/apps/details?id=io.ark.wallet.mobile)
-- App Store (Waiting for approval from Apple)
+- [App Store](https://itunes.apple.com/us/app/mobile-ark/id1324625967)
 
 ## Features
 
@@ -23,8 +31,8 @@ ARK’s mobile wallet is a hybrid application (using the same codebase for Andro
 - Option to add contacts and easily transact with them.
 - Total balance of your combined ARK addresses.
 - Wallet backup - input your selected PIN to decrypt your wallet and gain view of your private data.
-- Change PIN - if you want to change your encryption/decryption PIN you can easily do so..
-- Clear Data — you can clear all your data from the phone.
+- Change PIN - if you want to change your encryption/decryption PIN you can easily do so.
+- Clear Data - you can clear all your data from the phone.
 - Overview of network status with an option to change peer.
 - Current market value, along with weekly movements.
 - Support for showing data in different FIAT currencies.
@@ -34,7 +42,7 @@ ARK’s mobile wallet is a hybrid application (using the same codebase for Andro
 First follow the steps below to install the dependencies:
 
 ```bash
-$ npm install -g ionic cordova
+$ npm install -g ionic cordova@7.1.0
 $ npm install
 $ ionic cordova prepare
 ```
@@ -79,13 +87,17 @@ $ npm run test:e2e
 - If you find any bugs, submit an [issue](../../issues) or open [pull-request](../../pulls), helping us catch and fix them.
 - Engage with other users and developers on [ARK Slack](https://ark.io/slack/).
 - Join to our [gitter](https://gitter.im/ark-developers/Lobby).
-- [Contribute bounties](./CONTRIBUTING.md).
+- [Contribution bounties](https://docs.ark.io/guidebook/contribution-guidelines/contributing.html).
 - [Help translate](./TRANSLATING.md).
 
-## Authors
-- Lúcio Rubens <lucio@ark.io>
-- Alex Barnsley <alex@ark.io>
+## Security
+
+If you discover a security vulnerability within this package, please send an e-mail to security@ark.io. All security vulnerabilities will be promptly addressed.
+
+## Credits
+
+This project exists thanks to all the people who [contribute](../../contributors).
 
 ## License
 
-Ark Mobile is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+[MIT](LICENSE) © [ARK Ecosystem](https://ark.io)

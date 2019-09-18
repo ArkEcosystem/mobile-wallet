@@ -4,7 +4,7 @@
     <ion-title>{{ 'TRANSACTIONS_PAGE.TRANSACTION' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only *ngIf="showOptions" (click)="presentOptions()">
-        <ion-icon name="md-more"></ion-icon>
+        <ion-icon [name]="platform.is('ios') ? 'ios-more' : 'md-more'"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -19,8 +19,14 @@
         <h2 ion-text [color]="transaction.isSender() ? 'danger' : 'secondary'">
           {{ transaction?.isSender() ? '-' : '+' }} {{ transaction?.getAmount() | unitsSatoshi }} {{ currentNetwork?.token }}
         </h2>
-        <h4 appMainnetOnly>{{ equivalentSymbol }}{{ equivalentAmount | marketNumber }}</h4>
-        <button ion-button clear (click)="openInExplorer()" class="open-explorer-btn">{{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate }}</button>
+        <h4 appMarketNetOnly>{{ equivalentSymbol }}{{ equivalentAmount | marketNumber }}</h4>
+        <button ion-button
+                clear
+                *ngIf="currentNetwork?.explorer"
+                (click)="openInExplorer()"
+                class="open-explorer-btn">
+          {{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate }}
+        </button>
       </ion-col>
     </ion-row>
     <ion-row>

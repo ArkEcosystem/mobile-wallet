@@ -13,7 +13,7 @@ module.exports = function (config) {
       // require('karma-jasmine-html-reporter'),
       require('karma-jasmine'),
     ],
-    basePath: '',
+    basePath: '../',
     frameworks: ['@angular/cli', 'jasmine'],
     client:{
       clearContext: false // leave Jasmine Spec Runner output visible in browser
@@ -50,21 +50,17 @@ module.exports = function (config) {
     autoWatch: true,
     // Using ` --browsers Chrome` displays the browser
     browsers: ['ChromeHeadless'],
+    customLaunchers: {
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: ['--no-sandbox']
+      }
+    },
     singleRun: false
   }
 
   if (coverage) {
     custom.plugins.push(require('karma-coverage-istanbul-reporter'))
-  }
-
-  if (process.env.TRAVIS) {
-    custom.browsers.push('ChromeHeadlessNoSandbox')
-    custom.customLaunchers = {
-      ChromeHeadlessNoSandbox: {
-        base: 'ChromeHeadless',
-        flags: ['--no-sandbox']
-      }
-    }
   }
 
   config.set(custom);

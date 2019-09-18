@@ -12,42 +12,17 @@
 
 </ion-header>
 
-<ion-content no-bounce>
-  <ion-grid padding class="dark-navbar">
-    <ion-row>
-      <ion-col text-center>
-        <p class="sole-message">{{ 'PASSPHRASE_TEST.INFO' | translate }}</p>
-      </ion-col>
-    </ion-row>
-    <ion-row class="account-container">
-      <ion-col>
-          <form #wordsForm="ngForm">
-            <ng-container *ngFor="let word of words">
-              <ion-item>
-                <ion-label floating>{{ 'WORD' | translate }} {{word.number}}</ion-label>
-                <ion-input type="text"
-                           [name]="'word_' + word.number"
-                           [(ngModel)]="word.userValue"
-                           (keyup)="word.isUserTyped = true"
-                           required
-                           autocapitalize="none">
-                </ion-input>
-              </ion-item>
-              <ion-item class="no-border">
-                <p class="error-message" *ngIf="word.hasUIError">{{ 'PASSPHRASE_TEST.WRONG_WORD' | translate }}</p>
-              </ion-item>
-            </ng-container>
-          </form>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <div text-center>
-          <button ion-button class="button-continue" (click)="next()" [disabled]="!wordsForm.valid || !areAllWordsCorrect()">
-            {{ 'NEXT' | translate }}
-          </button>
-        </div>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-content no-bounce text-center padding>
+  <p class="sole-message">{{ 'PASSPHRASE_TEST.INFO' | translate }}</p>
+  <div *ngIf="isDevNet" class="note-message-default">
+    <p>{{ 'PASSPHRASE_TEST.DEVNET_WORDS_NOTICE' | translate }}</p>
+  </div>
+  <form #wordsForm="ngForm">
+    <passphrase-input [wordlistLanguage]="wordlistLanguage" [passphraseInit]="passphraseInit"></passphrase-input>
+  </form>
+  <div text-center>
+    <button ion-button class="button-continue" (click)="next()" [disabled]="!wordsForm.valid || !areAllWordsCorrect()">
+      {{ 'NEXT' | translate }}
+    </button>
+  </div>
 </ion-content>

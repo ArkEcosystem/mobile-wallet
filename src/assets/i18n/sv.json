@@ -106,7 +106,6 @@
     "PIN_UPDATED_TEXT": "Din PIN har uppdaterats",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Skriv in din PIN för att kryptera lösenordsfrasen",
     "TYPE_PIN_SIGN_TRANSACTION": "Skriv in din PIN för att signera transaktionen",
-    "TYPE_PIN_ENCRYPT_PASSPHRASE": "Skriv in din PIN för att kryptera lösenordsfrasen",
     "WRONG": "Vänligen ange rätt PIN"
   },
   "PROFILES_PAGE": {
@@ -152,7 +151,7 @@
     "ADD_ADDRESS_TO_CONTACTS": "Lägg till {{ address }} till kontakter",
     "AMOUNT": "Belopp",
     "CONFIRMATIONS": "Bekräftelser",
-    "CONTACT_NAME": "Nya Kontaktens Namn (frivilligt)",
+    "NEW_CONTACT_NAME": "Nya Kontaktens Namn (frivilligt)",
     "COPY_TXID": "Kopiera TXID",
     "CREATE_TRANSACTION_ERROR": "Kunde ej skapa transaktion. Kolla din uppkoppling mot Internet",
     "DELEGATE_REGISTRATION": "Registrera Delegat",

@@ -10,7 +10,7 @@ ion-app.transparent {
 
 #sidebarMenu {
   .menu-inner {
-    background: #fff!important;
+    background: #fff;
     width: 270px;
 
     ion-content {
@@ -30,10 +30,12 @@ ion-app.transparent {
       text-transform: capitalize;
     }
   }
+
   ion-list > .item {
     .icon {
       color: color($colors, primary, base);
     }
+
     .label {
       font-weight: 500;
     }
@@ -49,6 +51,7 @@ ion-app.transparent {
         border-bottom-right-radius: 0;
       }
     }
+
     &:not(:first-child):not(:last-child) {
       padding-right: 0;
       padding-left: 0;
@@ -56,6 +59,7 @@ ion-app.transparent {
         border-radius: 0;
       }
     }
+
     &:last-child:not(:first-child) {
       padding-left: 0;
       .button {
@@ -63,6 +67,10 @@ ion-app.transparent {
         border-bottom-left-radius: 0;
       }
     }
+  }
+
+  .col + .col .button {
+    border-left: none;
   }
 }
 
@@ -91,6 +99,7 @@ ion-app.transparent {
   &.delegate > .toolbar-background {
     background: #394cf8;
   }
+
   &>.toolbar-background {
     background: #101022;
     border: none;
@@ -98,11 +107,11 @@ ion-app.transparent {
 }
 
 .no-padding {
-  padding: 0;
+  padding: 0!important;
 }
 
 .no-margin {
-  margin: 0;
+  margin: 0!important;
 }
 
 .no-border {
@@ -146,6 +155,7 @@ ion-app.transparent {
       color: #495b71;
       font-weight: 600;
     }
+
     .content {
       margin-top: 5px;
     }
@@ -154,7 +164,7 @@ ion-app.transparent {
 
 .note-toolbar {
   padding: 1em;
-  background: #ffeaa5;
+  background: color($colors, warning, base);
 
   .toolbar-background {
     background: transparent;
@@ -179,7 +189,7 @@ ion-app.transparent {
   padding: 1.2em 1em;
   margin: 1.5em auto;
   color: black;
-  background: #ffeaa5;
+  background: color($colors, warning, base);
 }
 
 ion-content.column-mode {
@@ -187,10 +197,12 @@ ion-content.column-mode {
     display: flex;
     flex-direction: column;
   }
+
   ion-grid {
     padding: 0;
     height: 100%;
   }
+
   ion-row {
     flex: 1;
   }
@@ -216,4 +228,208 @@ ion-fab.pull-footer {
 
 .platform-ios modal-pin-code close-popup .button {
   top: 1.5em;
+}
+
+.content .scroll-content {
+  overflow-y: auto;
+}
+
+.content-ios .scroll-content {
+  overflow-y: scroll;
+}
+
+ion-app {
+  &.dark-theme {
+    .toggle-icon {
+      background-color: #0d1632;
+
+      .toggle-inner {
+        background-color: #2a375e;
+      }
+    }
+
+    .toggle-checked {
+      .toggle-icon {
+        background-color: #0d1632;
+
+        .toggle-inner {
+          background-color: lighten(color($darkColors, primary-background, base), 50%);
+        }
+      }
+    }
+
+    .card h3, .card h4, .card h5, .card h6 {
+      color: #fff;
+    }
+
+    .sole-message {
+      color: #fff;
+    }
+
+    #sidebarMenu {
+      ion-header p {
+        color: color($darkColors, secondary, base);
+      }
+
+      .menu-inner {
+        background-color: color($darkColors, primary-background, base);
+        color: #fff;
+      }
+
+      ion-list > .item {
+        .icon {
+          color: #4744f5;
+          -webkit-text-stroke: 0.4px #4744f5;
+        }
+
+        .label {
+          color: #fff;
+        }
+      }
+    }
+
+    ion-content {
+      background-color: color($darkColors, primary-background, base);
+    }
+
+    .content {
+      color: #fff;
+    }
+
+    .item {
+      color: #fff;
+
+      .label {
+        color: color($darkColors, secondary, base);
+
+        h3, h6 {
+          color: #fff;
+        }
+
+        span {
+          color: #fff;
+        }
+
+        .item-value {
+          color: #fff;
+        }
+
+        .content {
+          color: #fff;
+        }
+      }
+
+      p {
+        color: color($darkColors, secondary, base);
+      }
+    }
+
+    .list-selectable {
+      .item {
+        border-bottom: 1px solid color($darkColors, secondary-background, base)!important;
+      }
+    }
+
+    form .item-block .item-inner,
+    .list .item-block .item-inner {
+      border-bottom: 1px solid color($darkColors, secondary-background, base);
+    }
+
+    .list .item-block {
+      &.custom-arrow .item-inner {
+        background-image: url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 20'><path d='M2,20l-2-2l8-8L0,2l2-2l10,10L2,20z' fill='#5867d1'/></svg>");
+      }
+    }
+
+    .list > .item-block:last-child ion-label,
+    .list > .item-block:last-child .item-inner,
+    .list > .item-wrapper:last-child ion-label,
+    .list > .item-wrapper:last-child .item-inner {
+      border-bottom: 0;
+    }
+
+    ion-item-divider {
+      background-color: color($darkColors, primary-background, base);
+      border-bottom-color: color($darkColors, primary-background, base);
+    }
+
+    ion-list[no-lines] .item-block,
+    ion-list[no-lines] ion-item-options,
+    ion-list[no-lines] .item .item-inner,
+    ion-list .item[no-lines],
+    ion-list .item[no-lines] .item-inner {
+      border-width: 0;
+    }
+
+    .toolbar-title,
+    .toolbar-content {
+      color: #fff;
+    }
+
+    .bar-button-default {
+      color: lighten(color($darkColors, primary-background, base), 50%);
+    }
+
+    .bar-button-clear {
+      color: #fff !important;
+    }
+
+    .dark-navbar {
+      button {
+        .icon {
+          color: lighten(color($darkColors, primary-background, base), 50%);
+        }
+      }
+    }
+
+    .action-sheet-group {
+      background-color: color($darkColors, primary-background, base);
+    }
+
+    .action-sheet-button {
+      color: #fff !important;
+
+      &.activated {
+        background-color: #090e24;
+      }
+
+      .list .icon, .menu-inner .icon,
+      .action-sheet-icon {
+        color: #4744f5;
+        -webkit-text-stroke: 0.4px #4744f5;
+      }
+    }
+
+    .button-group {
+      .button-md-primary {
+      }
+    }
+
+    ion-alert {
+      .alert-wrapper {
+        background-color: color($darkColors, primary-background, base) !important;
+        color: #fff;
+
+        .alert-message {
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        .alert-radio-group {
+          border-color: color($darkColors, secondary-background, base);
+
+          .alert-radio-label {
+            color: #fff;
+          }
+
+          [aria-checked=true] .alert-radio-label {
+            color: color($darkColors, primary, base);
+          }
+        }
+      }
+    }
+
+    .searchbar-input-container .searchbar-input {
+      color: #fff;
+    }
+  }
 }

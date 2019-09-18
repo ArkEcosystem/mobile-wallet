@@ -1,10 +1,17 @@
 modal-pin-code {
+  close-popup {
+    color: color($colors, dark, base);
+  }
+
   scroll-content {
     display: flex;
     flex-direction: column;
   }
-  ion-grid {
-    height: 100%;
+
+  .pin-code-header {
+    font-weight: 500;
+    font-size: 17px;
+    opacity: 0.7;
   }
 
   .grid-password {
@@ -15,7 +22,6 @@ modal-pin-code {
   }
 
   .password-char {
-
     span {
       height: 20px;
       width: 20px;
@@ -31,7 +37,6 @@ modal-pin-code {
       border-color: #ed2a2d;
       background-color: #ed2a2d;
     }
-
   }
 
   .button-round {
@@ -142,6 +147,37 @@ modal-pin-code {
     100% {
       -webkit-transform: translate(0, 0);
       transform: translate(0, 0);
+    }
+  }
+}
+
+.dark-theme {
+  modal-pin-code {
+    close-popup {
+      color: lighten(color($darkColors, primary-background, base), 50%);
+    }
+
+    .button-round {
+      border-color: color($darkColors, secondary, base);
+    }
+
+    .password-char {
+      span {
+        border-color: color($darkColors, secondary, base);
+      }
+
+      &.active span {
+        border-color: color($darkColors, primary, base);
+        background-color: color($darkColors, primary, base);
+      }
+    }
+
+    .button-round {
+      color: #f4e7d7;
+    }
+
+    &.activated {
+      color: #f4e7d7;
     }
   }
 }

@@ -3,7 +3,8 @@
   <ion-navbar>
     <h6 class="no-padding no-margin" text-center>{{ 'TRANSACTIONS_PAGE.SEND_TRANSACTION' | translate }}</h6>
     <ion-buttons end>
-      <button ion-button clear (click)="sendAll()" color="primary">{{ 'TRANSACTIONS_PAGE.SEND_ALL' | translate }}</button>
+      <button ion-button clear (click)="toggleSendAll()"
+        color="primary">{{ 'TRANSACTIONS_PAGE.SEND_ALL' | translate }}</button>
     </ion-buttons>
   </ion-navbar>
 
@@ -15,95 +16,68 @@
       <ion-row class="row-contacts">
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
+            <ion-label floating stacked>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
             <ng-template #contactsTemplate let-attrs="attrs">
               <span class="auto-complete-row">
                 <ion-icon [name]="attrs.data.iconName" item-start></ion-icon>
                 <span>
-                  <span [innerHTML]="attrs.data.name | boldprefix:attrs.keyword"></span>
-                  <span class="autocomplete-second-line" [innerHTML]="attrs.data.address | boldprefix:attrs.keyword"></span>
+                  <span [innerHTML]="attrs.data.name | escapeHTML | boldprefix:attrs.keyword"></span>
+                  <span class="autocomplete-second-line"
+                    [innerHTML]="attrs.data.address | escapeHTML | boldprefix:attrs.keyword"></span>
                 </span>
-                </span>
+              </span>
             </ng-template>
-            <ion-auto-complete item-content
-                               [dataProvider]="contactsAutoCompleteService"
-                               [showResultsFirst]="true"
-                               [options]="{placeholder: ''}"
-                               formControlName="recipientAddress"
-                               (itemSelected)="onSearchItem($event)"
-                               (ionAutoInput)="onSearchInput($event)"
-                               [template]="contactsTemplate"
-                               #searchBar>
+            <ion-auto-complete item-content [dataProvider]="contactsAutoCompleteService" [showResultsFirst]="true"
+              [options]="{placeholder: ''}" formControlName="recipientAddress" (itemSelected)="onSearchItem($event)"
+              (ionAutoInput)="onSearchInput($event)" (autoFocus)="showFullAddress($event)"
+              (autoBlur)="truncateAddressMiddle($event)" [template]="contactsTemplate" #searchBar>
             </ion-auto-complete>
             <div class="qr-container" item-right>
-              <img src="./assets/img/light/wallet/qr-code-button.png" tappable (tap)="scanQRCode()" />
+              <img class="image" tappable (tap)="scanQRCode()" />
             </div>
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row *ngIf="!isExistingContact">
+      <ion-row *ngIf="transaction.recipientAddress">
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'TRANSACTIONS_PAGE.CONTACT_NAME' | translate }}</ion-label>
-            <ion-input type="text"
-                       formControlName="recipientName"
-                       name="recipientName"
-                       [(ngModel)]="transaction.recipientName"
-                       (keyup)="isRecipientNameAutoSet = false">
+            <ion-label floating stacked [ngSwitch]="addressType">
+              <ng-container *ngSwitchCase="addressTypes.Unknown">{{ 'TRANSACTIONS_PAGE.NEW_CONTACT_NAME' | translate }}
+              </ng-container>
+              <ng-container *ngSwitchCase="addressTypes.WalletWithoutLabel">
+                {{ 'TRANSACTIONS_PAGE.NEW_WALLET_LABEL' | translate }}</ng-container>
+              <ng-container *ngSwitchCase="addressTypes.WalletWithLabel">
+                {{ 'TRANSACTIONS_PAGE.EXISTING_WALLET' | translate }}</ng-container>
+              <ng-container *ngSwitchCase="addressTypes.Contact">{{ 'TRANSACTIONS_PAGE.EXISTING_CONTACT' | translate }}
+              </ng-container>
+            </ion-label>
+            <ion-input type="text" formControlName="recipientName" name="recipientName"
+              [disabled]="addressType === addressTypes.Contact || addressType === addressTypes.WalletWithLabel"
+              [(ngModel)]="transaction.recipientName" (keyup)="isRecipientNameAutoSet = false">
             </ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-grid no-padding class="amount-container">
-            <ion-row>
-              <ion-col>
-                <ion-item>
-                  <ion-label stacked>{{ currentNetwork?.token }}</ion-label>
-                  <ion-input type="number"
-                             formControlName="amount"
-                             step="0.00000001"
-                             min="0.00000001"
-                             max="10000000000"
-                             name="amount"
-                             [(ngModel)]="transaction.amount"
-                             (input)="onInputToken()"
-                             [placeholder]="tokenPlaceholder"
-                             required>
-                  </ion-input>
-                </ion-item>
-              </ion-col>
-              <ion-col appMainnetOnly>
-                <ion-item>
-                  <ion-label stacked>{{ marketCurrency?.code | uppercase }}</ion-label>
-                  <ion-input type="number"
-                             formControlName="amountEquivalent"
-                             step="0.01" min="0.00000001"
-                             max="10000000000"
-                             name="amountEquivalent"
-                             [(ngModel)]="transaction.amountEquivalent"
-                             (input)="onInputFiat()"
-                             [placeholder]="fiatPlaceholder"
-                             required>
-                  </ion-input>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-col>
-      </ion-row>
+      <amount [formGroup]="sendForm" (onChange)="onAmountChange($event)"></amount>
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</ion-label>
-            <ion-input type="text" formControlName="smartBridge" name="smartBridge" [(ngModel)]="transaction.smartBridge" maxlength="60"></ion-input>
+            <ion-label floating stacked>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</ion-label>
+            <ion-input type="text" formControlName="smartBridge" name="smartBridge" [(ngModel)]="transaction.smartBridge" [maxlength]="vendorFieldLength"></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
+        <ion-col>
+          <input-fee [transactionType]="transactionType" (onChange)="onFeeChange($event)"
+            (onError)="onFeeError($event)"></input-fee>
+        </ion-col>
+      </ion-row>
+      <ion-row>
         <ion-col align-self-end>
-          <button ion-button class="button-continue" (click)="send()">{{ 'TRANSACTIONS_PAGE.SEND' | translate }}</button>
+          <button ion-button class="button-continue" (click)="send()" [disabled]="hasSent || hasFeeError">
+            {{ 'TRANSACTIONS_PAGE.SEND' | translate }}
+          </button>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -111,6 +85,6 @@
 </ion-content>
 
 
-<pin-code [wallet]="currentWallet" (onSuccess)="onEnterPinCode($event)" #pinCode></pin-code>
+<pin-code [wallet]="currentWallet" #pinCode></pin-code>
 <confirm-transaction [wallet]="currentWallet" #confirmTransaction></confirm-transaction>
 <qr-scanner (onSuccess)="onScanQRCode($event)" #qrScanner></qr-scanner>

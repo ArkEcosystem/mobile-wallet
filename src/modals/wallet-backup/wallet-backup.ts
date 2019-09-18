@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import {IonicPage, ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
+import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { PrivateKey } from 'ark-ts/core';
 import bip39 from 'bip39';
-import { WalletKeys, AccountBackup, PassphraseWord } from '@models/model';
-import { ArkUtility } from '../../utils/ark-utility';
+import { WalletKeys, AccountBackup } from '@models/model';
 
 @IonicPage()
 @Component({
@@ -23,13 +23,15 @@ export class WalletBackupModal {
   public account: AccountBackup;
 
   private currentNetwork;
+  private wordlistLanguage: string;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private modalCtrl: ModalController,
-    private userDataProvider: UserDataProvider) {
+    private userDataProvider: UserDataProvider,
+    private settingsDataProvider: SettingsDataProvider) {
     this.title = this.navParams.get('title');
     this.entropy = this.navParams.get('entropy');
     this.keys = this.navParams.get('keys');
@@ -38,6 +40,7 @@ export class WalletBackupModal {
     if (!this.title || (!this.entropy && !this.keys)) { this.dismiss(); }
 
     this.currentNetwork = this.userDataProvider.currentNetwork;
+    this.settingsDataProvider.settings.subscribe((settings) => this.wordlistLanguage = settings.wordlistLanguage);
   }
 
   next() {
@@ -46,7 +49,8 @@ export class WalletBackupModal {
     }
 
     const wordTesterModal = this.modalCtrl.create('PassphraseWordTesterModal', {
-      words: this.getRandomWords(3, this.account.mnemonic.split(' '))
+      passphrase: this.account.mnemonic,
+      wordlistLanguage: this.wordlistLanguage
     });
 
     wordTesterModal.onDidDismiss(validationSuccess => {
@@ -72,23 +76,6 @@ export class WalletBackupModal {
     this.generateAccountFromEntropy();
   }
 
-  private getRandomWords(numberOfWords: number, words: string[]): PassphraseWord[] {
-    numberOfWords = words.length >= numberOfWords ? numberOfWords : words.length;
-
-    const randomWords: PassphraseWord[] = [];
-    while (randomWords.length !== numberOfWords) {
-      const randomIndex: number = ArkUtility.getRandomInt(0, words.length - 1);
-      if (randomWords.every(w => w.number - 1 !== randomIndex)) {
-        const randomWord: string = words[randomIndex];
-        randomWords.push(new PassphraseWord(randomWord,
-                                            randomIndex + 1,
-                                            this.userDataProvider.isDevNet ? randomWord : null));
-      }
-    }
-
-    return randomWords.sort((one, two) => one.number - two.number);
-  }
-
   private generateAccountFromKeys() {
     const pvKey = PrivateKey.fromSeed(this.keys.key, this.currentNetwork);
     const pbKey = pvKey.getPublicKey();
@@ -101,7 +88,9 @@ export class WalletBackupModal {
     account.mnemonic = this.keys.key;
     account.publicKey = pbKey.toHex();
     account.seed = bip39.mnemonicToSeedHex(account.mnemonic);
-    account.wif = pvKey.toWIF();
+    if (pbKey.network.wif) {
+      account.wif = pvKey.toWIF();
+    }
 
     if (this.keys.secondKey) {
       account.secondMnemonic = this.keys.secondKey;
@@ -112,16 +101,19 @@ export class WalletBackupModal {
 
   private generateAccountFromEntropy() {
     const account: AccountBackup = {};
+    const wordlist = bip39.wordlists[this.wordlistLanguage || 'english'];
 
     account.entropy = this.entropy;
-    account.mnemonic = bip39.entropyToMnemonic(account.entropy);
+    account.mnemonic = bip39.entropyToMnemonic(account.entropy, wordlist);
 
     const pvKey = PrivateKey.fromSeed(account.mnemonic, this.currentNetwork);
     const pbKey = pvKey.getPublicKey();
 
     account.address = pbKey.getAddress();
     account.publicKey = pbKey.toHex();
-    account.wif = pvKey.toWIF();
+    if (pbKey.network.wif) {
+      account.wif = pvKey.toWIF();
+    }
     account.seed = bip39.mnemonicToSeedHex(account.mnemonic);
 
     this.account = account;

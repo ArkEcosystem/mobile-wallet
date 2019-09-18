@@ -1,9 +1,6 @@
 {
   "rules": {
     "no-duplicate-variable": true,
-    "no-unused-variable": [
-      true
-    ],
     "arrow-return-shorthand": true,
     "class-name": true,
     "comment-format": [

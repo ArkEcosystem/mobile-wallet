@@ -15,24 +15,40 @@ import { Network, NetworkType } from 'ark-ts/model';
 
 import * as constants from '@app/app.constants';
 import { Delegate } from 'ark-ts';
+import { TranslatableObject } from '@models/translate';
+import { StoredNetwork } from '@models/stored-network';
 
 @Injectable()
 export class UserDataProvider {
 
-  public profiles = {};
+  public profiles: { [key: string]: Profile } = {};
   public networks = {};
 
   public currentProfile: Profile;
-  public currentNetwork: Network;
+  public currentNetwork: StoredNetwork;
   public currentWallet: Wallet;
 
-  public onActivateNetwork$: Subject<Network> = new Subject();
+  public onActivateNetwork$: Subject<StoredNetwork> = new Subject();
+  public onUpdateNetwork$: Subject<StoredNetwork> = new Subject();
   public onCreateWallet$: Subject<Wallet> = new Subject();
   public onUpdateWallet$: Subject<Wallet> = new Subject();
   public onSelectProfile$: Subject<Profile> = new Subject();
 
   public get isDevNet(): boolean {
     return this.currentNetwork && this.currentNetwork.type === NetworkType.Devnet;
+  }
+
+  public get isMainNet(): boolean {
+    return this.currentNetwork && this.currentNetwork.type === NetworkType.Mainnet;
+  }
+
+  private _defaultNetworks: Network[];
+
+  public get defaultNetworks(): Network[] {
+    if (!this._defaultNetworks) {
+      this._defaultNetworks = Network.getAll();
+    }
+    return this._defaultNetworks;
   }
 
   constructor(
@@ -44,35 +60,45 @@ export class UserDataProvider {
 
     this.onLogin();
     this.onClearStorage();
+
+    this.onUpdateNetwork$.subscribe(network => this.currentNetwork = network);
   }
 
-  addNetwork(network: Network) {
-    this.networks[this.generateUniqueId()] = network;
+  addOrUpdateNetwork(network: Network, networkId?: string): Observable<{ network: Network, id: string }> {
+    if (!networkId) {
+      networkId = this.generateUniqueId();
+    }
 
-    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
-  }
-
-  updateNetwork(networkId: string, network: Network) {
     this.networks[networkId] = network;
 
-    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
+    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks).map(() => {
+      return {
+        network: this.networks[networkId],
+        id: networkId
+      };
+    });
   }
 
-  getNetworkById(networkId: string) {
+  getNetworkById(networkId: string): StoredNetwork {
     return this.networks[networkId];
   }
 
   removeNetworkById(networkId: string) {
     delete this.networks[networkId];
-
-    this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
-    return this.networks;
+    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks);
   }
 
   addProfile(profile: Profile) {
     this.profiles[this.generateUniqueId()] = profile;
 
     return this.saveProfiles();
+  }
+
+  getProfileByName(name: string) {
+    const profile = lodash.find(this.profiles, (id: any) => id.name.toLowerCase() === name.toLowerCase());
+    if (profile) {
+      return new Profile().deserialize(profile);
+    }
   }
 
   getProfileById(profileId: string) {
@@ -101,7 +127,7 @@ export class UserDataProvider {
     if (wallet && !wallet.cipherSecondKey) {
       // wallet.secondBip38 = this.forgeProvider.encryptBip38(secondWif, pinCode, this.currentNetwork);
       wallet.cipherSecondKey = this.forgeProvider.encrypt(secondPassphrase, pinCode, wallet.address, wallet.iv);
-      return this.saveWallet(wallet, profileId, true);
+      return this.updateWallet(wallet, profileId, true);
     }
 
     return this.saveProfiles();
@@ -147,7 +173,7 @@ export class UserDataProvider {
           // wallet.secondBip38 = this.forgeProvider.encryptBip38(secondWif, newPassword, this.currentNetwork);
         }
 
-        this.saveWallet(wallet, profileId);
+        this.updateWallet(wallet, profileId);
       }
     }
 
@@ -175,7 +201,7 @@ export class UserDataProvider {
 
     wallet.isDelegate = true;
     wallet.username = userName;
-    this.saveWallet(wallet, undefined, true);
+    this.updateWallet(wallet, this.currentProfile.profileId, true);
   }
 
   getWalletByAddress(address: string, profileId: string = this.authProvider.loggedProfileId): Wallet {
@@ -186,11 +212,23 @@ export class UserDataProvider {
 
     if (profile.wallets[address]) {
       wallet = wallet.deserialize(profile.wallets[address]);
-      wallet.loadTransactions(wallet.transactions);
+      wallet.loadTransactions(wallet.transactions, this.currentNetwork);
       return wallet;
     }
 
     return null;
+  }
+
+  // Save only if wallet exists in profile
+  updateWallet(wallet: Wallet, profileId: string, notificate: boolean = false): Observable<any> {
+    if (lodash.isUndefined(profileId)) { return; }
+
+    const profile = this.getProfileById(profileId);
+    if (profile && profile.wallets[wallet.address]) {
+      return this.saveWallet(wallet, profileId, notificate);
+    }
+
+    return Observable.empty();
   }
 
   saveWallet(wallet: Wallet, profileId: string = this.authProvider.loggedProfileId, notificate: boolean = false) {
@@ -207,10 +245,27 @@ export class UserDataProvider {
     return this.saveProfiles();
   }
 
-  public getWalletLabel(walletOrAddress: Wallet | string): string {
+  public setWalletLabel(wallet: Wallet, label: string): Observable<any> {
+    if (!wallet) {
+      return Observable.throw({key: 'VALIDATION.INVALID_WALLET'} as TranslatableObject);
+    }
+
+    if (wallet.label === label) {
+      return Observable.empty();
+    }
+
+    if (lodash.some(this.currentProfile.wallets, w => label && w.label && w.label.toLowerCase() === label.toLowerCase())) {
+      return Observable.throw({key: 'VALIDATION.LABEL_EXISTS', parameters: {label: label}} as TranslatableObject);
+    }
+
+    wallet.label = label;
+    return this.updateWallet(wallet, this.currentProfile.profileId);
+  }
+
+  public getWalletLabel(walletOrAddress: Wallet | string, profileId?: string): string {
     let wallet: Wallet;
     if (typeof walletOrAddress === 'string') {
-      wallet = this.getWalletByAddress(walletOrAddress);
+      wallet = this.getWalletByAddress(walletOrAddress, profileId);
     } else {
       wallet = walletOrAddress;
     }
@@ -219,7 +274,7 @@ export class UserDataProvider {
       return null;
     }
 
-    return wallet.username || wallet.label || wallet.address;
+    return wallet.username || wallet.label;
   }
 
   setCurrentWallet(wallet: Wallet) {
@@ -240,15 +295,15 @@ export class UserDataProvider {
       .map(profiles => {
         // we have to create "real" contacts here, because the "address" property was not on the contact object
         // in the first versions of the app
-        return lodash.mapValues(profiles, profile => {
-          profile.contacts = lodash.transform(profile.contacts, UserDataProvider.mapContact, {});
-          return profile;
-        });
+        return lodash.mapValues(profiles, (profile, profileId) => ({
+          ...profile,
+          profileId,
+          contacts: lodash.transform(profile.contacts, UserDataProvider.mapContact, {})
+        }));
       });
   }
 
   loadNetworks() {
-    const defaults = Network.getAll();
 
     return Observable.create((observer) => {
       // Return defaults networks from arkts
@@ -256,8 +311,8 @@ export class UserDataProvider {
         if (!networks || lodash.isEmpty(networks)) {
           const uniqueDefaults = {};
 
-          for (let i = 0; i < defaults.length; i++) {
-            uniqueDefaults[this.generateUniqueId()] = defaults[i];
+          for (let i = 0; i < this.defaultNetworks.length; i++) {
+            uniqueDefaults[this.generateUniqueId()] = this.defaultNetworks[i];
           }
 
           this.storageProvider.set(constants.STORAGE_NETWORKS, uniqueDefaults);
@@ -296,7 +351,7 @@ export class UserDataProvider {
   private setCurrentNetwork(): void {
     if (!this.currentProfile) { return; }
 
-    const network = new Network();
+    const network = new StoredNetwork();
 
     Object.assign(network, this.networks[this.currentProfile.networkId]);
     this.onActivateNetwork$.next(network);

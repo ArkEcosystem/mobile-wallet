@@ -1,20 +1,32 @@
 page-delegate-detail {
+  .content {
+    background-color: #ffffff;
+  }
+
+  .vote-wrapper {
+    & > .row {
+      width: 100%;
+    }
+
+    input-fee {
+      width: 100%;
+    }
+  }
+
   .full-height {
     padding: 0;
   }
+
   .info-toolbar,
   .list-selectable {
     padding: 1em 2em;
   }
 
   .info-toolbar {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    overflow: hidden;
-
     .toolbar-content {
       color: white;
     }
+
     .toolbar-background {
       background: #23074d;  /* fallback for old browsers */
       background: -webkit-linear-gradient(to right, #1a1637, #2f2832);  /* Chrome 10-25, Safari 5.1-6 */
@@ -39,8 +51,15 @@ page-delegate-detail {
     border-radius: 5px;
   }
 
-  ion-row.details ion-item {
-    background: transparent;
+  ion-row.details {
+    p {
+      color: lighten(color($colors, dark, base), 55%);
+      margin-bottom: 0;
+    }
+
+    h5 {
+      margin-top: 1rem;
+    }
 
     ion-label {
       margin: 20px 0 0;

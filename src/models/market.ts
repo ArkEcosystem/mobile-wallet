@@ -140,9 +140,9 @@ export class MarketTicker {
     if (!input || !lodash.isObject(input)) { return; }
 
     self.info = {
-      identifier: input.symbol,
-      name: input.symbol,
-      symbol: input.symbol,
+      identifier: input['symbol'],
+      name: input['symbol'],
+      symbol: input['symbol'],
     };
 
     const currencies: MarketCurrency[] = [];
@@ -159,13 +159,13 @@ export class MarketTicker {
       marketCurrency.date = null;
       marketCurrency.change24h = 0;
 
-      if (input['currencies'] && input.currencies[currencyCode]) {
-        marketCurrency.price = input.currencies[currencyCode].PRICE;
-        marketCurrency.marketCap = input.currencies[currencyCode].MKTCAP;
-        marketCurrency.volume = input.currencies[currencyCode].SUPPLY;
-        marketCurrency.timestamp = input.currencies[currencyCode].time;
+      if (input['currencies'] && input['currencies'][currencyCode]) {
+        marketCurrency.price = input['currencies'][currencyCode].PRICE;
+        marketCurrency.marketCap = input['currencies'][currencyCode].MKTCAP;
+        marketCurrency.volume = input['currencies'][currencyCode].SUPPLY;
+        marketCurrency.timestamp = input['currencies'][currencyCode].time;
         marketCurrency.date = new Date(marketCurrency.timestamp * 1000);
-        marketCurrency.change24h = input.currencies[currencyCode].CHANGEPCT24HOUR || null;
+        marketCurrency.change24h = input['currencies'][currencyCode].CHANGEPCT24HOUR || null;
       }
 
       currencies.push(marketCurrency);

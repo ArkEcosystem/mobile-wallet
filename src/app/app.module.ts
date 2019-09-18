@@ -17,7 +17,7 @@ import { MarketDataProvider } from '@providers/market-data/market-data';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { ToastProvider } from '@providers/toast/toast';
 import { ForgeProvider } from '@providers/forge/forge';
-import { ContactsAutoCompleteService } from '@providers/contacts-auto-complete/contacts-auto-complete';
+import { AccountAutoCompleteService } from '@providers/account-auto-complete/account-auto-complete';
 
 // Ionic native
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -25,11 +25,16 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { Keyboard } from '@ionic-native/keyboard';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { SocialSharing } from '@ionic-native/social-sharing';
+// import { LocalNotifications } from '@ionic-native/local-notifications';
+// import { BackgroundMode } from '@ionic-native/background-mode';
 
 import { MyApp } from './app.component';
 
-import '@root/node_modules/chart.js/src/chart.js';
+import 'chart.js';
 import { AutoCompleteModule } from 'ionic2-auto-complete';
+import { NeoApiProvider } from '@providers/neo-api/neo-api';
+import { AddressCheckerProvider } from '@providers/address-checker/address-checker';
+// import { LocalNotificationsProvider } from '../providers/local-notifications/local-notifications';
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -65,6 +70,8 @@ export function httpLoaderFactory(http: HttpClient) {
     Keyboard,
     QRScanner,
     SocialSharing,
+    // LocalNotifications,
+    // BackgroundMode,
     // Custom providers
     {provide: StorageProvider, useClass: StorageProvider, deps: [Storage]},
     {provide: AuthProvider, useClass: AuthProvider, deps: [StorageProvider]},
@@ -76,7 +83,10 @@ export function httpLoaderFactory(http: HttpClient) {
     SettingsDataProvider,
     ForgeProvider,
     ToastProvider,
-    ContactsAutoCompleteService
+    AccountAutoCompleteService,
+    NeoApiProvider,
+    AddressCheckerProvider,
+    // LocalNotificationsProvider,
   ]
 })
 export class AppModule {}

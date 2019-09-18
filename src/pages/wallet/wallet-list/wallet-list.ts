@@ -1,4 +1,4 @@
-import {Component, OnDestroy, ViewChild} from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform, Content, Slides } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -74,7 +74,7 @@ export class WalletListPage implements OnDestroy {
     this.navCtrl.push('WalletDashboardPage', {
       address: wallet.address
     }).then(() => {
-      this.userDataProvider.saveWallet(wallet).subscribe(() => {
+      this.userDataProvider.updateWallet(wallet, this.currentProfile.profileId).subscribe(() => {
         this.loadWallets();
         this.slider.slideTo(0);
       });
@@ -91,14 +91,14 @@ export class WalletListPage implements OnDestroy {
           {
             text: translation.GENERATE,
             role: 'generate',
-            icon: !this.platform.is('ios') ? 'ios-card-outline' : null,
+            icon: this.platform.is('ios') ? 'ios-card-outline' : 'md-card',
             handler: () => {
               this.presentWalletGenerate();
             }
           }, {
             text: translation.IMPORT,
             role: 'import',
-            icon: !this.platform.is('ios') ? 'ios-cloud-upload-outline' : null,
+            icon: this.platform.is('ios') ? 'ios-cloud-upload-outline' : 'md-cloud-upload',
             handler: () => {
               this.presentWalletImport();
             }
@@ -172,12 +172,12 @@ export class WalletListPage implements OnDestroy {
       }
     }
 
-    this.totalBalance = lodash(list).values().sumBy((w) => parseInt(w.balance));
+    this.totalBalance = lodash.chain(list).sumBy((w) => parseInt(w.balance)).value();
     const wholeArk = (this.totalBalance / constants.WALLET_UNIT_TO_SATOSHI);
     this.fiatBalance = wholeArk * (this.fiatCurrency ? this.fiatCurrency.price : 0);
 
     this.wallets = lodash.orderBy(list, ['lastUpdate'], ['desc']);
-    if (!this.selectedWallet) {
+    if (!this.selectedWallet && this.wallets.length) {
       this.selectedWallet = this.userDataProvider.getWalletByAddress(this.wallets[0].address);
     }
   }
@@ -260,7 +260,10 @@ export class WalletListPage implements OnDestroy {
           gridLines: {
             drawBorder: false,
             display: true,
-            color: '#e1e4ea',
+            color: settings.darkMode ? '#12182d' : '#e1e4ea',
+          },
+          ticks: {
+            fontColor: settings.darkMode ? '#3a4566' : '#555459'
           }
         }],
         yAxes: [{

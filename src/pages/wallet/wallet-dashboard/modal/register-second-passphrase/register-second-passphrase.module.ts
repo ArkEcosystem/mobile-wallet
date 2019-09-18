@@ -4,6 +4,7 @@ import { RegisterSecondPassphrasePage } from './register-second-passphrase';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@pipes/pipes.module';
+import { DirectivesModule } from '@directives/directives.module';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { PipesModule } from '@pipes/pipes.module';
   ],
   imports: [
     IonicPageModule.forChild(RegisterSecondPassphrasePage),
+    DirectivesModule,
     TranslateModule,
     PipesModule,
   ],

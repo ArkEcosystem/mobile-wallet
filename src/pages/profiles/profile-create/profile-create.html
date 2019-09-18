@@ -34,15 +34,24 @@
           <ion-item class="network-types" no-lines>
             <span>{{ 'NETWORKS_PAGE.NETWORK_TYPE' | translate }}</span>
             <p>{{ 'NETWORKS_PAGE.CHOOSE_ONE' | translate }}.</p>
-
-            <ion-grid fixed class="button-group">
-              <ion-row nowrap>
-                <ion-col *ngFor="let id of networksIds">
-                  <button ion-button block round [outline]="newProfile.networkId !== id" (click)="onSelectNetwork(id)" color="primary">{{ networks[id].name }}</button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
           </ion-item>
+          <ion-grid fixed class="button-group">
+            <ion-row nowrap>
+              <ion-col *ngFor="let networkChoice of networkChoices">
+                <button ion-button block
+                        [outline]="networkChoice !== activeNetworkChoice"
+                        (click)="onSelectNetwork(networkChoice)"
+                        color="primary">
+                  {{ networkChoice.name }}
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+        <ion-col *ngIf="activeNetworkChoice && !activeNetworkChoice.id">
+            <ion-item no-lines>
+              <customNetwork (onNetworkChange)="onCustomNetworkChange($event)"></customNetwork>
+            </ion-item>
         </ion-col>
       </ion-row>
       <ion-row class="layout-flex">
@@ -53,6 +62,6 @@
   </form>
 </ion-content>
 
-<ion-footer padding no-shadow no-border [keyboard-attach]="content">
-  <button ion-button class="button-continue" [disabled]="!createProfileForm.form.valid" (click)="submitForm()">{{ 'NEXT' | translate }}</button>
+<ion-footer padding no-shadow no-border>
+  <button ion-button class="button-continue" [disabled]="!createProfileForm.form.valid || !newProfile.networkId" (click)="submitForm()">{{ 'NEXT' | translate }}</button>
 </ion-footer>

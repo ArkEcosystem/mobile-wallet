@@ -5,10 +5,13 @@ import { ToastProvider } from '@providers/toast/toast';
 import { PrivateKey, PublicKey } from 'ark-ts';
 import { Wallet } from '@models/model';
 import { NetworkProvider } from '@providers/network/network';
+import { SettingsDataProvider } from '@providers/settings-data/settings-data';
+import bip39 from 'bip39';
 
 export abstract class BaseWalletImport {
 
   public existingAddress: string;
+  protected wordlistLanguage: string;
 
   constructor(
     navParams: NavParams,
@@ -17,15 +20,19 @@ export abstract class BaseWalletImport {
     private arkApiProvider: ArkApiProvider,
     protected toastProvider: ToastProvider,
     private modalCtrl: ModalController,
-    private networkProvider: NetworkProvider
+    private networkProvider: NetworkProvider,
+    private settingsDataProvider: SettingsDataProvider
   ) {
     this.existingAddress = navParams.get('address');
+    this.settingsDataProvider.settings.subscribe((settings) => this.wordlistLanguage = settings.wordlistLanguage);
   }
 
   protected import(address?: string, passphrase?: string, checkBIP39Passphrase?: boolean): void {
     let privateKey;
     let publicKey;
-    const bip39 = require('bip39');
+
+    address = address ? address.trim() : address;
+    passphrase = passphrase ? passphrase.trim() : passphrase;
 
     if (address) {
       if (!this.networkProvider.isValidAddress(address)) {
@@ -36,7 +43,7 @@ export abstract class BaseWalletImport {
       publicKey.setNetwork(this.networkProvider.currentNetwork);
     } else {
       // test: import from passphrase here
-      if (checkBIP39Passphrase && !bip39.validateMnemonic(passphrase)) {
+      if (checkBIP39Passphrase && !this.validateMnemonic(passphrase)) {
         // passphrase is not a valid BIP39 mnemonic
         this.toastProvider.error('WALLETS_PAGE.PASSPHRASE_NOT_BIP39');
         return;
@@ -55,12 +62,17 @@ export abstract class BaseWalletImport {
 
     let newWallet = new Wallet(!privateKey);
 
-    this.arkApiProvider.api.account
-      .get({ address })
+    this.arkApiProvider.client.getWallet(address)
       .finally(() => {
         if (!privateKey) {
           this.addWallet(newWallet);
         } else {
+          // if we are converting watch-only to full wallet, keep label from existing watch-only wallet
+          const existingWallet = this.userDataProvider.getWalletByAddress(address);
+          if (existingWallet && existingWallet.label) {
+            newWallet.label = existingWallet.label;
+          }
+
           this.verifyWithPinCode(newWallet, passphrase);
         }
       })
@@ -107,5 +119,11 @@ export abstract class BaseWalletImport {
           });
         });
     });
+  }
+
+  private validateMnemonic(passphrase: string) {
+    const wordlist = bip39.wordlists[this.wordlistLanguage || 'english'];
+    if (bip39.validateMnemonic(passphrase, wordlist) || bip39.validateMnemonic(passphrase)) { return true; }
+    return false;
   }
 }

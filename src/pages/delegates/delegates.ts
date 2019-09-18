@@ -1,13 +1,14 @@
-import {Component, NgZone, OnDestroy, ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Platform, Slides } from 'ionic-angular';
+import { Component, NgZone, OnDestroy, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ModalController, Platform, Slides, Searchbar } from 'ionic-angular';
 
 import { Subject } from 'rxjs/Subject';
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { ToastProvider } from '@providers/toast/toast';
-import { Delegate, Network, VoteType, TransactionVote } from 'ark-ts';
+import { Delegate, VoteType, TransactionVote } from 'ark-ts';
 
 import { Wallet, WalletKeys } from '@models/model';
+import { StoredNetwork } from '@models/stored-network';
 
 import * as constants from '@app/app.constants';
 import { PinCodeComponent } from '@components/pin-code/pin-code';
@@ -22,25 +23,27 @@ export class DelegatesPage implements OnDestroy {
   @ViewChild('delegateSlider') slider: Slides;
   @ViewChild('pinCode') pinCode: PinCodeComponent;
   @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
+  @ViewChild('searchbar') searchbar: Searchbar;
 
   public isSearch = false;
-  public searchQuery: any = { username: ''};
+  public searchQuery = '';
 
   public delegates: Delegate[];
   public activeDelegates: Delegate[];
   public standByDelegates: Delegate[];
 
   public supply = 0;
-  public preMinned: number = constants.BLOCKCHAIN_PREMINNED;
+  public preMined: number = constants.BLOCKCHAIN_PREMINED;
 
   public rankStatus = 'active';
-  public currentNetwork: Network;
+  public currentNetwork: StoredNetwork;
   public slides: string[] = [
     'active',
     'standBy',
   ];
 
   private selectedDelegate: Delegate;
+  private selectedFee: number;
 
   private currentWallet: Wallet;
   private walletVote: Delegate;
@@ -64,11 +67,12 @@ export class DelegatesPage implements OnDestroy {
     const modal = this.modalCtrl.create('DelegateDetailPage', {
       delegate,
       vote: this.walletVote,
-    }, { cssClass: 'inset-modal-large', showBackdrop: false, enableBackdropDismiss: true });
+    }, { showBackdrop: false, enableBackdropDismiss: true });
 
-    modal.onDidDismiss((delegateVote) => {
+    modal.onDidDismiss(({ delegateVote, fee }) => {
       if (!delegateVote) { return; }
 
+      this.selectedFee = fee;
       this.selectedDelegate = delegateVote; // Save the delegate that we want to vote for
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
@@ -78,8 +82,13 @@ export class DelegatesPage implements OnDestroy {
   }
 
   toggleSearchBar() {
-    this.searchQuery.username = '';
+    this.searchQuery = '';
     this.isSearch = !this.isSearch;
+    if (this.isSearch) {
+      setTimeout(() => {
+        this.searchbar.setFocus();
+      }, 100);
+    }
   }
 
   onSlideChanged(slider) {
@@ -91,7 +100,7 @@ export class DelegatesPage implements OnDestroy {
   }
 
   getTotalForged() {
-    const forged = this.supply === 0 ? 0 : this.supply - this.preMinned;
+    const forged = this.supply === 0 ? 0 : this.supply - this.preMined;
 
     return forged;
   }
@@ -113,19 +122,19 @@ export class DelegatesPage implements OnDestroy {
       delegatePublicKey: this.selectedDelegate.publicKey,
       passphrase: keys.key,
       secondPassphrase: keys.secondKey,
+      fee: this.selectedFee,
       type,
     };
 
-    this.arkApiProvider.api.transaction.createVote(data).subscribe((transaction) => {
-      this.confirmTransaction.open(transaction, keys);
+    this.arkApiProvider.transactionBuilder.createVote(data).subscribe((transaction) => {
+      this.confirmTransaction.open(transaction, keys, null, { username: this.selectedDelegate.username });
     });
   }
 
   private fetchCurrentVote() {
     if (!this.currentWallet) { return; }
 
-    this.arkApiProvider.api.account
-      .votes({ address: this.currentWallet.address })
+    this.arkApiProvider.client.getWalletVotes(this.currentWallet.address)
       .takeUntil(this.unsubscriber$)
       .subscribe((data) => {
         if (data.success && data.delegates.length > 0) {
@@ -151,14 +160,14 @@ export class DelegatesPage implements OnDestroy {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.delegates.subscribe((data) => this.zone.run(() => {
         this.delegates = data;
-        this.activeDelegates = this.delegates.slice(0, constants.NUM_ACTIVE_DELEGATES);
-        this.standByDelegates = this.delegates.slice(constants.NUM_ACTIVE_DELEGATES, this.delegates.length);
+        this.activeDelegates = this.delegates.slice(0, this.currentNetwork.activeDelegates);
+        this.standByDelegates = this.delegates.slice(this.currentNetwork.activeDelegates, this.delegates.length);
       }));
     });
 
     this.onUpdateDelegates();
     this.fetchCurrentVote();
-    this.arkApiProvider.fetchDelegates(constants.NUM_ACTIVE_DELEGATES * 2).subscribe();
+    this.arkApiProvider.fetchDelegates(this.currentNetwork.activeDelegates * 2).subscribe();
   }
 
   ngOnDestroy() {

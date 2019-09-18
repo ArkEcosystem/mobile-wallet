@@ -1,13 +1,13 @@
 <ion-header no-shadow no-border [ngClass]="{'delegate-wallet': wallet?.isDelegate, 'default-wallet': wallet ? !wallet.isDelegate : false}">
 
-  <ion-navbar no-border-bottom no-shadow hideBackButton="true" color="primary" class="dark-navbar">
+  <ion-navbar no-border-bottom no-shadow hideBackButton="true" color="primary" class="transparent-navbar">
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{ wallet?.address | accountLabel: 'WALLETS_PAGE.MY_WALLET' | translate }}</ion-title>
+    <ion-title>{{ wallet?.username || wallet?.label || ('WALLETS_PAGE.MY_WALLET' | translate) }}</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="presentWalletActionSheet()">
-        <ion-icon name="md-more"></ion-icon>
+        <ion-icon [name]="platform.is('ios') ? 'ios-more' : 'md-more'"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -16,9 +16,9 @@
       <ion-row class="account-balance">
         <ion-col text-center>
           <h1>{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-8' }}</h1>
-          <h4 appMainnetOnly>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | marketNumber }}</h4>
+          <h4 appMarketNetOnly>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | marketNumber }}</h4>
           <p (click)="copyAddress()" tappable class="toolbar-address">
-            <ion-icon name="ios-copy-outline" item-start></ion-icon>
+            <ion-icon [name]="platform.is('ios') ? 'ios-copy-outline' : 'md-copy'" item-start></ion-icon>
             {{ wallet?.address }}
           </p>
           <ion-badge class="watch-only-badge" [color]="wallet?.isDelegate ? 'primary' : 'danger-alternative'" *ngIf="wallet?.isWatchOnly">
@@ -31,8 +31,17 @@
 </ion-header>
 
 <ion-content header-scroller>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="{{ 'PULL_REFRESH' | translate }}"
+      refreshingSpinner="circles"
+      refreshingText="{{ 'REFRESHING' | translate }}">
+    </ion-refresher-content>
+  </ion-refresher>
+
   <ion-fab bottom right edge>
-    <button ion-fab color="primary" (click)="presentAddActionSheet()"><ion-icon name="md-add"></ion-icon></button>
+    <button ion-fab color="primary" (click)="presentAddActionSheet()"><ion-icon  [name]="platform.is('ios') ? 'ios-add' : 'md-add'"></ion-icon></button>
   </ion-fab>
 
   <ion-grid class="main-grid full-height">

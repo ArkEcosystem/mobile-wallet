@@ -20,12 +20,38 @@
     "CONTACT_EXISTS_ADDRESS": "Er bestaat al een contact met adres '{{ address }}'!",
     "CONTACT_NOT_EXISTS_ADDRESS": "Een contact met adres '{{ address }}' bestaat niet!",
     "CONTACT_EXISTS_NAME": "Er bestaat al een contact met de naam '{{ name }}'!",
+    "DELETE_CONTACT": "Weet je zeker dat je contact '{{ name }}' wilt verwijderen?",
     "OVERWRITE_CONTACT": "Er bestaat al een contact genaamd '{{ name }}' met dit adres. Wil je de naam vervangen door '{{ newName }}'?"
   },
   "COPIED_CLIPBOARD": "Gekopieerd naar klembord",
   "COPY": "Kopieer",
   "COPY_CLIPBOARD_FAILED": "Kopiëren naar klembord mislukt",
   "CREATE": "Aanmaken",
+  "CUSTOM_NETWORK": {
+    "ADDRESS_VERSION": "Adres versie",
+    "CHOOSE_EXISTING": "Kies een bestaand netwerk, of...",
+    "CONFIGURE": "Configureer",
+    "CONFIGURE_ERROR": "Error tijdens het ophalen van netwerk instellingen van je peer server!",
+    "CONFIRM_DELETE": "Weet je zeker dat je dit netwerk wilt verwijderen?",
+    "CUSTOM_NETWORK": "Aangepast Netwerk",
+    "CREATE_NEW": "Aanmaken",
+    "CREATE_NETWORK": "Aangepast Netwerk Aanmaken",
+    "DELETE_FAIL_NOT_EMPTY": "Dit netwerk kan niet worden verwijderd, omdat er profielen zijn die er gebruik van maken. Verwijder deze profielen eerst.",
+    "DELETE_SUCCESSFUL": "Netwerk succesvol verwijderd!",
+    "EDIT": "Netwerk Aanpassen",
+    "EXPLORER": "Explorer",
+    "NAME": "Naam",
+    "NETHASH": "Nethash",
+    "MANAGE_NETWORKS": "Aangepast Netwerken Beheren",
+    "MARKET_SYMBOL_NAME": "Markt Symbool Naam (voor ophalen van prijzen in EUR, BTC, etc.)",
+    "OR_CREATE_NEW": "... of maak een nieuw aangepast netwerk",
+    "SAVE_SUCCESSFUL": "Netwerk succesvol opgeslagen!",
+    "SEED_SERVER": "Seed Server URL",
+    "SEED_SERVER_IP": "Seed Server IP",
+    "SEED_SERVER_PORT": "Seed Server Poort",
+    "SYMBOL_NAME": "Symbool naam",
+    "TOKEN_NAME": "Token naam"
+  },
   "DATE": "Datum",
   "DELEGATES_PAGE": {
     "ACTIVE": "Actief",
@@ -54,6 +80,7 @@
   "DELETE": "Verwijderen",
   "DONE": "Klaar",
   "EDIT": "Bewerken",
+  "SIGN_OUT": "Uitloggen",
   "EXIT_APP_TEXT": "App Verlaten?",
   "FAILED": "Mislukt",
   "GENERAL": "Algemeen",
@@ -98,7 +125,8 @@
   "NO": "Nee",
   "PASSPHRASE_TEST": {
     "INFO": "Type alsjeblieft de gevraagde woorden van je passphrase om de wallet aanmaak te valideren.",
-    "WRONG_WORD": "Dit woord is niet correct"
+    "WRONG_WORD": "Dit woord is niet correct",
+    "DEVNET_WORDS_NOTICE": "De woorden zijn automatisch ingevuld voor Devnet"
   },
   "PIN_CODE": {
     "CONFIRM": "Bevestig je pincode",
@@ -112,7 +140,9 @@
     "PIN_UPDATED_ERROR_TEXT": "Er was een probleem bij het updaten van je pincode",
     "PIN_UPDATED_TEXT": "Je pincode is geüpdatet",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type pincode om passphrase te versleutelen",
+    "TYPE_PIN_REMOVE_WALLET": "Type pincode om wallet te verwijderen",
     "TYPE_PIN_SIGN_TRANSACTION": "Type pincode om transactie te ondertekenen",
+    "UPDATING": "Bezig met pincode updaten voor alle profielen en wallets...",
     "WRONG": "Vul a.u.b. de juiste pincode in",
     "WEAK_PIN": "Zwakke pincode",
     "WEAK_PIN_DETAIL": "De opgegeven pincode is zwak en makkelijk te raden. Weet je zeker dat je deze wilt gebruiken?"
@@ -121,6 +151,7 @@
     "ADD_PROFILE_ERROR": "Kon profiel niet toevoegen",
     "ADD_PROFILE_TEXT": "Klik op de knop onderin om een profiel aan te maken",
     "CREATE_PROFILE": "Profiel aanmaken",
+    "CUSTOM": "Aangepast",
     "DELETE_NOT_EMPTY": "Je kunt geen profiel verwijderen met 1 of meer wallets",
     "GET_STARTED": "Beginnen",
     "SIGN_IN": "Inloggen"
@@ -148,6 +179,7 @@
     "PRIVACY_POLICY": "Privacybeleid",
     "SECURITY": "Beveiliging",
     "NOT_AVAILABLE_WATCH_ONLY": "Niet beschikbaar voor Alleen-lezen wallets",
+    "NOTIFICATIONS": "Notificaties",
     "SETTINGS": "Instellingen",
     "VERSION": "Versie",
     "WALLET_BACKUP": "Wallet Backup"
@@ -160,7 +192,10 @@
     "ADD_ADDRESS_TO_CONTACTS": "Voeg {{ address }} toe aan contacten",
     "AMOUNT": "Bedrag",
     "CONFIRMATIONS": "Bevestigingen",
-    "CONTACT_NAME": "Nieuwe contact naam (Optioneel)",
+    "NEW_CONTACT_NAME": "Nieuwe contact naam (Optioneel)",
+    "NEW_WALLET_LABEL": "Wallet label (Optioneel)",
+    "EXISTING_WALLET": "Wallet",
+    "EXISTING_CONTACT": "Contact",
     "COPY_TXID": "Kopieer TXID",
     "CREATE_TRANSACTION_ERROR": "Kon transactie niet aanmaken. Controleer je internet verbinding",
     "DELEGATE_REGISTRATION": "Registratie Afgevaardigde",
@@ -174,6 +209,7 @@
     "INVALID_FORM_ERROR": "Ongeldige formulier data",
     "MULTISIGNATURE_CREATION": "Multisignature aanmaken",
     "OPEN_EXPLORER": "Openen in explorer",
+    "PERFORMING_DESTINATION_ADDRESS_CHECKS": "Bezig met ontvangstadres te controleren...",
     "QRCODE_COPY": "Klik op het adres om het naar het klembord te kopiëren, of klik op pictogram om QR code te delen",
     "RECEIVE": "Ontvangen",
     "RECEIVE_TOKEN": "Ontvang {{ Token }}",
@@ -194,6 +230,14 @@
     "TRANSACTION": "Transactie"
   },
   "TYPE": "Type",
+  "VALIDATION": {
+    "INVALID_ADDRESS": "Dit adres is ongeldig!",
+    "IS_OWN_ADDRESS": "Dit is je eigen adres. Weet je zeker dat je het hier naartoe wilt sturen?",
+    "NO_TRANSACTIONS": "Het lijkt erop dat dit adres geen transacties bevat. Weet je zeker dat het correct is?",
+    "IS_NEO_ADDRESS": "Het lijkt erop dat dit een 'NEO' adres is. Weet je zeker dat het correct is?",
+    "LABEL_EXISTS": "Er bestaat al een wallet met het label '{{ label }}'!",
+    "INVALID_WALLET": "De wallet is ongeldig of niet ingesteld!"
+  },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "Kon wallet niet toevoegen",
     "ADD_WALLET_TEXT": "Klik op de knop onderin om een wallet te importeren of aan te maken",
@@ -216,6 +260,7 @@
     "IMPORT_WALLET": "Importeer Wallet",
     "KEEP_SAFE": "Bewaar Veilig",
     "LABEL": "Label",
+    "LABEL_EXISTS": "Er bestaat al een wallet met het label '{{ label }}'!",
     "MY_WALLET": "Mijn Wallet",
     "NEW_WALLET_NAME": "Nieuwe wallet naam",
     "NO_TRANSACTIONS": "Geen transacties beschikbaar",
@@ -226,6 +271,7 @@
     "PUBLIC_ADDRESS_SHARE": "Openbaar Adres (DEEL)",
     "PUBLIC_KEY": "Public Key",
     "RE_ENTER_PASSPHRASE": "Voer opnieuw je passphrase in",
+    "PASSPHRASE_NOT_BIP39": "Je hebt geen geldige BIP-39 passphrase ingevuld.",
     "REMOVE_WALLET": "Verwijder Wallet",
     "REMOVE_WALLET_TEXT": "Je account zal worden verwijderd. Zorg ervoor dat je een backup hebt, je hebt de originele passphrase nodig om hem te herstellen.",
     "SCAN_QRCODE": "Scan QR Code",

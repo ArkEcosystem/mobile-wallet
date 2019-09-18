@@ -8,7 +8,7 @@ import { ContactsProvider } from '@providers/contacts/contacts';
 import { Network } from 'ark-ts/model';
 import { TranslateService } from '@ngx-translate/core';
 import { TruncateMiddlePipe } from '@pipes/truncate-middle/truncate-middle';
-import { Wallet } from '@models/model';
+import { Wallet, StoredNetwork } from '@models/model';
 
 @IonicPage()
 @Component({
@@ -19,12 +19,11 @@ import { Wallet } from '@models/model';
 export class TransactionShowPage {
 
   public transaction: Transaction;
-  public currentNetwork: Network;
   public equivalentAmount = 0;
   public equivalentSymbol: string;
 
   public showOptions = false;
-
+  private currentNetwork: StoredNetwork;
   private currentWallet: Wallet;
 
   constructor(
@@ -47,12 +46,12 @@ export class TransactionShowPage {
 
     if (!transaction) { this.navCtrl.popToRoot(); }
 
-    this.transaction = new Transaction(transaction.address).deserialize(transaction);
+    this.transaction = new Transaction(transaction.address, this.currentNetwork).deserialize(transaction);
     this.shouldShowOptions();
   }
 
   openInExplorer() {
-    const url = `${this.currentNetwork.explorer}/tx/${this.transaction.id}`;
+    const url = `${this.currentNetwork.explorer}/transaction/${this.transaction.id}`;
     return this.inAppBrowser.create(url, '_system');
   }
 
@@ -72,7 +71,7 @@ export class TransactionShowPage {
         buttons.push({
           text: translation['TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS'],
           role: 'contact',
-          icon: this.platform.is('ios') ? '' : 'ios-person-add-outline',
+          icon: this.platform.is('ios') ? 'ios-person-add-outline' : 'md-person-add',
           handler: () => {
             this.addToContacts(address);
           }
@@ -83,7 +82,7 @@ export class TransactionShowPage {
         buttons.push({
           text: translation['TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS'],
           role: 'send',
-          icon: this.platform.is('ios') ? '' : 'ios-send-outline',
+          icon: this.platform.is('ios') ? 'ios-send-outline' : 'md-send',
           handler: () => {
             this.sendToAddress(address);
           }

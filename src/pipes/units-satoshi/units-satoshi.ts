@@ -6,9 +6,9 @@ import { ArkUtility } from '../../utils/ark-utility';
 })
 export class UnitsSatoshiPipe implements PipeTransform {
 
-  transform(value: number | string, returnRaw: boolean = false) {
+  transform(value: number | string, returnRaw: boolean = true) {
     if (typeof value === 'string') { value = Number(value); }
 
-    return ArkUtility.arktoshiToArk(value, returnRaw);
+    return ArkUtility.subToUnit(value, returnRaw);
   }
 }

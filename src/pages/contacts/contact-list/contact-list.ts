@@ -41,14 +41,14 @@ export class ContactListPage {
         {
           text: translation.EDIT,
           role: 'label',
-          icon: !this.platform.is('ios') ? 'ios-create-outline' : '',
+          icon: this.platform.is('ios') ? 'ios-create-outline' : 'md-create',
           handler: () => {
             this.openEditPage(address);
           },
         }, {
           text: translation.DELETE,
           role: 'label',
-          icon: !this.platform.is('ios') ? 'ios-trash-outline' : '',
+          icon: this.platform.is('ios') ? 'ios-trash-outline' : 'md-trash',
           handler: () => {
             this.showDeleteConfirm(address);
           },
@@ -61,13 +61,16 @@ export class ContactListPage {
   }
 
   showDeleteConfirm(address) {
+    const contactName = this.contactsProvider.getContactByAddress(address).name;
     this.translateService.get([
       'CANCEL',
       'CONFIRM',
       'ARE_YOU_SURE',
-    ]).subscribe((translation) => {
+      'CONTACTS_PAGE.DELETE_CONTACT'
+    ], {name: contactName}).subscribe((translation) => {
       const alert = this.alertCtrl.create({
         title: translation.ARE_YOU_SURE,
+        message: translation['CONTACTS_PAGE.DELETE_CONTACT'],
         buttons: [
           {
             text: translation.CANCEL

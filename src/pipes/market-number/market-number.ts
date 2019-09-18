@@ -2,7 +2,7 @@ import { Pipe, PipeTransform, OnDestroy } from '@angular/core';
 import { SettingsDataProvider } from '@providers/settings-data/settings-data';
 import { MarketDataProvider } from '@providers/market-data/market-data';
 import { MarketCurrency, MarketTicker } from '@models/model';
-import { BigNumber } from 'bignumber.js';
+import BigNumber from '@utils/bignumber';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import { UserSettings } from '@models/settings';

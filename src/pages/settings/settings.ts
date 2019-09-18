@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { IonicPage, NavController, AlertController, ModalController } from 'ionic-angular';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { IonicPage, Platform, NavController, AlertController, ModalController } from 'ionic-angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { Subject } from 'rxjs/Subject';
@@ -33,6 +33,7 @@ export class SettingsPage implements OnInit, OnDestroy {
   private unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(
+    public platform: Platform,
     private navCtrl: NavController,
     private settingsDataProvider: SettingsDataProvider,
     private alertCtrl: AlertController,
@@ -56,6 +57,11 @@ export class SettingsPage implements OnInit, OnDestroy {
         this.pinCode.createUpdatePinCode(null, password);
       }
     });
+  }
+
+  openManageNetworksPage() {
+    const modal = this.modalCtrl.create('CustomNetworkManageModal');
+    modal.present();
   }
 
   openPrivacyPolicy() {

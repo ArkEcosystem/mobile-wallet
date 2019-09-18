@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "declaration": false,
     "emitDecoratorMetadata": true,
@@ -10,9 +11,11 @@
       "@providers/*": ["src/providers/*"],
       "@models/*": ["src/models/*"],
       "@directives/*": ["src/directives/*"],
+      "@utils/*": ["src/utils/*"],
       "@pipes/*": ["src/pipes/*"],
       "@app/*": ["src/app/*"],
-      "@root/*": ["./*"]
+      "@root/*": ["./*"],
+      "*": ["./types/*"]
     },
     "lib": [
       "dom",

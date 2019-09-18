@@ -1,5 +1,4 @@
 page-transaction-send {
-
   .col {
     position: initial !important;
   }
@@ -13,13 +12,15 @@ page-transaction-send {
       background: transparent;
     }
   }
+
   .qr-container {
     height: 100%;
     padding-top: 20px;
     margin-left: 8px !important;
 
-    img {
+    .image {
       width: 30px;
+      content: url('../assets/img/light/wallet/qr-code-button.png');
     }
   }
 
@@ -48,7 +49,7 @@ page-transaction-send {
       background-color: transparent !important;
       -webkit-box-shadow: none !important;
       box-shadow: none !important;
-      padding: 6px 35px 6px 10px !important;
+      padding: 6px 35px 6px 0 !important;
     }
 
     ion-list li {
@@ -76,16 +77,16 @@ page-transaction-send {
 
     &.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner .input-wrapper,
     &.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner .input-wrapper {
-      border-bottom-color: #32db64;
-      -webkit-box-shadow: inset 0 -1px 0 0 #32db64;
-      box-shadow: inset 0 -1px 0 0 #32db64;
+      border-bottom-color: color($colors, success, base);
+      -webkit-box-shadow: inset 0 -1px 0 0 color($colors, success, base);
+      box-shadow: inset 0 -1px 0 0 color($colors, success, base);
     }
 
     &.item-input.ng-invalid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner .input-wrapper,
     &.item-input.ng-invalid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner .input-wrapper {
-      border-bottom-color: #f53d3d;
-      -webkit-box-shadow: inset 0 -1px 0 0 #f53d3d;
-      box-shadow: inset 0 -1px 0 0 #f53d3d;
+      border-bottom-color: color($colors, danger, base);
+      -webkit-box-shadow: inset 0 -1px 0 0 color($colors, danger, base);
+      box-shadow: inset 0 -1px 0 0 color($colors, danger, base);
     }
 
     .auto-complete-row {
@@ -97,14 +98,40 @@ page-transaction-send {
       }
     }
   }
+
   .item {
     padding-left: 0;
     background: transparent!important;
   }
+}
 
-  .amount-container {
-    .col:first-child {
-      margin-right: 1em;
+.dark-theme {
+  page-transaction-send {
+    .qr-container .image {
+        content: url('../assets/img/dark/wallet/qr-code-button.png');
+    }
+
+    ion-auto-complete ul {
+      background-color: color($darkColors, secondary-background, base);
+
+      li {
+        border-bottom-color: color($darkColors, primary-background, base);
+      }
+
+      .auto-complete-row {
+        .item-icon {
+          color: #4744f5;
+          -webkit-text-stroke: 0.4px #4744f5;
+        }
+
+        .autocomplete-second-line {
+          color: color($darkColors, secondary, base);
+        }
+      }
+    }
+
+    .icon {
+      color: lighten(color($darkColors, primary-background, base), 50%);
     }
   }
 }

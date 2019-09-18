@@ -1,7 +1,5 @@
 {
   "name": "ark-ionic",
-  "app_id": "0894ffa2",
-  "type": "ionic-angular",
   "integrations": {
     "cordova": {}
   }

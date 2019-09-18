@@ -1,7 +1,7 @@
 <ion-header no-shadow no-border>
 
   <ion-navbar>
-    <h6 text-center class="no-padding no-margin">{{ 'DELEGATES_PAGE.REGISTER_DELEGATE' | translate }}</h6>
+    <h6 padding class="no-margin">{{ 'DELEGATES_PAGE.REGISTER_DELEGATE' | translate }}</h6>
     <ion-buttons end>
       <button ion-button icon-only (click)="closeModal()">
         <ion-icon name="close"></ion-icon>
@@ -11,22 +11,28 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content padding #content>
   <ion-grid>
     <ion-row>
       <ion-col align-self-center>
         <form #registerDelegateForm="ngForm">
           <ion-item>
-            <ion-label stacked>{{ 'DELEGATES_PAGE.DELEGATE_NAME' | translate }}</ion-label>
-            <ion-textarea rows="2" type="text" name="name" [(ngModel)]="name" maxlength="20" [pattern]="allowedDelegateNameChars" (input)="validateName()" required></ion-textarea>
+            <ion-label floating stacked>{{ 'DELEGATES_PAGE.DELEGATE_NAME' | translate }}</ion-label>
+            <ion-input rows="2" type="text" name="name" [(ngModel)]="name" maxlength="20" [pattern]="allowedDelegateNameChars" (input)="validateName()" required></ion-input>
           </ion-item>
           <ion-item class="no-border">
             <p class="error-message" *ngIf="isExists">{{ 'DELEGATES_PAGE.USERNAME_ALREADY_EXISTS' | translate }}</p>
           </ion-item>
-        </form>
+        <ion-row>
+          <ion-col>
+            <input-fee [transactionType]="transactionType" (onChange)="onFeeChange($event)"></input-fee>
+          </ion-col>
+        </ion-row>
+      </form>
         <ion-row>
           <ion-col text-center>
-            <button ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid || isExists" (click)="submitForm()">{{ 'CREATE' | translate }} ({{ symbol }}{{ fee | unitsSatoshi }})</button>
+            <button ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid || isExists"
+              (click)="submitForm()">{{ 'CREATE' | translate }}</button>
           </ion-col>
         </ion-row>
       </ion-col>
@@ -34,12 +40,3 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="note-toolbar no-padding">
-  <ion-grid no-padding>
-    <ion-row>
-      <ion-col text-center no-padding>
-        <p>{{ 'DELEGATES_PAGE.NOTE_COST_TEXT' | translate }} {{ symbol }}{{ fee | unitsSatoshi }}!</p>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-footer>

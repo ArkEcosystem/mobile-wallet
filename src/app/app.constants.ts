@@ -1,5 +1,5 @@
 // BLOCKCHAIN
-export const BLOCKCHAIN_PREMINNED = 125000000;
+export const BLOCKCHAIN_PREMINED = 125000000;
 
 // WALLET
 export const ARKTOSHI_DP = 8;
@@ -8,6 +8,9 @@ export const WALLET_REFRESH_PRICE_MILLISECONDS = 500 * 1000;
 export const WALLET_REFRESH_TRANSACTIONS_MILLISECONDS = 10 * 1000;
 export const WALLET_MIN_NUMBER_CONFIRMATIONS = 51;
 export const BIP39_DOCUMENTATION_URL = 'https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki';
+
+// TRANSACTION SEND
+export const TRANSACTION_ADDRESS_SIZE = 20;
 
 // STORAGE
 export const STORAGE_MARKET_TICKER = 'market_ticker';
@@ -30,8 +33,6 @@ export const TOAST_POSITION = 'bottom';
 
 // COIN MARKETCAP API
 export const API_MARKET_URL = 'https://min-api.cryptocompare.com';
-export const API_MARKET_HISTORY_ENDPOINT = 'data/histoday?fsym=ARK&allData=true&tsym=';
-export const API_MARKET_TICKER_ENDPOINT = 'data/pricemultifull?fsyms=ARK&tsyms=';
 
 // GENERIC
 export const VIBRATION_TIME_MS = 30;
@@ -46,3 +47,4 @@ export const PIN_ATTEMPTS_TIMEOUT_MILLISECONDS = 30 * 1000;
 export const PRIVACY_POLICY_URL = 'https://ark.io/PrivacyPolicy.txt';
 export const URI_QRCODE_SCHEME_PREFIX = 'ark:';
 export const NUM_ACTIVE_DELEGATES = 51;
+export const TOP_WALLETS_TO_FETCH = 50;

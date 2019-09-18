@@ -61,7 +61,7 @@
     "WELCOME": "Добро пожаловать на борт"
   },
   "SIGN_IN_PAGE": {
-    "ARK_WALLET": "AРK Кошелек",
+    "ARK_WALLET": "ARK Кошелек",
     "CREATE_PROFILE": "Создать профиль",
     "SLOGAN": "Добро пожаловать в АРК Экосистема"
   },
@@ -144,7 +144,7 @@
     "ADD_ADDRESS_TO_CONTACTS": "Добавлять {{ address }} в контакты",
     "AMOUNT": "Сумма",
     "CONFIRMATIONS": "Подтверждения",
-    "CONTACT_NAME": "Имя нового контакта (optional)",
+    "NEW_CONTACT_NAME": "Имя нового контакта (optional)",
     "COPY_TXID": "Копия TXID",
     "CREATE_TRANSACTION_ERROR": "Не удалось создать транзакцию. Проверти соединение к интернету",
     "DELEGATE_REGISTRATION": "Регистрация Делегата",

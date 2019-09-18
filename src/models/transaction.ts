@@ -1,9 +1,11 @@
+import BigNumber from '@utils/bignumber';
+import moment from 'moment';
 import { Transaction as TransactionModel, TransactionType } from 'ark-ts/model';
-import arkConfig from 'ark-ts/config';
 
 import { MarketCurrency, MarketHistory, MarketTicker } from '@models/market';
 
-import { UnitsSatoshiPipe } from '@pipes/units-satoshi/units-satoshi';
+import { StoredNetwork } from './stored-network';
+import { ArkUtility } from '../utils/ark-utility';
 
 const TX_TYPES = {
   0: 'TRANSACTIONS_PAGE.SENT',
@@ -24,6 +26,7 @@ const TX_TYPES_ACTIVITY = {
 export interface SendTransactionForm {
   amount?: number;
   amountEquivalent?: number;
+  fee?: number;
   recipientAddress?: string;
   recipientName?: string;
   smartBridge?: string;
@@ -33,7 +36,7 @@ export class Transaction extends TransactionModel {
 
   public date: Date;
 
-  constructor(public address: string) {
+  constructor(public address: string, private network: StoredNetwork) {
     super();
   }
 
@@ -45,7 +48,9 @@ export class Transaction extends TransactionModel {
     }
 
     this.date = new Date(this.getTimestamp() * 1000);
-
+    this.amount = new BigNumber(input['amount']).toNumber();
+    this.fee = new BigNumber(input['fee']).toNumber();
+    delete self.network;
     return self;
   }
 
@@ -66,17 +71,20 @@ export class Transaction extends TransactionModel {
       price = currency ? currency.price : 0;
     } else {
       price = market.getPriceByDate(marketCurrency.code, this.date);
+
+      if (!price) {
+        price = market.getPriceByDate(marketCurrency.code, moment(this.date).subtract(1, 'd').toDate());
+      }
     }
 
-    const unitsSatoshiPipe = new UnitsSatoshiPipe();
-    const amount = unitsSatoshiPipe.transform(this.getAmount(), true);
+    const amount = ArkUtility.arktoshiToArk(this.getAmount(), true);
+    const raw = amount * price;
 
-    return amount * price;
+    return isNaN(raw) ? 0 : raw;
   }
 
   getTimestamp() {
-    const blockchainDate = arkConfig.blockchain.date;
-    const blockchainTime = blockchainDate.getTime() / 1000;
+    const blockchainTime = new Date(this.network.epoch).getTime() / 1000;
 
     return this.timestamp + blockchainTime;
   }
@@ -95,6 +103,7 @@ export class Transaction extends TransactionModel {
     let type = TX_TYPES[this.type];
 
     if (this.isTransfer() && !this.isSender()) { type = 'TRANSACTIONS_PAGE.RECEIVED'; }
+    if (this.type === TransactionType.Vote && this.isUnvote()) { type = 'DELEGATES_PAGE.UNVOTE'; }
 
     return type;
   }
@@ -103,6 +112,7 @@ export class Transaction extends TransactionModel {
     let type = TX_TYPES_ACTIVITY[this.type];
 
     if (this.isTransfer() && !this.isSender()) { type = 'TRANSACTIONS_PAGE.RECEIVED_FROM'; }
+    if (this.type === TransactionType.Vote && this.isUnvote()) { type = 'DELEGATES_PAGE.UNVOTE'; }
 
     return type;
   }
@@ -117,6 +127,14 @@ export class Transaction extends TransactionModel {
 
   isReceiver(): boolean {
     return this.recipientId === this.address;
+  }
+
+  isUnvote(): boolean {
+    if (this.asset && this.asset['votes']) {
+      const vote = this.asset['votes'][0];
+      return vote.charAt(0) === '-';
+    }
+    return false;
   }
 
 }

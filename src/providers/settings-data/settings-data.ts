@@ -22,6 +22,8 @@ export class SettingsDataProvider {
     languages: {
       'en': 'English',
       'de': 'Deutsch',
+      'fr': 'French',
+      'id': 'Indonesia',
       'it': 'Italiano',
       'nl': 'Nederlands',
       'sv': 'Svenska',
@@ -30,7 +32,9 @@ export class SettingsDataProvider {
       'pt-br': 'Português',
       'cs': 'Čeština',
       'kor': '한국어',
-      'bg': 'Български'
+      'bg': 'Български',
+      'pl': 'Polish',
+      'zh': '中文'
     },
     currencies: {
       'btc': 'Bitcoin',
@@ -51,6 +55,16 @@ export class SettingsDataProvider {
       'mxn': 'Mexican Peso',
       'czk': 'Česká koruna'
     },
+    wordlistLanguages: {
+    'english': 'English',
+    'french': 'French',
+    'spanish': 'Spanish',
+    'italian': 'Italian',
+    'japanese': 'Japanese',
+    'korean': 'Korean',
+    'chinese_simplified': 'Chinese simplified',
+    'chinese_traditional': 'Chinese traditional'
+    }
   };
 
   constructor(private _storageProvider: StorageProvider, private translateService: TranslateService) {

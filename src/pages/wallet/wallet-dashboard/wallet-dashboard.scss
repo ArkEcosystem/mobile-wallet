@@ -1,12 +1,12 @@
 page-wallet-dashboard {
-
   .header {
-    background-color: #ffffff;
+    background: color($colors, secondary-background, base);
     background-size: cover;
 
     &.default-wallet {
       background-image: url('../assets/img/light/wallet/wallet-balance.png');
     }
+
     &.delegate-wallet {
       background-image: url('../assets/img/light/wallet/delegate-balance.png');
     }
@@ -23,10 +23,17 @@ page-wallet-dashboard {
       padding-top: 1em;
       opacity: 0.8;
     }
+
+    .toolbar-title,
+    .bar-button-default {
+      color: #fff !important;
+    }
   }
+
   .main-grid {
     padding: 0 .5em!important;
   }
+
   .grid {
     padding: 0;
   }
@@ -36,15 +43,18 @@ page-wallet-dashboard {
     color: white;
     min-height: 146px;
   }
+
   ion-fab {
     bottom: 20px!important;
     right: 20px!important;
   }
+
   .tx {
     width: 100%;
     margin: .7em auto;
     box-shadow: none;
     border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
+
     .icon-bg {
       margin: 0;
       padding: 0;
@@ -53,23 +63,41 @@ page-wallet-dashboard {
         height: 60px;
       }
     }
+
     .item {
       padding: .5em 0 .5em .5em;
     }
+
     .label {
       margin: 0;
     }
+
     .timestamp,
     .type {
       margin-top: .4em;
       font-size: 1.2rem;
     }
+
     .amount,
     .type {
       font-weight: 500;
     }
+
     ion-icon {
       padding-left: .2em;
+    }
+  }
+}
+
+.dark-theme {
+  page-wallet-dashboard {
+    .tx {
+      border-bottom: 1px solid color($darkColors, secondary-background, base);
+    }
+    
+    ion-refresher * {
+      color: #fff;
+      stroke: #fff;
     }
   }
 }

@@ -1,8 +1,8 @@
 {
   "API": {
     "BALANCE_TOO_LOW": "Balance too low for transaction",
-    "BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} on your account! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your account balance is only {{ balance }}!",
-    "DESTINATION_ADDRESS_ERROR": "The destination address '{{ address }}' is erroneous",
+    "BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} in your wallet! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your wallet balance is only {{ balance }}!",
+    "DESTINATION_ADDRESS_ERROR": "The destination address '{{ address }}' is incorrect",
     "PEER_LIST_ERROR": "Could not get list of peers",
     "TRANSACTION_FAILED": "Transaction failed",
     "TRANSACTION_SENT": "Transaction was sent"
@@ -20,12 +20,41 @@
     "CONTACT_EXISTS_ADDRESS": "There is already a contact with the address '{{ address }}'!",
     "CONTACT_NOT_EXISTS_ADDRESS": "A contact with the address '{{ address }}' doesn't exist!",
     "CONTACT_EXISTS_NAME": "There is already a contact with the name '{{ name }}'!",
+    "DELETE_CONTACT": "Are you sure you want to delete contact '{{ name }}'?",
     "OVERWRITE_CONTACT": "There is already a contact named '{{ name }}' with this address. Do you want to overwrite it's name with '{{ newName }}'?"
   },
   "COPIED_CLIPBOARD": "Copied to clipboard",
   "COPY": "Copy",
   "COPY_CLIPBOARD_FAILED": "Copy to clipboard failed",
   "CREATE": "Create",
+  "CUSTOM_NETWORK": {
+    "ADDRESS_VERSION": "Address version",
+    "API_SERVER_PORT": "Seed Server API Port",
+    "CHOOSE_EXISTING": "Either choose an existing custom network...",
+    "CONFIGURE": "Configure",
+    "CONFIGURE_ERROR": "Error when trying to retrieve network settings from your peer server!",
+    "CONFIRM_DELETE": "Are you sure that you want to delete this network?",
+    "CUSTOM_NETWORK": "Custom Network",
+    "CREATE_NEW": "Create",
+    "CREATE_NETWORK": "Create Custom Network",
+    "DELETE_FAIL_NOT_EMPTY": "This network cannot be deleted because there are still profiles which use this network. You have to delete them first.",
+    "DELETE_SUCCESSFUL": "Successfully deleted network!",
+    "EDIT": "Edit Network",
+    "EXPLORER": "Explorer",
+    "IS_VERSION_2": "Is Version 2?",
+    "NAME": "Name",
+    "NETHASH": "Nethash",
+    "MANAGE_NETWORKS": "Manage Custom Networks",
+    "MARKET_SYMBOL_NAME": "Market Symbol Name (for getting prices in USD, BTC, etc.)",
+    "NO_NETWORK_CONFIGURED": "No custom network has been configured yet. Click on the button below to create one.",
+    "OR_CREATE_NEW": "... or create a new custom network",
+    "SAVE_SUCCESSFUL": "Successfully saved network!",
+    "SEED_SERVER": "Seed Server URL",
+    "SEED_SERVER_IP": "Seed Server IP",
+    "SEED_SERVER_PORT": "Seed Server Port",
+    "SYMBOL_NAME": "Symbol name",
+    "TOKEN_NAME": "Token name"
+  },
   "DATE": "Date",
   "DELEGATES_PAGE": {
     "ACTIVE": "Active",
@@ -48,6 +77,7 @@
     "UPTIME": "Uptime",
     "USERNAME_ALREADY_EXISTS": "This username already exists",
     "VOTE": "Vote",
+    "VOTED": "Voted",
     "VOTE_FETCH_ERROR": "Could not fetch current vote",
     "WARNING_SELECT_WALLET_FIRST": "You need to select a wallet first to enable the voting process"
   },
@@ -89,17 +119,21 @@
     "DELAY": "Delay",
     "HEIGHT": "Height",
     "LOOKING_GOOD_PEER": "Looking for a good peer",
+    "NO_GOOD_PEER": "No good peer could be found!",
     "PEER_SUCCESSFULLY_CHANGED": "Peer successfully changed",
     "NETWORK_STATUS": "Network Status",
     "NETWORK_TYPE": "Network Type",
     "INTERNET_DESCONNECTED": "Unable to connect to the Internet!",
-    "PEER": "Peer"
+    "PEER": "Peer",
+    "RESET_TO_SEED": "Reset to Seed Peer",
+    "VERSION": "Version"
   },
   "NEXT": "Next",
   "NO": "No",
   "PASSPHRASE_TEST": {
     "INFO": "Please type the required words from your passphrase to validate the wallet creation.",
-    "WRONG_WORD": "The typed word is not correct"
+    "WRONG_WORD": "The typed word is not correct",
+    "DEVNET_WORDS_NOTICE": "The words are automatically filled in for Devnet"
   },
   "PIN_CODE": {
     "CONFIRM": "Confirm your PIN",
@@ -113,15 +147,31 @@
     "PIN_UPDATED_ERROR_TEXT": "There was a problem updating your PIN",
     "PIN_UPDATED_TEXT": "Your PIN has been updated",
     "TYPE_PIN_ENCRYPT_PASSPHRASE": "Type your PIN to encrypt passphrase",
+    "TYPE_PIN_REMOVE_WALLET": "Type your PIN to remove the wallet",
     "TYPE_PIN_SIGN_TRANSACTION": "Type your PIN to sign transaction",
+    "UPDATING": "Updating PIN code for all profiles and wallets...",
     "WRONG": "Please enter the correct PIN",
     "WEAK_PIN": "Weak PIN",
     "WEAK_PIN_DETAIL": "The PIN you entered is considered weak and easy to guess. Are you sure you want to use it?"
   },
+  "INPUT_FEE": {
+    "MIN": "Min",
+    "AVERAGE": "Average",
+    "MAX": "Max",
+    "LOW_FEE_NOTICE": "Transactions with low fees may never get confirmed",
+    "ADVANCED_NOTICE": "Be careful what fee you choose as it will cost more than necessary if too high",
+    "STATIC_FEE": "The network fee has been set to the static value of {{ fee }}",
+    "ERROR": {
+      "MORE_THAN_MAXIMUM": "The maximum fee is {{ symbol }} {{ fee }}"
+    }
+  },
+  "PULL_REFRESH": "Pull to refresh",
   "PROFILES_PAGE": {
+    "PROFILENAME_ALREADY_EXISTS": "There is already a profile with the name '{{ name }}'!",
     "ADD_PROFILE_ERROR": "Could not add profile",
     "ADD_PROFILE_TEXT": "Click on the button below to create a profile",
     "CREATE_PROFILE": "Create Profile",
+    "CUSTOM": "Custom",
     "DELETE_NOT_EMPTY": "You cannot delete a Profile that has 1 or more Wallets",
     "GET_STARTED": "Get started",
     "SIGN_IN": "Sign in"
@@ -134,6 +184,7 @@
     "PROBLEM_TEXT": "There was a problem scanning a QR Code"
   },
   "RENAME": "Rename",
+  "REFRESHING": "Refreshing",
   "SAVE": "Save",
   "SEARCH": "Search",
   "SETTINGS_PAGE": {
@@ -149,9 +200,11 @@
     "PRIVACY_POLICY": "Privacy Policy",
     "SECURITY": "Security",
     "NOT_AVAILABLE_WATCH_ONLY": "Not available for watch only address",
+    "NOTIFICATIONS": "Notifications",
     "SETTINGS": "Settings",
     "VERSION": "Version",
-    "WALLET_BACKUP": "Wallet Backup"
+    "WALLET_BACKUP": "Wallet Backup",
+    "WORDLIST_LANGUAGE": "Passphrase language"
   },
   "SHOW_ADVANCED": "Show Advanced",
   "SKIP": "Skip",
@@ -161,11 +214,12 @@
     "ADD_ADDRESS_TO_CONTACTS": "Add {{ address }} to contacts",
     "AMOUNT": "Amount",
     "CONFIRMATIONS": "Confirmations",
-    "CONTACT_NAME": "New Contact's Name (optional)",
     "COPY_TXID": "Copy TXID",
     "CREATE_TRANSACTION_ERROR": "Could not create transaction. Check internet connectivity",
     "DELEGATE_REGISTRATION": "Delegate Registration",
     "ENCRYPT_SAVE_SECOND_PASSPHRASE": "Do you want to encrypt and save your second passphrase?",
+    "EXISTING_CONTACT": "Contact",
+    "EXISTING_WALLET": "Wallet",
     "FEE": "Fee",
     "FETCHING_TRANSACTIONS": "Fetching transactions",
     "FROM": "From",
@@ -174,8 +228,11 @@
     "INVALID_CONTACT_ERROR": "Invalid Contact",
     "INVALID_FORM_ERROR": "Invalid Form Data",
     "MULTISIGNATURE_CREATION": "Multisignature Creation",
+    "NEW_CONTACT_NAME": "New Contact's Name (optional)",
+    "NEW_WALLET_LABEL": "Wallet label (optional)",
     "OPEN_EXPLORER": "Open in Explorer",
-    "QRCODE_COPY": "Tap on address to copy it to clipboard or click on icon to share QR code.",
+    "PERFORMING_DESTINATION_ADDRESS_CHECKS": "Performing destination address checks...",
+    "QRCODE_COPY": "Tap on the address to copy it to clipboard or click on the icon to share the QR code. Optionally you can also enter an amount, which will then be included in the QR code.",
     "RECEIVE": "Receive",
     "RECEIVE_TOKEN": "Receive {{ Token }}",
     "RECEIVED": "Received",
@@ -192,9 +249,24 @@
     "SENT_SUCCESS": "Transaction sent with success!",
     "SMART_BRIDGE": "SmartBridge (optional)",
     "TO": "To",
-    "TRANSACTION": "Transaction"
+    "TRANSACTION": "Transaction",
+    "WARNING": {
+      "BROADCAST": "Transaction was broadcasted to other peers. It may not be accepted by them"
+    },
+    "ERROR": {
+      "NOTHING_SENT": "The transaction could not be sent. Please check your network connection or change peer",
+      "FEE_TOO_LOW": "Transaction could not be sent because the fee ({{ fee }}) is too low"
+    }
   },
   "TYPE": "Type",
+  "VALIDATION": {
+    "INVALID_ADDRESS": "This address is invalid!",
+    "IS_OWN_ADDRESS": "This is your own address. Are you sure you want to send to your own address?",
+    "NO_TRANSACTIONS": "It appears the address doesn't have any transactions. Are you sure it's correct?",
+    "IS_NEO_ADDRESS": "It looks like this is a 'NEO' address. Are you sure it's correct?",
+    "LABEL_EXISTS": "There is already a wallet with the label '{{ label }}'!",
+    "INVALID_WALLET": "The wallet is invalid or not set!"
+  },
   "WALLETS_PAGE": {
     "ADD_WALLET_ERROR": "Could not add wallet",
     "ADD_WALLET_TEXT": "To import or create wallet click on the button below",
@@ -208,6 +280,7 @@
     "BIP38_SEED": "BIP38 Seed",
     "CONVERT_TO_FULL_WALLET": "Convert to full wallet",
     "CREATE_WALLET": "Create Wallet",
+    "CUSTOM_PASSPHRASE": "Custom (non | BIP39|) passphrase",
     "ENTER_SECRET_PASSPHRASE": "Enter your secret passphrase",
     "ENTER_ADDRESS": "Enter your address",
     "ENTROPY": "Entropy",
@@ -215,10 +288,14 @@
     "GENERATE_ENTROPY": "Generate Entropy",
     "IMPORT_INVALID_ADDRESS": "This address can not be imported into this profile",
     "IMPORT_WALLET": "Import Wallet",
+    "INVALID_ADDRESS": "Invalid address",
+    "INVALID_MNEMONIC": "Invalid mnemonic",
+    "INVALID_WORD_NUMBER": "Invalid number of words",
     "KEEP_SAFE": "Keep Safe",
     "LABEL": "Label",
     "MY_WALLET": "My Wallet",
     "NEW_WALLET_NAME": "New wallet name",
+    "NEW_TRANSACTION": "New transaction in {{ profile }}",
     "NO_TRANSACTIONS": "No transactions available",
     "TYPE_PASSPHRASE_OR_ADDRESS": "or type your | secret passphrase | or your | address | manually.",
     "PASSPHRASE": "Passphrase",
@@ -228,9 +305,11 @@
     "PUBLIC_KEY": "Public Key",
     "PASSPHRASE_NOT_BELONG_TO_ADDRESS": "The entered passphrase doesn't belong to the address '{{ address }}'!",
     "PASSPHRASE_NOT_BIP39": "You have not entered a valid BIP-39 passphrase",
+    "PASSPHRASE_UNSUPPORTED_INPUT": "Unsupported input in hidden mode, please change passphrase visibility.",
     "RE_ENTER_PASSPHRASE": "Re-enter your passphrase",
     "REMOVE_WALLET": "Remove Wallet",
-    "REMOVE_WALLET_TEXT": "Your account will be removed. Make sure you have backed up, you will need the original passphrase to restore.",
+    "REMOVE_WALLET_TEXT": "Your wallet will be removed. Make sure you have backed up, you will need the original passphrase to restore.",
+    "REMOVE_WATCH_ONLY_WALLET_TEXT": "The wallet will be removed and you will not be able to watch it anymore.",
     "SCAN_QRCODE": "Scan QR Code",
     "SCAN_QRCODE_TEXT": "Import your address or passphrase using QR Code, just point and scan!",
     "SECOND_BIP38_SEED": "Second BIP38 Seed",
@@ -239,9 +318,14 @@
     "SECRET_PASSPHRASE": "Secret Passphrase",
     "SECRET_PASSPHRASE_KEEP_SAFE": "Secret Passphrase (KEEP SAFE)",
     "SEED": "Seed",
+    "TOP_WALLETS": "Top Wallets",
+    "TOP_WALLET_RANK": "Rank",
     "TOTAL_BALANCE": "Total Balance",
     "USERNAME": "Username",
+    "VALID_ADDRESS": "Valid address",
+    "VALID_PASSPHRASE": "Valid passphrase",
     "WALLETS": "Wallets",
+    "WARNING_SELECT_WALLET_TRANSACTION_LOOKUP": "You need to select a wallet first to look-up transactions",
     "WIF": "WIF"
   },
   "WATCH_ONLY": "Watch Only",

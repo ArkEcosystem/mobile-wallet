@@ -1,0 +1,49 @@
+version: 2
+jobs:
+  test-node-10:
+    working_directory: ~/mobile-wallet
+    docker:
+      - image: circleci/node:10-browsers
+    steps: &teststeps
+      - checkout
+      - restore_cache:
+          keys:
+            - npm-deps-{{ .Branch }}-{{ checksum "package.json" }}
+      - run:
+          name : Install pre dependencies
+          command : yarn global add ionic@4.x cordova@8.x
+      - run:
+          name: Install dependencies
+          command: yarn
+      - save_cache:
+          key: npm-deps-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: Rebuild node-sass
+          command: npm rebuild node-sass
+      - run:
+          name: Lint
+          command: npm run lint --bailOnLintError true
+      - run:
+          name: Unit tests
+          command: npm run test:coverage
+      - run:
+          name: e2e tests
+          command: npm run test:e2e
+      - run:
+          name: Build
+          command: npm run build -- --prod
+
+  test-node-11:
+      working_directory: ~/mobile-wallet
+      docker:
+        - image: circleci/node:11-browsers
+      steps: *teststeps
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test-node-10
+      - test-node-11

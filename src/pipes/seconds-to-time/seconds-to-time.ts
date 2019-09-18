@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class SecondsToTimePipe implements PipeTransform {
 
   transform(value: number, ...args) {
-    return new Date(value).setSeconds(value);
+    return new Date(0, 0, 0).setSeconds(value);
   }
 
 }

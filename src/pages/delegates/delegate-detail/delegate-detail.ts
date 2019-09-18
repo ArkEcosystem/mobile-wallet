@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, ViewController, AlertController } 
 
 import { ArkApiProvider } from '@providers/ark-api/ark-api';
 import { UserDataProvider } from '@providers/user-data/user-data';
-import { Delegate, Fees, Network } from 'ark-ts';
+import { Delegate, Fees, Network, TransactionType } from 'ark-ts';
 
 import { Wallet } from '@models/wallet';
 
@@ -22,10 +22,11 @@ export class DelegateDetailPage {
 
   public delegate: Delegate;
   public qraddress = '{a: ""}';
-  public fees: Fees;
   public currentNetwork: Network;
   public currentWallet: Wallet;
   public walletVote: Delegate;
+  public transactionType = TransactionType.Vote;
+  public fee: number;
 
   constructor(
     public navCtrl: NavController,
@@ -45,8 +46,6 @@ export class DelegateDetailPage {
     this.currentNetwork = this.arkApiProvider.network;
     this.currentWallet = this.userDataProvider.currentWallet;
 
-    this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);
-
     if (!this.delegate) { this.navCtrl.pop(); }
   }
 
@@ -59,7 +58,7 @@ export class DelegateDetailPage {
   }
 
   isWalletSelected() {
-    return !lodash.isNil(this.currentWallet);
+    return !lodash.isNil(this.currentWallet) && !this.currentWallet.isWatchOnly;
   }
 
   copyAddress() {
@@ -99,12 +98,16 @@ export class DelegateDetailPage {
 
   }
 
+  onInputFee(fee) {
+    this.fee = fee;
+  }
+
   unvote() {
     this.dismiss(this.walletVote);
   }
 
   dismiss(delegate?: Delegate) {
-    this.viewCtrl.dismiss(delegate);
+    this.viewCtrl.dismiss({ delegateVote: delegate, fee: this.fee });
   }
 
 }

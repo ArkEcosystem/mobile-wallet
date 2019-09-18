@@ -37,14 +37,29 @@ export class QRScannerComponent {
     if (lodash.isObject(qrCode)) { return this.formatOld(qrCode); }
 
     const scheme: QRCodeScheme = {};
-    const prefixUriRegex = new RegExp(`${constants.URI_QRCODE_SCHEME_PREFIX}([AaDd]{1}[0-9a-zA-Z]{33})`, 'g');
+    const prefixUriRegex = new RegExp(`${constants.URI_QRCODE_SCHEME_PREFIX}([0-9a-zA-Z]{34})`, 'g');
 
     if (qrCode.match(prefixUriRegex)) {
       scheme.address = prefixUriRegex.exec(qrCode)[1];
+      const paramsRegex = new RegExp(`(\\?|\\&)([^=]+)\\=([^&]+)`, 'g');
+      let regexResult;
+      while ((regexResult = paramsRegex.exec(qrCode)) != null) {
+        switch (regexResult[2]) {
+          case 'amount':
+            scheme.amount = regexResult[3];
+            break;
+          case 'vendorField':
+            scheme.vendorField = regexResult[3];
+            break;
+          case 'label':
+            scheme.label = regexResult[3];
+            break;
+        }
+      }
     } else {
       if (bip39.validateMnemonic(qrCode)) {
         scheme.passphrase = qrCode;
-      } else if (qrCode.match(/^[AaDd]{1}[0-9a-zA-Z]{33}/g)) {
+      } else if (qrCode.match(/[0-9a-zA-Z]{34}/g)) {
         scheme.address = qrCode;
       }
 
