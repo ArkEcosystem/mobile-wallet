@@ -372,8 +372,11 @@ export class ArkApiProvider {
 
       const epochTime = moment(this._network.epoch).utc().valueOf();
       const now = moment().valueOf();
+
+      const keys = ArkCrypto.Keys.fromPassphrase(key);
+
       transaction.timestamp = Math.floor((now - epochTime) / 1000);
-      transaction.senderPublicKey = wallet.publicKey;
+      transaction.senderPublicKey = keys.publicKey;
       transaction.signature = null;
       transaction.id = null;
 
@@ -389,7 +392,6 @@ export class ArkApiProvider {
         asset: transaction.asset
       };
 
-      const keys = ArkCrypto.Keys.fromPassphrase(key);
       data.signature = ArkCrypto.crypto.sign(data, keys);
 
       secondPassphrase = secondKey || secondPassphrase;
