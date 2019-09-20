@@ -126,7 +126,7 @@ export class TopWalletDetailsPage implements OnDestroy {
   }
 
   openTransactionShow(tx: Transaction) {
-    if (this.userDataProvider.currentWallet) {
+    if (this.topWallet) {
       this.navCtrl.push('TransactionShowPage', {
         transaction: tx,
         symbol: this.currentNetwork.symbol,
