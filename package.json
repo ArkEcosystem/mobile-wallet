@@ -139,6 +139,9 @@
     "ts-node": "6.2.0",
     "typescript": "2.8.4"
   },
+  "resolutions": {
+    "request": "^2.88.0"
+  },
   "description": "A Wallet for Everyone",
   "config": {
     "ionic_webpack": "./webpack.config.js",
