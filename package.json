@@ -1,6 +1,6 @@
 {
   "name": "ark-mobile",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "author": {
     "name": "Lucio Rubens",
     "email": "luciorubeens@gmail.com",
@@ -138,6 +138,9 @@
     "serve-static": "^1.13.1",
     "ts-node": "6.2.0",
     "typescript": "2.8.4"
+  },
+  "resolutions": {
+    "request": "^2.88.0"
   },
   "description": "A Wallet for Everyone",
   "config": {
