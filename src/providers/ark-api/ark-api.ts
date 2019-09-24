@@ -18,9 +18,9 @@ import moment from 'moment';
 import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
-import {AccountResponse, Delegate} from 'ark-ts';
+import {AccountResponse, Delegate, PeerResponse} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
-import ArkClient from '../../utils/ark-client';
+import ArkClient, { PeerApiResponse } from '../../utils/ark-client';
 import * as ArkCrypto from '@arkecosystem/crypto';
 
 interface NodeFees {
@@ -158,18 +158,23 @@ export class ArkApiProvider {
 
   public async findGoodSeedPeer() {
     const configNetwork = arktsConfig.networks[this._network.name];
-    let peers;
-    if (configNetwork) {
-      peers = configNetwork.peers.map(peer => {
-        const ip = peer.match(/^(\d+\.?){4}/);
-        const port = peer.match(/:\d+$/);
+    let peers = [];
 
-        return {
-          ip: ip[0],
-          port: port[0].substring(1),
-          version: configNetwork.p2pVersion
-        };
+    if (configNetwork) {
+      const activePeer = configNetwork.activePeer;
+      const peerSample = configNetwork.peers.slice(0, 10);
+      const peerRequests = peerSample.map(peer => {
+        const ip = peer.match(/^(\d+\.?){4}/);
+
+        return this.client.getPeer(ip[0], `http://${activePeer.ip}:${activePeer.port}`, 2000).toPromise();
       });
+
+      const peerResponses: PeerApiResponse[] = await Promise.all(peerRequests.map(p => p.catch(e => e)));
+      for (const peer of peerResponses) {
+        if (peer && peer.height) {
+          peers.push(peer);
+        }
+      }
     } else {
       peers = this.network.peerList;
     }
@@ -201,89 +206,31 @@ export class ArkApiProvider {
         () => this.toastProvider.error('API.PEER_LIST_ERROR'));
   }
 
-  private async findGoodPeerFromList(peerList: arkts.Peer[]) {
+  private async findGoodPeerFromList(peerList: PeerApiResponse[]) {
     if (!peerList || !peerList.length) {
       return false;
     }
-    const port = +(this._network.p2pPort || this._network.activePeer.port);
-    // Force P2P port if specified in the network
-    if (this._network.p2pPort) {
-      for (const peer of peerList) {
-        peer.port = +this._network.p2pPort;
-      }
-    }
-    const peersListSample = peerList.slice(0, 10);
-    const preFilteredPeers = lodash.filter(peersListSample, (peer) => {
-      if (peer['port'] !== port) {
+
+    const filteredPeers = lodash.filter(peerList, (peer) => {
+      if (peer.ip === this._network.activePeer.ip || peer.ip === '127.0.0.1') {
         return false;
       }
 
-      if (peer.ip === this._network.activePeer.ip || peer.ip === '127.0.0.1') {
-        return false;
+      if (peer.ports) {
+        const apiPort = lodash.find(peer.ports, (_, key) => key.split('/').reverse()[0] === 'core-api');
+        const isApiEnabled = apiPort && Number(apiPort) > 1;
+        peer.port = apiPort;
+        return isApiEnabled;
       }
 
       return true;
     });
 
-    let filteredPeers = [];
-    if (!this._network.isV2) {
-      filteredPeers = preFilteredPeers;
-    } else {
-      const configChecks = [];
-      for (const peer of preFilteredPeers) {
-        configChecks.push(this.zone.runOutsideAngular(() =>
-          this.client.getPeerConfig(peer.ip, peer.port).toPromise()
-        ));
-      }
-
-      const peerConfigResponses = await Promise.all(configChecks.map(p => p.catch(e => e)));
-      for (const peerId in peerConfigResponses) {
-        const config = peerConfigResponses[peerId];
-        if (config && config.data) {
-          const apiConfig: any = lodash.find(config.data.plugins, (_, key) => key.split('/').reverse()[0] === 'core-api');
-          if (apiConfig && apiConfig.enabled && apiConfig.port) {
-            const peer = preFilteredPeers[peerId];
-            peer.port = apiConfig.port;
-            if (config.data.version) {
-              peer.version = config.data.version;
-            }
-            filteredPeers.push(peer);
-          }
-        }
-      }
-    }
-
-    const missingHeights = [];
-    const missingHeightRequests = [];
-    for (const peerId in filteredPeers) {
-      const peer = filteredPeers[peerId];
-      if (!peer.height) {
-        missingHeights.push({
-          id: peerId,
-          peer
-        });
-        missingHeightRequests.push(this.client.getPeerSyncing(`http://${peer.ip}:${peer.port}`).toPromise());
-      }
-    }
-
-    if (missingHeightRequests.length) {
-      const missingHeightResponses = await Promise.all(missingHeightRequests.map(p => p.catch(e => e)));
-      for (const peerId in missingHeightResponses) {
-        const response = missingHeightResponses[peerId];
-        if (response && response.height) {
-          const missingHeight = missingHeights[peerId];
-          const peer = missingHeight.peer;
-          peer.height = response.height;
-          filteredPeers[missingHeight.peerId] = peer;
-        }
-      }
-    }
-
-    const sortedPeers = lodash.orderBy(filteredPeers, ['height', 'delay'], ['desc', 'asc']);
+    const sortedPeers = lodash.orderBy(filteredPeers, ['height', 'latency'], ['desc', 'asc']);
     if (!sortedPeers.length) {
       return false;
     }
-    this._network.peerList = sortedPeers;
+    this._network.peerList = sortedPeers.slice(0, 10);
     this.updateNetwork(sortedPeers[0]);
     return true;
   }
