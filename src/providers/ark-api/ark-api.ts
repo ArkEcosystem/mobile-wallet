@@ -169,9 +169,9 @@ export class ArkApiProvider {
         return this.client.getPeer(ip[0], `http://${activePeer.ip}:${activePeer.port}`, 2000).toPromise();
       });
 
-      const peerResponses: PeerApiResponse[] = await Promise.all(peerRequests.map(p => p.catch(e => e)));
+      const peerResponses = await Promise.all(peerRequests.map(p => p.catch(e => e)));
       for (const peer of peerResponses) {
-        if (peer && peer.height) {
+        if (peer && peer['height']) {
           peers.push(peer);
         }
       }
