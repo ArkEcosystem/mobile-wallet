@@ -16,8 +16,9 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 export interface PeerApiResponse extends Peer {
+  latency?: number;
   ports?: {
-    [plugin: string]: number
+    [plugin: string]: number;
   }
 }
 

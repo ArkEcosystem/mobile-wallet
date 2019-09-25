@@ -22,6 +22,7 @@ import {AccountResponse, Delegate, PeerResponse} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
 import ArkClient, { PeerApiResponse } from '../../utils/ark-client';
 import * as ArkCrypto from '@arkecosystem/crypto';
+import { PeerDiscovery } from '@utils/ark-peer-discovery';
 
 interface NodeFees {
   type: number;
@@ -58,6 +59,7 @@ export class ArkApiProvider {
   private _network: StoredNetwork;
   private _api: arkts.Client;
   private _client: ArkClient;
+  private _peerDiscovery: PeerDiscovery;
 
   private _fees: arkts.Fees;
   private _delegates: arkts.Delegate[];
@@ -133,7 +135,8 @@ export class ArkApiProvider {
 
     this._api = new arkts.Client(this._network);
     this._client = new ArkClient(this.network.getPeerAPIUrl(), this.httpClient);
-    this.findGoodPeer();
+    this._peerDiscovery = new PeerDiscovery(this.httpClient);
+    this.connectToRandomPeer();
 
     // Fallback if the fetchEpoch fail
     this._network.epoch = arktsConfig.blockchain.date;
@@ -144,95 +147,63 @@ export class ArkApiProvider {
     this.fetchFees().subscribe();
   }
 
-  public async findGoodPeer() {
-    // Get list from active peer
-    this.client.getPeerList().subscribe(async (response) => {
-      if (response && await this.findGoodPeerFromList(response.peers)) {
-        return;
-      } else {
-        await this.tryGetFallbackPeer();
-      }
-    },
-    async () => await this.tryGetFallbackPeer());
-  }
+  private async refreshPeers(): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      const network = this._network;
+      const networkLookup = ['mainnet', 'devnet'];
 
-  public async findGoodSeedPeer() {
-    const configNetwork = arktsConfig.networks[this._network.name];
-    let peers = [];
+      let peerDiscovery = null;
 
-    if (configNetwork) {
-      const activePeer = configNetwork.activePeer;
-      const peerSample = configNetwork.peers.slice(0, 10);
-      const peerRequests = peerSample.map(peer => {
-        const ip = peer.match(/^(\d+\.?){4}/);
-
-        return this.client.getPeer(ip[0], `http://${activePeer.ip}:${activePeer.port}`, 2000).toPromise();
-      });
-
-      const peerResponses = await Promise.all(peerRequests.map(p => p.catch(e => e)));
-      for (const peer of peerResponses) {
-        if (peer && peer['height']) {
-          peers.push(peer);
+      try {
+        if (networkLookup.includes(network.name)) {
+          peerDiscovery = await this._peerDiscovery.find({
+            networkOrHost: network.name
+          });
+        } else {
+          const peerUrl = network.getPeerAPIUrl();
+          peerDiscovery = await this._peerDiscovery.find({
+            networkOrHost: `${peerUrl}/api/peers`
+          });
         }
+
+        peerDiscovery
+          .withLatency(300)
+          .sortBy('latency', 'asc');
+
+        let peers = await peerDiscovery.findPeersWithPlugin('core-api', {
+          additional: [
+            'height',
+            'latency',
+            'version'
+          ]
+        });
+
+        if (!peers.length) {
+          peers = await peerDiscovery
+            .findPeersWithPlugin('core-wallet-api', {
+              additional: [
+                'height',
+                'latency',
+                'version'
+              ]
+            });
+        }
+
+        if (peers.length) {
+          this._network.peerList = peers;
+          resolve();
+        } else {
+          reject();
+        }
+      } catch (e) {
+        reject();
       }
-    } else {
-      peers = this.network.peerList;
-    }
-
-    if (lodash.isEmpty(peers)) {
-      return false;
-    }
-
-    await this.findGoodPeerFromList(peers);
-
-    return true;
-  }
-
-  private async tryGetFallbackPeer() {
-    if (await this.findGoodPeerFromList(this.network.peerList)) {
-      return;
-    }
-
-    // Custom network
-    if (!this.network.type) {
-      this.updateNetwork();
-      return;
-    }
-
-    // try get a peer from the hardcoded ark-ts peerlist (only works for main and devnet)
-    arkts.PeerApi
-      .findGoodPeer(this._network)
-      .subscribe((peer) => this.updateNetwork(peer),
-        () => this.toastProvider.error('API.PEER_LIST_ERROR'));
-  }
-
-  private async findGoodPeerFromList(peerList: PeerApiResponse[]) {
-    if (!peerList || !peerList.length) {
-      return false;
-    }
-
-    const filteredPeers = lodash.filter(peerList, (peer) => {
-      if (peer.ip === this._network.activePeer.ip || peer.ip === '127.0.0.1') {
-        return false;
-      }
-
-      if (peer.ports) {
-        const apiPort = lodash.find(peer.ports, (_, key) => key.split('/').reverse()[0] === 'core-api');
-        const isApiEnabled = apiPort && Number(apiPort) > 1;
-        peer.port = apiPort;
-        return isApiEnabled;
-      }
-
-      return true;
     });
+  }
 
-    const sortedPeers = lodash.orderBy(filteredPeers, ['height', 'latency'], ['desc', 'asc']);
-    if (!sortedPeers.length) {
-      return false;
-    }
-    this._network.peerList = sortedPeers.slice(0, 10);
-    this.updateNetwork(sortedPeers[0]);
-    return true;
+  public async connectToRandomPeer() {
+    await this.refreshPeers();
+    this.updateNetwork(this._network.peerList[lodash.random(this._network.peerList.length - 1)]);
   }
 
   public fetchDelegates(numberDelegatesToGet: number, getAllDelegates = false): Observable<arkts.Delegate[]> {
