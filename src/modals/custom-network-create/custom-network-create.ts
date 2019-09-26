@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, LoadingController, ViewController } from 'ionic-angular';
 import { ToastProvider } from '@providers/toast/toast';
-import { LoaderAutoConfigure, Network, NetworkType, Peer, PeerVersion2ConfigResponse } from 'ark-ts';
-import * as arkts from 'ark-ts';
+import { LoaderAutoConfigure, Network, Peer, PeerVersion2ConfigResponse } from 'ark-ts';
+import ArkClient from '@utils/ark-client';
 import lodash from 'lodash';
+import { HttpClient } from '@angular/common/http';
 
 @IonicPage()
 @Component({
@@ -15,56 +16,26 @@ export class CustomNetworkCreateModal {
   public network: Network = new Network();
   public name: string;
   public seedServer: string;
-  public isVersion2: boolean;
 
   public constructor(private viewCtrl: ViewController,
                      private toastProvider: ToastProvider,
-                     private loadingCtrl: LoadingController) {
+                     private loadingCtrl: LoadingController,
+                     private httpClient: HttpClient) {
   }
 
   public dismiss(network?: Network): void {
     this.viewCtrl.dismiss(network);
   }
 
-  public configure(): void {
-    if (this.isVersion2) {
-      return this.configureVersion2();
-    }
-
+  private configure(): void {
     const loading = this.loadingCtrl.create();
     loading.present();
 
     const seedServerUrl = this.getSeedServerUrl();
-    new arkts.Client(Network.getDefault(NetworkType.Mainnet))
-      .loader.autoConfigure(seedServerUrl.origin)
-      .finally(() => loading.dismiss())
-      .subscribe((r: LoaderAutoConfigure) => {
-        if (!r.success) {
-          this.configureError();
-          return;
-        }
+    const protocol = seedServerUrl.protocol === 'https:' ? 'https' : 'http';
 
-        this.network.name = this.name;
-        this.network.nethash = r.network.nethash;
-        this.network.token = r.network.token;
-        this.network.symbol = r.network.symbol;
-        this.network.explorer = r.network.explorer;
-        this.network.version = r.network.version;
-        this.network.activePeer = new Peer();
-        this.network.activePeer.ip = seedServerUrl.hostname;
-        this.network.activePeer.port = Number(seedServerUrl.port);
-        this.network.type = null;
-        this.dismiss(this.network);
-      }, () => this.configureError());
-  }
-
-  private configureVersion2(): void {
-    const loading = this.loadingCtrl.create();
-    loading.present();
-
-    const seedServerUrl = this.getSeedServerUrl();
-    new arkts.Client(Network.getDefault(NetworkType.Mainnet))
-      .peer.getVersion2Config(seedServerUrl.hostname, Number(seedServerUrl.port))
+    new ArkClient(this.seedServer, this.httpClient)
+      .getPeerConfig(seedServerUrl.hostname, Number(seedServerUrl.port), protocol)
       .finally(() => loading.dismiss())
       .subscribe((r: PeerVersion2ConfigResponse) => {
         if (!r.data) {

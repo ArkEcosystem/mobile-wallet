@@ -12,8 +12,17 @@ import {
   AccountResponse,
   BlockFees
 } from 'ark-ts';
+import lodash from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/switchMap';
+
+export interface PeerApiResponse extends Peer {
+  latency?: number;
+  ports?: {
+    [plugin: string]: number;
+  };
+}
 
 export default class ApiClient {
   private host: string;
@@ -125,6 +134,15 @@ export default class ApiClient {
     });
   }
 
+  getNodeConfiguration(host: string): Observable<PeerApiResponse> {
+    return Observable.create(observer => {
+      this.get(`node/configuration`, {}, host).subscribe((response: any) => {
+        observer.next(response.data);
+        observer.complete();
+      }, (error) => observer.error(error));
+    });
+  }
+
   getPeerSyncing(host: string): Observable<LoaderStatusSync> {
     return Observable.create(observer => {
       this.get(`node/syncing`, {}, host).subscribe((response: any) => {
@@ -170,7 +188,21 @@ export default class ApiClient {
         this.httpClient.get(`${protocol}://${ip}:${port}/config`).timeout(2000).subscribe((response: any) => {
           observer.next(response);
           observer.complete();
-        }, (error) => observer.error(error));
+        }, () => {
+          debugger;
+          this.getNodeConfiguration(`${protocol}://${ip}:${port}`).subscribe((response: PeerApiResponse) => {
+            const apiPort = lodash.find(response.ports, (_, key) => key.split('/').reverse()[0] === 'core-wallet-api');
+            const isApiEnabled = apiPort && Number(apiPort) > 1;
+            if (isApiEnabled) {
+              this.getPeerConfig(ip, apiPort, protocol).subscribe(
+                r => observer.next(r),
+                e => observer.error(e)
+              );
+            } else {
+              observer.error();
+            }
+          }, (error) => observer.error(error));
+        });
       });
     });
   }
