@@ -151,7 +151,7 @@
   dependencies:
     tslib "^1.7.1"
 
-"@angular/platform-browser-dynamic@^5.2.11":
+"@angular/platform-browser-dynamic@^5.1.3":
   version "5.2.11"
   resolved "https://registry.yarnpkg.com/@angular/platform-browser-dynamic/-/platform-browser-dynamic-5.2.11.tgz#1b2a9de4af207bee7040400f61c01a44e929c308"
   integrity sha512-5kKPNULcXNwkyBjpHfF+pq+Yxi8Zl866YSOK9t8txoiQ9Ctw97kMkEJcTetk6MJgBp/NP3YyjtoTAm8oXLerug==
@@ -839,10 +839,9 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
-ark-ts@^0.4.0:
+"ark-ts@github:arkecosystem/ark-ts#wat":
   version "0.4.0"
-  resolved "https://registry.yarnpkg.com/ark-ts/-/ark-ts-0.4.0.tgz#9e4b18b0f75320f2be8567ab740bbcf054d43692"
-  integrity sha512-l//IlLAOggcP2K2pnffB2azJ8UD/1mosAOaEPFwcaG6O3VO74LLUpgC0du2D6r9WpcbsoRtu3O0eftmAur7pjw==
+  resolved "https://codeload.github.com/arkecosystem/ark-ts/tar.gz/3b0eaa1f8067033d8949a7e19cfc27235df2c3b2"
   dependencies:
     "@types/bigi" "^1.4.0"
     "@types/node" "^8.0.12"
@@ -857,7 +856,7 @@ ark-ts@^0.4.0:
     ecurve "^1.0.5"
     json-typescript-mapper "^1.1.3"
     randombytes "^2.0.5"
-    rxjs "^5.4.2"
+    rxjs "^5.5.12"
     secp256k1 "^3.3.0"
     wif "^2.0.6"
 
@@ -2395,10 +2394,10 @@ cordova-plugin-inappbrowser@^3.1.0:
   resolved "https://registry.yarnpkg.com/cordova-plugin-inappbrowser/-/cordova-plugin-inappbrowser-3.1.0.tgz#61520b8de3eb75b37842d2340f5d90a84a073747"
   integrity sha512-YqrZfYgbGTS20SFID0mrRxud312VH072QVlFonCAkPgtGg1Svy7lELOCNFd+KU7t4mVtZeTEjZPEeefvjaetwQ==
 
-cordova-plugin-ionic-keyboard@^2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/cordova-plugin-ionic-keyboard/-/cordova-plugin-ionic-keyboard-2.1.3.tgz#6b050d5b7cb4393d5758b55f45a46372f25178fe"
-  integrity sha512-6ucQ6FdlLdBm8kJfFnzozmBTjru/0xekHP/dAhjoCZggkGRlgs8TsUJFkxa/bV+qi7Dlo50JjmpE4UMWAO+aOQ==
+cordova-plugin-ionic-keyboard@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-ionic-keyboard/-/cordova-plugin-ionic-keyboard-2.2.0.tgz#53ba9ccd5e765165446a094cfe042a2ddd87d81d"
+  integrity sha512-yDUG+9ieKVRitq5mGlNxjaZh/MgEhFFIgTIPhqSbUaQ8UuZbawy5mhJAVClqY97q8/rcQtL6dCDa7x2sEtCLcA==
 
 cordova-plugin-network-information@^2.0.2:
   version "2.0.2"
@@ -2445,10 +2444,10 @@ cordova-plugin-whitelist@^1.3.4:
   resolved "https://registry.yarnpkg.com/cordova-plugin-whitelist/-/cordova-plugin-whitelist-1.3.4.tgz#31938545c7c3e7de35c20ab08c2c3afa06e8a3f9"
   integrity sha512-EYC5eQFVkoYXq39l7tYKE6lEjHJ04mvTmKXxGL7quHLdFPfJMNzru/UYpn92AOfpl3PQaZmou78C7EgmFOwFQQ==
 
-cordova-plugin-x-socialsharing@^5.4.7:
-  version "5.4.7"
-  resolved "https://registry.yarnpkg.com/cordova-plugin-x-socialsharing/-/cordova-plugin-x-socialsharing-5.4.7.tgz#4ebe23f650b11df3437589093587a5dfeb870ab7"
-  integrity sha512-owN2DN02AHdt6WAzn1E35AxVDrmIo8ebZwtPQjzCvxCelkdiie/FMsgkUUT4Z1fUXunh0Oxovx9ce0w3zRXdlw==
+cordova-plugin-x-socialsharing@^5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-x-socialsharing/-/cordova-plugin-x-socialsharing-5.6.0.tgz#b0ba7a155688b43e15494859ddbeacb8968e0281"
+  integrity sha512-z/8XqFf9tK34gIv3TA+FwNwyLX3Wv5cCi/74/HpfP30dAjwTpFzFXXeoWhpckJwDGTKoP3DnBCZLGKuo4kxBfQ==
 
 cordova-registry-mapper@^1.1.8:
   version "1.1.15"
@@ -2465,17 +2464,6 @@ cordova-serve@2.0.1:
     express "^4.13.3"
     opn "^5.3.0"
     shelljs "^0.5.3"
-
-cordova-sqlite-storage-dependencies@2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/cordova-sqlite-storage-dependencies/-/cordova-sqlite-storage-dependencies-2.0.1.tgz#a7f7b1d7bcbe6ee752816af012238e1bbaa70c11"
-  integrity sha512-PJvFBCw8xRcYm2PxIppk0X0UTxhTc3TO4vizdasQwV/8XnxT2cjNN5bG4QBPoiL1qzpV0pTbdNJ75D0MzY6lXw==
-
-"cordova-sqlite-storage@git+https://github.com/litehelpers/Cordova-sqlite-storage.git":
-  version "3.2.2-dev"
-  resolved "git+https://github.com/litehelpers/Cordova-sqlite-storage.git#5e674ef35811e1018cc2176e72dc234cf6f6ddbd"
-  dependencies:
-    cordova-sqlite-storage-dependencies "2.0.1"
 
 core-js@^2.2.0, core-js@^2.4.0:
   version "2.6.9"
@@ -7183,7 +7171,7 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   dependencies:
     aproba "^1.1.1"
 
-rxjs@^5.4.2, rxjs@^5.5.12, rxjs@^5.5.6:
+rxjs@^5.5.12, rxjs@^5.5.6:
   version "5.5.12"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.12.tgz#6fa61b8a77c3d793dbaf270bee2f43f652d741cc"
   integrity sha512-xx2itnL5sBbqeeiVgNPVuQQ1nC8Jp2WfNJhXWHmElW9YmrpS9UVnNzhP3EH3HFqexO5Tlp8GhYY+WEcqcVMvGw==
