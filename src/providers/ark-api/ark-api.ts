@@ -147,7 +147,7 @@ export class ArkApiProvider {
     this.fetchFees().subscribe();
   }
 
-  private async refreshPeers(): Promise<void> {
+  private async refreshPeers(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const network = this._network;
       const networkLookup = ['mainnet', 'devnet'];

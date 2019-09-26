@@ -23,7 +23,6 @@ export class PeerDiscovery {
     networkOrHost: string;
     defaultPort?: number;
   }): Promise<PeerDiscovery> {
-    debugger;
     if (!networkOrHost || typeof networkOrHost !== 'string') {
       throw new Error('No network or host provided');
     }

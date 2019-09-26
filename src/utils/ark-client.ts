@@ -19,7 +19,7 @@ export interface PeerApiResponse extends Peer {
   latency?: number;
   ports?: {
     [plugin: string]: number;
-  }
+  };
 }
 
 export default class ApiClient {
