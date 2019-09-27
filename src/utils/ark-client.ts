@@ -189,7 +189,6 @@ export default class ApiClient {
           observer.next(response);
           observer.complete();
         }, () => {
-          debugger;
           this.getNodeConfiguration(`${protocol}://${ip}:${port}`).subscribe((response: PeerApiResponse) => {
             const apiPort = lodash.find(response.ports, (_, key) => key.split('/').reverse()[0] === 'core-wallet-api');
             const isApiEnabled = apiPort && Number(apiPort) > 1;
