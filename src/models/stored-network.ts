@@ -1,4 +1,5 @@
 import { Network, Peer } from 'ark-ts';
+import { PeerApiResponse } from '@utils/ark-client';
 
 export interface FeeStatistic {
   type: number;
@@ -16,7 +17,7 @@ export interface BlocksEpochResponse {
 
 export class StoredNetwork extends Network {
   public marketTickerName: string;
-  public peerList: Peer[];
+  public peerList: PeerApiResponse[];
   public feeStatistics: FeeStatistic[];
   public epoch: Date;
   public activeDelegates: number;

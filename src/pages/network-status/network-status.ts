@@ -50,24 +50,11 @@ export class NetworkStatusPage implements OnDestroy {
         duration: 10000
       });
 
-      this.arkApiProvider.findGoodPeer();
-      this.loader.present();
-    });
-  }
-
-  resetToSeed() {
-    this.translateService.get('NETWORKS_PAGE.LOOKING_GOOD_PEER').debounceTime(500).subscribe((translation) => {
-      this.loader = this.loadingCtrl.create({
-        content: translation,
-        duration: 10000
+      this.arkApiProvider.connectToRandomPeer().catch(() => {
+        this.loader.dismiss();
+        this.toastProvider.error('NETWORKS_PAGE.NO_GOOD_PEER');
       });
 
-      this.arkApiProvider.findGoodSeedPeer().then(success => {
-        if (!success) {
-          this.loader.dismiss();
-          this.toastProvider.error('NETWORKS_PAGE.NO_GOOD_PEER');
-        }
-      });
       this.loader.present();
     });
   }
