@@ -155,7 +155,7 @@ export class ArkApiProvider {
       let peerDiscovery = null;
 
       try {
-        if (networkLookup.includes(network.name)) {
+        if (lodash.includes(networkLookup, network.name)) {
           peerDiscovery = await this._peerDiscovery.find({
             networkOrHost: network.name
           });
