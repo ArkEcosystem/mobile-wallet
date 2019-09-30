@@ -24,6 +24,13 @@ export interface PeerApiResponse extends Peer {
   };
 }
 
+export interface PeerApiResponse extends Peer {
+  latency?: number;
+  ports?: {
+    [plugin: string]: number;
+  };
+}
+
 export default class ApiClient {
   private host: string;
   private httpClient: HttpClient;
@@ -37,12 +44,12 @@ export default class ApiClient {
     return { 'API-Version': '2' };
   }
 
-  private get(path: string, options: any = {}, host: string = this.host) {
+  private get(path: string, options: any = {}, host: string = this.host, timeout: number = 5000) {
     return this.httpClient.request(
       'GET',
       `${host}/api/${path}`,
       { ...options, headers: this.defaultHeaders }
-    ).timeout(5000);
+    ).timeout(timeout);
   }
 
   private post(path: string, body: any | null, options: any = {}, host: string = this.host) {
@@ -143,9 +150,9 @@ export default class ApiClient {
     });
   }
 
-  getPeerSyncing(host: string): Observable<LoaderStatusSync> {
+  getPeerSyncing(host: string, timeout?: number): Observable<LoaderStatusSync> {
     return Observable.create(observer => {
-      this.get(`node/syncing`, {}, host).subscribe((response: any) => {
+      this.get(`node/syncing`, {}, host, timeout).subscribe((response: any) => {
         observer.next({
           success: true,
           ...response.data
@@ -167,13 +174,10 @@ export default class ApiClient {
     });
   }
 
-  getPeer(ip: string): Observable<PeerResponse> {
+  getPeer(ip: string, host?: string, timeout?: number): Observable<PeerApiResponse> {
     return Observable.create(observer => {
-      this.get(`peers/${ip}`).subscribe((response: any) => {
-        observer.next({
-          success: true,
-          peer: response.data
-        });
+      this.get(`peers/${ip}`, null, host, timeout).subscribe((response: any) => {
+        observer.next(response.data);
         observer.complete();
       }, (error) => observer.error(error));
     });
