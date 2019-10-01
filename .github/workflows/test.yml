@@ -1,53 +1,44 @@
 name: Test
 
 on:
-    push:
-        branches:
-            - '**'
-    pull_request:
-        types: [ready_for_review, synchronize, opened]
+  push:
+  pull_request:
+    types: [ready_for_review, synchronize, opened]
 
 jobs:
-  unit:
+  build-android:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [10.x]
 
     steps:
       - uses: actions/checkout@v1
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+
       - name: Install pre dependencies
-        run: yarn global add ionic@4.x cordova@8.x
+        run: yarn global add ionic@4.x cordova@7.x
+
       - name: Install
-        run: npm rebuild node-sass && yarn install --frozen-lockfile
-      - name: Test
-        run: npm run test:coverage
-      - name: Build
-        run: npm run build -- --prod
+        run: |
+          export PATH="$(yarn global bin):$PATH"
+          npm install && npm rebuild node-sass
+          ionic config set -g telemetry false
 
-  e2e:
-    runs-on: ubuntu-latest
+      - name: Build APK
+        run: |
+          export PATH="$(yarn global bin):$PATH"
+          sudo mkdir -p $ANDROID_HOME/ndk-bundle/toolchains/mips64el-linux-android/prebuilt/linux-x86_64
+          export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=https://services.gradle.org/distributions/gradle-4.4-all.zip
+          ionic cordova build android --minifycss --optimizejs --aot
 
-    strategy:
-      matrix:
-        node-version: [10.x, 11.x, 12.x]
-
-    steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+      - name: Upload .apk
+        uses: actions/upload-artifact@master
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install pre dependencies
-        run: yarn global add ionic@4.x cordova@8.x
-      - name: Install
-        run: npm rebuild node-sass && yarn install --frozen-lockfile
-      - name: Test
-        run: npm run test:e2e
-      - name: Build
-        run: npm run build -- --prod
+          name: app-release-unsigned.apk
+          path: platforms/android/app/build/outputs/apk/release/app-release-unsigned.apk
