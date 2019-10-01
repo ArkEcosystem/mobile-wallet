@@ -29,6 +29,7 @@ jobs:
           export PATH="$(yarn global bin):$PATH"
           npm install && npm rebuild node-sass
           ionic config set -g telemetry false
+          ionic cordova platform add android --verbose
 
       - name: Build APK
         run: |
