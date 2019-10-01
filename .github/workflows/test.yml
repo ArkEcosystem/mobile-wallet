@@ -38,7 +38,7 @@ jobs:
           export PATH="$(yarn global bin):$PATH"
           sudo mkdir -p $ANDROID_HOME/ndk-bundle/toolchains/mips64el-linux-android/prebuilt/linux-x86_64
           export CORDOVA_ANDROID_GRADLE_DISTRIBUTION_URL=https://services.gradle.org/distributions/gradle-4.4-all.zip
-          ionic cordova build android --minifycss --optimizejs --aot
+          ionic cordova build android
 
       - name: Upload .apk
         uses: actions/upload-artifact@master
