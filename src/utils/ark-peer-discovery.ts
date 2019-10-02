@@ -89,7 +89,7 @@ export class PeerDiscovery {
           observer.next(seeds);
           observer.complete();
         }, (e) => observer.error(e));
-    })
+    });
   }
 
   public getSeeds(): PeerApiResponse[] {
