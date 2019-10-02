@@ -70,14 +70,12 @@
     "bip39": "^2.5.0",
     "chart.js": "^2.8.0",
     "cordova-allow-background-audio": "^1.0.2",
-    "cordova-android": "7.1.2",
-    "cordova-browser": "^5.0.4",
+    "cordova-android": "^8.1.0",
     "cordova-clipboard": "^1.3.0",
     "cordova-custom-config": "^5.1.0",
     "cordova-ios": "5.0.1",
     "cordova-plugin-add-swift-support": "^1.7.2",
     "cordova-plugin-compat": "^1.2.0",
-    "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-inappbrowser": "^3.1.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
@@ -154,7 +152,6 @@
       "cordova-plugin-whitelist": {},
       "cordova-plugin-qrscanner": {},
       "cordova-custom-config": {},
-      "cordova-plugin-console": {},
       "cordova-plugin-network-information": {},
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-screen-orientation": {},
@@ -174,7 +171,6 @@
     },
     "platforms": [
       "ios",
-      "browser",
       "android"
     ]
   }
