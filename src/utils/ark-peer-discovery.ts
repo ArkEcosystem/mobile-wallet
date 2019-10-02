@@ -131,7 +131,7 @@ export class PeerDiscovery {
       this.httpClient
         .request(
           'GET',
-          `http://178.32.65.137:4003/api/peers`,
+          `http://${seed.ip}:${seed.port}/api/peers`,
           {
             headers: {
               'API-Version': '2'
