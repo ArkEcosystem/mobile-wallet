@@ -50,10 +50,13 @@ export class NetworkStatusPage implements OnDestroy {
         duration: 10000
       });
 
-      this.arkApiProvider.connectToRandomPeer().catch(() => {
-        this.loader.dismiss();
-        this.toastProvider.error('NETWORKS_PAGE.NO_GOOD_PEER');
-      });
+      this.arkApiProvider
+        .connectToRandomPeer()
+        .takeUntil(this.unsubscriber$)
+        .subscribe(null, (e) => {
+          this.loader.dismiss();
+          this.toastProvider.error(e || 'NETWORKS_PAGE.NO_GOOD_PEER');
+        });
 
       this.loader.present();
     });

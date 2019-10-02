@@ -4,6 +4,8 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/expand';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/of';
 
 import { UserDataProvider } from '@providers/user-data/user-data';
 import { StorageProvider } from '@providers/storage/storage';
@@ -136,7 +138,7 @@ export class ArkApiProvider {
     this._api = new arkts.Client(this._network);
     this._client = new ArkClient(this.network.getPeerAPIUrl(), this.httpClient);
     this._peerDiscovery = new PeerDiscovery(this.httpClient);
-    this.connectToRandomPeer();
+    this.connectToRandomPeer().subscribe();
 
     // Fallback if the fetchEpoch fail
     this._network.epoch = arktsConfig.blockchain.date;
@@ -147,63 +149,61 @@ export class ArkApiProvider {
     this.fetchFees().subscribe();
   }
 
-  private async refreshPeers(): Promise<any> {
-    return new Promise(async (resolve, reject) => {
+  private refreshPeers(): Observable<void> {
+    return new Observable(observer => {
       const network = this._network;
       const networkLookup = ['mainnet', 'devnet'];
+      const isKnowNetwork = lodash.includes(networkLookup, network.name);
+      const peerUrl = network.getPeerAPIUrl();
 
-      let peerDiscovery = null;
+      const networkOrHost = isKnowNetwork ? network.name : `${peerUrl}/api/peers`;
 
-      try {
-        if (lodash.includes(networkLookup, network.name)) {
-          peerDiscovery = await this._peerDiscovery.find({
-            networkOrHost: network.name
-          });
-        } else {
-          const peerUrl = network.getPeerAPIUrl();
-          peerDiscovery = await this._peerDiscovery.find({
-            networkOrHost: `${peerUrl}/api/peers`
-          });
-        }
-
-        peerDiscovery
+      this._peerDiscovery.find({ networkOrHost }).subscribe(discovery => {
+        discovery
           .withLatency(300)
           .sortBy('latency', 'asc');
 
-        let peers = await peerDiscovery.findPeersWithPlugin('core-api', {
-          additional: [
-            'height',
-            'latency',
-            'version'
-          ]
-        });
+        discovery
+          .findPeersWithPlugin('core-api', {
+            additional: [
+              'height',
+              'latency',
+              'version'
+            ]
+          })
+          .switchMap(peers => {
+            if (!peers.length) {
+              return discovery.findPeersWithPlugin('core-wallet-api', {
+                additional: [
+                  'height',
+                  'latency',
+                  'version'
+                ]
+              });
+            }
 
-        if (!peers.length) {
-          peers = await peerDiscovery
-            .findPeersWithPlugin('core-wallet-api', {
-              additional: [
-                'height',
-                'latency',
-                'version'
-              ]
-            });
-        }
-
-        if (peers.length) {
-          this._network.peerList = peers;
-          resolve();
-        } else {
-          reject();
-        }
-      } catch (e) {
-        reject();
-      }
+            return Observable.of(peers);
+          })
+          .subscribe(peers => {
+            if (peers.length) {
+              this._network.peerList = peers;
+              observer.next();
+            } else {
+              observer.error('No good peer could be found!');
+            }
+          }, (e) => observer.error(e));
+      }, (e) => observer.error(e));
     });
   }
 
-  public async connectToRandomPeer() {
-    await this.refreshPeers();
-    this.updateNetwork(this._network.peerList[lodash.random(this._network.peerList.length - 1)]);
+  public connectToRandomPeer(): Observable<void> {
+    return Observable.create(observer => {
+      this.refreshPeers().subscribe(() => {
+        this.updateNetwork(this._network.peerList[lodash.random(this._network.peerList.length - 1)]);
+        observer.next();
+        observer.complete();
+      }, (e) => observer.error(e));
+    });
   }
 
   public fetchDelegates(numberDelegatesToGet: number, getAllDelegates = false): Observable<arkts.Delegate[]> {

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ark.wallet.mobile" version="1.5.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ark.wallet.mobile" version="1.5.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Ark Mobile</name>
     <description>ARK</description>
     <author email="lucio@ark.io" href="http://ark.io/">Ark Ecosystem</author>
@@ -15,7 +15,7 @@
     <preference name="fullscreen" value="false" />
     <preference name="UseSwiftLanguageVersion" value="5" />
     <preference name="android-minSdkVersion" value="19" />
-    <preference name="android-targetSdkVersion" value="26" />
+    <preference name="android-targetSdkVersion" value="28" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="BackgroundColor" value="0xffedf2f5" />
@@ -28,6 +28,9 @@
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <preference name="KeyboardResizeMode" value="native" />
     <platform name="android">
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
+            <application android:usesCleartextTraffic="true" />
+        </edit-config>
         <preference name="android-manifest/application/activity/@android:windowSoftInputMode" value="adjustPan" />
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -84,6 +87,19 @@
         <splash height="480" src="resources/ios/splash/Default~iphone.png" width="320" />
         <icon height="1024" src="resources/ios/icon/icon-1024.png" width="1024" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
+        <icon height="20" src="resources/ios/icon/icon-20.png" width="20" />
+        <icon height="40" src="resources/ios/icon/icon-20@2x.png" width="40" />
+        <icon height="60" src="resources/ios/icon/icon-20@3x.png" width="60" />
+        <icon height="29" src="resources/ios/icon/icon-29.png" width="29" />
+        <icon height="58" src="resources/ios/icon/icon-29@2x.png" width="58" />
+        <icon height="87" src="resources/ios/icon/icon-29@3x.png" width="87" />
+        <icon height="48" src="resources/ios/icon/icon-24@2x.png" width="48" />
+        <icon height="55" src="resources/ios/icon/icon-27.5@2x.png" width="55" />
+        <icon height="88" src="resources/ios/icon/icon-44@2x.png" width="88" />
+        <icon height="172" src="resources/ios/icon/icon-86@2x.png" width="172" />
+        <icon height="196" src="resources/ios/icon/icon-98@2x.png" width="196" />
+        <splash height="2436" src="resources/ios/splash/Default-2436h.png" width="1125" />
+        <splash height="1125" src="resources/ios/splash/Default-Landscape-2436h.png" width="2436" />
     </platform>
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
@@ -92,23 +108,25 @@
         <param name="ios-package" value="CDVWKWebViewEngine" />
     </feature>
     <allow-navigation href="http://localhost:8080/*" />
-    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
-    <plugin name="cordova-plugin-qrscanner" spec="^2.6.0" />
-    <plugin name="cordova-custom-config" spec="^5.0.2" />
-    <plugin name="cordova-plugin-console" spec="^1.1.0" />
-    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
-    <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
-    <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.4" />
+    <plugin name="cordova-plugin-qrscanner" spec="^3.0.1" />
+    <plugin name="cordova-custom-config" spec="^5.1.0" />
+    <plugin name="cordova-plugin-network-information" spec="^2.0.2" />
+    <plugin name="cordova-plugin-splashscreen" spec="^5.0.3" />
+    <plugin name="cordova-plugin-screen-orientation" spec="^3.0.2" />
     <plugin name="cordova-plugin-add-swift-support" spec="^1.7.2" />
-    <plugin name="cordova-plugin-device" spec="^2.0.2" />
-    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
-    <plugin name="cordova-plugin-vibration" spec="^3.1.0" />
-    <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
-    <plugin name="cordova-clipboard" spec="^1.2.1" />
-    <plugin name="cordova-plugin-x-socialsharing" spec="^5.4.3" />
-    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.1.3" />
+    <plugin name="cordova-plugin-device" spec="^2.0.3" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.4.3" />
+    <plugin name="cordova-plugin-vibration" spec="^3.1.1" />
+    <plugin name="cordova-plugin-inappbrowser" spec="^3.1.0" />
+    <plugin name="cordova-clipboard" spec="^1.3.0" />
+    <plugin name="cordova-plugin-x-socialsharing" spec="^5.6.0">
+        <variable name="PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION" value="This app requires photo library access to function properly." />
+        <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="This app requires photo library access to function properly." />
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="24.1.1+" />
+    </plugin>
+    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.2.0" />
     <plugin name="cordova-sqlite-storage" spec="git+https://github.com/litehelpers/Cordova-sqlite-storage.git" />
     <engine name="ios" spec="5.0.1" />
-    <engine name="browser" spec="^5.0.4" />
-    <engine name="android" spec="7.1.2" />
+    <engine name="android" spec="8.1.0" />
 </widget>
