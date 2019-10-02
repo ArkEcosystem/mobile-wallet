@@ -3,6 +3,7 @@ import orderBy from 'lodash/orderBy';
 import { HttpClient } from '@angular/common/http';
 import isUrl from 'is-url';
 import semver from 'semver';
+import { Observable } from 'rxjs/Observable';
 
 export class PeerDiscovery {
   private version: string | undefined;
@@ -16,22 +17,42 @@ export class PeerDiscovery {
     this.httpClient = httpClient;
   }
 
-  public async find({
+  public find({
     networkOrHost,
     defaultPort = 4003
   }: {
     networkOrHost: string;
     defaultPort?: number;
-  }): Promise<PeerDiscovery> {
-    if (!networkOrHost || typeof networkOrHost !== 'string') {
-      throw new Error('No network or host provided');
-    }
+  }): Observable<PeerDiscovery> {
+    return Observable.create(observer => {
+      if (!networkOrHost || typeof networkOrHost !== 'string') {
+        observer.error('No network or host provided');
+      }
 
-    const seeds: PeerApiResponse[] = [];
+      try {
+        if (isUrl(networkOrHost)) {
+          this.getSeedsFromHost(networkOrHost, defaultPort)
+            .subscribe(response => {
+              observer.next(new PeerDiscovery(this.httpClient, response));
+              observer.complete();
+            }, (e) => observer.error(e));
+        } else {
+          this.getSeedsFromRepository(networkOrHost, defaultPort)
+            .subscribe(response => {
+              observer.next(new PeerDiscovery(this.httpClient, response));
+              observer.complete();
+            }, (e) => observer.error(e));
+        }
+      } catch (error) {
+        observer.error('Failed to discovery any peers.');
+      }
+    });
+  }
 
-    try {
-      if (isUrl(networkOrHost)) {
-        const body = await this.httpClient.get(networkOrHost).toPromise();
+  private getSeedsFromHost (host: string, defaultPort: number): Observable<PeerApiResponse[]> {
+    return Observable.create(observer => {
+      this.httpClient.get(host).subscribe((body: any) => {
+        const seeds: PeerApiResponse[] = [];
 
         for (const seed of body['data']) {
           let port = defaultPort;
@@ -47,26 +68,28 @@ export class PeerDiscovery {
 
           seeds.push({ ip: seed.ip, port });
         }
-      } else {
-        const body: any = await this.httpClient
-          .get(
-            `https://raw.githubusercontent.com/ArkEcosystem/peers/master/${networkOrHost}.json`
-          )
-          .toPromise();
 
-        for (const seed of body) {
-          seeds.push({ ip: seed.ip, port: defaultPort });
-        }
-      }
-    } catch (error) {
-      throw new Error('Failed to discovery any peers.');
-    }
+        observer.next(seeds);
+        observer.complete();
+      }, (e) => observer.error(e));
+    });
+  }
 
-    if (!seeds.length) {
-      throw new Error('No seeds found');
-    }
-
-    return new PeerDiscovery(this.httpClient, seeds);
+  private getSeedsFromRepository (network: string, defaultPort: number): Observable<PeerApiResponse[]> {
+    return Observable.create(observer => {
+      this.httpClient
+        .get(
+          `https://raw.githubusercontent.com/ArkEcosystem/peers/master/${network}.json`
+        )
+        .subscribe((body: any) => {
+          const seeds: PeerApiResponse[] = [];
+          for (const seed of body) {
+            seeds.push({ ip: seed.ip, port: defaultPort });
+          }
+          observer.next(seeds);
+          observer.complete();
+        }, (e) => observer.error(e));
+    });
   }
 
   public getSeeds(): PeerApiResponse[] {
@@ -91,81 +114,97 @@ export class PeerDiscovery {
     return this;
   }
 
-  public async findPeers(opts: any = {}): Promise<PeerApiResponse[]> {
-    if (!opts.retry) {
-      opts.retry = { retries: 0 };
-    }
+  public findPeers(opts: any = {}): Observable<PeerApiResponse[]> {
+    return Observable.create(observer => {
+      if (!opts.retry) {
+        opts.retry = { retries: 0 };
+      }
 
-    if (!opts.timeout) {
-      opts.timeout = 3000;
-    }
+      if (!opts.timeout) {
+        opts.timeout = 3000;
+      }
 
-    const seed: PeerApiResponse = this.seeds[
-      Math.floor(Math.random() * this.seeds.length)
-    ];
+      const seed: PeerApiResponse = this.seeds[
+        Math.floor(Math.random() * this.seeds.length)
+      ];
 
-    const body: any = await this.httpClient
-      .request('get', `http://${seed.ip}:${seed.port}/api/v2/peers`, {
-        body: opts
-      })
-      .toPromise();
-
-    let peers = body.data;
-
-    if (this.version) {
-      peers = peers.filter((peer: PeerApiResponse) =>
-        semver.satisfies(peer.version, this.version)
-      );
-    }
-
-    if (this.latency) {
-      peers = peers.filter(
-        (peer: PeerApiResponse) => peer.latency <= this.latency
-      );
-    }
-
-    return orderBy<PeerApiResponse>(
-      peers,
-      [this.orderBy[0]],
-      [this.orderBy[1] as any]
-    );
-  }
-
-  public async findPeersWithPlugin(
-    name: string,
-    opts: { additional?: string[] } = {}
-  ): Promise<PeerApiResponse[]> {
-    const peers: PeerApiResponse[] = [];
-
-    for (const peer of await this.findPeers(opts)) {
-      const pluginName: string | undefined = Object.keys(peer.ports).find(
-        (key: string) => key.split('/')[1] === name
-      );
-
-      if (pluginName) {
-        const port: number = peer.ports[pluginName];
-
-        if (port >= 1 && port <= 65535) {
-          const peerData: PeerApiResponse = {
-            ip: peer.ip,
-            port
-          };
-
-          if (opts.additional && Array.isArray(opts.additional)) {
-            for (const additional of opts.additional) {
-              if (typeof peer[additional] === 'undefined') {
-                continue;
-              }
-
-              peerData[additional] = peer[additional];
+      this.httpClient
+        .request(
+          'GET',
+          `http://${seed.ip}:${seed.port}/api/peers`,
+          {
+            headers: {
+              'API-Version': '2'
             }
           }
+        )
+        .subscribe((body: any) => {
+          let peers = body.data;
 
-          peers.push(peerData);
+          if (this.version) {
+            peers = peers.filter((peer: PeerApiResponse) =>
+              semver.satisfies(peer.version, this.version)
+            );
+          }
+
+          if (this.latency) {
+            peers = peers.filter(
+              (peer: PeerApiResponse) => peer.latency <= this.latency
+            );
+          }
+
+          observer.next(orderBy<PeerApiResponse>(
+            peers,
+            [this.orderBy[0]],
+            [this.orderBy[1] as any]
+          ));
+          observer.complete();
+        }, (e) => {
+          observer.error(e);
+        });
+    });
+  }
+
+  public findPeersWithPlugin(
+    name: string,
+    opts: { additional?: string[] } = {}
+  ): Observable<PeerApiResponse[]> {
+    return Observable.create(observer => {
+      this.findPeers(opts).subscribe((response) => {
+        const peers: PeerApiResponse[] = [];
+
+        for (const peer of response) {
+          const pluginName: string | undefined = Object.keys(peer.ports).find(
+            (key: string) => key.split('/')[1] === name
+          );
+
+          if (pluginName) {
+            const port: number = peer.ports[pluginName];
+
+            if (port >= 1 && port <= 65535) {
+              const peerData: PeerApiResponse = {
+                ip: peer.ip,
+                port
+              };
+
+              if (opts.additional && Array.isArray(opts.additional)) {
+                for (const additional of opts.additional) {
+                  if (typeof peer[additional] === 'undefined') {
+                    continue;
+                  }
+
+                  peerData[additional] = peer[additional];
+                }
+              }
+
+              peers.push(peerData);
+            }
+          }
         }
-      }
-    }
 
-    return peers;
+        observer.next(peers);
+        observer.complete();
+      }, (e) => observer.error(e));
+    });
   }
 }
