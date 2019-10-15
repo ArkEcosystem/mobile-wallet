@@ -1,0 +1,27 @@
+page-register-second-passphrase {
+  ion-header {
+    background: color($colors, primary-background, base)!important;
+  }
+
+  ion-content {
+    background: color($colors, secondary-background, base)!important;
+  }
+
+  ion-footer {
+    &.note-toolbar {
+      color: white;
+      background: #b72626;
+      font-weight: bold;
+      padding: 1em 2em;
+    }
+  }
+
+  .item {
+    padding-left: 0;
+    background: none;
+  }
+
+  .controls-container {
+    flex: 1;
+  }
+}

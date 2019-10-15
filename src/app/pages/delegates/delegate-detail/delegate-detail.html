@@ -1,0 +1,57 @@
+<ion-content no-bounce tappable>
+  <ion-grid class="no-padding">
+    <ion-row>
+      <ion-col class="no-padding">
+        <ion-toolbar class="info-toolbar">
+          <close-popup color="light" large="true" (onClose)="dismiss()"></close-popup>
+          <h3 class="username">{{ delegate?.username }}</h3>
+          <ark-qr-code [address]="delegate?.address" size="100"></ark-qr-code>
+          <h5 class="address" (click)="copyAddress()">{{ delegate?.address | truncateMiddle: 20 }}</h5>
+          <ion-row class="details" align-items-center>
+            <ion-col>
+              <ion-label stacked>
+                <p>{{ 'DELEGATES_PAGE.RANK' | translate }} / {{ 'STATUS' | translate }}</p>
+                <h5>
+                  {{ delegate?.rate }} / {{ (delegate?.rate <= 51 ? 'DELEGATES_PAGE.ACTIVE' : 'DELEGATES_PAGE.STANDBY' ) | translate }}
+                </h5>
+              </ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-label stacked>
+                <p>{{ 'DELEGATES_PAGE.APPROVAL' | translate }}</p>
+                <h5>
+                  {{ (delegate?.approval).toFixed(2) }}%
+                </h5>
+              </ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-toolbar>
+      </ion-col>
+    </ion-row>
+    
+    <form #voteForm="ngForm">
+    <ion-row *ngIf="isWalletSelected()" class="vote-wrapper" padding>
+      <ion-row class="vote-wrapper__slider">
+        <input-fee [transactionType]="transactionType" (onChange)="onInputFee($event)"></input-fee>
+      </ion-row>
+      <ion-row>
+        <ion-col text-center padding>
+          <button ion-button (click)="submit()" color="primary" class="button-continue">
+            {{ (isSameDelegate() ? 'DELEGATES_PAGE.UNVOTE' : 'DELEGATES_PAGE.VOTE') | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-row>
+  </form>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="no-padding" no-shadow no-border>
+  <ion-grid class="no-padding">
+    <ion-row *ngIf="!isWalletSelected()" class="note-toolbar">
+      <ion-col text-center>
+        {{ 'DELEGATES_PAGE.WARNING_SELECT_WALLET_FIRST' | translate }}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

@@ -1,5 +1,5 @@
 {
-  "name": "mobo-wallet",
+  "name": "mobile-wallet",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -20,13 +20,29 @@
     "@angular/platform-browser": "~8.1.2",
     "@angular/platform-browser-dynamic": "~8.1.2",
     "@angular/router": "~8.1.2",
+    "@arkecosystem/crypto": "^2.5.26",
     "@ionic-native/core": "^5.0.0",
+    "@ionic-native/keyboard": "^5.15.0",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
     "@ionic/angular": "^4.7.1",
+    "@ngx-translate/core": "^11.0.1",
+    "@ngx-translate/http-loader": "^4.0.0",
+    "ark-ts": "^0.4.1",
+    "bcryptjs": "^2.4.3",
+    "bignumber.js": "^9.0.0",
+    "bip39": "^3.0.2",
+    "cordova-plugin-ionic-keyboard": "^2.2.0",
     "core-js": "^2.5.4",
-    "rxjs": "~6.5.1",
+    "is-url": "^1.2.4",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "node-forge": "^0.9.1",
+    "rxjs": "^6.5.3",
+    "rxjs-compat": "^6.5.3",
+    "semver": "^6.3.0",
     "tslib": "^1.9.0",
+    "uuid": "^3.3.3",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
@@ -34,14 +50,19 @@
     "@angular-devkit/build-angular": "~0.801.2",
     "@angular-devkit/core": "~8.1.2",
     "@angular-devkit/schematics": "~8.1.2",
-    "@angular/cli": "~8.1.2",
+    "@angular/cli": "^8.3.9",
     "@angular/compiler": "~8.1.2",
     "@angular/compiler-cli": "~8.1.2",
     "@angular/language-service": "~8.1.2",
     "@ionic/angular-toolkit": "~2.0.0",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/is-url": "^1.2.28",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/lodash": "^4.14.144",
     "@types/node": "~8.9.4",
+    "@types/node-forge": "^0.8.6",
+    "@types/semver": "^6.0.2",
     "codelyzer": "^5.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
@@ -55,5 +76,10 @@
     "tslint": "~5.15.0",
     "typescript": "~3.4.3"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-ionic-keyboard": {}
+    }
+  }
 }

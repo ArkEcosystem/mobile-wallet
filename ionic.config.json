@@ -1,5 +1,6 @@
 {
-  "name": "mobo-wallet",
-  "integrations": {},
-  "type": "angular"
+  "name": "ark-ionic",
+  "integrations": {
+    "cordova": {}
+  }
 }

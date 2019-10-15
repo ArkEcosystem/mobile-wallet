@@ -1,0 +1,23 @@
+<ion-header no-shadow no-border>
+
+  <ion-navbar>
+    <ion-title>{{ 'CONTACTS_PAGE.CONTACTS' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="column-mode">
+  <ion-fab bottom right class="pull-footer">
+    <button ion-fab color="primary" (click)="openCreatePage()"><ion-icon name="md-add"></ion-icon></button>
+  </ion-fab>
+
+  <ion-grid *ngIf="profile" no-padding>
+    <empty-list message="CONTACTS_PAGE.ADD_CONTACT_TEXT" (onClickButton)="openCreatePage()" *ngIf="isEmpty()"></empty-list>
+
+    <ion-row *ngIf="!isEmpty()">
+      <ion-col>
+        <address-list [map]="addresses" [icon]="platform.is('ios') ? 'ios-more' : 'md-more'" (onTap)="presentContactActionSheet($event)" (onPress)="presentContactActionSheet($event)" (onMore)="presentContactActionSheet($event)"></address-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

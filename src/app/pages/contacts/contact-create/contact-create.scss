@@ -1,0 +1,25 @@
+page-contact-create {
+  ion-item.item-address {
+    .input-cover {
+      display: none;
+    }
+
+    .qr-container {
+      height: 100%;
+      padding-top: 20px;
+
+      .image {
+        width: 30px;
+        content: url('../assets/img/light/wallet/qr-code-button.png');
+      }
+    }
+  }
+}
+
+.dark-theme {
+  page-contact-create {
+    ion-item.item-address .qr-container .image {
+        content: url('../assets/img/dark/wallet/qr-code-button.png');
+    }
+  }
+}

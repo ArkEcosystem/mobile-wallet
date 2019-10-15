@@ -1,0 +1,29 @@
+empty-list {
+  .grid {
+    padding: 5em 2em 2em 2em!important;
+  }
+
+  ion-row {
+    flex: 1!important;
+  }
+
+  .image {
+    max-height: 100%;
+    max-width: 90%;
+    margin: 2em auto;
+    content: url('../assets/img/light/wallet/hand-add-button.png');
+  }
+
+  p {
+    font-size: 13pt;
+    padding: 1em 1em;
+  }
+}
+
+.dark-theme {
+  empty-list {
+    .image {
+      content: url('../assets/img/dark/wallet/hand-add-button.png');
+    }
+  }
+}

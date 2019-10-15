@@ -1,0 +1,31 @@
+page-transaction-receive {
+  h6 {
+    padding: 1em;
+  }
+
+  .bar-button-md {
+    font-size: 1.3rem;
+  }
+
+  .sole-message {
+    font-size: 11pt;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .qrcode-container {
+    display: inline-block;
+    background: white;
+    padding: 1em;
+  }
+
+  .button-address {
+    padding: 2em 1em;
+    text-transform: none;
+    letter-spacing: .5px;
+    font-size: 11pt;
+    font-weight: 400!important;
+  }
+}

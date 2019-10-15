@@ -1,0 +1,75 @@
+<ion-header no-shadow no-border [ngClass]="{'delegate-wallet': wallet?.isDelegate, 'default-wallet': wallet ? !wallet.isDelegate : false}">
+
+  <ion-navbar no-border-bottom no-shadow hideBackButton="true" color="primary" class="transparent-navbar">
+    <button ion-button icon-only menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{ wallet?.username || wallet?.label || ('WALLETS_PAGE.MY_WALLET' | translate) }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="presentWalletActionSheet()">
+        <ion-icon [name]="platform.is('ios') ? 'ios-more' : 'md-more'"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-grid>
+      <ion-row class="account-balance">
+        <ion-col text-center>
+          <h1>{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-8' }}</h1>
+          <h4 appMarketNetOnly>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | marketNumber }}</h4>
+          <p (click)="copyAddress()" tappable class="toolbar-address">
+            <ion-icon [name]="platform.is('ios') ? 'ios-copy-outline' : 'md-copy'" item-start></ion-icon>
+            {{ wallet?.address }}
+          </p>
+          <ion-badge class="watch-only-badge" [color]="wallet?.isDelegate ? 'primary' : 'danger-alternative'" *ngIf="wallet?.isWatchOnly">
+            {{ 'WATCH_ONLY' | translate }}
+          </ion-badge>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content header-scroller>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="{{ 'PULL_REFRESH' | translate }}"
+      refreshingSpinner="circles"
+      refreshingText="{{ 'REFRESHING' | translate }}">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-fab bottom right edge>
+    <button ion-fab color="primary" (click)="presentAddActionSheet()"><ion-icon  [name]="platform.is('ios') ? 'ios-add' : 'md-add'"></ion-icon></button>
+  </ion-fab>
+
+  <ion-grid class="main-grid full-height">
+    <ion-row justify-content-center align-items-center class="full-height" *ngIf="emptyTransactions">
+      <ion-col text-center>
+        <h5>{{ 'WALLETS_PAGE.NO_TRANSACTIONS' | translate }}</h5>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="!emptyTransactions">
+      <ion-col>
+        <ion-card *ngFor="let tx of wallet?.transactions" class="tx" (click)="openTransactionShow(tx)">
+          <ion-item>
+            <h3 *ngIf="tx.isTransfer()" class="type">{{ tx?.getActivityLabel() | translate }}</h3>
+            <h3 class="address">{{ (tx?.isTransfer()) && (tx?.getAppropriateAddress() | accountLabel | truncateMiddle: 12 : tx?.getAppropriateAddress()) || (tx?.getTypeLabel() | translate) }}</h3>
+
+            <div text-right item-end>
+              <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi }} {{ network?.token | uppercase }}</h3>
+              <p class="timestamp">{{ tx?.date | timezone | timestampHuman }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
+            </div>
+            <ion-icon *ngIf="tx?.isSender()" item-end name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
+            <ion-icon *ngIf="!tx?.isSender()" item-end name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>
+          </ion-item>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<pin-code [wallet]="wallet" (onSuccess)="onEnterPinCode($event)" #pinCode></pin-code>
+<confirm-transaction [wallet]="wallet" #confirmTransaction></confirm-transaction>

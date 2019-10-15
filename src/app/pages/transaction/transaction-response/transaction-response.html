@@ -1,0 +1,61 @@
+<ion-header no-shadow no-border>
+
+  <ion-navbar>
+    <ion-title *ngIf="response?.status">{{ transaction?.getTypeLabel() | translate }}</ion-title>
+    <h6 text-center class="no-padding no-margin" *ngIf="!response?.status">{{ 'FAILED' | translate }}</h6>
+
+    <ion-buttons *ngIf="!response?.status" end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content no-bounce padding class="column-mode">
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center class="full-height" *ngIf="response?.status">
+        <ion-grid class="success-container">
+          <ion-row>
+            <ion-col text-center align-self-center>
+              <img class="image tx-success">
+              <h6>{{ 'TRANSACTIONS_PAGE.SENT_SUCCESS' | translate }}</h6>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col text-center align-self-center>
+              <button ion-button
+                      outline
+                      color="primary"
+                      *ngIf="currentNetwork?.explorer"
+                      (click)="openInExplorer()"
+                      class="open-explorer-btn">
+                {{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate }}
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <ion-col align-self-center *ngIf="!response?.status">
+        <img class="image tx-error">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="note-toolbar" padding *ngIf="!response.status">
+  <p>{{ response?.message }}</p>
+</ion-footer>
+
+<ion-footer padding *ngIf="transaction && showKeepSecondPassphrase">
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center>
+        <p class="encrypt-message">{{ 'TRANSACTIONS_PAGE.ENCRYPT_SAVE_SECOND_PASSPHRASE' | translate }}</p>
+        <button ion-button color="primary" (click)="saveSecondPassphrase()">{{ 'SAVE' | translate }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

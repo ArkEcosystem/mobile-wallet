@@ -1,0 +1,19 @@
+page-profile-signin {
+  ion-list {
+    ion-item.addressitem {
+      p {
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+.dark-theme {
+  page-profile-signin {
+    button.more {
+      .icon {
+        color: lighten(color($darkColors, primary-background, base), 50%);
+      }
+    }
+  }
+}

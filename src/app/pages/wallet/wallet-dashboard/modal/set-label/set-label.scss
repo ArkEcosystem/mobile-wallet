@@ -1,0 +1,27 @@
+page-set-label {
+  ion-header {
+    background-color: color($colors, primary-background, base) !important;
+  }
+
+  ion-content {
+    background-color: color($colors, secondary-background, base) !important;
+  }
+}
+
+.dark-theme {
+  page-set-label {
+    color: #fff;
+
+    ion-header {
+      background-color: color($darkColors, secondary-background, base) !important;
+    }
+
+    ion-content {
+      background-color: color($darkColors, primary-background, base) !important;
+    }
+
+    form .item-block .item-inner {
+      border-bottom: 1px solid color($darkColors, secondary-background, base);
+    }
+  }
+}

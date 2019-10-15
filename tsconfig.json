@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -17,7 +18,17 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@/components/*": ["./src/app/components/*"],
+      "@/services/*": ["./src/app/services/*"],
+      "@/models/*": ["./src/app/models/*"],
+      "@/directives/*": ["./src/app/directives/*"],
+      "@/utils/*": ["./src/app/utils/*"],
+      "@/pipes/*": ["./src/app/pipes/*"],
+      "@/app/*": ["./src/app/*"],
+      "*": ["./types/*"]
+    },
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

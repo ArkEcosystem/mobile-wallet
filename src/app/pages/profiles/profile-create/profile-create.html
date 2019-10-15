@@ -1,0 +1,67 @@
+<ion-header no-shadow no-border>
+
+  <ion-navbar>
+    <ion-title>{{ 'PROFILES_PAGE.CREATE_PROFILE' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding class="full-height" #content>
+  <form #createProfileForm="ngForm" class="full-height">
+    <ion-grid class="full-height">
+      <ion-row class="create-field">
+        <ion-col>
+          <ion-item>
+            <ion-label floating>{{ 'NAME' | translate }}</ion-label>
+            <ion-input type="text" name="name" [(ngModel)]="newProfile.name" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="no-padding">
+          <ion-toolbar (click)="toggleAdvanced()" class="advanced-toolbar">
+            {{ 'SHOW_ADVANCED' | translate }}
+            <ion-buttons end>
+              <button ion-button clear>
+                <ion-icon [name]="showAdvancedOptions ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
+              </button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-col>
+      </ion-row>
+      <ion-row class="create-field" *ngIf="showAdvancedOptions">
+        <ion-row>
+          <ion-item class="network-types" no-lines>
+            <span>{{ 'NETWORKS_PAGE.NETWORK_TYPE' | translate }}</span>
+            <p>{{ 'NETWORKS_PAGE.CHOOSE_ONE' | translate }}.</p>
+          </ion-item>
+          <ion-grid fixed class="button-group">
+            <ion-row nowrap>
+              <ion-col *ngFor="let networkChoice of networkChoices">
+                <button ion-button block
+                        [outline]="networkChoice !== activeNetworkChoice"
+                        (click)="onSelectNetwork(networkChoice)"
+                        color="primary">
+                  {{ networkChoice.name }}
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-row>
+        <ion-row *ngIf="activeNetworkChoice && !activeNetworkChoice.id">
+            <ion-item no-lines>
+              <customNetwork (onNetworkChange)="onCustomNetworkChange($event)"></customNetwork>
+            </ion-item>
+        </ion-row>
+      </ion-row>
+      <ion-row class="layout-flex">
+        <ion-col align-self-end>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+
+<ion-footer padding no-shadow no-border>
+  <button ion-button class="button-continue" [disabled]="!createProfileForm.form.valid || !newProfile.networkId" (click)="submitForm()">{{ 'NEXT' | translate }}</button>
+</ion-footer>

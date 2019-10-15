@@ -1,0 +1,35 @@
+page-register-delegate {
+  ion-header {
+    background: color($colors, primary-background, base)!important;
+  }
+
+  ion-content {
+    background: color($colors, secondary-background, base)!important;
+  }
+
+  ion-input {
+    text-transform: lowercase;
+  }
+}
+
+.dark-theme {
+  page-register-delegate {
+    color: #fff;
+
+    ion-header {
+      background-color: color($darkColors, secondary-background, base) !important;
+    }
+
+    ion-content {
+      background-color: color($darkColors, primary-background, base) !important;
+    }
+
+    form .item-block .item-inner {
+      border-bottom: 1px solid color($darkColors, secondary-background, base);
+    }
+
+    ion-footer {
+      color: #000;
+    }
+  }
+}

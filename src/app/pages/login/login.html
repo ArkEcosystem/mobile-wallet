@@ -1,0 +1,23 @@
+<ion-content class="column-mode" no-bounce padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col text-center class="image-container">
+        <img src="./assets/img/light/login/logo.png" class="image-logo">
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center class="slogan-container">
+        <h1 class="app-name">{{ 'SIGN_IN_PAGE.ARK_WALLET' | translate | uppercase }}</h1>
+        <p class="app-description">{{ 'SIGN_IN_PAGE.SLOGAN' | translate }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col text-center align-self-end *ngIf="isReady">
+        <button class="button-continue" (click)="openProfileSignin()" ion-button [hidden]="!hasProfiles">{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</button>
+        <button class="button-continue create-profile-btn" (click)="openProfileCreate()" ion-button [clear]="hasProfiles">{{ 'SIGN_IN_PAGE.CREATE_PROFILE' | translate }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<pin-code #pinCode></pin-code>

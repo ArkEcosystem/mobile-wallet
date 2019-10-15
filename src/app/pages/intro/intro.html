@@ -1,0 +1,42 @@
+<ion-content class="column-mode" no-bounce>
+  <ion-slides #slider (ionSlideDidChange)="slideChanged()">
+    <ion-slide *ngFor="let slide of slides">
+      <ion-grid>
+        <ion-row hideWhen="landscape">
+          <ion-col align-self-end>
+            <img [class]="'slide-image ' + slide.image">
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col align-self-center>
+            <h3 class="slide-title">{{ slide.title }}</h3>
+            <p>{{ slide.description }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+
+<ion-footer no-shadow no-border>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-3>
+        <button ion-button clear (click)="startApp()" [disabled]="!showSkip">{{ 'SKIP' | translate | uppercase }}</button>
+      </ion-col>
+      <ion-col col-6>
+        <ion-grid fixed class="slide-pagination full-height" text-center>
+          <ion-row class="full-height" nowrap align-items-center justify-content-center>
+            <ion-col *ngFor="let page of slides; let i = index" [class.active]="activeIndex == i">
+              <span></span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button clear (click)="goNext()" *ngIf="showSkip">{{ 'NEXT' | translate | uppercase }}</button>
+        <button ion-button clear (click)="startApp()" *ngIf="!showSkip">{{ 'DONE' | translate | uppercase }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

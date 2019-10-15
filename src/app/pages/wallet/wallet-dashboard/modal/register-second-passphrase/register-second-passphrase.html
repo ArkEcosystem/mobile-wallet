@@ -1,0 +1,61 @@
+<ion-header no-shadow no-border>
+
+  <ion-navbar>
+    <h6 text-center class="no-padding no-margin">{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</h6>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding #content>
+  <ion-grid class="full-height" *ngIf="step == 1">
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>{{ 'WALLETS_PAGE.PASSPHRASE' | translate }}</ion-label>
+          <ion-textarea name="passphrase" [(ngModel)]="passphrase" rows="4"></ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row class="controls-container">
+      <ion-col align-self-end text-center>
+        <button ion-button (click)="next()" class="button-continue">{{ 'NEXT' | translate }}</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="full-height" *ngIf="step == 2">
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-label stacked>{{ 'WALLETS_PAGE.RE_ENTER_PASSPHRASE' | translate }}</ion-label>
+          <ion-textarea name="repassphrase" [(ngModel)]="repassphrase" rows="4"></ion-textarea>
+        </ion-item>
+        <p class="error" *ngIf="isWrong" ion-text color="danger">{{ 'WALLETS_PAGE.PASSPHRASE_NOT_MATCH' | translate }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="controls-container">
+      <ion-col align-self-end text-center>
+        <ion-grid>
+          <ion-row>
+            <ion-col text-right>
+              <button ion-button clear (click)="prev()">{{ 'BACK_BUTTON_TEXT' | translate }}</button>
+            </ion-col>
+            <ion-col>
+              <button ion-button (click)="create()">{{ 'CREATE' | translate }} ({{ currentNetwork?.symbol }}{{ fees?.secondsignature | unitsSatoshi }})</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer class="note-toolbar" hide-on-keyboard-open no-shadow no-border [keyboard-attach]="content">
+  <p *ngIf="step == 1">{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT' | translate }}</p>
+  <p *ngIf="step == 2">{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE' | translate }}</p>
+</ion-footer>

@@ -1,0 +1,32 @@
+progress-bar {
+  .progress-outer {
+    width: 96%;
+    margin: 10px 2%;
+    padding: 3px;
+    text-align: center;
+    background-color: rgb(224, 229, 232);
+    color: #fff;
+    border-radius: 20px;
+  }
+
+  .progress-inner {
+    min-width: 5%;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 10px;
+    border-radius: 20px;
+    background-color: map-get($colors, danger);
+  }
+}
+
+.dark-theme {
+  progress-bar {
+    .progress-outer {
+      background-color: #131d3b;
+    }
+
+    .progress-inner {
+      background-color: #0d67fc;
+    }
+  }
+}

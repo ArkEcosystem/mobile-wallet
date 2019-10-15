@@ -1,0 +1,66 @@
+page-top-wallet-details {
+
+  .content {
+    background-color: #ffffff;
+  }
+
+  .info-toolbar {
+    padding: 1em 2em;
+  }
+
+  .info-toolbar {
+    .toolbar-content {
+      color: white;
+    }
+
+    .toolbar-background {
+      background: #23074d; /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #1a1637, #2f2832);  /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #1a1637, #2f2832); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+  }
+
+  .username {
+    font-weight: 700;
+    margin-bottom: 1em;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+  }
+
+  .qrcode-container {
+    display: inline-block;
+    padding: 1em;
+    background: white;
+    border-radius: 5px;
+  }
+
+  .timestamp,
+  .type {
+    margin-top: .4em;
+    font-size: 1.2rem;
+  }
+
+  .amount {
+    .type {
+      font-weight: 500;
+    }
+  }
+  .tx {
+    width: 100%;
+    margin: .7em auto;
+    box-shadow: none;
+    border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
+  }
+
+  ion-icon {
+    padding-left: .2em;
+  }
+}
+
+.dark-theme {
+  page-wallet-dashboard {
+    .tx {
+      border-bottom: 1px solid color($darkColors, secondary-background, base);
+    }
+  }
+}

@@ -1,0 +1,31 @@
+modal-generate-entropy {
+  ion-content {
+    ion-grid {
+      &,
+      * {
+        touch-action: none !important;
+      }
+
+      .image {
+        pointer-events: none;
+        display: block;
+        margin: 3em auto;
+        max-height: 100%;
+        max-width: 85%;
+        content: url('../assets/img/light/wallet/hand-swipe.png');
+      }
+
+      .sole-message {
+        margin: 2em auto;
+      }
+    }
+  }
+}
+
+.dark-theme {
+  modal-generate-entropy {
+    .image {
+      content: url('../assets/img/dark/wallet/hand-swipe.png');
+    }
+  }
+}

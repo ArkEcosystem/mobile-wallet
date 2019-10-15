@@ -1,0 +1,24 @@
+<ion-header no-shadow no-border>
+
+  <ion-navbar>
+    <h6 text-center class="no-padding no-margin">{{ 'WALLETS_PAGE.GENERATE_ENTROPY' | translate }}</h6>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding no-bounce class="column-mode">
+  <ion-grid padding (pan)="panEvent($event)">
+    <ion-row>
+      <ion-col padding text-center>
+        <img class="image">
+        <p class="sole-message">{{ 'WALLETS_PAGE.ENTROPY_RANDOM_BYTES' | translate }}</p>
+        <progress-bar [progress]="progress"></progress-bar>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

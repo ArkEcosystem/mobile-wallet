@@ -1,0 +1,85 @@
+<ion-content no-bounce padding>
+  <ion-grid class="full-height">
+    <close-popup (onClose)="dismiss(false)"></close-popup>
+
+    <ion-row nowrap>
+      <ion-col text-center align-self-center>
+        <p class="pin-code-header">{{ message || 'PIN_CODE.DEFAULT_MESSAGE' | translate }}</p>
+        <p *ngIf="unlockDiff > 0">{{ 'PIN_CODE.WAIT_TO_TRY' | translate: { time: unlockDiff | secondsToTime | date: 'mm:ss' } }}</p>
+        <ion-grid fixed class="grid-password" [class.miss]="isWrong">
+          <ion-row nowrap>
+            <ion-col class="password-char" [class.active]="password.length>0">
+              <span></span>
+            </ion-col>
+            <ion-col class="password-char" [class.active]="password.length>1">
+              <span></span>
+            </ion-col>
+            <ion-col class="password-char" [class.active]="password.length>2">
+              <span></span>
+            </ion-col>
+            <ion-col class="password-char" [class.active]="password.length>3">
+              <span></span>
+            </ion-col>
+            <ion-col class="password-char" [class.active]="password.length>4">
+              <span></span>
+            </ion-col>
+            <ion-col class="password-char" [class.active]="password.length>5">
+              <span></span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+
+    <ion-row nowrap class="full-height">
+      <ion-col text-center align-self-center>
+        <ion-grid class="grid-keyboard" [class.locked]="unlockDiff > 0">
+          <ion-row>
+            <ion-col col-4>
+              <button ion-button round outline (click)="add(1)" [disabled]="unlockDiff > 0">1</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button round outline (click)="add(2)" [disabled]="unlockDiff > 0">2</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button round outline (click)="add(3)" [disabled]="unlockDiff > 0">3</button>
+            </ion-col>
+          </ion-row>
+          <ion-row nowrap>
+            <ion-col col-4>
+              <button ion-button round outline (click)="add(4)" [disabled]="unlockDiff > 0">4</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button round outline (click)="add(5)" [disabled]="unlockDiff > 0">5</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button round outline (click)="add(6)" [disabled]="unlockDiff > 0">6</button>
+            </ion-col>
+          </ion-row>
+          <ion-row nowrap>
+            <ion-col col-4>
+              <button ion-button round outline (click)="add(7)" [disabled]="unlockDiff > 0">7</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button round outline (click)="add(8)" [disabled]="unlockDiff > 0">8</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button round outline (click)="add(9)" [disabled]="unlockDiff > 0">9</button>
+            </ion-col>
+          </ion-row>
+          <ion-row nowrap>
+            <ion-col col-4 class="help-item"></ion-col>
+            <ion-col col-4>
+              <button ion-button round outline (click)="add(0)" [disabled]="unlockDiff > 0">0</button>
+            </ion-col>
+            <ion-col col-4>
+              <button ion-button round clear (click)="delete()" class="help-item" [disabled]="unlockDiff > 0">
+                <ion-icon [name]="platform.is('ios') ? 'ios-backspace' : 'md-backspace'"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

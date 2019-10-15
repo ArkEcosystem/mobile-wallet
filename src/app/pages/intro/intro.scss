@@ -1,0 +1,90 @@
+page-intro {
+  .content {
+    background: color($colors, primary-background, base);
+  }
+
+  ion-row {
+    flex: auto 1!important;
+  }
+
+  .footer {
+    .button {
+      font-weight: 500
+    }
+  }
+
+  .slide-pagination {
+    max-width: 100px;
+
+    span {
+      height: 10px;
+      width: 10px;
+      border: 1px solid #979b9f;
+      background-color: transparent;
+      border-radius: 100%;
+      position: relative;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .col.active span {
+      border-color: color($colors, primary, base);
+      background-color: color($colors, primary, base);
+    }
+  }
+
+  .slide-zoom {
+    height: 100%;
+  }
+
+  .slide-image {
+    max-height: 80%;
+    max-width: 60%;
+    margin: 2em 0;
+
+    &.anytime {
+      content: url('../assets/img/light/intro/anytime.png');
+    }
+
+    &.pincode {
+      content: url('../assets/img/light/intro/pincode.png');
+    }
+
+    &.fast-easy {
+      content: url('../assets/img/light/intro/fast-easy.png');
+    }
+  }
+
+  p {
+    padding: 0 40px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #60646B;
+  }
+}
+
+.dark-theme {
+  page-intro {
+    p { 
+      color: color($darkColors, secondary, base);
+    }
+
+    .slide-image {
+      max-height: 80%;
+      max-width: 60%;
+      margin: 2em 0;
+
+      &.anytime {
+        content: url('../assets/img/dark/intro/anytime.png');
+      }
+
+      &.pincode {
+        content: url('../assets/img/dark/intro/pincode.png');
+      }
+
+      &.fast-easy {
+        content: url('../assets/img/dark/intro/fast-easy.png');
+      }
+    }
+  }
+}
