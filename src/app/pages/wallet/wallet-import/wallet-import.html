@@ -1,0 +1,46 @@
+<ion-header no-shadow no-border>
+
+  <ion-navbar>
+    <ion-title>{{ 'WALLETS_PAGE.IMPORT_WALLET' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-grid padding class="full-height">
+    <ion-row>
+      <ion-col text-center>
+        <img class="image">
+        <p class="sole-message">{{ 'WALLETS_PAGE.SCAN_QRCODE_TEXT' | translate }}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row class="layout-flex">
+      <ion-col text-center align-self-end>
+        <ion-grid no-padding>
+          <ion-row>
+            <ion-col>
+              <button ion-button color="primary" (click)="scanQRCode()" text-center class="button-continue">{{ 'WALLETS_PAGE.SCAN_QRCODE' | translate }}</button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <p>
+                {{ 'WALLETS_PAGE.TYPE_PASSPHRASE_OR_ADDRESS' | translate | translateCut:0 }}
+                <a (click)="openManualImportPage('passphrase')" tappable>
+                  {{ 'WALLETS_PAGE.TYPE_PASSPHRASE_OR_ADDRESS' | translate | translateCut:1 }}
+                </a>
+                {{ 'WALLETS_PAGE.TYPE_PASSPHRASE_OR_ADDRESS' | translate | translateCut:2 }}
+                <a (click)="openManualImportPage('address')" tappable>
+                  {{ 'WALLETS_PAGE.TYPE_PASSPHRASE_OR_ADDRESS' | translate | translateCut:3 }}
+                </a>
+                {{ 'WALLETS_PAGE.TYPE_PASSPHRASE_OR_ADDRESS' | translate | translateCut:4 }}
+              </p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+
+<qr-scanner (onSuccess)="onScanQRCode($event)" #qrScanner></qr-scanner>

@@ -1,0 +1,66 @@
+address-list {
+  .address-item {
+    padding-right: 16px;
+
+    .label {
+      margin: 8px 8px 8px 0;
+    }
+
+    .address-value {
+      font-size: 1.5rem;
+      margin-top: 0.3em;
+    }
+
+    .address-key {
+      font-size: 1.7rem;
+      font-weight: 400;
+    }
+
+    .item {
+      padding-left: 8px;
+
+      .item-inner {
+        border-bottom: none !important;
+      }
+    }
+
+    .circle-letter {
+      display: inline-block;
+      border-radius: 50%;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: center;
+      color: white;
+      background: darken(color($colors, primary-background, base), 15%);
+      height: 45px;
+      width: 45px;
+      line-height: 45px;
+      font-size: 1.9rem;
+      margin-right: 15px;
+      &.highlight {
+        background: color($colors, danger, base);
+      }
+    }
+
+    button.more {
+      background: transparent;
+      box-shadow: none;
+      padding: 10px !important;
+
+      .icon {
+        color: color($colors, dark, base);
+        -webkit-text-stroke: transparent;
+      }
+    }
+  }
+}
+
+.dark-theme {
+  address-list {
+    .address-item {
+      button.more .icon {
+        color: lighten(color($darkColors, primary-background, base), 50%);
+      }
+    }
+  }
+}

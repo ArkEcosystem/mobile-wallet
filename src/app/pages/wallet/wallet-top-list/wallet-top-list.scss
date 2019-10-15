@@ -1,0 +1,28 @@
+page-wallet-top-list {
+  .searchbar-clear-icon {
+    display: none!important;
+  }
+
+  .top-wallet-list {
+    .list {
+      margin: 0 16px;
+
+      .top-wallet-item {
+        border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
+        padding: 0;
+
+        .input-wrapper > .label {
+          margin: 10px 8px 10px 0;
+        }
+        .username {
+          white-space: normal;
+          font-size: 11pt;
+        }
+        .balance {
+          font-size: 10pt;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}

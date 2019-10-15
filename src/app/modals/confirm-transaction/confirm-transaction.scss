@@ -1,0 +1,90 @@
+modal-confirm-transaction {
+  ion-content {
+    background: color($colors, secondary-background, base)!important;
+  }
+
+  .header-row {
+    background: color($colors, primary-background, base)!important;
+  }
+
+  .header-toolbar {
+
+    &:after {
+      background-image: url('../assets/img/light/transaction/send-confirm.png');
+      background-size: contain;
+      background-repeat:no-repeat;
+      background-position: center center;
+      opacity: .1;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      content: "";
+    }
+
+    .amount {
+      margin-top: 1rem!important;
+    }
+  }
+
+  h6.account {
+    .account-label {
+      font-weight: 500;
+      display: block;
+    }
+    span:not(.account-label) {
+      font-size: .9em;
+    }
+  }
+
+  .address-checker {
+    display: flex;
+    align-items: center;
+    font-style: italic;
+    padding-top: 5px;
+
+    ion-icon {
+      display: block;
+      vertical-align: middle;
+      font-size: 20px;
+    }
+
+    > span {
+      display: block;
+      padding-left: 7px;
+    }
+  }
+}
+
+.dark-theme {
+  modal-confirm-transaction {
+    color: #fff;
+
+    .header-row {
+      background-color: color($darkColors, secondary-background, base) !important;
+    }
+
+    .header-toolbar:after {
+      background-image: url('../assets/img/dark/transaction/send-confirm.png');
+    }
+
+    ion-header {
+      background-color: color($darkColors, secondary-background, base) !important;
+    }
+
+    ion-content {
+      background-color: color($darkColors, primary-background, base) !important;
+
+      .scroll-content {
+        .button-clear .icon {
+          color: lighten(color($darkColors, primary-background, base), 50%);
+        }
+      }
+    }
+
+    form .item-block .item-inner {
+      border-bottom: 1px solid color($darkColors, secondary-background, base);
+    }
+  }
+}

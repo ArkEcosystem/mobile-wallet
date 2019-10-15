@@ -1,0 +1,52 @@
+page-settings {
+  .list {
+    margin-top: 0;
+
+    ion-item-group {
+      border-top: 1px solid #dedede;
+      border-bottom: 1px solid #dedede;
+    }
+
+    .item:not(.item-divider) {
+      background: color($colors, secondary-background, base) !important;
+
+      .input-wrapper > .label {
+        color: inherit;
+      }
+    }
+  }
+
+  .content .scroll-content {
+    overflow-y: auto;
+  }
+  
+  .content-ios .scroll-content {
+    overflow-y: scroll;
+  }
+}
+
+.dark-theme {
+  page-settings {
+    ion-item-group {
+      border-color: color($darkColors, primary-background, base);
+    }
+
+    .list {
+      .item-block {
+        &.item:not(.item-divider) {
+          background-color: color($darkColors, primary-background, base) !important;
+        }
+
+        .item-inner {
+          border-bottom-color: transparent;
+        }
+      }
+    }
+
+    .list .select-text,
+    .list .select-icon-inner,
+    .list p {
+      color: lighten(color($darkColors, primary-background, base), 50%);
+    }
+  }
+}

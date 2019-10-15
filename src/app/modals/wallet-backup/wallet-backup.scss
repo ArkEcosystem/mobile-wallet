@@ -1,0 +1,98 @@
+modal-wallet-backup {
+
+  .col:not(.no-padding) {
+    padding: 1.5em 2em!important;
+  }
+
+  .list {
+    .item-block {
+      padding-left: 0;
+    }
+
+    margin: .5em 0 0 0;
+
+    .item-value {
+      line-height: 1.5;
+      margin-top: .3em;
+    }
+  }
+
+  .advanced-toolbar {
+    padding-left: 0;
+    padding-right: 2em;
+    color: color($colors, dark, base);
+
+    .toolbar-background {
+      background: darken(color($colors, primary-background, base), 5%);
+    }
+
+    .toolbar-content {
+      padding-left: 2em;
+    }
+  }
+
+  .advanced-container {
+    .note-message {
+      color: white;
+      background: #b72626;
+      font-weight: bold;
+    }
+
+    .advanced-list {
+      .item-inner {
+        padding-right: 0;
+
+        .label {
+          margin-right: 0;
+        }
+      }
+
+      .item-caption {
+        color: rgb(99, 99, 99);
+      }
+    }
+
+    .show-advanced {
+      margin-bottom: 1em;
+    }
+  }
+
+  .account-container {
+    background: url('../assets/img/light/wallet/dark-wallet-balance.png') #080e20 repeat;
+    background-size: cover;
+
+    .qrcode-container {
+      margin-top: .5em;
+      display: inline-block;
+      padding: .3em;
+      background: white;
+      border-radius: 5px;
+    }
+
+    .account-list {
+
+      .item-caption {
+        color: rgb(203, 203, 203);
+      }
+
+      .item-value {
+        color: white;
+      }
+    }
+  }
+}
+
+.dark-theme {
+  modal-wallet-backup {
+    .advanced-toolbar {
+      .toolbar-background {
+        background-color: darken(color($darkColors, primary-background, base), 5%);
+      }
+    }
+
+    .advanced-container .advanced-list .item-caption,
+    .account-container .account-list .item-caption {
+      color: color($darkColors, secondary, base);
+    }
+  }
+}

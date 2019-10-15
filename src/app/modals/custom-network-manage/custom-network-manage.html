@@ -1,0 +1,20 @@
+<ion-header no-shadow no-border>
+  <ion-navbar>
+    <h6 text-center class="no-padding no-margin">{{ 'CUSTOM_NETWORK.MANAGE_NETWORKS' | translate }}</h6>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <form #pseudoFormForStylingOnly="ngForm">
+    <ion-item no-lines>
+      <customNetwork [openManageDialogOnSelect]="true" [showSuccessMessages]="true"></customNetwork>
+    </ion-item>
+  </form>
+</ion-content>
+
+<ion-footer padding text-center no-shadow no-border></ion-footer>

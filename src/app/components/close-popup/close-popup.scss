@@ -1,0 +1,18 @@
+close-popup {
+  .button {
+    display: block;
+    z-index: 1001;
+    position: absolute;
+    top: .5em;
+    right: .2em;
+    opacity: .60;
+  }
+
+  .icon {
+    font-size: 2.5rem;
+
+    &.large {
+      font-size: 3rem !important;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+page-transaction-show {
+  ion-content {
+    scroll-content {
+      display: flex;
+      flex-direction: column;
+    }
+    ion-grid {
+      padding: 0;
+      height: 100%;
+    }
+    .grid {
+      padding: 1em;
+    }
+    ion-row {
+      padding: 1em 0;
+    }
+    h4 {
+      span.account-label {
+        display: block;
+        font-weight: 500;
+      }
+    }
+  }
+}

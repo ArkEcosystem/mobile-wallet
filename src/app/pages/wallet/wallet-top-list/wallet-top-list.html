@@ -1,0 +1,50 @@
+<ion-header no-shadow no-border>
+
+  <ion-navbar>
+    <ion-title *ngIf="!isSearch"> {{ 'WALLETS_PAGE.TOP_WALLETS' | translate }}</ion-title>
+
+    <ion-searchbar #searchbar *ngIf="isSearch" [(ngModel)]="searchQuery" spellcheck="false" animated="true" showCancelButton="false" placeholder="{{ 'SEARCH' | translate }}"></ion-searchbar>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="toggleSearchBar()">
+        <ion-icon name="search" *ngIf="!isSearch"></ion-icon>
+        <ion-icon name="close" *ngIf="isSearch"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content tappable overflow-scroll="false" class="top-wallet-list">
+    <ion-list>
+      <ng-template ngFor let-topWallet [ngForOf]="topWallets" let-i="index">
+        <ion-item no-lines detail-push (click)="openDetailModal(topWallet)" *ngIf="topWallet.username?.toLowerCase().includes(searchQuery.toLowerCase()) || topWallet.address?.toLowerCase().includes(searchQuery.toLowerCase())" tappable nowrap text-left class="top-wallet-item custom-arrow">
+          <ion-grid>
+            <ion-row align-items-center>
+              <ion-col col-2 text-center><span>{{ i + 1}}</span></ion-col>
+              <ion-col col-10>
+                <ion-row>
+                  <ion-col>
+                    <span class="username">{{ topWallet?.username ? topWallet?.username: topWallet?.address}}</span>
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col>
+                    <span class="balance">{{ network?.symbol }} {{ getBalance(topWallet?.balance) | number: '1.0-8' }} </span>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ng-template>
+    </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="fetchWallets($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Fetching wallets...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

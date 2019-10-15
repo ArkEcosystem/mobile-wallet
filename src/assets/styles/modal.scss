@@ -1,0 +1,31 @@
+ion-modal[class^="inset-modal"] {
+  background-color: rgba(0, 0, 0, .5) !important;
+  transition: opacity .25s ease-in-out;
+
+  .modal-wrapper,
+  .show-page {
+    overflow: hidden;
+    border-radius: 10px;
+  }
+
+}
+
+ion-modal.inset-modal-tiny {
+  padding: 27vh 15vw;
+}
+
+ion-modal.inset-modal-small {
+  padding: 25vh 15vw;
+}
+
+ion-modal.inset-modal {
+  padding: 20vh 10vw;
+}
+
+ion-modal.inset-modal-send {
+  padding: 15vh 10vw;
+}
+
+ion-modal.inset-modal-large {
+  padding: 12vh 5vw;
+}

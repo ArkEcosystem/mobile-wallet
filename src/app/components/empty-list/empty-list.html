@@ -1,0 +1,16 @@
+<ion-fab bottom right class="pull-footer">
+  <button ion-fab color="primary" (click)="submit()"><ion-icon name="md-add"></ion-icon></button>
+</ion-fab>
+
+<ion-grid class="full-height">
+  <ion-row>
+    <ion-col text-center align-self-end>
+      <img class="image">
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col text-center align-self-start>
+      <p class="sole-message">{{ message | translate }}</p>
+    </ion-col>
+  </ion-row>
+</ion-grid>

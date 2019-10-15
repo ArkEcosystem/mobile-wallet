@@ -1,0 +1,25 @@
+<ion-header no-shadow no-border>
+
+  <ion-navbar>
+    <ion-title>{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="column-mode">
+  <ion-fab bottom right class="pull-footer" *ngIf="!isEmpty()">
+    <button ion-fab color="primary" (click)="openProfileCreate()"><ion-icon name="md-add"></ion-icon></button>
+  </ion-fab>
+  <ion-grid no-padding>
+    <empty-list message="PROFILES_PAGE.ADD_PROFILE_TEXT" (onClickButton)="openProfileCreate()" *ngIf="isEmpty()"></empty-list>
+
+    <ion-row *ngIf="!isEmpty()">
+      <ion-col>
+        <address-list [map]="addresses" [icon]="platform.is('ios') ? 'ios-more' : 'md-more'" circleProperty="value" (onTap)="verify($event)" (onPress)="presentProfileActionSheet($event)" (onMore)="presentProfileActionSheet($event)"></address-list>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>
+
+<pin-code #pinCode (onSuccess)="signin()" (onWrong)="error()"></pin-code>

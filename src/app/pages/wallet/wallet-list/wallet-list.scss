@@ -1,0 +1,155 @@
+page-wallet-list {
+  .content {
+    &.normal {
+      background: linear-gradient(0deg, rgba(0,0,0,0) 0%, transparentize(color($colors, wallet-normal-gradient, base), 0.80) 70%, color($colors, wallet-normal-gradient, base) 100%);
+    }
+
+    &.delegate {
+      background: linear-gradient(0deg, rgba(0,0,0,0) 0%, transparentize(color($colors, wallet-delegate-gradient, base), 0.80) 70%, color($colors, wallet-delegate-gradient, base) 100%);
+    }
+  }
+
+  .total-balance-container {
+    padding: 0 25px;
+
+    p {
+      color: lighten(color($colors, dark, base), 35%);
+      margin-bottom: 0;
+    }
+
+    .amount {
+      margin-top: 0.3em;
+      font-size: 2.5rem;
+      font-weight: 600;
+
+      .fiat {
+        font-size: 1.5rem;
+        margin-left: 1em;
+        color: lighten(color($colors, dark, base), 35%);
+      }
+    }
+  }
+
+  .wallets-container {
+    .scroll-x {
+      margin-top: 0;
+    }
+
+    .slides {
+      margin-left: 25px;
+
+      .wallet {
+        padding-left: 0;
+        background-color: transparent;
+
+        .item-inner {
+          border-bottom: none;
+        }
+
+        .label {
+          position: relative;
+          max-width: 75%;
+          background: white url('../assets/img/light/wallet/normal-block.png') no-repeat center center / cover;
+          padding: 2em 1.5em;
+          border-radius: 5px!important;
+
+          &.delegate {
+            background-image: url('../assets/img/light/wallet/delegate-block.png');
+          }
+
+          .address,
+          .amount {
+            color: white;
+          }
+
+          .amount {
+            font-size: 1.7rem;
+            font-weight: 500;
+          }
+
+          .address {
+            float: left;
+            width: 70%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: .5em;
+            opacity: 0.9;
+          }
+
+          .watch-only-badge {
+            margin-top: .3em;
+            vertical-align: middle;
+            display: inline-block;
+            position: absolute;
+            right: 12px;
+            opacity: 0.7;
+          }
+        }
+      }
+    }
+  }
+
+  .marketcap-container {
+    padding: 0 25px !important;
+
+    hr {
+      margin: 1em 0;
+    }
+
+    .price-container .col:first-child {
+      padding-left: 0;
+    }
+
+    .market-cap-title {
+      font-weight: 700;
+
+      .icon {
+        vertical-align: top;
+        margin-right: 0.1em;
+      }
+    }
+  }
+
+  .fiat-bullet,
+  .btc-bullet {
+    border-radius: 100%;
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin-left: 4px;
+    margin-bottom: 2px;
+  }
+
+  .fiat-bullet {
+    background: #394cf8
+  }
+
+  .btc-bullet {
+    background: #f3a447
+  }
+
+  .rowChart {
+    flex: 1;
+    margin-bottom: .5em;
+  }
+}
+
+.dark-theme {
+  page-wallet-list {
+    .toolbar-title,
+    .bar-button-default {
+      color: #fff !important;
+    }
+
+    .content {
+      &.normal {
+        background: linear-gradient(0deg, color($darkColors, primary-background, base) 0%, color($darkColors, primary-background, base) 70%, color($darkColors, wallet-normal-gradient, base) 100%);
+      }
+
+      &.delegate {
+        background: linear-gradient(0deg, color($darkColors, primary-background, base) 0%, color($darkColors, primary-background, base) 70%, color($darkColors, wallet-delegate-gradient, base) 100%);
+      }
+    }
+  }
+}

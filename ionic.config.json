@@ -1,0 +1,6 @@
+{
+  "name": "ark-ionic",
+  "integrations": {
+    "cordova": {}
+  }
+}
