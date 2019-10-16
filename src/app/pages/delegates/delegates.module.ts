@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
 import { DelegatesPage } from './delegates';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -14,7 +16,9 @@ import { ConfirmTransactionComponentModule } from '@/components/confirm-transact
     DelegatesPage,
   ],
   imports: [
-    IonicPageModule.forChild(DelegatesPage),
+    IonicModule,
+    CommonModule,
+    RouterModule.forChild([{ path: '/delegates', component: DelegatesPage }]),
     TranslateModule,
     PipesModule,
     FilterPipeModule,

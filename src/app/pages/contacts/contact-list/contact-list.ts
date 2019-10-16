@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform, NavController, AlertController, ActionSheetController } from '@ionic/angular';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
@@ -16,8 +16,7 @@ import { AddressMap } from '@/models/contact';
   selector: 'page-contact-list',
   templateUrl: 'contact-list.html',
 })
-export class ContactListPage {
-
+export class ContactListPage implements OnInit {
   public profile;
   public network;
   public addresses: AddressMap[];
@@ -34,57 +33,66 @@ export class ContactListPage {
     private actionSheetCtrl: ActionSheetController,
   ) { }
 
-  presentContactActionSheet(address) {
-    this.translateService.get(['EDIT', 'DELETE']).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      const buttons = [
-        {
-          text: translation.EDIT,
-          role: 'label',
-          icon: this.platform.is('ios') ? 'ios-create-outline' : 'md-create',
-          handler: () => {
-            this.openEditPage(address);
-          },
-        }, {
-          text: translation.DELETE,
-          role: 'label',
-          icon: this.platform.is('ios') ? 'ios-trash-outline' : 'md-trash',
-          handler: () => {
-            this.showDeleteConfirm(address);
-          },
-        }
-      ];
+  ngOnInit(): void {
+    this._load();
+  }
 
-      const action = this.actionSheetCtrl.create({buttons});
-      action.present();
-    });
+  presentContactActionSheet(address) {
+    this.translateService
+      .get(['EDIT', 'DELETE'])
+      .takeUntil(this.unsubscriber$)
+      .subscribe(async (translation) => {
+        const buttons = [
+          {
+            text: translation.EDIT,
+            role: 'label',
+            icon: this.platform.is('ios') ? 'ios-create-outline' : 'md-create',
+            handler: () => {
+              this.openEditPage(address);
+            },
+          }, {
+            text: translation.DELETE,
+            role: 'label',
+            icon: this.platform.is('ios') ? 'ios-trash-outline' : 'md-trash',
+            handler: () => {
+              this.showDeleteConfirm(address);
+            },
+          }
+        ];
+
+        const action = await this.actionSheetCtrl.create({buttons});
+        action.present();
+      });
   }
 
   showDeleteConfirm(address) {
     const contactName = this.contactsProvider.getContactByAddress(address).name;
-    this.translateService.get([
-      'CANCEL',
-      'CONFIRM',
-      'ARE_YOU_SURE',
-      'CONTACTS_PAGE.DELETE_CONTACT'
-    ], {name: contactName}).subscribe((translation) => {
-      const alert = this.alertCtrl.create({
-        title: translation.ARE_YOU_SURE,
-        message: translation['CONTACTS_PAGE.DELETE_CONTACT'],
-        buttons: [
-          {
-            text: translation.CANCEL
-          },
-          {
-            text: translation.CONFIRM,
-            handler: () => {
-              this.delete(address);
+    this.translateService
+      .get([
+        'CANCEL',
+        'CONFIRM',
+        'ARE_YOU_SURE',
+        'CONTACTS_PAGE.DELETE_CONTACT'
+      ], {name: contactName})
+      .subscribe(async (translation) => {
+        const alert = await this.alertCtrl.create({
+          header: translation.ARE_YOU_SURE,
+          message: translation['CONTACTS_PAGE.DELETE_CONTACT'],
+          buttons: [
+            {
+              text: translation.CANCEL
+            },
+            {
+              text: translation.CONFIRM,
+              handler: () => {
+                this.delete(address);
+              }
             }
-          }
-        ]
-      });
+          ]
+        });
 
-      alert.present();
-    });
+        alert.present();
+     });
   }
 
   isEmpty() {
@@ -98,11 +106,13 @@ export class ContactListPage {
 
   openEditPage(address) {
     const contact = this.contactsProvider.getContactByAddress(address);
-    return this.navCtrl.push('ContactCreatePage', {contact});
+    return this.navCtrl.navigateForward('/contacts/create', { queryParams: {
+      contact
+    }});
   }
 
   openCreatePage() {
-    return this.navCtrl.push('ContactCreatePage');
+    return this.navCtrl.navigateForward('/contacts/create');
   }
 
   private _load() {
@@ -112,9 +122,5 @@ export class ContactListPage {
     this.addresses = lodash(this.profile.contacts).mapValues('name').transform((result, key, value) => {
       result.push({ index: value, value, key });
     }, []).value().sort((a, b) => a.key.localeCompare(b.key));
-  }
-
-  ionViewDidLoad() {
-    this._load();
   }
 }

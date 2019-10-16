@@ -16,6 +16,7 @@ import lodash from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/timeout';
 
 export interface PeerApiResponse extends Peer {
   latency?: number;

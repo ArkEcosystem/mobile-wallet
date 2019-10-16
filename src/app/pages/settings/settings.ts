@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { IonicPage, Platform, NavController, AlertController, ModalController } from '@ionic/angular';
+import { Platform, NavController, AlertController, ModalController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { Subject } from 'rxjs/Subject';
@@ -11,17 +11,19 @@ import { SettingsDataProvider } from '@/services/settings-data/settings-data';
 import { PinCodeComponent } from '@/components/pin-code/pin-code';
 
 import * as constants from '@/app/app.constants';
+import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
+import { CustomNetworkCreateModal } from '@/app/modals/custom-network-create/custom-network-create';
 
 const packageJson = require('@/root/package.json');
 
-@IonicPage()
 @Component({
   selector: 'page-settings',
   templateUrl: 'settings.html',
+  styleUrls: ['settings.scss'],
   providers: [InAppBrowser],
 })
 export class SettingsPage implements OnInit, OnDestroy {
-  @ViewChild('pinCode') pinCode: PinCodeComponent;
+  @ViewChild('pinCode', { read: PinCodeComponent, static: true }) pinCode: PinCodeComponent;
 
   public objectKeys = Object.keys;
 
@@ -44,23 +46,29 @@ export class SettingsPage implements OnInit, OnDestroy {
     this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
   }
 
-  openChangePinPage() {
-    const modal = this.modalCtrl.create('PinCodeModal', {
-      message: 'PIN_CODE.DEFAULT_MESSAGE',
-      outputPassword: true,
-      validatePassword: true,
+  async openChangePinPage() {
+    const modal = await this.modalCtrl.create({
+      component: PinCodeModal,
+      componentProps: {
+        message: 'PIN_CODE.DEFAULT_MESSAGE',
+        outputPassword: true,
+        validatePassword: true,
+      }
     });
 
-    modal.present();
-    modal.onDidDismiss((password) => {
-      if (password) {
-        this.pinCode.createUpdatePinCode(null, password);
+    await modal.present();
+    modal.onDidDismiss().then(({ data }) => {
+      if (data.password) {
+        this.pinCode.createUpdatePinCode(null, data.password);
       }
     });
   }
 
-  openManageNetworksPage() {
-    const modal = this.modalCtrl.create('CustomNetworkManageModal');
+  async openManageNetworksPage() {
+    const modal = await this.modalCtrl.create({
+      component: CustomNetworkCreateModal
+    });
+
     modal.present();
   }
 
@@ -69,50 +77,51 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   confirmClearData() {
-    this.translateService.get([
-      'CANCEL',
-      'CONFIRM',
-      'ARE_YOU_SURE',
-      'SETTINGS_PAGE.CLEAR_DATA_TEXT',
-    ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      const confirm = this.alertCtrl.create({
-        title: translation.ARE_YOU_SURE,
-        message: translation['SETTINGS_PAGE.CLEAR_DATA_TEXT'],
-        buttons: [
-          {
-            text: translation.CANCEL
-          },
-          {
-            text: translation.CONFIRM,
-            handler: () => {
-              this.onEnterPinCode = this.clearData;
-              this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', false);
+    this.translateService
+      .get([
+        'CANCEL',
+        'CONFIRM',
+        'ARE_YOU_SURE',
+        'SETTINGS_PAGE.CLEAR_DATA_TEXT',
+      ])
+      .takeUntil(this.unsubscriber$)
+      .subscribe(async (translation) => {
+        const confirm = await this.alertCtrl.create({
+          header: translation.ARE_YOU_SURE,
+          message: translation['SETTINGS_PAGE.CLEAR_DATA_TEXT'],
+          buttons: [
+            {
+              text: translation.CANCEL
+            },
+            {
+              text: translation.CONFIRM,
+              handler: () => {
+                this.onEnterPinCode = this.clearData;
+                this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', false);
+              }
             }
-          }
-        ]
-      });
+          ]
+        });
 
-      confirm.present();
-    });
+        confirm.present();
+      });
   }
 
   private clearData() {
     this.settingsDataProvider.clearData();
-    this.navCtrl.setRoot('IntroPage');
+    this.navCtrl.navigateRoot('/intro');
   }
 
   onUpdate() {
     this.settingsDataProvider.save(this.currentSettings);
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     this.settingsDataProvider.settings
       .takeUntil(this.unsubscriber$)
       .do((settings) => this.currentSettings = settings)
       .subscribe();
-  }
 
-  ngOnInit() {
     this.settingsDataProvider.onUpdate$
       .takeUntil(this.unsubscriber$)
       .do((settings) => this.currentSettings = settings)

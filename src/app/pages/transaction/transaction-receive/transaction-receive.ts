@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from '@ionic/angular';
+import { NavController, NavParams } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard';
 
 import { ToastProvider } from '@/services/toast/toast';
 import { SocialSharing } from '@ionic-native/social-sharing';
 
-@IonicPage()
 @Component({
   selector: 'page-transaction-receive',
   templateUrl: 'transaction-receive.html',
+  styleUrls: ['transaction-receive.scss'],
   providers: [Clipboard],
 })
 export class TransactionReceivePage {

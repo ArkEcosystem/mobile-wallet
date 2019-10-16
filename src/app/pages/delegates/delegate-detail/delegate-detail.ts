@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, AlertController } from '@ionic/angular';
+import { NavController, NavParams, ModalController, AlertController } from '@ionic/angular';
 
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import { UserDataProvider } from '@/services/user-data/user-data';
@@ -12,10 +12,10 @@ import { Clipboard } from '@ionic-native/clipboard';
 import lodash from 'lodash';
 import { ToastProvider } from '@/services/toast/toast';
 
-@IonicPage()
 @Component({
   selector: 'page-delegate-detail',
   templateUrl: 'delegate-detail.html',
+  styleUrls: ['delegate-detail.scss'],
   providers: [Clipboard],
 })
 export class DelegateDetailPage {
@@ -32,7 +32,7 @@ export class DelegateDetailPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private arkApiProvider: ArkApiProvider,
-    private viewCtrl: ViewController,
+    private modalCtrl: ModalController,
     private clipboard: Clipboard,
     private userDataProvider: UserDataProvider,
     private alertCtrl: AlertController,
@@ -107,7 +107,7 @@ export class DelegateDetailPage {
   }
 
   dismiss(delegate?: Delegate) {
-    this.viewCtrl.dismiss({ delegateVote: delegate, fee: this.fee });
+    this.modalCtrl.dismiss({ delegateVote: delegate, fee: this.fee });
   }
 
 }

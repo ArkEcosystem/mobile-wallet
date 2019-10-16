@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { TransactionSendPage } from './transaction-send';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,13 +13,19 @@ import { DirectivesModule } from '@/directives/directives.module';
 
 import { AutoCompleteModule } from 'ionic2-auto-complete';
 import { AmountComponentModule } from '@/components/amount/amount.module';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     TransactionSendPage,
   ],
   imports: [
-    IonicPageModule.forChild(TransactionSendPage),
+    IonicModule,
+    CommonModule,
+    FormsModule,
+    RouterModule.forChild([{ path: '/transaction/send', component: TransactionSendPage }]),
     TranslateModule,
     PipesModule,
     PinCodeComponentModule,

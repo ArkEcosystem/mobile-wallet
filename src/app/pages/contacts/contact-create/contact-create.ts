@@ -17,10 +17,11 @@ import { TranslatableObject } from '@/models/translate';
 @Component({
   selector: 'page-contact-create',
   templateUrl: 'contact-create.html',
+  styleUrls: ['contact-create.scss']
 })
 export class ContactCreatePage {
   @ViewChild('createContactForm', { static: true }) createContactForm: HTMLFormElement;
-  @ViewChild('qrScanner', { static: true }) qrScanner: QRScannerComponent;
+  @ViewChild('qrScanner', { read: QRScannerComponent, static: true }) qrScanner: QRScannerComponent;
 
   public isNew: boolean;
 
@@ -84,12 +85,7 @@ export class ContactCreatePage {
   }
 
   private closeAndLoadContactList = (): void => {
-    this.navCtrl.push('ContactListPage')
-      .then(() => {
-        this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1).then(() => {
-          this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1);
-        });
-      });
+    this.navCtrl.navigateForward('/contacts', { replaceUrl: true })
   };
 
   private showErrorMessage = (error: TranslatableObject): void => {
@@ -114,23 +110,26 @@ export class ContactCreatePage {
 
   private showConfirmation(titleKey: string, stringParams: Object): Promise<void> {
     return new Promise((resolve) => {
-      this.translateService.get([titleKey, 'NO', 'YES'], stringParams).subscribe((translation) => {
-        const alert = this.alertCtrl.create({
-          subTitle: translation[titleKey],
-          buttons: [
-            {
-              text: translation.NO,
-              role: 'cancel',
-              handler: () => {}
-            },
-            {
-              text: translation.YES,
-              handler: () => resolve()
-            }
-          ]
+      this.translateService
+        .get([titleKey, 'NO', 'YES'], stringParams)
+        .subscribe(async (translation) => {
+          const alert = await this.alertCtrl.create({
+            subHeader: translation[titleKey],
+            buttons: [
+              {
+                text: translation.NO,
+                role: 'cancel',
+                handler: () => {}
+              },
+              {
+                text: translation.YES,
+                handler: () => resolve()
+              }
+            ]
+          });
+
+          await alert.present();
         });
-        alert.present();
-      });
     });
   }
 }

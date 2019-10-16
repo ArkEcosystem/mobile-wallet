@@ -1,18 +1,17 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController } from '@ionic/angular';
 import { PinCodeComponent } from '@/components/pin-code/pin-code';
 import { AuthProvider } from '@/services/auth/auth';
 import { UserDataProvider } from '@/services/user-data/user-data';
 
 import { isNil } from 'lodash';
 
-@IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
 })
 export class LoginPage {
-  @ViewChild('pinCode') pinCode: PinCodeComponent;
+  @ViewChild('pinCode', { read: PinCodeComponent, static: true }) pinCode: PinCodeComponent;
 
   public hasProfiles = false;
   public isReady = false;

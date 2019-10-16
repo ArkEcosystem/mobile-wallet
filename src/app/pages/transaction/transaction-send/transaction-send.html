@@ -58,7 +58,7 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <amount [formGroup]="sendForm" (onChange)="onAmountChange($event)"></amount>
+      <amount #amount [formGroup]="sendForm" (onChange)="onAmountChange($event)"></amount>
       <ion-row>
         <ion-col>
           <ion-item>

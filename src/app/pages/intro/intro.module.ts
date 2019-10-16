@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
 import { IntroPage } from './intro';
 
 import { TranslateModule } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     IntroPage,
   ],
   imports: [
-    IonicPageModule.forChild(IntroPage),
+    IonicModule,
+    CommonModule,
+    RouterModule.forChild([{ path: '/intro', component: IntroPage }]),
     TranslateModule
   ],
 })

@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnDestroy } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from '@ionic/angular';
+import { AlertController, NavController, NavParams } from '@ionic/angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -11,13 +11,13 @@ import lodash from 'lodash';
 import { Network } from 'ark-ts/model';
 import { TranslateService } from '@ngx-translate/core';
 
-@IonicPage()
 @Component({
   selector: 'page-profile-create',
   templateUrl: 'profile-create.html',
+  styleUrls: ['profile-create.scss'],
 })
 export class ProfileCreatePage implements OnDestroy {
-  @ViewChild('createProfileForm') createProfileForm: HTMLFormElement;
+  @ViewChild('createProfileForm', { static: true }) createProfileForm: HTMLFormElement;
 
   public networks: {[networkId: string]: Network};
   public networksIds: string[];
@@ -56,7 +56,7 @@ export class ProfileCreatePage implements OnDestroy {
       profile.networkId = this.newProfile.networkId;
 
       this.userDataProvider.addProfile(profile).takeUntil(this.unsubscriber$).subscribe(() => {
-        this.navCtrl.setRoot('ProfileSigninPage');
+        this.navCtrl.navigateRoot('/profile/signin');
       }, () => {
         this.toastProvider.error('PROFILES_PAGE.ADD_PROFILE_ERROR');
       });
@@ -99,12 +99,14 @@ export class ProfileCreatePage implements OnDestroy {
   }
 
   private showAlert(titleKey: string, stringParams: Object) {
-    this.translateService.get([titleKey, 'BACK_BUTTON_TEXT'], stringParams).subscribe((translation) => {
-      const alert = this.alertCtrl.create({
-        subTitle: translation[titleKey],
-        buttons: [translation.BACK_BUTTON_TEXT]
+    this.translateService
+      .get([titleKey, 'BACK_BUTTON_TEXT'], stringParams)
+      .subscribe(async (translation) => {
+        const alert = await this.alertCtrl.create({
+          subHeader: translation[titleKey],
+          buttons: [translation.BACK_BUTTON_TEXT]
+        });
+        alert.present();
       });
-      alert.present();
-    });
   }
 }

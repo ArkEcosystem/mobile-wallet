@@ -1,20 +1,24 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
+import { IonicModule } from '@ionic/angular';
 import { ProfileSigninPage } from './profile-signin';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { EmptyListComponentModule } from '@/components/empty-list/empty-list.module';
 import { AddressListComponentModule } from '@/components/address-list/address-list.module';
 import { PinCodeComponentModule } from '@/components/pin-code/pin-code.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     ProfileSigninPage,
   ],
   imports: [
+    CommonModule,
     EmptyListComponentModule,
     TranslateModule,
-    IonicPageModule.forChild(ProfileSigninPage),
+    IonicModule,
+    RouterModule.forChild([{ path: '/profile/signin', component: ProfileSigninPage }]),
     AddressListComponentModule,
     PinCodeComponentModule,
   ],

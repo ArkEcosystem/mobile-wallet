@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Content, ViewController } from '@ionic/angular';
+import { NavController, NavParams, ModalController, IonContent } from '@ionic/angular';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { Clipboard } from '@ionic-native/clipboard';
@@ -9,15 +9,17 @@ import { ToastProvider } from '@/services/toast/toast';
 
 import { Transaction, Wallet, WalletKeys, StoredNetwork } from '@/models/model';
 import { TransactionType, Network } from 'ark-ts';
+import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 
-@IonicPage()
 @Component({
   selector: 'page-transaction-response',
   templateUrl: 'transaction-response.html',
+  styleUrls: ['transaction-response.scss'],
   providers: [Clipboard, InAppBrowser],
 })
 export class TransactionResponsePage {
-  @ViewChild(Content) content: Content;
+  @ViewChild('content', { read: IonContent, static: true })
+  content: IonContent;
 
   public transaction: Transaction;
   public wallet: Wallet;
@@ -33,7 +35,6 @@ export class TransactionResponsePage {
     private clipboard: Clipboard,
     private modalCtrl: ModalController,
     private userDataProvider: UserDataProvider,
-    private viewController: ViewController,
     private toastProvider: ToastProvider,
     private iab: InAppBrowser,
   ) {
@@ -66,24 +67,27 @@ export class TransactionResponsePage {
     this.toastProvider.success('WALLETS_PAGE.ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE');
   }
 
-  saveSecondPassphrase() {
-    const modal = this.modalCtrl.create('PinCodeModal', {
-      message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
-      outputPassword: true,
-      validatePassword: true,
+  async saveSecondPassphrase() {
+    const modal = await this.modalCtrl.create({
+      component: PinCodeModal,
+      componentProps: {
+        message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
+        outputPassword: true,
+        validatePassword: true,
+      }
     });
 
-    modal.onDidDismiss((password) => {
-      if (!password) { return; }
+    modal.onDidDismiss().then((({ data }) => {
+      if (!data.password) { return; }
 
-      this.userDataProvider.encryptSecondPassphrase(this.wallet, password, this.keys.secondPassphrase).subscribe(() => {
+      this.userDataProvider.encryptSecondPassphrase(this.wallet, data.password, this.keys.secondPassphrase).subscribe(() => {
         this.wallet = this.userDataProvider.getWalletByAddress(this.wallet.address);
 
         this.showKeepSecondPassphrase = false;
-        if (this.content) { this.content.resize(); }
+        if (this.content) { this.content }
         this.presentEncryptedAlert();
       });
-    });
+    }));
 
     modal.present();
   }
@@ -96,11 +100,11 @@ export class TransactionResponsePage {
     }
 
     this.showKeepSecondPassphrase = false;
-    if (this.content) { this.content.resize(); }
+    // if (this.content) { this.content.resize(); }
   }
 
   dismiss() {
-    this.viewController.dismiss();
+    this.modalCtrl.dismiss();
   }
 
 }

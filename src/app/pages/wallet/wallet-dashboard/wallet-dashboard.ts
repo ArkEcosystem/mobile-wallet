@@ -1,6 +1,5 @@
 import { Component, NgZone, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import {
-  IonicPage,
   NavController,
   NavParams,
   Platform,
@@ -8,9 +7,8 @@ import {
   ModalController,
   AlertController,
   LoadingController,
-  Loading,
-  Content,
-  Refresher
+  IonRefresher,
+  IonContent
 } from '@ionic/angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -33,18 +31,26 @@ import { PinCodeComponent } from '@/components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@/components/confirm-transaction/confirm-transaction';
 import { Clipboard } from '@ionic-native/clipboard';
 import { ToastProvider } from '@/services/toast/toast';
+import { RegisterDelegatePage } from './modal/register-delegate/register-delegate';
+import { RegisterSecondPassphrasePage } from './modal/register-second-passphrase/register-second-passphrase';
+import { SetLabelPage } from './modal/set-label/set-label';
+import { WalletBackupModal } from '@/app/modals/wallet-backup/wallet-backup';
 
-@IonicPage()
 @Component({
   selector: 'page-wallet-dashboard',
   templateUrl: 'wallet-dashboard.html',
+  styleUrls: ['wallet-dashboard.scss'],
   providers: [Clipboard],
 })
 export class WalletDashboardPage implements OnInit, OnDestroy {
+  @ViewChild('content', { read: IonContent, static: true })
+  content: IonContent;
 
-  @ViewChild(Content) content: Content;
-  @ViewChild('pinCode') pinCode: PinCodeComponent;
-  @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
+  @ViewChild('pinCode', { read: PinCodeComponent, static: true })
+  pinCode: PinCodeComponent;
+
+  @ViewChild('confirmTransaction', { read: ConfirmTransactionComponent, static: true })
+  confirmTransaction: ConfirmTransactionComponent;
 
   public profile: Profile;
   public network: Network;
@@ -89,7 +95,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   ) {
     this.address = this.navParams.get('address');
 
-    if (!this.address) { this.navCtrl.popToRoot(); }
+    if (!this.address) { this.navCtrl.pop() }
 
     this.profile = this.userDataProvider.currentProfile;
     this.network = this.userDataProvider.currentNetwork;
@@ -100,7 +106,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.clipboard.copy(this.address).then(() => this.toastProvider.success('COPIED_CLIPBOARD'), (err) => this.toastProvider.error(err));
   }
 
-  doRefresh(refresher: Refresher) {
+  doRefresh(refresher: IonRefresher) {
     this.refreshAccount();
     this.refreshTransactions(true, refresher);
   }
@@ -115,7 +121,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       'WALLETS_PAGE.REMOVE_WALLET',
       'WALLETS_PAGE.CONVERT_TO_FULL_WALLET',
       'WALLETS_PAGE.TOP_WALLETS'
-    ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
+    ]).takeUntil(this.unsubscriber$).subscribe(async (translation) => {
       const delegateItem =  {
         text: translation['DELEGATES_PAGE.REGISTER_DELEGATE'],
         role: 'delegate',
@@ -188,12 +194,16 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
           role: 'label',
           icon: this.platform.is('ios') ? 'ios-git-compare-outline' : 'md-git-compare',
           handler: () => {
-            this.navCtrl.push('WalletImportPage', {address: this.wallet.address});
+            this.navCtrl.navigateForward('/wallets/import', {
+              queryParams: {
+                address: this.wallet.address
+              }
+            });
           }
         });
       }
 
-      const action = this.actionSheetCtrl.create({buttons});
+      const action = await this.actionSheetCtrl.create({buttons});
 
       action.present();
     });
@@ -204,12 +214,15 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.pinCode.open('PIN_CODE.DEFAULT_MESSAGE', true);
   }
 
-  private showBackup(keys: WalletKeys) {
+  private async showBackup(keys: WalletKeys) {
     if (!keys) { return; }
 
-    const modal = this.modalCtrl.create('WalletBackupModal', {
-      title: 'SETTINGS_PAGE.WALLET_BACKUP',
-      keys,
+    const modal = await this.modalCtrl.create({
+      component: WalletBackupModal,
+      componentProps: {
+        title: 'SETTINGS_PAGE.WALLET_BACKUP',
+        keys,
+      }
     });
 
     modal.present();
@@ -218,7 +231,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   presentAddActionSheet() {
     this.translateService.get(['TRANSACTIONS_PAGE.SEND', 'TRANSACTIONS_PAGE.RECEIVE'])
       .takeUntil(this.unsubscriber$)
-      .subscribe((translation) => {
+      .subscribe(async (translation) => {
         const buttons: Array<object> = [
           {
             text: translation['TRANSACTIONS_PAGE.RECEIVE'],
@@ -235,12 +248,12 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
             role: 'send',
             icon: this.platform.is('ios') ? 'ios-arrow-round-up' : 'md-arrow-round-up',
             handler: () => {
-              return this.navCtrl.push('TransactionSendPage');
+              return this.navCtrl.navigateForward('/transaction/send');
             }
           });
         }
 
-        const action = this.actionSheetCtrl.create({
+        const action = await this.actionSheetCtrl.create({
           buttons: buttons
         });
 
@@ -249,32 +262,41 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   openTransactionShow(tx: Transaction) {
-    this.navCtrl.push('TransactionShowPage', {
-      transaction: tx,
-      symbol: this.network.symbol,
-      equivalentAmount: tx.getAmountEquivalent(this.marketCurrency, this.marketHistory),
-      equivalentSymbol: this.marketCurrency.symbol,
+    this.navCtrl.navigateForward('/transaction/show', {
+      queryParams: {
+        transaction: tx,
+        symbol: this.network.symbol,
+        equivalentAmount: tx.getAmountEquivalent(this.marketCurrency, this.marketHistory),
+        equivalentSymbol: this.marketCurrency.symbol,
+      }
     });
   }
 
   openTransactionReceive() {
-    this.navCtrl.push('TransactionReceivePage', {
-      address: this.address,
-      token: this.network.token,
+    this.navCtrl.navigateForward('/transaction/receive', {
+      queryParams: {
+        address: this.address,
+        token: this.network.token,
+      }
     });
   }
 
   presentDelegatesModal() {
-    this.navCtrl.push('DelegatesPage');
+    this.navCtrl.navigateForward('/delegates');
   }
 
-  presentLabelModal() {
-    const modal = this.modalCtrl.create('SetLabelPage', {'label': this.wallet.label});
+  async presentLabelModal() {
+    const modal = await this.modalCtrl.create({
+      component: SetLabelPage,
+      componentProps: {
+        label: this.wallet.label
+      }
+    });
 
-    modal.onDidDismiss((label, role) => {
-      if (role === 'submit') {
+    modal.onDidDismiss().then(({ data }) => {
+      if (data.role === 'submit') {
         this.userDataProvider
-          .setWalletLabel(this.wallet, label)
+          .setWalletLabel(this.wallet, data.label)
           .subscribe(null, error => this.toastProvider.error(error, 3000));
       }
     });
@@ -282,14 +304,16 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     modal.present();
   }
 
-  presentRegisterDelegateModal() {
-    const modal = this.modalCtrl.create('RegisterDelegatePage', null);
+  async presentRegisterDelegateModal() {
+    const modal = await this.modalCtrl.create({
+      component: RegisterDelegatePage
+    });
 
-    modal.onDidDismiss(({ name, fee }) => {
+    modal.onDidDismiss().then(({ data }) => {
       if (lodash.isEmpty(name)) { return; }
 
-      this.newDelegateName = name;
-      this.newDelegateFee = fee;
+      this.newDelegateName = data.name;
+      this.newDelegateFee = data.fee;
       this.onEnterPinCode = this.createDelegate;
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
@@ -298,13 +322,15 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     modal.present();
   }
 
-  presentRegisterSecondPassphraseModal() {
-    const modal = this.modalCtrl.create('RegisterSecondPassphrasePage', null);
+  async presentRegisterSecondPassphraseModal() {
+    const modal = await this.modalCtrl.create({
+      component: RegisterSecondPassphrasePage
+    });
 
-    modal.onDidDismiss((newSecondPassphrase) => {
-      if (lodash.isEmpty(newSecondPassphrase)) { return; }
+    modal.onDidDismiss().then(({ data }) => {
+      if (lodash.isEmpty(data.newSecondPassphrase)) { return; }
 
-      this.newSecondPassphrase = newSecondPassphrase;
+      this.newSecondPassphrase = data.newSecondPassphrase;
       this.onEnterPinCode = this.createSignature;
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
 
@@ -317,9 +343,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.translateService.get(
         ['ARE_YOU_SURE', 'CONFIRM', 'CANCEL', 'WALLETS_PAGE.REMOVE_WALLET_TEXT', 'WALLETS_PAGE.REMOVE_WATCH_ONLY_WALLET_TEXT'])
       .takeUntil(this.unsubscriber$)
-      .subscribe((translation) => {
-        const confirm = this.alertCtrl.create({
-          title: translation.ARE_YOU_SURE,
+      .subscribe(async (translation) => {
+        const confirm = await this.alertCtrl.create({
+          header: translation.ARE_YOU_SURE,
           message: this.wallet.isWatchOnly ?
             translation['WALLETS_PAGE.REMOVE_WATCH_ONLY_WALLET_TEXT'] : translation['WALLETS_PAGE.REMOVE_WALLET_TEXT'],
           buttons: [
@@ -340,7 +366,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   presentTopWalletsModal() {
-    this.navCtrl.push('WalletTopListPage');
+    this.navCtrl.navigateForward('/wallets/top');
   }
 
   private createDelegate(keys: WalletKeys) {
@@ -387,17 +413,17 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
   private deleteWallet() {
       this.userDataProvider.removeWalletByAddress(this.wallet.address);
-      this.navCtrl.setRoot('WalletListPage');
+      this.navCtrl.navigateRoot('/wallets');
   }
 
-  private refreshTransactions(save: boolean = true, loader?: Loading|Refresher) {
+  private refreshTransactions(save: boolean = true, loader?: HTMLIonLoadingElement|IonRefresher) {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.client.getTransactionList(this.address)
       .finally(() => this.zone.run(() => {
         if (loader) {
-          if (loader instanceof Loading) {
+          if (loader instanceof HTMLIonLoadingElement) {
             loader.dismiss();
-          } else if (loader instanceof Refresher) {
+          } else if (loader instanceof IonRefresher) {
             loader.complete();
           }
         }
@@ -469,7 +495,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.marketDataProvider.history.subscribe((history) => this.marketHistory = history);
 
     if (lodash.isEmpty(this.wallet)) {
-      this.navCtrl.popToRoot();
+      this.navCtrl.pop();
       return;
     }
 
@@ -480,15 +506,18 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
     // search for new transactions immediately
     if (this.emptyTransactions && !this.wallet.isCold) {
-      this.translateService.get('TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS').takeUntil(this.unsubscriber$).subscribe((translation) => {
-        const loader = this.loadingCtrl.create({
-          content: `${translation}...`,
+      this.translateService
+        .get('TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS')
+        .takeUntil(this.unsubscriber$)
+        .subscribe(async (translation) => {
+          const loader = await this.loadingCtrl.create({
+            message: `${translation}...`,
+          });
+
+          loader.present();
+
+          this.refreshTransactions(true, loader);
         });
-
-        loader.present();
-
-        this.refreshTransactions(true, loader);
-      });
     }
   }
 
@@ -499,7 +528,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.refreshPrice();
     this.onUpdateWallet();
     this.onUpdateMarket();
-    this.content.resize();
+    // this.content.resize();
 
     this.refreshDataIntervalListener = setInterval(() => this.refreshAllData(), constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS);
     this.refreshTickerIntervalListener = setInterval(() => this.refreshPrice(), constants.WALLET_REFRESH_PRICE_MILLISECONDS);

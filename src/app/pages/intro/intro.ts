@@ -1,16 +1,15 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, Platform, Slides } from '@ionic/angular';
+import { NavController, Platform, IonSlides } from '@ionic/angular';
 
 import { AuthProvider } from '@/services/auth/auth';
 import { TranslateService } from '@ngx-translate/core';
 
-@IonicPage()
 @Component({
   selector: 'page-intro',
   templateUrl: 'intro.html',
 })
 export class IntroPage {
-  @ViewChild(Slides) slider: Slides;
+  @ViewChild('slider', { read: IonSlides, static: true }) slider: IonSlides;
 
   public showSkip = true;
   public slides: any;
@@ -55,9 +54,9 @@ export class IntroPage {
   startApp() {
     this.authProvider.saveIntro();
 
-    this.navCtrl.setRoot('LoginPage', {}, {
-      animate: true,
-      direction: 'forward'
+    this.navCtrl.navigateForward('/login', {
+      animated: true,
+      replaceUrl: true
     });
   }
 
@@ -65,9 +64,9 @@ export class IntroPage {
     this.slider.slideNext();
   }
 
-  slideChanged() {
-    const activeIndex = this.slider.getActiveIndex();
-    const slideLength = this.slider.length();
+  async ionSlideDidChange() {
+    const activeIndex = await this.slider.getActiveIndex();
+    const slideLength = await this.slider.length();
 
     if (activeIndex >= slideLength) { return; }
 

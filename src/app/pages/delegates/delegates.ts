@@ -1,5 +1,5 @@
 import { Component, NgZone, OnDestroy, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Platform, Slides, Searchbar } from '@ionic/angular';
+import { NavController, NavParams, ModalController, Platform, IonSearchbar, IonSlides } from '@ionic/angular';
 
 import { Subject } from 'rxjs/Subject';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
@@ -13,17 +13,25 @@ import { StoredNetwork } from '@/models/stored-network';
 import * as constants from '@/app/app.constants';
 import { PinCodeComponent } from '@/components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@/components/confirm-transaction/confirm-transaction';
+import { DelegateDetailPage } from './delegate-detail/delegate-detail';
 
-@IonicPage()
 @Component({
   selector: 'page-delegates',
   templateUrl: 'delegates.html',
+  styleUrls: ['delegates.scss']
 })
 export class DelegatesPage implements OnDestroy {
-  @ViewChild('delegateSlider') slider: Slides;
-  @ViewChild('pinCode') pinCode: PinCodeComponent;
-  @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
-  @ViewChild('searchbar') searchbar: Searchbar;
+  @ViewChild('delegateSlider', { read: IonSlides, static: true })
+  slider: IonSlides;
+
+  @ViewChild('pinCode', { read: PinCodeComponent, static: true })
+  pinCode: PinCodeComponent;
+
+  @ViewChild('confirmTransaction', { read: ConfirmTransactionComponent, static: true })
+  confirmTransaction: ConfirmTransactionComponent;
+
+  @ViewChild('searchbar', { read: IonSearchbar, static: true })
+  searchbar: IonSearchbar;
 
   public isSearch = false;
   public searchQuery = '';
@@ -62,14 +70,19 @@ export class DelegatesPage implements OnDestroy {
     private toastProvider: ToastProvider,
   ) { }
 
-  openDetailModal(delegate: Delegate) {
+  async openDetailModal(delegate: Delegate) {
+    const modal = await this.modalCtrl.create({
+      showBackdrop: false,
+      backdropDismiss: true,
+      component: DelegateDetailPage,
+      componentProps: {
+        delegate,
+        vote: this.walletVote
+      }
+    });
 
-    const modal = this.modalCtrl.create('DelegateDetailPage', {
-      delegate,
-      vote: this.walletVote,
-    }, { showBackdrop: false, enableBackdropDismiss: true });
-
-    modal.onDidDismiss(({ delegateVote, fee }) => {
+    modal.onDidDismiss().then(({ data }) => {
+      const { delegateVote, fee } = data
       if (!delegateVote) { return; }
 
       this.selectedFee = fee;
@@ -78,7 +91,7 @@ export class DelegatesPage implements OnDestroy {
 
     });
 
-    modal.present();
+    await modal.present();
   }
 
   toggleSearchBar() {

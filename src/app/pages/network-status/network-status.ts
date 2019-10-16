@@ -1,5 +1,5 @@
-import {Component, NgZone, OnDestroy} from '@angular/core';
-import { IonicPage, LoadingController } from '@ionic/angular';
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import { LoadingController } from '@ionic/angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -13,12 +13,12 @@ import { Network, Peer } from 'ark-ts';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastProvider } from '@/services/toast/toast';
 
-@IonicPage()
 @Component({
   selector: 'page-network-status',
   templateUrl: 'network-status.html',
+  styleUrls: ['network-status.scss'],
 })
-export class NetworkStatusPage implements OnDestroy {
+export class NetworkStatusPage implements OnInit, OnDestroy {
 
   public currentNetwork: Network;
   public currentPeer: Peer;
@@ -46,7 +46,7 @@ export class NetworkStatusPage implements OnDestroy {
   changePeer() {
     this.translateService.get('NETWORKS_PAGE.LOOKING_GOOD_PEER').debounceTime(500).subscribe((translate) => {
       this.loader = this.loadingCtrl.create({
-        content: translate,
+        message: translate,
         duration: 10000
       });
 
@@ -96,7 +96,7 @@ export class NetworkStatusPage implements OnDestroy {
       }).subscribe();
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     this.onUpdatePeer();
     this.refreshData();
 

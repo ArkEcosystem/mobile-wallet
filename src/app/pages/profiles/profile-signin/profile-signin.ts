@@ -1,5 +1,5 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ActionSheetController } from '@ionic/angular';
+import { NavController, NavParams, AlertController, ActionSheetController } from '@ionic/angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -14,16 +14,17 @@ import lodash from 'lodash';
 import { NetworkType } from 'ark-ts/model';
 import { PublicKey } from 'ark-ts/core';
 import { AddressMap } from '@/models/model';
-import { Platform } from '@ionic/angular/platform/platform';
+import { Platform } from '@ionic/angular';
 import { PinCodeComponent } from '@/components/pin-code/pin-code';
 
-@IonicPage()
 @Component({
   selector: 'page-profile-signin',
   templateUrl: 'profile-signin.html',
+  styleUrls: ['profile-signin.scss'],
 })
 export class ProfileSigninPage implements OnDestroy {
-  @ViewChild('pinCode') pinCode: PinCodeComponent;
+  @ViewChild('pinCode', { read: PinCodeComponent, static: true })
+  pinCode: PinCodeComponent;
 
   public profiles;
   public addresses: AddressMap[];
@@ -45,47 +46,53 @@ export class ProfileSigninPage implements OnDestroy {
   ) { }
 
   presentProfileActionSheet(profileId: string) {
-    this.translateService.get(['EDIT', 'DELETE']).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      const buttons = [{
-        text: translation.DELETE,
-        role: 'delete',
-        icon: this.platform.is('ios') ? 'ios-trash-outline' : 'md-trash',
-        handler: () => {
-          if (!this.profileHasWallets(profileId)) {
-            this.showDeleteConfirm(profileId);
-          } else {
-            this.toastProvider.error('PROFILES_PAGE.DELETE_NOT_EMPTY');
-          }
-        },
-      }];
+    this.translateService
+      .get(['EDIT', 'DELETE'])
+      .takeUntil(this.unsubscriber$)
+      .subscribe(async (translation) => {
+        const buttons = [{
+          text: translation.DELETE,
+          role: 'delete',
+          icon: this.platform.is('ios') ? 'ios-trash-outline' : 'md-trash',
+          handler: () => {
+            if (!this.profileHasWallets(profileId)) {
+              this.showDeleteConfirm(profileId);
+            } else {
+              this.toastProvider.error('PROFILES_PAGE.DELETE_NOT_EMPTY');
+            }
+          },
+        }];
 
-      const action = this.actionSheetCtrl.create({buttons});
-      action.present();
-    });
+        const action = await this.actionSheetCtrl.create({buttons});
+        action.present();
+      });
   }
 
   openProfileCreate() {
-    this.navCtrl.push('ProfileCreatePage');
+    this.navCtrl.navigateForward('/profile/create');
   }
 
   showDeleteConfirm(profileId: string) {
-    this.translateService.get(['ARE_YOU_SURE', 'CONFIRM', 'CANCEL']).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      const confirm = this.alertCtrl.create({
-        title: translation.ARE_YOU_SURE,
-        buttons: [
-          {
-            text: translation.CANCEL
-          },
-          {
-            text: translation.CONFIRM,
-            handler: () => {
-              this.delete(profileId);
+    this.translateService
+      .get(['ARE_YOU_SURE', 'CONFIRM', 'CANCEL'])
+      .takeUntil(this.unsubscriber$)
+      .subscribe(async (translation) => {
+        const confirm = await this.alertCtrl.create({
+          header: translation.ARE_YOU_SURE,
+          buttons: [
+            {
+              text: translation.CANCEL
+            },
+            {
+              text: translation.CONFIRM,
+              handler: () => {
+                this.delete(profileId);
+              }
             }
-          }
-        ]
+          ]
+        });
+        confirm.present();
       });
-      confirm.present();
-    });
   }
 
   delete(profileId: string) {
@@ -104,7 +111,7 @@ export class ProfileSigninPage implements OnDestroy {
 
     this.authProvider.login(this.profileIdSelected).takeUntil(this.unsubscriber$).subscribe((status) => {
       if (status) {
-        this.navCtrl.setRoot('WalletListPage');
+        this.navCtrl.navigateRoot('/wallets');
       } else {
         this.error();
       }

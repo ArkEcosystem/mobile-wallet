@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { ContactCreatePage } from './contact-create';
 
@@ -14,6 +15,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     IonicModule,
+    CommonModule,
     RouterModule.forChild([{ path: '/contacts/create', component: ContactCreatePage }]),
     TranslateModule,
     DirectivesModule,

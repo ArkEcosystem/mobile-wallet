@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { IonicPage, LoadingController, NavParams, Loading } from '@ionic/angular';
+import { LoadingController, NavParams } from '@ionic/angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Contact, Wallet, SendTransactionForm, WalletKeys, QRCodeScheme, StoredNetwork } from '@/models/model';
@@ -50,19 +50,30 @@ enum AddressType {
   WalletWithoutLabel
 }
 
-@IonicPage()
 @Component({
   selector: 'page-transaction-send',
   templateUrl: 'transaction-send.html',
+  styleUrls: ['transaction-send.scss'],
   providers: [TruncateMiddlePipe],
 })
 export class TransactionSendPage implements OnInit {
-  @ViewChild('sendTransactionForm') sendTransactionHTMLForm: HTMLFormElement;
-  @ViewChild('pinCode') pinCode: PinCodeComponent;
-  @ViewChild('confirmTransaction') confirmTransaction: ConfirmTransactionComponent;
-  @ViewChild('qrScanner') qrScanner: QRScannerComponent;
-  @ViewChild('searchBar') searchBar: AutoCompleteComponent;
-  @ViewChild(AmountComponent) private amountComponent: AmountComponent;
+  @ViewChild('sendTransactionForm', { static: true })
+  sendTransactionHTMLForm: HTMLFormElement;
+
+  @ViewChild('pinCode', { read: PinCodeComponent, static: true})
+  pinCode: PinCodeComponent;
+
+  @ViewChild('confirmTransaction', { read: ConfirmTransactionComponent, static: true })
+  confirmTransaction: ConfirmTransactionComponent;
+  
+  @ViewChild('qrScanner', { read: QRScannerComponent, static: true })
+  qrScanner: QRScannerComponent;
+
+  @ViewChild('searchBar', { read: AutoCompleteComponent, static: true })
+  searchBar: AutoCompleteComponent;
+
+  @ViewChild('amount', { read: AmountComponent, static: true })
+  private amountComponent: AmountComponent;
 
   sendForm: FormGroup;
   transaction: SendTransactionForm = {};
@@ -143,21 +154,23 @@ export class TransactionSendPage implements OnInit {
         this.hasSent = true;
         this.createContactOrLabel();
 
-        this.translateService.get('TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS').subscribe(translation => {
-          const loader = this.loadingCtrl.create({content: translation});
-          const combinedResult: CombinedResult = new CombinedResult(loader);
-          this.addressChecker.checkAddress(this.transaction.recipientAddress).subscribe(checkerResult => {
-            combinedResult.checkerDone = true;
-            combinedResult.checkerResult = checkerResult;
-            this.createTransactionAndShowConfirm(combinedResult);
-          });
-          this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true, (keys: WalletKeys) => {
-            combinedResult.pinCodeDone = true;
-            combinedResult.keys = keys;
-            this.createTransactionAndShowConfirm(combinedResult);
+        this.translateService
+          .get('TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS')
+          .subscribe(async (translation) => {
+            const loader = await this.loadingCtrl.create({message: translation});
+            const combinedResult: CombinedResult = new CombinedResult(loader);
+            this.addressChecker.checkAddress(this.transaction.recipientAddress).subscribe(checkerResult => {
+              combinedResult.checkerDone = true;
+              combinedResult.checkerResult = checkerResult;
+              this.createTransactionAndShowConfirm(combinedResult);
+            });
+            this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true, (keys: WalletKeys) => {
+              combinedResult.pinCodeDone = true;
+              combinedResult.keys = keys;
+              this.createTransactionAndShowConfirm(combinedResult);
+            });
           });
         });
-      });
     }
   }
 
@@ -296,11 +309,9 @@ export class TransactionSendPage implements OnInit {
     }
   }
 
-  ionViewDidLoad() {
-    this.hasNotSent();
-  }
-
   ngOnInit(): void {
+    this.hasNotSent();
+    
     this.pinCode.onClosed.takeUntil(this.unsubscriber$).subscribe(() => {
       this.hasNotSent();
     });

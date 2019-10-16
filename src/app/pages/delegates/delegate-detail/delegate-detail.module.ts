@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
+import { CommonModule } from '@angular/common';
 import { DelegateDetailPage } from './delegate-detail';
 
 import { TranslateModule } from '@ngx-translate/core';
@@ -13,12 +14,16 @@ import { InputFeeComponentModule } from '@/components/input-fee/input-fee.module
     DelegateDetailPage,
   ],
   imports: [
-    IonicPageModule.forChild(DelegateDetailPage),
+    IonicModule,
+    CommonModule,
     TranslateModule,
     QRCodeComponentModule,
     PipesModule,
     ClosePopupComponentModule,
     InputFeeComponentModule,
   ],
+  exports: [
+    DelegateDetailPage
+  ]
 })
 export class DelegateDetailPageModule {}

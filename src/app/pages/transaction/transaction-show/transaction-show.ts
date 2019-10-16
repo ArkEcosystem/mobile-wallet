@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, Platform } from '@ionic/angular';
+import { NavController, NavParams, ActionSheetController, Platform } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { Transaction } from '@/models/transaction';
@@ -10,10 +10,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { TruncateMiddlePipe } from '@/pipes/truncate-middle/truncate-middle';
 import { Wallet, StoredNetwork } from '@/models/model';
 
-@IonicPage()
 @Component({
   selector: 'page-transaction-show',
   templateUrl: 'transaction-show.html',
+  styleUrls: ['transaction-show.scss'],
   providers: [InAppBrowser, TruncateMiddlePipe],
 })
 export class TransactionShowPage {
@@ -44,7 +44,7 @@ export class TransactionShowPage {
     this.equivalentAmount = this.navParams.get('equivalentAmount');
     this.equivalentSymbol = this.navParams.get('equivalentSymbol');
 
-    if (!transaction) { this.navCtrl.popToRoot(); }
+    if (!transaction) { this.navCtrl.pop(); }
 
     this.transaction = new Transaction(transaction.address, this.currentNetwork).deserialize(transaction);
     this.shouldShowOptions();
@@ -61,44 +61,54 @@ export class TransactionShowPage {
     const contact = this.contactsProvider.getContactByAddress(address);
     const contactOrAddress = contact ? contact['name'] : addressTruncated;
 
-    this.translateService.get([
-      'TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS',
-      'TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS',
-    ], { address: contactOrAddress, token: this.currentNetwork.token }).subscribe((translation) => {
-      const buttons = [];
+    this.translateService
+      .get(
+        [
+          'TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS',
+          'TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS',
+        ],
+        { address: contactOrAddress, token: this.currentNetwork.token }
+      )
+      .subscribe(async (translation) => {
+        const buttons = [];
 
-      if (!contact) {
-        buttons.push({
-          text: translation['TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS'],
-          role: 'contact',
-          icon: this.platform.is('ios') ? 'ios-person-add-outline' : 'md-person-add',
-          handler: () => {
-            this.addToContacts(address);
-          }
-        });
-      }
+        if (!contact) {
+          buttons.push({
+            text: translation['TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS'],
+            role: 'contact',
+            icon: this.platform.is('ios') ? 'ios-person-add-outline' : 'md-person-add',
+            handler: () => {
+              this.addToContacts(address);
+            }
+          });
+        }
 
-      if (this.currentWallet && !this.currentWallet.isWatchOnly) {
-        buttons.push({
-          text: translation['TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS'],
-          role: 'send',
-          icon: this.platform.is('ios') ? 'ios-send-outline' : 'md-send',
-          handler: () => {
-            this.sendToAddress(address);
-          }
-        });
-      }
+        if (this.currentWallet && !this.currentWallet.isWatchOnly) {
+          buttons.push({
+            text: translation['TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS'],
+            role: 'send',
+            icon: this.platform.is('ios') ? 'ios-send-outline' : 'md-send',
+            handler: () => {
+              this.sendToAddress(address);
+            }
+          });
+        }
 
-      this.actionSheetCtrl.create({ buttons }).present();
-    });
+        const action = await this.actionSheetCtrl.create({ buttons })
+        action.present();
+      });
   }
 
   addToContacts(address: string) {
-    this.navCtrl.push('ContactCreatePage', { address });
+    this.navCtrl.navigateForward('/contacts/create', { queryParams: {
+      address
+    }});
   }
 
   sendToAddress(address: string) {
-    this.navCtrl.push('TransactionSendPage', { address });
+    this.navCtrl.navigateForward('/transaction/send', { queryParams: {
+      address
+    }});
   }
 
   private shouldShowOptions() {
