@@ -1,5 +1,5 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ActionSheetController, Platform, Content, Slides } from '@ionic/angular';
+import { NavController, NavParams, ModalController, ActionSheetController, Platform, IonSlides, IonContent } from '@ionic/angular';
 
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -17,16 +17,24 @@ import { TranslateService } from '@ngx-translate/core';
 import * as constants from '@/app/app.constants';
 import lodash from 'lodash';
 import { BaseChartDirective } from 'ng2-charts';
+import { GenerateEntropyModal } from '@/app/modals/generate-entropy/generate-entropy';
+import { WalletBackupModal } from '@/app/modals/wallet-backup/wallet-backup';
+import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 
-@IonicPage()
 @Component({
   selector: 'page-wallet-list',
   templateUrl: 'wallet-list.html',
+  styleUrls: ['wallet-list.scss'],
 })
 export class WalletListPage implements OnDestroy {
-  @ViewChild('walletSlider') slider: Slides;
-  @ViewChild(Content) content: Content;
-  @ViewChild('chart') chart: BaseChartDirective;
+  @ViewChild('walletSlider', { read: IonSlides, static: true })
+  slider: IonSlides;
+
+  @ViewChild('content', { read: IonContent, static: true })
+  content: IonContent;
+
+  @ViewChild('chart', { read: BaseChartDirective, static: true })
+  chart: BaseChartDirective;
 
   public currentProfile: Profile;
   public currentNetwork: Network;
@@ -66,13 +74,16 @@ export class WalletListPage implements OnDestroy {
     this.userDataProvider.clearCurrentWallet();
   }
 
-  onSlideChanged() {
-    this.selectedWallet = this.userDataProvider.getWalletByAddress(this.wallets[this.slider.realIndex].address);
+  async ionSlideDidChange() {
+    const realIndex = await this.slider.getActiveIndex();
+    this.selectedWallet = this.userDataProvider.getWalletByAddress(this.wallets[realIndex].address);
   }
 
   openWalletDashboard(wallet: Wallet) {
-    this.navCtrl.push('WalletDashboardPage', {
-      address: wallet.address
+    this.navCtrl.navigateForward('/wallets/dashboard', {
+      queryParams: {
+        address: wallet.address
+      }
     }).then(() => {
       this.userDataProvider.updateWallet(wallet, this.currentProfile.profileId).subscribe(() => {
         this.loadWallets();
@@ -85,8 +96,8 @@ export class WalletListPage implements OnDestroy {
     this.translateService.get([
       'GENERATE',
       'IMPORT',
-    ]).takeUntil(this.unsubscriber$).subscribe((translation) => {
-      const actionSheet = this.actionSheetCtrl.create({
+    ]).takeUntil(this.unsubscriber$).subscribe(async (translation) => {
+      const actionSheet = await this.actionSheetCtrl.create({
         buttons: [
           {
             text: translation.GENERATE,
@@ -110,18 +121,23 @@ export class WalletListPage implements OnDestroy {
     });
   }
 
-  private presentWalletGenerate() {
-    const modal = this.modalCtrl.create('GenerateEntropyModal');
+  private async presentWalletGenerate() {
+    const modal = await this.modalCtrl.create({
+      component: GenerateEntropyModal
+    });
 
-    modal.onDidDismiss((entropy) => {
+    modal.onDidDismiss().then(async (entropy) => {
       if (!entropy) { return; }
 
-      const showModal = this.modalCtrl.create('WalletBackupModal', {
-        title: 'WALLETS_PAGE.CREATE_WALLET',
-        entropy,
+      const showModal = await this.modalCtrl.create({
+        component: WalletBackupModal,
+        componentProps: {
+          title: 'WALLETS_PAGE.CREATE_WALLET',
+          entropy,
+        }
       });
 
-      showModal.onDidDismiss((account) => {
+      showModal.onDidDismiss().then((account) => {
         if (!account) { return; }
 
         this.storeWallet(account);
@@ -135,24 +151,27 @@ export class WalletListPage implements OnDestroy {
   }
 
   private presentWalletImport() {
-    this.navCtrl.push('WalletImportPage');
+    this.navCtrl.navigateForward('/wallets/import');
   }
 
-  private storeWallet(account) {
+  private async storeWallet(account) {
     const wallet = new Wallet();
     wallet.address = account.address;
     wallet.publicKey = account.publicKey;
 
-    const modal = this.modalCtrl.create('PinCodeModal', {
-      message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
-      outputPassword: true,
-      validatePassword: true
+    const modal = await this.modalCtrl.create({
+      component: PinCodeModal,
+      componentProps: {
+        message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
+        outputPassword: true,
+        validatePassword: true
+      }
     });
 
-    modal.onDidDismiss((password) => {
-      if (!password) { return; }
+    modal.onDidDismiss().then(({ data }) => {
+      if (!data.password) { return; }
 
-      this.userDataProvider.addWallet(wallet, account.mnemonic, password).takeUntil(this.unsubscriber$).subscribe(() => {
+      this.userDataProvider.addWallet(wallet, account.mnemonic, data.password).takeUntil(this.unsubscriber$).subscribe(() => {
         this.loadWallets();
       });
     });
@@ -320,7 +339,7 @@ export class WalletListPage implements OnDestroy {
     this.initMarketHistory();
     this.initTicker();
 
-    this.content.resize();
+    // this.content.resize();
   }
 
   private initTicker() {

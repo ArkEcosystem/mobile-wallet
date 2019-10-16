@@ -1,21 +1,25 @@
 import {Component, NgZone, OnDestroy, ViewChild} from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, Platform, Searchbar, Slides} from '@ionic/angular';
+import {ModalController, NavController, NavParams, Platform, IonSlides, IonSearchbar} from '@ionic/angular';
 import {Wallet} from '@/models/wallet';
-import {Delegate, Network} from '@/root/node_modules/ark-ts';
+import {Delegate, Network} from 'ark-ts';
 import {ArkApiProvider} from '@/services/ark-api/ark-api';
 import {UserDataProvider} from '@/services/user-data/user-data';
 import {ToastProvider} from '@/services/toast/toast';
 import * as constants from '@/app/app.constants';
-import {Subject} from '@/root/node_modules/rxjs';
+import {Subject} from 'rxjs';
+import { TopWalletDetailsPage } from './modal/top-wallet-details/top-wallet-details';
 
-@IonicPage()
 @Component({
   selector: 'page-wallet-top-list',
   templateUrl: 'wallet-top-list.html',
+  styleUrls: ['wallet-top-list.scss'],
 })
 export class WalletTopListPage implements OnDestroy {
-  @ViewChild('topWalletSlider') slider: Slides;
-  @ViewChild('searchbar') searchbar: Searchbar;
+  @ViewChild('topWalletSlider', { read: IonSlides, static: true })
+  slider: IonSlides;
+
+  @ViewChild('searchbar', { read: IonSearchbar, static: true })
+  searchbar: IonSearchbar;
 
   public network: Network;
   public isSearch = false;
@@ -42,10 +46,15 @@ export class WalletTopListPage implements OnDestroy {
     this.network = this.userDataProvider.currentNetwork;
   }
 
-  openDetailModal(wallet: Wallet) {
-    const modal = this.modalCtrl.create('TopWalletDetailsPage', {
-      wallet: wallet
-    }, { showBackdrop: true, enableBackdropDismiss: true });
+  async openDetailModal(wallet: Wallet) {
+    const modal = await this.modalCtrl.create({
+      component: TopWalletDetailsPage,
+      componentProps: {
+        wallet
+      },
+      showBackdrop: true,
+      backdropDismiss: true
+    });
 
     modal.present();
   }

@@ -1,21 +1,22 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, ModalController, NavParams } from '@ionic/angular';
+import { NavController, ModalController, NavParams } from '@ionic/angular';
 import { QRCodeScheme } from '@/models/model';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import { ToastProvider } from '@/services/toast/toast';
 import { QRScannerComponent } from '@/components/qr-scanner/qr-scanner';
-import { BaseWalletImport } from '@/root/src/pages/wallet/wallet-import/wallet-import.base';
+import { BaseWalletImport } from '@/app/pages/wallet/wallet-import/wallet-import.base';
 import { NetworkProvider } from '@/services/network/network';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
 
-@IonicPage()
 @Component({
   selector: 'page-wallet-import',
   templateUrl: 'wallet-import.html',
+  styleUrls: ['wallet-import.scss']
 })
 export class WalletImportPage extends BaseWalletImport {
-  @ViewChild('qrScanner') qrScanner: QRScannerComponent;
+  @ViewChild('qrScanner', { read: QRScannerComponent, static: true })
+  qrScanner: QRScannerComponent;
 
   constructor(
     navParams: NavParams,
@@ -31,7 +32,12 @@ export class WalletImportPage extends BaseWalletImport {
   }
 
   openManualImportPage(type: string) {
-    this.navCtrl.push('WalletManualImportPage', {type: type, address: this.existingAddress});
+    this.navCtrl.navigateForward('/wallet/import-manual', {
+      queryParams: {
+        type: type,
+        address: this.existingAddress
+      }
+    });
   }
 
   scanQRCode() {

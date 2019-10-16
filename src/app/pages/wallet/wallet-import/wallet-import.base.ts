@@ -7,6 +7,7 @@ import { Wallet } from '@/models/model';
 import { NetworkProvider } from '@/services/network/network';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
 import bip39 from 'bip39';
+import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 
 export abstract class BaseWalletImport {
 
@@ -92,16 +93,19 @@ export abstract class BaseWalletImport {
       });
   }
 
-  private verifyWithPinCode(newWallet: Wallet, passphrase: string): void {
-    const modal = this.modalCtrl.create('PinCodeModal', {
-      message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
-      outputPassword: true,
-      validatePassword: true,
+  private async verifyWithPinCode(newWallet: Wallet, passphrase: string): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: PinCodeModal,
+      componentProps: {
+        message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
+        outputPassword: true,
+        validatePassword: true,
+      }
     });
 
-    modal.onDidDismiss((password) => {
-      if (password) {
-        this.addWallet(newWallet, passphrase, password);
+    modal.onDidDismiss().then(({ data }) => {
+      if (data.password) {
+        this.addWallet(newWallet, passphrase, data.password);
       } else {
         this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR');
       }
@@ -112,12 +116,11 @@ export abstract class BaseWalletImport {
 
   private addWallet(newWallet: Wallet, passphrase?: string, password?: string): void {
     this.userDataProvider.addWallet(newWallet, passphrase, password).subscribe(() => {
-      this.navCtrl.push('WalletDashboardPage', {address: newWallet.address})
-        .then(() => {
-          this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1).then(() => {
-            this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1);
-          });
-        });
+      this.navCtrl.navigateRoot('/wallet/dashboard', {
+        queryParams: {
+          address: newWallet.address
+        }
+      })
     });
   }
 

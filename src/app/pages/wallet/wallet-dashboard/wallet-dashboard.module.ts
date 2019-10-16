@@ -19,7 +19,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     IonicModule,
     CommonModule,
-    RouterModule.forChild([{ paht: '/wallet/dashboard', component: WalletDashboardPage }]),
+    RouterModule.forChild([{ path: '/wallet/dashboard', component: WalletDashboardPage }]),
     TranslateModule,
     PipesModule,
     PinCodeComponentModule,

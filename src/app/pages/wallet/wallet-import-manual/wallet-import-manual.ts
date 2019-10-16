@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from '@ionic/angular';
+import { NavController, NavParams, ModalController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
@@ -8,19 +8,19 @@ import { ToastProvider } from '@/services/toast/toast';
 
 import { NetworkProvider } from '@/services/network/network';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
-import { BaseWalletImport } from '@/root/src/pages/wallet/wallet-import/wallet-import.base';
+import { BaseWalletImport } from '@/app/pages/wallet/wallet-import/wallet-import.base';
 
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { PassphraseValidator } from '@/root/src/validators/passphrase/passphrase';
-import { AddressValidator } from '@/root/src/validators/address/address';
+import { PassphraseValidator } from '@/app/validators/passphrase/passphrase';
+import { AddressValidator } from '@/app/validators/address/address';
 
 import * as constants from '@/app/app.constants';
 import bip39 from 'bip39';
 
-@IonicPage()
 @Component({
   selector: 'page-wallet-import-passphrase',
   templateUrl: 'wallet-import-manual.html',
+  styleUrls: ['wallet-import-manul.scss'],
   providers: [InAppBrowser, AddressValidator]
 })
 export class WalletManualImportPage extends BaseWalletImport  {
@@ -37,9 +37,14 @@ export class WalletManualImportPage extends BaseWalletImport  {
   private wordlist;
   private suggestLanguageFound = false;
 
-  @ViewChild('inputAddressOrPassphrase') inputAddressOrPassphrase;
-  @ViewChild('inputPassphraseHidden') inputPassphraseHidden;
-  @ViewChild('importWalletManual') importWalletManual: HTMLFormElement;
+  @ViewChild('inputAddressOrPassphrase', { static: true })
+  inputAddressOrPassphrase;
+
+  @ViewChild('inputPassphraseHidden', { static: true })
+  inputPassphraseHidden;
+
+  @ViewChild('importWalletManual', { static: true })
+  importWalletManual: HTMLFormElement;
 
   constructor(
     navParams: NavParams,

@@ -1,24 +1,24 @@
-import {Component, NgZone, OnDestroy, OnInit} from '@/root/node_modules/@angular/core';
-import {IonicPage, Loading, LoadingController, NavController, NavParams, Refresher, ViewController} from '@/root/node_modules/@ionic/angular';
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {LoadingController, NavController, NavParams, ModalController, IonRefresher} from '@ionic/angular';
 import {Wallet} from '@/models/wallet';
-import {Fees, Network} from '@/root/node_modules/ark-ts';
+import {Fees, Network} from 'ark-ts';
 import {UserDataProvider} from '@/services/user-data/user-data';
 import {MarketCurrency, MarketHistory, MarketTicker} from '@/models/market';
-import {Clipboard} from '@/root/node_modules/@ionic-native/clipboard';
+import {Clipboard} from '@ionic-native/clipboard';
 import {ToastProvider} from '@/services/toast/toast';
 import {ArkApiProvider} from '@/services/ark-api/ark-api';
 import lodash from 'lodash';
-import {Subject} from '@/root/node_modules/rxjs';
+import {Subject} from 'rxjs';
 import * as constants from '@/app/app.constants';
 import {Transaction} from '@/models/transaction';
 import {MarketDataProvider} from '@/services/market-data/market-data';
-import {TranslateService} from '@/root/node_modules/@ngx-translate/core';
+import {TranslateService} from '@ngx-translate/core';
 import {SettingsDataProvider} from '@/services/settings-data/settings-data';
 
-@IonicPage()
 @Component({
   selector: 'page-top-wallet-details',
   templateUrl: 'top-wallet-details.html',
+  styleUrls: ['top-wallet-details.scss'],
   providers: [Clipboard],
 })
 export class TopWalletDetailsPage implements OnDestroy {
@@ -49,13 +49,13 @@ export class TopWalletDetailsPage implements OnDestroy {
     private loadingCtrl: LoadingController,
     private settingsDataProvider: SettingsDataProvider,
     private toastProvider: ToastProvider,
-    private viewCtrl: ViewController,
+    private modalCtrl: ModalController,
   ) {
     this.topWallet = new Wallet().deserialize(this.navParams.get('wallet'));
 
     this.address = this.topWallet.address;
 
-    if (!this.topWallet) { this.navCtrl.popToRoot(); }
+    if (!this.topWallet) { this.navCtrl.pop(); }
 
     this.currentNetwork = this.userDataProvider.currentNetwork;
   }
@@ -73,7 +73,7 @@ export class TopWalletDetailsPage implements OnDestroy {
     this.marketDataProvider.history.subscribe((history) => this.marketHistory = history);
 
     if (lodash.isEmpty(this.topWallet)) {
-      this.navCtrl.popToRoot();
+      this.navCtrl.pop();
       return;
     }
 
@@ -82,15 +82,18 @@ export class TopWalletDetailsPage implements OnDestroy {
 
     // search for new transactions immediately
     if (this.emptyTransactions && !this.topWallet.isCold) {
-      this.translateService.get('TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS').takeUntil(this.unsubscriber$).subscribe((translation) => {
-        const loader = this.loadingCtrl.create({
-          content: `${translation}...`,
+      this.translateService
+        .get('TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS')
+        .takeUntil(this.unsubscriber$)
+        .subscribe(async (translation) => {
+          const loader = await this.loadingCtrl.create({
+            message: `${translation}...`,
+          });
+
+          loader.present();
+
+          this.refreshTransactions(loader);
         });
-
-        loader.present();
-
-        this.refreshTransactions(loader);
-      });
     }
   }
 
@@ -101,14 +104,14 @@ export class TopWalletDetailsPage implements OnDestroy {
     });
   }
 
-  private refreshTransactions(loader?: Loading|Refresher) {
+  private refreshTransactions(loader?: HTMLIonLoadingElement|IonRefresher) {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.client.getTransactionList(this.address)
         .finally(() => this.zone.run(() => {
           if (loader) {
-            if (loader instanceof Loading) {
+            if (loader instanceof HTMLIonLoadingElement) {
               loader.dismiss();
-            } else if (loader instanceof Refresher) {
+            } else if (loader instanceof IonRefresher) {
               loader.complete();
             }
           }
@@ -127,11 +130,13 @@ export class TopWalletDetailsPage implements OnDestroy {
 
   openTransactionShow(tx: Transaction) {
     if (this.topWallet) {
-      this.navCtrl.push('TransactionShowPage', {
-        transaction: tx,
-        symbol: this.currentNetwork.symbol,
-        equivalentAmount: tx.getAmountEquivalent(this.marketCurrency, this.marketHistory),
-        equivalentSymbol: this.marketCurrency.symbol,
+      this.navCtrl.navigateForward('/transaction/show', {
+        queryParams: {
+          transaction: tx,
+          symbol: this.currentNetwork.symbol,
+          equivalentAmount: tx.getAmountEquivalent(this.marketCurrency, this.marketHistory),
+          equivalentSymbol: this.marketCurrency.symbol,
+        }
       });
     } else {
       this.toastProvider.error('WALLETS_PAGE.WARNING_SELECT_WALLET_TRANSACTION_LOOKUP');
@@ -145,12 +150,12 @@ export class TopWalletDetailsPage implements OnDestroy {
       () => this.toastProvider.error('COPY_CLIPBOARD_FAILED'));
   }
 
-  doRefresh(refresher: Refresher) {
+  doRefresh(refresher: IonRefresher) {
     this.refreshTransactions(refresher);
   }
 
   dismiss() {
-    this.viewCtrl.dismiss();
+    this.modalCtrl.dismiss();
   }
 
   ionViewDidEnter() {

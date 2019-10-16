@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { WalletTopListPage } from './wallet-top-list';
-import {TranslateModule} from '@/root/node_modules/@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 import {PipesModule} from '@/pipes/pipes.module';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     WalletTopListPage,
   ],
   imports: [
-    IonicPageModule.forChild(WalletTopListPage),
+    IonicModule,
+    CommonModule,
+    RouterModule.forChild([{ path: '/wallets/top', component: WalletTopListPage }]),
     TranslateModule,
     PipesModule
   ],

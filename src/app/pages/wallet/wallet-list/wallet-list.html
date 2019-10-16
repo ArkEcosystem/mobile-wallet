@@ -9,7 +9,7 @@
 
 </ion-header>
 
-<ion-content class="column-mode-simple" [ngClass]="{delegate: selectedWallet?.isDelegate, normal: selectedWallet?.isDelegate == false}" no-padding no-bounce>
+<ion-content #content class="column-mode-simple" [ngClass]="{delegate: selectedWallet?.isDelegate, normal: selectedWallet?.isDelegate == false}" no-padding no-bounce>
   <ion-grid no-padding class="full-height">
     <empty-list message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="presentActionSheet()" *ngIf="wallets?.length === 0"></empty-list>
 
