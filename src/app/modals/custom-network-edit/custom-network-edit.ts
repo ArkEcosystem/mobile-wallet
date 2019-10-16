@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavParams, ViewController } from '@ionic/angular';
+import { AlertController, NavParams, ModalController } from '@ionic/angular';
 import { StoredNetwork } from '@/models/stored-network';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { TranslateService } from '@ngx-translate/core';
@@ -15,7 +15,6 @@ export interface EditNetworkResult {
   action: EditNetworkAction;
 }
 
-@IonicPage()
 @Component({
   selector: 'customNetworkEdit',
   templateUrl: 'custom-network-edit.html'
@@ -28,7 +27,7 @@ export class CustomNetworkEditModal {
   public networkId: string;
 
   public constructor(public navParams: NavParams,
-                     private viewCtrl: ViewController,
+                     private modalCtrl: ModalController,
                      private alertCtrl: AlertController,
                      private userDataProvider: UserDataProvider,
                      private translateService: TranslateService,
@@ -40,7 +39,7 @@ export class CustomNetworkEditModal {
   }
 
   dismiss(result?: EditNetworkResult) {
-    this.viewCtrl.dismiss(result);
+    this.modalCtrl.dismiss(result);
   }
 
   public updateApiPort() {
@@ -66,23 +65,26 @@ export class CustomNetworkEditModal {
       return;
     }
 
-    this.translateService.get(['CUSTOM_NETWORK.CONFIRM_DELETE', 'NO', 'YES']).subscribe(translations => {
-      const alert = this.alertCtrl.create({
-        title: translations['CUSTOM_NETWORK.CONFIRM_DELETE'],
-        buttons: [
-          {
-            text: translations['NO'],
-            role: 'cancel',
-            handler: () => {}
-          },
-          {
-            text: translations['YES'],
-            handler: () => this.delete()
-          }
-          ]
+    this.translateService
+      .get(['CUSTOM_NETWORK.CONFIRM_DELETE', 'NO', 'YES'])
+      .subscribe(async (translations) => {
+        const alert = await this.alertCtrl.create({
+          header: translations['CUSTOM_NETWORK.CONFIRM_DELETE'],
+          buttons: [
+            {
+              text: translations['NO'],
+              role: 'cancel',
+              handler: () => {}
+            },
+            {
+              text: translations['YES'],
+              handler: () => this.delete()
+            }
+            ]
+        });
+      
+        alert.present();
       });
-      alert.present();
-    });
   }
 
   private delete(): void {

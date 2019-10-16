@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, ViewController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { ToastProvider } from '@/services/toast/toast';
 import { LoaderAutoConfigure, Network, Peer, PeerVersion2ConfigResponse } from 'ark-ts';
 import ArkClient from '@/utils/ark-client';
 import lodash from 'lodash';
 import { HttpClient } from '@angular/common/http';
 
-@IonicPage()
 @Component({
   selector: 'customNetworkCreate',
   templateUrl: 'custom-network-create.html'
@@ -17,18 +16,18 @@ export class CustomNetworkCreateModal {
   public name: string;
   public seedServer: string;
 
-  public constructor(private viewCtrl: ViewController,
+  public constructor(private modalCtrl: ModalController,
                      private toastProvider: ToastProvider,
                      private loadingCtrl: LoadingController,
                      private httpClient: HttpClient) {
   }
 
   public dismiss(network?: Network): void {
-    this.viewCtrl.dismiss(network);
+    this.modalCtrl.dismiss(network);
   }
 
-  private configure(): void {
-    const loading = this.loadingCtrl.create();
+  public async configure(): Promise<void> {
+    const loading = await this.loadingCtrl.create();
     loading.present();
 
     const seedServerUrl = this.getSeedServerUrl();

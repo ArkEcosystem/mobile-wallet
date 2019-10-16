@@ -1,5 +1,5 @@
 import { Component, NgZone, OnDestroy } from '@angular/core';
-import { IonicPage, Platform, NavController, NavParams, ViewController, AlertController } from '@ionic/angular';
+import { Platform, NavController, NavParams, ModalController, AlertController } from '@ionic/angular';
 import { Vibration } from '@ionic-native/vibration';
 import { AuthProvider } from '@/services/auth/auth';
 
@@ -15,10 +15,10 @@ import lodash from 'lodash';
 
 import * as constants from '@/app/app.constants';
 
-@IonicPage()
 @Component({
   selector: 'modal-pin-code',
   templateUrl: 'pin-code.html',
+  styleUrls: ['pin-code.scss'],
   providers: [Vibration],
 })
 export class PinCodeModal implements OnDestroy {
@@ -44,7 +44,7 @@ export class PinCodeModal implements OnDestroy {
     public platform: Platform,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public viewCtrl: ViewController,
+    public modalCtrl: ModalController,
     private authProvider: AuthProvider,
     private zone: NgZone,
     private vibration: Vibration,
@@ -80,9 +80,9 @@ export class PinCodeModal implements OnDestroy {
                 'PIN_CODE.WEAK_PIN_DETAIL',
                 'NO',
                 'YES'
-              ]).subscribe((translation) => {
-                const alert = this.alertCtrl.create({
-                  title: translation['PIN_CODE.WEAK_PIN'],
+              ]).subscribe(async (translation) => {
+                const alert = await this.alertCtrl.create({
+                  header: translation['PIN_CODE.WEAK_PIN'],
                   message: translation['PIN_CODE.WEAK_PIN_DETAIL'],
                   buttons: [{
                     text: translation.NO,
@@ -160,7 +160,7 @@ export class PinCodeModal implements OnDestroy {
 
   dismiss(status: boolean = true) {
     if (!status) {
-      return this.viewCtrl.dismiss();
+      return this.modalCtrl.dismiss();
     }
 
     // When logged in, the attempts are restarted
@@ -169,11 +169,11 @@ export class PinCodeModal implements OnDestroy {
     }
 
     if (this.outputPassword) {
-      this.viewCtrl.dismiss(this.password);
+      this.modalCtrl.dismiss(this.password);
       return;
     }
 
-    this.viewCtrl.dismiss(status);
+    this.modalCtrl.dismiss(status);
   }
 
   private loadUnlockTime() {

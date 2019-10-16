@@ -1,15 +1,15 @@
 import {Component, OnDestroy} from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from '@ionic/angular';
+import { NavController, NavParams, ModalController } from '@ionic/angular';
 
 import { Subject } from 'rxjs/Subject';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import lodash from 'lodash';
 import { TransactionType } from 'ark-ts/model';
 
-@IonicPage()
 @Component({
   selector: 'page-register-delegate',
   templateUrl: 'register-delegate.html',
+  styleUrls: ['register-delegate.scss']
 })
 export class RegisterDelegatePage implements OnDestroy {
   public fee: number;
@@ -26,7 +26,7 @@ export class RegisterDelegatePage implements OnDestroy {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public viewCtrl: ViewController,
+    public modalCtrl: ModalController,
     private arkApiProvider: ArkApiProvider,
   ) {
     this.symbol = this.arkApiProvider.network.symbol;
@@ -46,11 +46,11 @@ export class RegisterDelegatePage implements OnDestroy {
   }
 
   closeModal() {
-    this.viewCtrl.dismiss();
+    this.modalCtrl.dismiss();
   }
 
   submitForm() {
-    this.viewCtrl.dismiss({ name: this.name, fee: this.fee });
+    this.modalCtrl.dismiss({ name: this.name, fee: this.fee });
   }
 
   ngOnDestroy() {

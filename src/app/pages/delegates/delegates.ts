@@ -82,11 +82,10 @@ export class DelegatesPage implements OnDestroy {
     });
 
     modal.onDidDismiss().then(({ data }) => {
-      const { delegateVote, fee } = data
-      if (!delegateVote) { return; }
+      if (!data.delegateVote) { return; }
 
-      this.selectedFee = fee;
-      this.selectedDelegate = delegateVote; // Save the delegate that we want to vote for
+      this.selectedFee = data.fee;
+      this.selectedDelegate = data.delegateVote; // Save the delegate that we want to vote for
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true);
 
     });

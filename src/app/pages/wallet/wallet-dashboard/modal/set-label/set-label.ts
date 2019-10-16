@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from '@ionic/angular';
+import { NavController, NavParams, ModalController } from '@ionic/angular';
 
-@IonicPage()
 @Component({
   selector: 'page-set-label',
   templateUrl: 'set-label.html',
@@ -13,17 +12,17 @@ export class SetLabelPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public viewCtrl: ViewController,
+    public modalCtrl: ModalController,
   ) {
     this.label = this.navParams.get('label') || '';
   }
 
   closeModal() {
-    this.viewCtrl.dismiss();
+    this.modalCtrl.dismiss();
   }
 
   submitForm() {
-    this.viewCtrl.dismiss(this.label, 'submit');
+    this.modalCtrl.dismiss(this.label, 'submit');
   }
 
 }

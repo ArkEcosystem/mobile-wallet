@@ -293,10 +293,10 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       }
     });
 
-    modal.onDidDismiss().then(({ data }) => {
-      if (data.role === 'submit') {
+    modal.onDidDismiss().then(({ data, role }) => {
+      if (role === 'submit') {
         this.userDataProvider
-          .setWalletLabel(this.wallet, data.label)
+          .setWalletLabel(this.wallet, data)
           .subscribe(null, error => this.toastProvider.error(error, 3000));
       }
     });
@@ -328,9 +328,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     });
 
     modal.onDidDismiss().then(({ data }) => {
-      if (lodash.isEmpty(data.newSecondPassphrase)) { return; }
+      if (lodash.isEmpty(data)) { return; }
 
-      this.newSecondPassphrase = data.newSecondPassphrase;
+      this.newSecondPassphrase = data;
       this.onEnterPinCode = this.createSignature;
       this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true);
 

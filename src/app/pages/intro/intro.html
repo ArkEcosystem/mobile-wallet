@@ -1,5 +1,5 @@
 <ion-content class="column-mode" no-bounce>
-  <ion-slides #slider (ionSlideDidChange)="slideChanged()">
+  <ion-slides #slider (ionSlideDidChange)="onSlideChanged()">
     <ion-slide *ngFor="let slide of slides">
       <ion-grid>
         <ion-row hideWhen="landscape">

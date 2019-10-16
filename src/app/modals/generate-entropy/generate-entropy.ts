@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, ViewController } from '@ionic/angular';
+import { NavController, NavParams, MenuController, ModalController } from '@ionic/angular';
 
 import { Crypto } from 'ark-ts/utils';
 
-@IonicPage()
 @Component({
   selector: 'modal-generate-entropy',
   templateUrl: 'generate-entropy.html',
+  styleUrls: ['generate-entropy.scss']
 })
 export class GenerateEntropyModal {
 
@@ -26,7 +26,7 @@ export class GenerateEntropyModal {
     public navCtrl: NavController,
     public navParams: NavParams,
     private menuCtrl: MenuController,
-    private viewCtrl: ViewController,
+    private modalCtrl: ModalController,
   ) {
     this.reset();
     this.menuCtrl.swipeEnable(false, 'sidebarMenu');
@@ -86,7 +86,7 @@ export class GenerateEntropyModal {
   }
 
   dismiss(result?) {
-    this.viewCtrl.dismiss(result);
+    this.modalCtrl.dismiss(result);
   }
 
   ionViewDidLeave() {

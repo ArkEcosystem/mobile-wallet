@@ -74,7 +74,7 @@ export class WalletListPage implements OnDestroy {
     this.userDataProvider.clearCurrentWallet();
   }
 
-  async ionSlideDidChange() {
+  async onSlideChanged() {
     const realIndex = await this.slider.getActiveIndex();
     this.selectedWallet = this.userDataProvider.getWalletByAddress(this.wallets[realIndex].address);
   }

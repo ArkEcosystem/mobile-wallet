@@ -53,7 +53,7 @@ export class ConfirmTransactionModal implements OnDestroy {
     this.address = this.transaction.address;
 
     if (!this.transaction) { this.navCtrl.pop(); }
-    this.loadingCtrl.create().dismissAll();
+    // this.loadingCtrl.create().dismissAll();
 
     this.currentNetwork = this.arkApiProvider.network;
   }

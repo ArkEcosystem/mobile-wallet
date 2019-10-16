@@ -64,7 +64,7 @@ export class IntroPage {
     this.slider.slideNext();
   }
 
-  async ionSlideDidChange() {
+  async onSlideChanged() {
     const activeIndex = await this.slider.getActiveIndex();
     const slideLength = await this.slider.length();
 

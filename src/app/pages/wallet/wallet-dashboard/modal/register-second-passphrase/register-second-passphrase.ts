@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from '@ionic/angular';
+import { NavController, NavParams, ModalController } from '@ionic/angular';
 
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 
 import bip39 from 'bip39';
 import { Fees, Network } from 'ark-ts';
 
-@IonicPage()
 @Component({
   selector: 'page-register-second-passphrase',
   templateUrl: 'register-second-passphrase.html',
+  styleUrls: ['register-second-passphrase.scss'],
 })
 export class RegisterSecondPassphrasePage {
 
@@ -24,7 +24,7 @@ export class RegisterSecondPassphrasePage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private viewCtrl: ViewController,
+    private modalCtrl: ModalController,
     private arkApiProvider: ArkApiProvider,
   ) {
   }
@@ -49,7 +49,7 @@ export class RegisterSecondPassphrasePage {
   }
 
   dismiss(result?: any) {
-    this.viewCtrl.dismiss(result);
+    this.modalCtrl.dismiss(result);
   }
 
   ionViewDidLoad() {

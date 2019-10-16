@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { SetLabelPage } from './set-label';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { DirectivesModule } from '@/directives/directives.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     SetLabelPage,
   ],
   imports: [
-    IonicPageModule.forChild(SetLabelPage),
+    IonicModule,
+    CommonModule,
     DirectivesModule,
     TranslateModule,
   ],
+  exports: [
+    SetLabelPage
+  ]
 })
 export class SetLabelPageModule {}

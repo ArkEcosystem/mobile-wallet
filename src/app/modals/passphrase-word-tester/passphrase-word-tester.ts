@@ -1,12 +1,12 @@
 import {Component, ViewChild} from '@angular/core';
-import {IonicPage, NavController, NavParams, ViewController} from '@ionic/angular';
+import { NavController, NavParams, ModalController } from '@ionic/angular';
 import { UserDataProvider } from '@/services/user-data/user-data';
-import { PassphraseInputComponent } from '@components/passphrase-input/passphrase-input';
+import { PassphraseInputComponent } from '@/components/passphrase-input/passphrase-input';
 
-@IonicPage()
 @Component({
   selector: 'modal-passphrase-word-tester',
   templateUrl: 'passphrase-word-tester.html',
+  styleUrls: ['passphrase-word-tester.scss']
 })
 export class PassphraseWordTesterModal {
 
@@ -15,11 +15,12 @@ export class PassphraseWordTesterModal {
   public wordlistLanguage: string;
   public isDevNet: boolean;
 
-  @ViewChild(PassphraseInputComponent) passphraseInput: PassphraseInputComponent;
+  @ViewChild('passphrase', { read: PassphraseInputComponent, static: true })
+  passphraseInput: PassphraseInputComponent;
 
   public constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private viewCtrl: ViewController,
+              private modalCtrl: ModalController,
               private userDataProvider: UserDataProvider) {
     this.passphraseReference = this.navParams.get('passphrase');
     this.wordlistLanguage = this.navParams.get('wordlistLanguage') || 'english';
@@ -43,7 +44,7 @@ export class PassphraseWordTesterModal {
   }
 
   public dismiss(validationSuccess?: boolean): void {
-    this.viewCtrl.dismiss(validationSuccess);
+    this.modalCtrl.dismiss(validationSuccess);
   }
 
 }

@@ -1,15 +1,20 @@
 import { NgModule } from '@angular/core';
-import {  IonicPageModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { TranslateModule } from '@ngx-translate/core';
 import { CustomNetworkEditModal } from './custom-network-edit';
 import { DirectivesModule } from '@/directives/directives.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [CustomNetworkEditModal],
   imports: [
-    IonicPageModule.forChild(CustomNetworkEditModal),
+    IonicModule,
+    CommonModule,
     DirectivesModule,
     TranslateModule
+  ],
+  exports: [
+    CustomNetworkEditModal
   ]
 })
 export class CustomNetworkEditModalModule {
