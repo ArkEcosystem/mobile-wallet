@@ -10,7 +10,7 @@ import 'rxjs/add/observable/of';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { StorageProvider } from '@/services/storage/storage';
 import { ToastProvider } from '@/services/toast/toast';
-import { HttpUtils } from '@/root/src/utils/http-utils';
+import { HttpUtils } from '@/app/utils/http-utils';
 
 import {Transaction, TranslatableObject, BlocksEpochResponse, Wallet} from '@/models/model';
 

@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnDestroy } from '@angular/core';
+import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { AlertController, NavController, NavParams } from '@ionic/angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: 'profile-create.html',
   styleUrls: ['profile-create.scss'],
 })
-export class ProfileCreatePage implements OnDestroy {
+export class ProfileCreatePage implements OnInit, OnDestroy {
   @ViewChild('createProfileForm', { static: true }) createProfileForm: HTMLFormElement;
 
   public networks: {[networkId: string]: Network};
@@ -89,7 +89,7 @@ export class ProfileCreatePage implements OnDestroy {
     this.newProfile.networkId = customNetworkId;
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     this.load();
   }
 

@@ -6,6 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 import lodash from 'lodash';
 import { AddressCheckResult } from '@/services/address-checker/address-check-result';
+import { ConfirmTransactionModal } from '@/app/modals/confirm-transaction/confirm-transaction';
+import { TransactionResponsePage } from '@/app/pages/transaction/transaction-response/transaction-response';
 
 @Component({
   selector: 'confirm-transaction',
@@ -30,36 +32,39 @@ export class ConfirmTransactionComponent {
     transaction = new Transaction(this.wallet.address, this.arkApiProvider.network).deserialize(transaction);
 
     this.arkApiProvider.createTransaction(transaction, keys.key, keys.secondKey, keys.secondPassphrase)
-      .subscribe((tx) => {
-        const modal = this.modalCtrl.create('ConfirmTransactionModal', {
-          transaction: tx,
-          addressCheckResult: addressCheckResult,
-          extra: extra
-        }, { enableBackdropDismiss: true });
+      .subscribe(async (tx) => {
+        const modal = await this.modalCtrl.create({
+          component: ConfirmTransactionModal,
+          componentProps: {
+            transaction: tx,
+            addressCheckResult: addressCheckResult,
+            extra: extra
+          },
+          backdropDismiss: true
+        });
 
-        modal.onDidDismiss((result) => {
-          if (lodash.isUndefined(result)) {
+        modal.onDidDismiss().then(({ data }) => {
+          if (lodash.isUndefined(data)) {
             return this.onClosed.emit();
           }
 
-          if (!result.status) {
+          if (!data.status) {
             this.onClosed.emit();
 
-            return this.presentWrongModal(result);
+            return this.presentWrongModal(data);
           }
 
           this.onConfirm.emit(tx);
 
-          return this.navCtrl.push('TransactionResponsePage', {
-            transaction: tx,
-            keys,
-            response: result,
-            wallet: this.wallet,
-          })
-          .then(() => {
-            this.navCtrl.remove(this.navCtrl.getActive().index - 1, 1);
+          this.navCtrl.navigateForward('/transaction/response', {
+            queryParams: {
+              transaction: tx,
+              keys,
+              response: data,
+              wallet: this.wallet,
+            },
+            replaceUrl: true
           });
-
         });
 
         modal.present();
@@ -75,9 +80,10 @@ export class ConfirmTransactionComponent {
       });
   }
 
-  presentWrongModal(response) {
-    const responseModal = this.modalCtrl.create('TransactionResponsePage', {
-      response
+  async presentWrongModal(response) {
+    const responseModal = await this.modalCtrl.create({
+      component: TransactionResponsePage,
+      componentProps: response
     });
 
     responseModal.present();

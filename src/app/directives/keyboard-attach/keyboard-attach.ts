@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
-import { Keyboard } from '@ionic-native/keyboard';
-import { Content, Platform } from '@ionic/angular';
+import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { IonContent, Platform } from '@ionic/angular';
 import { Subscription } from 'rxjs/Subscription';
 import { setTimeout } from 'timers';
 
@@ -39,7 +39,7 @@ import { setTimeout } from 'timers';
   selector: '[keyboard-attach]'
 })
 export class KeyboardAttachDirective implements OnInit, OnDestroy {
-  @Input('keyboard-attach') content: Content;
+  @Input('keyboard-attach') content: IonContent;
 
   private onShowSubscription: Subscription;
   private onHideSubscription: Subscription;
@@ -83,6 +83,6 @@ export class KeyboardAttachDirective implements OnInit, OnDestroy {
 
   private setElementPosition(pixels: number) {
     this.elementRef.nativeElement.style.paddingBottom = pixels + this.initialPaddingBottom + 'px';
-    this.content.resize();
+    // this.content.resize();
   }
 }

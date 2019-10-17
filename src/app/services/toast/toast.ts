@@ -70,11 +70,11 @@ export class ToastProvider {
       message = obj.key;
       parameters = obj.parameters;
     }
-    this.translateService.get(message, parameters).subscribe((translation) => {
-      const toast = this.toastCtrl.create({
+    this.translateService.get(message, parameters).subscribe(async (translation) => {
+      const toast = await this.toastCtrl.create({
         message: translation,
         duration: hideDelay || this.hideDelay,
-        position: position || this.position,
+        position: (position || this.position) as 'top' | 'bottom' | 'middle',
         cssClass: cssClass
       });
 

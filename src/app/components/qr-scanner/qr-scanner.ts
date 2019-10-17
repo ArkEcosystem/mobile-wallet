@@ -5,6 +5,7 @@ import { QRCodeScheme } from '@/models/model';
 import lodash from 'lodash';
 import bip39 from 'bip39';
 import * as constants from '@/app/app.constants';
+import { QRScannerModal } from '@/app/modals/qr-scanner/qr-scanner';
 
 @Component({
   selector: 'qr-scanner',
@@ -17,10 +18,12 @@ export class QRScannerComponent {
 
   constructor(private modalCtrl: ModalController) { }
 
-  open(format: boolean = false) {
-    const modal = this.modalCtrl.create('QRScannerModal');
+  async open(format: boolean = false) {
+    const modal = await this.modalCtrl.create({
+      component: QRScannerModal
+    });
 
-    modal.onDidDismiss((qrCode) => {
+    modal.onDidDismiss().then(({ data: qrCode }) => {
       if (lodash.isNil(qrCode)) { return this.onWrong.emit(); }
 
       let response = qrCode;

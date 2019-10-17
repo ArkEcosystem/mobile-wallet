@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ModalController, Events } from '@ionic/angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 
@@ -13,7 +13,7 @@ import * as constants from '@/app/app.constants';
   styleUrls: ['qr-scanner.scss'],
   providers: [Vibration],
 })
-export class QRScannerModal {
+export class QRScannerModal implements OnDestroy {
 
   private ionApp: HTMLElement;
 
@@ -85,7 +85,7 @@ export class QRScannerModal {
     this.modalCtrl.dismiss(qrCode);
   }
 
-  ionViewDidLeave() {
+  ngOnDestroy() {
     this.hideCamera();
     this.qrScanner.destroy();
   }

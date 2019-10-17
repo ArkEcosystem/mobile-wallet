@@ -14,8 +14,8 @@ export class PassphraseInputComponent implements OnInit {
   public hidePassphrase = false;
   public passphraseHidden: string;
 
-  @ViewChild('inputPassphrase') inputPassphrase;
-  @ViewChild('inputPassphraseHidden') inputPassphraseHidden;
+  @ViewChild('inputPassphrase', { static: true }) inputPassphrase;
+  @ViewChild('inputPassphraseHidden', { static: true }) inputPassphraseHidden;
 
   @Input() wordlistLanguage: string;
   @Input() passphraseInit: string; // used for devnet to fill the words automatically

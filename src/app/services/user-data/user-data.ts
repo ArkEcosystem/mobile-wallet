@@ -6,6 +6,7 @@ import { ForgeProvider } from '@/services/forge/forge';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/empty';
 
 import { Contact, Profile, Wallet, WalletKeys } from '@/models/model';
 

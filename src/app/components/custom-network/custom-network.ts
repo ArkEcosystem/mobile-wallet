@@ -3,8 +3,9 @@ import lodash from 'lodash';
 import { Network } from 'ark-ts/model';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { ModalController } from '@ionic/angular';
-import { EditNetworkAction, EditNetworkResult } from '@/app/modals/custom-network-edit/custom-network-edit';
+import { EditNetworkAction, EditNetworkResult, CustomNetworkEditModal } from '@/app/modals/custom-network-edit/custom-network-edit';
 import { ToastProvider } from '@/services/toast/toast';
+import { CustomNetworkCreateModal } from '@/app/modals/custom-network-create/custom-network-create';
 
 
 @Component({
@@ -49,37 +50,46 @@ export class CustomNetworkComponent implements OnInit {
          });
   }
 
-  public createNewModal(): void {
-    const modal = this.modalCtrl.create('CustomNetworkCreateModal');
+  public async createNewModal() {
+    const modal = await this.modalCtrl.create({
+      component: CustomNetworkCreateModal
+    });
 
-    modal.onDidDismiss((result: Network) => {
-      if (!result) {
+    modal.onDidDismiss().then(({ data }) => {
+      if (!data) {
         return;
       }
-      this.openManageDialog(result);
+      this.openManageDialog(data);
     });
 
     modal.present();
   }
 
-  private openManageDialog(network: Network, networkId?: string) {
-    const modal = this.modalCtrl.create('CustomNetworkEditModal', {network: network, id: networkId});
-    modal.onDidDismiss((result: EditNetworkResult) => {
-      if (!result) {
+  private async openManageDialog(network: Network, networkId?: string) {
+    const modal = await this.modalCtrl.create({
+      component: CustomNetworkEditModal,
+      componentProps: {
+        network: network,
+        id: networkId
+      }
+    });
+  
+    modal.onDidDismiss().then(({ data }) => {
+      if (!data) {
         return;
       }
 
       if (this.showSuccessMessages) {
-        if (result.action === EditNetworkAction.Update) {
+        if (data.action === EditNetworkAction.Update) {
           this.toastProvider.success('CUSTOM_NETWORK.SAVE_SUCCESSFUL');
-        } else if (result.action === EditNetworkAction.Delete) {
+        } else if (data.action === EditNetworkAction.Delete) {
           this.toastProvider.success('CUSTOM_NETWORK.DELETE_SUCCESSFUL');
         }
       }
 
       this.loadNetworks();
 
-      const filteredNetworks = this.networkChoices.filter(n => n.id === result.networkId);
+      const filteredNetworks = this.networkChoices.filter(n => n.id === data.networkId);
       if (filteredNetworks.length) {
         this.activeNetworkChoice = filteredNetworks[0];
       } else {

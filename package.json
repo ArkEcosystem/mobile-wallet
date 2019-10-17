@@ -27,7 +27,9 @@
     "@ionic-native/in-app-browser": "^5.15.0",
     "@ionic-native/keyboard": "^5.15.0",
     "@ionic-native/local-notifications": "^5.15.0",
+    "@ionic-native/network": "^5.15.0",
     "@ionic-native/qr-scanner": "^5.15.0",
+    "@ionic-native/screen-orientation": "^5.15.0",
     "@ionic-native/social-sharing": "^5.15.0",
     "@ionic-native/splash-screen": "^5.0.0",
     "@ionic-native/status-bar": "^5.0.0",
@@ -45,7 +47,9 @@
     "cordova-plugin-inappbrowser": "^3.1.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-local-notification": "^0.9.0-beta.2",
+    "cordova-plugin-network-information": "^2.0.2",
     "cordova-plugin-qrscanner": "^3.0.1",
+    "cordova-plugin-screen-orientation": "^3.0.2",
     "cordova-plugin-vibration": "^3.1.1",
     "cordova-plugin-x-socialsharing": "^5.6.2",
     "cordova-sqlite-storage": "3.4.0",
@@ -53,11 +57,13 @@
     "is-url": "^1.2.4",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
     "ngx-filter-pipe": "^2.1.2",
     "node-forge": "^0.9.1",
     "rxjs": "^6.5.3",
     "rxjs-compat": "^6.5.3",
     "semver": "^6.3.0",
+    "string-hash": "^1.1.3",
     "tslib": "^1.9.0",
     "uuid": "^3.3.3",
     "zone.js": "~0.9.1"
@@ -105,7 +111,9 @@
       "cordova-plugin-x-socialsharing": {},
       "cordova-plugin-local-notification": {},
       "cordova-plugin-background-mode": {},
-      "cordova-sqlite-storage": {}
+      "cordova-sqlite-storage": {},
+      "cordova-plugin-network-information": {},
+      "cordova-plugin-screen-orientation": {}
     }
   }
 }

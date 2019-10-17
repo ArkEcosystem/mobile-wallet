@@ -1,6 +1,6 @@
-import { Component, NgZone, OnDestroy } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Platform, NavController, NavParams, ModalController, AlertController } from '@ionic/angular';
-import { Vibration } from '@ionic-native/vibration';
+import { Vibration } from '@ionic-native/vibration/ngx';
 import { AuthProvider } from '@/services/auth/auth';
 
 import { Subscription } from 'rxjs/Subscription';
@@ -21,7 +21,7 @@ import * as constants from '@/app/app.constants';
   styleUrls: ['pin-code.scss'],
   providers: [Vibration],
 })
-export class PinCodeModal implements OnDestroy {
+export class PinCodeModal implements OnInit, OnDestroy {
 
   public message: string;
   public password: string;
@@ -207,7 +207,7 @@ export class PinCodeModal implements OnDestroy {
     });
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     this.authProvider.getAttempts().subscribe((attempts) => this.attempts = attempts);
     this.loadUnlockTime();
   }

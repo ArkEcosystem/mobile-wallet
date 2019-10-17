@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController, NavParams } from '@ionic/angular';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
@@ -13,7 +13,7 @@ import { PassphraseWordTesterModal } from '../passphrase-word-tester/passphrase-
   templateUrl: 'wallet-backup.html',
   styleUrls: ['wallet-backup.scss']
 })
-export class WalletBackupModal {
+export class WalletBackupModal implements OnInit {
 
   public title: string;
   public entropy: string;
@@ -71,7 +71,7 @@ export class WalletBackupModal {
     this.showAdvancedOptions = !this.showAdvancedOptions;
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     if (this.keys) {
       return this.generateAccountFromKeys();
     }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { NavController, NavParams, MenuController, ModalController } from '@ionic/angular';
 
 import { Crypto } from 'ark-ts/utils';
@@ -8,7 +8,7 @@ import { Crypto } from 'ark-ts/utils';
   templateUrl: 'generate-entropy.html',
   styleUrls: ['generate-entropy.scss']
 })
-export class GenerateEntropyModal {
+export class GenerateEntropyModal implements OnDestroy {
 
   public pan: number;
   public progress: number;
@@ -89,7 +89,7 @@ export class GenerateEntropyModal {
     this.modalCtrl.dismiss(result);
   }
 
-  ionViewDidLeave() {
+  ngOnDestroy() {
     this.reset();
     this.menuCtrl.swipeEnable(true, 'sidebarMenu');
   }

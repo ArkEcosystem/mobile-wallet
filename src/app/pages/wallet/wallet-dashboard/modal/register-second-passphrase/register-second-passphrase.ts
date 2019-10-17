@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, ModalController } from '@ionic/angular';
 
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
@@ -11,7 +11,7 @@ import { Fees, Network } from 'ark-ts';
   templateUrl: 'register-second-passphrase.html',
   styleUrls: ['register-second-passphrase.scss'],
 })
-export class RegisterSecondPassphrasePage {
+export class RegisterSecondPassphrasePage implements OnInit {
 
   public passphrase: string;
   public repassphrase: string;
@@ -52,7 +52,7 @@ export class RegisterSecondPassphrasePage {
     this.modalCtrl.dismiss(result);
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     this.passphrase = bip39.generateMnemonic();
     this.currentNetwork = this.arkApiProvider.network;
     this.arkApiProvider.fees.subscribe((fees) => this.fees = fees);

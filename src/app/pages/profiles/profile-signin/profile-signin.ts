@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController, ActionSheetController } from '@ionic/angular';
 
 import { Subject } from 'rxjs/Subject';
@@ -22,7 +22,7 @@ import { PinCodeComponent } from '@/components/pin-code/pin-code';
   templateUrl: 'profile-signin.html',
   styleUrls: ['profile-signin.scss'],
 })
-export class ProfileSigninPage implements OnDestroy {
+export class ProfileSigninPage implements OnInit, OnDestroy {
   @ViewChild('pinCode', { read: PinCodeComponent, static: true })
   pinCode: PinCodeComponent;
 
@@ -143,7 +143,7 @@ export class ProfileSigninPage implements OnDestroy {
     return lodash.isEmpty(this.profiles);
   }
 
-  ionViewDidLoad() {
+  ngOnInit() {
     this.load();
   }
 

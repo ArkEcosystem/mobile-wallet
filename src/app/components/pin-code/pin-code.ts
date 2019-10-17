@@ -7,6 +7,8 @@ import { ToastProvider } from '@/services/toast/toast';
 
 import lodash from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
+import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
+import { EnterSecondPassphraseModal } from '@/app/modals/enter-second-passphrase/enter-second-passphrase';
 
 @Component({
   selector: 'pin-code',
@@ -31,21 +33,23 @@ export class PinCodeComponent {
   ) {
   }
 
-  open(message: string, outputPassword: boolean, verifySecondPassphrase: boolean = false, onSuccess?: (keys: WalletKeys) => void) {
+  async open(message: string, outputPassword: boolean, verifySecondPassphrase: boolean = false, onSuccess?: (keys: WalletKeys) => void) {
     if (outputPassword && !this.wallet) { return false; }
 
-    const modal = this.modalCtrl.create('PinCodeModal', {
-      message,
-      outputPassword,
-      validatePassword: true,
+    const modal = await this.modalCtrl.create({
+      component: PinCodeModal,
+      componentProps: {
+        message,
+        outputPassword,
+        validatePassword: true,
+      }
     });
 
-    modal.onDidDismiss((password) => {
-      if (lodash.isNil(password)) { return this.onClosed.emit(); }
+    modal.onDidDismiss().then(async ({ data }) => {
+      if (lodash.isNil(data)) { return this.onClosed.emit(); }
 
-      const loader = this.loadingCtrl.create({
-        dismissOnPageChange: true,
-        enableBackdropDismiss: false,
+      const loader = await this.loadingCtrl.create({
+        backdropDismiss: false,
         showBackdrop: true
       });
 
@@ -56,7 +60,7 @@ export class PinCodeComponent {
         return this.executeOnSuccess(onSuccess);
       }
 
-      const passphrases = this.userDataProvider.getKeysByWallet(this.wallet, password);
+      const passphrases = this.userDataProvider.getKeysByWallet(this.wallet, data);
       loader.dismiss();
 
       if (lodash.isEmpty(passphrases) || lodash.isNil(passphrases)) { return this.onWrong.emit(); }
@@ -68,17 +72,19 @@ export class PinCodeComponent {
     modal.present();
   }
 
-  private requestSecondPassphrase(passphrases: WalletKeys, onSuccess: (keys: WalletKeys) => void) {
+  private async requestSecondPassphrase(passphrases: WalletKeys, onSuccess: (keys: WalletKeys) => void) {
     if (this.wallet.secondPublicKey && !this.wallet.cipherSecondKey) {
-      const modal = this.modalCtrl.create('EnterSecondPassphraseModal', null);
+      const modal = await this.modalCtrl.create({
+        component: EnterSecondPassphraseModal
+      });
 
-      modal.onDidDismiss((passphrase) => {
-        if (!passphrase) {
+      modal.onDidDismiss().then(({ data }) => {
+        if (!data) {
           this.toastProvider.error('TRANSACTIONS_PAGE.SECOND_PASSPHRASE_NOT_ENTERED');
           return this.onWrong.emit();
         }
 
-        passphrases.secondPassphrase = passphrase;
+        passphrases.secondPassphrase = data;
         return this.executeOnSuccess(onSuccess, passphrases);
       });
 
@@ -89,33 +95,39 @@ export class PinCodeComponent {
   }
 
   createUpdatePinCode(nextPage?: string, oldPassword?: string) {
-    const createPinCodeModalFunc = (master?: any) => {
+    const createPinCodeModalFunc = async (master?: any) => {
       if (!master) {
-        const pinCodeModal = this.modalCtrl.create('PinCodeModal', {
-          message: 'PIN_CODE.CREATE',
-          outputPassword: true,
+        const pinCodeModal = await this.modalCtrl.create({
+          component: PinCodeModal,
+          componentProps: {
+            message: 'PIN_CODE.CREATE',
+            outputPassword: true,
+          }
         });
 
-        pinCodeModal.onDidDismiss((password) => {
+        pinCodeModal.onDidDismiss().then(async ({ data: password }) => {
           if (password) {
-            const validateModal = this.modalCtrl.create('PinCodeModal', {
-              message: 'PIN_CODE.CONFIRM',
-              expectedPassword: password,
+            const validateModal = await this.modalCtrl.create({
+              component: PinCodeModal,
+              componentProps: {
+                message: 'PIN_CODE.CONFIRM',
+                expectedPassword: password,
+              }
             });
 
-            validateModal.onDidDismiss((status) => {
+            validateModal.onDidDismiss().then(({ data: status }) => {
               const continueWithSuccess = (successMessageKey: string) => {
                 this.toastProvider.success(successMessageKey);
                 if (nextPage) {
-                  this.navCtrl.push(nextPage);
+                  this.navCtrl.navigateForward(nextPage);
                 }
               };
 
               if (status) {
                 this.authProvider.saveMasterPassword(password);
                 if (oldPassword) {
-                  this.translateService.get('PIN_CODE.UPDATING').subscribe(updatingText => {
-                    const loading = this.loadingCtrl.create({content: updatingText});
+                  this.translateService.get('PIN_CODE.UPDATING').subscribe(async (updatingText) => {
+                    const loading = await this.loadingCtrl.create({message: updatingText});
                     loading.present()
                       .then(() => {
                         this.userDataProvider.updateWalletEncryption(oldPassword, password);
@@ -139,7 +151,7 @@ export class PinCodeComponent {
 
         pinCodeModal.present();
       } else if (nextPage) {
-        this.navCtrl.push(nextPage);
+        this.navCtrl.navigateForward(nextPage);
       }
     };
     if (!oldPassword) {
