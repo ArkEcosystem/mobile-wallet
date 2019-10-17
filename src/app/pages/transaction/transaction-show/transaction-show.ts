@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ActionSheetController, Platform } from '@ionic/angular';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { Transaction } from '@/models/transaction';
 import { UserDataProvider } from '@/services/user-data/user-data';

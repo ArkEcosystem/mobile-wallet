@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from '@ionic/angular';
-import { Clipboard } from '@ionic-native/clipboard';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 
 import { ToastProvider } from '@/services/toast/toast';
-import { SocialSharing } from '@ionic-native/social-sharing';
+import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 
 @Component({
   selector: 'page-transaction-receive',

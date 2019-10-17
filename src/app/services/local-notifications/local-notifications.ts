@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { LocalNotifications } from '@ionic-native/local-notifications';
-import { BackgroundMode } from '@ionic-native/background-mode';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import { BackgroundMode } from '@ionic-native/background-mode/ngx';
 
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
 import { UserDataProvider } from '@/services/user-data/user-data';

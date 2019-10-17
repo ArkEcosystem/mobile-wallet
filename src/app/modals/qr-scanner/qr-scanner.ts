@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, Events } from '@ionic/angular';
-
-import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner';
+import { ModalController, Events } from '@ionic/angular';
+import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 
 import { ToastProvider } from '@/services/toast/toast';
-import { Vibration } from '@ionic-native/vibration';
+import { Vibration } from '@ionic-native/vibration/ngx';
 
 import * as constants from '@/app/app.constants';
 
-@IonicPage()
 @Component({
   selector: 'modal-qr-scanner',
   templateUrl: 'qr-scanner.html',
+  styleUrls: ['qr-scanner.scss'],
   providers: [Vibration],
 })
 export class QRScannerModal {
@@ -22,7 +21,7 @@ export class QRScannerModal {
     private events: Events,
     private qrScanner: QRScanner,
     private toastProvider: ToastProvider,
-    private viewCtrl: ViewController,
+    private modalCtrl: ModalController,
     private vibration: Vibration,
   ) {
     this.scanQrCode();
@@ -83,7 +82,7 @@ export class QRScannerModal {
       this.ionApp.classList.remove('transparent');
     });
 
-    this.viewCtrl.dismiss(qrCode);
+    this.modalCtrl.dismiss(qrCode);
   }
 
   ionViewDidLeave() {

@@ -1,8 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ModalController, IonContent } from '@ionic/angular';
 
-import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { Clipboard } from '@ionic-native/clipboard';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { ToastProvider } from '@/services/toast/toast';

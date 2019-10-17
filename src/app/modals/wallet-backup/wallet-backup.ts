@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams, ViewController} from '@ionic/angular';
+import { ModalController, NavController, NavParams } from '@ionic/angular';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
 import { PrivateKey } from 'ark-ts/core';
 import bip39 from 'bip39';
 import { WalletKeys, AccountBackup } from '@/models/model';
+import { PassphraseWordTesterModal } from '../passphrase-word-tester/passphrase-word-tester';
 
-@IonicPage()
 @Component({
   selector: 'modal-wallet-backup',
   templateUrl: 'wallet-backup.html',
+  styleUrls: ['wallet-backup.scss']
 })
 export class WalletBackupModal {
 
@@ -28,7 +29,6 @@ export class WalletBackupModal {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private viewCtrl: ViewController,
     private modalCtrl: ModalController,
     private userDataProvider: UserDataProvider,
     private settingsDataProvider: SettingsDataProvider) {
@@ -43,25 +43,28 @@ export class WalletBackupModal {
     this.settingsDataProvider.settings.subscribe((settings) => this.wordlistLanguage = settings.wordlistLanguage);
   }
 
-  next() {
+  async next() {
     if (!this.account || !this.account.mnemonic) {
       this.dismiss(this.account);
     }
 
-    const wordTesterModal = this.modalCtrl.create('PassphraseWordTesterModal', {
-      passphrase: this.account.mnemonic,
-      wordlistLanguage: this.wordlistLanguage
+    const wordTesterModal = await this.modalCtrl.create({
+      component: PassphraseWordTesterModal,
+      componentProps: {
+        passphrase: this.account.mnemonic,
+        wordlistLanguage: this.wordlistLanguage
+      }
     });
 
-    wordTesterModal.onDidDismiss(validationSuccess => {
-      this.dismiss(validationSuccess ? this.account : null);
+    wordTesterModal.onDidDismiss().then(({ data }) => {
+      this.dismiss(data ? this.account : null);
     });
 
     wordTesterModal.present();
   }
 
   dismiss(result?: any) {
-    this.viewCtrl.dismiss(result);
+    this.modalCtrl.dismiss(result);
   }
 
   toggleAdvanced() {
@@ -87,7 +90,7 @@ export class WalletBackupModal {
     account.address = wallet.address;
     account.mnemonic = this.keys.key;
     account.publicKey = pbKey.toHex();
-    account.seed = bip39.mnemonicToSeedHex(account.mnemonic);
+    account.seed = bip39.mnemonicToSeedSync(account.mnemonic).toString('hex');
     if (pbKey.network.wif) {
       account.wif = pvKey.toWIF();
     }
@@ -114,7 +117,7 @@ export class WalletBackupModal {
     if (pbKey.network.wif) {
       account.wif = pvKey.toWIF();
     }
-    account.seed = bip39.mnemonicToSeedHex(account.mnemonic);
+    account.seed = bip39.mnemonicToSeedSync(account.mnemonic).toString('hex');
 
     this.account = account;
   }

@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from '@ionic/angular';
+import { IonicModule } from '@ionic/angular';
 import { WalletBackupModal } from './wallet-backup';
 
 import { TranslateModule } from '@ngx-translate/core';
-import { QRCodeComponentModule } from '@components/qr-code/qr-code.module';
+import { QRCodeComponentModule } from '@/components/qr-code/qr-code.module';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     WalletBackupModal
   ],
   imports: [
-    IonicPageModule.forChild(WalletBackupModal),
+    IonicModule,
+    CommonModule,
     TranslateModule,
     QRCodeComponentModule
   ],
+  exports: [
+    WalletBackupModal
+  ]
 })
 export class WalletBackupModalModule {}

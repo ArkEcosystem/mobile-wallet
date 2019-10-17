@@ -29,7 +29,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as constants from '@/app/app.constants';
 import { PinCodeComponent } from '@/components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@/components/confirm-transaction/confirm-transaction';
-import { Clipboard } from '@ionic-native/clipboard';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { ToastProvider } from '@/services/toast/toast';
 import { RegisterDelegatePage } from './modal/register-delegate/register-delegate';
 import { RegisterSecondPassphrasePage } from './modal/register-second-passphrase/register-second-passphrase';

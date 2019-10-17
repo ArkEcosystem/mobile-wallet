@@ -4,7 +4,7 @@ import {Wallet} from '@/models/wallet';
 import {Fees, Network} from 'ark-ts';
 import {UserDataProvider} from '@/services/user-data/user-data';
 import {MarketCurrency, MarketHistory, MarketTicker} from '@/models/market';
-import {Clipboard} from '@ionic-native/clipboard';
+import {Clipboard} from '@ionic-native/clipboard/ngx';
 import {ToastProvider} from '@/services/toast/toast';
 import {ArkApiProvider} from '@/services/ark-api/ark-api';
 import lodash from 'lodash';

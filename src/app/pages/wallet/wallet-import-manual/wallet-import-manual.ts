@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, NavParams, ModalController } from '@ionic/angular';
-import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';

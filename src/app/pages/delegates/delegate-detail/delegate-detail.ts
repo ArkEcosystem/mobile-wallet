@@ -8,7 +8,7 @@ import { Delegate, Fees, Network, TransactionType } from 'ark-ts';
 import { Wallet } from '@/models/wallet';
 
 import { TranslateService } from '@ngx-translate/core';
-import { Clipboard } from '@ionic-native/clipboard';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 import lodash from 'lodash';
 import { ToastProvider } from '@/services/toast/toast';
 
@@ -76,9 +76,9 @@ export class DelegateDetailPage {
         'CANCEL',
         'DELEGATES_PAGE.UNVOTE'
       ], { delegate: this.walletVote.username })
-        .subscribe((translation) => {
-          const alert = this.alertCtrl.create({
-            title: translation['DELEGATES_PAGE.UNVOTE'],
+        .subscribe(async (translation) => {
+          const alert = await this.alertCtrl.create({
+            header: translation['DELEGATES_PAGE.UNVOTE'],
             message: translation['DELEGATES_PAGE.UNVOTE_CURRENT_DELEGATE'],
             buttons: [{
               text: translation.CANCEL,

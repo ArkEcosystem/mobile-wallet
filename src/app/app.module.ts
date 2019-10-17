@@ -5,13 +5,14 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 export function httpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -21,8 +22,9 @@ export function httpLoaderFactory(http: HttpClient) {
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    IonicModule.forRoot(),
+    IonicStorageModule.forRoot(),
     BrowserModule,
-    IonicModule.forRoot(),,
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {
