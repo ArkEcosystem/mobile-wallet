@@ -7,6 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'page-intro',
   templateUrl: 'intro.html',
+  styleUrls: ['intro.scss']
 })
 export class IntroPage {
   @ViewChild('slider', { read: IonSlides, static: true }) slider: IonSlides;
@@ -71,7 +72,7 @@ export class IntroPage {
     if (activeIndex >= slideLength) { return; }
 
     this.activeIndex = activeIndex;
-    this.showSkip = !this.slider.isEnd();
+    this.showSkip = !await this.slider.isEnd();
   }
 
 }

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 
-@IonicPage()
 @Component({
   selector: 'modal-enter-second-passphrase',
   templateUrl: 'enter-second-passphrase.html',
@@ -13,7 +12,7 @@ export class EnterSecondPassphraseModal {
   public iconName = 'eye';
 
   constructor(
-    private viewCtrl: ViewController,
+    private modalCtrl: ModalController,
   ) {
   }
 
@@ -27,7 +26,7 @@ export class EnterSecondPassphraseModal {
   }
 
   dismiss(passphrase?: string) {
-    this.viewCtrl.dismiss(passphrase);
+    this.modalCtrl.dismiss(passphrase);
   }
 
 

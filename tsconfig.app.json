@@ -5,7 +5,8 @@
     "types": []
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "node_modules/ark-ts/node_modules/json-typescript-mapper/libs/utils.ts"
   ],
   "exclude": [
     "src/test.ts",
