@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     IonicModule,
     CommonModule,
-    RouterModule.forChild([{ path: '/wallet/import-manual', component: WalletManualImportPage }]),
+    RouterModule.forChild([{ path: '', component: WalletManualImportPage }]),
     TranslateModule,
     DirectivesModule,
     PipesModule

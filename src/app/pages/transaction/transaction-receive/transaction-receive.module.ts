@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     IonicModule,
     CommonModule,
-    RouterModule.forChild([{ path: '/transaction/receive', component: TransactionReceivePage }]),
+    RouterModule.forChild([{ path: '', component: TransactionReceivePage }]),
     TranslateModule,
     AmountComponentModule,
     QRCodeComponentModule,

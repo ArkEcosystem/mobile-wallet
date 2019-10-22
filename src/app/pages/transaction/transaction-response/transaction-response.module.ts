@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     IonicModule,
     CommonModule,
-    RouterModule.forChild([{ path: '/transaction/response', component: TransactionResponsePage }]),
+    RouterModule.forChild([{ path: '', component: TransactionResponsePage }]),
     TranslateModule,
   ],
 })

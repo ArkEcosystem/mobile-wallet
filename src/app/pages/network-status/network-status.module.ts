@@ -11,7 +11,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     IonicModule,
-    RouterModule.forChild([{ path: '/network-status', component: NetworkStatusPage }]),
+    RouterModule.forChild([{ path: '', component: NetworkStatusPage }]),
     TranslateModule,
   ],
 })

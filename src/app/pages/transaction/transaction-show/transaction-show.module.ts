@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     IonicModule,
     CommonModule,
-    RouterModule.forChild([{ path: '/transaction/show', component: TransactionShowPage }]),
+    RouterModule.forChild([{ path: '', component: TransactionShowPage }]),
     TranslateModule,
     PipesModule,
     DirectivesModule,

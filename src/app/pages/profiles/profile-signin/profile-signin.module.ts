@@ -18,7 +18,7 @@ import { RouterModule } from '@angular/router';
     EmptyListComponentModule,
     TranslateModule,
     IonicModule,
-    RouterModule.forChild([{ path: '/profile/signin', component: ProfileSigninPage }]),
+    RouterModule.forChild([{ path: '', component: ProfileSigninPage }]),
     AddressListComponentModule,
     PinCodeComponentModule,
   ],

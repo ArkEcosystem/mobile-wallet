@@ -12,7 +12,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     IonicModule,
-    RouterModule.forChild([{ path: '/settings', component: SettingsPage }]),
+    RouterModule.forChild([{ path: '', component: SettingsPage }]),
     TranslateModule,
     PinCodeComponentModule
   ],
