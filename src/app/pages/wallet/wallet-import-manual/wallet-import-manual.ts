@@ -20,7 +20,7 @@ import bip39 from 'bip39';
 @Component({
   selector: 'page-wallet-import-passphrase',
   templateUrl: 'wallet-import-manual.html',
-  styleUrls: ['wallet-import-manul.scss'],
+  styleUrls: ['wallet-import-manual.scss'],
   providers: [InAppBrowser, AddressValidator]
 })
 export class WalletManualImportPage extends BaseWalletImport  {

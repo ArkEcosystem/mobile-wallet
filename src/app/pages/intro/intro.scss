@@ -4,6 +4,10 @@ ion-footer {
   }
 }
 
+ion-row {
+  flex: auto 1!important;
+}
+
 .slide-pagination {
   max-width: 100px;
 
@@ -24,6 +28,17 @@ ion-footer {
   }
 }
 
+.slide-zoom {
+  height: 100%;
+}
+
+p {
+  padding: 0 40px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #60646B;
+}
+
 .slide-image {
   max-height: 80%;
   max-width: 60%;
@@ -40,57 +55,4 @@ ion-footer {
   &.fast-easy {
     content: url('/assets/img/light/intro/fast-easy.png');
   }
-}
-
-page-intro {
-  // .content {
-  //   background: var(--ion-color-primary);
-  // }
-
-//   ion-row {
-//     flex: auto 1!important;
-//   }
-
-//   
-
-
-
-//   .slide-zoom {
-//     height: 100%;
-//   }
-
-
-
-//   p {
-//     padding: 0 40px;
-//     font-size: 14px;
-//     line-height: 1.5;
-//     color: #60646B;
-//   }
-// }
-
-// .dark-theme {
-//   page-intro {
-//     p { 
-//       // color: color($darkColors, secondary, base);
-//     }
-
-//     .slide-image {
-//       max-height: 80%;
-//       max-width: 60%;
-//       margin: 2em 0;
-
-//       &.anytime {
-//         content: url('/assets/img/dark/intro/anytime.png');
-//       }
-
-//       &.pincode {
-//         content: url('/assets/img/dark/intro/pincode.png');
-//       }
-
-//       &.fast-easy {
-//         content: url('/assets/img/dark/intro/fast-easy.png');
-//       }
-//     }
-//   }
 }

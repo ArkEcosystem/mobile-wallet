@@ -18,6 +18,7 @@ import * as constants from '@/app/app.constants';
 import { Delegate } from 'ark-ts';
 import { TranslatableObject } from '@/models/translate';
 import { StoredNetwork } from '@/models/stored-network';
+import { debounceTime } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UserDataProvider {
@@ -385,13 +386,13 @@ export class UserDataProvider {
 
   private onClearStorage() {
     this.storageProvider.onClear$
-      .debounceTime(100)
-      .do(() => {
-        this.loadAllData();
-
-        this.setCurrentProfile(null);
-      })
-      .subscribe();
+    .pipe(
+      debounceTime(100)
+    )
+    .subscribe(() => {
+      this.loadAllData();
+      this.setCurrentProfile(null);
+    });
   }
 
   private generateUniqueId(): string {
