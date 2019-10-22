@@ -8,11 +8,11 @@ form,
   background: none;
 
   ion-item-sliding {
-    background: color($colors, primary-background, base);
+    // background: color($colors, primary-background, base);
 
-    &.active-slide .item {
-      background: color($colors, primary-background, base);
-    }
+    // &.active-slide .item {
+    //   background: color($colors, primary-background, base);
+    // }
   }
 
   .item:not(.item-divider) {
@@ -34,8 +34,8 @@ form {
 .list .icon,
 .menu-inner .icon,
 .action-sheet-icon {
-  color: color($colors, primary, base);
-  -webkit-text-stroke: .4px color($colors, primary, base);
+  // color: color($colors, primary, base);
+  // -webkit-text-stroke: .4px color($colors, primary, base);
 }
 
 ion-alert.select-alert div[ng-reflect-ng-switch] {

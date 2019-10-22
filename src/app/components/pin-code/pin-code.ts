@@ -155,7 +155,7 @@ export class PinCodeComponent {
       }
     };
     if (!oldPassword) {
-      this.authProvider.getMasterPassword().do(createPinCodeModalFunc).subscribe();
+      this.authProvider.getMasterPassword().subscribe(createPinCodeModalFunc);
     } else {
       createPinCodeModalFunc();
     }

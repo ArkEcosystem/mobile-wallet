@@ -22,18 +22,18 @@ export class LoginPage {
     private authProvider: AuthProvider,
     private userDataProvider: UserDataProvider,
   ) {
-    this.authProvider.getMasterPassword().do(master => {
+    this.authProvider.getMasterPassword().subscribe(master => {
       this.hasProfiles = master && !isNil(this.userDataProvider.profiles);
       this.isReady = true;
-    }).subscribe();
+    });
   }
 
   openProfileSignin() {
-    this.pinCode.createUpdatePinCode('ProfileSigninPage');
+    this.pinCode.createUpdatePinCode('/profile/signin');
   }
 
   openProfileCreate() {
-    this.pinCode.createUpdatePinCode('ProfileCreatePage');
+    this.pinCode.createUpdatePinCode('/profile/create');
   }
 
 }

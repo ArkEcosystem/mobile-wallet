@@ -1,6 +1,6 @@
 modal-pin-code {
   close-popup {
-    color: color($colors, dark, base);
+    // color: color($colors, dark, base);
   }
 
   scroll-content {
@@ -154,21 +154,21 @@ modal-pin-code {
 .dark-theme {
   modal-pin-code {
     close-popup {
-      color: lighten(color($darkColors, primary-background, base), 50%);
+      // color: lighten(color($darkColors, primary-background, base), 50%);
     }
 
     .button-round {
-      border-color: color($darkColors, secondary, base);
+      // border-color: color($darkColors, secondary, base);
     }
 
     .password-char {
       span {
-        border-color: color($darkColors, secondary, base);
+        // border-color: color($darkColors, secondary, base);
       }
 
       &.active span {
-        border-color: color($darkColors, primary, base);
-        background-color: color($darkColors, primary, base);
+        // border-color: color($darkColors, primary, base);
+        // background-color: color($darkColors, primary, base);
       }
     }
 

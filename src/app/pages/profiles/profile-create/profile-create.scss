@@ -25,10 +25,10 @@ page-profile-create {
     margin-top: 2em;
     padding-left: 0;
     padding-right: 2em;
-    color: color($colors, dark, base);
+    // color: color($colors, dark, base);
 
     .toolbar-background {
-      background-color: darken(color($colors, primary-background, base), 5%);
+      // background-color: darken(color($colors, primary-background, base), 5%);
     }
 
     .toolbar-content {
@@ -52,10 +52,10 @@ page-profile-create {
 .dark-theme {
   page-profile-create {
     .advanced-toolbar {
-      color: color($darkColors, dark, base);
+      // color: color($darkColors, dark, base);
 
       .toolbar-background {
-        background-color: color($darkColors, secondary-background, base);
+        // background-color: color($darkColors, secondary-background, base);
       }
     }
   }
