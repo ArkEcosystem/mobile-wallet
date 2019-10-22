@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     IonicModule,
-    RouterModule.forChild([{ path: '/profile/create', component: ProfileCreatePage }]),
+    RouterModule.forChild([{ path: '', component: ProfileCreatePage }]),
     TranslateModule,
     DirectivesModule,
     CustomNetworkComponentModule

@@ -16,7 +16,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     IonicModule,
     CommonModule,
-    RouterModule.forChild([{ path: '/contacts/create', component: ContactCreatePage }]),
+    RouterModule.forChild([{ path: '', component: ContactCreatePage }]),
     TranslateModule,
     DirectivesModule,
     QRScannerComponentModule,

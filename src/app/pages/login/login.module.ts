@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     IonicModule,
     CommonModule,
-    RouterModule.forChild([{ path: '/login', component: LoginPage }]),
+    RouterModule.forChild([{ path: '', component: LoginPage }]),
     TranslateModule,
     PinCodeComponentModule,
   ],

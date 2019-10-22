@@ -13,7 +13,7 @@ import { RouterModule } from '@angular/router';
   imports: [
     IonicModule,
     CommonModule,
-    RouterModule.forChild([{ path: '/wallets/top', component: WalletTopListPage }]),
+    RouterModule.forChild([{ path: '', component: WalletTopListPage }]),
     TranslateModule,
     PipesModule
   ],

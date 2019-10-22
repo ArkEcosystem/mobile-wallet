@@ -25,7 +25,7 @@ import { FormsModule } from '@angular/forms';
     IonicModule,
     CommonModule,
     FormsModule,
-    RouterModule.forChild([{ path: '/transaction/send', component: TransactionSendPage }]),
+    RouterModule.forChild([{ path: '', component: TransactionSendPage }]),
     TranslateModule,
     PipesModule,
     PinCodeComponentModule,

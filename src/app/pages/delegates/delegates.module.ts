@@ -18,7 +18,7 @@ import { ConfirmTransactionComponentModule } from '@/components/confirm-transact
   imports: [
     IonicModule,
     CommonModule,
-    RouterModule.forChild([{ path: '/delegates', component: DelegatesPage }]),
+    RouterModule.forChild([{ path: '', component: DelegatesPage }]),
     TranslateModule,
     PipesModule,
     FilterPipeModule,
