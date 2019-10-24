@@ -5,9 +5,9 @@
     <h6 text-center class="no-padding no-margin" *ngIf="!response?.status">{{ 'FAILED' | translate }}</h6>
 
     <ion-buttons *ngIf="!response?.status" end>
-      <button ion-button icon-only (click)="dismiss()">
-        <ion-icon name="close"></ion-icon>
-      </button>
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-navbar>
 
@@ -26,14 +26,14 @@
           </ion-row>
           <ion-row>
             <ion-col text-center align-self-center>
-              <button ion-button
-                      outline
+              <ion-button
+                      fill="outline"
                       color="primary"
                       *ngIf="currentNetwork?.explorer"
                       (click)="openInExplorer()"
                       class="open-explorer-btn">
                 {{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate }}
-              </button>
+              </ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -54,7 +54,7 @@
     <ion-row>
       <ion-col text-center>
         <p class="encrypt-message">{{ 'TRANSACTIONS_PAGE.ENCRYPT_SAVE_SECOND_PASSPHRASE' | translate }}</p>
-        <button ion-button color="primary" (click)="saveSecondPassphrase()">{{ 'SAVE' | translate }}</button>
+        <ion-button color="primary" (click)="saveSecondPassphrase()">{{ 'SAVE' | translate }}</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

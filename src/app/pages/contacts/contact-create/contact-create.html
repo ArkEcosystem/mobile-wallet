@@ -24,7 +24,7 @@
 </ion-content>
 
 <ion-footer padding no-shadow no-border [keyboard-attach]="content">
-  <button ion-button class="button-continue" [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'SAVE' | translate }}</button>
+  <ion-button class="button-continue" [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'SAVE' | translate }}</ion-button>
 </ion-footer>
 
 <qr-scanner (onSuccess)="onScanQRCode($event)" #qrScanner></qr-scanner>

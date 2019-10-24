@@ -1,9 +1,9 @@
 <ion-header no-border no-shadow>
 
   <ion-navbar>
-    <button ion-button icon-only menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+    <ion-button menuToggle>
+      <ion-icon slot="icon-only" name="menu"></ion-icon>
+    </ion-button>
     <ion-title>{{ currentProfile?.name }}</ion-title>
   </ion-navbar>
 
@@ -14,7 +14,9 @@
     <empty-list message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="presentActionSheet()" *ngIf="wallets?.length === 0"></empty-list>
 
     <ion-fab bottom right class="pull-footer" *ngIf="wallets?.length > 0">
-      <button ion-fab color="primary" (click)="presentActionSheet()"><ion-icon name="md-add"></ion-icon></button>
+      <ion-fab color="primary" (click)="presentActionSheet()">
+        <ion-icon name="md-add"></ion-icon>
+      </ion-fab>
     </ion-fab>
     <ion-row class="total-balance-container" *ngIf="wallets?.length > 0">
       <ion-col>

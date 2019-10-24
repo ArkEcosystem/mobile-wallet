@@ -85,10 +85,10 @@
 </ion-content>
 
 <ion-footer text-center padding>
-  <button ion-button
+  <ion-button
           class="button-continue"
           (click)="broadcast()"
           [disabled]="hasBroadcast || addressCheckResult?.type === checkTypes.Error">
     {{ 'TRANSACTIONS_PAGE.SEND' | translate }}
-  </button>
+  </ion-button>
 </ion-footer>

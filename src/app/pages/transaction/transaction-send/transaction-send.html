@@ -3,8 +3,9 @@
   <ion-navbar>
     <h6 class="no-padding no-margin" text-center>{{ 'TRANSACTIONS_PAGE.SEND_TRANSACTION' | translate }}</h6>
     <ion-buttons end>
-      <button ion-button clear (click)="toggleSendAll()"
-        color="primary">{{ 'TRANSACTIONS_PAGE.SEND_ALL' | translate }}</button>
+      <ion-button fill="clear" (click)="toggleSendAll()"
+        color="primary">{{ 'TRANSACTIONS_PAGE.SEND_ALL' | translate }}
+      </ion-button>
     </ion-buttons>
   </ion-navbar>
 
@@ -75,9 +76,9 @@
       </ion-row>
       <ion-row>
         <ion-col align-self-end>
-          <button ion-button class="button-continue" (click)="send()" [disabled]="hasSent || hasFeeError">
+          <ion-button class="button-continue" (click)="send()" [disabled]="hasSent || hasFeeError">
             {{ 'TRANSACTIONS_PAGE.SEND' | translate }}
-          </button>
+          </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

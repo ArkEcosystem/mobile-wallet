@@ -8,12 +8,12 @@
     <!--formControlName="controlPassphrase"-->
     <ion-textarea *ngIf="hidePassphrase" #inputPassphraseHidden name="passphraseHidden" rows="2" [ngModel]="passphraseHidden" 
       (ngModelChange)="passphraseHiddenChange($event)" [ngModelOptions]="{standalone: true}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required></ion-textarea>
-    <button ion-button clear item-end (click)='showHidePassphrase()' style="height:100%;">
+    <ion-button fill="clear" item-end (click)='showHidePassphrase()' style="height:100%;">
       <ion-icon *ngIf="!hidePassphrase" name="eye" style="font-size:200%;"></ion-icon>
       <ion-icon *ngIf="hidePassphrase" name="eye-off" style="font-size:200%;"></ion-icon>
-    </button>
+    </ion-button>
   </ion-item>
-  <button (click)="suggestionClick(0)" *ngIf="wordSuggestions[0]" ion-button color="light" round small name="wordSuggestion0">{{ wordSuggestions[0] }}</button>
-  <button (click)="suggestionClick(1)" *ngIf="wordSuggestions[1]" ion-button color="light" round small name="wordSuggestion1">{{ wordSuggestions[1] }}</button>
-  <button (click)="suggestionClick(2)" *ngIf="wordSuggestions[2]" ion-button color="light" round small name="wordSuggestion2">{{ wordSuggestions[2] }}</button>
+  <ion-button size="small" shape="round" (click)="suggestionClick(0)" *ngIf="wordSuggestions[0]" color="light" name="wordSuggestion0">{{ wordSuggestions[0] }}</ion-button>
+  <ion-button size="small" shape="round" (click)="suggestionClick(1)" *ngIf="wordSuggestions[1]" color="light" name="wordSuggestion1">{{ wordSuggestions[1] }}</ion-button>
+  <ion-button size="small" shape="round" (click)="suggestionClick(2)" *ngIf="wordSuggestions[2]" color="light" name="wordSuggestion2">{{ wordSuggestions[2] }}</ion-button>
   </div>

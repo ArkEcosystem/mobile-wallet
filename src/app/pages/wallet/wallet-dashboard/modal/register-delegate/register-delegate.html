@@ -3,9 +3,9 @@
   <ion-navbar>
     <h6 padding class="no-margin">{{ 'DELEGATES_PAGE.REGISTER_DELEGATE' | translate }}</h6>
     <ion-buttons end>
-      <button ion-button icon-only (click)="closeModal()">
-        <ion-icon name="close"></ion-icon>
-      </button>
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-navbar>
 
@@ -31,8 +31,8 @@
       </form>
         <ion-row>
           <ion-col text-center>
-            <button ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid || isExists"
-              (click)="submitForm()">{{ 'CREATE' | translate }}</button>
+            <ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid || isExists"
+              (click)="submitForm()">{{ 'CREATE' | translate }}</ion-button>
           </ion-col>
         </ion-row>
       </ion-col>
