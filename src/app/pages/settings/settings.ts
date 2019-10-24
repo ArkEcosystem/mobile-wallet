@@ -2,8 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Platform, NavController, AlertController, ModalController } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -13,6 +12,7 @@ import { PinCodeComponent } from '@/components/pin-code/pin-code';
 import * as constants from '@/app/app.constants';
 import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 import { CustomNetworkCreateModal } from '@/app/modals/custom-network-create/custom-network-create';
+import { takeUntil, tap } from 'rxjs/operators';
 
 const packageJson = require('@/root/package.json');
 
@@ -84,7 +84,6 @@ export class SettingsPage implements OnInit, OnDestroy {
         'ARE_YOU_SURE',
         'SETTINGS_PAGE.CLEAR_DATA_TEXT',
       ])
-      .takeUntil(this.unsubscriber$)
       .subscribe(async (translation) => {
         const confirm = await this.alertCtrl.create({
           header: translation.ARE_YOU_SURE,
@@ -118,13 +117,17 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.settingsDataProvider.settings
-      .takeUntil(this.unsubscriber$)
-      .do((settings) => this.currentSettings = settings)
+      .pipe(
+        takeUntil(this.unsubscriber$),
+        tap((settings) => this.currentSettings = settings)
+      )
       .subscribe();
 
     this.settingsDataProvider.onUpdate$
-      .takeUntil(this.unsubscriber$)
-      .do((settings) => this.currentSettings = settings)
+      .pipe(
+        takeUntil(this.unsubscriber$),
+        tap((settings) => this.currentSettings = settings)
+      )
       .subscribe();
   }
 

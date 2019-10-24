@@ -1,8 +1,7 @@
 import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { AlertController, NavController, NavParams } from '@ionic/angular';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
 
 import { Profile } from '@/models/profile';
 import { UserDataProvider } from '@/services/user-data/user-data';
@@ -10,6 +9,7 @@ import { ToastProvider } from '@/services/toast/toast';
 import lodash from 'lodash';
 import { Network } from 'ark-ts/model';
 import { TranslateService } from '@ngx-translate/core';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'page-profile-create',
@@ -55,7 +55,9 @@ export class ProfileCreatePage implements OnInit, OnDestroy {
       profile.name = this.newProfile.name;
       profile.networkId = this.newProfile.networkId;
 
-      this.userDataProvider.addProfile(profile).takeUntil(this.unsubscriber$).subscribe(() => {
+      this.userDataProvider.addProfile(profile).pipe(
+        takeUntil(this.unsubscriber$)
+      ).subscribe(() => {
         this.navCtrl.navigateRoot('/profile/signin');
       }, () => {
         this.toastProvider.error('PROFILES_PAGE.ADD_PROFILE_ERROR');

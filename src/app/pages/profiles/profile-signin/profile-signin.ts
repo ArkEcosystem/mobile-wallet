@@ -1,8 +1,7 @@
 import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController, ActionSheetController } from '@ionic/angular';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { AuthProvider } from '@/services/auth/auth';
@@ -16,6 +15,7 @@ import { PublicKey } from 'ark-ts/core';
 import { AddressMap } from '@/models/model';
 import { Platform } from '@ionic/angular';
 import { PinCodeComponent } from '@/components/pin-code/pin-code';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'page-profile-signin',
@@ -48,7 +48,6 @@ export class ProfileSigninPage implements OnInit, OnDestroy {
   presentProfileActionSheet(profileId: string) {
     this.translateService
       .get(['EDIT', 'DELETE'])
-      .takeUntil(this.unsubscriber$)
       .subscribe(async (translation) => {
         const buttons = [{
           text: translation.DELETE,
@@ -75,7 +74,6 @@ export class ProfileSigninPage implements OnInit, OnDestroy {
   showDeleteConfirm(profileId: string) {
     this.translateService
       .get(['ARE_YOU_SURE', 'CONFIRM', 'CANCEL'])
-      .takeUntil(this.unsubscriber$)
       .subscribe(async (translation) => {
         const confirm = await this.alertCtrl.create({
           header: translation.ARE_YOU_SURE,
@@ -96,7 +94,9 @@ export class ProfileSigninPage implements OnInit, OnDestroy {
   }
 
   delete(profileId: string) {
-    return this.userDataProvider.removeProfileById(profileId).takeUntil(this.unsubscriber$).subscribe(() => {
+    return this.userDataProvider.removeProfileById(profileId).pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe(() => {
       this.load();
     });
   }
@@ -109,7 +109,9 @@ export class ProfileSigninPage implements OnInit, OnDestroy {
   signin() {
     if (!this.profileIdSelected) { return; }
 
-    this.authProvider.login(this.profileIdSelected).takeUntil(this.unsubscriber$).subscribe((status) => {
+    this.authProvider.login(this.profileIdSelected).pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe((status) => {
       if (status) {
         this.navCtrl.navigateRoot('/wallets');
       } else {

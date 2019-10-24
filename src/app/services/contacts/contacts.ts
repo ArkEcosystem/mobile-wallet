@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { NetworkProvider } from '@/services/network/network';
 import lodash from 'lodash';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Contact } from '@/models/contact';
 import { Profile } from '@/models/profile';
 import { TranslatableObject } from '@/models/model';

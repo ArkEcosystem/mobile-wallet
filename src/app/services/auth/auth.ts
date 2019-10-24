@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { StorageProvider } from '@/services/storage/storage';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/share';
+import { Observable, Subject } from 'rxjs';
 
 import * as constants from '@/app/app.constants';
 import * as bcrypt from 'bcryptjs';
 import * as moment from 'moment';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthProvider {
@@ -99,10 +96,12 @@ export class AuthProvider {
   }
 
   increaseAttempts() {
-    return this.getAttempts().mergeMap(attempts => {
-      const increasedAttempts = Number(attempts) + 1;
-      return this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, increasedAttempts).map(() => increasedAttempts);
-    });
+    return this.getAttempts().pipe(
+      mergeMap(attempts => {
+        const increasedAttempts = Number(attempts) + 1;
+        return this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, increasedAttempts).map(() => increasedAttempts);
+      })
+    )
   }
 
   increaseUnlockTimestamp(): Promise<Date> {

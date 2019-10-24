@@ -11,9 +11,7 @@ import {
   IonContent
 } from '@ionic/angular';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/finally';
+import { Subject } from 'rxjs';
 
 import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory, WalletKeys } from '@/models/model';
 import { UserDataProvider } from '@/services/user-data/user-data';
@@ -35,6 +33,7 @@ import { RegisterDelegatePage } from './modal/register-delegate/register-delegat
 import { RegisterSecondPassphrasePage } from './modal/register-second-passphrase/register-second-passphrase';
 import { SetLabelPage } from './modal/set-label/set-label';
 import { WalletBackupModal } from '@/app/modals/wallet-backup/wallet-backup';
+import { takeUntil, finalize, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'page-wallet-dashboard',
@@ -121,7 +120,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       'WALLETS_PAGE.REMOVE_WALLET',
       'WALLETS_PAGE.CONVERT_TO_FULL_WALLET',
       'WALLETS_PAGE.TOP_WALLETS'
-    ]).takeUntil(this.unsubscriber$).subscribe(async (translation) => {
+    ]).subscribe(async (translation) => {
       const delegateItem =  {
         text: translation['DELEGATES_PAGE.REGISTER_DELEGATE'],
         role: 'delegate',
@@ -230,7 +229,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
   presentAddActionSheet() {
     this.translateService.get(['TRANSACTIONS_PAGE.SEND', 'TRANSACTIONS_PAGE.RECEIVE'])
-      .takeUntil(this.unsubscriber$)
       .subscribe(async (translation) => {
         const buttons: Array<object> = [
           {
@@ -342,7 +340,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   presentDeleteWalletConfirm() {
     this.translateService.get(
         ['ARE_YOU_SURE', 'CONFIRM', 'CANCEL', 'WALLETS_PAGE.REMOVE_WALLET_TEXT', 'WALLETS_PAGE.REMOVE_WATCH_ONLY_WALLET_TEXT'])
-      .takeUntil(this.unsubscriber$)
       .subscribe(async (translation) => {
         const confirm = await this.alertCtrl.create({
           header: translation.ARE_YOU_SURE,
@@ -381,7 +378,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     };
 
     this.arkApiProvider.transactionBuilder.createDelegate(transaction)
-      .takeUntil(this.unsubscriber$)
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe((data) => {
         this.confirmTransaction.open(data, keys);
       });
@@ -401,7 +400,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
     this.arkApiProvider.transactionBuilder
       .createSignature(keys.key, keys.secondPassphrase)
-      .takeUntil(this.unsubscriber$)
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe((data) => {
         this.confirmTransaction.open(data, keys);
       });
@@ -419,17 +420,19 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   private refreshTransactions(save: boolean = true, loader?: HTMLIonLoadingElement|IonRefresher) {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.client.getTransactionList(this.address)
-      .finally(() => this.zone.run(() => {
-        if (loader) {
-          if (loader instanceof HTMLIonLoadingElement) {
-            loader.dismiss();
-          } else if (loader instanceof IonRefresher) {
-            loader.complete();
+      .pipe(
+        finalize(() => this.zone.run(() => {
+          if (loader) {
+            if (loader instanceof HTMLIonLoadingElement) {
+              loader.dismiss();
+            } else if (loader instanceof IonRefresher) {
+              loader.complete();
+            }
           }
-        }
-        this.emptyTransactions = lodash.isEmpty(this.wallet.transactions);
-      }))
-      .takeUntil(this.unsubscriber$)
+          this.emptyTransactions = lodash.isEmpty(this.wallet.transactions);
+        })),
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe((response) => {
         if (response && response.success) {
           this.wallet.loadTransactions(response.transactions, this.arkApiProvider.network);
@@ -446,7 +449,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   private refreshAccount() {
-    this.arkApiProvider.client.getWallet(this.address).takeUntil(this.unsubscriber$).subscribe((response) => {
+    this.arkApiProvider.client.getWallet(this.address).pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe((response) => {
       if (response.success) {
         this.wallet.deserialize(response.account);
         this.saveWallet();
@@ -467,7 +472,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   private onUpdateMarket() {
-    this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).subscribe((ticker) => this.setTicker(ticker));
+    this.marketDataProvider.onUpdateTicker$.pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe((ticker) => this.setTicker(ticker));
   }
 
   private setTicker(ticker) {
@@ -479,8 +486,10 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
   private onUpdateWallet() {
     this.userDataProvider.onUpdateWallet$
-      .takeUntil(this.unsubscriber$)
-      .debounceTime(500)
+      .pipe(
+        takeUntil(this.unsubscriber$),
+        debounceTime(500)
+      )
       .subscribe((wallet) => {
         if (!lodash.isEmpty(wallet) && this.wallet.address === wallet.address) { this.wallet = wallet; }
       });
@@ -508,7 +517,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     if (this.emptyTransactions && !this.wallet.isCold) {
       this.translateService
         .get('TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS')
-        .takeUntil(this.unsubscriber$)
+        .pipe(
+          takeUntil(this.unsubscriber$)
+        )
         .subscribe(async (translation) => {
           const loader = await this.loadingCtrl.create({
             message: `${translation}...`,
@@ -522,7 +533,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.confirmTransaction.onConfirm.takeUntil(this.unsubscriber$).subscribe(this.onTransactionConfirm);
+    this.confirmTransaction.onConfirm.pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe(this.onTransactionConfirm);
     this.load();
     this.refreshAllData();
     this.refreshPrice();

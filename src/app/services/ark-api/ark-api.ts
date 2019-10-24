@@ -1,18 +1,14 @@
 import { Injectable, NgZone } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/expand';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/observable/of';
+import { Observable, Subject, of, empty } from 'rxjs';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { StorageProvider } from '@/services/storage/storage';
 import { ToastProvider } from '@/services/toast/toast';
 import { HttpUtils } from '@/app/utils/http-utils';
 
-import {Transaction, TranslatableObject, BlocksEpochResponse, Wallet} from '@/models/model';
+import {Transaction, TranslatableObject, Wallet} from '@/models/model';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
@@ -21,11 +17,11 @@ import BigNumber from '@/utils/bignumber';
 import * as constants from '@/app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
-import {AccountResponse, Delegate, PeerResponse} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@/models/stored-network';
-import ArkClient, { PeerApiResponse } from '../../utils/ark-client';
+import ArkClient from '../../utils/ark-client';
 import * as ArkCrypto from '@arkecosystem/crypto';
 import { PeerDiscovery } from '@/utils/ark-peer-discovery';
+import { expand, finalize, tap, switchMap } from 'rxjs/operators';
 
 interface NodeFees {
   type: number;
@@ -98,19 +94,19 @@ export class ArkApiProvider {
   }
 
   public get feeStatistics () {
-    if (!lodash.isUndefined(this._network.feeStatistics)) { return Observable.of(this._network.feeStatistics); }
+    if (!lodash.isUndefined(this._network.feeStatistics)) { return of(this._network.feeStatistics); }
 
     return this.fetchFeeStatistics();
   }
 
   public get fees() {
-    if (!lodash.isUndefined(this._fees)) { return Observable.of(this._fees); }
+    if (!lodash.isUndefined(this._fees)) { return of(this._fees); }
 
     return this.fetchFees();
   }
 
   public get delegates(): Observable<arkts.Delegate[]> {
-    if (!lodash.isEmpty(this._delegates)) { return Observable.of(this._delegates); }
+    if (!lodash.isEmpty(this._delegates)) { return of(this._delegates); }
 
     return this.fetchDelegates(this._network.activeDelegates * 2);
   }
@@ -172,19 +168,21 @@ export class ArkApiProvider {
               'version'
             ]
           })
-          .switchMap(peers => {
-            if (!peers.length) {
-              return discovery.findPeersWithPlugin('core-wallet-api', {
-                additional: [
-                  'height',
-                  'latency',
-                  'version'
-                ]
-              });
-            }
-
-            return Observable.of(peers);
-          })
+          .pipe(
+            switchMap(peers => {
+              if (!peers.length) {
+                return discovery.findPeersWithPlugin('core-wallet-api', {
+                  additional: [
+                    'height',
+                    'latency',
+                    'version'
+                  ]
+                });
+              }
+  
+              return of(peers);
+            })
+          )
           .subscribe(peers => {
             if (peers.length) {
               this._network.peerList = peers;
@@ -220,20 +218,25 @@ export class ArkApiProvider {
 
     return Observable.create((observer) => {
 
-      this.client.getDelegateList({ limit, page }).expand(() => {
-        const next = this.client.getDelegateList({ limit, page });
-        return (page - 1) < totalPages ? next : Observable.empty();
-      }).do((response) => {
-        if (response.success && getAllDelegates) { numberDelegatesToGet = response.totalCount; }
-        totalPages = Math.ceil(numberDelegatesToGet / limit);
-        page++;
-      }).finally(() => {
-        this.storageProvider.set(constants.STORAGE_DELEGATES, delegates);
-        this.onUpdateDelegates$.next(delegates);
-
-        observer.next(delegates);
-        observer.complete();
-      }).subscribe((data) => {
+      this.client.getDelegateList({ limit, page }).pipe(
+        expand(() => {
+          const next = this.client.getDelegateList({ limit, page });
+          return (page - 1) < totalPages ? next : empty();
+        }),
+        tap((response) => {
+          if (response.success && getAllDelegates) { numberDelegatesToGet = response.totalCount; }
+          totalPages = Math.ceil(numberDelegatesToGet / limit);
+          page++;
+        }),
+        finalize(() => {
+          this.storageProvider.set(constants.STORAGE_DELEGATES, delegates);
+          this.onUpdateDelegates$.next(delegates);
+  
+          observer.next(delegates);
+          observer.complete();
+        })
+      )
+      .subscribe((data) => {
         if (data.success) { delegates = [...delegates, ...data.delegates]; }
       });
     });
@@ -242,7 +245,7 @@ export class ArkApiProvider {
 
   fetchTopWallets(numberWalletsToGet: number, page?: number): Observable<Wallet[]> {
     if (!this._network || !this._network.isV2) {
-      return Observable.empty();
+      return empty();
     }
 
     let topWallets: Wallet[] = [];
@@ -355,9 +358,9 @@ export class ArkApiProvider {
     });
   }
 
-  public getDelegateByPublicKey(publicKey: string): Observable<Delegate> {
+  public getDelegateByPublicKey(publicKey: string): Observable<arkts.Delegate> {
     if (!publicKey) {
-      return Observable.of(null);
+      return of(null);
     }
 
     return this.client.getDelegateByPublicKey(publicKey);
@@ -421,7 +424,7 @@ export class ArkApiProvider {
 
   private fetchNodeConfiguration(): Observable<NodeConfigurationResponse> {
     if (!this._network || !this._network.isV2) {
-      return Observable.empty();
+      return empty();
     }
 
     return Observable.create((observer) => {
@@ -433,7 +436,7 @@ export class ArkApiProvider {
 
   private fetchFeeStatistics(): Observable<FeeStatistic[]> {
     if (!this._network || !this._network.isV2) {
-      return Observable.empty();
+      return empty();
     }
 
     return Observable.create((observer) => {

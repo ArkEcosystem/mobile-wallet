@@ -1,7 +1,7 @@
 import { Component, NgZone, OnDestroy, ViewChild } from '@angular/core';
 import { NavController, NavParams, ModalController, Platform, IonSearchbar, IonSlides } from '@ionic/angular';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { ToastProvider } from '@/services/toast/toast';
@@ -14,6 +14,7 @@ import * as constants from '@/app/app.constants';
 import { PinCodeComponent } from '@/components/pin-code/pin-code';
 import { ConfirmTransactionComponent } from '@/components/confirm-transaction/confirm-transaction';
 import { DelegateDetailPage } from './delegate-detail/delegate-detail';
+import { takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'page-delegates',
@@ -147,7 +148,9 @@ export class DelegatesPage implements OnDestroy {
     if (!this.currentWallet) { return; }
 
     this.arkApiProvider.client.getWalletVotes(this.currentWallet.address)
-      .takeUntil(this.unsubscriber$)
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe((data) => {
         if (data.success && data.delegates.length > 0) {
           this.walletVote = data.delegates[0];
@@ -159,10 +162,12 @@ export class DelegatesPage implements OnDestroy {
 
   private onUpdateDelegates() {
     this.arkApiProvider.onUpdateDelegates$
-      .takeUntil(this.unsubscriber$)
-      .do((delegates) => {
-        this.zone.run(() => this.delegates = delegates);
-      })
+      .pipe(
+        takeUntil(this.unsubscriber$),
+        tap((delegates) => {
+          this.zone.run(() => this.delegates = delegates);
+        })
+      )
       .subscribe();
   }
 

@@ -1,10 +1,11 @@
 import {Component, OnDestroy} from '@angular/core';
 import { NavController, NavParams, ModalController } from '@ionic/angular';
 
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import lodash from 'lodash';
 import { TransactionType } from 'ark-ts/model';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'page-register-delegate',
@@ -31,7 +32,9 @@ export class RegisterDelegatePage implements OnDestroy {
   ) {
     this.symbol = this.arkApiProvider.network.symbol;
 
-    this.arkApiProvider.delegates.takeUntil(this.unsubscriber$).subscribe((delegates) => this.delegates = delegates);
+    this.arkApiProvider.delegates.pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe((delegates) => this.delegates = delegates);
   }
 
   validateName() {
