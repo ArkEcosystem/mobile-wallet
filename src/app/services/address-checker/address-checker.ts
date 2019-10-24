@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { NetworkProvider } from '@/services/network/network';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscriber } from 'rxjs';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import { NeoApiProvider } from '@/services/neo-api/neo-api';
-import { Subscriber } from 'rxjs/Subscriber';
 import { CompleteHandler } from '../../utils/complete-handler';
 import { AddressCheckResultType } from '@/services/address-checker/address-check-result-type';
 import { AddressCheckResult } from '@/services/address-checker/address-check-result';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AddressCheckerProvider {
@@ -59,12 +59,14 @@ export class AddressCheckerProvider {
   }
 
   public hasTransactions(address: string): Observable<boolean> {
-    return this.arkApiProvider.client.getTransactionList(address).map(txs => {
-      if (!txs.success) {
-        throw Error();
-      }
-     return txs.transactions && txs.transactions.length > 0;
-    });
+    return this.arkApiProvider.client.getTransactionList(address).pipe(
+      map(txs => {
+        if (!txs.success) {
+          throw Error();
+        }
+       return txs.transactions && txs.transactions.length > 0;
+      })
+    )
   }
 
   private static createError(key: string, parameters?: Object): AddressCheckResult {

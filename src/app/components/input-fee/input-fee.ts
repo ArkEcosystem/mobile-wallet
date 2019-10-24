@@ -5,9 +5,9 @@ import { FeeStatistic } from '@/models/stored-network';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import { ArkUtility } from '../../utils/ark-utility';
 
-import 'rxjs/add/operator/switchMap';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'input-fee',
@@ -55,26 +55,28 @@ export class InputFeeComponent implements OnInit, OnDestroy {
   }
 
   public prepareFeeStatistics() {
-    this.subscription = this.arkApiProvider.fees.switchMap(fees => {
-      switch (Number(this.transactionType)) {
-        case TransactionType.SendArk:
-          this.v1Fee = fees.send;
-          break;
-        case TransactionType.Vote:
-          this.v1Fee = fees.vote;
-          break;
-        case TransactionType.CreateDelegate:
-          this.v1Fee = fees.delegate;
-          break;
-      }
-
-      this.max = this.v1Fee;
-      this.avg = this.v1Fee;
-      this.limitFee = this.max * 10;
-      this.setRangeFee(this.avg);
-
-      return this.arkApiProvider.feeStatistics;
-    }).subscribe(fees => {
+    this.subscription = this.arkApiProvider.fees.pipe(
+      switchMap(fees => {
+        switch (Number(this.transactionType)) {
+          case TransactionType.SendArk:
+            this.v1Fee = fees.send;
+            break;
+          case TransactionType.Vote:
+            this.v1Fee = fees.vote;
+            break;
+          case TransactionType.CreateDelegate:
+            this.v1Fee = fees.delegate;
+            break;
+        }
+  
+        this.max = this.v1Fee;
+        this.avg = this.v1Fee;
+        this.limitFee = this.max * 10;
+        this.setRangeFee(this.avg);
+  
+        return this.arkApiProvider.feeStatistics;
+      })
+    ).subscribe(fees => {
       this.v2Fee = fees.find(fee => fee.type === Number(this.transactionType));
       if (this.v2Fee.fees.avgFee > this.max) {
         this.isStaticFee = true;

@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { StorageProvider } from '@/services/storage/storage';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/takeUntil';
+import { Observable, Subject, of } from 'rxjs';
 
 import lodash from 'lodash';
 import { UserSettings } from '@/models/settings';
@@ -78,7 +75,7 @@ export class SettingsDataProvider {
     if (lodash.isEmpty(this._settings)) {
       return this.load();
     } else {
-      return Observable.of(this._settings);
+      return of(this._settings);
     }
   }
 

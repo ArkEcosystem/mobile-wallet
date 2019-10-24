@@ -1,17 +1,14 @@
 import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/debounceTime';
-
+import { Subject } from 'rxjs';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 
 import { Network, Peer } from 'ark-ts';
 
 import { TranslateService } from '@ngx-translate/core';
 import { ToastProvider } from '@/services/toast/toast';
+import { takeUntil, debounceTime, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'page-network-status',
@@ -44,27 +41,35 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
   }
 
   changePeer() {
-    this.translateService.get('NETWORKS_PAGE.LOOKING_GOOD_PEER').debounceTime(500).subscribe((translate) => {
-      this.loader = this.loadingCtrl.create({
-        message: translate,
-        duration: 10000
-      });
-
-      this.arkApiProvider
-        .connectToRandomPeer()
-        .takeUntil(this.unsubscriber$)
-        .subscribe(null, (e) => {
-          this.loader.dismiss();
-          this.toastProvider.error(e || 'NETWORKS_PAGE.NO_GOOD_PEER');
+    this.translateService.get('NETWORKS_PAGE.LOOKING_GOOD_PEER')
+      .pipe(
+        debounceTime(500)
+      )
+      .subscribe((translate) => {
+        this.loader = this.loadingCtrl.create({
+          message: translate,
+          duration: 10000
         });
 
-      this.loader.present();
-    });
+        this.arkApiProvider
+          .connectToRandomPeer()
+          .pipe(
+            takeUntil(this.unsubscriber$)
+          )
+          .subscribe(null, (e) => {
+            this.loader.dismiss();
+            this.toastProvider.error(e || 'NETWORKS_PAGE.NO_GOOD_PEER');
+          });
+
+        this.loader.present();
+      });
   }
 
   private refreshData() {
     this.arkApiProvider.client.getPeerConfig(this.currentPeer.ip, this.currentNetwork.p2pPort)
-      .takeUntil(this.unsubscriber$)
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe((response) => {
         if (response) {
           this.zone.run(() => {
@@ -74,7 +79,9 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
       });
 
     this.arkApiProvider.client.getPeerSyncing(this.getPeerUrl())
-      .takeUntil(this.unsubscriber$)
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe((response) => {
         if (response) {
           this.zone.run(() => {
@@ -86,14 +93,17 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
 
   private onUpdatePeer() {
     this.arkApiProvider.onUpdatePeer$
-      .takeUntil(this.unsubscriber$)
-      .do((peer) => {
-        if (this.loader) { this.loader.dismiss(); }
-        this.translateService.get('NETWORKS_PAGE.PEER_SUCCESSFULLY_CHANGED')
-          .subscribe((translate) => this.toastProvider.success(translate));
-        this.zone.run(() => this.currentPeer = peer);
-        this.refreshData();
-      }).subscribe();
+      .pipe(
+        takeUntil(this.unsubscriber$),
+        tap((peer) => {
+          if (this.loader) { this.loader.dismiss(); }
+          this.translateService.get('NETWORKS_PAGE.PEER_SUCCESSFULLY_CHANGED')
+            .subscribe((translate) => this.toastProvider.success(translate));
+          this.zone.run(() => this.currentPeer = peer);
+          this.refreshData();
+        })
+      )
+      .subscribe();
   }
 
   ngOnInit() {

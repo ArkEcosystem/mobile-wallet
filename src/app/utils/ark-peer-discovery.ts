@@ -3,7 +3,7 @@ import { orderBy } from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import isUrl from 'is-url';
 import semver from 'semver';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export class PeerDiscovery {
   private version: string | undefined;

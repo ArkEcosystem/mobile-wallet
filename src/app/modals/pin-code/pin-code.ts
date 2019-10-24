@@ -3,10 +3,7 @@ import { Platform, NavController, NavParams, ModalController, AlertController } 
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { AuthProvider } from '@/services/auth/auth';
 
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
-import 'rxjs/add/operator/takeWhile';
+import { Subscription, timer } from 'rxjs';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -14,6 +11,7 @@ import moment from 'moment';
 import lodash from 'lodash';
 
 import * as constants from '@/app/app.constants';
+import { map, takeWhile, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'modal-pin-code',
@@ -199,11 +197,12 @@ export class PinCodeModal implements OnInit, OnDestroy {
       this.message = 'PIN_CODE.WRONG_PIN_MANY_TIMES';
 
       // Start the countdown
-      this.unlockCountdown$ = Observable.timer(0, 1000)
-                                        .map(x => this.zone.run(() => this.unlockDiff--))
-                                        .takeWhile(() => this.unlockDiff > 0)
-                                        .finally(() => this.zone.run(() => this.message = 'PIN_CODE.DEFAULT_MESSAGE'))
-                                        .subscribe();
+      this.unlockCountdown$ = timer(0, 1000).pipe(
+        map(x => this.zone.run(() => this.unlockDiff--)),
+        takeWhile(() => this.unlockDiff > 0),
+        finalize(() => this.zone.run(() => this.message = 'PIN_CODE.DEFAULT_MESSAGE'))
+      ).subscribe()
+                                        
     });
   }
 

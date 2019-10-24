@@ -1,6 +1,5 @@
 import { AutoCompleteService } from 'ionic2-auto-complete';
 import { Injectable } from '@angular/core';
-import 'rxjs/add/operator/map';
 import lodash from 'lodash';
 
 import { UserDataProvider } from '@/services/user-data/user-data';

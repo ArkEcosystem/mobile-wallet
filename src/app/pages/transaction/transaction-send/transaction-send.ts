@@ -13,7 +13,7 @@ import { AccountAutoCompleteService } from '@/services/account-auto-complete/acc
 
 import { PublicKey } from 'ark-ts/core';
 import { Network, Fees } from 'ark-ts/model';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 import { TruncateMiddlePipe } from '@/pipes/truncate-middle/truncate-middle';
 import { PinCodeComponent } from '@/components/pin-code/pin-code';

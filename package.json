@@ -66,7 +66,6 @@
     "ngx-filter-pipe": "^2.1.2",
     "node-forge": "^0.9.1",
     "rxjs": "^6.5.3",
-    "rxjs-compat": "^6.5.3",
     "semver": "^6.3.0",
     "string-hash": "^1.1.3",
     "tslib": "^1.9.0",

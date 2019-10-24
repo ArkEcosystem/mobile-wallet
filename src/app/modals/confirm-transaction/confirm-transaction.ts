@@ -2,9 +2,7 @@ import { Component, OnDestroy, NgZone } from '@angular/core';
 import { NavController, NavParams, ModalController, LoadingController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
-
+import { Subject } from 'rxjs';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import { MarketDataProvider } from '@/services/market-data/market-data';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
@@ -16,6 +14,7 @@ import lodash from 'lodash';
 import { AddressCheckResult} from '@/services/address-checker/address-check-result';
 import { AddressCheckResultType } from '@/services/address-checker/address-check-result-type';
 import { ArkUtility } from '../../utils/ark-utility';
+import { takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'modal-confirm-transaction',
@@ -106,14 +105,19 @@ export class ConfirmTransactionModal implements OnDestroy {
   }
 
   private onUpdateTicker() {
-    this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).do((ticker) => {
-      if (!ticker) { return; }
-
-      this.ticker = ticker;
-      this.settingsDataProvider.settings.subscribe((settings) => {
-        this.marketCurrency = this.ticker.getCurrency({ code: settings.currency });
-      });
-    }).subscribe();
+    this.marketDataProvider.onUpdateTicker$
+      .pipe(
+        takeUntil(this.unsubscriber$),
+        tap(((ticker) => {
+          if (!ticker) { return; }
+    
+          this.ticker = ticker;
+          this.settingsDataProvider.settings.subscribe((settings) => {
+            this.marketCurrency = this.ticker.getCurrency({ code: settings.currency });
+          });
+        }))
+      )
+    .subscribe();
   }
 
   ionViewDidEnter() {

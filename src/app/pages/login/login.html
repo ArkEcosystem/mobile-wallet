@@ -12,7 +12,7 @@
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col class="ion-align-self-end">
+      <ion-col *ngIf="isReady" class="ion-align-self-end">
         <ion-row class="ion-justify-content-center">
           <ion-button (click)="openProfileSignin()" [hidden]="!hasProfiles">{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</ion-button>
         </ion-row>

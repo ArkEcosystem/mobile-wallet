@@ -6,11 +6,11 @@ import { ContactsProvider } from '@/services/contacts/contacts';
 
 import { TranslateService } from '@ngx-translate/core';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
 
 import lodash from 'lodash';
 import { AddressMap } from '@/models/contact';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'page-contact-list',
@@ -40,7 +40,9 @@ export class ContactListPage implements OnInit {
   presentContactActionSheet(address) {
     this.translateService
       .get(['EDIT', 'DELETE'])
-      .takeUntil(this.unsubscriber$)
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe(async (translation) => {
         const buttons = [
           {

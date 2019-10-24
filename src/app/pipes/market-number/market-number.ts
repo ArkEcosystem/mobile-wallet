@@ -3,9 +3,9 @@ import { SettingsDataProvider } from '@/services/settings-data/settings-data';
 import { MarketDataProvider } from '@/services/market-data/market-data';
 import { MarketCurrency, MarketTicker } from '@/models/model';
 import BigNumber from '@/utils/bignumber';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
 import { UserSettings } from '@/models/settings';
+import { tap, finalize, takeUntil } from 'rxjs/operators';
 
 @Pipe({
   name: 'marketNumber',
@@ -21,12 +21,18 @@ export class MarketNumberPipe implements PipeTransform, OnDestroy {
     private marketDataProvider: MarketDataProvider,
   ) {
     this.marketDataProvider.ticker
-      .do((ticker) => this.marketTicker = ticker)
-      .finally(() => this.settingsDataProvider.settings.subscribe((settings) => this.updateCurrency(settings)))
+      .pipe(
+        tap((ticker) => this.marketTicker = ticker),
+        finalize(() => this.settingsDataProvider.settings.subscribe((settings) => this.updateCurrency(settings)))
+      )
       .subscribe();
 
-    this.settingsDataProvider.onUpdate$.takeUntil(this.unsubscriber$).subscribe((settings) => this.updateCurrency(settings));
-    this.marketDataProvider.onUpdateTicker$.takeUntil(this.unsubscriber$).subscribe((ticker) => this.marketTicker = ticker);
+    this.settingsDataProvider.onUpdate$.pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe((settings) => this.updateCurrency(settings));
+    this.marketDataProvider.onUpdateTicker$.pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe((ticker) => this.marketTicker = ticker);
   }
 
   private updateCurrency(settings: UserSettings) {

@@ -13,10 +13,8 @@ import {
   BlockFees
 } from 'ark-ts';
 import lodash from 'lodash';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/timeout';
+import { Observable, of } from 'rxjs';
+import { timeout } from 'rxjs/operators';
 
 export interface PeerApiResponse extends Peer {
   latency?: number;
@@ -45,12 +43,14 @@ export default class ApiClient {
     return { 'API-Version': '2' };
   }
 
-  private get(path: string, options: any = {}, host: string = this.host, timeout: number = 5000) {
+  private get(path: string, options: any = {}, host: string = this.host, timeoutMs: number = 5000) {
     return this.httpClient.request(
       'GET',
       `${host}/api/${path}`,
       { ...options, headers: this.defaultHeaders }
-    ).timeout(timeout);
+    ).pipe(
+      timeout(timeoutMs)
+    );
   }
 
   private post(path: string, body: any | null, options: any = {}, host: string = this.host) {
@@ -240,7 +240,7 @@ export default class ApiClient {
 
   getDelegateByPublicKey(publicKey: string): Observable<Delegate> {
     if (!publicKey) {
-      return Observable.of(null);
+      return of(null);
     }
 
     return Observable.create(observer => {

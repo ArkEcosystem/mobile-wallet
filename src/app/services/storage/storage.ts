@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-
-import 'rxjs/add/observable/fromPromise';
-import 'rxjs/add/operator/map';
+import { Subject, from } from 'rxjs';
 
 import { isObject, isString, toString } from 'lodash';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class StorageProvider {
@@ -17,11 +14,13 @@ export class StorageProvider {
   constructor(private _storage: Storage) { }
 
   public get(key) {
-    return Observable.fromPromise(this._storage.get(key));
+    return from(this._storage.get(key));
   }
 
   public getObject(key) {
-    return Observable.fromPromise(this._storage.get(key)).map((result) => JSON.parse(result || '{}'));
+    return from(this._storage.get(key)).pipe(
+      map((result) => JSON.parse(result || '{}'))
+    )
   }
 
   public set(key, value) {
@@ -33,11 +32,11 @@ export class StorageProvider {
       value = toString(value);
     }
 
-    return Observable.fromPromise(this._storage.set(key, value));
+    return from(this._storage.set(key, value));
   }
 
   public clear() {
-    Observable.fromPromise(this._storage.clear());
+    from(this._storage.clear());
     return this.onClear$.next();
   }
 

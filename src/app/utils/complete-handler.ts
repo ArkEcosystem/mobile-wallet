@@ -1,4 +1,4 @@
-import { Subscriber } from 'rxjs/Subscriber';
+import { Subscriber } from 'rxjs';
 
 export class CompleteHandler<T> {
   private currentNumberOfAsyncCalls = 0;

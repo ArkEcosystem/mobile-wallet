@@ -3,10 +3,7 @@ import { StorageProvider } from '@/services/storage/storage';
 import { AuthProvider } from '@/services/auth/auth';
 import { ForgeProvider } from '@/services/forge/forge';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/empty';
+import { Observable, Subject, empty } from 'rxjs';
 
 import { Contact, Profile, Wallet, WalletKeys } from '@/models/model';
 
@@ -18,7 +15,7 @@ import * as constants from '@/app/app.constants';
 import { Delegate } from 'ark-ts';
 import { TranslatableObject } from '@/models/translate';
 import { StoredNetwork } from '@/models/stored-network';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class UserDataProvider {
@@ -73,12 +70,14 @@ export class UserDataProvider {
 
     this.networks[networkId] = network;
 
-    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks).map(() => {
-      return {
-        network: this.networks[networkId],
-        id: networkId
-      };
-    });
+    return this.storageProvider.set(constants.STORAGE_NETWORKS, this.networks).pipe(
+      map(() => {
+        return {
+          network: this.networks[networkId],
+          id: networkId
+        };
+      })
+    )
   }
 
   getNetworkById(networkId: string): StoredNetwork {
@@ -230,7 +229,7 @@ export class UserDataProvider {
       return this.saveWallet(wallet, profileId, notificate);
     }
 
-    return Observable.empty();
+    return empty();
   }
 
   saveWallet(wallet: Wallet, profileId: string = this.authProvider.loggedProfileId, notificate: boolean = false) {
@@ -253,7 +252,7 @@ export class UserDataProvider {
     }
 
     if (wallet.label === label) {
-      return Observable.empty();
+      return empty();
     }
 
     if (lodash.some(this.currentProfile.wallets, w => label && w.label && w.label.toLowerCase() === label.toLowerCase())) {
@@ -294,15 +293,17 @@ export class UserDataProvider {
   loadProfiles() {
     return this.storageProvider
       .getObject(constants.STORAGE_PROFILES)
-      .map(profiles => {
-        // we have to create "real" contacts here, because the "address" property was not on the contact object
-        // in the first versions of the app
-        return lodash.mapValues(profiles, (profile, profileId) => ({
-          ...profile,
-          profileId,
-          contacts: lodash.transform(profile.contacts, UserDataProvider.mapContact, {})
-        }));
-      });
+      .pipe(
+        map(profiles => {
+          // we have to create "real" contacts here, because the "address" property was not on the contact object
+          // in the first versions of the app
+          return lodash.mapValues(profiles, (profile, profileId) => ({
+            ...profile,
+            profileId,
+            contacts: lodash.transform(profile.contacts, UserDataProvider.mapContact, {})
+          }));
+        })
+      )
   }
 
   loadNetworks() {

@@ -1,8 +1,7 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { NavController, NavParams, ModalController, ActionSheetController, Platform, IonSlides, IonContent } from '@ionic/angular';
 
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import { Subject } from 'rxjs';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { MarketDataProvider } from '@/services/market-data/market-data';
@@ -20,6 +19,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { GenerateEntropyModal } from '@/app/modals/generate-entropy/generate-entropy';
 import { WalletBackupModal } from '@/app/modals/wallet-backup/wallet-backup';
 import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'page-wallet-list',
@@ -96,7 +96,7 @@ export class WalletListPage implements OnDestroy {
     this.translateService.get([
       'GENERATE',
       'IMPORT',
-    ]).takeUntil(this.unsubscriber$).subscribe(async (translation) => {
+    ]).subscribe(async (translation) => {
       const actionSheet = await this.actionSheetCtrl.create({
         buttons: [
           {
@@ -171,7 +171,9 @@ export class WalletListPage implements OnDestroy {
     modal.onDidDismiss().then(({ data }) => {
       if (!data.password) { return; }
 
-      this.userDataProvider.addWallet(wallet, account.mnemonic, data.password).takeUntil(this.unsubscriber$).subscribe(() => {
+      this.userDataProvider.addWallet(wallet, account.mnemonic, data.password).pipe(
+        takeUntil(this.unsubscriber$)
+      ).subscribe(() => {
         this.loadWallets();
       });
     });
@@ -208,10 +210,14 @@ export class WalletListPage implements OnDestroy {
 
   private onCreateUpdateWallet() {
     this.userDataProvider.onCreateWallet$
-      .takeUntil(this.unsubscriber$)
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe(() => this.loadWallets());
     this.userDataProvider.onUpdateWallet$
-      .takeUntil(this.unsubscriber$)
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe(() => this.loadWallets());
   }
 
@@ -236,7 +242,9 @@ export class WalletListPage implements OnDestroy {
 
         this.marketDataProvider
           .onUpdateHistory$
-          .takeUntil(this.unsubscriber$)
+          .pipe(
+            takeUntil(this.unsubscriber$)
+          )
           .subscribe((updatedHistory) => this.setChartData(settings, days, updatedHistory));
         this.marketDataProvider.fetchHistory().subscribe();
       });
@@ -351,7 +359,9 @@ export class WalletListPage implements OnDestroy {
     // now let's subscribe for any future changes
     this.marketDataProvider
       .onUpdateTicker$
-      .takeUntil(this.unsubscriber$)
+      .pipe(
+        takeUntil(this.unsubscriber$)
+      )
       .subscribe((updatedTicker) => this.setTicker(updatedTicker));
     // let's get the up-to-date data from the internet now
     this.marketDataProvider.refreshTicker();

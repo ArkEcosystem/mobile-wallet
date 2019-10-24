@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/mergeMap';
+import { Observable, Subject, of } from 'rxjs';
 
 import { StorageProvider } from '@/services/storage/storage';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
@@ -15,6 +10,7 @@ import * as model from '@/models/market';
 import { UserSettings } from '@/models/settings';
 import * as constants from '@/app/app.constants';
 import { UserDataProvider } from '@/services/user-data/user-data';
+import { map, flatMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class MarketDataProvider {
@@ -48,7 +44,7 @@ export class MarketDataProvider {
   }
 
   get history(): Observable<model.MarketHistory> {
-    if (this.marketHistory) { return Observable.of(this.marketHistory); }
+    if (this.marketHistory) { return of(this.marketHistory); }
 
     return this.fetchHistory();
   }
@@ -58,7 +54,7 @@ export class MarketDataProvider {
   }
 
   get ticker(): Observable<model.MarketTicker> {
-    if (this.marketTicker) { return Observable.of(this.marketTicker); }
+    if (this.marketTicker) { return of(this.marketTicker); }
 
     return this.fetchTicker();
   }
@@ -80,18 +76,20 @@ export class MarketDataProvider {
       return currency.code.toUpperCase();
     }).join(',');
 
-    return this.http.get(url + currenciesList).map((response) => {
-      const json = response['RAW'][this.marketTickerName] || response['RAW'][this.marketTickerName.toUpperCase()];
-      const tickerObject = {
-        symbol: json['BTC']['FROMSYMBOL'],
-        currencies: json,
-      };
-
-      this.marketTicker = new model.MarketTicker().deserialize(tickerObject);
-      this.storageProvider.set(this.getKey(constants.STORAGE_MARKET_TICKER), tickerObject);
-
-      return this.marketTicker;
-    });
+    return this.http.get(url + currenciesList).pipe(
+      map((response) => {
+        const json = response['RAW'][this.marketTickerName] || response['RAW'][this.marketTickerName.toUpperCase()];
+        const tickerObject = {
+          symbol: json['BTC']['FROMSYMBOL'],
+          currencies: json,
+        };
+  
+        this.marketTicker = new model.MarketTicker().deserialize(tickerObject);
+        this.storageProvider.set(this.getKey(constants.STORAGE_MARKET_TICKER), tickerObject);
+  
+        return this.marketTicker;
+      })
+    )
   }
 
   fetchHistory(): Observable<model.MarketHistory> {
@@ -100,20 +98,24 @@ export class MarketDataProvider {
       ? this.settingsDataProvider.getDefaults().currency
       : this.settings.currency).toUpperCase();
     return this.http.get(url + 'BTC')
-      .map((btcResponse) => btcResponse)
-      .flatMap((btcResponse) => this.http.get(url + myCurrencyCode).map((currencyResponse) => {
-        const historyData = {
-          BTC: btcResponse['Data'],
-        };
-        historyData[myCurrencyCode] = currencyResponse['Data'];
-        const history = new model.MarketHistory().deserialize(historyData);
-
-        this.marketHistory = history;
-        this.storageProvider.set(this.getKey(constants.STORAGE_MARKET_HISTORY), historyData);
-        this.onUpdateHistory$.next(history);
-
-        return history;
-      }));
+      .pipe(
+        map((btcResponse) => btcResponse),
+        flatMap((btcResponse) => this.http.get(url + myCurrencyCode).pipe(
+          map((currencyResponse) => {
+            const historyData = {
+              BTC: btcResponse['Data'],
+            };
+            historyData[myCurrencyCode] = currencyResponse['Data'];
+            const history = new model.MarketHistory().deserialize(historyData);
+  
+            this.marketHistory = history;
+            this.storageProvider.set(this.getKey(constants.STORAGE_MARKET_HISTORY), historyData);
+            this.onUpdateHistory$.next(history);
+  
+            return history;
+          })
+        ))
+      )
   }
 
   private onUpdateSettings() {
