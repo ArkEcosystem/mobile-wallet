@@ -54,7 +54,9 @@ export default class ApiClient {
   }
 
   private post(path: string, body: any | null, options: any = {}, host: string = this.host) {
-    return this.httpClient.post(`${this.host}/api/${path}`, body, { ...options, headers: this.defaultHeaders }).timeout(5000);
+    return this.httpClient.post(`${this.host}/api/${path}`, body, { ...options, headers: this.defaultHeaders }).pipe(
+      timeout(5000)
+    )
   }
 
   getWallet(address: string): Observable<AccountResponse> {
@@ -186,11 +188,15 @@ export default class ApiClient {
 
   getPeerConfig(ip: string, port: number, protocol: 'http' | 'https' = 'http'): Observable<PeerVersion2ConfigResponse> {
     return Observable.create(observer => {
-      this.httpClient.get(`${protocol}://${ip}:4040/config`).timeout(2000).subscribe((response: any) => {
+      this.httpClient.get(`${protocol}://${ip}:4040/config`).pipe(
+        timeout(2000)
+      ).subscribe((response: any) => {
         observer.next(response);
         observer.complete();
       }, () => {
-        this.httpClient.get(`${protocol}://${ip}:${port}/config`).timeout(2000).subscribe((response: any) => {
+        this.httpClient.get(`${protocol}://${ip}:${port}/config`).pipe(
+          timeout(2000)
+        ).subscribe((response: any) => {
           observer.next(response);
           observer.complete();
         }, () => {

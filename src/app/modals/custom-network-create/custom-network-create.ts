@@ -5,6 +5,7 @@ import { LoaderAutoConfigure, Network, Peer, PeerVersion2ConfigResponse } from '
 import ArkClient from '@/utils/ark-client';
 import lodash from 'lodash';
 import { HttpClient } from '@angular/common/http';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'customNetworkCreate',
@@ -35,7 +36,9 @@ export class CustomNetworkCreateModal {
 
     new ArkClient(this.seedServer, this.httpClient)
       .getPeerConfig(seedServerUrl.hostname, Number(seedServerUrl.port), protocol)
-      .finally(() => loading.dismiss())
+      .pipe(
+        finalize(() => loading.dismiss())
+      )
       .subscribe((r: PeerVersion2ConfigResponse) => {
         if (!r.data) {
           this.configureError();

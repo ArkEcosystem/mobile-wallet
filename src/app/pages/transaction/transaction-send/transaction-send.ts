@@ -32,6 +32,7 @@ import { AddressCheckResult } from '@/services/address-checker/address-check-res
 import { AmountComponent } from '@/components/amount/amount';
 import { Amount } from '@/components/amount/amount.model';
 import { TranslateService } from '@ngx-translate/core';
+import { takeUntil } from 'rxjs/operators';
 
 class CombinedResult {
   public checkerDone: boolean;
@@ -312,13 +313,19 @@ export class TransactionSendPage implements OnInit {
   ngOnInit(): void {
     this.hasNotSent();
     
-    this.pinCode.onClosed.takeUntil(this.unsubscriber$).subscribe(() => {
+    this.pinCode.onClosed.pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe(() => {
       this.hasNotSent();
     });
-    this.confirmTransaction.onError.takeUntil(this.unsubscriber$).subscribe(() => {
+    this.confirmTransaction.onError.pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe(() => {
       this.hasNotSent();
     });
-    this.confirmTransaction.onClosed.takeUntil(this.unsubscriber$).subscribe(() => {
+    this.confirmTransaction.onClosed.pipe(
+      takeUntil(this.unsubscriber$)
+    ).subscribe(() => {
       this.hasNotSent();
     });
 
