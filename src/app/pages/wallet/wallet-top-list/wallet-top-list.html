@@ -6,10 +6,9 @@
     <ion-searchbar #searchbar *ngIf="isSearch" [(ngModel)]="searchQuery" spellcheck="false" animated="true" showCancelButton="false" placeholder="{{ 'SEARCH' | translate }}"></ion-searchbar>
 
     <ion-buttons end>
-      <button ion-button icon-only (click)="toggleSearchBar()">
-        <ion-icon name="search" *ngIf="!isSearch"></ion-icon>
-        <ion-icon name="close" *ngIf="isSearch"></ion-icon>
-      </button>
+      <ion-button (click)="toggleSearchBar()">
+        <ion-icon slot="icon-only" [name]="isSearch ? 'close' : 'search'"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-navbar>
 

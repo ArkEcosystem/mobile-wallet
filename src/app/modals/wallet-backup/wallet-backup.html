@@ -4,9 +4,9 @@
     <h6 class="no-padding no-margin" text-center>{{ title | translate }}</h6>
 
     <ion-buttons end>
-      <button ion-button icon-only (click)="dismiss()">
-        <ion-icon name="close" color="light"></ion-icon>
-      </button>
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close" color="light"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-navbar>
 
@@ -38,9 +38,9 @@
         <ion-toolbar (click)="toggleAdvanced()" class="advanced-toolbar">
           {{ 'SHOW_ADVANCED' | translate }}
           <ion-buttons end>
-            <button ion-button clear>
+            <ion-button fill="clear">
               <ion-icon [name]="showAdvancedOptions ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
-            </button>
+            </ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-col>
@@ -69,7 +69,7 @@
           <p>{{ 'WALLETS_PAGE.BACKUP_ACCOUNT' | translate }}</p>
         </div>
         <div text-center *ngIf="!keys">
-          <button ion-button class="button-continue" (click)="next()">{{ 'NEXT' | translate }}</button>
+          <ion-button class="button-continue" (click)="next()">{{ 'NEXT' | translate }}</ion-button>
         </div>
       </ion-col>
     </ion-row>

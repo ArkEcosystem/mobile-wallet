@@ -2,9 +2,9 @@
   <ion-navbar>
     <h6 text-center class="no-padding no-margin">{{ 'CUSTOM_NETWORK.EDIT' | translate }}</h6>
     <ion-buttons end>
-      <button ion-button icon-only (click)="dismiss()">
-        <ion-icon name="close"></ion-icon>
-      </button>
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -150,11 +150,11 @@
         </button>
       </ion-col>
       <ion-col *ngIf="networkId">
-        <button ion-button
+        <ion-button
                 class="button-continue"
                 (click)="prepareDelete()">
           {{ 'DELETE' | translate }}
-        </button>
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

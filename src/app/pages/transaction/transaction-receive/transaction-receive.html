@@ -3,9 +3,9 @@
   <ion-navbar>
     <ion-title>{{ 'TRANSACTIONS_PAGE.RECEIVE_TOKEN' | translate:tokenParam }}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="share()">
-        <ion-icon name="share"></ion-icon>
-      </button>
+      <ion-button (click)="share()">
+        <ion-icon slot="icon-only" name="share"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-navbar>
 
@@ -20,7 +20,7 @@
     </ion-row>
     <ion-row>
       <ion-col text-center>
-        <button ion-button clear small color="primary" (click)="copyAddress()" class="button-address">{{ address }}</button>
+        <ion-button fill="clear" size="small" color="primary" (click)="copyAddress()" class="button-address">{{ address }}</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>

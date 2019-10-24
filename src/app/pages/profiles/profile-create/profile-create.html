@@ -22,9 +22,9 @@
           <ion-toolbar (click)="toggleAdvanced()" class="advanced-toolbar">
             {{ 'SHOW_ADVANCED' | translate }}
             <ion-buttons end>
-              <button ion-button clear>
+              <ion-button fill="clear">
                 <ion-icon [name]="showAdvancedOptions ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
-              </button>
+              </ion-button>
             </ion-buttons>
           </ion-toolbar>
         </ion-col>
@@ -38,8 +38,8 @@
           <ion-grid fixed class="button-group">
             <ion-row nowrap>
               <ion-col *ngFor="let networkChoice of networkChoices">
-                <button ion-button block
-                        [outline]="networkChoice !== activeNetworkChoice"
+                <ion-button expand="block"
+                        [fill]="networkChoice !== activeNetworkChoice ? 'outline' : 'solid'"
                         (click)="onSelectNetwork(networkChoice)"
                         color="primary">
                   {{ networkChoice.name }}
@@ -63,5 +63,5 @@
 </ion-content>
 
 <ion-footer padding no-shadow no-border>
-  <button ion-button class="button-continue" [disabled]="!createProfileForm.form.valid || !newProfile.networkId" (click)="submitForm()">{{ 'NEXT' | translate }}</button>
+  <ion-button class="button-continue" [disabled]="!createProfileForm.form.valid || !newProfile.networkId" (click)="submitForm()">{{ 'NEXT' | translate }}</ion-button>
 </ion-footer>

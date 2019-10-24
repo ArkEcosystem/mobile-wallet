@@ -3,9 +3,9 @@
   <ion-navbar>
     <h6 padding class="no-margin">{{ 'WALLETS_PAGE.LABEL' | translate }}</h6>
     <ion-buttons end>
-      <button ion-button icon-only (click)="closeModal()">
-        <ion-icon name="close"></ion-icon>
-      </button>
+      <ion-button (click)="closeModal()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-navbar>
 
@@ -27,7 +27,7 @@
 </ion-content>
 
 <ion-footer no-shadow no-border padding text-center [keyboard-attach]="content">
-  <button ion-button class="button-continue" color="primary" [disabled]="!labelForm.form.valid" (click)="submitForm()">
+  <ion-button class="button-continue" color="primary" [disabled]="!labelForm.form.valid" (click)="submitForm()">
     {{ 'RENAME' | translate }}
-  </button>
+  </ion-button>
 </ion-footer>

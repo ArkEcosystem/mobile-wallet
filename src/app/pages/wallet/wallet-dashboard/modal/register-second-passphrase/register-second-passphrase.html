@@ -3,9 +3,9 @@
   <ion-navbar>
     <h6 text-center class="no-padding no-margin">{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</h6>
     <ion-buttons end>
-      <button ion-button icon-only (click)="dismiss()">
-        <ion-icon name="close"></ion-icon>
-      </button>
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-navbar>
 
@@ -23,7 +23,7 @@
     </ion-row>
     <ion-row class="controls-container">
       <ion-col align-self-end text-center>
-        <button ion-button (click)="next()" class="button-continue">{{ 'NEXT' | translate }}</button>
+        <ion-button (click)="next()" class="button-continue">{{ 'NEXT' | translate }}</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -43,10 +43,10 @@
         <ion-grid>
           <ion-row>
             <ion-col text-right>
-              <button ion-button clear (click)="prev()">{{ 'BACK_BUTTON_TEXT' | translate }}</button>
+              <ion-button fill="clear" (click)="prev()">{{ 'BACK_BUTTON_TEXT' | translate }}</ion-button>
             </ion-col>
             <ion-col>
-              <button ion-button (click)="create()">{{ 'CREATE' | translate }} ({{ currentNetwork?.symbol }}{{ fees?.secondsignature | unitsSatoshi }})</button>
+              <ion-button (click)="create()">{{ 'CREATE' | translate }} ({{ currentNetwork?.symbol }}{{ fees?.secondsignature | unitsSatoshi }})</ion-button>
             </ion-col>
           </ion-row>
         </ion-grid>
