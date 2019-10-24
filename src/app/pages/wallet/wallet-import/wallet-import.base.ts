@@ -8,6 +8,7 @@ import { NetworkProvider } from '@/services/network/network';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
 import bip39 from 'bip39';
 import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
+import { finalize } from 'rxjs/operators';
 
 export abstract class BaseWalletImport {
 
@@ -64,19 +65,21 @@ export abstract class BaseWalletImport {
     let newWallet = new Wallet(!privateKey);
 
     this.arkApiProvider.client.getWallet(address)
-      .finally(() => {
-        if (!privateKey) {
-          this.addWallet(newWallet);
-        } else {
-          // if we are converting watch-only to full wallet, keep label from existing watch-only wallet
-          const existingWallet = this.userDataProvider.getWalletByAddress(address);
-          if (existingWallet && existingWallet.label) {
-            newWallet.label = existingWallet.label;
+      .pipe(
+        finalize(() => {
+          if (!privateKey) {
+            this.addWallet(newWallet);
+          } else {
+            // if we are converting watch-only to full wallet, keep label from existing watch-only wallet
+            const existingWallet = this.userDataProvider.getWalletByAddress(address);
+            if (existingWallet && existingWallet.label) {
+              newWallet.label = existingWallet.label;
+            }
+  
+            this.verifyWithPinCode(newWallet, passphrase);
           }
-
-          this.verifyWithPinCode(newWallet, passphrase);
-        }
-      })
+        })
+      )
       .subscribe((response) => {
         if (response && response.success) {
           const account = response.account;

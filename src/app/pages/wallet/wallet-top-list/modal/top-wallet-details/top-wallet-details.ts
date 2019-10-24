@@ -14,6 +14,7 @@ import {Transaction} from '@/models/transaction';
 import {MarketDataProvider} from '@/services/market-data/market-data';
 import {TranslateService} from '@ngx-translate/core';
 import {SettingsDataProvider} from '@/services/settings-data/settings-data';
+import { finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'page-top-wallet-details',
@@ -84,7 +85,6 @@ export class TopWalletDetailsPage implements OnDestroy {
     if (this.emptyTransactions && !this.topWallet.isCold) {
       this.translateService
         .get('TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS')
-        .takeUntil(this.unsubscriber$)
         .subscribe(async (translation) => {
           const loader = await this.loadingCtrl.create({
             message: `${translation}...`,
@@ -107,17 +107,19 @@ export class TopWalletDetailsPage implements OnDestroy {
   private refreshTransactions(loader?: HTMLIonLoadingElement|IonRefresher) {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.client.getTransactionList(this.address)
-        .finally(() => this.zone.run(() => {
-          if (loader) {
-            if (loader instanceof HTMLIonLoadingElement) {
-              loader.dismiss();
-            } else if (loader instanceof IonRefresher) {
-              loader.complete();
+        .pipe(
+          finalize(() => this.zone.run(() => {
+            if (loader) {
+              if (loader instanceof HTMLIonLoadingElement) {
+                loader.dismiss();
+              } else if (loader instanceof IonRefresher) {
+                loader.complete();
+              }
             }
-          }
-          this.emptyTransactions = lodash.isEmpty(this.topWallet.transactions);
-        }))
-        .takeUntil(this.unsubscriber$)
+            this.emptyTransactions = lodash.isEmpty(this.topWallet.transactions);
+          })),
+          takeUntil(this.unsubscriber$)
+        )
         .subscribe((response) => {
           if (response && response.success) {
             this.topWallet.loadTransactions(response.transactions, this.arkApiProvider.network);

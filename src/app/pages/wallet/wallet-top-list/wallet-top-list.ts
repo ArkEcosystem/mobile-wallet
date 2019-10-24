@@ -8,6 +8,7 @@ import {ToastProvider} from '@/services/toast/toast';
 import * as constants from '@/app/app.constants';
 import {Subject} from 'rxjs';
 import { TopWalletDetailsPage } from './modal/top-wallet-details/top-wallet-details';
+import { tap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'page-wallet-top-list',
@@ -69,15 +70,17 @@ export class WalletTopListPage implements OnDestroy {
   }
 
   onUpdateTopWallets() {
-    this.arkApiProvider.onUpdateTopWallets$.
-      takeUntil(this.unsubscriber$)
-      .do((topWallets) => {
-        this.zone.run(() => {
-          topWallets.forEach(wallet => {
-            this.topWallets.push(wallet);
+    this.arkApiProvider.onUpdateTopWallets$
+      .pipe(
+        takeUntil(this.unsubscriber$),
+        tap((topWallets) => {
+          this.zone.run(() => {
+            topWallets.forEach(wallet => {
+              this.topWallets.push(wallet);
+            });
           });
-        });
-      })
+        })
+      )
       .subscribe();
   }
 

@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 import * as constants from '@/app/app.constants';
 import * as bcrypt from 'bcryptjs';
 import * as moment from 'moment';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthProvider {
@@ -99,7 +99,9 @@ export class AuthProvider {
     return this.getAttempts().pipe(
       mergeMap(attempts => {
         const increasedAttempts = Number(attempts) + 1;
-        return this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, increasedAttempts).map(() => increasedAttempts);
+        return this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, increasedAttempts).pipe(
+          map(() => increasedAttempts)
+        )
       })
     )
   }
