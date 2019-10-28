@@ -1,6 +1,6 @@
 <ion-header no-shadow no-border>
 
-  <ion-navbar>
+  <ion-toolbar>
     <ion-title *ngIf="response?.status">{{ transaction?.getTypeLabel() | translate }}</ion-title>
     <h6 text-center class="no-padding no-margin" *ngIf="!response?.status">{{ 'FAILED' | translate }}</h6>
 
@@ -9,7 +9,7 @@
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
     </ion-buttons>
-  </ion-navbar>
+  </ion-toolbar>
 
 </ion-header>
 

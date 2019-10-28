@@ -1,6 +1,6 @@
 <ion-header no-shadow no-border>
 
-  <ion-navbar>
+  <ion-toolbar>
     <ion-title *ngIf="!isSearch"> {{ 'WALLETS_PAGE.TOP_WALLETS' | translate }}</ion-title>
 
     <ion-searchbar #searchbar *ngIf="isSearch" [(ngModel)]="searchQuery" spellcheck="false" animated="true" showCancelButton="false" placeholder="{{ 'SEARCH' | translate }}"></ion-searchbar>
@@ -10,7 +10,7 @@
         <ion-icon slot="icon-only" [name]="isSearch ? 'close' : 'search'"></ion-icon>
       </ion-button>
     </ion-buttons>
-  </ion-navbar>
+  </ion-toolbar>
 
 </ion-header>
 
