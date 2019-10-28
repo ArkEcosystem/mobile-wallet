@@ -291,16 +291,16 @@ export class ArkApiProvider {
       const epochTime = moment(this._network.epoch).utc().valueOf();
       const now = moment().valueOf();
 
-      const keys = ArkCrypto.Keys.fromPassphrase(key);
+      const keys = ArkCrypto.Identities.Keys.fromPassphrase(key);
 
       transaction.timestamp = Math.floor((now - epochTime) / 1000);
       transaction.senderPublicKey = keys.publicKey;
       transaction.signature = null;
       transaction.id = null;
 
-      const data: ArkCrypto.ITransactionData = {
+      const data: ArkCrypto.Interfaces.ITransactionData = {
         network: this._network.version,
-        type: ArkCrypto.constants.TransactionTypes[ArkCrypto.constants.TransactionTypes[transaction.type]],
+        type: ArkCrypto.Enums.TransactionType[ArkCrypto.Enums.TransactionType[transaction.type]],
         senderPublicKey: transaction.senderPublicKey,
         timestamp: transaction.timestamp,
         amount: transaction.amount,
@@ -310,16 +310,16 @@ export class ArkApiProvider {
         asset: transaction.asset
       };
 
-      data.signature = ArkCrypto.crypto.sign(data, keys);
+      data.signature = ArkCrypto.Transactions.Signer.sign(data, keys);
 
       secondPassphrase = secondKey || secondPassphrase;
 
       if (secondPassphrase) {
-        const secondKeys = ArkCrypto.Keys.fromPassphrase(secondPassphrase);
-        data.secondSignature = ArkCrypto.crypto.secondSign(data, secondKeys);
+        const secondKeys = ArkCrypto.Identities.Keys.fromPassphrase(secondPassphrase);
+        data.secondSignature = ArkCrypto.Transactions.Signer.secondSign(data, secondKeys);
       }
 
-      transaction.id = ArkCrypto.crypto.getId(data);
+      transaction.id = ArkCrypto.Transactions.Utils.getId(data);
       transaction.signature = data.signature;
       transaction.signSignature = data.secondSignature;
 

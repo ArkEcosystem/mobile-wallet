@@ -16,5 +16,26 @@ module.exports = function() {
   defaults.dev.resolve.alias = aliases;
   defaults.prod.resolve.alias = aliases;
 
+  defaults.dev.module.loaders.push({
+    test: /\.js$/,
+    loader: [
+      {
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            'env'
+          ],
+          plugins: [
+            ['transform-runtime', { regenerator: true }],
+            ['transform-object-rest-spread', { useBuiltIns: true }]
+          ]
+        }
+      },
+    ],
+    include: [
+      path.resolve(__dirname, 'node_modules/@arkecosystem')
+    ]
+  })
+
   return defaults;
 }
