@@ -2,7 +2,8 @@ import { Component, Input, HostBinding, Output, EventEmitter } from '@angular/co
 
 @Component({
   selector: 'empty-list',
-  templateUrl: 'empty-list.html'
+  templateUrl: 'empty-list.html',
+  styleUrls: ['empty-list.scss']
 })
 export class EmptyListComponent {
 
