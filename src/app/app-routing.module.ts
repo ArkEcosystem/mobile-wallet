@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'intro', loadChildren: () => import('./pages/intro/intro.module').then( m => m.IntroPageModule)},
   // { path: 'network-status', loadChildren: () => import('./pages/network-status/network-status.module').then( m => m.NetworkStatusPageModule)},
