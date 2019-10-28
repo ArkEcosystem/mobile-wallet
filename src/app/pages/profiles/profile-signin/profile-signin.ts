@@ -1,5 +1,5 @@
 import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
-import { NavController, NavParams, AlertController, ActionSheetController } from '@ionic/angular';
+import { NavController, AlertController, ActionSheetController } from '@ionic/angular';
 
 import { Subject } from 'rxjs';
 
@@ -36,7 +36,6 @@ export class ProfileSigninPage implements OnInit, OnDestroy {
   constructor(
     public platform: Platform,
     public navCtrl: NavController,
-    public navParams: NavParams,
     private userDataProvider: UserDataProvider,
     private translateService: TranslateService,
     private authProvider: AuthProvider,

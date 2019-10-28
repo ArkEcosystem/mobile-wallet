@@ -1,14 +1,19 @@
-
 <ion-list>
   <ion-item class="address-item" *ngFor="let item of map">
-    <ion-item tappable (tap)="tap(item.index)" (press)="press(item.index)">
-      <div class="circle-letter"  [class.highlight]="item.highlight" item-start>
+    <ion-item tappable (click)="tap(item.index)" (press)="press(item.index)">
+      <div class="circle-letter" [class.highlight]="item.highlight" item-start>
         {{ item[circleProperty].charAt(0) }}
       </div>
       <h3 class="address-key">{{ item.key }}</h3>
       <p class="address-value">{{ item.value }}</p>
     </ion-item>
-    <ion-button item-right fill="clear" class="more disable-hover" *ngIf="icon" (tap)="more(item.index)">
+    <ion-button
+      item-right
+      fill="clear"
+      class="more disable-hover"
+      *ngIf="icon"
+      (tap)="more(item.index)"
+    >
       <ion-icon slot="icon-only" [name]="icon"></ion-icon>
     </ion-button>
   </ion-item>

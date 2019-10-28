@@ -21,6 +21,6 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild([{ path: '', component: ProfileSigninPage }]),
     AddressListComponentModule,
     PinCodeComponentModule,
-  ],
+  ]
 })
 export class ProfileSigninPageModule {}

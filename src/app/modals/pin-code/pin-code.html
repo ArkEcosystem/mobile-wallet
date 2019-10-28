@@ -1,11 +1,11 @@
-<ion-content no-bounce padding>
+<ion-content no-bounce class="ion-padding">
   <ion-grid class="full-height">
     <close-popup (onClose)="dismiss(false)"></close-popup>
 
     <ion-row nowrap>
-      <ion-col text-center align-self-center>
+      <ion-col class="ion-text-center ion-align-self-center">
         <p class="pin-code-header">{{ message || 'PIN_CODE.DEFAULT_MESSAGE' | translate }}</p>
-        <p *ngIf="unlockDiff > 0">{{ 'PIN_CODE.WAIT_TO_TRY' | translate: { time: unlockDiff | secondsToTime | date: 'mm:ss' } }}</p>
+        <p *ngIf="unlockDiff > 0">{{ 'PIN_CODE.WAIT_TO_TRY' | translate: { time: unlockDiff | date: 'mm:ss' } }}</p>
         <ion-grid fixed class="grid-password" [class.miss]="isWrong">
           <ion-row nowrap>
             <ion-col class="password-char" [class.active]="password.length>0">
@@ -32,7 +32,7 @@
     </ion-row>
 
     <ion-row nowrap class="full-height">
-      <ion-col text-center align-self-center>
+      <ion-col class="ion-text-center ion-align-self-center">
         <ion-grid class="grid-keyboard" [class.locked]="unlockDiff > 0">
           <ion-row>
             <ion-col col-4>
@@ -70,7 +70,7 @@
           <ion-row nowrap>
             <ion-col col-4 class="help-item"></ion-col>
             <ion-col col-4>
-              <ion-button shape="round" fill="outline" (click)="add(0)" [disabled]="unlockDiff > 0">0</button>
+              <ion-button shape="round" fill="outline" (click)="add(0)" [disabled]="unlockDiff > 0">0</ion-button>
             </ion-col>
             <ion-col col-4>
               <ion-button shape="round" fill="clear" (click)="delete()" class="help-item" [disabled]="unlockDiff > 0">

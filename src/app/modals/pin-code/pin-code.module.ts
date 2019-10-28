@@ -7,10 +7,12 @@ import { ClosePopupComponentModule } from '@/components/close-popup/close-popup.
 import { DirectivesModule } from '@/directives/directives.module';
 import { PipesModule } from '@/pipes/pipes.module';
 import { CommonModule } from '@angular/common';
+import { ClosePopupComponent } from '@/components/close-popup/close-popup';
 
 @NgModule({
   declarations: [
     PinCodeModal,
+    ClosePopupComponent
   ],
   imports: [
     IonicModule,
