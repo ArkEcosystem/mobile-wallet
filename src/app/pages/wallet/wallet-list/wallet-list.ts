@@ -60,7 +60,6 @@ export class WalletListPage implements OnDestroy {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     private userDataProvider: UserDataProvider,
     private marketDataProvider: MarketDataProvider,
     private modalCtrl: ModalController,
