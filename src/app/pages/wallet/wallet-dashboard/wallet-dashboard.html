@@ -1,6 +1,6 @@
 <ion-header no-shadow no-border [ngClass]="{'delegate-wallet': wallet?.isDelegate, 'default-wallet': wallet ? !wallet.isDelegate : false}">
 
-  <ion-navbar no-border-bottom no-shadow hideBackButton="true" color="primary" class="transparent-navbar">
+  <ion-toolbar no-border-bottom no-shadow hideBackButton="true" color="primary" class="transparent-navbar">
     <ion-button menuToggle>
       <ion-icon slot="icon-only" name="menu"></ion-icon>
     </ion-button>
@@ -10,7 +10,7 @@
         <ion-icon slot="icon-only" [name]="platform.is('ios') ? 'ios-more' : 'md-more'"></ion-icon>
       </ion-button>
     </ion-buttons>
-  </ion-navbar>
+  </ion-toolbar>
   <ion-toolbar no-border-top>
     <ion-grid>
       <ion-row class="account-balance">

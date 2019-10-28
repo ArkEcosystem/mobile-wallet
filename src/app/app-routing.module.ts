@@ -25,7 +25,7 @@ const routes: Routes = [
   // { path: 'wallet/import', loadChildren: () => import('./pages/wallet/wallet-import/wallet-import.module').then( m => m.WalletImportPageModule)},
   // { path: 'wallet/import-manual', loadChildren: () => import('./pages/wallet/wallet-import-manual/wallet-import-manual.module').then( m => m.WalletManualImportPageModule)},
   // { path: 'wallets/top', loadChildren: () => import('./pages/wallet/wallet-top-list/wallet-top-list.module').then( m => m.WalletTopListPageModule)},
-  // { path: 'wallets', loadChildren: () => import('./pages/wallet/wallet-list/wallet-list.module').then( m => m.WalletListPageModule)},
+  { path: 'wallets', loadChildren: () => import('./pages/wallet/wallet-list/wallet-list.module').then( m => m.WalletListPageModule)},
 ];
 
 @NgModule({
