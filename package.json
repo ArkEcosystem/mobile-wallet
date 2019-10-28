@@ -1,8 +1,8 @@
 {
-  "name": "mobile-wallet",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "name": "ark-mobile",
+  "version": "1.5.5",
+  "author": "Ark Ecosystem <mobile@ark.io>",
+  "homepage": "https://github.com/ArkEcosystem/mobile-wallet#readme",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -107,7 +107,7 @@
     "tslint": "~5.15.0",
     "typescript": "~3.4.3"
   },
-  "description": "An Ionic project",
+  "description": "A Wallet for Everyone",
   "cordova": {
     "plugins": {
       "cordova-plugin-ionic-keyboard": {},
