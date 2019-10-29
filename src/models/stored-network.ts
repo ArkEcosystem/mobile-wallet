@@ -22,4 +22,5 @@ export class StoredNetwork extends Network {
   public epoch: Date;
   public activeDelegates: number;
   public vendorFieldLength?: number;
+  public aip11: boolean;
 }

@@ -14,15 +14,9 @@ import {
 } from 'ark-ts';
 import lodash from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import BigNumber from '@utils/BigNumber';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/switchMap';
-
-export interface PeerApiResponse extends Peer {
-  latency?: number;
-  ports?: {
-    [plugin: string]: number;
-  };
-}
 
 export interface PeerApiResponse extends Peer {
   latency?: number;
@@ -54,6 +48,18 @@ export default class ApiClient {
 
   private post(path: string, body: any | null, options: any = {}, host: string = this.host) {
     return this.httpClient.post(`${this.host}/api/${path}`, body, { ...options, headers: this.defaultHeaders }).timeout(5000);
+  }
+
+  getNextNonce(address: string): Observable<string> {
+    return Observable.create(observer => {
+      this.getWallet(address).subscribe((wallet: AccountResponse) => {
+        const nonce = wallet.nonce;
+        const nextNonce = new BigNumber(nonce).plus(1).toString();
+        observer.next(nextNonce);
+      },
+      () => observer.next('1'),
+      () => observer.complete());
+    });
   }
 
   getWallet(address: string): Observable<AccountResponse> {

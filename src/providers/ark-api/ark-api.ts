@@ -41,6 +41,7 @@ interface NodeConfigurationConstants {
   vendorFieldLength?: number;
   activeDelegates?: number;
   epoch?: Date;
+  aip11?: boolean;
 }
 
 interface NodeConfigurationResponse {
@@ -310,6 +311,13 @@ export class ArkApiProvider {
         asset: transaction.asset
       };
 
+      if (this._network.aip11) {
+        this._client.getNextNonce(wallet.address).subscribe(nonce => {
+          data.nonce = nonce;
+          data.version = 2;
+        });
+      }
+
       data.signature = ArkCrypto.Transactions.Signer.sign(data, keys);
 
       secondPassphrase = secondKey || secondPassphrase;
@@ -404,7 +412,7 @@ export class ArkApiProvider {
     this.fetchFees().subscribe();
     this.fetchFeeStatistics().subscribe();
     this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
-      const { vendorFieldLength, activeDelegates, epoch } = response.data && response.data.constants || {} as NodeConfigurationConstants;
+      const { vendorFieldLength, activeDelegates, epoch, aip11 } = response.data && response.data.constants || {} as NodeConfigurationConstants;
 
       if (vendorFieldLength) {
         this._network.vendorFieldLength = vendorFieldLength;
@@ -414,6 +422,9 @@ export class ArkApiProvider {
       }
       if (epoch) {
         this._network.epoch = new Date(epoch);
+      }
+      if (aip11) {
+        this._network.aip11 = aip11;
       }
     });
   }
