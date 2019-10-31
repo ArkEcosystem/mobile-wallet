@@ -57,18 +57,6 @@ export default class ApiClient {
     return this.httpClient.post(`${this.host}/api/${path}`, body, { ...options, headers: this.defaultHeaders }).timeout(5000);
   }
 
-  getNextNonce(address: string): Observable<string> {
-    return Observable.create(observer => {
-      this.getWallet(address).subscribe((wallet: WalletResponse) => {
-        const nonce = wallet.nonce;
-        const nextNonce = new BigNumber(nonce).plus(1).toString();
-        observer.next(nextNonce);
-      },
-      () => observer.next('1'),
-      () => observer.complete());
-    });
-  }
-
   getWallet(address: string): Observable<WalletResponse> {
     return Observable.create(observer => {
       this.get(`wallets/${address}`).subscribe((response: any) => {

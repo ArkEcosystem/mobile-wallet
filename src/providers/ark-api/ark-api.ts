@@ -22,9 +22,11 @@ import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
 import {AccountResponse, Delegate, PeerResponse} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
-import ArkClient, { PeerApiResponse } from '../../utils/ark-client';
+import ArkClient, { PeerApiResponse, WalletResponse } from '../../utils/ark-client';
 import * as ArkCrypto from '@arkecosystem/crypto';
 import { PeerDiscovery } from '@utils/ark-peer-discovery';
+import BigNumber from '@utils/bignumber';
+import { finalize, tap } from 'rxjs/operators';
 
 interface NodeFees {
   type: number;
@@ -311,28 +313,45 @@ export class ArkApiProvider {
         asset: transaction.asset
       };
 
-      if (this._network.aip11) {
-        this._client.getNextNonce(wallet.address).subscribe(nonce => {
-          data.nonce = nonce;
-          data.version = 2;
-        });
-      }
+      this.getNextWalletNonce(wallet.address)
+        .pipe(
+          tap(nonce => {
+            if (this._network.aip11) {
+              data.nonce = nonce;
+              data.version = 2;
+            }
+          }),
+          finalize(() => {
+            data.signature = ArkCrypto.Transactions.Signer.sign(data, keys);
 
-      data.signature = ArkCrypto.Transactions.Signer.sign(data, keys);
+            secondPassphrase = secondKey || secondPassphrase;
 
-      secondPassphrase = secondKey || secondPassphrase;
+            if (secondPassphrase) {
+              const secondKeys = ArkCrypto.Identities.Keys.fromPassphrase(secondPassphrase);
+              data.secondSignature = ArkCrypto.Transactions.Signer.secondSign(data, secondKeys);
+            }
 
-      if (secondPassphrase) {
-        const secondKeys = ArkCrypto.Identities.Keys.fromPassphrase(secondPassphrase);
-        data.secondSignature = ArkCrypto.Transactions.Signer.secondSign(data, secondKeys);
-      }
+            transaction.id = ArkCrypto.Transactions.Utils.getId(data);
+            transaction.signature = data.signature;
+            transaction.signSignature = data.secondSignature;
 
-      transaction.id = ArkCrypto.Transactions.Utils.getId(data);
-      transaction.signature = data.signature;
-      transaction.signSignature = data.secondSignature;
+            observer.next(transaction);
+            observer.complete();
+          })
+        )
+        .subscribe()
+    });
+  }
 
-      observer.next(transaction);
-      observer.complete();
+  private getNextWalletNonce(address: string): Observable<string> {
+    return Observable.create(observer => {
+      this._client.getWallet(address).subscribe((wallet: WalletResponse) => {
+        const nonce = wallet.nonce || 0;
+        const nextNonce = new BigNumber(nonce).plus(1).toString();
+        observer.next(nextNonce);
+      },
+      () => observer.next('1'),
+      () => observer.complete());
     });
   }
 
