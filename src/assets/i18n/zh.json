@@ -59,7 +59,7 @@
   "DELEGATES_PAGE": {
     "ACTIVE": "激活",
     "APPROVAL": "批准",
-    "DELEGATE": "代理",
+    "DELEGATE": "验证者”“验证人",
     "DELEGATE_NAME": "代理姓名",
     "DELEGATES": "代理",
     "MISSED_BLOCKS": "错过的区块",
@@ -312,6 +312,7 @@
     "SECRET_PASSPHRASE": "秘密密码",
     "SECRET_PASSPHRASE_KEEP_SAFE": "秘密密码短语 (保持安全)",
     "SEED": "种子",
+    "TOP_WALLETS": "富豪榜",
     "TOTAL_BALANCE": "全部余额",
     "USERNAME": "用户名",
     "VALID_ADDRESS": "有效的地址",
