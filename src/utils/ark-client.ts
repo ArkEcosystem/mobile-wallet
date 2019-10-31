@@ -25,6 +25,13 @@ export interface PeerApiResponse extends Peer {
   };
 }
 
+export interface WalletResponse extends AccountResponse {
+  balance: string;
+  isDelegate: boolean;
+  vote: string;
+  nonce: string;
+}
+
 export default class ApiClient {
   private host: string;
   private httpClient: HttpClient;
@@ -52,7 +59,7 @@ export default class ApiClient {
 
   getNextNonce(address: string): Observable<string> {
     return Observable.create(observer => {
-      this.getWallet(address).subscribe((wallet: AccountResponse) => {
+      this.getWallet(address).subscribe((wallet: WalletResponse) => {
         const nonce = wallet.nonce;
         const nextNonce = new BigNumber(nonce).plus(1).toString();
         observer.next(nextNonce);
@@ -62,16 +69,16 @@ export default class ApiClient {
     });
   }
 
-  getWallet(address: string): Observable<AccountResponse> {
+  getWallet(address: string): Observable<WalletResponse> {
     return Observable.create(observer => {
       this.get(`wallets/${address}`).subscribe((response: any) => {
-        observer.next({
-          success: true,
-          account: {
-            ...response.data,
-            balance: String(response.data.balance),
-          }
-        });
+        if (response && response.data) {
+          observer.next({
+            ...response.data
+          });
+        } else {
+          observer.error();
+        }
         observer.complete();
       }, (error) => observer.error(error));
     });
