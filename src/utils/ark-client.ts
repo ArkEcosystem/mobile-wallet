@@ -142,6 +142,15 @@ export default class ApiClient {
     });
   }
 
+  getNodeCrypto(host: string): Observable<any> {
+    return Observable.create(observer => {
+      this.get('node/configuration/crypto', {}, host).subscribe((response: any) => {
+        observer.next(response.data);
+        observer.complete();
+      }, (error) => observer.error(error));
+    });
+  }
+
   getNodeConfiguration(host: string): Observable<PeerApiResponse> {
     return Observable.create(observer => {
       this.get(`node/configuration`, {}, host).subscribe((response: any) => {

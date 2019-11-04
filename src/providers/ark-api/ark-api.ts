@@ -44,6 +44,7 @@ interface NodeConfigurationConstants {
   activeDelegates?: number;
   epoch?: Date;
   aip11?: boolean;
+  height?: number;
 }
 
 interface NodeConfigurationResponse {
@@ -317,6 +318,7 @@ export class ArkApiProvider {
         .pipe(
           tap(nonce => {
             if (this._network.aip11) {
+              transaction.nonce = nonce;
               data.nonce = nonce;
               data.version = 2;
             }
@@ -334,6 +336,7 @@ export class ArkApiProvider {
             transaction.id = ArkCrypto.Transactions.Utils.getId(data);
             transaction.signature = data.signature;
             transaction.signSignature = data.secondSignature;
+            transaction.version = data.version || 1;
 
             observer.next(transaction);
             observer.complete();
@@ -431,20 +434,26 @@ export class ArkApiProvider {
     this.fetchFees().subscribe();
     this.fetchFeeStatistics().subscribe();
     this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
-      const { vendorFieldLength, activeDelegates, epoch, aip11 } = response.data && response.data.constants || {} as NodeConfigurationConstants;
+      const config = response.data && response.data.constants || {} as NodeConfigurationConstants;
 
-      if (vendorFieldLength) {
-        this._network.vendorFieldLength = vendorFieldLength;
+      if (config.vendorFieldLength) {
+        this._network.vendorFieldLength = config.vendorFieldLength;
       }
-      if (activeDelegates) {
-        this._network.activeDelegates = activeDelegates;
+      if (config.activeDelegates) {
+        this._network.activeDelegates = config.activeDelegates;
       }
-      if (epoch) {
-        this._network.epoch = new Date(epoch);
+      if (config.epoch) {
+        this._network.epoch = new Date(config.epoch);
       }
-      if (aip11) {
-        this._network.aip11 = aip11;
+      if (config.aip11) {
+        this._network.aip11 = config.aip11;
       }
+
+      this._client.getNodeCrypto(this._network.getPeerAPIUrl())
+        .subscribe((crypto: any) => {
+          ArkCrypto.Managers.configManager.setConfig(crypto);
+          ArkCrypto.Managers.configManager.setHeight(config.height);
+        });
     });
   }
 
