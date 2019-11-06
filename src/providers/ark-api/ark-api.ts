@@ -342,7 +342,7 @@ export class ArkApiProvider {
             observer.complete();
           })
         )
-        .subscribe()
+        .subscribe();
     });
   }
 

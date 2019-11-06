@@ -13,8 +13,8 @@ import {
   BlockFees
 } from 'ark-ts';
 import lodash from 'lodash';
+import BigNumber from './BigNumber';
 import { Observable } from 'rxjs/Observable';
-import BigNumber from '@utils/BigNumber';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/switchMap';
 
