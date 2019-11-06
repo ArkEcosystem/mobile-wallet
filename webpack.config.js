@@ -16,7 +16,7 @@ module.exports = function() {
   defaults.dev.resolve.alias = aliases;
   defaults.prod.resolve.alias = aliases;
 
-  defaults.dev.module.loaders.push({
+  const cryptoLoader = {
     test: /\.js$/,
     loader: [
       {
@@ -35,7 +35,10 @@ module.exports = function() {
     include: [
       path.resolve(__dirname, 'node_modules/@arkecosystem')
     ]
-  })
+  }
+
+  defaults.dev.module.loaders.push(cryptoLoader)
+  defaults.prod.module.loaders.push(cryptoLoader)
 
   return defaults;
 }
