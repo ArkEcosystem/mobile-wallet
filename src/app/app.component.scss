@@ -1,0 +1,11 @@
+:host {
+  #sidebar {
+    ion-list > ion-item {
+      font-weight: 500;
+
+      ion-icon {
+        color: var(--ion-color-primary)
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2, ElementRef } from '@angular/core';
 
 import { Platform, NavController, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -12,6 +12,7 @@ import { AuthProvider } from '@/services/auth/auth';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { Wallet } from '@/models/model';
 import { ArkApiProvider } from './services/ark-api/ark-api';
+import { SettingsDataProvider } from './services/settings-data/settings-data';
 
 @Component({
   selector: 'app-root',
@@ -35,23 +36,50 @@ export class AppComponent implements OnDestroy, OnInit {
     private authProvider: AuthProvider,
     private menuCtrl: MenuController,
     private userDataProvider: UserDataProvider,
-    private arkApiProvider: ArkApiProvider
+    private arkApiProvider: ArkApiProvider,
+    private settingsDataProvider: SettingsDataProvider,
+    public element: ElementRef,
+    private renderer: Renderer2
   ) {
     this.initializeApp();
-    this.initializeTranslation();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.initTranslation();
+      this.initTheme();
       this.statusBar.styleDefault();
+    
       this.splashScreen.hide();
 
-      this.navController.navigateForward('/intro')
+      this.navController.navigateForward('/intro');
     });
   }
 
-  initializeTranslation() {
+  initTranslation() {
     this.translateService.setDefaultLang('en');
+  }
+
+  initTheme() {
+    this.settingsDataProvider.settings.subscribe(settings => {
+      if (settings.darkMode) {
+        this.renderer.addClass(this.element.nativeElement.parentNode, 'dark-theme');
+      } else {
+        this.renderer.removeClass(this.element.nativeElement.parentNode, 'dark-theme');
+      }
+    });
+  }
+
+  initMenu() {
+    this.menuCtrl.enable(false, 'sidebar');
+  }
+
+  openPage(path: string, rootPage: boolean = true) {
+    if (rootPage) {
+      this.navController.navigateRoot(path);
+    } else {
+      this.navController.navigateForward(path);
+    }
   }
 
   logout() {
@@ -98,7 +126,6 @@ export class AppComponent implements OnDestroy, OnInit {
       )
       .subscribe(() => this.toastProvider.error('NETWORKS_PAGE.INTERNET_DESCONNECTED'));
   }
-
 
   ngOnInit() {
     this.onUserLogin();

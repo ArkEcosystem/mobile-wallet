@@ -13,11 +13,12 @@
   <ion-grid class="full-height ion-no-padding">
     <empty-list message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="presentActionSheet()" *ngIf="wallets?.length === 0"></empty-list>
 
-    <ion-fab bottom right class="pull-footer" *ngIf="wallets?.length > 0">
-      <ion-fab color="primary" (click)="presentActionSheet()">
-        <ion-icon name="md-add"></ion-icon>
-      </ion-fab>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="wallets?.length > 0">
+      <ion-fab-button (click)="presentActionSheet()">
+        <ion-icon name="arrow-dropleft"></ion-icon>
+      </ion-fab-button>
     </ion-fab>
+
     <ion-row class="total-balance-container" *ngIf="wallets?.length > 0">
       <ion-col>
         <p>{{ 'WALLETS_PAGE.TOTAL_BALANCE' | translate }}</p>

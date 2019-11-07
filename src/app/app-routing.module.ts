@@ -5,9 +5,9 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
   { path: 'intro', loadChildren: () => import('./pages/intro/intro.module').then( m => m.IntroPageModule)},
-  // { path: 'network-status', loadChildren: () => import('./pages/network-status/network-status.module').then( m => m.NetworkStatusPageModule)},
+  { path: 'network-status', loadChildren: () => import('./pages/network-status/network-status.module').then( m => m.NetworkStatusPageModule)},
   { path: 'login', loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)},
-  // { path: 'settings', loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)},
+  { path: 'settings', loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)},
   // { path: 'delegates', loadChildren: () => import('./pages/delegates/delegates.module').then( m => m.DelegatesPageModule)},
 
   { path: 'profile/signin', loadChildren: () => import('./pages/profiles/profile-signin/profile-signin.module').then( m => m.ProfileSigninPageModule)},
