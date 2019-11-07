@@ -5,6 +5,7 @@ import { SettingsPage } from './settings';
 import { TranslateModule } from '@ngx-translate/core';
 import { PinCodeComponentModule } from '@/components/pin-code/pin-code.module';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     IonicModule,
+    CommonModule,
     RouterModule.forChild([{ path: '', component: SettingsPage }]),
     TranslateModule,
     PinCodeComponentModule

@@ -1,4 +1,4 @@
-<ion-menu type="overlay" contentId="main" menuId="sidebar">
+<ion-menu type="overlay" contentId="main" menuId="sidebar" id="sidebar">
   <ion-header padding no-border no-shadow>
     <img src="/assets/img/logo-no-shadow.png" width="70" height="70">
     <h4>{{ profile?.name }}</h4>
@@ -7,27 +7,27 @@
 
   <ion-content>
     <ion-list inset lines="none">
-      <ion-item menuClose (click)="openPage('WalletListPage')" class="custom-arrow">
+      <ion-item menuClose (click)="openPage('/wallets')" class="custom-arrow">
         <ion-icon [name]="platform.is('ios') ? 'ios-cash-outline' : 'md-cash'" slot="start"></ion-icon>
         {{ 'WALLETS_PAGE.WALLETS' | translate }}
       </ion-item>
-      <ion-item menuClose (click)="openPage('WalletTopListPage', false)" class="custom-arrow">
+      <ion-item menuClose (click)="openPage('/wallets/top', false)" class="custom-arrow">
         <ion-icon [name]="platform.is('ios') ? 'ios-filing-outline' : 'md-filing'" slot="start"></ion-icon>
         {{ 'WALLETS_PAGE.TOP_WALLETS' | translate }}
       </ion-item>
-      <ion-item menuClose (click)="openPage('DelegatesPage', false)" class="custom-arrow">
+      <ion-item menuClose (click)="openPage('/delegates', false)" class="custom-arrow">
         <ion-icon [name]="platform.is('ios') ? 'ios-people-outline' : 'md-people'" slot="start"></ion-icon>
         {{ 'DELEGATES_PAGE.DELEGATES' | translate }}
       </ion-item>
-      <ion-item menuClose (click)="openPage('NetworkStatusPage', false)" class="custom-arrow">
+      <ion-item menuClose (click)="openPage('/network-status', false)" class="custom-arrow">
         <ion-icon [name]="platform.is('ios') ? 'ios-wifi-outline' : 'md-wifi'" slot="start"></ion-icon>
         {{ 'NETWORKS_PAGE.NETWORK_STATUS' | translate }}
       </ion-item>
-      <ion-item menuClose (click)="openPage('SettingsPage', false)" class="custom-arrow">
+      <ion-item menuClose (click)="openPage('/settings', false)" class="custom-arrow">
         <ion-icon [name]="platform.is('ios') ? 'ios-settings-outline' : 'md-settings'" slot="start"></ion-icon>
         {{ 'SETTINGS_PAGE.SETTINGS' | translate }}
       </ion-item>
-      <ion-item menuClose (click)="openPage('ContactListPage', false)" class="custom-arrow">
+      <ion-item menuClose (click)="openPage('/contacts', false)" class="custom-arrow">
         <ion-icon [name]="platform.is('ios') ? 'ios-contacts-outline' : 'md-contacts'" slot="start"></ion-icon>
         {{ 'CONTACTS_PAGE.CONTACTS' | translate }}
       </ion-item>

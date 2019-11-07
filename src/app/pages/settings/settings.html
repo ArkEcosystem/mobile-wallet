@@ -12,31 +12,31 @@
 
     <ion-item-group>
       <ion-item>
-        <ion-icon [name]="platform.is('ios') ? 'ios-globe-outline' : 'md-globe'" item-start></ion-icon>
+        <ion-icon [name]="platform.is('ios') ? 'ios-globe-outline' : 'md-globe'" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.LANGUAGE' | translate }}</ion-label>
-        <ion-select [(ngModel)]="currentSettings.language" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
-          <ion-option *ngFor="let item of objectKeys(availableOptions?.languages)" [value]="item">
+        <ion-select [value]="currentSettings.language" (ionChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
+          <ion-select-option *ngFor="let item of objectKeys(availableOptions?.languages)" [value]="item">
             {{ availableOptions?.languages[item] }}
-          </ion-option>
+          </ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
-        <ion-icon [name]="platform.is('ios') ? 'ios-cash-outline' : 'md-cash'" item-start></ion-icon>
+        <ion-icon [name]="platform.is('ios') ? 'ios-cash-outline' : 'md-cash'" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.CURRENCY' | translate }}</ion-label>
-        <ion-select [(ngModel)]="currentSettings.currency" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
-          <ion-option *ngFor="let item of objectKeys(availableOptions?.currencies)" [value]="item">
+        <ion-select [value]="currentSettings.currency" (ionChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
+          <ion-select-option *ngFor="let item of objectKeys(availableOptions?.currencies)" [value]="item">
             {{ item | uppercase }}
-          </ion-option>
+          </ion-select-option>
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-icon [name]="platform.is('ios') ? 'ios-book-outline' : 'md-book'" item-start></ion-icon>
+        <ion-icon [name]="platform.is('ios') ? 'ios-book-outline' : 'md-book'" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.WORDLIST_LANGUAGE' | translate }}</ion-label>
-        <ion-select [(ngModel)]="currentSettings.wordlistLanguage" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
-          <ion-option *ngFor="let item of objectKeys(availableOptions?.wordlistLanguages)" [value]="item">
+        <ion-select [value]="currentSettings.wordlistLanguage" (ionChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
+          <ion-select-option *ngFor="let item of objectKeys(availableOptions?.wordlistLanguages)" [value]="item">
             {{ availableOptions?.wordlistLanguages[item] }}
-          </ion-option>
+          </ion-select-option>
         </ion-select>
       </ion-item>
     </ion-item-group>
@@ -49,7 +49,7 @@
       </ion-item>
       <!-- NOTE: Deprecate notifications -->
       <!-- <ion-item ion-item>
-        <ion-icon [name]="platform.is('ios') ? 'ios-notifications-outline' : 'md-notifications-outline'" item-start></ion-icon>
+        <ion-icon [name]="platform.is('ios') ? 'ios-notifications-outline' : 'md-notifications-outline'" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.NOTIFICATIONS' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="currentSettings.notification" (ngModelChange)="onUpdate()"></ion-toggle>
       </ion-item> -->
@@ -64,7 +64,7 @@
       <ion-item>
         <ion-icon [name]="platform.is('ios') ? 'ios-moon-outline' : 'ios-moon'" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.DARK_MODE' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="currentSettings.darkMode" (ngModelChange)="onUpdate()"></ion-toggle>
+        <ion-toggle [checked]="currentSettings.darkMode" (ionChange)="onUpdate()"></ion-toggle>
       </ion-item>
     </ion-item-group>
 
@@ -75,11 +75,11 @@
         {{ 'SETTINGS_PAGE.CLEAR_DATA' | translate }}
       </ion-item>
       <ion-item detail (click)="openPrivacyPolicy()" class="custom-arrow">
-        <ion-icon [name]="platform.is('ios') ? 'ios-document-outline' : 'md-document'" item-start></ion-icon>
+        <ion-icon [name]="platform.is('ios') ? 'ios-document-outline' : 'md-document'" slot="start"></ion-icon>
         {{ 'SETTINGS_PAGE.PRIVACY_POLICY' | translate }}
       </ion-item>
       <ion-item detail="false">
-        <ion-icon [name]="platform.is('ios') ? 'ios-information-circle-outline' : 'md-information-circle'" item-start></ion-icon>
+        <ion-icon [name]="platform.is('ios') ? 'ios-information-circle-outline' : 'md-information-circle'" slot="start"></ion-icon>
         {{ 'SETTINGS_PAGE.VERSION' | translate }}
         <div item-right><p>{{ appVersion }}</p></div>
       </ion-item>

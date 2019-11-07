@@ -14,7 +14,7 @@ import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 import { CustomNetworkCreateModal } from '@/app/modals/custom-network-create/custom-network-create';
 import { takeUntil, tap } from 'rxjs/operators';
 
-const packageJson = require('@/root/package.json');
+const packageJson = require('@@/package.json');
 
 @Component({
   selector: 'page-settings',

@@ -1,4 +1,4 @@
-modal-pin-code {
+:host {
   close-popup {
     // color: color($colors, dark, base);
   }
@@ -152,7 +152,7 @@ modal-pin-code {
 }
 
 .dark-theme {
-  modal-pin-code {
+  :host {
     close-popup {
       // color: lighten(color($darkColors, primary-background, base), 50%);
     }
