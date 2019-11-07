@@ -63,8 +63,6 @@ export class ArkApiProvider {
   private _fees: arkts.Fees;
   private _delegates: arkts.Delegate[];
 
-  public arkjs = require('arkjs');
-
   constructor(
     private httpClient: HttpClient,
     private zone: NgZone,
@@ -130,7 +128,6 @@ export class ArkApiProvider {
     this._delegates = [];
 
     this._network = network;
-    this.arkjs.crypto.setNetworkVersion(this._network.version);
 
     this._api = new arkts.Client(this._network);
     this._client = new ArkClient(this.network.getPeerAPIUrl(), this.httpClient);

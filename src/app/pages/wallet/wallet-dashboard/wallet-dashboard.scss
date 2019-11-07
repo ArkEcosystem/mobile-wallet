@@ -4,11 +4,11 @@ page-wallet-dashboard {
     background-size: cover;
 
     &.default-wallet {
-      background-image: url('../assets/img/light/wallet/wallet-balance.png');
+      background-image: url('/assets/img/light/wallet/wallet-balance.png');
     }
 
     &.delegate-wallet {
-      background-image: url('../assets/img/light/wallet/delegate-balance.png');
+      background-image: url('/assets/img/light/wallet/delegate-balance.png');
     }
 
     .dark-navbar > .toolbar-background {

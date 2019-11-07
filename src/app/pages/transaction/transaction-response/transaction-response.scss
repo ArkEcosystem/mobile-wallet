@@ -6,11 +6,11 @@ page-transaction-response {
     height: auto;
 
     &.tx-success {
-      content: url('../assets/img/light/transaction/transfer-success.png');
+      content: url('/assets/img/light/transaction/transfer-success.png');
     }
 
     &.tx-error {
-      content: url('../assets/img/light/transaction/transfer-error.png');
+      content: url('/assets/img/light/transaction/transfer-error.png');
     }
   }
 
@@ -34,11 +34,11 @@ page-transaction-response {
 
     .image {
       &.tx-success {
-        content: url('../assets/img/dark/transaction/transfer-success.png');
+        content: url('/assets/img/dark/transaction/transfer-success.png');
       }
 
       &.tx-error {
-        content: url('../assets/img/dark/transaction/transfer-error.png');
+        content: url('/assets/img/dark/transaction/transfer-error.png');
       }
     }
   }
