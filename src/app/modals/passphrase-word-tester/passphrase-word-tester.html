@@ -4,15 +4,15 @@
     <h6 class="no-padding no-margin" text-center>{{ 'WALLETS_PAGE.CREATE_WALLET' | translate }}</h6>
 
     <ion-buttons end>
-      <button ion-button icon-only (click)="dismiss()">
-        <ion-icon name="close" color="light"></ion-icon>
-      </button>
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close" color="light"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 
 </ion-header>
 
-<ion-content no-bounce text-center padding>
+<ion-content class="ion-no-bounce ion-text-center ion-padding">
   <p class="sole-message">{{ 'PASSPHRASE_TEST.INFO' | translate }}</p>
   <div *ngIf="isDevNet" class="note-message-default">
     <p>{{ 'PASSPHRASE_TEST.DEVNET_WORDS_NOTICE' | translate }}</p>
@@ -21,8 +21,8 @@
     <passphrase-input #passphrase [wordlistLanguage]="wordlistLanguage" [passphraseInit]="passphraseInit"></passphrase-input>
   </form>
   <div text-center>
-    <button ion-button class="button-continue" (click)="next()" [disabled]="!wordsForm.valid || !areAllWordsCorrect()">
+    <ion-button class="button-continue" (click)="next()" [disabled]="!wordsForm.valid || !areAllWordsCorrect()">
       {{ 'NEXT' | translate }}
-    </button>
+    </ion-button>
   </div>
 </ion-content>

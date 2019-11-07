@@ -6,6 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { DirectivesModule } from '@/directives/directives.module';
 import {CustomNetworkComponentModule} from '@/components/custom-network/custom-network.module';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -13,6 +15,8 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     IonicModule,
+    FormsModule,
+    CommonModule,
     RouterModule.forChild([{ path: '', component: ProfileCreatePage }]),
     TranslateModule,
     DirectivesModule,

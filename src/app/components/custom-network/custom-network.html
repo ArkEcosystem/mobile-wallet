@@ -10,8 +10,8 @@
     <ion-col >
       <ion-item>
         <ion-label>{{ 'CUSTOM_NETWORK.CUSTOM_NETWORK' | translate}}</ion-label>
-        <ion-select [(ngModel)]="activeNetworkChoice" (ngModelChange)="onActiveNetworkChange()">
-          <ion-option *ngFor="let choice of networkChoices" [value]="choice">{{choice.name}}</ion-option>
+        <ion-select [value]="activeNetworkChoice" (ionChange)="onActiveNetworkChange()">
+          <ion-select-option *ngFor="let choice of networkChoices" [value]="choice">{{choice.name}}</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-col>
@@ -36,7 +36,7 @@
                 class="button-continue"
                 (click)="createNewModal()">
           {{ 'CUSTOM_NETWORK.CREATE_NEW' | translate}}
-        </button>
+        </ion-button>
     </ion-col>
   </ion-row>
 </ion-grid>

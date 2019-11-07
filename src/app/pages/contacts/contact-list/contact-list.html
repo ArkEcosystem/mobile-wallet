@@ -7,8 +7,10 @@
 </ion-header>
 
 <ion-content class="column-mode">
-  <ion-fab bottom right class="pull-footer">
-    <button ion-fab color="primary" (click)="openCreatePage()"><ion-icon name="md-add"></ion-icon></button>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="pull-footer">
+    <ion-fab-button color="primary" (click)="openCreatePage()">
+      <ion-icon name="md-add"></ion-icon>
+    </ion-fab-button>
   </ion-fab>
 
   <ion-grid *ngIf="profile" no-padding>

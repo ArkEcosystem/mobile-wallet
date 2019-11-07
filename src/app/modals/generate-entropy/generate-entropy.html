@@ -3,18 +3,18 @@
   <ion-toolbar>
     <h6 text-center class="no-padding no-margin">{{ 'WALLETS_PAGE.GENERATE_ENTROPY' | translate }}</h6>
     <ion-buttons end>
-      <button ion-button icon-only (click)="dismiss()">
-        <ion-icon name="close"></ion-icon>
-      </button>
+      <ion-button (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 
 </ion-header>
 
-<ion-content padding no-bounce class="column-mode">
-  <ion-grid padding (pan)="panEvent($event)">
+<ion-content class="column-mode ion-padding ion-no-bounce">
+  <ion-grid class="ion-padding" (pan)="panEvent($event)">
     <ion-row>
-      <ion-col padding text-center>
+      <ion-col class="ion-padding ion-text-center">
         <img class="image">
         <p class="sole-message">{{ 'WALLETS_PAGE.ENTROPY_RANDOM_BYTES' | translate }}</p>
         <progress-bar [progress]="progress"></progress-bar>

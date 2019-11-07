@@ -2,7 +2,7 @@
   <close-popup color="dark" (onClose)="dismiss()"></close-popup>
   <ion-grid class="no-padding">
     <ion-row class="header-row">
-      <ion-col text-center padding align-self-end class="header-toolbar">
+      <ion-col class="header-toolbar ion-text-center ion-padding ion-align-self-end">
         <h3 class="amount">{{ transaction?.getAmount() | unitsSatoshi }} {{ currentNetwork?.symbol }}</h3>
         <p appMarketNetOnly>{{ marketCurrency?.symbol }}{{ transaction?.getAmountEquivalent(marketCurrency, ticker) | marketNumber }}</p>
       </ion-col>

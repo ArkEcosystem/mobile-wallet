@@ -14,7 +14,7 @@
 <ion-content padding #content>
   <ion-grid>
     <ion-row>
-      <ion-col align-self-center>
+      <ion-col class="ion-align-self-center">
         <form #registerDelegateForm="ngForm">
           <ion-item>
             <ion-label floating stacked>{{ 'DELEGATES_PAGE.DELEGATE_NAME' | translate }}</ion-label>
@@ -30,7 +30,7 @@
         </ion-row>
       </form>
         <ion-row>
-          <ion-col text-center>
+          <ion-col class="ion-text-center">
             <ion-button class="button-continue" color="primary" [disabled]="!registerDelegateForm.form.valid || isExists"
               (click)="submitForm()">{{ 'CREATE' | translate }}</ion-button>
           </ion-col>
