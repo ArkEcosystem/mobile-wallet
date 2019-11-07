@@ -5,10 +5,10 @@
 </ion-header>
 
 <ion-content class="column-mode">
-  <ion-fab bottom right class="pull-footer" *ngIf="!isEmpty()">
-    <button ion-fab color="primary" (click)="openProfileCreate()">
+  <ion-fab vertical="bottom" horizontal="end" class="pull-footer" *ngIf="!isEmpty()">
+    <ion-fab-button color="primary" (click)="openProfileCreate()">
       <ion-icon name="md-add"></ion-icon>
-    </button>
+    </ion-fab-button>
   </ion-fab>
   <ion-grid class="ion-no-padding">
     <empty-list

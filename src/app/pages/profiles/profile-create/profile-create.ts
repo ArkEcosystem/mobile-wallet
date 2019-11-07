@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnDestroy, OnInit } from '@angular/core';
-import { AlertController, NavController, NavParams } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 
 import { Subject } from 'rxjs';
 
@@ -32,7 +32,6 @@ export class ProfileCreatePage implements OnInit, OnDestroy {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     private alertCtrl: AlertController,
     private userDataProvider: UserDataProvider,
     private toastProvider: ToastProvider,

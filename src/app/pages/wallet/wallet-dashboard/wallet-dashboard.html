@@ -40,8 +40,10 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-fab bottom right edge>
-    <button ion-fab color="primary" (click)="presentAddActionSheet()"><ion-icon  [name]="platform.is('ios') ? 'ios-add' : 'md-add'"></ion-icon></button>
+  <ion-fab vertical="bottom" horizontal="end" edge>
+    <ion-fab-button color="primary" (click)="presentAddActionSheet()">
+      <ion-icon  [name]="platform.is('ios') ? 'ios-add' : 'md-add'"></ion-icon>
+    </ion-fab-button>
   </ion-fab>
 
   <ion-grid class="main-grid full-height">

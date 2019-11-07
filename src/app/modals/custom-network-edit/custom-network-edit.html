@@ -142,12 +142,12 @@
   <ion-grid>
     <ion-row align-items-center>
       <ion-col>
-        <button ion-button
+        <ion-button
                 class="button-continue"
                 [disabled]="!manageForm.valid"
                 (click)="save()">
           {{ 'SAVE' | translate }}
-        </button>
+        </ion-button>
       </ion-col>
       <ion-col *ngIf="networkId">
         <ion-button

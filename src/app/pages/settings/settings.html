@@ -43,26 +43,26 @@
 
     <ion-item-group>
       <ion-item-divider color="primary-background"></ion-item-divider>
-      <button detail-push ion-item (click)="openChangePinPage()" class="custom-arrow">
-        <ion-icon [name]="platform.is('ios') ? 'ios-lock-outline' : 'md-lock'" item-start></ion-icon>
+      <ion-item detail (click)="openChangePinPage()" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-lock-outline' : 'md-lock'" slot="start"></ion-icon>
         {{ 'SETTINGS_PAGE.CHANGE_PIN' | translate }}
-      </button>
+      </ion-item>
       <!-- NOTE: Deprecate notifications -->
       <!-- <ion-item ion-item>
         <ion-icon [name]="platform.is('ios') ? 'ios-notifications-outline' : 'md-notifications-outline'" item-start></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.NOTIFICATIONS' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="currentSettings.notification" (ngModelChange)="onUpdate()"></ion-toggle>
       </ion-item> -->
-      <button detail-push ion-item (click)="openManageNetworksPage()" class="custom-arrow">
-        <ion-icon [name]="platform.is('ios') ? 'ios-wifi-outline' : 'md-wifi'" item-start></ion-icon>
+      <ion-item details (click)="openManageNetworksPage()" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-wifi-outline' : 'md-wifi'" slot="start"></ion-icon>
         {{ 'CUSTOM_NETWORK.MANAGE_NETWORKS' | translate }}
-      </button>
+      </ion-item>
     </ion-item-group>
 
     <ion-item-group>
       <ion-item-divider color="primary-background"></ion-item-divider>
-      <ion-item ion-item>
-        <ion-icon [name]="platform.is('ios') ? 'ios-moon-outline' : 'ios-moon'" item-start></ion-icon>
+      <ion-item>
+        <ion-icon [name]="platform.is('ios') ? 'ios-moon-outline' : 'ios-moon'" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.DARK_MODE' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="currentSettings.darkMode" (ngModelChange)="onUpdate()"></ion-toggle>
       </ion-item>
@@ -70,15 +70,15 @@
 
     <ion-item-group>
       <ion-item-divider color="primary-background"></ion-item-divider>
-      <button detail-push ion-item (click)="confirmClearData()" class="custom-arrow">
-        <ion-icon [name]="platform.is('ios') ? 'ios-trash-outline' : 'md-trash'" item-start></ion-icon>
+      <ion-item details (click)="confirmClearData()" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-trash-outline' : 'md-trash'" slot="start"></ion-icon>
         {{ 'SETTINGS_PAGE.CLEAR_DATA' | translate }}
-      </button>
-      <button detail-push ion-item (click)="openPrivacyPolicy()" class="custom-arrow">
+      </ion-item>
+      <ion-item detail (click)="openPrivacyPolicy()" class="custom-arrow">
         <ion-icon [name]="platform.is('ios') ? 'ios-document-outline' : 'md-document'" item-start></ion-icon>
         {{ 'SETTINGS_PAGE.PRIVACY_POLICY' | translate }}
-      </button>
-      <ion-item detail-none>
+      </ion-item>
+      <ion-item detail="false">
         <ion-icon [name]="platform.is('ios') ? 'ios-information-circle-outline' : 'md-information-circle'" item-start></ion-icon>
         {{ 'SETTINGS_PAGE.VERSION' | translate }}
         <div item-right><p>{{ appVersion }}</p></div>

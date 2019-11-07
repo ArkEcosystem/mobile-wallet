@@ -2,7 +2,7 @@
 
   <ion-toolbar>
     <ion-title *ngIf="response?.status">{{ transaction?.getTypeLabel() | translate }}</ion-title>
-    <h6 text-center class="no-padding no-margin" *ngIf="!response?.status">{{ 'FAILED' | translate }}</h6>
+    <h6 class="ion-text-center no-padding no-margin" *ngIf="!response?.status">{{ 'FAILED' | translate }}</h6>
 
     <ion-buttons *ngIf="!response?.status" end>
       <ion-button (click)="dismiss()">
@@ -16,16 +16,16 @@
 <ion-content #content no-bounce padding class="column-mode">
   <ion-grid>
     <ion-row>
-      <ion-col text-center class="full-height" *ngIf="response?.status">
+      <ion-col class="ion-text-center full-height" *ngIf="response?.status">
         <ion-grid class="success-container">
           <ion-row>
-            <ion-col text-center align-self-center>
+            <ion-col class="ion-text-center ion-align-self-center">
               <img class="image tx-success">
               <h6>{{ 'TRANSACTIONS_PAGE.SENT_SUCCESS' | translate }}</h6>
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col text-center align-self-center>
+            <ion-col class="ion-text-center ion-align-self-center">
               <ion-button
                       fill="outline"
                       color="primary"
@@ -38,7 +38,7 @@
           </ion-row>
         </ion-grid>
       </ion-col>
-      <ion-col align-self-center *ngIf="!response?.status">
+      <ion-col class="ion-align-self-center" *ngIf="!response?.status">
         <img class="image tx-error">
       </ion-col>
     </ion-row>
@@ -52,7 +52,7 @@
 <ion-footer padding *ngIf="transaction && showKeepSecondPassphrase">
   <ion-grid>
     <ion-row>
-      <ion-col text-center>
+      <ion-col class="ion-text-center">
         <p class="encrypt-message">{{ 'TRANSACTIONS_PAGE.ENCRYPT_SAVE_SECOND_PASSPHRASE' | translate }}</p>
         <ion-button color="primary" (click)="saveSecondPassphrase()">{{ 'SAVE' | translate }}</ion-button>
       </ion-col>
