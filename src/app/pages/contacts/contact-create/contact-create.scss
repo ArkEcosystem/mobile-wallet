@@ -10,7 +10,7 @@ page-contact-create {
 
       .image {
         width: 30px;
-        content: url('../assets/img/light/wallet/qr-code-button.png');
+        content: url('/assets/img/light/wallet/qr-code-button.png');
       }
     }
   }
@@ -19,7 +19,7 @@ page-contact-create {
 .dark-theme {
   page-contact-create {
     ion-item.item-address .qr-container .image {
-        content: url('../assets/img/dark/wallet/qr-code-button.png');
+        content: url('/assets/img/dark/wallet/qr-code-button.png');
     }
   }
 }

@@ -4,7 +4,7 @@ page-wallet-import {
     margin: 2em auto;
     width: 10em;
     max-height: 100%;
-    content: url('../assets/img/light/wallet/qr-code.png');
+    content: url('/assets/img/light/wallet/qr-code.png');
   }
 
   .qr-preview {
@@ -19,7 +19,7 @@ page-wallet-import {
 .dark-theme {
   page-wallet-import {
     .image {
-      content: url('../assets/img/dark/wallet/qr-code.png');
+      content: url('/assets/img/dark/wallet/qr-code.png');
     }
   }
 }

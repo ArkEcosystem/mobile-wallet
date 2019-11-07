@@ -53,7 +53,7 @@
         <ion-label>{{ 'SETTINGS_PAGE.NOTIFICATIONS' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="currentSettings.notification" (ngModelChange)="onUpdate()"></ion-toggle>
       </ion-item> -->
-      <ion-item details (click)="openManageNetworksPage()" class="custom-arrow">
+      <ion-item detail (click)="openManageNetworksPage()" class="custom-arrow">
         <ion-icon [name]="platform.is('ios') ? 'ios-wifi-outline' : 'md-wifi'" slot="start"></ion-icon>
         {{ 'CUSTOM_NETWORK.MANAGE_NETWORKS' | translate }}
       </ion-item>
@@ -70,7 +70,7 @@
 
     <ion-item-group>
       <ion-item-divider color="primary-background"></ion-item-divider>
-      <ion-item details (click)="confirmClearData()" class="custom-arrow">
+      <ion-item detail (click)="confirmClearData()" class="custom-arrow">
         <ion-icon [name]="platform.is('ios') ? 'ios-trash-outline' : 'md-trash'" slot="start"></ion-icon>
         {{ 'SETTINGS_PAGE.CLEAR_DATA' | translate }}
       </ion-item>

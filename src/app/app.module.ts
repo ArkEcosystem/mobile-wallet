@@ -9,6 +9,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { IonicStorageModule } from '@ionic/storage';
+import { Network } from '@ionic-native/network/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -46,6 +47,7 @@ export function createTranslateLoader(http: HttpClient) {
     QRScanner,
     Keyboard,
     SocialSharing,
+    Network,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

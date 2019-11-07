@@ -1,3 +1,47 @@
-<ion-app>
-  <ion-router-outlet></ion-router-outlet>
-</ion-app>
+<ion-menu type="overlay" contentId="main" menuId="sidebar">
+  <ion-header padding no-border no-shadow>
+    <img src="/assets/img/logo-no-shadow.png" width="70" height="70">
+    <h4>{{ profile?.name }}</h4>
+    <p>{{ network?.name }}</p>
+  </ion-header>
+
+  <ion-content>
+    <ion-list inset lines="none">
+      <ion-item menuClose (click)="openPage('WalletListPage')" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-cash-outline' : 'md-cash'" slot="start"></ion-icon>
+        {{ 'WALLETS_PAGE.WALLETS' | translate }}
+      </ion-item>
+      <ion-item menuClose (click)="openPage('WalletTopListPage', false)" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-filing-outline' : 'md-filing'" slot="start"></ion-icon>
+        {{ 'WALLETS_PAGE.TOP_WALLETS' | translate }}
+      </ion-item>
+      <ion-item menuClose (click)="openPage('DelegatesPage', false)" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-people-outline' : 'md-people'" slot="start"></ion-icon>
+        {{ 'DELEGATES_PAGE.DELEGATES' | translate }}
+      </ion-item>
+      <ion-item menuClose (click)="openPage('NetworkStatusPage', false)" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-wifi-outline' : 'md-wifi'" slot="start"></ion-icon>
+        {{ 'NETWORKS_PAGE.NETWORK_STATUS' | translate }}
+      </ion-item>
+      <ion-item menuClose (click)="openPage('SettingsPage', false)" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-settings-outline' : 'md-settings'" slot="start"></ion-icon>
+        {{ 'SETTINGS_PAGE.SETTINGS' | translate }}
+      </ion-item>
+      <ion-item menuClose (click)="openPage('ContactListPage', false)" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-contacts-outline' : 'md-contacts'" slot="start"></ion-icon>
+        {{ 'CONTACTS_PAGE.CONTACTS' | translate }}
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+  <ion-footer no-border no-shadow>
+    <ion-list inset lines="none">
+      <ion-item menuClose (click)="logout()" class="custom-arrow">
+        <ion-icon [name]="platform.is('ios') ? 'ios-log-out-outline' : 'md-log-out'" slot="start"></ion-icon>
+        {{ 'SIGN_OUT' | translate }}
+      </ion-item>
+    </ion-list>
+  </ion-footer>
+</ion-menu>
+
+<ion-router-outlet id="main"></ion-router-outlet>

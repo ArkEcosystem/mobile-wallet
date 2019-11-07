@@ -20,7 +20,7 @@ page-transaction-send {
 
     .image {
       width: 30px;
-      content: url('../assets/img/light/wallet/qr-code-button.png');
+      content: url('/assets/img/light/wallet/qr-code-button.png');
     }
   }
 
@@ -108,7 +108,7 @@ page-transaction-send {
 .dark-theme {
   page-transaction-send {
     .qr-container .image {
-        content: url('../assets/img/dark/wallet/qr-code-button.png');
+        content: url('/assets/img/dark/wallet/qr-code-button.png');
     }
 
     ion-auto-complete ul {

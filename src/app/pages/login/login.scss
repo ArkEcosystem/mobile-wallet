@@ -1,6 +1,6 @@
 page-login {
   ion-content {
-    background: url('../assets/img/light/login/login-pattern.png') repeat;
+    background: url('/assets/img/light/login/login-pattern.png') repeat;
     background-size: contain;
     background-repeat:no-repeat;
     background-position: top center;
@@ -44,7 +44,7 @@ page-login {
 .dark-theme {
   page-login {
     ion-content {
-      background: url('../assets/img/dark/login/login-pattern.png') repeat;
+      background: url('/assets/img/dark/login/login-pattern.png') repeat;
       background-size: contain;
       background-repeat:no-repeat;
       background-position: top center;
