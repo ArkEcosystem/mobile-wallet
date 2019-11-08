@@ -1,4 +1,4 @@
-page-delegate-detail {
+:host {
   .content {
     background-color: #ffffff;
   }
@@ -53,7 +53,7 @@ page-delegate-detail {
 
   ion-row.details {
     p {
-      color: lighten(color($colors, dark, base), 55%);
+      // color: lighten(color($colors, dark, base), 55%);
       margin-bottom: 0;
     }
 

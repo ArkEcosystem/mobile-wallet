@@ -14,17 +14,17 @@
 <ion-content>
   <ion-grid padding>
     <ion-row>
-      <ion-col text-center>
+      <ion-col class="ion-text-center">
         <p class="sole-message">{{ 'TRANSACTIONS_PAGE.QRCODE_COPY' | translate }}</p>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col text-center>
+      <ion-col class="ion-text-center">
         <ion-button fill="clear" size="small" color="primary" (click)="copyAddress()" class="button-address">{{ address }}</ion-button>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col text-center>
+      <ion-col class="ion-text-center">
         <ark-qr-code [address]="address" [amount]="amount ? amount : null" [size]="140"></ark-qr-code>
       </ion-col>
     </ion-row>

@@ -63,7 +63,6 @@ export class DelegatesPage implements OnDestroy {
   constructor(
     public platform: Platform,
     public navCtrl: NavController,
-    public navParams: NavParams,
     private arkApiProvider: ArkApiProvider,
     private zone: NgZone,
     private modalCtrl: ModalController,
