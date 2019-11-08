@@ -45,8 +45,8 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
       .pipe(
         debounceTime(500)
       )
-      .subscribe((translate) => {
-        this.loader = this.loadingCtrl.create({
+      .subscribe(async (translate) => {
+        this.loader = await this.loadingCtrl.create({
           message: translate,
           duration: 10000
         });
@@ -61,7 +61,7 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
             this.toastProvider.error(e || 'NETWORKS_PAGE.NO_GOOD_PEER');
           });
 
-        this.loader.present();
+        await this.loader.present();
       });
   }
 

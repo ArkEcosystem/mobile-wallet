@@ -6,33 +6,37 @@
 
 </ion-header>
 
-<ion-content no-bounce padding>
+<ion-content no-bounce class="ion-padding">
   <ion-grid>
     <ion-row>
-      <ion-col padding>
-        <ion-list no-lines *ngIf="currentPeer" class="list-selectable">
+      <ion-col class="ion-padding">
+        <ion-list lines="none" *ngIf="currentPeer" class="list-selectable">
 
           <ion-item>
-            <ion-label stacked>
-              <p ion-text>{{ 'NETWORKS_PAGE.PEER' | translate }}</p>
-              <h4 item-content class="content">
-                {{ getPeerUrl() }}
-              </h4>
+            <ion-label position="stacked">
+              {{ 'NETWORKS_PAGE.PEER' | translate }}
             </ion-label>
+            <ion-text>
+              <h5>{{ getPeerUrl() }}</h5>
+            </ion-text>
           </ion-item>
 
           <ion-item>
-            <ion-label stacked>
-              <p ion-text>{{ 'NETWORKS_PAGE.HEIGHT' | translate }}</p>
-              <h4 item-content class="content">{{ currentPeer?.height }}</h4>
+            <ion-label position="stacked">
+              {{ 'NETWORKS_PAGE.HEIGHT' | translate }}
             </ion-label>
+            <ion-text>
+              <h5>{{ currentPeer?.height }}</h5>
+            </ion-text>
           </ion-item>
 
           <ion-item>
-            <ion-label stacked>
-              <p ion-text>{{ 'NETWORKS_PAGE.VERSION' | translate }}</p>
-              <h4 item-content class="content">{{ currentPeer?.version }}</h4>
+            <ion-label position="stacked">
+              {{ 'NETWORKS_PAGE.VERSION' | translate }}
             </ion-label>
+            <ion-text>
+              <h5>{{ currentPeer?.version }}</h5>
+            </ion-text>
           </ion-item>
         </ion-list>
       </ion-col>

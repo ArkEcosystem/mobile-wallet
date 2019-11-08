@@ -4,6 +4,7 @@ import { NetworkStatusPage } from './network-status';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     IonicModule,
+    CommonModule,
     RouterModule.forChild([{ path: '', component: NetworkStatusPage }]),
     TranslateModule,
   ],
