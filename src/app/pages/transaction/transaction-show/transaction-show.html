@@ -14,7 +14,7 @@
 <ion-content padding>
   <ion-grid>
     <ion-row>
-      <ion-col text-center>
+      <ion-col class="ion-text-center">
         <span>{{ transaction?.getTypeLabel() | translate }}</span>
         <h2 ion-text [color]="transaction.isSender() ? 'danger' : 'secondary'">
           {{ transaction?.isSender() ? '-' : '+' }} {{ transaction?.getAmount() | unitsSatoshi }} {{ currentNetwork?.token }}

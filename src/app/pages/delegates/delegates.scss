@@ -1,6 +1,6 @@
-page-delegates {
+:host {
   .segment-md .segment-button {
-    color: color($colors, dark, base)!important;
+    // color: color($colors, dark, base)!important;
   }
 
   .searchbar-clear-icon {
@@ -19,7 +19,7 @@ page-delegates {
       margin: 0 16px;
 
       .delegate-item {
-        border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
+        // border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
         padding: 0;
 
         .input-wrapper > .label {
@@ -50,7 +50,7 @@ page-delegates {
 .dark-theme {
   page-delegates {
     .segment-md .segment-button {
-      color: color($darkColors, primary, base) !important;
+      // color: color($darkColors, primary, base) !important;
 
       &.segment-activated {
         color: #fff !important;
@@ -58,10 +58,10 @@ page-delegates {
     }
 
     .delegate-list .list .delegate-item {
-      border-bottom: 1px solid color($darkColors, secondary-background, base);
+      // border-bottom: 1px solid color($darkColors, secondary-background, base);
 
       .rate {
-        color: lighten(color($darkColors, primary-background, base), 50%);
+        // color: lighten(color($darkColors, primary-background, base), 50%);
       }
     }
   }

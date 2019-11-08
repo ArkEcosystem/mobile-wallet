@@ -10,6 +10,9 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 
 import { PinCodeComponentModule } from '@/components/pin-code/pin-code.module';
 import { ConfirmTransactionComponentModule } from '@/components/confirm-transaction/confirm-transaction.module';
+import { FormsModule } from '@angular/forms';
+import { DelegateDetailPageModule } from './delegate-detail/delegate-detail.module';
+import { DelegateDetailPage } from './delegate-detail/delegate-detail';
 
 @NgModule({
   declarations: [
@@ -17,6 +20,7 @@ import { ConfirmTransactionComponentModule } from '@/components/confirm-transact
   ],
   imports: [
     IonicModule,
+    FormsModule,
     CommonModule,
     RouterModule.forChild([{ path: '', component: DelegatesPage }]),
     TranslateModule,
@@ -24,6 +28,10 @@ import { ConfirmTransactionComponentModule } from '@/components/confirm-transact
     FilterPipeModule,
     PinCodeComponentModule,
     ConfirmTransactionComponentModule,
+    DelegateDetailPageModule
   ],
+  entryComponents: [
+    DelegateDetailPage
+  ]
 })
 export class DelegatesPageModule {}
