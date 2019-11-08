@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'profile/create', loadChildren: () => import('./pages/profiles/profile-create/profile-create.module').then( m => m.ProfileCreatePageModule)},
 
   // { path: 'contacts/create', loadChildren: () => import('./pages/contacts/contact-create/contact-create.module').then( m => m.ContactCreatePageModule)},
-  // { path: 'contacts', loadChildren: () => import('./pages/contacts/contact-list/contact-list.module').then( m => m.ContactListPageModule)},
+  { path: 'contacts', loadChildren: () => import('./pages/contacts/contact-list/contact-list.module').then( m => m.ContactListPageModule)},
 
   // { path: 'transaction/send', loadChildren: () => import('./pages/transaction/transaction-send/transaction-send.module').then( m => m.TransactionSendPageModule)},
   // { path: 'transaction/receive', loadChildren: () => import('./pages/transaction/transaction-receive/transaction-receive.module').then( m => m.WalletReceivePageModule)},

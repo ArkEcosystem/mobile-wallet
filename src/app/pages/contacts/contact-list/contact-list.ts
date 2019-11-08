@@ -15,6 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'page-contact-list',
   templateUrl: 'contact-list.html',
+  styleUrls: ['contact-list.scss']
 })
 export class ContactListPage implements OnInit {
   public profile;

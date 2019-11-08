@@ -7,13 +7,13 @@
 </ion-header>
 
 <ion-content class="column-mode">
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="pull-footer">
+  <ion-fab *ngIf="!isEmpty()" vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="primary" (click)="openCreatePage()">
       <ion-icon name="md-add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <ion-grid *ngIf="profile" no-padding>
+  <ion-grid *ngIf="profile" class="no-padding">
     <empty-list message="CONTACTS_PAGE.ADD_CONTACT_TEXT" (onClickButton)="openCreatePage()" *ngIf="isEmpty()"></empty-list>
 
     <ion-row *ngIf="!isEmpty()">
