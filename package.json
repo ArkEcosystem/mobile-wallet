@@ -43,7 +43,7 @@
     "@angular/http": "^5.2.11",
     "@angular/platform-browser": "^5.2.11",
     "@angular/platform-browser-dynamic": "^5.2.11",
-    "@arkecosystem/crypto": "2.3.22",
+    "@arkecosystem/crypto": "2.5.28",
     "@ionic-native/background-mode": "^4.20.0",
     "@ionic-native/clipboard": "^4.20.0",
     "@ionic-native/core": "^4.20.0",
