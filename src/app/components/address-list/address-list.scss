@@ -1,4 +1,4 @@
-.address-item {
+:host {
   padding-right: 16px;
 
   .label {
@@ -30,14 +30,14 @@
     text-transform: uppercase;
     text-align: center;
     color: white;
-    // background: darken(color($colors, primary-background, base), 15%);
+    background: var(--ion-background-color);
     height: 45px;
     width: 45px;
     line-height: 45px;
     font-size: 1.9rem;
     margin-right: 15px;
     &.highlight {
-      // background: color($colors, danger, base);
+      background: var(--ion-color-danger)
     }
   }
 
