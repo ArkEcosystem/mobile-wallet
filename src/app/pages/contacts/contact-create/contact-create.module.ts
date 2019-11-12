@@ -8,6 +8,7 @@ import { DirectivesModule } from '@/directives/directives.module';
 
 import { QRScannerComponentModule } from '@/components/qr-scanner/qr-scanner.module';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     IonicModule,
+    FormsModule,
     CommonModule,
     RouterModule.forChild([{ path: '', component: ContactCreatePage }]),
     TranslateModule,

@@ -6,15 +6,15 @@
 
 </ion-header>
 
-<ion-content padding #content>
+<ion-content class="ion-padding" #content>
   <form #createContactForm="ngForm">
     <ion-item>
-      <ion-label floating>{{ 'NAME' | translate }}</ion-label>
+      <ion-label position="floating">{{ 'NAME' | translate }}</ion-label>
       <ion-input type="text" name="name" [(ngModel)]="contactName" (keyup)="validateAddress()" required></ion-input>
     </ion-item>
 
     <ion-item class="item-address">
-      <ion-label floating>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
+      <ion-label position="floating">{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
       <ion-input type="text" name="address" [(ngModel)]="address" [disabled]="!isNew" (keyup)="validateAddress()" required></ion-input>
       <div class="qr-container" item-right *ngIf="isNew">
         <img class="image" tappable (tap)="scanQRCode()" />
@@ -23,7 +23,7 @@
   </form>
 </ion-content>
 
-<ion-footer padding no-shadow no-border [keyboard-attach]="content">
+<ion-footer class="ion-padding" no-shadow no-border>
   <ion-button class="button-continue" [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'SAVE' | translate }}</ion-button>
 </ion-footer>
 

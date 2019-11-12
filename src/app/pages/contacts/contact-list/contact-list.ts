@@ -109,8 +109,9 @@ export class ContactListPage implements OnInit {
 
   openEditPage(address) {
     const contact = this.contactsProvider.getContactByAddress(address);
+
     return this.navCtrl.navigateForward('/contacts/create', { queryParams: {
-      contact
+      contact: JSON.stringify(contact)
     }});
   }
 
