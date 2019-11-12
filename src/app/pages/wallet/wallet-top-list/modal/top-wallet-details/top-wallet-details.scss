@@ -1,4 +1,4 @@
-page-top-wallet-details {
+:host {
 
   .content {
     background-color: #ffffff;
@@ -49,7 +49,7 @@ page-top-wallet-details {
     width: 100%;
     margin: .7em auto;
     box-shadow: none;
-    border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
+    // border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
   }
 
   ion-icon {
@@ -60,7 +60,7 @@ page-top-wallet-details {
 .dark-theme {
   page-wallet-dashboard {
     .tx {
-      border-bottom: 1px solid color($darkColors, secondary-background, base);
+      // border-bottom: 1px solid color($darkColors, secondary-background, base);
     }
   }
 }

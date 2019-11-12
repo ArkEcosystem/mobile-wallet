@@ -9,7 +9,7 @@
 
     <ion-searchbar #searchbar *ngIf="isSearch" [(ngModel)]="searchQuery" spellcheck="false" animated="true" showCancelButton="false" placeholder="{{ 'SEARCH' | translate }}"></ion-searchbar>
 
-    <ion-buttons end>
+    <ion-buttons slot="end">
       <ion-button (click)="toggleSearchBar()">
         <ion-icon slot="icon-only" [name]="isSearch ? 'close' : 'search'"></ion-icon>
       </ion-button>
@@ -22,10 +22,10 @@
 <ion-content tappable overflow-scroll="false" class="top-wallet-list">
     <ion-list>
       <ng-template ngFor let-topWallet [ngForOf]="topWallets" let-i="index">
-        <ion-item no-lines detail-push (click)="openDetailModal(topWallet)" *ngIf="topWallet.username?.toLowerCase().includes(searchQuery.toLowerCase()) || topWallet.address?.toLowerCase().includes(searchQuery.toLowerCase())" tappable nowrap text-left class="top-wallet-item custom-arrow">
+        <ion-item detail lines="none" (click)="openDetailModal(topWallet)" *ngIf="topWallet.username?.toLowerCase().includes(searchQuery.toLowerCase()) || topWallet.address?.toLowerCase().includes(searchQuery.toLowerCase())" tappable nowrap class="ion-text-left top-wallet-item custom-arrow">
           <ion-grid>
-            <ion-row align-items-center>
-              <ion-col col-2 text-center><span>{{ i + 1}}</span></ion-col>
+            <ion-row class="ion-align-items-center">
+              <ion-col col-2 class="ion-text-center"><span>{{ i + 1}}</span></ion-col>
               <ion-col col-10>
                 <ion-row>
                   <ion-col>

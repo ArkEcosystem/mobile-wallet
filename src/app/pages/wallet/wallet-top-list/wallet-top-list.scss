@@ -1,4 +1,4 @@
-page-wallet-top-list {
+:host {
   .searchbar-clear-icon {
     display: none!important;
   }
@@ -8,7 +8,7 @@ page-wallet-top-list {
       margin: 0 16px;
 
       .top-wallet-item {
-        border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
+        // border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
         padding: 0;
 
         .input-wrapper > .label {
