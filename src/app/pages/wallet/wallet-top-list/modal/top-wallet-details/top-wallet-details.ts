@@ -1,4 +1,4 @@
-import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {Component, NgZone, OnDestroy} from '@angular/core';
 import {LoadingController, NavController, NavParams, ModalController, IonRefresher} from '@ionic/angular';
 import {Wallet} from '@/models/wallet';
 import {Fees, Network} from 'ark-ts';
@@ -104,16 +104,16 @@ export class TopWalletDetailsPage implements OnDestroy {
     });
   }
 
-  private refreshTransactions(loader?: HTMLIonLoadingElement|IonRefresher) {
+  private refreshTransactions(loader?: any) {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.client.getTransactionList(this.address)
         .pipe(
           finalize(() => this.zone.run(() => {
             if (loader) {
-              if (loader instanceof HTMLIonLoadingElement) {
-                loader.dismiss();
-              } else if (loader instanceof IonRefresher) {
+              if (loader instanceof IonRefresher) {
                 loader.complete();
+              } else {
+                loader.dismiss();
               }
             }
             this.emptyTransactions = lodash.isEmpty(this.topWallet.transactions);

@@ -5,6 +5,9 @@ import {TranslateModule} from '@ngx-translate/core';
 import {PipesModule} from '@/pipes/pipes.module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { TopWalletDetailsPage } from './modal/top-wallet-details/top-wallet-details';
+import { TopWalletDetailsPageModule } from './modal/top-wallet-details/top-wallet-details.module';
 
 @NgModule({
   declarations: [
@@ -12,10 +15,15 @@ import { RouterModule } from '@angular/router';
   ],
   imports: [
     IonicModule,
+    FormsModule,
     CommonModule,
     RouterModule.forChild([{ path: '', component: WalletTopListPage }]),
     TranslateModule,
-    PipesModule
+    PipesModule,
+    TopWalletDetailsPageModule
   ],
+  entryComponents: [
+    TopWalletDetailsPage
+  ]
 })
 export class WalletTopListPageModule {}

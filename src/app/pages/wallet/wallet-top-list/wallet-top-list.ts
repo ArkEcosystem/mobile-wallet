@@ -1,5 +1,5 @@
 import {Component, NgZone, OnDestroy, ViewChild} from '@angular/core';
-import {ModalController, NavController, NavParams, Platform, IonSlides, IonSearchbar} from '@ionic/angular';
+import {ModalController, NavController, Platform, IonSlides, IonSearchbar} from '@ionic/angular';
 import {Wallet} from '@/models/wallet';
 import {Delegate, Network} from 'ark-ts';
 import {ArkApiProvider} from '@/services/ark-api/ark-api';
@@ -37,7 +37,6 @@ export class WalletTopListPage implements OnDestroy {
   constructor(
     public platform: Platform,
     public navCtrl: NavController,
-    public navParams: NavParams,
     private arkApiProvider: ArkApiProvider,
     private zone: NgZone,
     private modalCtrl: ModalController,
