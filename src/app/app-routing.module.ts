@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'profile/signin', loadChildren: () => import('./pages/profiles/profile-signin/profile-signin.module').then( m => m.ProfileSigninPageModule)},
   { path: 'profile/create', loadChildren: () => import('./pages/profiles/profile-create/profile-create.module').then( m => m.ProfileCreatePageModule)},
 
-  // { path: 'contacts/create', loadChildren: () => import('./pages/contacts/contact-create/contact-create.module').then( m => m.ContactCreatePageModule)},
+  { path: 'contacts/create', loadChildren: () => import('./pages/contacts/contact-create/contact-create.module').then( m => m.ContactCreatePageModule)},
   { path: 'contacts', loadChildren: () => import('./pages/contacts/contact-list/contact-list.module').then( m => m.ContactListPageModule)},
 
   // { path: 'transaction/send', loadChildren: () => import('./pages/transaction/transaction-send/transaction-send.module').then( m => m.TransactionSendPageModule)},

@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { AlertController, NavController, NavParams } from '@ionic/angular';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
@@ -13,13 +13,14 @@ import lodash from 'lodash';
 import { ToastProvider } from '@/services/toast/toast';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslatableObject } from '@/models/translate';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'page-contact-create',
   templateUrl: 'contact-create.html',
   styleUrls: ['contact-create.scss']
 })
-export class ContactCreatePage {
+export class ContactCreatePage implements OnInit {
   @ViewChild('createContactForm', { static: true }) createContactForm: HTMLFormElement;
   @ViewChild('qrScanner', { read: QRScannerComponent, static: true }) qrScanner: QRScannerComponent;
 
@@ -32,20 +33,26 @@ export class ContactCreatePage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
+    private route: ActivatedRoute,
     private userDataProvider: UserDataProvider,
     private contactsProvider: ContactsProvider,
     private translateService: TranslateService,
     private alertCtrl: AlertController,
     private toastProvider: ToastProvider
-  ) {
-    const contact = this.navParams.get('contact') as Contact;
-    this.address = this.navParams.get('address');
+  ) {}
+
+  ngOnInit() {
+    this.currentNetwork = this.userDataProvider.currentNetwork;
+
+    const contact = this.route.snapshot.queryParamMap.get('contact');
+    this.address = this.route.snapshot.queryParamMap.get('address');
 
     this.isNew = lodash.isEmpty(contact);
+
     if (!this.isNew) {
-      this.contactName = contact.name;
-      this.address = contact.address;
+      const contactMap = JSON.parse(contact);
+      this.contactName = contactMap.name;
+      this.address = contactMap.address;
     }
 
     this.currentNetwork = this.userDataProvider.currentNetwork;
@@ -128,7 +135,7 @@ export class ContactCreatePage {
             ]
           });
 
-          await alert.present();
+          alert.present();
         });
     });
   }
