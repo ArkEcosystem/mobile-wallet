@@ -15,7 +15,8 @@ import { PassphraseValidator } from '@/app/validators/passphrase/passphrase';
 import { AddressValidator } from '@/app/validators/address/address';
 
 import * as constants from '@/app/app.constants';
-import bip39 from 'bip39';
+import * as bip39 from 'bip39';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'page-wallet-import-passphrase',
@@ -47,7 +48,7 @@ export class WalletManualImportPage extends BaseWalletImport  {
   importWalletManual: HTMLFormElement;
 
   constructor(
-    navParams: NavParams,
+    route: ActivatedRoute,
     navCtrl: NavController,
     userDataProvider: UserDataProvider,
     arkApiProvider: ArkApiProvider,
@@ -58,8 +59,8 @@ export class WalletManualImportPage extends BaseWalletImport  {
     private formBuilder: FormBuilder,
     private addressValidator: AddressValidator,
     settingsDataProvider: SettingsDataProvider) {
-    super(navParams, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider, settingsDataProvider);
-    this.useAddress = navParams.get('type') === 'address';
+    super(route, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider, settingsDataProvider);
+    this.useAddress = route.snapshot.queryParamMap.get('type') === 'address';
     this.nonBIP39Passphrase = false;
 
     this.wordlist = bip39.wordlists.english;

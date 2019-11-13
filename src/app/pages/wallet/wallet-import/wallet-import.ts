@@ -8,6 +8,7 @@ import { QRScannerComponent } from '@/components/qr-scanner/qr-scanner';
 import { BaseWalletImport } from '@/app/pages/wallet/wallet-import/wallet-import.base';
 import { NetworkProvider } from '@/services/network/network';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'page-wallet-import',
@@ -19,7 +20,7 @@ export class WalletImportPage extends BaseWalletImport {
   qrScanner: QRScannerComponent;
 
   constructor(
-    navParams: NavParams,
+    route: ActivatedRoute,
     navCtrl: NavController,
     userDataProvider: UserDataProvider,
     arkApiProvider: ArkApiProvider,
@@ -28,11 +29,11 @@ export class WalletImportPage extends BaseWalletImport {
     networkProvider: NetworkProvider,
     settingsDataProvider: SettingsDataProvider
   ) {
-    super(navParams, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider, settingsDataProvider);
+    super(route, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider, settingsDataProvider);
   }
 
   openManualImportPage(type: string) {
-    this.navCtrl.navigateForward('/wallet/import-manual', {
+    this.navCtrl.navigateForward('/wallets/import-manual', {
       queryParams: {
         type: type,
         address: this.existingAddress
