@@ -1,4 +1,4 @@
-import { ModalController, NavController, NavParams } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import { ToastProvider } from '@/services/toast/toast';
@@ -9,6 +9,7 @@ import { SettingsDataProvider } from '@/services/settings-data/settings-data';
 import bip39 from 'bip39';
 import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 import { finalize } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 export abstract class BaseWalletImport {
 
@@ -16,7 +17,7 @@ export abstract class BaseWalletImport {
   protected wordlistLanguage: string;
 
   constructor(
-    navParams: NavParams,
+    route: ActivatedRoute,
     protected navCtrl: NavController,
     private userDataProvider: UserDataProvider,
     private arkApiProvider: ArkApiProvider,
@@ -25,7 +26,7 @@ export abstract class BaseWalletImport {
     private networkProvider: NetworkProvider,
     private settingsDataProvider: SettingsDataProvider
   ) {
-    this.existingAddress = navParams.get('address');
+    this.existingAddress = route.snapshot.queryParamMap.get('address');
     this.settingsDataProvider.settings.subscribe((settings) => this.wordlistLanguage = settings.wordlistLanguage);
   }
 
@@ -107,8 +108,8 @@ export abstract class BaseWalletImport {
     });
 
     modal.onDidDismiss().then(({ data }) => {
-      if (data.password) {
-        this.addWallet(newWallet, passphrase, data.password);
+      if (data) {
+        this.addWallet(newWallet, passphrase, data);
       } else {
         this.toastProvider.error('WALLETS_PAGE.ADD_WALLET_ERROR');
       }

@@ -7,6 +7,9 @@ import { DirectivesModule } from '@/directives/directives.module';
 import { PipesModule } from '@/pipes/pipes.module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PinCodeModalModule } from '@/app/modals/pin-code/pin-code.module';
+import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 
 @NgModule({
   declarations: [
@@ -15,10 +18,16 @@ import { RouterModule } from '@angular/router';
   imports: [
     IonicModule,
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild([{ path: '', component: WalletManualImportPage }]),
     TranslateModule,
     DirectivesModule,
-    PipesModule
+    PipesModule,
+    PinCodeModalModule
   ],
+  entryComponents: [
+    PinCodeModal
+  ]
 })
 export class WalletManualImportPageModule {}

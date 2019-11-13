@@ -8,6 +8,8 @@ import { QRScannerComponentModule } from '@/components/qr-scanner/qr-scanner.mod
 import { PipesModule } from '@/pipes/pipes.module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { PinCodeModalModule } from '@/app/modals/pin-code/pin-code.module';
+import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,11 @@ import { RouterModule } from '@angular/router';
     RouterModule.forChild([{ path: '', component: WalletImportPage }]),
     TranslateModule,
     QRScannerComponentModule,
-    PipesModule
+    PipesModule,
+    PinCodeModalModule
   ],
+  entryComponents: [
+    PinCodeModal
+  ]
 })
 export class WalletImportPageModule {}

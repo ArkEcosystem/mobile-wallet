@@ -6,17 +6,18 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 import { ClosePopupComponentModule } from '../close-popup/close-popup.module';
+import { PinCodeModalModule } from '@/app/modals/pin-code/pin-code.module';
 
 @NgModule({
   declarations: [
-    PinCodeComponent,
-    PinCodeModal
+    PinCodeComponent
   ],
   imports: [
     IonicModule,
     TranslateModule,
     CommonModule,
-    ClosePopupComponentModule
+    ClosePopupComponentModule,
+    PinCodeModalModule
   ],
   exports: [PinCodeComponent],
   entryComponents: [

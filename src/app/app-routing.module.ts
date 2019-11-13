@@ -22,8 +22,8 @@ const routes: Routes = [
   // { path: 'transaction/show', loadChildren: () => import('./pages/transaction/transaction-show/transaction-show.module').then( m => m.TransactionShowPageModule)},
 
   // { path: 'wallet/dashboard', loadChildren: () => import('./pages/wallet/wallet-dashboard/wallet-dashboard.module').then( m => m.WalletDashboardPageModule)},
-  // { path: 'wallet/import', loadChildren: () => import('./pages/wallet/wallet-import/wallet-import.module').then( m => m.WalletImportPageModule)},
-  // { path: 'wallet/import-manual', loadChildren: () => import('./pages/wallet/wallet-import-manual/wallet-import-manual.module').then( m => m.WalletManualImportPageModule)},
+  { path: 'wallets/import', loadChildren: () => import('./pages/wallet/wallet-import/wallet-import.module').then( m => m.WalletImportPageModule)},
+  { path: 'wallets/import-manual', loadChildren: () => import('./pages/wallet/wallet-import-manual/wallet-import-manual.module').then( m => m.WalletManualImportPageModule)},
   { path: 'wallets/top', loadChildren: () => import('./pages/wallet/wallet-top-list/wallet-top-list.module').then( m => m.WalletTopListPageModule)},
   { path: 'wallets', loadChildren: () => import('./pages/wallet/wallet-list/wallet-list.module').then( m => m.WalletListPageModule)},
 ];
