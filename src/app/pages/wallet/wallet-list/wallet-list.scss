@@ -35,7 +35,7 @@
       margin-top: 0;
     }
   
-    .slides {
+    ion-slides {
       margin-left: 25px;
   
       .wallet {
@@ -46,7 +46,7 @@
           border-bottom: none;
         }
   
-        .label {
+        ion-label {
           position: relative;
           max-width: 75%;
           background: white url('/assets/img/light/wallet/normal-block.png') no-repeat center center / cover;
