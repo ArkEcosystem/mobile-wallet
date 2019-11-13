@@ -5,7 +5,7 @@
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-label stacked>{{ currentNetwork?.token }}</ion-label>
+              <ion-label position="stacked">{{ currentNetwork?.token }}</ion-label>
               <ion-input type="number"
                          formControlName="amount"
                          step="0.00000001"
@@ -21,7 +21,7 @@
           </ion-col>
           <ion-col appMarketNetOnly>
             <ion-item>
-              <ion-label stacked>{{ marketCurrency?.code | uppercase }}</ion-label>
+              <ion-label position="stacked">{{ marketCurrency?.code | uppercase }}</ion-label>
               <ion-input type="number"
                          formControlName="amountEquivalent"
                          step="0.01" min="0.00000001"

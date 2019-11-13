@@ -1,8 +1,11 @@
 <ion-header no-shadow no-border>
 
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>{{ 'TRANSACTIONS_PAGE.RECEIVE_TOKEN' | translate:tokenParam }}</ion-title>
-    <ion-buttons end>
+    <ion-buttons slot="end">
       <ion-button (click)="share()">
         <ion-icon slot="icon-only" name="share"></ion-icon>
       </ion-button>
@@ -12,7 +15,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid padding>
+  <ion-grid class="ion-padding">
     <ion-row>
       <ion-col class="ion-text-center">
         <p class="sole-message">{{ 'TRANSACTIONS_PAGE.QRCODE_COPY' | translate }}</p>

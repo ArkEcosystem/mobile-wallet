@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 
 import { ToastProvider } from '@/services/toast/toast';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'page-transaction-receive',
@@ -19,13 +20,13 @@ export class TransactionReceivePage {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
+    public route: ActivatedRoute,
     private clipboard: Clipboard,
     private toastProvider: ToastProvider,
     private socialSharing: SocialSharing,
   ) {
-    this.address = this.navParams.get('address');
-    this.tokenParam = {Token: this.navParams.get('token')};
+    this.address = this.route.snapshot.queryParamMap.get('address');
+    this.tokenParam = {Token: this.route.snapshot.queryParamMap.get('token')};
 
     this.qraddress = `'{"a": "${this.address}"}'`;
   }
