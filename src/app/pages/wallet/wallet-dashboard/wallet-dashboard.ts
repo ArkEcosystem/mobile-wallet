@@ -1,7 +1,6 @@
 import { Component, NgZone, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import {
   NavController,
-  NavParams,
   Platform,
   ActionSheetController,
   ModalController,
@@ -34,6 +33,7 @@ import { RegisterSecondPassphrasePage } from './modal/register-second-passphrase
 import { SetLabelPage } from './modal/set-label/set-label';
 import { WalletBackupModal } from '@/app/modals/wallet-backup/wallet-backup';
 import { takeUntil, finalize, debounceTime } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'page-wallet-dashboard',
@@ -78,7 +78,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   constructor(
     private platform: Platform,
     private navCtrl: NavController,
-    private navParams: NavParams,
+    private route: ActivatedRoute,
     private userDataProvider: UserDataProvider,
     private arkApiProvider: ArkApiProvider,
     private actionSheetCtrl: ActionSheetController,
@@ -92,7 +92,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     private clipboard: Clipboard,
     private toastProvider: ToastProvider,
   ) {
-    this.address = this.navParams.get('address');
+    this.address = this.route.snapshot.queryParamMap.get('address');
 
     if (!this.address) { this.navCtrl.pop() }
 
@@ -417,16 +417,16 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       this.navCtrl.navigateRoot('/wallets');
   }
 
-  private refreshTransactions(save: boolean = true, loader?: HTMLIonLoadingElement|IonRefresher) {
+  private refreshTransactions(save: boolean = true, loader?: any) {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.client.getTransactionList(this.address)
       .pipe(
         finalize(() => this.zone.run(() => {
           if (loader) {
-            if (loader instanceof HTMLIonLoadingElement) {
-              loader.dismiss();
-            } else if (loader instanceof IonRefresher) {
+            if (loader instanceof IonRefresher) {
               loader.complete();
+            } else {
+              loader.dismiss();
             }
           }
           this.emptyTransactions = lodash.isEmpty(this.wallet.transactions);

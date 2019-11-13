@@ -1,6 +1,6 @@
-page-wallet-dashboard {
+:host {
   .header {
-    background: color($colors, secondary-background, base);
+    // background: color($colors, secondary-background, base);
     background-size: cover;
 
     &.default-wallet {
@@ -53,7 +53,7 @@ page-wallet-dashboard {
     width: 100%;
     margin: .7em auto;
     box-shadow: none;
-    border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
+    // border-bottom: 1px solid darken(color($colors, primary-background, base), 5%);
 
     .icon-bg {
       margin: 0;
@@ -92,7 +92,7 @@ page-wallet-dashboard {
 .dark-theme {
   page-wallet-dashboard {
     .tx {
-      border-bottom: 1px solid color($darkColors, secondary-background, base);
+      // border-bottom: 1px solid color($darkColors, secondary-background, base);
     }
     
     ion-refresher * {
