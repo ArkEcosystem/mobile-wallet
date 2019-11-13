@@ -1,5 +1,5 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { NavController, NavParams, ModalController, ActionSheetController, Platform, IonSlides, IonContent } from '@ionic/angular';
+import { Component, OnDestroy, ViewChild, OnInit, NgZone } from '@angular/core';
+import { NavController, ModalController, ActionSheetController, Platform, IonSlides, IonContent } from '@ionic/angular';
 
 import { Subject } from 'rxjs';
 
@@ -26,14 +26,14 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: 'wallet-list.html',
   styleUrls: ['wallet-list.scss'],
 })
-export class WalletListPage implements OnDestroy {
+export class WalletListPage implements OnInit, OnDestroy {
   @ViewChild('walletSlider', { read: IonSlides, static: false })
   slider: IonSlides;
 
   @ViewChild('content', { read: IonContent, static: true })
   content: IonContent;
 
-  @ViewChild('chart', { read: BaseChartDirective, static: true })
+  @ViewChild(BaseChartDirective, { static: false })
   chart: BaseChartDirective;
 
   public currentProfile: Profile;
@@ -67,6 +67,7 @@ export class WalletListPage implements OnDestroy {
     private translateService: TranslateService,
     private settingsDataProvider: SettingsDataProvider,
     private platform: Platform,
+    private ngZone: NgZone
   ) {
     this.loadUserData();
 
@@ -273,8 +274,6 @@ export class WalletListPage implements OnDestroy {
     }];
 
     this.chartOptions = {
-      maintainAspectRatio: false,
-      response: true,
       legend: {
         display: false,
       },
@@ -322,10 +321,14 @@ export class WalletListPage implements OnDestroy {
       this.chartData[0].data = [];
     }
 
-    setTimeout(() => this.chartLabels = lodash.map(fiatHistory.dates, (d: Date) => days[d.getDay()]), 0);
-    if (this.chart && this.chart.chart) {
-      this.chart.chart.update();
-    }
+    this.ngZone.run(() => {
+      this.chartLabels = lodash.map(fiatHistory.dates, (d: Date) => days[d.getDay()]);
+      setTimeout(() => {
+        if (this.chart) {
+          this.chart.update();
+        }
+      }, 0);
+    });
   };
 
   private setTicker(ticker) {
@@ -340,7 +343,7 @@ export class WalletListPage implements OnDestroy {
     });
   }
 
-  ionViewDidEnter() {
+  ngOnInit() {
     this.loadWallets();
     this.onCreateUpdateWallet();
     this.initMarketHistory();
