@@ -120,7 +120,7 @@ export abstract class BaseWalletImport {
 
   private addWallet(newWallet: Wallet, passphrase?: string, password?: string): void {
     this.userDataProvider.addWallet(newWallet, passphrase, password).subscribe(() => {
-      this.navCtrl.navigateRoot('/wallet/dashboard', {
+      this.navCtrl.navigateRoot('/wallets/dashboard', {
         queryParams: {
           address: newWallet.address
         }

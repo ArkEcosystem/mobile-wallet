@@ -1,11 +1,9 @@
 <ion-header no-shadow no-border [ngClass]="{'delegate-wallet': wallet?.isDelegate, 'default-wallet': wallet ? !wallet.isDelegate : false}">
 
   <ion-toolbar no-border-bottom no-shadow hideBackButton="true" color="primary" class="transparent-navbar">
-    <ion-button menuToggle>
-      <ion-icon slot="icon-only" name="menu"></ion-icon>
-    </ion-button>
+    <ion-menu-button slot="start"></ion-menu-button>
     <ion-title>{{ wallet?.username || wallet?.label || ('WALLETS_PAGE.MY_WALLET' | translate) }}</ion-title>
-    <ion-buttons end>
+    <ion-buttons slot="end">
       <ion-button (click)="presentWalletActionSheet()">
         <ion-icon slot="icon-only" [name]="platform.is('ios') ? 'ios-more' : 'md-more'"></ion-icon>
       </ion-button>
@@ -30,8 +28,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content #content header-scroller>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+<ion-content #content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
       pullingText="{{ 'PULL_REFRESH' | translate }}"
@@ -47,7 +45,7 @@
   </ion-fab>
 
   <ion-grid class="main-grid full-height">
-    <ion-row justify-content-center align-items-center class="full-height" *ngIf="emptyTransactions">
+    <ion-row class="ion-justify-content-center ion-align-items-center full-height" *ngIf="emptyTransactions">
       <ion-col class="ion-text-center">
         <h5>{{ 'WALLETS_PAGE.NO_TRANSACTIONS' | translate }}</h5>
       </ion-col>
@@ -60,12 +58,12 @@
             <h3 *ngIf="tx.isTransfer()" class="type">{{ tx?.getActivityLabel() | translate }}</h3>
             <h3 class="address">{{ (tx?.isTransfer()) && (tx?.getAppropriateAddress() | accountLabel | truncateMiddle: 12 : tx?.getAppropriateAddress()) || (tx?.getTypeLabel() | translate) }}</h3>
 
-            <div text-right item-end>
+            <div class="ion-text-right" slot="end">
               <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi }} {{ network?.token | uppercase }}</h3>
               <p class="timestamp">{{ tx?.date | timezone | timestampHuman }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
             </div>
-            <ion-icon *ngIf="tx?.isSender()" item-end name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
-            <ion-icon *ngIf="!tx?.isSender()" item-end name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>
+            <ion-icon *ngIf="tx?.isSender()" slot="end" name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
+            <ion-icon *ngIf="!tx?.isSender()" slot="end" name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>
           </ion-item>
         </ion-card>
       </ion-col>

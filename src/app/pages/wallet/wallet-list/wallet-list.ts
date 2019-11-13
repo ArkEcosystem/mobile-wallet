@@ -27,7 +27,7 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['wallet-list.scss'],
 })
 export class WalletListPage implements OnDestroy {
-  @ViewChild('walletSlider', { read: IonSlides, static: true })
+  @ViewChild('walletSlider', { read: IonSlides, static: false })
   slider: IonSlides;
 
   @ViewChild('content', { read: IonContent, static: true })
