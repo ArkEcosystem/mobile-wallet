@@ -15,6 +15,8 @@ import { RegisterDelegatePageModule } from './modal/register-delegate/register-d
 import { RegisterDelegatePage } from './modal/register-delegate/register-delegate';
 import { SetLabelPageModule } from './modal/set-label/set-label.module';
 import { SetLabelPage } from './modal/set-label/set-label';
+import { WalletBackupModalModule } from '@/app/modals/wallet-backup/wallet-backup.module';
+import { WalletBackupModal } from '@/app/modals/wallet-backup/wallet-backup';
 
 @NgModule({
   declarations: [
@@ -30,11 +32,13 @@ import { SetLabelPage } from './modal/set-label/set-label';
     ConfirmTransactionComponentModule,
     DirectivesModule,
     RegisterDelegatePageModule,
-    SetLabelPageModule
+    SetLabelPageModule,
+    WalletBackupModalModule
   ],
   entryComponents: [
     RegisterDelegatePage,
-    SetLabelPage
+    SetLabelPage,
+    WalletBackupModal
   ]
 })
 export class WalletDashboardPageModule {}
