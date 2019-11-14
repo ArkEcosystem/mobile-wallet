@@ -1,18 +1,21 @@
 <ion-header no-shadow no-border>
 
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>{{ 'PROFILES_PAGE.CREATE_PROFILE' | translate }}</ion-title>
   </ion-toolbar>
 
 </ion-header>
 
-<ion-content padding class="full-height" #content>
+<ion-content class="ion-padding full-height" #content>
   <form #createProfileForm="ngForm" class="full-height">
     <ion-grid class="full-height">
       <ion-row class="create-field">
         <ion-col>
           <ion-item>
-            <ion-label floating>{{ 'NAME' | translate }}</ion-label>
+            <ion-label position="floating">{{ 'NAME' | translate }}</ion-label>
             <ion-input type="text" name="name" [(ngModel)]="newProfile.name" required></ion-input>
           </ion-item>
         </ion-col>
@@ -21,7 +24,7 @@
         <ion-col class="no-padding">
           <ion-toolbar (click)="toggleAdvanced()" class="advanced-toolbar">
             {{ 'SHOW_ADVANCED' | translate }}
-            <ion-buttons end>
+            <ion-buttons slots="end">
               <ion-button fill="clear">
                 <ion-icon [name]="showAdvancedOptions ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
               </ion-button>
@@ -49,7 +52,7 @@
           </ion-grid>
         </ion-row>
         <ion-row *ngIf="activeNetworkChoice && !activeNetworkChoice.id">
-            <ion-item no-lines>
+            <ion-item lines="none">
               <customNetwork (onNetworkChange)="onCustomNetworkChange($event)"></customNetwork>
             </ion-item>
         </ion-row>

@@ -48,7 +48,7 @@ export class AppComponent implements OnDestroy, OnInit {
     this.platform.ready().then(() => {
       this.initTranslation();
       this.initTheme();
-      this.statusBar.styleDefault();
+      this.initMenu();
     
       this.splashScreen.hide();
 
@@ -71,6 +71,7 @@ export class AppComponent implements OnDestroy, OnInit {
   }
 
   initMenu() {
+    this.statusBar.styleDefault();
     this.menuCtrl.enable(false, 'sidebar');
   }
 
