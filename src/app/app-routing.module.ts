@@ -19,7 +19,7 @@ const routes: Routes = [
   { path: 'transaction/send', loadChildren: () => import('./pages/transaction/transaction-send/transaction-send.module').then( m => m.TransactionSendPageModule)},
   { path: 'transaction/receive', loadChildren: () => import('./pages/transaction/transaction-receive/transaction-receive.module').then( m => m.WalletReceivePageModule)},
   { path: 'transaction/response', loadChildren: () => import('./pages/transaction/transaction-response/transaction-response.module').then( m => m.TransactionResponsePageModule)},
-  // { path: 'transaction/show', loadChildren: () => import('./pages/transaction/transaction-show/transaction-show.module').then( m => m.TransactionShowPageModule)},
+  { path: 'transaction/show', loadChildren: () => import('./pages/transaction/transaction-show/transaction-show.module').then( m => m.TransactionShowPageModule)},
 
   { path: 'wallets/dashboard', loadChildren: () => import('./pages/wallet/wallet-dashboard/wallet-dashboard.module').then( m => m.WalletDashboardPageModule)},
   { path: 'wallets/import', loadChildren: () => import('./pages/wallet/wallet-import/wallet-import.module').then( m => m.WalletImportPageModule)},

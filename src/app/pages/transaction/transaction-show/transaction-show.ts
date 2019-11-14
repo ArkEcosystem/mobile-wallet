@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ActionSheetController, Platform } from '@ionic/angular';
+import { NavController, ActionSheetController, Platform } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 import { Transaction } from '@/models/transaction';
@@ -9,6 +9,7 @@ import { Network } from 'ark-ts/model';
 import { TranslateService } from '@ngx-translate/core';
 import { TruncateMiddlePipe } from '@/pipes/truncate-middle/truncate-middle';
 import { Wallet, StoredNetwork } from '@/models/model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'page-transaction-show',
@@ -28,7 +29,7 @@ export class TransactionShowPage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
+    private route: ActivatedRoute,
     private userDataProvider: UserDataProvider,
     private contactsProvider: ContactsProvider,
     private inAppBrowser: InAppBrowser,
@@ -37,16 +38,17 @@ export class TransactionShowPage {
     private truncateMiddlePipe: TruncateMiddlePipe,
     private platform: Platform,
   ) {
-    const transaction = this.navParams.get('transaction');
     this.currentNetwork = this.userDataProvider.currentNetwork;
     this.currentWallet = this.userDataProvider.currentWallet;
-
-    this.equivalentAmount = this.navParams.get('equivalentAmount');
-    this.equivalentSymbol = this.navParams.get('equivalentSymbol');
+    
+    const transaction = this.route.snapshot.queryParamMap.get('transaction');
+    this.equivalentAmount = +this.route.snapshot.queryParamMap.get('equivalentAmount');
+    this.equivalentSymbol = this.route.snapshot.queryParamMap.get('equivalentSymbol');
 
     if (!transaction) { this.navCtrl.pop(); }
 
-    this.transaction = new Transaction(transaction.address, this.currentNetwork).deserialize(transaction);
+    const transactionMap = JSON.parse(transaction);
+    this.transaction = new Transaction(transactionMap.address, this.currentNetwork).deserialize(transactionMap);
     this.shouldShowOptions();
   }
 
