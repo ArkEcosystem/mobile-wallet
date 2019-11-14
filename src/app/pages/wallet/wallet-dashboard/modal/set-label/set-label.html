@@ -1,8 +1,8 @@
 <ion-header no-shadow no-border>
 
   <ion-toolbar>
-    <h6 padding class="no-margin">{{ 'WALLETS_PAGE.LABEL' | translate }}</h6>
-    <ion-buttons end>
+    <h6 class="ion-padding no-margin">{{ 'WALLETS_PAGE.LABEL' | translate }}</h6>
+    <ion-buttons slot="end">
       <ion-button (click)="closeModal()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
@@ -11,13 +11,13 @@
 
 </ion-header>
 
-<ion-content padding class="column-mode" no-bounce #content>
+<ion-content class="ion-padding column-mode" no-bounce #content>
   <ion-grid class="full-height">
     <ion-row>
       <ion-col class="ion-text-center">
         <form #labelForm="ngForm">
           <ion-item>
-            <ion-label floating stacked>{{ 'WALLETS_PAGE.NEW_WALLET_NAME' | translate }}</ion-label>
+            <ion-label position="floating">{{ 'WALLETS_PAGE.NEW_WALLET_NAME' | translate }}</ion-label>
             <ion-input type="text" name="name" [(ngModel)]="label" required></ion-input>
           </ion-item>
         </form>
@@ -26,7 +26,7 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer no-shadow no-border padding text-center [keyboard-attach]="content">
+<ion-footer no-shadow no-border class="ion-padding ion-text-center">
   <ion-button class="button-continue" color="primary" [disabled]="!labelForm.form.valid" (click)="submitForm()">
     {{ 'RENAME' | translate }}
   </ion-button>
