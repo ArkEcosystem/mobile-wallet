@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { LoadingController, NavParams } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
 import { Contact, Wallet, SendTransactionForm, WalletKeys, QRCodeScheme, StoredNetwork } from '@/models/model';
@@ -12,7 +12,6 @@ import { ToastProvider } from '@/services/toast/toast';
 import { AccountAutoCompleteService } from '@/services/account-auto-complete/account-auto-complete';
 
 import { PublicKey } from 'ark-ts/core';
-import { Network, Fees } from 'ark-ts/model';
 import { Subject } from 'rxjs';
 
 import { TruncateMiddlePipe } from '@/pipes/truncate-middle/truncate-middle';
@@ -22,17 +21,18 @@ import { QRScannerComponent } from '@/components/qr-scanner/qr-scanner';
 import * as constants from '@/app/app.constants';
 import { TransactionSend, TransactionType } from 'ark-ts';
 
-import { AutoCompleteComponent } from 'ionic2-auto-complete';
+import { AutoCompleteComponent } from 'ionic4-auto-complete';
 import { AutoCompleteAccount, AutoCompleteAccountType } from '@/models/contact';
 import { TranslatableObject } from '@/models/translate';
 import BigNumber from '@/utils/bignumber';
-import { ArkUtility } from '../../../utils/ark-utility';
+import { ArkUtility } from '@/utils/ark-utility';
 import { AddressCheckerProvider} from '@/services/address-checker/address-checker';
 import { AddressCheckResult } from '@/services/address-checker/address-check-result';
 import { AmountComponent } from '@/components/amount/amount';
 import { Amount } from '@/components/amount/amount.model';
 import { TranslateService } from '@ngx-translate/core';
 import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 class CombinedResult {
   public checkerDone: boolean;
@@ -94,7 +94,6 @@ export class TransactionSendPage implements OnInit {
   private unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(
-    private navParams: NavParams,
     private userDataProvider: UserDataProvider,
     private contactsProvider: ContactsProvider,
     private arkApiProvider: ArkApiProvider,
@@ -105,6 +104,7 @@ export class TransactionSendPage implements OnInit {
     private loadingCtrl: LoadingController,
     private translateService: TranslateService,
     private ngZone: NgZone,
+    private route: ActivatedRoute
   ) {
     this.currentWallet = this.userDataProvider.currentWallet;
     this.currentNetwork = this.userDataProvider.currentNetwork;
@@ -339,7 +339,7 @@ export class TransactionSendPage implements OnInit {
       smartBridge: new FormControl('')
     });
 
-    this.setFormValuesFromAddress(this.navParams.get('address') || '');
+    this.setFormValuesFromAddress(this.route.snapshot.queryParamMap.get('address') || '');
   }
 
   ngOnDestroy() {

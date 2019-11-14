@@ -2,7 +2,7 @@
 
   <ion-toolbar>
     <h6 class="no-padding no-margin" text-center>{{ 'TRANSACTIONS_PAGE.SEND_TRANSACTION' | translate }}</h6>
-    <ion-buttons end>
+    <ion-buttons slot="end">
       <ion-button fill="clear" (click)="toggleSendAll()"
         color="primary">{{ 'TRANSACTIONS_PAGE.SEND_ALL' | translate }}
       </ion-button>
@@ -13,11 +13,11 @@
 
 <ion-content>
   <form [formGroup]="sendForm" #sendTransactionForm="ngForm">
-    <ion-grid padding>
+    <ion-grid class="ion-padding">
       <ion-row class="row-contacts">
         <ion-col>
           <ion-item>
-            <ion-label floating stacked>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
+            <ion-label position="floating">{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
             <ng-template #contactsTemplate let-attrs="attrs">
               <span class="auto-complete-row">
                 <ion-icon [name]="attrs.data.iconName" item-start></ion-icon>
@@ -42,7 +42,7 @@
       <ion-row *ngIf="transaction.recipientAddress">
         <ion-col>
           <ion-item>
-            <ion-label floating stacked [ngSwitch]="addressType">
+            <ion-label position="floating" [ngSwitch]="addressType">
               <ng-container *ngSwitchCase="addressTypes.Unknown">{{ 'TRANSACTIONS_PAGE.NEW_CONTACT_NAME' | translate }}
               </ng-container>
               <ng-container *ngSwitchCase="addressTypes.WalletWithoutLabel">
@@ -63,7 +63,7 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label floating stacked>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</ion-label>
+            <ion-label position="floating">{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</ion-label>
             <ion-input type="text" formControlName="smartBridge" name="smartBridge" [(ngModel)]="transaction.smartBridge" [maxlength]="vendorFieldLength"></ion-input>
           </ion-item>
         </ion-col>
