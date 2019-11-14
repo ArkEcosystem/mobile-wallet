@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { RegisterDelegatePageModule } from './modal/register-delegate/register-delegate.module';
 import { RegisterDelegatePage } from './modal/register-delegate/register-delegate';
+import { SetLabelPageModule } from './modal/set-label/set-label.module';
+import { SetLabelPage } from './modal/set-label/set-label';
 
 @NgModule({
   declarations: [
@@ -27,10 +29,12 @@ import { RegisterDelegatePage } from './modal/register-delegate/register-delegat
     PinCodeComponentModule,
     ConfirmTransactionComponentModule,
     DirectivesModule,
-    RegisterDelegatePageModule
+    RegisterDelegatePageModule,
+    SetLabelPageModule
   ],
   entryComponents: [
-    RegisterDelegatePage
+    RegisterDelegatePage,
+    SetLabelPage
   ]
 })
 export class WalletDashboardPageModule {}
