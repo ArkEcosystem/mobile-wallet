@@ -1,8 +1,8 @@
 <ion-header no-shadow no-border>
 
   <ion-toolbar>
-    <h6 padding class="no-margin">{{ 'DELEGATES_PAGE.REGISTER_DELEGATE' | translate }}</h6>
-    <ion-buttons end>
+    <h6 class="ion-padding no-margin">{{ 'DELEGATES_PAGE.REGISTER_DELEGATE' | translate }}</h6>
+    <ion-buttons slot="end">
       <ion-button (click)="closeModal()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
@@ -11,17 +11,17 @@
 
 </ion-header>
 
-<ion-content padding #content>
+<ion-content class="ion-padding" #content>
   <ion-grid>
     <ion-row>
       <ion-col class="ion-align-self-center">
         <form #registerDelegateForm="ngForm">
           <ion-item>
-            <ion-label floating stacked>{{ 'DELEGATES_PAGE.DELEGATE_NAME' | translate }}</ion-label>
+            <ion-label position="floating">{{ 'DELEGATES_PAGE.DELEGATE_NAME' | translate }}</ion-label>
             <ion-input rows="2" type="text" name="name" [(ngModel)]="name" maxlength="20" [pattern]="allowedDelegateNameChars" (input)="validateName()" required></ion-input>
           </ion-item>
-          <ion-item class="no-border">
-            <p class="error-message" *ngIf="isExists">{{ 'DELEGATES_PAGE.USERNAME_ALREADY_EXISTS' | translate }}</p>
+          <ion-item lines="none" class="no-border" *ngIf="isExists">
+            <p class="error-message">{{ 'DELEGATES_PAGE.USERNAME_ALREADY_EXISTS' | translate }}</p>
           </ion-item>
         <ion-row>
           <ion-col>

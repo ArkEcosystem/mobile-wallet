@@ -7,6 +7,7 @@ import { DirectivesModule } from '@/directives/directives.module';
 import { PipesModule } from '@/pipes/pipes.module';
 import { InputFeeComponentModule } from '@/components/input-fee/input-fee.module';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
   ],
   imports: [
     IonicModule,
+    FormsModule,
     CommonModule,
     DirectivesModule,
     TranslateModule,

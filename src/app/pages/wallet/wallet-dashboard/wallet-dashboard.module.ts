@@ -11,6 +11,8 @@ import { ConfirmTransactionComponentModule } from '@/components/confirm-transact
 import { DirectivesModule } from '@/directives/directives.module';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { RegisterDelegatePageModule } from './modal/register-delegate/register-delegate.module';
+import { RegisterDelegatePage } from './modal/register-delegate/register-delegate';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,10 @@ import { RouterModule } from '@angular/router';
     PinCodeComponentModule,
     ConfirmTransactionComponentModule,
     DirectivesModule,
+    RegisterDelegatePageModule
   ],
+  entryComponents: [
+    RegisterDelegatePage
+  ]
 })
 export class WalletDashboardPageModule {}
