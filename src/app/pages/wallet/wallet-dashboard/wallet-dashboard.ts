@@ -262,7 +262,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   openTransactionShow(tx: Transaction) {
     this.navCtrl.navigateForward('/transaction/show', {
       queryParams: {
-        transaction: tx,
+        transaction: JSON.stringify(tx),
         symbol: this.network.symbol,
         equivalentAmount: tx.getAmountEquivalent(this.marketCurrency, this.marketHistory),
         equivalentSymbol: this.marketCurrency.symbol,
