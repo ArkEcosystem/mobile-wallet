@@ -1,4 +1,4 @@
-import { AutoCompleteService } from 'ionic2-auto-complete';
+import { AutoCompleteService } from 'ionic4-auto-complete';
 import { Injectable } from '@angular/core';
 import lodash from 'lodash';
 

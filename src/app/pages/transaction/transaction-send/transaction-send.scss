@@ -1,4 +1,4 @@
-page-transaction-send {
+:host {
   .col {
     position: initial !important;
   }
@@ -77,16 +77,16 @@ page-transaction-send {
 
     &.item-input.ng-valid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner .input-wrapper,
     &.item-input.ng-valid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner .input-wrapper {
-      border-bottom-color: color($colors, success, base);
-      -webkit-box-shadow: inset 0 -1px 0 0 color($colors, success, base);
-      box-shadow: inset 0 -1px 0 0 color($colors, success, base);
+      // border-bottom-color: color($colors, success, base);
+      // -webkit-box-shadow: inset 0 -1px 0 0 color($colors, success, base);
+      // box-shadow: inset 0 -1px 0 0 color($colors, success, base);
     }
 
     &.item-input.ng-invalid.item-input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner .input-wrapper,
     &.item-input.ng-invalid.input-has-value:not(.input-has-focus):not(.item-input-has-focus) .item-inner .input-wrapper {
-      border-bottom-color: color($colors, danger, base);
-      -webkit-box-shadow: inset 0 -1px 0 0 color($colors, danger, base);
-      box-shadow: inset 0 -1px 0 0 color($colors, danger, base);
+      // border-bottom-color: color($colors, danger, base);
+      // -webkit-box-shadow: inset 0 -1px 0 0 color($colors, danger, base);
+      // box-shadow: inset 0 -1px 0 0 color($colors, danger, base);
     }
 
     .auto-complete-row {
@@ -112,10 +112,10 @@ page-transaction-send {
     }
 
     ion-auto-complete ul {
-      background-color: color($darkColors, secondary-background, base);
+      // background-color: color($darkColors, secondary-background, base);
 
       li {
-        border-bottom-color: color($darkColors, primary-background, base);
+        // border-bottom-color: color($darkColors, primary-background, base);
       }
 
       .auto-complete-row {
@@ -125,13 +125,13 @@ page-transaction-send {
         }
 
         .autocomplete-second-line {
-          color: color($darkColors, secondary, base);
+          // color: color($darkColors, secondary, base);
         }
       }
     }
 
     .icon {
-      color: lighten(color($darkColors, primary-background, base), 50%);
+      // color: lighten(color($darkColors, primary-background, base), 50%);
     }
   }
 }

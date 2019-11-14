@@ -11,11 +11,11 @@ import { InputFeeComponentModule } from '@/components/input-fee/input-fee.module
 
 import { DirectivesModule } from '@/directives/directives.module';
 
-import { AutoCompleteModule } from 'ionic2-auto-complete';
+import { AutoCompleteModule } from 'ionic4-auto-complete';
 import { AmountComponentModule } from '@/components/amount/amount.module';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,6 +25,7 @@ import { FormsModule } from '@angular/forms';
     IonicModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild([{ path: '', component: TransactionSendPage }]),
     TranslateModule,
     PipesModule,
