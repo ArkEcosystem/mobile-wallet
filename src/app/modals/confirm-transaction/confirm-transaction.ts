@@ -1,5 +1,5 @@
-import { Component, OnDestroy, NgZone } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController } from '@ionic/angular';
+import { Component, OnDestroy, NgZone, OnInit } from '@angular/core';
+import { NavController, ModalController } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 
 import { Subject } from 'rxjs';
@@ -13,14 +13,14 @@ import { Network } from 'ark-ts/model';
 import lodash from 'lodash';
 import { AddressCheckResult} from '@/services/address-checker/address-check-result';
 import { AddressCheckResultType } from '@/services/address-checker/address-check-result-type';
-import { ArkUtility } from '../../utils/ark-utility';
+import { ArkUtility } from '@/utils/ark-utility';
 import { takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'modal-confirm-transaction',
   templateUrl: 'confirm-transaction.html',
 })
-export class ConfirmTransactionModal implements OnDestroy {
+export class ConfirmTransactionModal implements OnInit, OnDestroy {
 
   public transaction: Transaction;
   public address: string;
@@ -37,25 +37,13 @@ export class ConfirmTransactionModal implements OnDestroy {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     private modalCtrl: ModalController,
     private arkApiProvider: ArkApiProvider,
     private marketDataProvider: MarketDataProvider,
     private settingsDataProvider: SettingsDataProvider,
-    private loadingCtrl: LoadingController,
     private ngZone: NgZone,
     private translateService: TranslateService,
-  ) {
-    this.transaction = this.navParams.get('transaction');
-    this.addressCheckResult = this.navParams.get('addressCheckResult');
-    this.extra = this.navParams.get('extra');
-    this.address = this.transaction.address;
-
-    if (!this.transaction) { this.navCtrl.pop(); }
-    // this.loadingCtrl.create().dismissAll();
-
-    this.currentNetwork = this.arkApiProvider.network;
-  }
+  ) { }
 
   broadcast() {
     if (this.hasBroadcast) {
@@ -120,7 +108,13 @@ export class ConfirmTransactionModal implements OnDestroy {
     .subscribe();
   }
 
-  ionViewDidEnter() {
+  ngOnInit() {
+    this.address = this.transaction.address;
+
+    if (!this.transaction) { this.navCtrl.pop(); }
+
+    this.currentNetwork = this.arkApiProvider.network;
+
     this.onUpdateTicker();
     this.marketDataProvider.refreshTicker();
   }

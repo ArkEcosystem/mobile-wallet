@@ -4,13 +4,19 @@ import { ConfirmTransactionComponent } from './confirm-transaction';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { ConfirmTransactionModalModule } from '@/app/modals/confirm-transaction/confirm-transaction.module';
+import { ConfirmTransactionModal } from '@/app/modals/confirm-transaction/confirm-transaction';
 
 @NgModule({
   declarations: [ConfirmTransactionComponent],
   imports: [
     IonicModule,
     TranslateModule,
-    CommonModule
+    CommonModule,
+    ConfirmTransactionModalModule
+  ],
+  entryComponents: [
+    ConfirmTransactionModal
   ],
   exports: [ConfirmTransactionComponent]
 })
