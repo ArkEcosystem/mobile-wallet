@@ -1,6 +1,9 @@
 <ion-header no-shadow no-border>
 
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>{{ (useAddress ? 'WALLETS_PAGE.ADDRESS' : 'WALLETS_PAGE.SECRET_PASSPHRASE') | translate }}</ion-title>
   </ion-toolbar>
 

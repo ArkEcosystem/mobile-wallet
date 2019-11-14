@@ -7,7 +7,6 @@ import { TranslateService } from '@ngx-translate/core';
 import lodash from 'lodash';
 import { AddressCheckResult } from '@/services/address-checker/address-check-result';
 import { ConfirmTransactionModal } from '@/app/modals/confirm-transaction/confirm-transaction';
-import { TransactionResponsePage } from '@/app/pages/transaction/transaction-response/transaction-response';
 
 @Component({
   selector: 'confirm-transaction',
@@ -81,12 +80,13 @@ export class ConfirmTransactionComponent {
   }
 
   async presentWrongModal(response) {
-    const responseModal = await this.modalCtrl.create({
-      component: TransactionResponsePage,
-      componentProps: response
-    });
+    // TODO:
+    // const responseModal = await this.modalCtrl.create({
+    //   component: TransactionResponsePage,
+    //   componentProps: response
+    // });
 
-    responseModal.present();
+    // responseModal.present();
   }
 
 }

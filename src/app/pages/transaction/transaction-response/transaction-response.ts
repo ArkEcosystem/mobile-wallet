@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, ModalController, IonContent } from '@ionic/angular';
+import { NavController, ModalController, IonContent } from '@ionic/angular';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
@@ -10,6 +10,7 @@ import { ToastProvider } from '@/services/toast/toast';
 import { Transaction, Wallet, WalletKeys, StoredNetwork } from '@/models/model';
 import { TransactionType, Network } from 'ark-ts';
 import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'page-transaction-response',
@@ -31,23 +32,29 @@ export class TransactionResponsePage {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     private clipboard: Clipboard,
     private modalCtrl: ModalController,
     private userDataProvider: UserDataProvider,
     private toastProvider: ToastProvider,
     private iab: InAppBrowser,
+    private route: ActivatedRoute
   ) {
-    this.wallet = this.navParams.get('wallet');
-    this.response = this.navParams.get('response');
-    this.keys = this.navParams.get('keys');
+    const wallet = this.route.snapshot.queryParamMap.get('wallet');
+    const response = this.route.snapshot.queryParamMap.get('response');
+    const keys = this.route.snapshot.queryParamMap.get('keys');
 
-    const transaction = this.navParams.get('transaction');
+    const transaction = this.route.snapshot.queryParamMap.get('transaction');
 
     if (!this.response) { this.navCtrl.pop(); }
 
     this.currentNetwork = this.userDataProvider.currentNetwork;
-    if (transaction) { this.transaction = new Transaction(this.wallet.address, this.currentNetwork).deserialize(transaction); }
+
+    if (transaction) {
+      this.wallet = JSON.parse(wallet);
+      this.keys = JSON.parse(keys);
+      this.response = JSON.parse(response);
+      this.transaction = new Transaction(this.wallet.address, this.currentNetwork).deserialize(JSON.parse(transaction));
+    }
 
     this.verifySecondPassphrasHasEncrypted();
   }
