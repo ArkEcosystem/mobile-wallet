@@ -1,9 +1,9 @@
 <ion-header>
 
   <ion-toolbar no-border class="dark-navbar">
-    <h6 class="no-padding no-margin" text-center>{{ title | translate }}</h6>
+    <h6 class="no-padding no-margin ion-text-center">{{ title | translate }}</h6>
 
-    <ion-buttons end>
+    <ion-buttons slots="end">
       <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="close" color="light"></ion-icon>
       </ion-button>
@@ -17,16 +17,16 @@
     <ion-row class="account-container">
       <ion-col>
         <ark-qr-code [address]="account?.address" size="100"></ark-qr-code>
-        <ion-list class="account-list" no-lines>
-          <ion-item text-wrap>
+        <ion-list class="account-list" lines="none">
+          <ion-item class="ion-text-wrap">
             <p class="item-caption">{{ 'WALLETS_PAGE.PUBLIC_ADDRESS_SHARE' | translate }}</p>
             <h6 class="item-value text-selectable">{{ account?.address }}</h6>
           </ion-item>
-          <ion-item text-wrap>
+          <ion-item class="ion-text-wrap">
             <p class="item-caption">{{ 'WALLETS_PAGE.SECRET_PASSPHRASE' | translate }} <ion-badge color="danger"><strong>{{ 'WALLETS_PAGE.KEEP_SAFE' | translate | uppercase }}</strong></ion-badge></p>
             <h6 class="item-value text-selectable">{{ account?.mnemonic }}</h6>
           </ion-item>
-          <ion-item text-wrap *ngIf="account?.secondMnemonic">
+          <ion-item class="ion-text-wrap" *ngIf="account?.secondMnemonic">
             <p class="item-caption">{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }} <ion-badge color="danger"><strong>{{ 'WALLETS_PAGE.KEEP_SAFE' | translate | uppercase }}</strong></ion-badge></p>
             <h6 class="item-value text-selectable">{{ account?.secondMnemonic }}</h6>
           </ion-item>
@@ -37,7 +37,7 @@
       <ion-col class="no-padding">
         <ion-toolbar (click)="toggleAdvanced()" class="advanced-toolbar">
           {{ 'SHOW_ADVANCED' | translate }}
-          <ion-buttons end>
+          <ion-buttons slot="end">
             <ion-button fill="clear">
               <ion-icon [name]="showAdvancedOptions ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
             </ion-button>
@@ -48,19 +48,19 @@
     <ion-row class="advanced-container">
       <ion-col>
         <ion-list class="advanced-list" *ngIf="showAdvancedOptions">
-          <ion-item text-wrap *ngIf="account?.entropy">
+          <ion-item class="ion-text-wrap" *ngIf="account?.entropy">
             <p class="item-caption">{{ 'WALLETS_PAGE.ENTROPY' | translate }}</p>
             <h6 class="item-value text-selectable">{{ account?.entropy }}</h6>
           </ion-item>
-          <ion-item text-wrap>
+          <ion-item class="ion-text-wrap">
             <p class="item-caption">{{ 'WALLETS_PAGE.SEED' | translate }}</p>
             <h6 class="item-value text-selectable">{{ account?.seed }}</h6>
           </ion-item>
-          <ion-item text-wrap>
+          <ion-item class="ion-text-wrap">
             <p class="item-caption">{{ 'WALLETS_PAGE.PUBLIC_KEY' | translate }}</p>
             <h6 class="item-value text-selectable">{{ account?.publicKey }}</h6>
           </ion-item>
-          <ion-item text-wrap *ngIf="account?.wif">
+          <ion-item class="ion-text-wrap" *ngIf="account?.wif">
             <p class="item-caption">{{ 'WALLETS_PAGE.WIF' | translate }}</p>
             <h6 class="item-value text-selectable">{{ account?.wif }}</h6>
           </ion-item>
@@ -68,7 +68,7 @@
         <div class="note-message">
           <p>{{ 'WALLETS_PAGE.BACKUP_ACCOUNT' | translate }}</p>
         </div>
-        <div text-center *ngIf="!keys">
+        <div class="ion-text-center" *ngIf="!keys">
           <ion-button class="button-continue" (click)="next()">{{ 'NEXT' | translate }}</ion-button>
         </div>
       </ion-col>

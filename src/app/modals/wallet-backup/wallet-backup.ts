@@ -4,7 +4,7 @@ import { ModalController, NavController, NavParams } from '@ionic/angular';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
 import { PrivateKey } from 'ark-ts/core';
-import bip39 from 'bip39';
+import * as bip39 from 'bip39';
 import { WalletKeys, AccountBackup } from '@/models/model';
 import { PassphraseWordTesterModal } from '../passphrase-word-tester/passphrase-word-tester';
 
