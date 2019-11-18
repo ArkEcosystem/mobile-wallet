@@ -33,7 +33,8 @@ export interface SendTransactionForm {
 }
 
 export class Transaction extends TransactionModel {
-
+  public nonce?: string;
+  public version?: number;
   public date: Date;
 
   constructor(public address: string, private network: StoredNetwork) {
