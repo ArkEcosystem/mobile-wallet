@@ -12,7 +12,7 @@ import { StorageProvider } from '@providers/storage/storage';
 import { ToastProvider } from '@providers/toast/toast';
 import { HttpUtils } from '@root/src/utils/http-utils';
 
-import {Transaction, TranslatableObject, BlocksEpochResponse, Wallet} from '@models/model';
+import { Transaction, TranslatableObject, Wallet } from '@models/model';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
@@ -20,13 +20,14 @@ import moment from 'moment';
 import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
-import {AccountResponse, Delegate, PeerResponse} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
-import ArkClient, { PeerApiResponse, WalletResponse } from '../../utils/ark-client';
+import ArkClient, { WalletResponse } from '../../utils/ark-client';
 import * as ArkCrypto from '@arkecosystem/crypto';
 import { PeerDiscovery } from '@utils/ark-peer-discovery';
 import BigNumber from '@utils/bignumber';
 import { finalize, tap } from 'rxjs/operators';
+import { Delegate } from 'ark-ts';
+import { INodeConfiguration } from '@models/node';
 
 interface NodeFees {
   type: number;
@@ -37,21 +38,6 @@ interface NodeFees {
 
 interface NodeFeesResponse {
   data: NodeFees[];
-}
-
-interface NodeConfigurationConstants {
-  vendorFieldLength?: number;
-  activeDelegates?: number;
-  epoch?: Date;
-  aip11?: boolean;
-  height?: number;
-}
-
-interface NodeConfigurationResponse {
-  data: {
-    feeStatistics: FeeStatistic[],
-    constants: NodeConfigurationConstants
-  };
 }
 
 @Injectable()
@@ -438,18 +424,13 @@ export class ArkApiProvider {
 
     this.fetchFees().subscribe();
     this.fetchFeeStatistics().subscribe();
-    this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
-      const config = response.data && response.data.constants || {} as NodeConfigurationConstants;
+    this.fetchNodeConfiguration().subscribe((response: INodeConfiguration) => {
+      const config = response.constants;
 
-      if (config.vendorFieldLength) {
-        this._network.vendorFieldLength = config.vendorFieldLength;
-      }
-      if (config.activeDelegates) {
-        this._network.activeDelegates = config.activeDelegates;
-      }
-      if (config.epoch) {
-        this._network.epoch = new Date(config.epoch);
-      }
+      this._network.vendorFieldLength = config.vendorFieldLength;
+      this._network.activeDelegates = config.activeDelegates;
+      this._network.epoch = new Date(config.epoch);
+
       if (config.aip11) {
         this._network.aip11 = config.aip11;
       }
@@ -462,16 +443,8 @@ export class ArkApiProvider {
     });
   }
 
-  private fetchNodeConfiguration(): Observable<NodeConfigurationResponse> {
-    if (!this._network || !this._network.isV2) {
-      return Observable.empty();
-    }
-
-    return Observable.create((observer) => {
-      this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/v2/node/configuration`).subscribe((response: NodeConfigurationResponse) => {
-        observer.next(response);
-      }, e => observer.error(e));
-    });
+  private fetchNodeConfiguration(): Observable<INodeConfiguration> {
+    return this._client.getNodeConfiguration(this._network.getPeerAPIUrl());
   }
 
   private fetchFeeStatistics(): Observable<FeeStatistic[]> {
@@ -496,16 +469,7 @@ export class ArkApiProvider {
 
         this._network.feeStatistics = feeStatistics;
         observer.next(feeStatistics);
-      }, () => {
-        this.fetchNodeConfiguration().subscribe(
-          (response: NodeConfigurationResponse) => {
-            const data = response.data;
-            this._network.feeStatistics = data.feeStatistics;
-            observer.next(this._network.feeStatistics);
-          },
-          e => observer.error(e)
-        );
-      });
+      }, (e) => observer.error(e));
     });
   }
 

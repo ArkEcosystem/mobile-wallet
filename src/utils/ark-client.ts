@@ -16,6 +16,7 @@ import lodash from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/switchMap';
+import { INodeConfiguration } from '@models/node';
 
 export interface PeerApiResponse extends Peer {
   latency?: number;
@@ -150,7 +151,7 @@ export default class ApiClient {
     });
   }
 
-  getNodeConfiguration(host: string): Observable<PeerApiResponse> {
+  getNodeConfiguration(host?: string): Observable<INodeConfiguration> {
     return Observable.create(observer => {
       this.get(`node/configuration`, {}, host).subscribe((response: any) => {
         observer.next(response.data);
@@ -202,7 +203,7 @@ export default class ApiClient {
           observer.next(response);
           observer.complete();
         }, () => {
-          this.getNodeConfiguration(`${protocol}://${ip}:${port}`).subscribe((response: PeerApiResponse) => {
+          this.getNodeConfiguration(`${protocol}://${ip}:${port}`).subscribe((response) => {
             const apiPort = lodash.find(response.ports, (_, key) => key.split('/').reverse()[0] === 'core-wallet-api');
             const isApiEnabled = apiPort && Number(apiPort) > 1;
             if (isApiEnabled) {
