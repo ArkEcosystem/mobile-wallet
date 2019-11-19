@@ -164,7 +164,8 @@ export class PeerDiscovery {
             observer.error(e);
           });
       } else {
-        observer.error();
+        observer.next([]);
+        observer.complete();
       }
     });
   }
