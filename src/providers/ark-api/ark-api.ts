@@ -148,7 +148,7 @@ export class ArkApiProvider {
     // Fallback if the fetchNodeConfiguration fail
     this._network.activeDelegates = constants.NUM_ACTIVE_DELEGATES;
 
-    this.connectToRandomPeer().subscribe();
+    this.connectToRandomPeer().subscribe(null, (e) => console.error(e));
 
     this.userDataProvider.onUpdateNetwork$.next(this._network);
 

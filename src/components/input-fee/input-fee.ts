@@ -76,7 +76,7 @@ export class InputFeeComponent implements OnInit, OnDestroy {
       return this.arkApiProvider.feeStatistics;
     }).subscribe(fees => {
       this.v2Fee = fees.find(fee => fee.type === Number(this.transactionType));
-      if (this.v2Fee.fees.avgFee > this.max) {
+      if (!this.v2Fee || this.v2Fee.fees.avgFee > this.max) {
         this.isStaticFee = true;
         return;
       }
