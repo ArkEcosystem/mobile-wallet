@@ -1,11 +1,14 @@
 <ion-header no-shadow no-border>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>{{ "PROFILES_PAGE.SIGN_IN" | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="column-mode">
-  <ion-fab vertical="bottom" horizontal="end" class="pull-footer" *ngIf="!isEmpty()">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="pull-footer" *ngIf="!isEmpty()">
     <ion-fab-button color="primary" (click)="openProfileCreate()">
       <ion-icon name="md-add"></ion-icon>
     </ion-fab-button>

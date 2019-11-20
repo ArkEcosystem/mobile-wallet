@@ -22,7 +22,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: 'profile-signin.html',
   styleUrls: ['profile-signin.scss'],
 })
-export class ProfileSigninPage implements OnInit, OnDestroy {
+export class ProfileSigninPage implements OnDestroy {
   @ViewChild('pinCode', { read: PinCodeComponent, static: true })
   pinCode: PinCodeComponent;
 
@@ -144,7 +144,7 @@ export class ProfileSigninPage implements OnInit, OnDestroy {
     return lodash.isEmpty(this.profiles);
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.load();
   }
 

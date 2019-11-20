@@ -16,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: 'profile-create.html',
   styleUrls: ['profile-create.scss'],
 })
-export class ProfileCreatePage implements OnInit, OnDestroy {
+export class ProfileCreatePage implements OnDestroy {
   @ViewChild('createProfileForm', { static: true }) createProfileForm: HTMLFormElement;
 
   public networks: {[networkId: string]: Network};
@@ -90,7 +90,7 @@ export class ProfileCreatePage implements OnInit, OnDestroy {
     this.newProfile.networkId = customNetworkId;
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.load();
   }
 

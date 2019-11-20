@@ -26,7 +26,7 @@ import { takeUntil } from 'rxjs/operators';
   templateUrl: 'wallet-list.html',
   styleUrls: ['wallet-list.scss'],
 })
-export class WalletListPage implements OnInit, OnDestroy {
+export class WalletListPage implements OnDestroy {
   @ViewChild('walletSlider', { read: IonSlides, static: false })
   slider: IonSlides;
 
@@ -343,7 +343,7 @@ export class WalletListPage implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.loadWallets();
     this.onCreateUpdateWallet();
     this.initMarketHistory();

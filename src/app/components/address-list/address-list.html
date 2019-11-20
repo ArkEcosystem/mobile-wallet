@@ -4,7 +4,7 @@
       {{ item[circleProperty].charAt(0) }}
     </div>
 
-    <ion-label tappable (click)="tap(item.index)" (press)="press(item.index)">
+    <ion-label (click)="tap(item.index)" (press)="press(item.index)">
       <h3 class="address-key">{{ item.key }}</h3>
       <p class="address-value">{{ item.value }}</p>
     </ion-label>
@@ -14,7 +14,7 @@
       fill="clear"
       class="more disable-hover"
       *ngIf="icon"
-      (tap)="more(item.index)"
+      (click)="more(item.index)"
     >
       <ion-icon slot="icon-only" [name]="icon"></ion-icon>
     </ion-button>
