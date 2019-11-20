@@ -13,6 +13,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { GenerateEntropyModalModule } from '@/app/modals/generate-entropy/generate-entropy.module';
 import { GenerateEntropyModal } from '@/app/modals/generate-entropy/generate-entropy';
+import { WalletBackupModal } from '@/app/modals/wallet-backup/wallet-backup';
+import { WalletBackupModalModule } from '@/app/modals/wallet-backup/wallet-backup.module';
 
 @NgModule({
   declarations: [
@@ -27,10 +29,12 @@ import { GenerateEntropyModal } from '@/app/modals/generate-entropy/generate-ent
     EmptyListComponentModule,
     ChartsModule,
     DirectivesModule,
-    GenerateEntropyModalModule
+    GenerateEntropyModalModule,
+    WalletBackupModalModule
   ],
   entryComponents: [
-    GenerateEntropyModal
+    GenerateEntropyModal,
+    WalletBackupModal
   ]
 })
 export class WalletListPageModule {}

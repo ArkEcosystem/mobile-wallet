@@ -4,11 +4,14 @@ import { PassphraseInputComponent } from '@/components/passphrase-input/passphra
 import { DirectivesModule } from '@/directives/directives.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [PassphraseInputComponent],
   imports: [
     IonicModule,
+    FormsModule,
+    ReactiveFormsModule,
     DirectivesModule,
     CommonModule,
     TranslateModule

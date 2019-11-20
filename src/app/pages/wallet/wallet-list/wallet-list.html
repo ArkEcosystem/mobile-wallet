@@ -10,14 +10,14 @@
 </ion-header>
 
 <ion-content #content class="column-mode-simple ion-no-padding" [ngClass]="{delegate: selectedWallet?.isDelegate, normal: selectedWallet?.isDelegate == false}"  no-bounce>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="wallets?.length > 0">
+    <ion-fab-button (click)="presentActionSheet()">
+      <ion-icon name="md-add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   <ion-grid class="full-height ion-no-padding">
     <empty-list message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="presentActionSheet()" *ngIf="wallets?.length === 0"></empty-list>
-
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="wallets?.length > 0">
-      <ion-fab-button (click)="presentActionSheet()">
-        <ion-icon name="arrow-dropleft"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
 
     <ion-row class="total-balance-container" *ngIf="wallets?.length > 0">
       <ion-col>

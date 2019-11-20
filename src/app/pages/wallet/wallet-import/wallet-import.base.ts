@@ -6,7 +6,7 @@ import { PrivateKey, PublicKey } from 'ark-ts';
 import { Wallet } from '@/models/model';
 import { NetworkProvider } from '@/services/network/network';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
-import bip39 from 'bip39';
+import * as bip39 from 'bip39';
 import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';

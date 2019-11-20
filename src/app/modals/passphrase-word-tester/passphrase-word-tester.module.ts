@@ -5,7 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import {PassphraseWordTesterModal} from './passphrase-word-tester';
 import { PassphraseInputComponentModule } from '@/components/passphrase-input/passphrase-input.module';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
     IonicModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     TranslateModule,
     PassphraseInputComponentModule
   ],

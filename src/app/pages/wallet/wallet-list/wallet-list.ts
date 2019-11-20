@@ -126,7 +126,7 @@ export class WalletListPage implements OnInit, OnDestroy {
       component: GenerateEntropyModal
     });
 
-    modal.onDidDismiss().then(async (entropy) => {
+    modal.onDidDismiss().then(async ({ data: entropy }) => {
       if (!entropy) { return; }
 
       const showModal = await this.modalCtrl.create({

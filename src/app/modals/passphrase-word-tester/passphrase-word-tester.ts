@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import { NavController, NavParams, ModalController } from '@ionic/angular';
+import {Component, ViewChild, Input} from '@angular/core';
+import { NavController, ModalController } from '@ionic/angular';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { PassphraseInputComponent } from '@/components/passphrase-input/passphrase-input';
 
@@ -9,21 +9,21 @@ import { PassphraseInputComponent } from '@/components/passphrase-input/passphra
   styleUrls: ['passphrase-word-tester.scss']
 })
 export class PassphraseWordTesterModal {
-
+  @Input()
   public passphraseReference: string;
-  public passphraseInit: string;
+  
+  @Input()
   public wordlistLanguage: string;
+
+  public passphraseInit: string;
   public isDevNet: boolean;
 
   @ViewChild('passphrase', { read: PassphraseInputComponent, static: true })
   passphraseInput: PassphraseInputComponent;
 
   public constructor(public navCtrl: NavController,
-              public navParams: NavParams,
               private modalCtrl: ModalController,
               private userDataProvider: UserDataProvider) {
-    this.passphraseReference = this.navParams.get('passphrase');
-    this.wordlistLanguage = this.navParams.get('wordlistLanguage') || 'english';
 
     if (!this.passphraseReference) {
       this.dismiss();

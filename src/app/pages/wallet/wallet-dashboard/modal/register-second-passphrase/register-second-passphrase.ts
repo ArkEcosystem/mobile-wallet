@@ -3,7 +3,7 @@ import { NavController, NavParams, ModalController } from '@ionic/angular';
 
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 
-import bip39 from 'bip39';
+import * as bip39 from 'bip39';
 import { Fees, Network } from 'ark-ts';
 
 @Component({

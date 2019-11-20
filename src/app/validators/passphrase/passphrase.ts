@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
-import bip39 from 'bip39';
+import * as bip39 from 'bip39';
 
 export class PassphraseValidator {
 
