@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, OnInit } from '@angular/core';
 import { ToastProvider } from '@/services/toast/toast';
-import bip39 from 'bip39';
+import * as bip39 from 'bip39';
 
 @Component({
   selector: 'passphrase-input',

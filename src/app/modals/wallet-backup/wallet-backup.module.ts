@@ -5,6 +5,8 @@ import { WalletBackupModal } from './wallet-backup';
 import { TranslateModule } from '@ngx-translate/core';
 import { QRCodeComponentModule } from '@/components/qr-code/qr-code.module';
 import { CommonModule } from '@angular/common';
+import { PassphraseWordTesterModalModule } from '../passphrase-word-tester/passphrase-word-tester.module';
+import { PassphraseWordTesterModal } from '../passphrase-word-tester/passphrase-word-tester';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,11 @@ import { CommonModule } from '@angular/common';
     IonicModule,
     CommonModule,
     TranslateModule,
-    QRCodeComponentModule
+    QRCodeComponentModule,
+    PassphraseWordTesterModalModule
+  ],
+  entryComponents: [
+    PassphraseWordTesterModal
   ],
   exports: [
     WalletBackupModal

@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { QRCodeScheme } from '@/models/model';
 
 import lodash from 'lodash';
-import bip39 from 'bip39';
+import * as bip39 from 'bip39';
 import * as constants from '@/app/app.constants';
 import { QRScannerModal } from '@/app/modals/qr-scanner/qr-scanner';
 

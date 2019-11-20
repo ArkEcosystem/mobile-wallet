@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController, NavParams } from '@ionic/angular';
+import { Component, OnInit, Input } from '@angular/core';
+import { ModalController, NavController } from '@ionic/angular';
 
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
@@ -14,10 +14,16 @@ import { PassphraseWordTesterModal } from '../passphrase-word-tester/passphrase-
   styleUrls: ['wallet-backup.scss']
 })
 export class WalletBackupModal implements OnInit {
-
+  @Input()
   public title: string;
+
+  @Input()
   public entropy: string;
+
+  @Input()
   public keys: WalletKeys;
+
+  @Input()
   public message: string;
   public showAdvancedOptions = false;
 
@@ -28,15 +34,9 @@ export class WalletBackupModal implements OnInit {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams,
     private modalCtrl: ModalController,
     private userDataProvider: UserDataProvider,
     private settingsDataProvider: SettingsDataProvider) {
-    this.title = this.navParams.get('title');
-    this.entropy = this.navParams.get('entropy');
-    this.keys = this.navParams.get('keys');
-    this.message = this.navParams.get('message');
-
     if (!this.title || (!this.entropy && !this.keys)) { this.dismiss(); }
 
     this.currentNetwork = this.userDataProvider.currentNetwork;
