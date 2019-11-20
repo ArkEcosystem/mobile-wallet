@@ -1,7 +1,7 @@
 <ion-header no-shadow no-border>
   <ion-toolbar>
-    <h6 text-center class="no-padding no-margin">{{ 'CUSTOM_NETWORK.EDIT' | translate }}</h6>
-    <ion-buttons end>
+    <ion-title>{{ 'CUSTOM_NETWORK.EDIT' | translate }}</ion-title>
+    <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
@@ -9,13 +9,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding #content>
+<ion-content class="ion-padding" #content>
   <form #manageForm="ngForm">
     <ion-grid fixed>
       <ion-row nowrap>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.NAME' | translate }}</ion-label>
+            <ion-label position="stacked">{{ 'CUSTOM_NETWORK.NAME' | translate }}</ion-label>
             <ion-input type="text"
                        required
                        name="Name"
@@ -27,7 +27,7 @@
       <ion-row nowrap>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.TOKEN_NAME' | translate }}</ion-label>
+            <ion-label position="stacked">{{ 'CUSTOM_NETWORK.TOKEN_NAME' | translate }}</ion-label>
             <ion-input type="text"
                        required
                        name="Token"
@@ -39,7 +39,7 @@
       <ion-row nowrap>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.SYMBOL_NAME' | translate }}</ion-label>
+            <ion-label position="stacked">{{ 'CUSTOM_NETWORK.SYMBOL_NAME' | translate }}</ion-label>
             <ion-input type="text"
                        required
                        name="Symbol"
@@ -51,7 +51,7 @@
       <ion-row nowrap>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.ADDRESS_VERSION' | translate }}</ion-label>
+            <ion-label position="stacked">{{ 'CUSTOM_NETWORK.ADDRESS_VERSION' | translate }}</ion-label>
             <ion-input type="text"
                        required
                        name="Version"
@@ -63,7 +63,7 @@
       <ion-row nowrap>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.NETHASH' | translate }}</ion-label>
+            <ion-label position="stacked">{{ 'CUSTOM_NETWORK.NETHASH' | translate }}</ion-label>
             <ion-input type="text"
                        required
                        name="Nethash"
@@ -75,7 +75,7 @@
       <ion-row nowrap>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.SEED_SERVER_IP' | translate }}</ion-label>
+            <ion-label position="stacked">{{ 'CUSTOM_NETWORK.SEED_SERVER_IP' | translate }}</ion-label>
             <ion-input type="text"
                        required
                        name="activePeerIp"
@@ -85,7 +85,7 @@
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.SEED_SERVER_PORT' | translate }}</ion-label>
+            <ion-label position="stacked">{{ 'CUSTOM_NETWORK.SEED_SERVER_PORT' | translate }}</ion-label>
             <ion-input type="text"
                        required
                        name="activePeerPort"
@@ -101,7 +101,7 @@
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.API_SERVER_PORT' | translate }}</ion-label>
+            <ion-label position="stacked">{{ 'CUSTOM_NETWORK.API_SERVER_PORT' | translate }}</ion-label>
             <ion-input type="text"
                        required
                        name="apiPort"
@@ -114,7 +114,7 @@
       <ion-row nowrap>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.EXPLORER' | translate }}</ion-label>
+            <ion-label position="stacked">{{ 'CUSTOM_NETWORK.EXPLORER' | translate }}</ion-label>
             <ion-input type="text"
                        name="Explorer"
                        [(ngModel)]="network.explorer">
@@ -125,7 +125,7 @@
       <ion-row nowrap>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.MARKET_SYMBOL_NAME' | translate }}</ion-label>
+            <ion-label position="stacked">{{ 'CUSTOM_NETWORK.MARKET_SYMBOL_NAME' | translate }}</ion-label>
             <ion-input type="text"
                        name="CryptoCompareName"
                        placeholder="e.g. ARK"
@@ -138,9 +138,9 @@
   </form>
 </ion-content>
 
-<ion-footer no-border no-shadow [keyboard-attach]="content">
+<ion-footer no-border no-shadow>
   <ion-grid>
-    <ion-row align-items-center>
+    <ion-row class="ion-align-items-center">
       <ion-col>
         <ion-button
                 class="button-continue"

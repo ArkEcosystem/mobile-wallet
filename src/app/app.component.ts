@@ -76,6 +76,7 @@ export class AppComponent implements OnDestroy, OnInit {
   }
 
   openPage(path: string, rootPage: boolean = true) {
+    this.menuCtrl.close();
     if (rootPage) {
       this.navController.navigateRoot(path);
     } else {
@@ -116,6 +117,7 @@ export class AppComponent implements OnDestroy, OnInit {
       this.userDataProvider.clearCurrentWallet();
 
       this.menuCtrl.enable(false, 'sidebar');
+      return this.openPage('/login');
     });
   }
 

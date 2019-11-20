@@ -6,6 +6,8 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PinCodeComponentModule } from '@/components/pin-code/pin-code.module';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CustomNetworkCreateModalModule } from '@/app/modals/custom-network-create/custom-network-create.module';
+import { CustomNetworkCreateModal } from '@/app/modals/custom-network-create/custom-network-create';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,11 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     RouterModule.forChild([{ path: '', component: SettingsPage }]),
     TranslateModule,
-    PinCodeComponentModule
+    PinCodeComponentModule,
+    CustomNetworkCreateModalModule
   ],
+  entryComponents: [
+    CustomNetworkCreateModal
+  ]
 })
 export class SettingsPageModule {}
