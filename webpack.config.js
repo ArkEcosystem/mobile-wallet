@@ -41,7 +41,7 @@ module.exports = function() {
 
   const bigIntPolyfill = [
     new CopyPlugin([
-      { from: './node_modules/big-integer/BigInteger.js', to: 'bigint.js' }
+      { from: './node_modules/big-integer/BigInteger.js', to: '../assets/scripts/bigint.js' }
     ])
   ]
 
