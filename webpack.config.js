@@ -1,5 +1,7 @@
-const path = require('path');
-const defaults = require('@ionic/app-scripts/config/webpack.config');
+const path = require('path')
+const defaults = require('@ionic/app-scripts/config/webpack.config')
+const webpack = require('webpack')
+const CopyPlugin = require('copy-webpack-plugin')
 
 module.exports = function() {
   const aliases = {
@@ -37,8 +39,23 @@ module.exports = function() {
     ]
   }
 
+  const bigIntPolyfill = [
+    new CopyPlugin([
+      { from: './node_modules/big-integer/BigInteger.js', to: 'bigint.js' }
+    ])
+  ]
+
+  if (process.env.IONIC_PLATFORM === 'ios') {
+    bigIntPolyfill.push(new webpack.DefinePlugin({
+      BigInt: 'bigInt'
+    }))
+  }
+
   defaults.dev.module.loaders.push(cryptoLoader)
   defaults.prod.module.loaders.push(cryptoLoader)
+
+  defaults.dev.plugins.push(...bigIntPolyfill)
+  defaults.prod.plugins.push(...bigIntPolyfill)
 
   return defaults;
 }
