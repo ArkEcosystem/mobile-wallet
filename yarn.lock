@@ -437,10 +437,10 @@
   resolved "https://registry.yarnpkg.com/@ngx-translate/core/-/core-8.0.0.tgz#751fd6b512d80f3a748d2de8dfc96dfefa29afe0"
   integrity sha1-dR/WtRLYDzp0jS3o38lt/vopr+A=
 
-"@ngx-translate/http-loader@2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@ngx-translate/http-loader/-/http-loader-2.0.0.tgz#9c16d07cd070c67ada270a2e940281eb826b3f43"
-  integrity sha1-nBbQfNBwxnraJwoulAKB64JrP0M=
+"@ngx-translate/http-loader@2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@ngx-translate/http-loader/-/http-loader-2.0.1.tgz#aa67788e64bfa8652691a77b022b3b4031209113"
+  integrity sha1-qmd4jmS/qGUmkad7Ais7QDEgkRM=
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
