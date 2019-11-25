@@ -101,7 +101,7 @@
     "moment-timezone": "^0.5.21",
     "ng2-charts": "^1.6.0",
     "ngx-filter-pipe": "^1.0.2",
-    "node-forge": "^0.8.5",
+    "node-forge": "^0.9.0",
     "rxjs": "^5.5.12",
     "semver": "^6.3.0",
     "string-hash": "^1.1.3",
