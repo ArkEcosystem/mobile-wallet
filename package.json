@@ -115,7 +115,7 @@
     "@ionic/app-scripts": "3.2.3",
     "@types/bcryptjs": "^2.4.2",
     "@types/bytebuffer": "^5.0.40",
-    "@types/jasmine": "2.8.9",
+    "@types/jasmine": "2.8.16",
     "@types/jasminewd2": "^2.0.6",
     "@types/lodash": "^4.14.136",
     "@types/moment-timezone": "^0.5.9",
