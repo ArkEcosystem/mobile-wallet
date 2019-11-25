@@ -37,7 +37,11 @@ interface NodeFees {
 }
 
 interface NodeFeesResponse {
-  data: NodeFees[];
+  data: NodeFees[] | {
+    [group: string]: {
+      [type: string]: NodeFees;
+    }
+  };
 }
 
 @Injectable()
@@ -457,18 +461,37 @@ export class ArkApiProvider {
         `${this._network.getPeerAPIUrl()}/api/v2/node/fees?days=7`
       ).subscribe((response: NodeFeesResponse) => {
         const data = response.data;
-        // Converts the new response to the old template
-        const feeStatistics: FeeStatistic[] = data.map(item => ({
-          type: Number(item.type),
-          fees: {
-            minFee: Number(item.min),
-            maxFee: Number(item.max),
-            avgFee: Number(item.avg),
+        let feeStatistics: FeeStatistic[] = [];
+
+        if (Array.isArray(data)) {
+          feeStatistics = data.map(fee => ({
+            type: Number(fee.type),
+            fees: {
+              minFee: Number(fee.min),
+              maxFee: Number(fee.max),
+              avgFee: Number(fee.avg)
+            }
+          }));
+        } else {
+          const standard = data[constants.TRANSACTION_GROUPS.STANDARD];
+
+          for (const type in standard) {
+            const fee = standard[type];
+            const typeFormatted = lodash.snakeCase(type).toUpperCase();
+
+            feeStatistics.push({
+              type: constants.TRANSACTION_TYPES.GROUP_1[typeFormatted],
+              fees: {
+                minFee: Number(fee.min),
+                maxFee: Number(fee.max),
+                avgFee: Number(fee.avg)
+              }
+            });
           }
-        }));
+        }
 
         this._network.feeStatistics = feeStatistics;
-        observer.next(feeStatistics);
+        observer.next(this._network.feeStatistics);
       }, (e) => observer.error(e));
     });
   }
