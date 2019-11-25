@@ -142,7 +142,7 @@
     "karma-spec-reporter": "0.0.32",
     "karma-webpack": "^3.0.4",
     "protractor": "^5.4.2",
-    "rimraf": "^2.6.3",
+    "rimraf": "^3.0.0",
     "serve-static": "^1.13.1",
     "ts-node": "6.2.0",
     "typescript": "2.8.4"
