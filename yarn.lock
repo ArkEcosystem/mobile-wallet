@@ -366,10 +366,10 @@
   resolved "https://registry.yarnpkg.com/@ionic-native/vibration/-/vibration-4.20.0.tgz#17c0239919f35b1ad4aa04f1abc2c11b04ebeb8f"
   integrity sha512-IWspVEZPCw0RxeZHLa2ISJ6est4YZx5XGnep9yX2xeY83wSVhQtlubRJbC3ftw0T2XMkihWlzt/xWWv4Jum4tw==
 
-"@ionic/app-scripts@3.2.3":
-  version "3.2.3"
-  resolved "https://registry.yarnpkg.com/@ionic/app-scripts/-/app-scripts-3.2.3.tgz#b1bc492f2ff49777ec0f6594930a0e707a641a4f"
-  integrity sha512-t1kL9NqY/sVLfAIVKfN4VJigPqMWs5euKxig3sjsrakSQ9z4njmbDghzAC4taefIpYxLGMOeWgKwrrxOiLkdWQ==
+"@ionic/app-scripts@3.2.4":
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/@ionic/app-scripts/-/app-scripts-3.2.4.tgz#db3f6a215ba226099db2a9af41f0f6bb5d4cc368"
+  integrity sha512-Wt6bBnLtyknbTn6ikUTst2HLs5ww+BL9FpYv2dQWZwDODYqyWFkQQvdXj0IFibU2umXFOH5nQXJin2vvgtovzA==
   dependencies:
     "@angular-devkit/build-optimizer" "0.0.35"
     autoprefixer "^7.2.6"
