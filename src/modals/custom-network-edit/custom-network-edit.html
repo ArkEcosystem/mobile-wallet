@@ -85,22 +85,6 @@
         </ion-col>
         <ion-col>
           <ion-item>
-            <ion-label stacked>{{ 'CUSTOM_NETWORK.SEED_SERVER_PORT' | translate }}</ion-label>
-            <ion-input type="text"
-                       required
-                       name="activePeerPort"
-                       [(ngModel)]="p2pPort"
-                       (ionChange)="updateP2PPort()">
-            </ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row nowrap *ngIf="network.isV2">
-        <ion-col>
-          &nbsp;
-        </ion-col>
-        <ion-col>
-          <ion-item>
             <ion-label stacked>{{ 'CUSTOM_NETWORK.API_SERVER_PORT' | translate }}</ion-label>
             <ion-input type="text"
                        required

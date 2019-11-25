@@ -16,6 +16,8 @@ import lodash from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/switchMap';
+import { INodeConfiguration } from '@models/node';
+import { TRANSACTION_GROUPS } from '@app/app.constants';
 
 export interface PeerApiResponse extends Peer {
   latency?: number;
@@ -24,11 +26,11 @@ export interface PeerApiResponse extends Peer {
   };
 }
 
-export interface PeerApiResponse extends Peer {
-  latency?: number;
-  ports?: {
-    [plugin: string]: number;
-  };
+export interface WalletResponse extends AccountResponse {
+  balance: string;
+  isDelegate: boolean;
+  vote: string;
+  nonce: string;
 }
 
 export default class ApiClient {
@@ -56,16 +58,16 @@ export default class ApiClient {
     return this.httpClient.post(`${this.host}/api/${path}`, body, { ...options, headers: this.defaultHeaders }).timeout(5000);
   }
 
-  getWallet(address: string): Observable<AccountResponse> {
+  getWallet(address: string): Observable<WalletResponse> {
     return Observable.create(observer => {
       this.get(`wallets/${address}`).subscribe((response: any) => {
-        observer.next({
-          success: true,
-          account: {
-            ...response.data,
-            balance: String(response.data.balance),
-          }
-        });
+        if (response && response.data) {
+          observer.next({
+            ...response.data
+          });
+        } else {
+          observer.error();
+        }
         observer.complete();
       }, (error) => observer.error(error));
     });
@@ -126,14 +128,16 @@ export default class ApiClient {
     return Observable.create(observer => {
       this.get('transactions/fees').subscribe((response: any) => {
         const data = response.data;
+        const payload = data[TRANSACTION_GROUPS.STANDARD] ? data[TRANSACTION_GROUPS.STANDARD] : data;
+
         observer.next({
           success: true,
           fees: {
-            send: data.transfer,
-            vote: data.vote,
-            secondsignature: data.secondSignature,
-            delegate: data.delegateRegistration,
-            multisignature: data.multiSignature
+            send: payload.transfer,
+            vote: payload.vote,
+            secondsignature: payload.secondSignature,
+            delegate: payload.delegateRegistration,
+            multisignature: payload.multiSignature
           }
         });
         observer.complete();
@@ -141,7 +145,16 @@ export default class ApiClient {
     });
   }
 
-  getNodeConfiguration(host: string): Observable<PeerApiResponse> {
+  getNodeCrypto(host: string): Observable<any> {
+    return Observable.create(observer => {
+      this.get('node/configuration/crypto', {}, host).subscribe((response: any) => {
+        observer.next(response.data);
+        observer.complete();
+      }, (error) => observer.error(error));
+    });
+  }
+
+  getNodeConfiguration(host?: string): Observable<INodeConfiguration> {
     return Observable.create(observer => {
       this.get(`node/configuration`, {}, host).subscribe((response: any) => {
         observer.next(response.data);
@@ -193,7 +206,7 @@ export default class ApiClient {
           observer.next(response);
           observer.complete();
         }, () => {
-          this.getNodeConfiguration(`${protocol}://${ip}:${port}`).subscribe((response: PeerApiResponse) => {
+          this.getNodeConfiguration(`${protocol}://${ip}:${port}`).subscribe((response) => {
             const apiPort = lodash.find(response.ports, (_, key) => key.split('/').reverse()[0] === 'core-wallet-api');
             const isApiEnabled = apiPort && Number(apiPort) > 1;
             if (isApiEnabled) {

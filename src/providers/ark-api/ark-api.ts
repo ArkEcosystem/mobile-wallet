@@ -12,7 +12,7 @@ import { StorageProvider } from '@providers/storage/storage';
 import { ToastProvider } from '@providers/toast/toast';
 import { HttpUtils } from '@root/src/utils/http-utils';
 
-import {Transaction, TranslatableObject, BlocksEpochResponse, Wallet} from '@models/model';
+import { Transaction, TranslatableObject, Wallet } from '@models/model';
 
 import * as arkts from 'ark-ts';
 import lodash from 'lodash';
@@ -20,11 +20,14 @@ import moment from 'moment';
 import * as constants from '@app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
-import {AccountResponse, Delegate, PeerResponse} from 'ark-ts';
 import { StoredNetwork, FeeStatistic } from '@models/stored-network';
-import ArkClient, { PeerApiResponse } from '../../utils/ark-client';
+import ArkClient, { WalletResponse } from '../../utils/ark-client';
 import * as ArkCrypto from '@arkecosystem/crypto';
 import { PeerDiscovery } from '@utils/ark-peer-discovery';
+import BigNumber from '@utils/bignumber';
+import { finalize, tap } from 'rxjs/operators';
+import { Delegate } from 'ark-ts';
+import { INodeConfiguration } from '@models/node';
 
 interface NodeFees {
   type: number;
@@ -34,19 +37,10 @@ interface NodeFees {
 }
 
 interface NodeFeesResponse {
-  data: NodeFees[];
-}
-
-interface NodeConfigurationConstants {
-  vendorFieldLength?: number;
-  activeDelegates?: number;
-  epoch?: Date;
-}
-
-interface NodeConfigurationResponse {
-  data: {
-    feeStatistics: FeeStatistic[],
-    constants: NodeConfigurationConstants
+  data: NodeFees[] | {
+    [group: string]: {
+      [type: string]: NodeFees;
+    }
   };
 }
 
@@ -138,12 +132,14 @@ export class ArkApiProvider {
     this._api = new arkts.Client(this._network);
     this._client = new ArkClient(this.network.getPeerAPIUrl(), this.httpClient);
     this._peerDiscovery = new PeerDiscovery(this.httpClient);
-    this.connectToRandomPeer().subscribe();
 
     // Fallback if the fetchEpoch fail
     this._network.epoch = arktsConfig.blockchain.date;
     // Fallback if the fetchNodeConfiguration fail
     this._network.activeDelegates = constants.NUM_ACTIVE_DELEGATES;
+
+    this.connectToRandomPeer().subscribe(null, (e) => console.error(e));
+
     this.userDataProvider.onUpdateNetwork$.next(this._network);
 
     this.fetchFees().subscribe();
@@ -202,7 +198,10 @@ export class ArkApiProvider {
         this.updateNetwork(this._network.peerList[lodash.random(this._network.peerList.length - 1)]);
         observer.next();
         observer.complete();
-      }, (e) => observer.error(e));
+      }, (e) => {
+        this.updateNetwork();
+        observer.error(e);
+      });
     });
   }
 
@@ -291,16 +290,16 @@ export class ArkApiProvider {
       const epochTime = moment(this._network.epoch).utc().valueOf();
       const now = moment().valueOf();
 
-      const keys = ArkCrypto.Keys.fromPassphrase(key);
+      const keys = ArkCrypto.Identities.Keys.fromPassphrase(key);
 
       transaction.timestamp = Math.floor((now - epochTime) / 1000);
       transaction.senderPublicKey = keys.publicKey;
       transaction.signature = null;
       transaction.id = null;
 
-      const data: ArkCrypto.ITransactionData = {
+      const data: ArkCrypto.Interfaces.ITransactionData = {
         network: this._network.version,
-        type: ArkCrypto.constants.TransactionTypes[ArkCrypto.constants.TransactionTypes[transaction.type]],
+        type: ArkCrypto.Enums.TransactionType[ArkCrypto.Enums.TransactionType[transaction.type]],
         senderPublicKey: transaction.senderPublicKey,
         timestamp: transaction.timestamp,
         amount: transaction.amount,
@@ -310,21 +309,47 @@ export class ArkApiProvider {
         asset: transaction.asset
       };
 
-      data.signature = ArkCrypto.crypto.sign(data, keys);
+      this.getNextWalletNonce(wallet.address)
+        .pipe(
+          tap(nonce => {
+            if (this._network.aip11) {
+              transaction.nonce = nonce;
+              data.nonce = nonce;
+              data.version = 2;
+            }
+          }),
+          finalize(() => {
+            data.signature = ArkCrypto.Transactions.Signer.sign(data, keys);
 
-      secondPassphrase = secondKey || secondPassphrase;
+            secondPassphrase = secondKey || secondPassphrase;
 
-      if (secondPassphrase) {
-        const secondKeys = ArkCrypto.Keys.fromPassphrase(secondPassphrase);
-        data.secondSignature = ArkCrypto.crypto.secondSign(data, secondKeys);
-      }
+            if (secondPassphrase) {
+              const secondKeys = ArkCrypto.Identities.Keys.fromPassphrase(secondPassphrase);
+              data.secondSignature = ArkCrypto.Transactions.Signer.secondSign(data, secondKeys);
+            }
 
-      transaction.id = ArkCrypto.crypto.getId(data);
-      transaction.signature = data.signature;
-      transaction.signSignature = data.secondSignature;
+            transaction.id = ArkCrypto.Transactions.Utils.getId(data);
+            transaction.signature = data.signature;
+            transaction.signSignature = data.secondSignature;
+            transaction.version = data.version || 1;
 
-      observer.next(transaction);
-      observer.complete();
+            observer.next(transaction);
+            observer.complete();
+          })
+        )
+        .subscribe();
+    });
+  }
+
+  private getNextWalletNonce(address: string): Observable<string> {
+    return Observable.create(observer => {
+      this._client.getWallet(address).subscribe((wallet: WalletResponse) => {
+        const nonce = wallet.nonce || 0;
+        const nextNonce = new BigNumber(nonce).plus(1).toString();
+        observer.next(nextNonce);
+      },
+      () => observer.next('1'),
+      () => observer.complete());
     });
   }
 
@@ -403,31 +428,27 @@ export class ArkApiProvider {
 
     this.fetchFees().subscribe();
     this.fetchFeeStatistics().subscribe();
-    this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
-      const { vendorFieldLength, activeDelegates, epoch } = response.data && response.data.constants || {} as NodeConfigurationConstants;
+    this.fetchNodeConfiguration().subscribe((response: INodeConfiguration) => {
+      const config = response.constants;
 
-      if (vendorFieldLength) {
-        this._network.vendorFieldLength = vendorFieldLength;
+      this._network.vendorFieldLength = config.vendorFieldLength;
+      this._network.activeDelegates = config.activeDelegates;
+      this._network.epoch = new Date(config.epoch);
+
+      if (config.aip11) {
+        this._network.aip11 = config.aip11;
       }
-      if (activeDelegates) {
-        this._network.activeDelegates = activeDelegates;
-      }
-      if (epoch) {
-        this._network.epoch = new Date(epoch);
-      }
+
+      this._client.getNodeCrypto(this._network.getPeerAPIUrl())
+        .subscribe((crypto: any) => {
+          ArkCrypto.Managers.configManager.setConfig(crypto);
+          ArkCrypto.Managers.configManager.setHeight(config.height);
+        });
     });
   }
 
-  private fetchNodeConfiguration(): Observable<NodeConfigurationResponse> {
-    if (!this._network || !this._network.isV2) {
-      return Observable.empty();
-    }
-
-    return Observable.create((observer) => {
-      this.httpClient.get(`${this._network.getPeerAPIUrl()}/api/v2/node/configuration`).subscribe((response: NodeConfigurationResponse) => {
-        observer.next(response);
-      }, e => observer.error(e));
-    });
+  private fetchNodeConfiguration(): Observable<INodeConfiguration> {
+    return this._client.getNodeConfiguration(this._network.getPeerAPIUrl());
   }
 
   private fetchFeeStatistics(): Observable<FeeStatistic[]> {
@@ -440,28 +461,38 @@ export class ArkApiProvider {
         `${this._network.getPeerAPIUrl()}/api/v2/node/fees?days=7`
       ).subscribe((response: NodeFeesResponse) => {
         const data = response.data;
-        // Converts the new response to the old template
-        const feeStatistics: FeeStatistic[] = data.map(item => ({
-          type: Number(item.type),
-          fees: {
-            minFee: Number(item.min),
-            maxFee: Number(item.max),
-            avgFee: Number(item.avg),
+        let feeStatistics: FeeStatistic[] = [];
+
+        if (Array.isArray(data)) {
+          feeStatistics = data.map(fee => ({
+            type: Number(fee.type),
+            fees: {
+              minFee: Number(fee.min),
+              maxFee: Number(fee.max),
+              avgFee: Number(fee.avg)
+            }
+          }));
+        } else {
+          const standard = data[constants.TRANSACTION_GROUPS.STANDARD];
+
+          for (const type in standard) {
+            const fee = standard[type];
+            const typeFormatted = lodash.snakeCase(type).toUpperCase();
+
+            feeStatistics.push({
+              type: constants.TRANSACTION_TYPES.GROUP_1[typeFormatted],
+              fees: {
+                minFee: Number(fee.min),
+                maxFee: Number(fee.max),
+                avgFee: Number(fee.avg)
+              }
+            });
           }
-        }));
+        }
 
         this._network.feeStatistics = feeStatistics;
-        observer.next(feeStatistics);
-      }, () => {
-        this.fetchNodeConfiguration().subscribe(
-          (response: NodeConfigurationResponse) => {
-            const data = response.data;
-            this._network.feeStatistics = data.feeStatistics;
-            observer.next(this._network.feeStatistics);
-          },
-          e => observer.error(e)
-        );
-      });
+        observer.next(this._network.feeStatistics);
+      }, (e) => observer.error(e));
     });
   }
 

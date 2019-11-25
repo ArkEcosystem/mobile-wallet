@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ark.wallet.mobile" version="1.5.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ark.wallet.mobile" version="1.6.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Ark Mobile</name>
     <description>ARK</description>
     <author email="lucio@ark.io" href="http://ark.io/">Ark Ecosystem</author>
@@ -118,7 +118,6 @@
     <plugin name="cordova-plugin-device" spec="^2.0.3" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.3" />
     <plugin name="cordova-plugin-vibration" spec="^3.1.1" />
-    <plugin name="cordova-plugin-inappbrowser" spec="^3.1.0" />
     <plugin name="cordova-clipboard" spec="^1.3.0" />
     <plugin name="cordova-plugin-x-socialsharing" spec="^5.6.0">
         <variable name="PHOTO_LIBRARY_ADD_USAGE_DESCRIPTION" value="This app requires photo library access to function properly." />
@@ -127,6 +126,7 @@
     </plugin>
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.2.0" />
     <plugin name="cordova-sqlite-storage" spec="git+https://github.com/litehelpers/Cordova-sqlite-storage.git" />
-    <engine name="ios" spec="5.0.1" />
+    <plugin name="cordova-plugin-inappbrowser" spec="^3.1.0" />
     <engine name="android" spec="8.1.0" />
+    <engine name="ios" spec="^5.0.1" />
 </widget>

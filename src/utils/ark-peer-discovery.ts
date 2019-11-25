@@ -124,44 +124,49 @@ export class PeerDiscovery {
         opts.timeout = 3000;
       }
 
-      const seed: PeerApiResponse = this.seeds[
-        Math.floor(Math.random() * this.seeds.length)
-      ];
+      if (this.seeds.length) {
+        const seed: PeerApiResponse = this.seeds[
+          Math.floor(Math.random() * this.seeds.length)
+        ];
 
-      this.httpClient
-        .request(
-          'GET',
-          `http://${seed.ip}:${seed.port}/api/peers`,
-          {
-            headers: {
-              'API-Version': '2'
+        this.httpClient
+          .request(
+            'GET',
+            `http://${seed.ip}:${seed.port}/api/peers`,
+            {
+              headers: {
+                'API-Version': '2'
+              }
             }
-          }
-        )
-        .subscribe((body: any) => {
-          let peers = body.data;
+          )
+          .subscribe((body: any) => {
+            let peers = body.data;
 
-          if (this.version) {
-            peers = peers.filter((peer: PeerApiResponse) =>
-              semver.satisfies(peer.version, this.version)
-            );
-          }
+            if (this.version) {
+              peers = peers.filter((peer: PeerApiResponse) =>
+                semver.satisfies(peer.version, this.version)
+              );
+            }
 
-          if (this.latency) {
-            peers = peers.filter(
-              (peer: PeerApiResponse) => peer.latency <= this.latency
-            );
-          }
+            if (this.latency) {
+              peers = peers.filter(
+                (peer: PeerApiResponse) => peer.latency <= this.latency
+              );
+            }
 
-          observer.next(orderBy<PeerApiResponse>(
-            peers,
-            [this.orderBy[0]],
-            [this.orderBy[1] as any]
-          ));
-          observer.complete();
-        }, (e) => {
-          observer.error(e);
-        });
+            observer.next(orderBy<PeerApiResponse>(
+              peers,
+              [this.orderBy[0]],
+              [this.orderBy[1] as any]
+            ));
+            observer.complete();
+          }, (e) => {
+            observer.error(e);
+          });
+      } else {
+        observer.next([]);
+        observer.complete();
+      }
     });
   }
 
