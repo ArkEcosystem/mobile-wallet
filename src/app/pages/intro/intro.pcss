@@ -8,14 +8,8 @@ ion-footer {
   max-width: 100px;
 
   span {
-    height: 10px;
-    width: 10px;
-    border: 1px solid #979b9f;
-    background-color: transparent;
-    border-radius: 100%;
-    position: relative;
-    display: inline-block;
-    text-align: center;
+    @apply w-3 h-3 border bg-transparent rounded-full relative inline-block text-center;
+    border-color: var(--ion-color-medium);
   }
 
   .active span {

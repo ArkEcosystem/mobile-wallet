@@ -15,7 +15,7 @@
 
     <ion-item-group>
       <ion-item>
-        <ion-icon [name]="platform.is('ios') ? 'ios-globe-outline' : 'md-globe'" slot="start"></ion-icon>
+        <ion-icon color="primary" name="globe" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.LANGUAGE' | translate }}</ion-label>
         <ion-select [value]="currentSettings.language" (ionChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
           <ion-select-option *ngFor="let item of objectKeys(availableOptions?.languages)" [value]="item">
@@ -25,7 +25,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-icon [name]="platform.is('ios') ? 'ios-cash-outline' : 'md-cash'" slot="start"></ion-icon>
+        <ion-icon color="primary" name="cash" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.CURRENCY' | translate }}</ion-label>
         <ion-select [value]="currentSettings.currency" (ionChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
           <ion-select-option *ngFor="let item of objectKeys(availableOptions?.currencies)" [value]="item">
@@ -34,7 +34,7 @@
         </ion-select>
       </ion-item>
       <ion-item>
-        <ion-icon [name]="platform.is('ios') ? 'ios-book-outline' : 'md-book'" slot="start"></ion-icon>
+        <ion-icon color="primary" name="book" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.WORDLIST_LANGUAGE' | translate }}</ion-label>
         <ion-select [value]="currentSettings.wordlistLanguage" (ionChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
           <ion-select-option *ngFor="let item of objectKeys(availableOptions?.wordlistLanguages)" [value]="item">
@@ -47,17 +47,17 @@
     <ion-item-group>
       <ion-item-divider color="primary-background"></ion-item-divider>
       <ion-item detail (click)="openChangePinPage()" class="custom-arrow">
-        <ion-icon [name]="platform.is('ios') ? 'ios-lock-outline' : 'md-lock'" slot="start"></ion-icon>
+        <ion-icon color="primary" name="lock" slot="start"></ion-icon>
         {{ 'SETTINGS_PAGE.CHANGE_PIN' | translate }}
       </ion-item>
       <!-- NOTE: Deprecate notifications -->
       <!-- <ion-item ion-item>
-        <ion-icon [name]="platform.is('ios') ? 'ios-notifications-outline' : 'md-notifications-outline'" slot="start"></ion-icon>
+        <ion-icon color="primary" [name]="platform.is('ios') ? 'ios-notifications-outline' : 'md-notifications-outline'" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.NOTIFICATIONS' | translate }}</ion-label>
         <ion-toggle [(ngModel)]="currentSettings.notification" (ngModelChange)="onUpdate()"></ion-toggle>
       </ion-item> -->
       <ion-item detail (click)="openManageNetworksPage()" class="custom-arrow">
-        <ion-icon [name]="platform.is('ios') ? 'ios-wifi-outline' : 'md-wifi'" slot="start"></ion-icon>
+        <ion-icon color="primary" name="wifi" slot="start"></ion-icon>
         {{ 'CUSTOM_NETWORK.MANAGE_NETWORKS' | translate }}
       </ion-item>
     </ion-item-group>
@@ -65,7 +65,7 @@
     <ion-item-group>
       <ion-item-divider color="primary-background"></ion-item-divider>
       <ion-item>
-        <ion-icon [name]="platform.is('ios') ? 'ios-moon-outline' : 'ios-moon'" slot="start"></ion-icon>
+        <ion-icon color="primary" name="moon" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.DARK_MODE' | translate }}</ion-label>
         <ion-toggle [checked]="currentSettings.darkMode" (ionChange)="onUpdate()"></ion-toggle>
       </ion-item>
@@ -74,17 +74,17 @@
     <ion-item-group>
       <ion-item-divider color="primary-background"></ion-item-divider>
       <ion-item detail (click)="confirmClearData()" class="custom-arrow">
-        <ion-icon [name]="platform.is('ios') ? 'ios-trash-outline' : 'md-trash'" slot="start"></ion-icon>
+        <ion-icon color="primary" name="trash" slot="start"></ion-icon>
         {{ 'SETTINGS_PAGE.CLEAR_DATA' | translate }}
       </ion-item>
       <ion-item detail (click)="openPrivacyPolicy()" class="custom-arrow">
-        <ion-icon [name]="platform.is('ios') ? 'ios-document-outline' : 'md-document'" slot="start"></ion-icon>
+        <ion-icon color="primary" name="document" slot="start"></ion-icon>
         {{ 'SETTINGS_PAGE.PRIVACY_POLICY' | translate }}
       </ion-item>
       <ion-item detail="false">
-        <ion-icon [name]="platform.is('ios') ? 'ios-information-circle-outline' : 'md-information-circle'" slot="start"></ion-icon>
+        <ion-icon color="primary" name="information-circle-outline" slot="start"></ion-icon>
         {{ 'SETTINGS_PAGE.VERSION' | translate }}
-        <div item-right><p>{{ appVersion }}</p></div>
+        <div slot="end"><p>{{ appVersion }}</p></div>
       </ion-item>
     </ion-item-group>
 

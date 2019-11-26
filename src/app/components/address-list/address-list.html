@@ -1,16 +1,17 @@
 <ion-list>
-  <ion-item class="address-item" *ngFor="let item of map">
-    <div class="circle-letter" [class.highlight]="item.highlight" slot="start">
+  <ion-item *ngFor="let item of map">
+    <div class="avatar" [class.highlight]="item.highlight" slot="start">
       {{ item[circleProperty].charAt(0) }}
     </div>
 
     <ion-label (click)="tap(item.index)" (press)="press(item.index)">
-      <h3 class="address-key">{{ item.key }}</h3>
-      <p class="address-value">{{ item.value }}</p>
+      <h3 class="item-title">{{ item.key }}</h3>
+      <p class="item-subtitle">{{ item.value }}</p>
     </ion-label>
 
     <ion-button
       slot="end"
+      color="medium"
       fill="clear"
       class="more disable-hover"
       *ngIf="icon"

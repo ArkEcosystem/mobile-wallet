@@ -1,4 +1,4 @@
-<ion-content forceOverscroll fullscreen>
+<ion-content>
   <ion-slides class="h-full" #slider (ionSlideDidChange)="onSlideChanged()">
     <ion-slide *ngFor="let slide of slides">
       <ion-grid class="flex flex-col h-full">
@@ -10,7 +10,9 @@
         <ion-row class="flex-1">
           <ion-col class="flex flex-col justify-center">
             <h3 class="text-xl font-semibold">{{ slide.title }}</h3>
-            <p class="leading-normal mt-2 px-6">{{ slide.description }}</p>
+            <ion-text color="medium">
+              <p class="leading-normal mt-2 px-6">{{ slide.description }}</p>
+            </ion-text>
           </ion-col>
         </ion-row>
       </ion-grid>

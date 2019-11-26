@@ -4,7 +4,7 @@ import { AddressMap } from '@/models/contact';
 @Component({
   selector: 'address-list',
   templateUrl: 'address-list.html',
-  styleUrls: ['address-list.scss']
+  styleUrls: ['address-list.pcss']
 })
 export class AddressListComponent {
   @Input() map: AddressMap[];
