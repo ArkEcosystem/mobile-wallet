@@ -7,7 +7,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'page-intro',
   templateUrl: 'intro.html',
-  styleUrls: ['intro.scss']
+  styleUrls: ['intro.pcss']
 })
 export class IntroPage {
   @ViewChild('slider', { read: IonSlides, static: true }) slider: IonSlides;

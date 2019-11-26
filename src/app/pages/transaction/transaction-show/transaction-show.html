@@ -14,79 +14,85 @@
 
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col class="ion-text-center">
-        <span>{{ transaction?.getTypeLabel() | translate }}</span>
-        <ion-text [color]="transaction.isSender() ? 'danger' : 'secondary'">
-          {{ transaction?.isSender() ? '-' : '+' }} {{ transaction?.getAmount() | unitsSatoshi }} {{ currentNetwork?.token }}
-        </ion-text>
-        <h4 appMarketNetOnly>{{ equivalentSymbol }}{{ equivalentAmount | marketNumber }}</h4>
-        <ion-button
-                fill="clear"
-                *ngIf="currentNetwork?.explorer"
-                (click)="openInExplorer()"
-                class="open-explorer-btn">
-          {{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate }}
-        </ion-button>
+      <ion-col class="text-center">
+        <div>
+          <span>{{ transaction?.getTypeLabel() | translate }}</span>
+          <ion-text [color]="transaction.isSender() ? 'danger' : 'secondary'">
+            {{ transaction?.isSender() ? '-' : '+' }} {{ transaction?.getAmount() | unitsSatoshi }} {{ currentNetwork?.token }}
+          </ion-text>
+        </div>
+        <div>
+          <h4 appMarketNetOnly>{{ equivalentSymbol }}{{ equivalentAmount | marketNumber }}</h4>
+        </div>
+        <div>
+          <ion-button
+            fill="clear"
+            *ngIf="currentNetwork?.explorer"
+            (click)="openInExplorer()"
+            class="open-explorer-btn"
+          >
+            {{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate }}
+          </ion-button>
+        </div>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col class="ion-text-left">
-        <ion-list class="list-selectable">
-          <ion-item *ngIf="transaction?.recipientId" lines="none" class="ion-text-wrap">
-            <ion-label position="stacked">
-              <ion-text>{{ 'TRANSACTIONS_PAGE.TO' | translate }}</ion-text>
-              <h4 item-content class="content">
-                <span *ngIf="transaction?.recipientId | hasAccountLabel" class="account-label">
+
+    <ion-row class="mt-4">
+      <ion-col class="text-left">
+        <ion-list lines="none" class="list-selectable">
+          <ion-item *ngIf="transaction?.recipientId">
+            <ion-label>
+              <div class="item-title">{{ 'TRANSACTIONS_PAGE.TO' | translate }}</div>
+              <h3 class="whitespace-normal">
+                <span *ngIf="transaction?.recipientId | hasAccountLabel" class="font-semibold block">
                   {{ transaction?.recipientId | accountLabel }}
                 </span>
                 {{ transaction?.recipientId }}
-              </h4>
+              </h3>
             </ion-label>
           </ion-item>
-          <ion-item lines="none" class="ion-text-wrap">
-            <ion-label position="stacked">
-              <ion-text>{{ 'TRANSACTIONS_PAGE.FROM' | translate }}</ion-text>
-              <h4 item-content class="content">
-                <span *ngIf="transaction?.senderId | hasAccountLabel" class="account-label">
+          <ion-item>
+            <ion-label>
+              <h4>{{ 'TRANSACTIONS_PAGE.FROM' | translate }}</h4>
+              <h3 class="whitespace-normal">
+                <span *ngIf="transaction?.senderId | hasAccountLabel" class="font-semibold block">
                   {{ transaction?.senderId | accountLabel }}
                 </span>
                 {{ transaction?.senderId }}
-              </h4>
+              </h3>
             </ion-label>
           </ion-item>
-          <ion-item lines="none" class="ion-text-wrap">
-            <ion-label position="stacked">
-              <ion-text>{{ 'DATE' | translate}}</ion-text>
-              <h4 item-content class="content">
+          <ion-item>
+            <ion-label>
+              <h4>{{ 'DATE' | translate}}</h4>
+              <h3>
                 {{ transaction?.date | timezone | date: 'dd.MM.yy | hh:mm a' }}
-              </h4>
+              </h3>
             </ion-label>
           </ion-item>
-          <ion-item lines="none" class="ion-text-wrap">
-            <ion-label position="stacked">
-              <ion-text>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</ion-text>
-              <h4 item-content class="content">
+          <ion-item>
+            <ion-label>
+              <h3>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</h3>
+              <h4 class="whitespace-normal">
                 {{ transaction?.vendorField || 'N/A' }}
               </h4>
             </ion-label>
           </ion-item>
-          <ion-item lines="none" class="ion-text-wrap">
+          <ion-item class="ion-text-wrap">
             <ion-label position="stacked">
               <ion-text>{{ 'TRANSACTIONS_PAGE.CONFIRMATIONS' | translate }}</ion-text>
-              <h4 item-content class="content">
+              <h4 class="content">
                 {{ transaction?.confirmations }}
               </h4>
             </ion-label>
           </ion-item>
-          <ion-item lines="none" class="ion-text-wrap">
+          <ion-item class="ion-text-wrap">
             <ion-label position="stacked">
               <ion-text>{{ 'TRANSACTIONS_PAGE.ID' | translate }}</ion-text>
-              <h4 item-content class="content">
-                {{ transaction?.id }}
-              </h4>
+
             </ion-label>
           </ion-item>
         </ion-list>
