@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'page-transaction-show',
   templateUrl: 'transaction-show.html',
-  styleUrls: ['transaction-show.scss'],
+  styleUrls: ['transaction-show.pcss'],
   providers: [InAppBrowser, TruncateMiddlePipe],
 })
 export class TransactionShowPage {

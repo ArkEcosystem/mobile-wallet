@@ -4,10 +4,6 @@ ion-footer {
   }
 }
 
-ion-row {
-  flex: auto 1!important;
-}
-
 .slide-pagination {
   max-width: 100px;
 
@@ -22,21 +18,14 @@ ion-row {
     text-align: center;
   }
 
-  .col.active span {
-    // border-color: color($colors, primary, base);
-    // background-color: color($colors, primary, base);
+  .active span {
+    border-color: var(--ion-color-primary);
+    background-color: var(--ion-color-primary);
   }
 }
 
 .slide-zoom {
   height: 100%;
-}
-
-p {
-  padding: 0 40px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #60646B;
 }
 
 .slide-image {

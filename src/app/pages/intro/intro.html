@@ -1,16 +1,16 @@
-<ion-content class="column-mode" no-bounce>
-  <ion-slides #slider (ionSlideDidChange)="onSlideChanged()">
+<ion-content forceOverscroll fullscreen>
+  <ion-slides class="h-full" #slider (ionSlideDidChange)="onSlideChanged()">
     <ion-slide *ngFor="let slide of slides">
-      <ion-grid>
-        <ion-row hideWhen="landscape">
-          <ion-col class="ion-align-self-end">
+      <ion-grid class="flex flex-col h-full">
+        <ion-row class="flex-1 py-5" hideWhen="landscape">
+          <ion-col class="flex justify-center">
             <img [class]="'slide-image ' + slide.image">
           </ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col class="ion-align-self-center">
-            <h3 class="slide-title">{{ slide.title }}</h3>
-            <p>{{ slide.description }}</p>
+        <ion-row class="flex-1">
+          <ion-col class="flex flex-col justify-center">
+            <h3 class="text-xl font-semibold">{{ slide.title }}</h3>
+            <p class="leading-normal mt-2 px-6">{{ slide.description }}</p>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -20,23 +20,23 @@
 
 <ion-footer no-shadow no-border>
   <ion-grid>
-    <ion-row>
-      <ion-col col-3>
+    <div class="flex items-center">
+      <ion-col class="flex-1">
         <ion-button fill="clear" (click)="startApp()" [disabled]="!showSkip">{{ 'SKIP' | translate | uppercase }}</ion-button>
       </ion-col>
-      <ion-col col-6>
-        <ion-grid fixed class="slide-pagination full-height ion-text-center">
-          <ion-row class="full-height ion-align-items-center ion-justify-content-center" nowrap >
+      <ion-col class="w-32">
+        <ion-grid fixed class="slide-pagination h-full text-center">
+          <ion-row class="flex items-center justify-center flex-shrink-0">
             <ion-col *ngFor="let page of slides; let i = index" [class.active]="activeIndex == i">
               <span></span>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-col>
-      <ion-col col-3>
+      <ion-col class="flex-1 text-right">
         <ion-button fill="clear" (click)="goNext()" *ngIf="showSkip">{{ 'NEXT' | translate | uppercase }}</ion-button>
         <ion-button fill="clear" (click)="startApp()" *ngIf="!showSkip">{{ 'DONE' | translate | uppercase }}</ion-button>
       </ion-col>
-    </ion-row>
+    </div>
   </ion-grid>
 </ion-footer>
