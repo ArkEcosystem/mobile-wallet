@@ -1,61 +1,32 @@
 :host {
   close-popup {
-    // color: color($colors, dark, base);
-  }
-
-  scroll-content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .pin-code-header {
-    font-weight: 500;
-    font-size: 17px;
-    opacity: 0.7;
-  }
-
-  .grid-password {
-    max-width: 200px;
-    margin: 1em auto;
-    position: relative;
-    display: block;
+    @apply text-right opacity-75;
   }
 
   .password-char {
     span {
-      height: 20px;
-      width: 20px;
-      border: 2px solid rgb(224, 229, 232);
+      @apply w-4 h-4 border-2 inline-block relative text-center rounded-full;
+      border-color: var(--ion-color-light-shade);
       background-color: transparent;
-      border-radius: 100%;
-      position: relative;
-      display: inline-block;
-      text-align: center;
     }
 
     &.active span {
-      border-color: #ed2a2d;
-      background-color: #ed2a2d;
+      border-color: var(--ion-color-danger);
+      background-color: var(--ion-color-danger);
     }
   }
 
   .button-round {
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    font-weight: 500;
-    font-size: 22pt;
-    border-color: rgb(224, 229, 232);
-    color: #0b1828;
-    pointer-events: auto;
+    @apply w-20 h-20 font-semibold text-3xl border relative overflow-hidden rounded-full;
+    border-color: var(--ion-color-light-shade);
+    color: var(--ion-text-color)!important;
 
     &.activated {
-      color: #0b1828;
-      background: #d4e4ef;
+      color: var(--ion-text-color);
     }
 
     &.help-item {
-      color: #b3c1d3;
+      border-color: transparent;
     }
   }
 
@@ -154,21 +125,21 @@
 .dark-theme {
   :host {
     close-popup {
-      // color: lighten(color($darkColors, primary-background, base), 50%);
+      /* // color: lighten(color($darkColors, primary-background, base), 50%); */
     }
 
     .button-round {
-      // border-color: color($darkColors, secondary, base);
+      /* // border-color: color($darkColors, secondary, base); */
     }
 
     .password-char {
       span {
-        // border-color: color($darkColors, secondary, base);
+        /* // border-color: color($darkColors, secondary, base); */
       }
 
       &.active span {
-        // border-color: color($darkColors, primary, base);
-        // background-color: color($darkColors, primary, base);
+        /* // border-color: color($darkColors, primary, base);
+        // background-color: color($darkColors, primary, base); */
       }
     }
 

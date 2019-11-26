@@ -1,23 +1,23 @@
-<ion-content class="column-mode ion-padding" no-bounce>
-  <ion-grid>
-    <ion-row>
-      <ion-col class="image-container ion-text-center ">
-        <img src="./assets/img/light/login/logo.png" class="image-logo">
+<ion-content forceOverscroll scrollY="false">
+  <ion-grid class="h-full flex flex-col p-0">
+    <ion-row class="flex-1 flex justify-center">
+      <img src="./assets/img/light/login/logo.png" class="w-48 h-48">
+    </ion-row>
+    <ion-row class="flex-1">
+      <ion-col class="text-center">
+        <h1 class="text-2xl font-semibold">{{ 'SIGN_IN_PAGE.ARK_WALLET' | translate | uppercase }}</h1>
+        <ion-text class="medium">
+          <p class="mt-2">{{ 'SIGN_IN_PAGE.SLOGAN' | translate }}</p>
+        </ion-text>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col class="slogan-container ion-text-center">
-        <h1 class="app-name">{{ 'SIGN_IN_PAGE.ARK_WALLET' | translate | uppercase }}</h1>
-        <p class="app-description">{{ 'SIGN_IN_PAGE.SLOGAN' | translate }}</p>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col *ngIf="isReady" class="ion-align-self-end">
-        <ion-row class="ion-justify-content-center">
-          <ion-button (click)="openProfileSignin()" [hidden]="!hasProfiles">{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</ion-button>
+    <ion-row class="flex-1 p-5">
+      <ion-col class="flex flex-col items-center justify-end" *ngIf="isReady">
+        <ion-row>
+          <ion-button fill="solid" (click)="openProfileSignin()" [hidden]="!hasProfiles">{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</ion-button>
         </ion-row>
-        <ion-row class="ion-justify-content-center">
-          <ion-button class="create-profile-btn" (click)="openProfileCreate()" [disabled]="hasProfiles">{{ 'SIGN_IN_PAGE.CREATE_PROFILE' | translate }}</ion-button>
+        <ion-row>
+          <ion-button [fill]="hasProfiles ? 'clear' : 'solid'" (click)="openProfileCreate()">{{ 'SIGN_IN_PAGE.CREATE_PROFILE' | translate }}</ion-button>
         </ion-row>
       </ion-col>
     </ion-row>

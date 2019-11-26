@@ -7,12 +7,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="column-mode">
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="pull-footer" *ngIf="!isEmpty()">
+<ion-content>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="!isEmpty()">
     <ion-fab-button color="primary" (click)="openProfileCreate()">
       <ion-icon name="md-add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
   <ion-grid class="ion-no-padding">
     <empty-list
       message="PROFILES_PAGE.ADD_PROFILE_TEXT"

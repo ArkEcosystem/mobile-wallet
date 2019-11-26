@@ -16,7 +16,7 @@ import { map, takeWhile, finalize } from 'rxjs/operators';
 @Component({
   selector: 'modal-pin-code',
   templateUrl: 'pin-code.html',
-  styleUrls: ['pin-code.scss'],
+  styleUrls: ['pin-code.pcss'],
   providers: [Vibration],
 })
 export class PinCodeModal implements OnInit, OnDestroy {

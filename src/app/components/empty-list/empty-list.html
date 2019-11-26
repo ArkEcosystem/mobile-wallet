@@ -1,19 +1,18 @@
+<ion-content>
 
-<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button (click)="submit()">
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
-
-<ion-grid class="full-height">
-  <ion-row>
-    <ion-col class="ion-text-center ion-align-self-end">
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="submit()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+  <ion-grid class="h-full flex flex-col justify-center items-center">
+    <div class="p-5">
       <img class="image">
-    </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col class="ion-text-center ion-align-self-start">
-      <p class="sole-message">{{ message | translate }}</p>
-    </ion-col>
-  </ion-row>
-</ion-grid>
+      <ion-text color="dark" class="text-center">
+        <p class="leading-normal py-2">{{ message | translate }}</p>
+      </ion-text>
+    </div>
+  </ion-grid>
+  
+</ion-content>

@@ -52,7 +52,7 @@ export class AppComponent implements OnDestroy, OnInit {
     
       this.splashScreen.hide();
 
-      this.navController.navigateForward('/intro');
+      // this.navController.navigateForward('/intro');
     });
   }
 

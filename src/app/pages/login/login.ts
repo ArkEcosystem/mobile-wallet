@@ -9,6 +9,7 @@ import { isNil } from 'lodash';
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
+  styleUrls: ['login.scss']
 })
 export class LoginPage {
   @ViewChild('pinCode', { read: PinCodeComponent, static: true }) pinCode: PinCodeComponent;
