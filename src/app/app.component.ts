@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, Renderer2, ElementRef } from '@angular/core';
 
-import { Platform, NavController, MenuController } from '@ionic/angular';
+import { Platform, NavController, MenuController, Events } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Network } from '@ionic-native/network/ngx';
@@ -26,6 +26,7 @@ export class AppComponent implements OnDestroy, OnInit {
   private unsubscriber$: Subject<void> = new Subject<void>();
   private exitText: string;
   private signOutText: string;
+  private hideRouter = false;
 
   constructor(
     private platform: Platform,
@@ -41,7 +42,8 @@ export class AppComponent implements OnDestroy, OnInit {
     private arkApiProvider: ArkApiProvider,
     private settingsDataProvider: SettingsDataProvider,
     public element: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private events: Events
   ) {
     this.initializeApp();
   }
@@ -50,11 +52,18 @@ export class AppComponent implements OnDestroy, OnInit {
     this.platform.ready().then(() => {
       this.initTranslation();
       this.initTheme();
-      this.initMenu();
+      this.initalConfig();
     
       this.splashScreen.hide();
 
-      this.navController.navigateForward('/intro');
+      this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
+        if (!hasSeenIntro) {
+          this.openPage('/intro', true);
+          return;
+        }
+
+        this.openPage('/login', true);
+      });
     });
   }
 
@@ -81,9 +90,16 @@ export class AppComponent implements OnDestroy, OnInit {
     });
   }
 
-  initMenu() {
+  initalConfig() {
     this.statusBar.styleDefault();
     this.menuCtrl.enable(false, 'sidebar');
+    
+    this.events.subscribe('qrScanner:show', () => {
+      this.hideRouter = true;
+    });
+    this.events.subscribe('qrScanner:hide', () => {
+      this.hideRouter = false;
+    });
   }
 
   openPage(path: string, rootPage: boolean = true) {

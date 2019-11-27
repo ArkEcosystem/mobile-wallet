@@ -9,17 +9,16 @@
 
 </ion-header>
 
-<ion-content class="column-mode">
+<ion-content forceOverscroll="false" fullscreen>
   <ion-fab *ngIf="!isEmpty()" vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="primary" (click)="openCreatePage()">
       <ion-icon name="md-add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <ion-grid *ngIf="profile" class="no-padding">
-    <empty-list message="CONTACTS_PAGE.ADD_CONTACT_TEXT" (onClickButton)="openCreatePage()" *ngIf="isEmpty()"></empty-list>
-
-    <ion-row *ngIf="!isEmpty()">
+  <empty-list *ngIf="isEmpty()" message="CONTACTS_PAGE.ADD_CONTACT_TEXT" (onClickButton)="openCreatePage()"></empty-list>
+  <ion-grid *ngIf="!isEmpty()">
+    <ion-row>
       <ion-col>
         <address-list [map]="addresses" [icon]="platform.is('ios') ? 'ios-more' : 'md-more'" (onTap)="presentContactActionSheet($event)" (onPress)="presentContactActionSheet($event)" (onMore)="presentContactActionSheet($event)"></address-list>
       </ion-col>
