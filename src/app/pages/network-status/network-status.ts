@@ -13,7 +13,7 @@ import { takeUntil, debounceTime, tap } from 'rxjs/operators';
 @Component({
   selector: 'page-network-status',
   templateUrl: 'network-status.html',
-  styleUrls: ['network-status.scss'],
+  styleUrls: ['network-status.pcss'],
 })
 export class NetworkStatusPage implements OnInit, OnDestroy {
 
