@@ -1,20 +1,16 @@
-<ion-content>
+<ion-content forceOverscroll="false" class="ion-padding">
   <ion-slides class="h-full" #slider (ionSlideDidChange)="onSlideChanged()">
     <ion-slide *ngFor="let slide of slides">
-      <ion-grid class="flex flex-col h-full">
-        <ion-row class="flex-1 py-5" hideWhen="landscape">
-          <ion-col class="flex justify-center">
-            <img [class]="'slide-image ' + slide.image">
-          </ion-col>
-        </ion-row>
-        <ion-row class="flex-1">
-          <ion-col class="flex flex-col justify-center">
+      <ion-grid class="h-full flex flex-col justify-center items-center">
+        <div class="flex flex-col justify-center items-center">
+          <img [class]="'slide-image ' + slide.image">
+          <ion-text color="dark">
             <h3 class="text-xl font-semibold">{{ slide.title }}</h3>
-            <ion-text color="medium">
-              <p class="leading-normal mt-2 px-6">{{ slide.description }}</p>
-            </ion-text>
-          </ion-col>
-        </ion-row>
+          </ion-text>
+          <ion-text color="medium">
+            <p class="leading-normal mt-2 px-6">{{ slide.description }}</p>
+          </ion-text>
+        </div>
       </ion-grid>
     </ion-slide>
   </ion-slides>

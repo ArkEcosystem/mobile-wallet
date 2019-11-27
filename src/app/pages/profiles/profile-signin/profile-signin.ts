@@ -112,6 +112,7 @@ export class ProfileSigninPage implements OnDestroy {
       takeUntil(this.unsubscriber$)
     ).subscribe((status) => {
       if (status) {
+        console.log(status);
         this.navCtrl.navigateRoot('/wallets');
       } else {
         this.error();

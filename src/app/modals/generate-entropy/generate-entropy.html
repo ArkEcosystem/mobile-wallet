@@ -11,9 +11,9 @@
 
 </ion-header>
 
-<ion-content forceOverscroll fullscreen>
+<ion-content forceOverscroll="false" fullscreen class="ion-padding">
   <ion-grid class="h-full flex flex-col justify-center items-center" (pan)="panEvent($event)">
-    <div class="text-center px-5">
+    <div class="text-center">
       <img class="image">
       <p class="my-2">{{ 'WALLETS_PAGE.ENTROPY_RANDOM_BYTES' | translate }}</p>
       <progress-bar [progress]="progress"></progress-bar>
