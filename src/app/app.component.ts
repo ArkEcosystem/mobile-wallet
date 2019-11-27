@@ -20,10 +20,12 @@ import { SettingsDataProvider } from './services/settings-data/settings-data';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnDestroy, OnInit {
-  public profile = null;
-  public network = null;
+  private profile = null;
+  private network = null;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
+  private exitText: string;
+  private signOutText: string;
 
   constructor(
     private platform: Platform,
@@ -58,6 +60,15 @@ export class AppComponent implements OnDestroy, OnInit {
 
   initTranslation() {
     this.translateService.setDefaultLang('en');
+    this.settingsDataProvider.settings.subscribe(settings => {
+      this.translateService.use(settings.language);
+
+      this.translateService.get(['BACK_BUTTON_TEXT', 'EXIT_APP_TEXT', 'SIGN_OUT_PROFILE_TEXT']).subscribe(translations => {
+        // this.config.set('backButtonText', translations['BACK_BUTTON_TEXT']);
+        this.exitText = translations['EXIT_APP_TEXT'];
+        this.signOutText = translations['SIGN_OUT_PROFILE_TEXT'];
+      });
+    });
   }
 
   initTheme() {
@@ -136,6 +147,11 @@ export class AppComponent implements OnDestroy, OnInit {
     this.verifyNetwork();
 
     this.onCreateWallet();
+
+    this.settingsDataProvider.onUpdate$.subscribe(() => {
+      this.initTranslation();
+      this.initTheme();
+    });
   }
 
   ngOnDestroy() {

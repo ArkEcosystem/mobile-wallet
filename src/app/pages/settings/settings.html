@@ -17,7 +17,7 @@
       <ion-item>
         <ion-icon color="primary" name="globe" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.LANGUAGE' | translate }}</ion-label>
-        <ion-select [value]="currentSettings.language" (ionChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
+        <ion-select [(ngModel)]="currentSettings.language" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
           <ion-select-option *ngFor="let item of objectKeys(availableOptions?.languages)" [value]="item">
             {{ availableOptions?.languages[item] }}
           </ion-select-option>
@@ -27,7 +27,7 @@
       <ion-item>
         <ion-icon color="primary" name="cash" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.CURRENCY' | translate }}</ion-label>
-        <ion-select [value]="currentSettings.currency" (ionChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
+        <ion-select [(ngModel)]="currentSettings.currency" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
           <ion-select-option *ngFor="let item of objectKeys(availableOptions?.currencies)" [value]="item">
             {{ item | uppercase }}
           </ion-select-option>
@@ -36,7 +36,7 @@
       <ion-item>
         <ion-icon color="primary" name="book" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.WORDLIST_LANGUAGE' | translate }}</ion-label>
-        <ion-select [value]="currentSettings.wordlistLanguage" (ionChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
+        <ion-select [(ngModel)]="currentSettings.wordlistLanguage" (ngModelChange)="onUpdate()" cancelText="{{ 'CANCEL' | translate }}">
           <ion-select-option *ngFor="let item of objectKeys(availableOptions?.wordlistLanguages)" [value]="item">
             {{ availableOptions?.wordlistLanguages[item] }}
           </ion-select-option>
@@ -67,7 +67,7 @@
       <ion-item>
         <ion-icon color="primary" name="moon" slot="start"></ion-icon>
         <ion-label>{{ 'SETTINGS_PAGE.DARK_MODE' | translate }}</ion-label>
-        <ion-toggle [checked]="currentSettings.darkMode" (ionChange)="onUpdate()"></ion-toggle>
+        <ion-toggle [(ngModel)]="currentSettings.darkMode" (ngModelChange)="onUpdate()"></ion-toggle>
       </ion-item>
     </ion-item-group>
 

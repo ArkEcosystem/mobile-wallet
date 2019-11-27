@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CustomNetworkCreateModalModule } from '@/app/modals/custom-network-create/custom-network-create.module';
 import { CustomNetworkCreateModal } from '@/app/modals/custom-network-create/custom-network-create';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,8 @@ import { CustomNetworkCreateModal } from '@/app/modals/custom-network-create/cus
   imports: [
     IonicModule,
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forChild([{ path: '', component: SettingsPage }]),
     TranslateModule,
     PinCodeComponentModule,
