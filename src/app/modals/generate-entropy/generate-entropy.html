@@ -11,14 +11,12 @@
 
 </ion-header>
 
-<ion-content class="column-mode ion-padding ion-no-bounce">
-  <ion-grid class="ion-padding" (pan)="panEvent($event)">
-    <ion-row>
-      <ion-col class="ion-padding ion-text-center">
-        <img class="image">
-        <p class="sole-message">{{ 'WALLETS_PAGE.ENTROPY_RANDOM_BYTES' | translate }}</p>
-        <progress-bar [progress]="progress"></progress-bar>
-      </ion-col>
-    </ion-row>
+<ion-content forceOverscroll fullscreen>
+  <ion-grid class="h-full flex flex-col justify-center items-center" (pan)="panEvent($event)">
+    <div class="text-center px-5">
+      <img class="image">
+      <p class="my-2">{{ 'WALLETS_PAGE.ENTROPY_RANDOM_BYTES' | translate }}</p>
+      <progress-bar [progress]="progress"></progress-bar>
+    </div>
   </ion-grid>
 </ion-content>
