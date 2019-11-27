@@ -95,7 +95,6 @@ export class SettingsDataProvider {
     for (const prop in options) {
       this._settings[prop] = settings[prop];
     }
-
     if (options) { this.onUpdate$.next(this._settings); }
     return this._storageProvider.set(constants.STORAGE_SETTINGS, this._settings);
   }
