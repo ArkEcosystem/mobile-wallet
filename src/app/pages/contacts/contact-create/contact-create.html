@@ -1,12 +1,15 @@
 <ion-header no-shadow no-border>
 
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>{{ 'CONTACTS_PAGE.CONTACT' | translate }}</ion-title>
   </ion-toolbar>
 
 </ion-header>
 
-<ion-content class="ion-padding" #content>
+<ion-content class="ion-padding">
   <form #createContactForm="ngForm">
     <ion-item>
       <ion-label position="floating">{{ 'NAME' | translate }}</ion-label>
@@ -16,15 +19,15 @@
     <ion-item class="item-address">
       <ion-label position="floating">{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
       <ion-input type="text" name="address" [(ngModel)]="address" [disabled]="!isNew" (keyup)="validateAddress()" required></ion-input>
-      <div class="qr-container" item-right *ngIf="isNew">
+      <div class="qr-container" slot="end" *ngIf="isNew">
         <img class="image" tappable (tap)="scanQRCode()" />
       </div>
     </ion-item>
   </form>
 </ion-content>
 
-<ion-footer class="ion-padding" no-shadow no-border>
-  <ion-button class="button-continue" [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'SAVE' | translate }}</ion-button>
+<ion-footer class="ion-padding text-center" no-shadow no-border>
+  <ion-button [disabled]="!createContactForm.form.valid" (click)="submitForm()">{{ 'SAVE' | translate }}</ion-button>
 </ion-footer>
 
 <qr-scanner (onSuccess)="onScanQRCode($event)" #qrScanner></qr-scanner>
