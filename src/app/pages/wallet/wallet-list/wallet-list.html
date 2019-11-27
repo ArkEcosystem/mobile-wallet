@@ -9,17 +9,16 @@
 
 </ion-header>
 
-<ion-content #content class="column-mode-simple ion-no-padding" [ngClass]="{delegate: selectedWallet?.isDelegate, normal: selectedWallet?.isDelegate == false}"  no-bounce>
+<ion-content forceOverscroll="false" fullscreen #content [ngClass]="{delegate: selectedWallet?.isDelegate, normal: selectedWallet?.isDelegate == false}">
   <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="wallets?.length > 0">
     <ion-fab-button (click)="presentActionSheet()">
       <ion-icon name="md-add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <ion-grid class="h-full p-0">
-    <empty-list message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="presentActionSheet()" *ngIf="wallets?.length === 0"></empty-list>
-
-    <ion-row class="total-balance-container" *ngIf="wallets?.length > 0">
+  <empty-list *ngIf="wallets?.length === 0" message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="presentActionSheet()"></empty-list>
+  <ion-grid *ngIf="wallets?.length > 0">
+    <ion-row class="total-balance-container">
       <ion-col>
         <p>{{ 'WALLETS_PAGE.TOTAL_BALANCE' | translate }}</p>
         <h2 class="amount">

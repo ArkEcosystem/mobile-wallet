@@ -10,8 +10,6 @@ export class EmptyListComponent {
   @Input() message: string;
   @Output() onClickButton = new EventEmitter();
 
-  @HostBinding('class') classes = 'full-height';
-
   constructor() {}
 
   submit() {

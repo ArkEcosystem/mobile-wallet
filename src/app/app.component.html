@@ -1,7 +1,7 @@
 <ion-app>
-  <ion-menu type="overlay" contentId="main" menuId="sidebar" id="sidebar">
-    <ion-header no-border no-shadow>
-      <div class="p-8">
+  <ion-menu type="overlay" contentId="main" menuId="sidebar" id="sidebar">  
+    <ion-content>
+      <div class="p-8 my-4">
         <img src="/assets/img/logo-no-shadow.png" width="70" height="70">
         <ion-text color="dark">
           <h4 class="text-xl font-semibold mt-4 whitespace-normal">{{ profile?.name }}</h4>
@@ -10,9 +10,7 @@
           <p>{{ network?.name }}</p>
         </ion-text>
       </div>
-    </ion-header>
-  
-    <ion-content>
+
       <ion-list inset lines="none">
         <ion-item detail (click)="openPage('/wallets')">
           <ion-icon name="wallet" slot="start"></ion-icon>
