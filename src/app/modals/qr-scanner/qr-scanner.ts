@@ -1,11 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ModalController, Events } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 import { QRScanner, QRScannerStatus } from '@ionic-native/qr-scanner/ngx';
 
 import { ToastProvider } from '@/services/toast/toast';
 import { Vibration } from '@ionic-native/vibration/ngx';
 
 import * as constants from '@/app/app.constants';
+import { EventBusProvider } from '@/services/event-bus/event-bus';
 
 @Component({
   selector: 'modal-qr-scanner',
@@ -18,7 +19,7 @@ export class QRScannerModal implements OnDestroy {
   private ionApp: HTMLElement;
 
   constructor(
-    private events: Events,
+    private eventBus: EventBusProvider,
     private qrScanner: QRScanner,
     private toastProvider: ToastProvider,
     private modalCtrl: ModalController,
@@ -66,12 +67,12 @@ export class QRScannerModal implements OnDestroy {
 
   private showCamera() {
     this.qrScanner.show();
-    this.events.publish('qrScanner:show');
+    this.eventBus.emit('qrScanner:show');
   }
 
   private hideCamera() {
     this.qrScanner.hide();
-    this.events.publish('qrScanner:hide');
+    this.eventBus.emit('qrScanner:hide');
   }
 
   private dismiss(qrCode: object = null) {

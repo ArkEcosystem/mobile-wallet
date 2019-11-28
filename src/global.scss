@@ -24,6 +24,15 @@
 
 @import "../node_modules/ionic4-auto-complete/auto-complete.scss";
 
+ion-grid {
+  --ion-grid-padding: 0;
+}
+
 ion-toolbar * {
   box-sizing: border-box;
+}
+
+.note-toolbar {
+  padding: 1em;
+  background-color: rgba(var(--ion-color-warning-rgb), .5);
 }

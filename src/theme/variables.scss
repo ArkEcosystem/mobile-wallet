@@ -1,15 +1,9 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
-.list-inset ion-item:first-child,
-.list-ios.list-inset ion-item {
-  --border-width: 0 0 0 0;
-}
 
 /** Ionic CSS Variables **/
 :root {
-  --ion-grid-padding: 0;
-
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;

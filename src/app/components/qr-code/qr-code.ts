@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
 
 import * as constants from '@/app/app.constants';
 
 @Component({
   selector: 'ark-qr-code',
-  templateUrl: 'qr-code.html'
+  templateUrl: 'qr-code.html',
+  styleUrls: ['qr-code.scss']
 })
 export class QRCodeComponent implements OnChanges {
   @Input() address: string;
@@ -12,6 +13,7 @@ export class QRCodeComponent implements OnChanges {
   @Input() amount: number;
   @Input() label: string;
   @Input() vendorField: string;
+  @Input() wrapper: boolean;
 
   public value: string;
 
