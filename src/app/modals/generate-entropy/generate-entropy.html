@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header no-shadow no-border collapse="condense">
 
   <ion-toolbar>
     <ion-title>{{ 'WALLETS_PAGE.GENERATE_ENTROPY' | translate }}</ion-title>
@@ -16,7 +16,9 @@
     <div class="text-center">
       <img class="image">
       <p class="my-2">{{ 'WALLETS_PAGE.ENTROPY_RANDOM_BYTES' | translate }}</p>
-      <progress-bar [progress]="progress"></progress-bar>
+      <div class="p-2">
+        <progress-bar [progress]="progress"></progress-bar>
+      </div>
     </div>
   </ion-grid>
 </ion-content>
