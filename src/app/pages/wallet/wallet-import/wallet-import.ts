@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NavController, ModalController, NavParams } from '@ionic/angular';
 import { QRCodeScheme } from '@/models/model';
 import { UserDataProvider } from '@/services/user-data/user-data';
@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: 'wallet-import.html',
   styleUrls: ['wallet-import.scss']
 })
-export class WalletImportPage extends BaseWalletImport {
+export class WalletImportPage extends BaseWalletImport implements OnInit {
   @ViewChild('qrScanner', { read: QRScannerComponent, static: true })
   qrScanner: QRScannerComponent;
 
@@ -27,9 +27,13 @@ export class WalletImportPage extends BaseWalletImport {
     toastProvider: ToastProvider,
     modalCtrl: ModalController,
     networkProvider: NetworkProvider,
-    settingsDataProvider: SettingsDataProvider
+    settingsDataProvider: SettingsDataProvider,
   ) {
     super(route, navCtrl, userDataProvider, arkApiProvider, toastProvider, modalCtrl, networkProvider, settingsDataProvider);
+  }
+
+  ngOnInit() {
+    this.scanQRCode();
   }
 
   openManualImportPage(type: string) {

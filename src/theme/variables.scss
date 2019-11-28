@@ -4,6 +4,9 @@
 
 /** Ionic CSS Variables **/
 :root {
+  --wallet-normal-gradient-rgb: 217, 199, 201;
+  --wallet-delegate-gradient-rgb: 210, 219, 242;
+
   /** primary **/
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -78,6 +81,9 @@
 }
 
 .dark-theme {
+  --wallet-normal-gradient-rgb: 96, 65, 69;
+  --wallet-delegate-gradient-rgb: 44, 75, 153;
+
   --ion-color-primary: #428cff;
   --ion-color-primary-rgb: 66,140,255;
   --ion-color-primary-contrast: #ffffff;

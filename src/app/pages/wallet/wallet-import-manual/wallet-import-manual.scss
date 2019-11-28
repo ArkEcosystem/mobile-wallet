@@ -1,17 +1,15 @@
-page-wallet-import-passphrase {
+:host {
   .image {
     display: block;
     max-height: 100%;
     max-width: 90%;
-    margin: 2em auto;
+    margin: 3em auto;
     content: url('/assets/img/light/wallet/import-wallet.png');
   }
 }
 
-.dark-theme {
-  page-wallet-import-passphrase {
-    .image {
-      content: url('/assets/img/dark/wallet/import-wallet.png');
-    }
+:host-context(.dark-theme) {
+  .image {
+    content: url('/assets/img/dark/wallet/import-wallet.png');
   }
 }

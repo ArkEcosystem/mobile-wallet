@@ -47,6 +47,10 @@ export class WalletListPage implements OnDestroy {
   public fiatCurrency: MarketCurrency;
   public marketTicker: MarketTicker;
 
+  public slideOptions = {
+    speed: 100,
+    spaceBetween: -75
+  };
   public chartOptions: any;
   public chartLabels: any;
   public chartData: any;
@@ -95,23 +99,39 @@ export class WalletListPage implements OnDestroy {
   presentActionSheet() {
     this.translateService.get([
       'GENERATE',
-      'IMPORT',
+      'WALLETS_PAGE.SCAN_QRCODE',
+      'IMPORT_PASSPHRASE',
+      'IMPORT_ADDRESS'
     ]).subscribe(async (translation) => {
       const actionSheet = await this.actionSheetCtrl.create({
         buttons: [
           {
             text: translation.GENERATE,
             role: 'generate',
-            icon: this.platform.is('ios') ? 'ios-card-outline' : 'md-card',
+            icon: 'card',
             handler: () => {
               this.presentWalletGenerate();
             }
           }, {
-            text: translation.IMPORT,
-            role: 'import',
-            icon: this.platform.is('ios') ? 'ios-cloud-upload-outline' : 'md-cloud-upload',
+            text: translation['WALLETS_PAGE.SCAN_QRCODE'],
+            role: 'qrcode',
+            icon: 'qr-scanner',
             handler: () => {
-              this.presentWalletImport();
+              this.presentWalletImport('qrcode')
+            }
+          }, {
+            text: translation.IMPORT_PASSPHRASE,
+            role: 'passphrase',
+            icon: 'lock',
+            handler: () => {
+              this.presentWalletImport('passphrase');
+            }
+          }, {
+            text: translation.IMPORT_ADDRESS,
+            role: 'address',
+            icon: 'globe',
+            handler: () => {
+              this.presentWalletImport('address');
             }
           }
         ]
@@ -150,8 +170,16 @@ export class WalletListPage implements OnDestroy {
     modal.present();
   }
 
-  private presentWalletImport() {
-    this.navCtrl.navigateForward('/wallets/import');
+  private presentWalletImport(role: string) {
+    if (role === 'qrcode') {
+      this.navCtrl.navigateForward('/wallets/import');
+    } else {
+      this.navCtrl.navigateForward('/wallets/import-manual', {
+        queryParams: {
+          type: role
+        }
+      });
+    }
   }
 
   private async storeWallet(account) {

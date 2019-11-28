@@ -17,7 +17,7 @@ export abstract class BaseWalletImport {
   protected wordlistLanguage: string;
 
   constructor(
-    route: ActivatedRoute,
+    protected route: ActivatedRoute,
     protected navCtrl: NavController,
     private userDataProvider: UserDataProvider,
     private arkApiProvider: ArkApiProvider,

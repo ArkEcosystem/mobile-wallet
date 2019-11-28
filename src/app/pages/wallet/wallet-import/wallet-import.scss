@@ -16,10 +16,8 @@
   }
 }
 
-.dark-theme {
-  page-wallet-import {
-    .image {
-      content: url('/assets/img/dark/wallet/qr-code.png');
-    }
+:host-context(.dark-theme) {
+  .image {
+    content: url('/assets/img/dark/wallet/qr-code.png');
   }
 }

@@ -90,6 +90,8 @@
   "GENERAL": "General",
   "GENERATE": "Generate",
   "IMPORT": "Import",
+  "IMPORT_ADDRESS": "Import Address",
+  "IMPORT_PASSPHRASE": "Import Passphrase",
   "INTRO_PAGE": {
     "FAST_EASY": "Fast and Easy",
     "GET_STARTED": "Get Started",
@@ -311,7 +313,7 @@
     "REMOVE_WALLET_TEXT": "Your wallet will be removed. Make sure you have backed up, you will need the original passphrase to restore.",
     "REMOVE_WATCH_ONLY_WALLET_TEXT": "The wallet will be removed and you will not be able to watch it anymore.",
     "SCAN_QRCODE": "Scan QR Code",
-    "SCAN_QRCODE_TEXT": "Import your address or passphrase using QR Code, just point and scan!",
+    "SCAN_QRCODE_TEXT": "Import your wallet using QR Code, just point and scan!",
     "SECOND_BIP38_SEED": "Second BIP38 Seed",
     "SECOND_PASSPHRASE": "Second Passphrase",
     "SECOND_WIF": "Second WIF",
