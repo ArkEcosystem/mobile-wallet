@@ -19,10 +19,10 @@ import { takeUntil, tap } from 'rxjs/operators';
 @Component({
   selector: 'page-delegates',
   templateUrl: 'delegates.html',
-  styleUrls: ['delegates.scss']
+  styleUrls: ['delegates.pcss']
 })
 export class DelegatesPage implements OnDestroy {
-  @ViewChild('delegateSlider', { read: IonSlides, static: true })
+  @ViewChild('delegateSlider', { read: IonSlides, static: false })
   slider: IonSlides;
 
   @ViewChild('pinCode', { read: PinCodeComponent, static: true })
@@ -31,7 +31,7 @@ export class DelegatesPage implements OnDestroy {
   @ViewChild('confirmTransaction', { read: ConfirmTransactionComponent, static: true })
   confirmTransaction: ConfirmTransactionComponent;
 
-  @ViewChild('searchbar', { read: IonSearchbar, static: true })
+  @ViewChild('searchbar', { read: IonSearchbar, static: false })
   searchbar: IonSearchbar;
 
   public isSearch = false;
@@ -40,6 +40,7 @@ export class DelegatesPage implements OnDestroy {
   public delegates: Delegate[];
   public activeDelegates: Delegate[];
   public standByDelegates: Delegate[];
+  public allDelegates: [Delegate[], Delegate[]];
 
   public supply = 0;
   public preMined: number = constants.BLOCKCHAIN_PREMINED;
@@ -68,7 +69,7 @@ export class DelegatesPage implements OnDestroy {
     private modalCtrl: ModalController,
     private userDataProvider: UserDataProvider,
     private toastProvider: ToastProvider,
-  ) { }
+  ) {}
 
   async openDetailModal(delegate: Delegate) {
     const modal = await this.modalCtrl.create({
@@ -103,8 +104,10 @@ export class DelegatesPage implements OnDestroy {
     }
   }
 
-  onSlideChanged(slider) {
-    this.rankStatus = this.slides[slider.realIndex];
+  onSlideChanged() {
+    this.slider.getActiveIndex().then(index => {
+      this.rankStatus = this.slides[index];
+    })
   }
 
   onSegmentChange() {
@@ -178,6 +181,7 @@ export class DelegatesPage implements OnDestroy {
         this.delegates = data;
         this.activeDelegates = this.delegates.slice(0, this.currentNetwork.activeDelegates);
         this.standByDelegates = this.delegates.slice(this.currentNetwork.activeDelegates, this.delegates.length);
+        this.allDelegates = [this.activeDelegates, this.standByDelegates];
       }));
     });
 

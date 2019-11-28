@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, Renderer2, ElementRef } from '@angular/core';
 
-import { Platform, NavController, MenuController, Events } from '@ionic/angular';
+import { Platform, NavController, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Network } from '@ionic-native/network/ngx';
@@ -13,6 +13,7 @@ import { UserDataProvider } from '@/services/user-data/user-data';
 import { Wallet } from '@/models/model';
 import { ArkApiProvider } from './services/ark-api/ark-api';
 import { SettingsDataProvider } from './services/settings-data/settings-data';
+import { EventBusProvider } from './services/event-bus/event-bus';
 
 @Component({
   selector: 'app-root',
@@ -43,7 +44,7 @@ export class AppComponent implements OnDestroy, OnInit {
     private settingsDataProvider: SettingsDataProvider,
     public element: ElementRef,
     private renderer: Renderer2,
-    private events: Events
+    private eventBus: EventBusProvider,
   ) {
     this.initializeApp();
   }
@@ -94,11 +95,15 @@ export class AppComponent implements OnDestroy, OnInit {
     this.statusBar.styleDefault();
     this.menuCtrl.enable(false, 'sidebar');
     
-    this.events.subscribe('qrScanner:show', () => {
-      this.hideRouter = true;
-    });
-    this.events.subscribe('qrScanner:hide', () => {
-      this.hideRouter = false;
+    this.eventBus.$subject.subscribe((event) => {
+      switch (event.key) {
+        case 'qrScanner:show':
+          this.hideRouter = true;
+          break;
+        case 'qrScanner:hide':
+          this.hideRouter = false;
+          break;
+      }
     });
   }
 

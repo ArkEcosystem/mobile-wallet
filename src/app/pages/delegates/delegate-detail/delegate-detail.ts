@@ -15,7 +15,7 @@ import { ToastProvider } from '@/services/toast/toast';
 @Component({
   selector: 'page-delegate-detail',
   templateUrl: 'delegate-detail.html',
-  styleUrls: ['delegate-detail.scss'],
+  styleUrls: ['delegate-detail.pcss'],
   providers: [Clipboard],
 })
 export class DelegateDetailPage {

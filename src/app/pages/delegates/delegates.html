@@ -17,7 +17,7 @@
   </ion-toolbar>
 
   <ion-toolbar>
-    <ion-segment [(ngModel)]="rankStatus" (ionChange)="onSegmentChange()" [color]="platform.is('ios') ? 'primary' : 'danger'">
+    <ion-segment class="py-2" [(ngModel)]="rankStatus" (ionChange)="onSegmentChange()" [color]="platform.is('ios') ? 'primary' : 'danger'">
       <ion-segment-button value="active">
         {{ 'DELEGATES_PAGE.ACTIVE' | translate }}
       </ion-segment-button>
@@ -31,36 +31,30 @@
 
 <ion-content tappable>
   <ion-slides #delegateSlider (ionSlideDidChange)="onSlideChanged($event)" *ngIf="delegates">
-    <ion-slide class="delegate-list">
-      <ion-list>
-        <ng-template ngFor let-delegate [ngForOf]="activeDelegates">
-          <ion-item no-lines detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngIf="delegate.username.indexOf(searchQuery.toLowerCase()) > -1" class="delegate-item custom-arrow">
-            <ion-grid>
-              <ion-row>
-                <ion-col col-2 class="ion-text-center"><span class="rate">{{ delegate?.rate }}</span></ion-col>
-                <ion-col col-8>
-                  <span class="username">{{ delegate?.username }}</span>
-                  <ion-badge *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTED' | translate | lowercase }}</ion-badge>
+    <ion-slide *ngFor="let delegates of allDelegates">
+      <ion-list inset class="delegate-list">
+        <ng-template ngFor let-delegate [ngForOf]="delegates">
+          <ion-item class="delegate-item" detail (click)="openDetailModal(delegate)" tappable *ngIf="delegate.username.indexOf(searchQuery.toLowerCase()) > -1">
+            <ion-grid class="py-4 pr-1">
+              <ion-row class="flex-no-wrap">
+                <ion-col size="2" class="text-center">
+                  <ion-text color="medium" class="text-sm">
+                    {{ delegate?.rate }}
+                  </ion-text>
                 </ion-col>
-                <ion-col col-2 class="ion-text-center"><span class="percentage">{{ (delegate?.approval).toFixed(2) }}%</span></ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-        </ng-template>
-      </ion-list>
-    </ion-slide>
-    <ion-slide class="delegate-list">
-      <ion-list>
-        <ng-template ngFor let-delegate [ngForOf]="standByDelegates">
-          <ion-item no-lines detail-push (click)="openDetailModal(delegate)" tappable nowrap text-left *ngIf="delegate.username.indexOf(searchQuery.toLowerCase()) > -1" class="delegate-item custom-arrow">
-            <ion-grid>
-              <ion-row>
-                <ion-col col-2 text-center><span class="rate">{{ delegate?.rate }}</span></ion-col>
-                <ion-col col-8>
-                  <span class="username">{{ delegate?.username }}</span>
-                  <ion-badge item-end *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">{{ 'DELEGATES_PAGE.VOTED' | translate | lowercase }}</ion-badge>
+                <ion-col size="7" class="truncate">
+                  <span>
+                    {{ delegate?.username }}
+                  </span>
+                  <ion-badge *ngIf="isSameDelegate(delegate?.publicKey)" color="danger">
+                    {{ 'DELEGATES_PAGE.VOTED' | translate | lowercase }}
+                  </ion-badge>
                 </ion-col>
-                <ion-col col-2 text-center><span class="percentage">{{ (delegate?.approval).toFixed(2) }}%</span></ion-col>
+                <ion-col size="2" class="text-center truncate">
+                  <span class="text-sm font-semibold">
+                    {{ (delegate?.approval).toFixed(2) }}%
+                  </span>
+                </ion-col>
               </ion-row>
             </ion-grid>
           </ion-item>
