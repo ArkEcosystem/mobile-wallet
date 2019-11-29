@@ -1,28 +1,27 @@
 <ion-header no-shadow no-border [ngClass]="{'delegate-wallet': wallet?.isDelegate, 'default-wallet': wallet ? !wallet.isDelegate : false}">
 
-  <ion-toolbar no-border-bottom no-shadow hideBackButton="true" color="primary" class="transparent-navbar">
+  <ion-toolbar no-border-bottom no-shadow>
     <ion-menu-button slot="start"></ion-menu-button>
     <ion-title>{{ wallet?.username || wallet?.label || ('WALLETS_PAGE.MY_WALLET' | translate) }}</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="presentWalletActionSheet()">
-        <ion-icon slot="icon-only" [name]="platform.is('ios') ? 'ios-more' : 'md-more'"></ion-icon>
+        <ion-icon slot="icon-only" name="more"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+
   <ion-toolbar no-border-top>
     <ion-grid>
-      <ion-row class="account-balance">
-        <ion-col class="ion-text-center">
-          <h1>{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-8' }}</h1>
-          <h4 appMarketNetOnly>{{ marketCurrency?.symbol }}{{ wallet?.getBalanceEquivalent(marketCurrency) | marketNumber }}</h4>
-          <p (click)="copyAddress()" tappable class="toolbar-address">
-            <ion-icon [name]="platform.is('ios') ? 'ios-copy-outline' : 'md-copy'" item-start></ion-icon>
-            {{ wallet?.address }}
-          </p>
-          <ion-badge class="watch-only-badge" [color]="wallet?.isDelegate ? 'primary' : 'danger-alternative'" *ngIf="wallet?.isWatchOnly">
-            {{ 'WATCH_ONLY' | translate }}
-          </ion-badge>
-        </ion-col>
+      <ion-row class="stats-toolbar mt-2 mb-4 flex flex-col justify-center items-center">
+        <h1 class="text-2xl font-bold my-2">{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-8' }}</h1>
+        <h4 class="text-lg font-semibold" appMarketNetOnly>{{ marketCurrency?.symbol }}{{ (wallet?.getBalanceEquivalent(marketCurrency) | marketNumber) || 0 }}</h4>
+        <p (click)="copyAddress()" tappable class="toolbar-address flex items-center mt-3 opacity-75">
+          <ion-icon name="copy" class="mr-1"></ion-icon>
+          {{ wallet?.address }}
+        </p>
+        <ion-badge class="watch-only-badge" color="medium" *ngIf="wallet?.isWatchOnly">
+          {{ 'WATCH_ONLY' | translate }}
+        </ion-badge>
       </ion-row>
     </ion-grid>
   </ion-toolbar>
@@ -38,17 +37,17 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-fab vertical="bottom" horizontal="end" edge>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="primary" (click)="presentAddActionSheet()">
       <ion-icon  [name]="platform.is('ios') ? 'ios-add' : 'md-add'"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
-  <ion-grid class="main-grid full-height">
-    <ion-row class="ion-justify-content-center ion-align-items-center full-height" *ngIf="emptyTransactions">
-      <ion-col class="ion-text-center">
-        <h5>{{ 'WALLETS_PAGE.NO_TRANSACTIONS' | translate }}</h5>
-      </ion-col>
+  <ion-grid class="h-full">
+    <ion-row class="h-full flex items-center justify-center" *ngIf="emptyTransactions">
+      <ion-text color="dark">
+        <h5 class="text-lg font-semibold">{{ 'WALLETS_PAGE.NO_TRANSACTIONS' | translate }}</h5>
+      </ion-text>
     </ion-row>
 
     <ion-row *ngIf="!emptyTransactions">
