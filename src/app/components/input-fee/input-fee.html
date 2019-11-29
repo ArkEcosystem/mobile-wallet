@@ -1,13 +1,13 @@
 <ion-grid class="input-fee" [ngClass]="{'input-fee--warning': !!warningMessage, 'input-fee--danger': !!errorMessage}">
-  <ion-row class="input-fee__wrapper">
+  <ion-row class="input-fee__wrapper flex flex-col">
     <ion-label position="stacked" class="input-fee__label" color="">Fee</ion-label>
-    <ion-item no-lines class="input-fee__input">
+    <ion-item class="input-fee__input">
       <ion-label>{{ symbol }}</ion-label>
       <ion-input [(ngModel)]="inputFee" name="fee-input" [step]="step" [min]="min" [max]="max"
         (ionChange)="onInputText()" type="string">
       </ion-input>
     </ion-item>
-    <ion-item no-lines class="input-fee__range">
+    <ion-item lines="none" class="input-fee__range">
       <ion-range [(ngModel)]="rangeFee" name="fee-range" [step]="step" [min]="min" [max]="max"
         (ionChange)="onInputRange()">
       </ion-range>
@@ -27,8 +27,8 @@
     INPUT_FEE.STATIC_FEE
   </ion-label>
 
-  <ion-grid fixed class="button-group no-padding">
-    <ion-row nowrap class="no-padding">
+  <ion-grid>
+    <ion-row nowrap class="p-0">
       <ion-col>
         <ion-button expand="block" [fill]="min !== rangeFee ? 'outline' : 'solid'" color="primary" (click)="setRangeFee(min)">
           {{ 'INPUT_FEE.MIN' | translate }}
