@@ -38,9 +38,10 @@ export class ProfileCreatePage implements OnDestroy {
     private translateService: TranslateService
   ) { }
 
-  onSelectNetwork(networkChoice: {name: string, id?: string}) {
-    this.activeNetworkChoice = networkChoice;
-    this.newProfile.networkId = networkChoice.id;
+  onSelectNetwork(event: any) {
+    const detail = event.detail.value;
+    this.activeNetworkChoice = detail;
+    this.newProfile.networkId = detail.id;
   }
 
   submitForm() {

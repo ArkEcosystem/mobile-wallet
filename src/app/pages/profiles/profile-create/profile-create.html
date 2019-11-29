@@ -9,62 +9,53 @@
 
 </ion-header>
 
-<ion-content class="ion-padding full-height" #content>
-  <form #createProfileForm="ngForm" class="full-height">
-    <ion-grid class="full-height">
-      <ion-row class="create-field">
-        <ion-col>
-          <ion-item>
+<ion-content>
+  <form #createProfileForm="ngForm" class="h-full">
+    <ion-grid class="h-full">
+      <ion-row class="px-6 mt-4">
+        <ion-col class="p-0">
+          <ion-item class="p-0">
             <ion-label position="floating">{{ 'NAME' | translate }}</ion-label>
             <ion-input type="text" name="name" [(ngModel)]="newProfile.name" required></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col class="no-padding">
-          <ion-toolbar (click)="toggleAdvanced()" class="advanced-toolbar">
+
+      <ion-row class="mt-6">
+        <ion-col class="p-0">
+          <ion-toolbar color="light" (click)="toggleAdvanced()">
             {{ 'SHOW_ADVANCED' | translate }}
-            <ion-buttons slots="end">
-              <ion-button fill="clear">
+            <ion-buttons slot="end">
+              <ion-button color="primary" fill="clear">
                 <ion-icon [name]="showAdvancedOptions ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
               </ion-button>
             </ion-buttons>
           </ion-toolbar>
         </ion-col>
       </ion-row>
-      <ion-row class="create-field" *ngIf="showAdvancedOptions">
-        <ion-row>
-          <ion-item class="network-types" no-lines>
-            <span>{{ 'NETWORKS_PAGE.NETWORK_TYPE' | translate }}</span>
-            <p>{{ 'NETWORKS_PAGE.CHOOSE_ONE' | translate }}.</p>
+
+      <ion-row class="px-6 mt-2" *ngIf="showAdvancedOptions">
+        <ion-list lines="full" inset class="w-full">
+          <ion-item>
+            <ion-label>{{ 'NETWORKS_PAGE.NETWORK_TYPE' | translate }}</ion-label>
+            <ion-select (ionChange)="onSelectNetwork($event)">
+              <ion-select-option *ngFor="let networkChoice of networkChoices" [value]="networkChoice" [selected]="networkChoice.id === activeNetworkChoice.id">
+                <span class="capitalize">{{ networkChoice.name }}</span>
+              </ion-select-option>
+            </ion-select>
           </ion-item>
-          <ion-grid fixed class="button-group">
-            <ion-row nowrap>
-              <ion-col *ngFor="let networkChoice of networkChoices">
-                <ion-button expand="block"
-                        [fill]="networkChoice !== activeNetworkChoice ? 'outline' : 'solid'"
-                        (click)="onSelectNetwork(networkChoice)"
-                        color="primary">
-                  {{ networkChoice.name }}
-                </ion-button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-row>
+        </ion-list>
+
         <ion-row *ngIf="activeNetworkChoice && !activeNetworkChoice.id">
-            <ion-item lines="none">
-              <customNetwork (onNetworkChange)="onCustomNetworkChange($event)"></customNetwork>
-            </ion-item>
+          <customNetwork (onNetworkChange)="onCustomNetworkChange($event)"></customNetwork>
         </ion-row>
-      </ion-row>
-      <ion-row class="layout-flex">
-        <ion-col class="ion-align-self-end">
-        </ion-col>
       </ion-row>
     </ion-grid>
   </form>
 </ion-content>
 
-<ion-footer padding no-shadow no-border>
-  <ion-button class="button-continue" [disabled]="!createProfileForm.form.valid || !newProfile.networkId" (click)="submitForm()">{{ 'NEXT' | translate }}</ion-button>
+<ion-footer class="text-center py-3" no-shadow no-border>
+  <ion-button [disabled]="!createProfileForm.form.valid || !newProfile.networkId" (click)="submitForm()">
+    {{ 'NEXT' | translate }}
+  </ion-button>
 </ion-footer>

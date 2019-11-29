@@ -9,10 +9,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" #content>
+<ion-content forceOverscroll="false" class="ion-padding">
   <form #createForm="ngForm">
-    <ion-grid fixed>
-      <ion-row nowrap>
+    <ion-grid>
+      <ion-row>
         <ion-col>
           <ion-item>
             <ion-label position="stacked">{{ 'CUSTOM_NETWORK.NAME' | translate }}</ion-label>
@@ -24,7 +24,8 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row nowrap>
+  
+      <ion-row>
         <ion-col>
           <ion-item>
             <ion-label position="stacked">{{ 'CUSTOM_NETWORK.SEED_SERVER' | translate }}</ion-label>
@@ -41,7 +42,7 @@
   </form>
 </ion-content>
 
-<ion-footer class="ion-padding ion-text-center" no-shadow no-border>
+<ion-footer class="py-3 text-center" no-shadow no-border>
   <ion-button
           [disabled]="!createForm.valid || !getSeedServerUrl()"
           (click)="configure()">

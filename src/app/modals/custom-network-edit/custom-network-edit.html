@@ -9,9 +9,9 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" #content>
+<ion-content forceOverscroll="false" class="ion-padding">
   <form #manageForm="ngForm">
-    <ion-grid fixed>
+    <ion-grid>
       <ion-row nowrap>
         <ion-col>
           <ion-item>
@@ -138,9 +138,9 @@
   </form>
 </ion-content>
 
-<ion-footer no-border no-shadow>
+<ion-footer class="py-1" no-border no-shadow>
   <ion-grid>
-    <ion-row class="ion-align-items-center">
+    <ion-row class="text-center">
       <ion-col>
         <ion-button
                 class="button-continue"
@@ -150,9 +150,7 @@
         </ion-button>
       </ion-col>
       <ion-col *ngIf="networkId">
-        <ion-button
-                class="button-continue"
-                (click)="prepareDelete()">
+        <ion-button (click)="prepareDelete()">
           {{ 'DELETE' | translate }}
         </ion-button>
       </ion-col>

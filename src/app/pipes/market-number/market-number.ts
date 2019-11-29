@@ -8,7 +8,7 @@ import { UserSettings } from '@/models/settings';
 import { tap, finalize, takeUntil } from 'rxjs/operators';
 
 @Pipe({
-  name: 'marketNumber',
+  name: 'marketNumber'
 })
 export class MarketNumberPipe implements PipeTransform, OnDestroy {
   private marketCurrency: MarketCurrency;
