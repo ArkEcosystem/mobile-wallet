@@ -1,13 +1,14 @@
-<ion-grid fixed>
-  <ion-row text-wrap *ngIf="networkChoices && networkChoices.length > 0">
-    <ion-col >
-      <ion-item>
-        {{ 'CUSTOM_NETWORK.CHOOSE_EXISTING' | translate}}
-      </ion-item>
+<ion-grid>
+  <ion-row *ngIf="networkChoices && networkChoices.length > 0">
+    <ion-col class="text-center">
+      <ion-text color="dark">
+        <p>{{ 'CUSTOM_NETWORK.CHOOSE_EXISTING' | translate}}</p>
+      </ion-text>
     </ion-col>
   </ion-row>
+
   <ion-row *ngIf="networkChoices && networkChoices.length > 0">
-    <ion-col >
+    <ion-col>
       <ion-item>
         <ion-label>{{ 'CUSTOM_NETWORK.CUSTOM_NETWORK' | translate}}</ion-label>
         <ion-select [value]="activeNetworkChoice" (ionChange)="onActiveNetworkChange()">
@@ -16,27 +17,28 @@
       </ion-item>
     </ion-col>
   </ion-row>
-  <ion-row text-wrap *ngIf="networkChoices && networkChoices.length > 0">
-    <ion-col>
-      <ion-item>
-        {{ 'CUSTOM_NETWORK.OR_CREATE_NEW' | translate}}
-      </ion-item>
+
+  <ion-row *ngIf="networkChoices && networkChoices.length > 0">
+    <ion-col class="text-center">
+      <ion-text color="dark">
+        <p>{{ 'CUSTOM_NETWORK.OR_CREATE_NEW' | translate}}</p>
+      </ion-text>
     </ion-col>
   </ion-row>
-  <ion-row text-wrap *ngIf="!networkChoices || networkChoices.length == 0">
-    <ion-col>
-      <ion-item>
-        {{ 'CUSTOM_NETWORK.NO_NETWORK_CONFIGURED' | translate}}
-      </ion-item>
+
+  <ion-row *ngIf="!networkChoices || networkChoices.length == 0">
+    <ion-col class="text-center">
+      <ion-text color="dark">
+        <p>{{ 'CUSTOM_NETWORK.NO_NETWORK_CONFIGURED' | translate}}</p>
+      </ion-text>
     </ion-col>
   </ion-row>
-  <ion-row text-wrap>
-    <ion-col>
-        <ion-button
-                class="button-continue"
-                (click)="createNewModal()">
-          {{ 'CUSTOM_NETWORK.CREATE_NEW' | translate}}
-        </ion-button>
+
+  <ion-row>
+    <ion-col class="text-center">
+      <ion-button fill="outline" (click)="createNewModal()">
+        {{ 'CUSTOM_NETWORK.CREATE_NEW' | translate}}
+      </ion-button>
     </ion-col>
   </ion-row>
 </ion-grid>

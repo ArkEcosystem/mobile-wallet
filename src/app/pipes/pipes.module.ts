@@ -9,6 +9,7 @@ import { TranslateCutPipe } from './../pipes/translate-cut/translate-cut';
 import { TimestampHumanPipe } from './timestamp-human/timestamp-human';
 import { TimezonePipe } from './timezone/timezone';
 import { SecondsToTimePipe } from './seconds-to-time/seconds-to-time';
+import { MarketDataProvider } from '@/services/market-data/market-data';
 
 @NgModule({
   declarations: [TruncateMiddlePipe,
@@ -31,6 +32,10 @@ import { SecondsToTimePipe } from './seconds-to-time/seconds-to-time';
     TimestampHumanPipe,
     TimezonePipe,
     SecondsToTimePipe,
-    TranslateCutPipe]
+    TranslateCutPipe
+  ],
+  providers: [
+    MarketDataProvider
+  ]
 })
 export class PipesModule {}
