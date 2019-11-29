@@ -21,13 +21,20 @@
   ion-slides ion-item {
     width: 75%;
     --border-radius: 5px;
-    --background: url('/assets/img/light/wallet/normal-block.png') no-repeat center center / cover;
     --padding-start: 0;
     --inner-padding-start: 1.5rem;
     --inner-padding-end: 1.5rem;
     --inner-padding-top: 2rem;
     --inner-padding-bottom: 2rem;
     --color: white;
+
+    &.normal {
+      --background: url('/assets/img/light/wallet/normal-block.png') no-repeat center center / cover;
+    }
+
+    &.delegate {
+      --background: url('/assets/img/light/wallet/delegate-block.png') no-repeat center center / cover;
+    }
   }
 
   .fiat-balance {
@@ -43,6 +50,18 @@
 
     &.btc {
       background-color: #f3a447;
+    }
+  }
+}
+
+:host-context(.dark-theme) {
+  ion-slides ion-item {
+    &.normal {
+      --background: url('/assets/img/dark/wallet/normal-block.png') no-repeat center center / cover;
+    }
+
+    &.delegate {
+      --background: url('/assets/img/dark/wallet/delegate-block.png') no-repeat center center / cover;
     }
   }
 }

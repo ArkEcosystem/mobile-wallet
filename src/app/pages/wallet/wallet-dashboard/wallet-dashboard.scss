@@ -1,5 +1,16 @@
 :host {
-  .header {
+  ion-toolbar {
+    --background: transparent;
+    --ion-toolbar-color: #fff;
+
+    ion-menu-button,
+    ion-button,
+    ion-icon {
+      --color: #fff;
+    }
+  }
+
+  ion-header {
     // background: color($colors, secondary-background, base);
     background-size: cover;
 
@@ -16,37 +27,8 @@
     }
   }
 
-  .toolbar {
-    padding: 0;
-
-    .toolbar-address {
-      padding-top: 1em;
-      opacity: 0.8;
-    }
-
-    .toolbar-title,
-    .bar-button-default {
-      color: #fff !important;
-    }
-  }
-
-  .main-grid {
-    padding: 0 .5em!important;
-  }
-
-  .grid {
-    padding: 0;
-  }
-
-  .account-balance {
-    padding: .5em 0 2em 0;
-    color: white;
+  .stats-toolbar {
     min-height: 146px;
-  }
-
-  ion-fab {
-    bottom: 20px!important;
-    right: 20px!important;
   }
 
   .tx {
@@ -89,15 +71,19 @@
   }
 }
 
-.dark-theme {
-  page-wallet-dashboard {
-    .tx {
-      // border-bottom: 1px solid color($darkColors, secondary-background, base);
+:host-context(.dark-theme) {
+  ion-refresher * {
+    color: #fff;
+    stroke: #fff;
+  }
+
+  ion-header {
+    &.default-wallet {
+      background-image: url('/assets/img/dark/wallet/wallet-balance.png');
     }
-    
-    ion-refresher * {
-      color: #fff;
-      stroke: #fff;
+
+    &.delegate-wallet {
+      background-image: url('/assets/img/dark/wallet/delegate-balance.png');
     }
   }
 }
