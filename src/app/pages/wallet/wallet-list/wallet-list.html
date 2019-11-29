@@ -1,4 +1,4 @@
-<ion-header no-border no-shadow translucent collapse="condense">
+<ion-header no-border no-shadow [translucent]="wallets?.length > 0" collapse="condense">
 
   <ion-toolbar>
     <ion-buttons slot="start">
@@ -19,8 +19,8 @@
   <empty-list *ngIf="wallets?.length === 0" message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="presentActionSheet()"></empty-list>
 
   <ion-grid class="h-full flex flex-col justify-between" *ngIf="wallets?.length > 0">
-    <ion-row class="flex-1 py-5">
-      <ion-col class="px-5">
+    <ion-row class="flex-1 flex flex-col py-5">
+      <ion-row class="flex flex-col px-5">
         <ion-text color="medium">
           <p class="mb-1 text-xs uppercase font-semibold">{{ 'WALLETS_PAGE.TOTAL_BALANCE' | translate }}</p>
         </ion-text>
@@ -34,9 +34,9 @@
             <span class="text-lg ml-2" appMarketNetOnly>{{ fiatCurrency?.symbol }}{{ (fiatBalance | marketNumber) || 0 }}</span>
           </ion-text>
         </div>
-      </ion-col>
+      </ion-row>
 
-      <ion-col class="p-0 mt-4">
+      <ion-row class="p-0 mt-4">
         <ion-slides class="ml-5" [options]="slideOptions" #walletSlider (ionSlideDidChange)="onSlideChanged()">
           <ion-slide class="flex justify-start" *ngFor="let wallet of wallets" tappable (tap)="openWalletDashboard(wallet)">
             <ion-item lines="none" class="w-4/5" [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}">
@@ -56,7 +56,7 @@
             </ion-item>
           </ion-slide>
         </ion-slides>
-      </ion-col>
+      </ion-row>
     </ion-row>
 
     <ion-row class="flex-1 flex items-center p-5">
