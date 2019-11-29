@@ -1,4 +1,8 @@
 :host {
+  ion-item {
+    --padding-start: 0;
+  }
+
   .amount-container {
     .col:first-child {
       margin-right: 1em;

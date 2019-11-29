@@ -4,7 +4,9 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <h6 class="no-padding no-margin" text-center>{{ 'TRANSACTIONS_PAGE.SEND_TRANSACTION' | translate }}</h6>
+    <ion-title>
+      {{ 'TRANSACTIONS_PAGE.SEND_TRANSACTION' | translate }}
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="toggleSendAll()"
         color="primary">{{ 'TRANSACTIONS_PAGE.SEND_ALL' | translate }}
@@ -19,24 +21,22 @@
     <ion-grid class="ion-padding">
       <ion-row class="row-contacts">
         <ion-col>
-          <ion-item>
+          <ion-item class="item-address">
             <ion-label position="floating">{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label>
             <ng-template #contactsTemplate let-attrs="attrs">
-              <span class="auto-complete-row">
-                <ion-icon [name]="attrs.data.iconName" item-start></ion-icon>
-                <span>
-                  <span [innerHTML]="attrs.data.name | escapeHTML | boldprefix:attrs.keyword"></span>
-                  <span class="autocomplete-second-line"
-                    [innerHTML]="attrs.data.address | escapeHTML | boldprefix:attrs.keyword"></span>
-                </span>
-              </span>
+              <ion-item lines="none">
+                <div>
+                  <h2 class="item-title" [innerHTML]="attrs.data.name | escapeHTML | boldprefix:attrs.keyword"></h2>
+                  <p class="item-subtitle" *ngIf="attrs.data.name !== attrs.data.address" [innerHTML]="attrs.data.address | escapeHTML | boldprefix:attrs.keyword"></p>
+                </div>
+              </ion-item>
             </ng-template>
-            <ion-auto-complete item-content [dataProvider]="contactsAutoCompleteService" [showResultsFirst]="true"
-              [options]="{placeholder: ''}" formControlName="recipientAddress" (itemSelected)="onSearchItem($event)"
+            <ion-auto-complete [dataProvider]="contactsAutoCompleteService" [showResultsFirst]="true"
+              [options]="{placeholder: '', mode: 'md'}" formControlName="recipientAddress" (itemSelected)="onSearchItem($event)"
               (ionAutoInput)="onSearchInput($event)" (autoFocus)="showFullAddress($event)"
               (autoBlur)="truncateAddressMiddle($event)" [template]="contactsTemplate" #searchBar>
             </ion-auto-complete>
-            <div class="qr-container" item-right>
+            <div class="qr-container" slot="end">
               <img class="image" tappable (tap)="scanQRCode()" />
             </div>
           </ion-item>

@@ -11,7 +11,8 @@ import BigNumber from '@/utils/bignumber';
 
 @Component({
   selector: 'amount',
-  templateUrl: 'amount.html'
+  templateUrl: 'amount.html',
+  styleUrls: ['amount.scss']
 })
 export class AmountComponent implements OnInit {
   @Input()

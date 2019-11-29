@@ -30,17 +30,17 @@
   <ion-grid>
     <ion-row nowrap class="p-0">
       <ion-col>
-        <ion-button expand="block" [fill]="min !== rangeFee ? 'outline' : 'solid'" color="primary" (click)="setRangeFee(min)">
+        <ion-button size="small" expand="block" [fill]="min !== rangeFee ? 'outline' : 'solid'" color="primary" (click)="setRangeFee(min)">
           {{ 'INPUT_FEE.MIN' | translate }}
         </ion-button>
       </ion-col>
       <ion-col *ngIf="!isStaticFee">
-        <ion-button expand="block" [fill]="avg !== rangeFee ? 'outline' : 'solid'" color="primary" (click)="setRangeFee(avg)">
+        <ion-button size="small" expand="block" [fill]="avg !== rangeFee ? 'outline' : 'solid'" color="primary" (click)="setRangeFee(avg)">
           {{ 'INPUT_FEE.AVERAGE' | translate }}
         </ion-button>
       </ion-col>
       <ion-col>
-        <ion-button expand="block" [fill]="max !== rangeFee ? 'outline' : 'solid'" color="primary" (click)="setRangeFee(max)">
+        <ion-button size="small" expand="block" [fill]="max !== rangeFee ? 'outline' : 'solid'" color="primary" (click)="setRangeFee(max)">
           {{ 'INPUT_FEE.MAX' | translate }}
         </ion-button>
       </ion-col>

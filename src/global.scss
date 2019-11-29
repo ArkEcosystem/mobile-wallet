@@ -22,7 +22,7 @@
 @import "../node_modules/tailwindcss/components.css";
 @import "../node_modules/tailwindcss/utilities.css";
 
-@import "../node_modules/ionic4-auto-complete/auto-complete.scss";
+@import "./assets/styles/auto-complete.pcss";
 
 ion-grid {
   --ion-grid-padding: 0;
