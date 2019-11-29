@@ -24,7 +24,7 @@ export class AccountAutoCompleteService implements AutoCompleteService {
       return {
         address: contact.address,
         name: contact.name,
-        iconName: 'ios-contacts-outline',
+        iconName: 'contacts',
         type: AutoCompleteAccountType.Contact
       } as AutoCompleteAccount;
     });
@@ -36,7 +36,7 @@ export class AccountAutoCompleteService implements AutoCompleteService {
         return {
           address: address,
           name: label,
-          iconName: 'ios-cash-outline',
+          iconName: 'wallet',
           type: AutoCompleteAccountType.Wallet
         } as AutoCompleteAccount;
       }

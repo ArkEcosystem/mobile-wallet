@@ -124,7 +124,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       const delegateItem =  {
         text: translation['DELEGATES_PAGE.REGISTER_DELEGATE'],
         role: 'delegate',
-        icon: this.platform.is('ios') ? 'ios-contact-outline' : 'md-contact',
+        icon: 'contact',
         handler: () => {
           this.presentRegisterDelegateModal();
         },
@@ -133,7 +133,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       const delegatesItem = {
           text: translation['DELEGATES_PAGE.DELEGATES'],
           role: 'label',
-          icon: this.platform.is('ios') ? 'ios-people-outline' : 'md-people',
+          icon: 'people',
           handler: () => {
             this.presentDelegatesModal();
           },
@@ -143,7 +143,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         {
           text: translation['WALLETS_PAGE.REMOVE_WALLET'],
           role: 'delete',
-          icon: this.platform.is('ios') ? 'ios-trash-outline' : 'md-trash',
+          icon: 'trash',
           handler: () => {
             this.presentDeleteWalletConfirm();
           }
@@ -155,7 +155,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         buttons.unshift({
           text: translation['WALLETS_PAGE.LABEL'],
           role: 'label',
-          icon: this.platform.is('ios') ? 'ios-bookmark-outline' : 'md-bookmark',
+          icon: 'bookmark',
           handler: () => {
             this.presentLabelModal();
           },
@@ -165,7 +165,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       const backupItem = {
         text: translation['SETTINGS_PAGE.WALLET_BACKUP'],
         role: 'label',
-        icon: this.platform.is('ios') ? 'ios-briefcase-outline' : 'md-briefcase',
+        icon: 'briefcase',
         handler: () => {
           this.presentWalletBackupPage();
         }
@@ -174,7 +174,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       const topWalletsItem = {
         text: translation['WALLETS_PAGE.TOP_WALLETS'],
         role: 'label',
-        icon: this.platform.is('ios') ? 'ios-filing-outline' : 'md-filing',
+        icon: 'filing',
         handler: () => {
           this.presentTopWalletsModal();
         }
@@ -191,7 +191,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         buttons.unshift({
           text: translation['WALLETS_PAGE.CONVERT_TO_FULL_WALLET'],
           role: 'label',
-          icon: this.platform.is('ios') ? 'ios-git-compare-outline' : 'md-git-compare',
+          icon: 'git-compare',
           handler: () => {
             this.navCtrl.navigateForward('/wallets/import', {
               queryParams: {
