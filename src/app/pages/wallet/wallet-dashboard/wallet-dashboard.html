@@ -51,20 +51,30 @@
     </ion-row>
 
     <ion-row *ngIf="!emptyTransactions">
-      <ion-col>
-        <ion-card *ngFor="let tx of wallet?.transactions" class="tx" (click)="openTransactionShow(tx)">
-          <ion-item>
-            <h3 *ngIf="tx.isTransfer()" class="type">{{ tx?.getActivityLabel() | translate }}</h3>
-            <h3 class="address">{{ (tx?.isTransfer()) && (tx?.getAppropriateAddress() | accountLabel | truncateMiddle: 12 : tx?.getAppropriateAddress()) || (tx?.getTypeLabel() | translate) }}</h3>
-
-            <div class="ion-text-right" slot="end">
-              <h3 class="amount">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi }} {{ network?.token | uppercase }}</h3>
-              <p class="timestamp">{{ tx?.date | timezone | timestampHuman }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
+      <ion-col class="transactions px-3">
+        <ion-item *ngFor="let tx of wallet?.transactions" (click)="openTransactionShow(tx)">
+          <div class="flex w-full justify-between flex-no-wrap items-center">
+            <div class="flex flex-col">
+              <ion-text color="medium">
+                <span *ngIf="tx.isTransfer()" class="text-xs font-semibold">{{ tx?.getActivityLabel() | translate }}</span>
+              </ion-text>
+              <h3 class="text-sm">
+                {{ (tx?.isTransfer()) && (tx?.getAppropriateAddress() | accountLabel | truncateMiddle: 12 : tx?.getAppropriateAddress()) || (tx?.getTypeLabel() | translate) }}
+              </h3>
             </div>
-            <ion-icon *ngIf="tx?.isSender()" slot="end" name="ios-arrow-round-up" class="icon-rotate-right" style="color: red"></ion-icon>
-            <ion-icon *ngIf="!tx?.isSender()" slot="end" name="ios-arrow-round-down" class="icon-rotate-right" style="color: green"></ion-icon>
-          </ion-item>
-        </ion-card>
+            
+            <div class="flex items-center">
+              <div class="flex flex-col text-right mr-1">
+                <span class="text-sm font-semibold">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi }} {{ network?.token | uppercase }}</span>
+                <ion-text color="medium">
+                  <p class="timestamp text-xs mt-1">{{ tx?.date | timezone | timestampHuman }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
+                </ion-text>
+              </div>
+              <ion-icon *ngIf="tx?.isSender()" name="ios-arrow-round-up" class="icon-rotate-right text-3xl" color="danger"></ion-icon>
+              <ion-icon *ngIf="!tx?.isSender()" name="ios-arrow-round-down" class="icon-rotate-right text-3xl" color="success"></ion-icon>
+            </div>
+          </div>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
