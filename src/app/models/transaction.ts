@@ -23,6 +23,17 @@ const TX_TYPES_ACTIVITY = {
   4: 'TRANSACTIONS.MULTISIGNATURE_CREATION',
 };
 
+export type TransactionEntity = TransactionModel & {
+  isSender: boolean;
+  isTransfer: boolean;
+  appropriateAddress: string;
+  activityLabel: string;
+  typeLabel: string;
+  totalAmount: number;
+  date: Date;
+  amountEquivalent: number;
+};
+
 export interface SendTransactionForm {
   amount?: number;
   amountEquivalent?: number;

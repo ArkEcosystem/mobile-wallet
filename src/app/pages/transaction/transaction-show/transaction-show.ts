@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { NavController, ActionSheetController, Platform } from '@ionic/angular';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
-import { Transaction } from '@/models/transaction';
+import { Transaction, TransactionEntity } from '@/models/transaction';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { ContactsProvider } from '@/services/contacts/contacts';
-import { Network } from 'ark-ts/model';
 import { TranslateService } from '@ngx-translate/core';
 import { TruncateMiddlePipe } from '@/pipes/truncate-middle/truncate-middle';
 import { Wallet, StoredNetwork } from '@/models/model';
@@ -19,13 +18,17 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TransactionShowPage {
 
-  public transaction: Transaction;
-  public equivalentAmount = 0;
+  public transaction: TransactionEntity;
+  public equivalentAmount: string;
   public equivalentSymbol: string;
 
   public showOptions = false;
   private currentNetwork: StoredNetwork;
   private currentWallet: Wallet;
+
+  private isSender: boolean;
+  private totalAmount: number;
+  private typeLabel: string;
 
   constructor(
     private navCtrl: NavController,
@@ -36,19 +39,18 @@ export class TransactionShowPage {
     private actionSheetCtrl: ActionSheetController,
     private translateService: TranslateService,
     private truncateMiddlePipe: TruncateMiddlePipe,
-    private platform: Platform,
   ) {
     this.currentNetwork = this.userDataProvider.currentNetwork;
     this.currentWallet = this.userDataProvider.currentWallet;
     
     const transaction = this.route.snapshot.queryParamMap.get('transaction');
-    this.equivalentAmount = +this.route.snapshot.queryParamMap.get('equivalentAmount');
+    this.equivalentAmount = this.route.snapshot.queryParamMap.get('equivalentAmount');
     this.equivalentSymbol = this.route.snapshot.queryParamMap.get('equivalentSymbol');
 
     if (!transaction) { this.navCtrl.pop(); }
 
     const transactionMap = JSON.parse(transaction);
-    this.transaction = new Transaction(transactionMap.address, this.currentNetwork).deserialize(transactionMap);
+    this.transaction = transactionMap;
     this.shouldShowOptions();
   }
 
@@ -58,7 +60,7 @@ export class TransactionShowPage {
   }
 
   presentOptions() {
-    const address = this.transaction.getAppropriateAddress();
+    const address = this.transaction.appropriateAddress;
     const addressTruncated = this.truncateMiddlePipe.transform(address, 10, null);
     const contact = this.contactsProvider.getContactByAddress(address);
     const contactOrAddress = contact ? contact['name'] : addressTruncated;
@@ -114,8 +116,8 @@ export class TransactionShowPage {
   }
 
   private shouldShowOptions() {
-    if (this.transaction.isTransfer()) {
-      const contact = this.contactsProvider.getContactByAddress(this.transaction.getAppropriateAddress());
+    if (this.transaction.isTransfer) {
+      const contact = this.contactsProvider.getContactByAddress(this.transaction.appropriateAddress);
       if (!contact || (this.currentWallet && !this.currentWallet.isWatchOnly)) { return this.showOptions = true; }
     }
   }

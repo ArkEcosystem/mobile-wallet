@@ -12,14 +12,16 @@ import {
 
 import { Subject } from 'rxjs';
 
-import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory, WalletKeys } from '@/models/model';
+import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory, WalletKeys, TransactionEntity } from '@/models/model';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import { MarketDataProvider } from '@/services/market-data/market-data';
 import { SettingsDataProvider } from '@/services/settings-data/settings-data';
 
 import lodash from 'lodash';
-import { Network, Fees, TransactionDelegate, PrivateKey, TransactionType } from 'ark-ts';
+import dequal from 'dequal';
+
+import { Network, Fees, TransactionDelegate, PrivateKey, TransactionType, Transaction as TransactionModel } from 'ark-ts';
 
 import { TranslateService } from '@ngx-translate/core';
 
@@ -44,6 +46,9 @@ import { ActivatedRoute } from '@angular/router';
 export class WalletDashboardPage implements OnInit, OnDestroy {
   @ViewChild('content', { read: IonContent, static: true })
   content: IonContent;
+
+  @ViewChild('refresher', { read: IonRefresher, static: true })
+  refresher: IonRefresher;
 
   @ViewChild('pinCode', { read: PinCodeComponent, static: true })
   pinCode: PinCodeComponent;
@@ -75,6 +80,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   private refreshDataIntervalListener;
   private refreshTickerIntervalListener;
 
+  private transactions: TransactionEntity[] = [];
+
   constructor(
     private platform: Platform,
     private navCtrl: NavController,
@@ -98,7 +105,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
     this.profile = this.userDataProvider.currentProfile;
     this.network = this.userDataProvider.currentNetwork;
-    this.wallet = this.userDataProvider.getWalletByAddress(this.address);
+    this.setWallet(this.userDataProvider.getWalletByAddress(this.address));
   }
 
   copyAddress() {
@@ -259,12 +266,12 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     });
   }
 
-  openTransactionShow(tx: Transaction) {
+  openTransactionShow(tx: TransactionEntity) {
     this.navCtrl.navigateForward('/transaction/show', {
       queryParams: {
         transaction: JSON.stringify(tx),
         symbol: this.network.symbol,
-        equivalentAmount: tx.getAmountEquivalent(this.marketCurrency, this.marketHistory),
+        equivalentAmount: tx.amountEquivalent,
         equivalentSymbol: this.marketCurrency.symbol,
       }
     });
@@ -362,6 +369,35 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     });
   }
 
+  setWallet(wallet: Wallet) {
+    this.wallet = wallet;
+    const transactions = this.wallet.transactions.map((transaction) => ({
+      id: transaction.id,
+      timestamp: transaction.timestamp,
+      recipientId: transaction.recipientId,
+      amount: transaction.amount,
+      fee: transaction.fee,
+      type: transaction.type,
+      vendorField: transaction.vendorField,
+      senderId: transaction.senderId,
+      confirmations: transaction.confirmations,
+      isTransfer: transaction.isTransfer(),
+      isSender: transaction.isSender(),
+      appropriateAddress: transaction.getAppropriateAddress(),
+      activityLabel: transaction.getActivityLabel(),
+      typeLabel: transaction.getTypeLabel(),
+      totalAmount: transaction.getAmount(),
+      date: transaction.date,
+      amountEquivalent: transaction.getAmountEquivalent(this.marketCurrency, this.marketHistory)
+    }));
+
+    if (dequal(transactions, this.transactions)) {
+      return;
+    }
+
+    this.transactions = transactions;
+  }
+
   presentTopWalletsModal() {
     this.navCtrl.navigateForward('/wallets/top');
   }
@@ -421,21 +457,22 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.zone.runOutsideAngular(() => {
       this.arkApiProvider.client.getTransactionList(this.address)
       .pipe(
-        finalize(() => this.zone.run(() => {
+        finalize(() => {
           if (loader) {
             if (loader.type === "ionRefresh") {
-              loader.complete();
+              this.refresher.complete();
             } else {
               loader.dismiss();
             }
           }
           this.emptyTransactions = lodash.isEmpty(this.wallet.transactions);
-        })),
+        }),
         takeUntil(this.unsubscriber$)
       )
       .subscribe((response) => {
         if (response && response.success) {
           this.wallet.loadTransactions(response.transactions, this.arkApiProvider.network);
+          this.setWallet(this.wallet);
           this.wallet.lastUpdate = new Date().getTime();
           this.wallet.isCold = lodash.isEmpty(response.transactions);
           if (save) { this.saveWallet(); }
@@ -491,7 +528,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         debounceTime(500)
       )
       .subscribe((wallet) => {
-        if (!lodash.isEmpty(wallet) && this.wallet.address === wallet.address) { this.wallet = wallet; }
+        if (!lodash.isEmpty(wallet) && this.wallet.address === wallet.address) { this.setWallet(wallet); }
       });
   }
 
