@@ -1,7 +1,7 @@
 <ion-grid class="input-fee" [ngClass]="{'input-fee--warning': !!warningMessage, 'input-fee--danger': !!errorMessage}">
   <ion-row class="input-fee__wrapper flex flex-col">
     <ion-label position="stacked" class="input-fee__label" color="">Fee</ion-label>
-    <ion-item class="input-fee__input">
+    <ion-item lines="none" class="input-fee__input">
       <ion-label>{{ symbol }}</ion-label>
       <ion-input [(ngModel)]="inputFee" name="fee-input" [step]="step" [min]="min" [max]="max"
         (ionChange)="onInputText()" type="string">

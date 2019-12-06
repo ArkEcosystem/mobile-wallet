@@ -3,7 +3,7 @@
     <ion-col>
       <ion-grid no-padding class="amount-container">
         <ion-row>
-          <ion-col>
+          <ion-col class="pl-0">
             <ion-item>
               <ion-label position="stacked">{{ currentNetwork?.token }}</ion-label>
               <ion-input type="number"
@@ -19,7 +19,7 @@
               </ion-input>
             </ion-item>
           </ion-col>
-          <ion-col appMarketNetOnly>
+          <ion-col class="ml-1 pr-0" appMarketNetOnly>
             <ion-item>
               <ion-label position="stacked">{{ marketCurrency?.code | uppercase }}</ion-label>
               <ion-input type="number"

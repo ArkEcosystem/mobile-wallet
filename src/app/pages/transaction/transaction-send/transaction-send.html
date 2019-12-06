@@ -16,9 +16,9 @@
 
 </ion-header>
 
-<ion-content>
-  <form [formGroup]="sendForm" #sendTransactionForm="ngForm">
-    <ion-grid class="ion-padding">
+<ion-content fullscreen class="ion-padding">
+  <form [formGroup]="sendForm" #sendTransactionForm="ngForm" class="h-full">
+    <ion-grid class="h-full flex flex-col">
       <ion-row class="row-contacts">
         <ion-col>
           <ion-item class="item-address">
@@ -71,15 +71,15 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row class="flex-grow">
         <ion-col>
           <input-fee [transactionType]="transactionType" (onChange)="onFeeChange($event)"
             (onError)="onFeeError($event)"></input-fee>
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col class="ion-align-self-end">
-          <ion-button class="button-continue" (click)="send()" [disabled]="hasSent || hasFeeError">
+        <ion-col class="text-center">
+          <ion-button (click)="send()" [disabled]="hasSent || hasFeeError">
             {{ 'TRANSACTIONS_PAGE.SEND' | translate }}
           </ion-button>
         </ion-col>

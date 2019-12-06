@@ -1,7 +1,6 @@
 import { Component, NgZone, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import {
   NavController,
-  Platform,
   ActionSheetController,
   ModalController,
   AlertController,
@@ -83,7 +82,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   private transactions: TransactionEntity[] = [];
 
   constructor(
-    private platform: Platform,
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private userDataProvider: UserDataProvider,
@@ -241,7 +239,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
           {
             text: translation['TRANSACTIONS_PAGE.RECEIVE'],
             role: 'receive',
-            icon: this.platform.is('ios') ? 'ios-arrow-round-down' : 'md-arrow-round-down',
+            icon: 'arrow-round-down',
             handler: () => {
               return this.openTransactionReceive();
             }
@@ -251,7 +249,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
           buttons.push({
             text: translation['TRANSACTIONS_PAGE.SEND'],
             role: 'send',
-            icon: this.platform.is('ios') ? 'ios-arrow-round-up' : 'md-arrow-round-up',
+            icon: 'arrow-round-up',
             handler: () => {
               return this.navCtrl.navigateForward('/transaction/send');
             }
