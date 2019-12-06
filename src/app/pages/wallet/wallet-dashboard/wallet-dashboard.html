@@ -10,9 +10,9 @@
     </ion-buttons>
   </ion-toolbar>
 
-  <ion-toolbar no-border-top>
+  <ion-toolbar class="stats-toolbar flex items-center" no-border-top [header-scroller]="content">
     <ion-grid>
-      <ion-row class="stats-toolbar mt-2 mb-4 flex flex-col justify-center items-center">
+      <ion-row class="mt-2 mb-4 flex flex-col justify-center items-center">
         <h1 class="text-2xl font-bold my-2">{{ network?.symbol }} {{ wallet?.getBalance() | number: '1.0-8' }}</h1>
         <h4 class="text-lg font-semibold" appMarketNetOnly>{{ marketCurrency?.symbol }}{{ (wallet?.getBalanceEquivalent(marketCurrency) | marketNumber) || 0 }}</h4>
         <p (click)="copyAddress()" tappable class="toolbar-address flex items-center mt-3 opacity-75">
@@ -27,7 +27,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content #content>
+<ion-content #content [scrollEvents]="true">
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"

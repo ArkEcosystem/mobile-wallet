@@ -1,74 +1,68 @@
-import { Directive, ElementRef, OnInit } from '@angular/core';
+import { Directive, ElementRef, OnInit, Input, Renderer2, AfterViewInit } from "@angular/core";
+import { IonContent, DomController } from "@ionic/angular";
 
 /**
- * Directive based in https://github.com/ionic-team/ionic/issues/1381
+ * Directive based in https://github.com/yalzeee/Ionic-4-Press-and-Hold-Gallery
  * with some changes
  */
 
 @Directive({
-  selector: '[header-scroller]'
+  selector: "[header-scroller]"
 })
 export class HeaderScrollerDirective implements OnInit {
+  @Input("header-scroller")
+  private content: IonContent;
+
+  private isHidden = false;
   private triggerDistance = 50;
-  private el: HTMLElement;
-  private lastScrollTop = 0;
-  private lastMargin = 0;
+  private contentHeight = 200;
 
-  constructor(el: ElementRef) {
-    this.el = el.nativeElement;
-  }
+  constructor(
+    private element: ElementRef,
+    private renderer: Renderer2,
+    private domCtrl: DomController
+  ) {}
 
-  public ngOnInit() {
-    const el = this.el;
-    const children = el && el.children;
-    const childList = children && <Array<HTMLElement>>Array.from(children);
+  ngOnInit() {
+    this.initStyles();
+    this.content.ionScroll.subscribe((scrollEvent: CustomEvent) => {
+      const currentY = scrollEvent.detail.currentY;
 
-    const scrollList = (childList || []).filter(e => e.classList.contains('scroll-content'));
-    const scroll = scrollList.length ? scrollList[0] : null;
-
-    scroll.style.zIndex = '998';
-    scroll.style.backgroundColor = 'inherit';
-
-    if (scroll) {
-      this.bindScroller(scroll);
-    }
-  }
-
-  private bindScroller(el: HTMLElement): void {
-    el.addEventListener('scroll', event => {
-      const scroller = <HTMLElement>event.target;
-
-      const header = <HTMLElement>scroller.parentElement.previousElementSibling;
-      const nav = <HTMLElement>scroller.parentElement.previousElementSibling.children[0];
-
-      const scrollTop = scroller.scrollTop;
-      const scrollerStyle = scroller.style;
-
-      const navOffset = nav.offsetHeight;
-      const headerOffset = header.offsetHeight;
-
-      let newMargin;
-      let newPadding;
-
-      if (scrollTop > this.lastScrollTop && scrollTop > this.triggerDistance) {
-        newMargin = (this.lastMargin || headerOffset) - (scrollTop - this.lastScrollTop);
-        if (newMargin <= navOffset) {
-          newMargin = navOffset;
-        }
-      } else if (scrollTop < this.lastScrollTop) {
-        newMargin = (this.lastMargin || headerOffset) + (this.lastScrollTop - scrollTop);
-        if (newMargin >= headerOffset) {
-          newMargin = headerOffset;
-        }
+      if (currentY === 0 && this.isHidden) {
+        this.show();
+      } else if (!this.isHidden && currentY > this.triggerDistance) {
+        this.hide();
+      } else if (this.isHidden && currentY < this.triggerDistance * -1) {
+        this.show();
       }
-      if (newMargin) {
-        newPadding = headerOffset - newMargin;
-      }
-
-      scrollerStyle.marginTop = `${newMargin}px`;
-      scrollerStyle.paddingTop = `${newPadding}px`;
-      this.lastScrollTop = scrollTop;
-      this.lastMargin = newMargin;
     });
+  }
+
+  initStyles() {
+    setTimeout(() => {
+      this.contentHeight = this.element.nativeElement.offsetHeight;
+    }, 0);
+  }
+
+  hide() {
+    this.domCtrl.write(() => {
+      this.renderer.setStyle(this.element.nativeElement, "min-height", "0px");
+      this.renderer.setStyle(this.element.nativeElement, "height", "0px");
+      this.renderer.setStyle(this.element.nativeElement, "opacity", "0");
+      this.renderer.setStyle(this.element.nativeElement, "padding", "0");
+    });
+
+    this.isHidden = true;
+  }
+
+  show() {
+    this.domCtrl.write(() => {
+      this.renderer.setStyle(this.element.nativeElement, "height", this.contentHeight + "px");
+      this.renderer.removeStyle(this.element.nativeElement, "min-height");
+      this.renderer.removeStyle(this.element.nativeElement, "opacity");
+      this.renderer.removeStyle(this.element.nativeElement, "padding");
+    });
+
+    this.isHidden = false;
   }
 }
