@@ -423,7 +423,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       .pipe(
         finalize(() => this.zone.run(() => {
           if (loader) {
-            if (loader instanceof IonRefresher) {
+            if (loader.type === "ionRefresh") {
               loader.complete();
             } else {
               loader.dismiss();
