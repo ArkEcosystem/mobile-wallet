@@ -19,7 +19,7 @@
           <ion-icon name="copy" class="mr-1"></ion-icon>
           {{ wallet?.address }}
         </p>
-        <ion-badge class="watch-only-badge" color="medium" *ngIf="wallet?.isWatchOnly">
+        <ion-badge class="mt-2" color="primary" *ngIf="wallet?.isWatchOnly">
           {{ 'WATCH_ONLY' | translate }}
         </ion-badge>
       </ion-row>
@@ -28,7 +28,7 @@
 </ion-header>
 
 <ion-content #content [scrollEvents]="true">
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+  <ion-refresher #refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content
       pullingIcon="arrow-dropdown"
       pullingText="{{ 'PULL_REFRESH' | translate }}"
@@ -52,26 +52,26 @@
 
     <ion-row *ngIf="!emptyTransactions">
       <ion-col class="transactions px-3">
-        <ion-item *ngFor="let tx of wallet?.transactions" (click)="openTransactionShow(tx)">
+        <ion-item *ngFor="let tx of transactions" (click)="openTransactionShow(tx)">
           <div class="flex w-full justify-between flex-no-wrap items-center">
             <div class="flex flex-col">
               <ion-text color="medium">
-                <span *ngIf="tx.isTransfer()" class="text-xs font-semibold">{{ tx?.getActivityLabel() | translate }}</span>
+                <span *ngIf="tx.isTransfer" class="text-xs font-semibold">{{ tx?.activityLabel | translate }}</span>
               </ion-text>
               <h3 class="text-sm">
-                {{ (tx?.isTransfer()) && (tx?.getAppropriateAddress() | accountLabel | truncateMiddle: 12 : tx?.getAppropriateAddress()) || (tx?.getTypeLabel() | translate) }}
+                {{ tx?.isTransfer && (tx?.appropriateAddress | accountLabel | truncateMiddle: 12 : tx?.appropriateAddress) || (tx?.typeLabel | translate) }}
               </h3>
             </div>
             
             <div class="flex items-center">
               <div class="flex flex-col text-right mr-1">
-                <span class="text-sm font-semibold">{{ tx?.isSender() ? '-' : '+' }}{{ tx?.getAmount() | unitsSatoshi }} {{ network?.token | uppercase }}</span>
+                <span class="text-sm font-semibold">{{ tx?.isSender ? '-' : '+' }}{{ tx?.amount | unitsSatoshi }} {{ network?.token | uppercase }}</span>
                 <ion-text color="medium">
                   <p class="timestamp text-xs mt-1">{{ tx?.date | timezone | timestampHuman }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
                 </ion-text>
               </div>
-              <ion-icon *ngIf="tx?.isSender()" name="ios-arrow-round-up" class="icon-rotate-right text-3xl" color="danger"></ion-icon>
-              <ion-icon *ngIf="!tx?.isSender()" name="ios-arrow-round-down" class="icon-rotate-right text-3xl" color="success"></ion-icon>
+              <ion-icon *ngIf="tx?.isSender" name="ios-arrow-round-up" class="icon-rotate-right text-3xl" color="danger"></ion-icon>
+              <ion-icon *ngIf="!tx?.isSender" name="ios-arrow-round-down" class="icon-rotate-right text-3xl" color="success"></ion-icon>
             </div>
           </div>
         </ion-item>

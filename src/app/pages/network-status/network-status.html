@@ -13,25 +13,25 @@
   <ion-grid class="h-full flex flex-col">
     <ion-row class="flex-grow">
       <ion-col>
-        <ion-list lines="none" *ngIf="currentPeer">
+        <ion-list inset *ngIf="currentPeer">
           <ion-item>
             <ion-label>
-              <p class="item-title">{{ 'NETWORKS_PAGE.PEER' | translate }}</p>
-              <span>{{ getPeerUrl() }}</span>
+              <div class="item-title">{{ 'NETWORKS_PAGE.PEER' | translate }}</div>
+              <div class="item-content">{{ getPeerUrl() }}</div>
             </ion-label>
           </ion-item>
 
           <ion-item>
             <ion-label>
-              <p class="item-title">{{ 'NETWORKS_PAGE.HEIGHT' | translate }}</p>
-              <span>{{ currentPeer?.height | number }}</span>
+              <div class="item-title">{{ 'NETWORKS_PAGE.HEIGHT' | translate }}</div>
+              <div class="item-content">{{ currentPeer?.height | number }}</div>
             </ion-label>
           </ion-item>
 
           <ion-item>
             <ion-label>
-              <p class="item-title">{{ 'NETWORKS_PAGE.VERSION' | translate }}</p>
-              <span>{{ currentPeer?.version }}</span>
+              <div class="item-title">{{ 'NETWORKS_PAGE.VERSION' | translate }}</div>
+              <div class="item-content">{{ currentPeer?.version }}</div>
             </ion-label>
           </ion-item>
         </ion-list>

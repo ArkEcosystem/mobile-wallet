@@ -18,12 +18,12 @@
   <ion-grid class="ion-padding">
     <ion-row>
       <ion-col class="text-center flex flex-col justify-center items-center">
-        <span>{{ transaction?.getTypeLabel() | translate }}</span>
-        <ion-text [color]="transaction.isSender() ? 'danger' : 'success'" class="text-xl font-semibold my-3">
-          {{ transaction?.isSender() ? '-' : '+' }} {{ transaction?.getAmount() | unitsSatoshi }} {{ currentNetwork?.token }}
+        <span>{{ transaction.typeLabel | translate }}</span>
+        <ion-text [color]="isSender ? 'danger' : 'success'" class="text-xl font-semibold my-3">
+          {{ transaction.isSender ? '-' : '+' }} {{ transaction.totalAmount | unitsSatoshi }} {{ currentNetwork?.token }}
         </ion-text>
         <ion-text color="medium" appMarketNetOnly>
-          {{ equivalentSymbol }}{{ equivalentAmount | marketNumber }}
+          {{ equivalentSymbol }}{{ (equivalentAmount | marketNumber) || 0 }}
         </ion-text>
         <ion-button
           fill="clear"
