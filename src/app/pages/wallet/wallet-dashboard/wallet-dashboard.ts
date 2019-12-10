@@ -487,17 +487,15 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.arkApiProvider.client.getWallet(this.address).pipe(
       takeUntil(this.unsubscriber$)
     ).subscribe((response) => {
-      if (response.success) {
-        this.wallet.deserialize(response.account);
-        this.saveWallet();
-        if (this.wallet.isDelegate) {
-          return;
-        }
-
-        this.arkApiProvider
-            .getDelegateByPublicKey(this.wallet.publicKey)
-            .subscribe(delegate => this.userDataProvider.ensureWalletDelegateProperties(this.wallet, delegate));
+      this.wallet.deserialize(response);
+      this.saveWallet();
+      if (this.wallet.isDelegate) {
+        return;
       }
+
+      this.arkApiProvider
+          .getDelegateByPublicKey(this.wallet.publicKey)
+          .subscribe(delegate => this.userDataProvider.ensureWalletDelegateProperties(this.wallet, delegate));
     });
   }
 

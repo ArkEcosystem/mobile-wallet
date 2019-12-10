@@ -82,14 +82,7 @@ export abstract class BaseWalletImport {
         })
       )
       .subscribe((response) => {
-        if (response && response.success) {
-          const account = response.account;
-
-          newWallet = newWallet.deserialize(account);
-        } else {
-          newWallet.address = address;
-          newWallet.publicKey = publicKey.toHex();
-        }
+        newWallet = newWallet.deserialize(response);
       }, () => {
         // Empty wallet
         newWallet.address = address;
