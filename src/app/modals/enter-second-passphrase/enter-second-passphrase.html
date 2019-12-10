@@ -1,7 +1,7 @@
 <ion-header no-shadow no-border>
 
   <ion-toolbar>
-    <h6 text-center class="no-padding no-margin">{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</h6>
+    <ion-title>{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</ion-title>
     <ion-buttons end>
       <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
@@ -14,13 +14,13 @@
 <ion-content padding #content>
   <form #ngForm="ngForm">
     <ion-item>
-      <ion-label stacked>{{ 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE' | translate }}</ion-label>
+      <ion-label position="stacked">{{ 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE' | translate }}</ion-label>
       <ion-input autocapitalize="off" name="secondPassphrase" [type]="displayType" [(ngModel)]="passphrase"></ion-input>
-      <ion-icon item-end [name]="iconName" (click)='hideShow()'></ion-icon>
+      <ion-icon slot="end" [name]="iconName" (click)='hideShow()'></ion-icon>
     </ion-item>
   </form>
 </ion-content>
 
-<ion-footer padding text-center no-shadow no-border [keyboard-attach]="content">
-  <ion-button class="button-continue" (click)="submit()" [disabled]="!ngForm.form.valid">{{ 'CONFIRM' | translate }}</ion-button>
+<ion-footer class="ion-padding text-center" no-shadow no-border>
+  <ion-button (click)="submit()" [disabled]="!ngForm.form.valid">{{ 'CONFIRM' | translate }}</ion-button>
 </ion-footer>
