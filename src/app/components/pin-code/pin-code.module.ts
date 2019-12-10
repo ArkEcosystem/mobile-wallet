@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 import { ClosePopupComponentModule } from '../close-popup/close-popup.module';
 import { PinCodeModalModule } from '@/app/modals/pin-code/pin-code.module';
+import { EnterSecondPassphraseModal } from '@/app/modals/enter-second-passphrase/enter-second-passphrase';
+import { EnterSecondPassphraseModalModule } from '@/app/modals/enter-second-passphrase/enter-second-passphrase.module';
 
 @NgModule({
   declarations: [
@@ -17,11 +19,13 @@ import { PinCodeModalModule } from '@/app/modals/pin-code/pin-code.module';
     TranslateModule,
     CommonModule,
     ClosePopupComponentModule,
-    PinCodeModalModule
+    PinCodeModalModule,
+    EnterSecondPassphraseModalModule
   ],
   exports: [PinCodeComponent],
   entryComponents: [
-    PinCodeModal
+    PinCodeModal,
+    EnterSecondPassphraseModal
   ]
 })
 export class PinCodeComponentModule { }
