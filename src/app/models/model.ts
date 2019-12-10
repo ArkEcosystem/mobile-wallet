@@ -7,3 +7,4 @@ export * from './wallet';
 export * from './translate';
 export * from './passphrase-word';
 export * from './stored-network';
+export * from './node';

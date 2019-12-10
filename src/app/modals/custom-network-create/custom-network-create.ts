@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { ToastProvider } from '@/services/toast/toast';
-import { LoaderAutoConfigure, Network, Peer, PeerVersion2ConfigResponse } from 'ark-ts';
+import { Network, Peer } from 'ark-ts';
 import ArkClient from '@/utils/ark-client';
 import lodash from 'lodash';
 import { HttpClient } from '@angular/common/http';
@@ -39,32 +39,25 @@ export class CustomNetworkCreateModal {
       .pipe(
         finalize(() => loading.dismiss())
       )
-      .subscribe((r: PeerVersion2ConfigResponse) => {
-        if (!r.data) {
-          this.configureError();
-          return;
-        }
-
+      .subscribe(response => {
         this.network.name = this.name;
-        this.network.nethash = lodash.get(r, 'data.network.nethash');
-        this.network.token = lodash.get(r, 'data.network.token.name');
-        this.network.symbol = lodash.get(r, 'data.network.token.symbol');
-        this.network.explorer = lodash.get(r, 'data.network.explorer');
-        this.network.version = lodash.get(r, 'data.network.version');
+        this.network.nethash = response.nethash;
+        this.network.token = response.token;
+        this.network.symbol = response.symbol;
+        this.network.explorer = response.explorer;
+        this.network.version = response.version;
         this.network.type = null;
 
-        const apiConfig: any = lodash.find(r.data.plugins, (_, key) => key.split('/').reverse()[0] === 'core-api');
-        if (!r.data.plugins || !apiConfig || !apiConfig.enabled || !apiConfig.port) {
+        const apiConfig: any = lodash.find(response.ports, (_, key) => key.split('/').reverse()[0] === 'core-api');
+        if (!response.ports || !apiConfig) {
           this.configureError();
           return;
         }
-        this.network.apiPort = apiConfig.port;
-        this.network.p2pPort = Number(seedServerUrl.port);
-        this.network.p2pVersion = '2.0.0';
+        this.network.apiPort = apiConfig;
 
         this.network.activePeer = new Peer();
         this.network.activePeer.ip = seedServerUrl.hostname;
-        this.network.activePeer.port = this.network.apiPort;
+        this.network.activePeer.port = apiConfig;
 
         this.network.isV2 = true;
         this.dismiss(this.network);
