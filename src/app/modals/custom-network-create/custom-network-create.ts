@@ -32,10 +32,9 @@ export class CustomNetworkCreateModal {
     loading.present();
 
     const seedServerUrl = this.getSeedServerUrl();
-    const protocol = seedServerUrl.protocol === 'https:' ? 'https' : 'http';
 
     new ArkClient(this.seedServer, this.httpClient)
-      .getPeerConfig(seedServerUrl.hostname, Number(seedServerUrl.port), protocol)
+      .getNodeConfiguration()
       .pipe(
         finalize(() => loading.dismiss())
       )

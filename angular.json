@@ -47,7 +47,11 @@
                 "input": "src/global.scss"
               }
             ],
-            "scripts": []
+            "scripts": [
+              {
+                "input": "node_modules/big-integer/BigInteger.js"
+              }
+            ]
           },
           "configurations": {
             "production": {

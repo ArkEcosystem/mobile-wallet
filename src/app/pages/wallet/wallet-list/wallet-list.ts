@@ -49,7 +49,7 @@ export class WalletListPage implements OnDestroy {
 
   public slideOptions = {
     speed: 100,
-    spaceBetween: -75
+    spaceBetween: -150
   };
   public chartOptions: any;
   public chartLabels: any;
