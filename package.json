@@ -21,7 +21,7 @@
     "@angular/platform-browser": "~8.1.2",
     "@angular/platform-browser-dynamic": "~8.1.2",
     "@angular/router": "~8.1.2",
-    "@arkecosystem/crypto": "^2.5.26",
+    "@arkecosystem/crypto": "^2.6.0-next.6",
     "@ionic-native/background-mode": "^5.15.0",
     "@ionic-native/clipboard": "^5.15.0",
     "@ionic-native/core": "^5.0.0",

@@ -23,11 +23,11 @@ export interface PeerApiResponse extends Peer {
   };
 }
 
-export interface PeerApiResponse extends Peer {
-  latency?: number;
-  ports?: {
-    [plugin: string]: number;
-  };
+export interface WalletResponse extends AccountResponse {
+  balance: string;
+  isDelegate: boolean;
+  vote: string;
+  nonce: string;
 }
 
 export default class ApiClient {
@@ -59,16 +59,16 @@ export default class ApiClient {
     )
   }
 
-  getWallet(address: string): Observable<AccountResponse> {
+  getWallet(address: string): Observable<WalletResponse> {
     return Observable.create(observer => {
       this.get(`wallets/${address}`).subscribe((response: any) => {
-        observer.next({
-          success: true,
-          account: {
-            ...response.data,
-            balance: String(response.data.balance),
-          }
-        });
+        if (response && response.data) {
+          observer.next({
+            ...response.data
+          });
+        } else {
+          observer.error();
+        }
         observer.complete();
       }, (error) => observer.error(error));
     });
@@ -139,6 +139,15 @@ export default class ApiClient {
             multisignature: data.multiSignature
           }
         });
+        observer.complete();
+      }, (error) => observer.error(error));
+    });
+  }
+
+  getNodeCrypto(host: string): Observable<any> {
+    return Observable.create(observer => {
+      this.get('node/configuration/crypto', {}, host).subscribe((response: any) => {
+        observer.next(response.data);
         observer.complete();
       }, (error) => observer.error(error));
     });

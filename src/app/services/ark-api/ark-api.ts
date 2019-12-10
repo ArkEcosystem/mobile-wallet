@@ -18,7 +18,7 @@ import * as constants from '@/app/app.constants';
 import arktsConfig from 'ark-ts/config';
 import { ArkUtility } from '../../utils/ark-utility';
 import { StoredNetwork, FeeStatistic } from '@/models/stored-network';
-import ArkClient from '../../utils/ark-client';
+import ArkClient, { WalletResponse } from '../../utils/ark-client';
 import * as ArkCrypto from '@arkecosystem/crypto';
 import { PeerDiscovery } from '@/utils/ark-peer-discovery';
 import { expand, finalize, tap, switchMap } from 'rxjs/operators';
@@ -38,6 +38,8 @@ interface NodeConfigurationConstants {
   vendorFieldLength?: number;
   activeDelegates?: number;
   epoch?: Date;
+  aip11?: boolean;
+  height?: number;
 }
 
 interface NodeConfigurationResponse {
@@ -306,7 +308,7 @@ export class ArkApiProvider {
 
       const data: ArkCrypto.Interfaces.ITransactionData = {
         network: this._network.version,
-        type: ArkCrypto.Enums.TransactionTypes[ArkCrypto.Enums.TransactionTypes[transaction.type]],
+        type: ArkCrypto.Enums.TransactionType[ArkCrypto.Enums.TransactionType[transaction.type]],
         senderPublicKey: transaction.senderPublicKey,
         timestamp: transaction.timestamp,
         amount: new BigNumber(transaction.amount),
@@ -316,21 +318,47 @@ export class ArkApiProvider {
         asset: transaction.asset
       };
 
-      data.signature = ArkCrypto.Transactions.Signer.sign(data, keys);
+      this.getNextWalletNonce(wallet.address)
+        .pipe(
+          tap(nonce => {
+            if (this._network.aip11) {
+              transaction.nonce = nonce;
+              data.nonce = nonce;
+              data.version = 2;
+            }
+          }),
+          finalize(() => {
+            data.signature = ArkCrypto.Transactions.Signer.sign(data, keys);
 
-      secondPassphrase = secondKey || secondPassphrase;
+            secondPassphrase = secondKey || secondPassphrase;
 
-      if (secondPassphrase) {
-        const secondKeys = ArkCrypto.Identities.Keys.fromPassphrase(secondPassphrase);
-        data.secondSignature = ArkCrypto.Transactions.Signer.secondSign(data, secondKeys);
-      }
+            if (secondPassphrase) {
+              const secondKeys = ArkCrypto.Identities.Keys.fromPassphrase(secondPassphrase);
+              data.secondSignature = ArkCrypto.Transactions.Signer.secondSign(data, secondKeys);
+            }
 
-      transaction.id = ArkCrypto.Transactions.Utils.getId(data);
-      transaction.signature = data.signature;
-      transaction.signSignature = data.secondSignature;
+            transaction.id = ArkCrypto.Transactions.Utils.getId(data);
+            transaction.signature = data.signature;
+            transaction.signSignature = data.secondSignature;
+            transaction.version = data.version || 1;
 
-      observer.next(transaction);
-      observer.complete();
+            observer.next(transaction);
+            observer.complete();
+          })
+        )
+        .subscribe();
+    });
+  }
+
+  private getNextWalletNonce(address: string): Observable<string> {
+    return Observable.create(observer => {
+      this._client.getWallet(address).subscribe((wallet: WalletResponse) => {
+        const nonce = wallet.nonce || 0;
+        const nextNonce = new BigNumber(nonce).plus(1).toString();
+        observer.next(nextNonce);
+      },
+      () => observer.next('1'),
+      () => observer.complete());
     });
   }
 
@@ -410,17 +438,26 @@ export class ArkApiProvider {
     this.fetchFees().subscribe();
     this.fetchFeeStatistics().subscribe();
     this.fetchNodeConfiguration().subscribe((response: NodeConfigurationResponse) => {
-      const { vendorFieldLength, activeDelegates, epoch } = response.data && response.data.constants || {} as NodeConfigurationConstants;
+      const config = response.data && response.data.constants || {} as NodeConfigurationConstants;
 
-      if (vendorFieldLength) {
-        this._network.vendorFieldLength = vendorFieldLength;
+      if (config.vendorFieldLength) {
+        this._network.vendorFieldLength = config.vendorFieldLength;
       }
-      if (activeDelegates) {
-        this._network.activeDelegates = activeDelegates;
+      if (config.activeDelegates) {
+        this._network.activeDelegates = config.activeDelegates;
       }
-      if (epoch) {
-        this._network.epoch = new Date(epoch);
+      if (config.epoch) {
+        this._network.epoch = new Date(config.epoch);
       }
+      if (config.aip11) {
+        this._network.aip11 = config.aip11;
+      }
+
+      this._client.getNodeCrypto(this._network.getPeerAPIUrl())
+        .subscribe((crypto: any) => {
+          ArkCrypto.Managers.configManager.setConfig(crypto);
+          ArkCrypto.Managers.configManager.setHeight(config.height);
+        });
     });
   }
 
