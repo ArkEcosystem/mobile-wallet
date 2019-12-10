@@ -176,18 +176,18 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
         }
       };
 
-      const topWalletsItem = {
-        text: translation['WALLETS_PAGE.TOP_WALLETS'],
-        role: 'label',
-        icon: 'filing',
-        handler: () => {
-          this.presentTopWalletsModal();
-        }
-      };
+      // const topWalletsItem = {
+      //   text: translation['WALLETS_PAGE.TOP_WALLETS'],
+      //   role: 'label',
+      //   icon: 'filing',
+      //   handler: () => {
+      //     this.presentTopWalletsModal();
+      //   }
+      // };
 
       // DEPRECATED:
       // if (!this.wallet.isWatchOnly && !this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
-      if (!this.wallet.isWatchOnly) { buttons.unshift(topWalletsItem); }
+      // if (!this.wallet.isWatchOnly) { buttons.unshift(topWalletsItem); }
       if (!this.wallet.isWatchOnly) { buttons.unshift(delegatesItem); } // "Watch Only" address can't vote
       if (!this.wallet.isWatchOnly && !this.wallet.isDelegate) { buttons.unshift(delegateItem); }
       if (!this.wallet.isWatchOnly) { buttons.splice(buttons.length - 1, 0, backupItem); }
@@ -396,9 +396,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
     this.transactions = transactions;
   }
 
-  presentTopWalletsModal() {
-    this.navCtrl.navigateForward('/wallets/top');
-  }
+  // presentTopWalletsModal() {
+  //   this.navCtrl.navigateForward('/wallets/top');
+  // }
 
   private createDelegate(keys: WalletKeys) {
     const publicKey = this.wallet.publicKey || PrivateKey.fromSeed(keys.key).getPublicKey().toHex();
