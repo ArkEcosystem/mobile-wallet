@@ -16,6 +16,7 @@ import lodash from 'lodash';
 import { Observable, of } from 'rxjs';
 import { timeout } from 'rxjs/operators';
 import { INodeConfiguration } from '@/models/node';
+import { TRANSACTION_GROUPS } from '@/app/app.constants';
 
 export interface PeerApiResponse extends Peer {
   latency?: number;
@@ -130,14 +131,16 @@ export default class ApiClient {
     return Observable.create(observer => {
       this.get('transactions/fees').subscribe((response: any) => {
         const data = response.data;
+        const payload = data[TRANSACTION_GROUPS.STANDARD] ? data[TRANSACTION_GROUPS.STANDARD] : data;
+
         observer.next({
           success: true,
           fees: {
-            send: data.transfer,
-            vote: data.vote,
-            secondsignature: data.secondSignature,
-            delegate: data.delegateRegistration,
-            multisignature: data.multiSignature
+            send: payload.transfer,
+            vote: payload.vote,
+            secondsignature: payload.secondSignature,
+            delegate: payload.delegateRegistration,
+            multisignature: payload.multiSignature
           }
         });
         observer.complete();
