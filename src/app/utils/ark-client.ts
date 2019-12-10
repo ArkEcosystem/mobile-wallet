@@ -154,7 +154,7 @@ export default class ApiClient {
     });
   }
 
-  getNodeConfiguration(host: string): Observable<INodeConfiguration> {
+  getNodeConfiguration(host?: string): Observable<INodeConfiguration> {
     return Observable.create(observer => {
       this.get(`node/configuration`, {}, host).subscribe((response: any) => {
         observer.next(response.data);
