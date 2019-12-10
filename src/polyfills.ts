@@ -64,3 +64,15 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+
+/**
+  * TODO: Remove when angular supports TypeScript >3.7
+  * @see: https://github.com/angular/angular-cli/issues/16071#issuecomment-553227215
+*/
+
+// @ts-ignore
+window.__importDefault = function(mod) {
+  return mod && mod.__esModule ? mod : { default: mod };
+};
+ 

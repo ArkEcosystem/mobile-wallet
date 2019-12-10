@@ -42,7 +42,7 @@
       <ion-row class="p-0 mt-4">
         <ion-slides class="w-full ml-5" [options]="slideOptions" #walletSlider (ionSlideDidChange)="onSlideChanged()">
           <ion-slide class="flex justify-start" *ngFor="let wallet of wallets" tappable (tap)="openWalletDashboard(wallet)">
-            <ion-item lines="none" class="w-4/5" [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}">
+            <ion-item lines="none" [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}">
               <div class="flex flex-col text-white">
                 <h2 class="font-semibold">
                   {{ currentNetwork?.symbol }} {{ (wallet?.balance | unitsSatoshi) || 0 }}

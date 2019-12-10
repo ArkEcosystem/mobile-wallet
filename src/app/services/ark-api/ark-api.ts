@@ -300,7 +300,9 @@ export class ArkApiProvider {
         type: ArkCrypto.Enums.TransactionType[ArkCrypto.Enums.TransactionType[transaction.type]],
         senderPublicKey: transaction.senderPublicKey,
         timestamp: transaction.timestamp,
+        // @ts-ignore
         amount: new BigNumber(transaction.amount),
+        // @ts-ignore
         fee: new BigNumber(transaction.fee),
         vendorField: transaction.vendorField,
         recipientId: transaction.recipientId,
@@ -312,6 +314,7 @@ export class ArkApiProvider {
           tap(nonce => {
             if (this._network.aip11) {
               transaction.nonce = nonce;
+              // @ts-ignore
               data.nonce = nonce;
               data.version = 2;
             }
