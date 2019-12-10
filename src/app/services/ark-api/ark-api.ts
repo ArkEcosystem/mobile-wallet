@@ -132,15 +132,17 @@ export class ArkApiProvider {
     this._api = new arkts.Client(this._network);
     this._client = new ArkClient(this.network.getPeerAPIUrl(), this.httpClient);
     this._peerDiscovery = new PeerDiscovery(this.httpClient);
-    this.connectToRandomPeer().subscribe();
 
     // Fallback if the fetchEpoch fail
     this._network.epoch = arktsConfig.blockchain.date;
     // Fallback if the fetchNodeConfiguration fail
     this._network.activeDelegates = constants.NUM_ACTIVE_DELEGATES;
-    this.userDataProvider.onUpdateNetwork$.next(this._network);
 
     this.fetchFees().subscribe();
+
+    this.userDataProvider.onUpdateNetwork$.next(this._network);
+
+    this.connectToRandomPeer().subscribe();
   }
 
   private refreshPeers(): Observable<void> {
@@ -198,7 +200,10 @@ export class ArkApiProvider {
         this.updateNetwork(this._network.peerList[lodash.random(this._network.peerList.length - 1)]);
         observer.next();
         observer.complete();
-      }, (e) => observer.error(e));
+      }, (e) => {
+        this.updateNetwork();
+        observer.error(e);
+      });
     });
   }
 
