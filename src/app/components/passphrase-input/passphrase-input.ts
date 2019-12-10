@@ -28,8 +28,12 @@ export class PassphraseInputComponent implements OnInit {
     }
   }
 
-  public validatePassphrase(reference) {
-      return this.passphrase === reference;
+  public validatePassphrase(reference?: string): boolean {
+    if (this.passphrase && reference) {
+      return this.passphrase.trim() === reference.trim();
+    }
+
+    return false;
   }
 
   passphraseChange(value) {
