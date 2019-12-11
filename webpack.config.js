@@ -2,7 +2,7 @@ const webpack = require('webpack')
 
 const bigIntPolyfill = []
 
-if (process.env.IONIC_PLATFORM === 'ios') {
+if (process.env.PLATFORM === 'ios') {
   bigIntPolyfill.push(new webpack.DefinePlugin({
     BigInt: 'bigInt'
   }))
