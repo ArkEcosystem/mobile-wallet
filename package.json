@@ -10,7 +10,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "lab": "ionic serve --lab"
+    "lab": "ionic serve --lab",
+    "run:ios": "ionic cordova run ios --address=0.0.0.0 --debug --consolelogs -l",
+    "build:ios": "ionic cordova build ios --aot --optimizejs --minifycss"
   },
   "private": true,
   "dependencies": {

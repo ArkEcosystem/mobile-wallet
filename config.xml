@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ark.wallet.mobile" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ark.wallet.mobile" version="1.6.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Ark Mobile</name>
     <description>ARK</description>
     <author email="mobile@ark.io" href="http://ark.io/">Ark Ecosystem</author>
@@ -114,5 +114,5 @@
     <plugin name="cordova-sqlite-storage" spec="3.4.0" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.2" />
     <plugin name="cordova-plugin-screen-orientation" spec="^3.0.2" />
-    <engine name="ios" spec="5.1.0" />
+    <engine name="ios" spec="5.1.1" />
 </widget>
