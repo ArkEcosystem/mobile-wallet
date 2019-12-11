@@ -45,6 +45,7 @@ export interface SendTransactionForm {
 
 export class Transaction extends TransactionModel {
   public nonce?: string;
+  public typeGroup?: number;
   public version?: number;
   public date: Date;
 
