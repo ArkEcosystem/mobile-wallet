@@ -13,8 +13,8 @@
                          max="10000000000"
                          name="amount"
                          [(ngModel)]="amount"
-                         (input)="onInputToken()"
-                         (blur)="onBlurToken()"
+                         (ionInput)="onInputToken()"
+                         (ionBlur)="onBlurToken()"
                          [placeholder]="tokenPlaceholder">
               </ion-input>
             </ion-item>
@@ -28,7 +28,7 @@
                          max="10000000000"
                          name="amountEquivalent"
                          [(ngModel)]="amountEquivalent"
-                         (input)="onInputFiat()"
+                         (ionInput)="onInputFiat()"
                          [placeholder]="fiatPlaceholder">
               </ion-input>
             </ion-item>
