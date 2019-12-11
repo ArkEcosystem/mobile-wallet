@@ -1,7 +1,7 @@
 <ion-header no-shadow no-border>
   <ion-toolbar>
-    <h6 class="ion-text-center no-padding no-margin">{{ 'CUSTOM_NETWORK.MANAGE_NETWORKS' | translate }}</h6>
-    <ion-buttons end>
+    <ion-title>{{ 'CUSTOM_NETWORK.MANAGE_NETWORKS' | translate }}</ion-title>
+    <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
@@ -17,4 +17,4 @@
   </form>
 </ion-content>
 
-<ion-footer class="ion-padding ion-text-center" no-shadow no-border></ion-footer>
+<ion-footer class="ion-padding text-center" no-shadow no-border></ion-footer>

@@ -1,8 +1,8 @@
 <ion-header no-shadow no-border>
 
   <ion-toolbar>
-    <h6 text-center class="no-padding no-margin">{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</h6>
-    <ion-buttons end>
+    <ion-title>{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</ion-title>
+    <ion-buttons slot="end">
       <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
@@ -11,8 +11,8 @@
 
 </ion-header>
 
-<ion-content padding #content>
-  <ion-grid class="full-height" *ngIf="step == 1">
+<ion-content class="ion-padding" #content>
+  <ion-grid class="h-full" *ngIf="step == 1">
     <ion-row>
       <ion-col>
         <ion-item>
@@ -28,7 +28,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid class="full-height" *ngIf="step == 2">
+  <ion-grid class="h-full" *ngIf="step == 2">
     <ion-row>
       <ion-col>
         <ion-item>
