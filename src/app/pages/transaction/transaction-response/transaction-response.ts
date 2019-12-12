@@ -39,12 +39,10 @@ export class TransactionResponsePage {
     this.wallet = this.userDataProvider.currentWallet;
     this.currentNetwork = this.userDataProvider.currentNetwork;
   
-    const response = this.route.snapshot.queryParamMap.get('response');
+    this.response = this.route.snapshot.queryParamMap.get('response');
     const transaction = this.route.snapshot.queryParamMap.get('transaction');
 
-    if (!response) { this.navCtrl.pop(); }
-
-    debugger;
+    if (!this.response) { this.navCtrl.pop(); }
 
     if (transaction) {
       this.transaction = new Transaction(this.wallet.address, this.currentNetwork).deserialize(transaction);
@@ -101,7 +99,11 @@ export class TransactionResponsePage {
   // }
 
   dismiss() {
-    this.modalCtrl.dismiss();
+    if (this.response && this.response.status) {
+      this.navCtrl.navigateRoot('/wallets/dashboard')
+    } else {
+      this.modalCtrl.dismiss();
+    }
   }
-
+  
 }
