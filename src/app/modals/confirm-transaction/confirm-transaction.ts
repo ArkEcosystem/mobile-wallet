@@ -19,6 +19,7 @@ import { takeUntil, tap } from 'rxjs/operators';
 @Component({
   selector: 'modal-confirm-transaction',
   templateUrl: 'confirm-transaction.html',
+  styleUrls: ['confirm-transaction.pcss']
 })
 export class ConfirmTransactionModal implements OnInit, OnDestroy {
 
@@ -43,7 +44,7 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
     private settingsDataProvider: SettingsDataProvider,
     private ngZone: NgZone,
     private translateService: TranslateService,
-  ) { }
+  ) {}
 
   broadcast() {
     if (this.hasBroadcast) {
