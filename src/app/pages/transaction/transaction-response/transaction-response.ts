@@ -19,15 +19,12 @@ import { ActivatedRoute } from '@angular/router';
   providers: [Clipboard, InAppBrowser],
 })
 export class TransactionResponsePage {
-  @ViewChild('content', { read: IonContent, static: true })
-  content: IonContent;
-
   public transaction: Transaction;
   public wallet: Wallet;
-  public keys: WalletKeys = {};
+  // public keys: WalletKeys = {};
   public response: any = { status: false, message: '' };
 
-  public showKeepSecondPassphrase = true;
+  // public showKeepSecondPassphrase = true;
   public currentNetwork: StoredNetwork;
 
   constructor(
@@ -39,24 +36,19 @@ export class TransactionResponsePage {
     private iab: InAppBrowser,
     private route: ActivatedRoute
   ) {
-    const wallet = this.route.snapshot.queryParamMap.get('wallet');
+    this.wallet = this.userDataProvider.currentWallet;
+    this.currentNetwork = this.userDataProvider.currentNetwork;
+  
     const response = this.route.snapshot.queryParamMap.get('response');
-    const keys = this.route.snapshot.queryParamMap.get('keys');
-
     const transaction = this.route.snapshot.queryParamMap.get('transaction');
 
-    if (!this.response) { this.navCtrl.pop(); }
+    if (!response) { this.navCtrl.pop(); }
 
-    this.currentNetwork = this.userDataProvider.currentNetwork;
+    debugger;
 
     if (transaction) {
-      this.wallet = JSON.parse(wallet);
-      this.keys = JSON.parse(keys);
-      this.response = JSON.parse(response);
-      this.transaction = new Transaction(this.wallet.address, this.currentNetwork).deserialize(JSON.parse(transaction));
+      this.transaction = new Transaction(this.wallet.address, this.currentNetwork).deserialize(transaction);
     }
-
-    this.verifySecondPassphrasHasEncrypted();
   }
 
   copyTxid() {
@@ -74,41 +66,39 @@ export class TransactionResponsePage {
     this.toastProvider.success('WALLETS_PAGE.ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE');
   }
 
-  async saveSecondPassphrase() {
-    const modal = await this.modalCtrl.create({
-      component: PinCodeModal,
-      componentProps: {
-        message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
-        outputPassword: true,
-        validatePassword: true,
-      }
-    });
+  // async saveSecondPassphrase() {
+  //   const modal = await this.modalCtrl.create({
+  //     component: PinCodeModal,
+  //     componentProps: {
+  //       message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
+  //       outputPassword: true,
+  //       validatePassword: true,
+  //     }
+  //   });
 
-    modal.onDidDismiss().then((({ data }) => {
-      if (!data.password) { return; }
+  //   modal.onDidDismiss().then((({ data }) => {
+  //     if (!data.password) { return; }
 
-      this.userDataProvider.encryptSecondPassphrase(this.wallet, data.password, this.keys.secondPassphrase).subscribe(() => {
-        this.wallet = this.userDataProvider.getWalletByAddress(this.wallet.address);
+  //     this.userDataProvider.encryptSecondPassphrase(this.wallet, data.password, this.keys.secondPassphrase).subscribe(() => {
+  //       this.wallet = this.userDataProvider.getWalletByAddress(this.wallet.address);
 
-        this.showKeepSecondPassphrase = false;
-        if (this.content) { this.content }
-        this.presentEncryptedAlert();
-      });
-    }));
+  //       this.showKeepSecondPassphrase = false;
+  //       this.presentEncryptedAlert();
+  //     });
+  //   }));
 
-    modal.present();
-  }
+  //   modal.present();
+  // }
 
-  verifySecondPassphrasHasEncrypted() {
-    if (!this.transaction) { return; }
+  // verifySecondPassphrasHasEncrypted() {
+  //   if (!this.transaction) { return; }
 
-    if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondPublicKey && !this.wallet.cipherSecondKey)) {
-      if (this.response.status) { return this.showKeepSecondPassphrase = true; }
-    }
+  //   if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondPublicKey && !this.wallet.cipherSecondKey)) {
+  //     if (this.response.status) { return this.showKeepSecondPassphrase = true; }
+  //   }
 
-    this.showKeepSecondPassphrase = false;
-    // if (this.content) { this.content.resize(); }
-  }
+  //   this.showKeepSecondPassphrase = false;
+  // }
 
   dismiss() {
     this.modalCtrl.dismiss();

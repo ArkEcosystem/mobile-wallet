@@ -2,9 +2,9 @@
 
   <ion-toolbar>
     <ion-title *ngIf="response?.status">{{ transaction?.getTypeLabel() | translate }}</ion-title>
-    <h6 class="ion-text-center no-padding no-margin" *ngIf="!response?.status">{{ 'FAILED' | translate }}</h6>
+    <ion-title *ngIf="!response?.status">{{ 'FAILED' | translate }}</ion-title>
 
-    <ion-buttons *ngIf="!response?.status" end>
+    <ion-buttons *ngIf="!response?.status" slot="end">
       <ion-button (click)="dismiss()">
         <ion-icon slot="icon-only" name="close"></ion-icon>
       </ion-button>
@@ -13,19 +13,20 @@
 
 </ion-header>
 
-<ion-content #content no-bounce padding class="column-mode">
-  <ion-grid>
+<ion-content forceOverscroll="false" fullscreen class="ion-padding">
+  <ion-grid class="h-full flex flex-col">
     <ion-row>
-      <ion-col class="ion-text-center full-height" *ngIf="response?.status">
+
+      <ion-col class="flex-1 flex flex-col items-center justify-center" *ngIf="response?.status">
         <ion-grid class="success-container">
           <ion-row>
-            <ion-col class="ion-text-center ion-align-self-center">
+            <ion-col class="text-center ion-align-self-center">
               <img class="image tx-success">
               <h6>{{ 'TRANSACTIONS_PAGE.SENT_SUCCESS' | translate }}</h6>
             </ion-col>
           </ion-row>
           <ion-row>
-            <ion-col class="ion-text-center ion-align-self-center">
+            <ion-col class="text-center ion-align-self-center">
               <ion-button
                       fill="outline"
                       color="primary"
@@ -38,7 +39,8 @@
           </ion-row>
         </ion-grid>
       </ion-col>
-      <ion-col class="ion-align-self-center" *ngIf="!response?.status">
+  
+      <ion-col *ngIf="!response?.status" class="flex items-center justify-center">
         <img class="image tx-error">
       </ion-col>
     </ion-row>
@@ -47,15 +49,4 @@
 
 <ion-footer class="note-toolbar" padding *ngIf="!response.status">
   <p>{{ response?.message }}</p>
-</ion-footer>
-
-<ion-footer padding *ngIf="transaction && showKeepSecondPassphrase">
-  <ion-grid>
-    <ion-row>
-      <ion-col class="ion-text-center">
-        <p class="encrypt-message">{{ 'TRANSACTIONS_PAGE.ENCRYPT_SAVE_SECOND_PASSPHRASE' | translate }}</p>
-        <ion-button color="primary" (click)="saveSecondPassphrase()">{{ 'SAVE' | translate }}</ion-button>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
 </ion-footer>

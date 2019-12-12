@@ -1,81 +1,80 @@
 <ion-content>
-  <close-popup color="dark" (onClose)="dismiss()"></close-popup>
-  <ion-grid class="no-padding">
+  <ion-grid>
     <ion-row class="header-row">
-      <ion-col class="header-toolbar ion-text-center ion-padding ion-align-self-end">
-        <h3 class="amount">{{ transaction?.getAmount() | unitsSatoshi }} {{ currentNetwork?.symbol }}</h3>
+      <close-popup color="dark" (onClose)="dismiss()" class="absolute right-0 opacity-75 text-sm"></close-popup>
+      <ion-col class="header-toolbar text-center ion-padding">
+        <div class="header-background"></div>
+        <p class="my-1 text-xl font-bold">{{ transaction?.getAmount(true) | unitsSatoshi }} {{ currentNetwork?.symbol }}</p>
         <p appMarketNetOnly>{{ marketCurrency?.symbol }}{{ transaction?.getAmountEquivalent(marketCurrency, ticker) | marketNumber }}</p>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col padding>
-        <ion-list class="list-selectable">
-          <ion-item no-lines text-wrap>
-            <ion-label stacked>
-              <p>{{ 'TRANSACTIONS_PAGE.FROM' | translate }}</p>
-              <h6 ion-content class="account">
-                <span *ngIf="address | hasAccountLabel" class="account-label">
+      <ion-col>
+        <ion-list inset class="list-selectable">
+          <ion-item>
+            <ion-label>
+              <div class="item-title">{{ 'TRANSACTIONS_PAGE.FROM' | translate }}</div>
+              <div class="item-content">
+                <div *ngIf="address | hasAccountLabel" class="font-semibold">
                   {{ address | accountLabel }}
-                </span>
-                <span>
-                  {{address}}
-                </span>
-              </h6>
+                </div>
+                {{address}}
+              </div>
             </ion-label>
           </ion-item>
 
-          <ion-item no-lines text-wrap *ngIf="transaction?.type == 0">
-            <ion-label stacked>
-              <p>{{ 'TRANSACTIONS_PAGE.RECIPIENT' | translate }}</p>
-              <h6 ion-content class="account">
-                <span *ngIf="transaction?.recipientId | hasAccountLabel" class="account-label">
+          <ion-item *ngIf="transaction?.type == 0" class="whitespace-normal">
+            <ion-label>
+              <div class="item-title">{{ 'TRANSACTIONS_PAGE.RECIPIENT' | translate }}</div>
+              <div class="item-content">
+                <div *ngIf="transaction?.recipientId | hasAccountLabel" class="font-semibold">
                   {{ transaction?.recipientId | accountLabel }}
-                </span>
-                <span>
+                </div>
+                <div class="text-sm">
                   {{transaction?.recipientId}}
-                </span>
-                <span *ngIf="addressCheckResult && addressCheckResult.message" class="address-checker">
-                  <ion-icon [name]="addressCheckResult.icon"></ion-icon>
-                  <span>
+                </div>
+                <div *ngIf="addressCheckResult && addressCheckResult.message" class="flex items-center pt-1">
+                  <ion-icon [name]="addressCheckResult.icon" color="light"></ion-icon>
+                  <span class="ml-2">
                     {{ addressCheckResult.message.key | translate:addressCheckResult.message.parameters }}
                   </span>
-                </span>
-              </h6>
+                </div>
+              </div>
             </ion-label>
           </ion-item>
 
-          <ion-item no-lines text-wrap>
-            <ion-label stacked>
-              <p>{{ 'TYPE' | translate }}</p>
-              <h6 ion-content>{{ transaction?.getTypeLabel() | translate }}</h6>
+          <ion-item class="whitespace-normal">
+            <ion-label>
+              <div class="item-title">{{ 'TYPE' | translate }}</div>
+              <div class="item-content">{{ transaction?.getTypeLabel() | translate }}</div>
             </ion-label>
           </ion-item>
 
-          <ion-item no-lines text-wrap *ngIf="transaction?.type == 3 && extra.username">
-            <ion-label stacked>
-              <p>{{ 'DELEGATES_PAGE.DELEGATE' | translate }}</p>
-              <h6 ion-content>{{ extra.username }}</h6>
+          <ion-item class="whitespace-normal" *ngIf="transaction?.type == 3 && extra.username">
+            <ion-label>
+              <div class="item-title">{{ 'DELEGATES_PAGE.DELEGATE' | translate }}</div>
+              <div class="item-content">{{ extra.username }}</div>
             </ion-label>
           </ion-item>
 
-          <ion-item no-lines text-wrap>
-            <ion-label stacked>
-              <p>{{ 'TRANSACTIONS_PAGE.AMOUNT' | translate }}</p>
-              <h6 ion-content>{{ (transaction?.amount | unitsSatoshi) || 0 }} {{ currentNetwork?.symbol }}</h6>
+          <ion-item class="whitespace-normal">
+            <ion-label>
+              <div class="item-title">{{ 'TRANSACTIONS_PAGE.AMOUNT' | translate }}</div>
+              <div class="item-content">{{ (transaction?.amount | unitsSatoshi) || 0 }} {{ currentNetwork?.symbol }}</div>
             </ion-label>
           </ion-item>
 
-          <ion-item no-lines text-wrap>
-            <ion-label stacked>
-              <p>{{ 'TRANSACTIONS_PAGE.FEE' | translate }}</p>
-              <h6 ion-content>{{ transaction?.fee | unitsSatoshi }} {{ currentNetwork?.symbol }}</h6>
+          <ion-item class="whitespace-normal">
+            <ion-label>
+              <div class="item-title">{{ 'TRANSACTIONS_PAGE.FEE' | translate }}</div>
+              <div class="item-content">{{ transaction?.fee | unitsSatoshi }} {{ currentNetwork?.symbol }}</div>
             </ion-label>
           </ion-item>
 
-          <ion-item no-lines text-wrap>
-            <ion-label stacked>
-              <p>{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</p>
-              <h6 ion-content>{{ transaction?.vendorField || 'N/A' }}</h6>
+          <ion-item class="whitespace-normal">
+            <ion-label>
+              <div class="item-title">{{ 'TRANSACTIONS_PAGE.SMART_BRIDGE' | translate }}</div>
+              <div class="item-content">{{ transaction?.vendorField || 'N/A' }}</div>
             </ion-label>
           </ion-item>
         </ion-list>
@@ -84,9 +83,8 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer text-center padding>
+<ion-footer class="ion-padding text-center">
   <ion-button
-          class="button-continue"
           (click)="broadcast()"
           [disabled]="hasBroadcast || addressCheckResult?.type === checkTypes.Error">
     {{ 'TRANSACTIONS_PAGE.SEND' | translate }}

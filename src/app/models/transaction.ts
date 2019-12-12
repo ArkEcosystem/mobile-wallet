@@ -67,10 +67,10 @@ export class Transaction extends TransactionModel {
     return self;
   }
 
-  getAmount() {
+  getAmount(forceFee?: boolean) {
     let amount = this.amount;
 
-    if (this.isSender()) { amount = this.amount + this.fee; }
+    if (this.isSender() || forceFee) { amount = this.amount + this.fee; }
 
     return amount;
   }

@@ -1,4 +1,4 @@
-page-transaction-response {
+:host {
   .image {
     display: block;
     margin: 1em auto;
@@ -26,20 +26,18 @@ page-transaction-response {
   }
 }
 
-.dark-theme {
-  page-transaction-response {
-    .encrypt-message {
-      color: #fff;
+:host-context(.dark-theme) {
+  .encrypt-message {
+    color: #fff;
+  }
+
+  .image {
+    &.tx-success {
+      content: url('/assets/img/dark/transaction/transfer-success.png');
     }
 
-    .image {
-      &.tx-success {
-        content: url('/assets/img/dark/transaction/transfer-success.png');
-      }
-
-      &.tx-error {
-        content: url('/assets/img/dark/transaction/transfer-error.png');
-      }
+    &.tx-error {
+      content: url('/assets/img/dark/transaction/transfer-error.png');
     }
   }
 }
