@@ -48,13 +48,13 @@
     "bignumber.js": "^9.0.0",
     "bip39": "^3.0.2",
     "chart.js": "^2.9.3",
-    "cordova-android": "^8.1.0",
+    "cordova-android": "8.1.0",
     "cordova-clipboard": "^1.3.0",
     "cordova-ios": "5.1.1",
     "cordova-plugin-add-swift-support": "^2.0.2",
     "cordova-plugin-background-mode": "^0.7.3",
     "cordova-plugin-badge": "^0.8.8",
-    "cordova-plugin-device": "2.0.3",
+    "cordova-plugin-device": "^2.0.3",
     "cordova-plugin-inappbrowser": "^3.1.0",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.1.3",
@@ -67,7 +67,7 @@
     "cordova-plugin-vibration": "^3.1.1",
     "cordova-plugin-whitelist": "^1.3.4",
     "cordova-plugin-x-socialsharing": "^5.6.3",
-    "cordova-sqlite-storage": "4.0.0",
+    "cordova-sqlite-storage": "^4.0.0",
     "core-js": "^3.4.8",
     "dequal": "^1.0.0",
     "es6-promise-plugin": "^4.2.2",
@@ -132,12 +132,13 @@
   "description": "A Wallet for Everyone",
   "cordova": {
     "plugins": {
-      "cordova-plugin-ionic-keyboard": {},
       "cordova-clipboard": {},
       "cordova-plugin-vibration": {},
       "cordova-plugin-qrscanner": {},
       "cordova-plugin-inappbrowser": {},
-      "cordova-plugin-x-socialsharing": {},
+      "cordova-plugin-x-socialsharing": {
+        "ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
+      },
       "cordova-plugin-local-notification": {},
       "cordova-plugin-background-mode": {},
       "cordova-sqlite-storage": {},
@@ -147,7 +148,10 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {}
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
+      "cordova-plugin-ionic-keyboard": {}
     },
     "platforms": [
       "ios",
