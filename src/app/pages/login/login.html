@@ -1,9 +1,9 @@
-<ion-content forceOverscroll="false" fullscreen class="ion-padding">
-  <ion-grid class="h-full flex flex-col">
+<ion-content forceOverscroll="false" fullscreen>
+  <ion-grid class="h-full flex flex-col content-background">
     <ion-row class="flex-1 flex justify-center items-center">
       <img src="./assets/img/light/login/logo.png" class="w-48 h-48">
     </ion-row>
-    <ion-row class="flex-1">
+    <ion-row class="flex-1 px-6">
       <ion-col class="text-center">
         <h1 class="text-2xl font-semibold">{{ 'SIGN_IN_PAGE.ARK_WALLET' | translate | uppercase }}</h1>
         <ion-text class="medium">
@@ -11,7 +11,7 @@
         </ion-text>
       </ion-col>
     </ion-row>
-    <ion-row class="flex-1">
+    <ion-row class="flex-1 p-6">
       <ion-col class="flex flex-col items-center justify-end" *ngIf="isReady">
         <ion-row>
           <ion-button fill="solid" (click)="openProfileSignin()" [hidden]="!hasProfiles">{{ 'PROFILES_PAGE.SIGN_IN' | translate }}</ion-button>

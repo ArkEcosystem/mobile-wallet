@@ -22,7 +22,6 @@
   }
 
   ion-slides ion-item {
-    width: 65%;
     --border-radius: 5px;
     --padding-start: 0;
     --inner-padding-start: 1.5rem;
@@ -54,6 +53,18 @@
     &.btc {
       background-color: #f3a447;
     }
+  }
+}
+
+:host-context(.ios) {
+  ion-slides ion-item {
+    width: 75%;
+  }
+}
+
+:host-context(.md) {
+  ion-slides ion-item {
+    width: 75%;
   }
 }
 
