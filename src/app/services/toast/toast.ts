@@ -56,7 +56,6 @@ export class ToastProvider {
   }
 
   show(messageOrObj: string | TranslatableObject, type?: number, hideDelay?: number, position?: string) {
-    console.log()
     let message: string;
     let parameters: any;
     if (typeof messageOrObj === 'string') {

@@ -371,7 +371,7 @@ export class WalletListPage implements OnDestroy {
     });
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
     this.loadWallets();
     this.onCreateUpdateWallet();
     this.initMarketHistory();
