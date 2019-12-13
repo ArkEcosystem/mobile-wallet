@@ -73,7 +73,7 @@ export class ProfileCreatePage implements OnDestroy {
         this.networksIds
           .filter(id => this.userDataProvider
                             .defaultNetworks
-                            .some(defaultNetwork => this.networks[id].nethash === defaultNetwork.nethash))
+                            .some(defaultNetwork => this.networks[id].name === defaultNetwork.name))
           .map(id => {
             return {name: this.networks[id].name, id: id};
           });
@@ -88,7 +88,11 @@ export class ProfileCreatePage implements OnDestroy {
   }
 
   public onCustomNetworkChange(customNetworkId: string) {
-    this.newProfile.networkId = customNetworkId;
+    if (customNetworkId) {
+      this.newProfile.networkId = customNetworkId;
+    } else {
+      this.load();
+    }
   }
 
   ionViewWillEnter() {

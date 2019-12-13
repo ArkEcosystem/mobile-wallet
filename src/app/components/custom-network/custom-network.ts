@@ -44,7 +44,7 @@ export class CustomNetworkComponent implements OnInit {
     this.networkChoices = this.networksIds
         .filter(id => this.userDataProvider
                           .defaultNetworks
-                          .every(defaultNetwork => this.networks[id].nethash !== defaultNetwork.nethash))
+                          .every(defaultNetwork => this.networks[id].name !== defaultNetwork.name))
         .map(id => {
           return {name: this.networks[id].name, id: id};
          });
