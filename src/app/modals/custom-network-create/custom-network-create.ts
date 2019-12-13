@@ -9,7 +9,8 @@ import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'customNetworkCreate',
-  templateUrl: 'custom-network-create.html'
+  templateUrl: 'custom-network-create.html',
+  styleUrls: ['custom-network-create.pcss']
 })
 export class CustomNetworkCreateModal {
 

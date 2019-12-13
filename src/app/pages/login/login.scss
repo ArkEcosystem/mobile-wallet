@@ -1,21 +1,14 @@
-ion-grid {
-  background: url('/assets/img/light/login/login-pattern.png') repeat;
-  background-size: contain;
-  background-repeat:no-repeat;
-  background-position: top center;
-
-  .image-logo {
-    display: block;
-    max-width: 55%;
+:host {
+  .content-background {
+    background-image: url('/assets/img/light/login/login-pattern.png');
+    background-size: contain;
+    background-repeat:no-repeat;
+    background-position: top center;
   }
 }
 
 :host-context(.dark-theme) {
-  ion-grid {
-    background: url('/assets/img/dark/login/login-pattern.png') repeat;
-    background-size: contain;
-    background-repeat:no-repeat;
-    background-position: top center;
-    // background-color: color($darkColors, primary-background, base);
+  .content-background {
+    background-image: url('/assets/img/dark/login/login-pattern.png');
   }
 }
