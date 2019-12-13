@@ -20,11 +20,11 @@ export class ToastProvider {
   };
 
   private TypeName = [
-    'error',
+    'danger',
     'success',
-    'warn',
-    'log',
-    'debug'
+    'warning',
+    'medium',
+    'dark'
   ];
 
   constructor(
@@ -56,10 +56,7 @@ export class ToastProvider {
   }
 
   show(messageOrObj: string | TranslatableObject, type?: number, hideDelay?: number, position?: string) {
-    let cssClass = 'toast-service';
-    if (this.TypeName[type]) {
-      cssClass += ' toast-' + this.TypeName[type];
-    }
+    console.log()
     let message: string;
     let parameters: any;
     if (typeof messageOrObj === 'string') {
@@ -75,7 +72,7 @@ export class ToastProvider {
         message: translation,
         duration: hideDelay || this.hideDelay,
         position: (position || this.position) as 'top' | 'bottom' | 'middle',
-        cssClass: cssClass
+        color: this.TypeName[type]
       });
 
       toast.present();
