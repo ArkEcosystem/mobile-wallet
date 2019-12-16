@@ -13,6 +13,7 @@ import * as constants from '@/app/app.constants';
 import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
 import { CustomNetworkCreateModal } from '@/app/modals/custom-network-create/custom-network-create';
 import { takeUntil, tap } from 'rxjs/operators';
+import { UserDataProvider } from '@/services/user-data/user-data';
 
 const packageJson = require('@@/package.json');
 
@@ -32,6 +33,8 @@ export class SettingsPage implements OnInit, OnDestroy {
   public onEnterPinCode;
   public appVersion: number = packageJson.version;
 
+  public currentWallet;
+
   private unsubscriber$: Subject<void> = new Subject<void>();
 
   constructor(
@@ -41,9 +44,11 @@ export class SettingsPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     private translateService: TranslateService,
     private modalCtrl: ModalController,
-    private inAppBrowser: InAppBrowser
+    private inAppBrowser: InAppBrowser,
+    private userDataProvider: UserDataProvider
   ) {
     this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
+    this.currentWallet = this.userDataProvider.currentWallet;
   }
 
   async openChangePinPage() {

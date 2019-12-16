@@ -33,8 +33,8 @@
             </ng-template>
             <ion-auto-complete [dataProvider]="contactsAutoCompleteService" [showResultsFirst]="true"
               [options]="{placeholder: '', mode: 'md'}" formControlName="recipientAddress" (itemSelected)="onSearchItem($event)"
-              (ionAutoInput)="onSearchInput($event)" (autoFocus)="showFullAddress($event)"
-              (autoBlur)="truncateAddressMiddle($event)" [template]="contactsTemplate" #searchBar>
+              (ionAutoInput)="onSearchInput($event)" (autoFocus)="showFullAddress()"
+              (autoBlur)="truncateAddressMiddle()" [template]="contactsTemplate" #searchBar>
             </ion-auto-complete>
             <div class="qr-container" slot="end">
               <img class="image" tappable (tap)="scanQRCode()" />

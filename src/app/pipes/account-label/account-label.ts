@@ -10,7 +10,7 @@ export class AccountLabelPipe implements PipeTransform {
   constructor(private userDataProvider: UserDataProvider, private contactsProvider: ContactsProvider) {
   }
 
-  transform(value: string, defaultText: string, ...args) {
+  transform(value: string, defaultText?: string) {
     const contact = this.contactsProvider.getContactByAddress(value);
     if (contact) { return contact.name; }
 

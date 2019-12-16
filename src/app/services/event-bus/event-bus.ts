@@ -5,6 +5,8 @@ import { Subject } from 'rxjs'
 export class EventBusProvider {
   public $subject: Subject<{ key: string, data?: any }> = new Subject();
 
+  constructor() {}
+
   emit(key: string, data?: any) {
     this.$subject.next({ key, data })
   }

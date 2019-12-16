@@ -25,7 +25,7 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
 
   public transaction: Transaction;
   public address: string;
-  public extra: object;
+  public extra: any;
 
   public addressCheckResult: AddressCheckResult;
   public marketCurrency: MarketCurrency;

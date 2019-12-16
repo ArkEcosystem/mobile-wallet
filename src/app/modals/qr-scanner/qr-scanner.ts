@@ -75,7 +75,7 @@ export class QRScannerModal implements OnDestroy {
     this.eventBus.emit('qrScanner:hide');
   }
 
-  private dismiss(qrCode: object = null) {
+  public dismiss(qrCode: object = null) {
     this.qrScanner.getStatus().then((status: QRScannerStatus) => {
       if (status.showing) {
         this.hideCamera();

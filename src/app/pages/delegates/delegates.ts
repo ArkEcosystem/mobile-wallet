@@ -55,7 +55,7 @@ export class DelegatesPage implements OnDestroy {
   private selectedDelegate: Delegate;
   private selectedFee: number;
 
-  private currentWallet: Wallet;
+  public currentWallet: Wallet;
   private walletVote: Delegate;
 
   private unsubscriber$: Subject<void> = new Subject<void>();
