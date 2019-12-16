@@ -48,6 +48,7 @@ export function createTranslateLoader(http: HttpClient) {
     Keyboard,
     SocialSharing,
     Network,
+    ScreenOrientation,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
