@@ -17,6 +17,7 @@ export class TransactionReceivePage {
   public address;
   public qraddress: any;
   public tokenParam: Object;
+  public amount: number;
 
   constructor(
     public navCtrl: NavController,
@@ -35,6 +36,10 @@ export class TransactionReceivePage {
     this.clipboard.copy(this.address).then(
       () => this.toastProvider.success('COPIED_CLIPBOARD'),
       () => this.toastProvider.error('COPY_CLIPBOARD_FAILED'));
+  }
+
+  setAmount(amount: number) {
+    this.amount = amount;
   }
 
   share() {

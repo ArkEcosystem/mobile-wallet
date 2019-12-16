@@ -22,19 +22,18 @@ import moment from 'moment';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
-  providers: [ScreenOrientation]
+  styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnDestroy, OnInit {
-  private profile = null;
-  private network = null;
-
   private unsubscriber$: Subject<void> = new Subject<void>();
-  private exitText: string;
-  private signOutText: string;
-  private hideRouter = false;
-
   private lastPauseTimestamp: Date;
+
+  public profile = null;
+  public network = null;
+
+  public exitText: string;
+  public signOutText: string;
+  public hideRouter = false;
 
   constructor(
     private platform: Platform,

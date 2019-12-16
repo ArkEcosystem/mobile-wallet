@@ -30,7 +30,7 @@
 </ion-header>
 
 <ion-content tappable>
-  <ion-slides #delegateSlider (ionSlideDidChange)="onSlideChanged($event)" *ngIf="delegates">
+  <ion-slides #delegateSlider (ionSlideDidChange)="onSlideChanged()" *ngIf="delegates">
     <ion-slide *ngFor="let delegates of allDelegates">
       <ion-list inset class="delegate-list">
         <ng-template ngFor let-delegate [ngForOf]="delegates">

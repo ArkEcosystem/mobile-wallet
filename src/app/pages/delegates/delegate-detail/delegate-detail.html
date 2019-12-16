@@ -8,7 +8,9 @@
         </ion-text>
         <ark-qr-code wrapper="true" [address]="delegate?.address" size="100"></ark-qr-code>
         <ion-text color="dark">
-          <h5 class="text-lg font-semibold my-2" (click)="copyAddress()">{{ delegate?.address | truncateMiddle: 20 }}</h5>
+          <h5 class="text-lg font-semibold my-2" (click)="copyAddress()">
+            {{ delegate?.address | truncateMiddle: 20 }}
+          </h5>
         </ion-text>
   
         <ion-row class="flex items-center mt-6">

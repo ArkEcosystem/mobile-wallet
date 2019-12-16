@@ -33,6 +33,6 @@
         <ark-qr-code wrapper="true" [address]="address" [amount]="amount ? amount : null" [size]="140"></ark-qr-code>
       </ion-col>
     </ion-row>
-    <amount (onChange)="amount = $event.amount"></amount>
+    <amount (onChange)="setAmount($event.amount)"></amount>
   </ion-grid>
 </ion-content>

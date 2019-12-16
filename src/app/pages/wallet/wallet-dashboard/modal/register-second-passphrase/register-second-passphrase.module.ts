@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '@/pipes/pipes.module';
 import { DirectivesModule } from '@/directives/directives.module';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { CommonModule } from '@angular/common';
   ],
   imports: [
     IonicModule,
+    FormsModule,
     CommonModule,
     DirectivesModule,
     TranslateModule,

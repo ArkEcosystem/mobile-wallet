@@ -23,12 +23,12 @@ export class TransactionShowPage {
   public equivalentSymbol: string;
 
   public showOptions = false;
-  private currentNetwork: StoredNetwork;
+  public currentNetwork: StoredNetwork;
   private currentWallet: Wallet;
 
-  private isSender: boolean;
-  private totalAmount: number;
-  private typeLabel: string;
+  public isSender: boolean;
+  public totalAmount: number;
+  public typeLabel: string;
 
   constructor(
     private navCtrl: NavController,

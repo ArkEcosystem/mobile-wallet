@@ -79,7 +79,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   private refreshDataIntervalListener;
   private refreshTickerIntervalListener;
 
-  private transactions: TransactionEntity[] = [];
+  public transactions: TransactionEntity[] = [];
 
   constructor(
     private navCtrl: NavController,
