@@ -15,6 +15,9 @@ import { ArkApiProvider } from './services/ark-api/ark-api';
 import { SettingsDataProvider } from './services/settings-data/settings-data';
 import { EventBusProvider } from './services/event-bus/event-bus';
 
+import * as constants from '@/app/app.constants';
+import moment from 'moment';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -28,6 +31,8 @@ export class AppComponent implements OnDestroy, OnInit {
   private exitText: string;
   private signOutText: string;
   private hideRouter = false;
+
+  private lastPauseTimestamp: Date;
 
   constructor(
     private platform: Platform,
@@ -45,6 +50,7 @@ export class AppComponent implements OnDestroy, OnInit {
     public element: ElementRef,
     private renderer: Renderer2,
     private eventBus: EventBusProvider,
+    private screenOrientation: ScreenOrientation
   ) {
     this.initializeApp();
   }
@@ -54,8 +60,7 @@ export class AppComponent implements OnDestroy, OnInit {
       this.initTranslation();
       this.initTheme();
       this.initalConfig();
-    
-      this.splashScreen.hide();
+      this.initSessionCheck();
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
         if (!hasSeenIntro) {
@@ -65,6 +70,8 @@ export class AppComponent implements OnDestroy, OnInit {
 
         this.openPage('/login', true);
       });
+
+      this.splashScreen.hide();
     });
   }
 
@@ -91,9 +98,28 @@ export class AppComponent implements OnDestroy, OnInit {
     });
   }
 
+  initSessionCheck() {
+    this.platform.pause.subscribe(() => {
+      this.lastPauseTimestamp = moment().toDate();
+    });
+
+    this.platform.resume.subscribe(() => {
+      const now = moment();
+      const diff = now.diff(this.lastPauseTimestamp);
+
+      if (diff >= constants.APP_TIMEOUT_DESTROY) {
+        if (this.menuCtrl && this.menuCtrl.isOpen()) {
+          this.menuCtrl.close();
+        }
+        this.logout();
+      }
+    });
+  }
+
   initalConfig() {
     this.statusBar.styleDefault();
     this.menuCtrl.enable(false, 'sidebar');
+    this.screenOrientation.lock("portrait");
     
     this.eventBus.$subject.subscribe((event) => {
       switch (event.key) {

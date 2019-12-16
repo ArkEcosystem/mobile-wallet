@@ -368,34 +368,32 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   }
 
   setWallet(wallet: Wallet) {
-    this.zone.run(() => {
-      this.wallet = wallet;
-      const transactions = this.wallet.transactions.map((transaction) => ({
-        id: transaction.id,
-        timestamp: transaction.timestamp,
-        recipientId: transaction.recipientId,
-        amount: transaction.amount,
-        fee: transaction.fee,
-        type: transaction.type,
-        vendorField: transaction.vendorField,
-        senderId: transaction.senderId,
-        confirmations: transaction.confirmations,
-        isTransfer: transaction.isTransfer(),
-        isSender: transaction.isSender(),
-        appropriateAddress: transaction.getAppropriateAddress(),
-        activityLabel: transaction.getActivityLabel(),
-        typeLabel: transaction.getTypeLabel(),
-        totalAmount: transaction.getAmount(),
-        date: transaction.date,
-        amountEquivalent: transaction.getAmountEquivalent(this.marketCurrency, this.marketHistory)
-      }));
-  
-      if (dequal(transactions, this.transactions)) {
-        return;
-      }
-  
-      this.transactions = transactions;
-    });
+    this.wallet = wallet;
+    const transactions = this.wallet.transactions.map((transaction) => ({
+      id: transaction.id,
+      timestamp: transaction.timestamp,
+      recipientId: transaction.recipientId,
+      amount: transaction.amount,
+      fee: transaction.fee,
+      type: transaction.type,
+      vendorField: transaction.vendorField,
+      senderId: transaction.senderId,
+      confirmations: transaction.confirmations,
+      isTransfer: transaction.isTransfer(),
+      isSender: transaction.isSender(),
+      appropriateAddress: transaction.getAppropriateAddress(),
+      activityLabel: transaction.getActivityLabel(),
+      typeLabel: transaction.getTypeLabel(),
+      totalAmount: transaction.getAmount(),
+      date: transaction.date,
+      amountEquivalent: transaction.getAmountEquivalent(this.marketCurrency, this.marketHistory)
+    }));
+
+    // if (dequal(transactions, this.transactions)) {
+    //   return;
+    // }
+
+    this.transactions = transactions;
   }
 
   // presentTopWalletsModal() {
