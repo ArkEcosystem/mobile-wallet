@@ -4,6 +4,7 @@ import { Platform, NavController, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Network } from '@ionic-native/network/ngx';
+import { ScreenOrientation } from '@ionic-native/screen-orientation/ngx';
 import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
@@ -21,7 +22,8 @@ import moment from 'moment';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss']
+  styleUrls: ['app.component.scss'],
+  providers: [ScreenOrientation]
 })
 export class AppComponent implements OnDestroy, OnInit {
   private profile = null;
@@ -61,6 +63,7 @@ export class AppComponent implements OnDestroy, OnInit {
       this.initTheme();
       this.initalConfig();
       this.initSessionCheck();
+      this.splashScreen.hide();
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
         if (!hasSeenIntro) {
@@ -71,7 +74,6 @@ export class AppComponent implements OnDestroy, OnInit {
         this.openPage('/login', true);
       });
 
-      this.splashScreen.hide();
     });
   }
 
@@ -99,25 +101,36 @@ export class AppComponent implements OnDestroy, OnInit {
   }
 
   initSessionCheck() {
-    this.platform.pause.subscribe(() => {
-      this.lastPauseTimestamp = moment().toDate();
-    });
-
-    this.platform.resume.subscribe(() => {
-      const now = moment();
-      const diff = now.diff(this.lastPauseTimestamp);
-
-      if (diff >= constants.APP_TIMEOUT_DESTROY) {
-        if (this.menuCtrl && this.menuCtrl.isOpen()) {
-          this.menuCtrl.close();
+    if (this.platform.is('cordova')) {
+      this.platform.pause.subscribe(() => {
+        this.lastPauseTimestamp = moment().toDate();
+      });
+  
+      this.platform.resume.subscribe(() => {
+        const now = moment();
+        const diff = now.diff(this.lastPauseTimestamp);
+  
+        if (diff >= constants.APP_TIMEOUT_DESTROY) {
+          if (this.menuCtrl && this.menuCtrl.isOpen()) {
+            this.menuCtrl.close();
+          }
+          this.logout();
         }
-        this.logout();
-      }
-    });
+      });
+    }
   }
 
   initalConfig() {
-    this.statusBar.styleDefault();
+    if (this.platform.is('cordova')) {
+      if (this.platform.is('ios')) {
+        this.statusBar.styleDefault();
+      }
+  
+      if (this.platform.is('android')) {
+        this.statusBar.show();
+      }
+    }
+
     this.menuCtrl.enable(false, 'sidebar');
     this.screenOrientation.lock("portrait");
     

@@ -24,7 +24,7 @@
     <preference name="SplashShowOnlyFirstTime" value="false" />
     <preference name="SplashScreenSpinnerColor" value="#0000ff" />
     <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="5000" />
+    <preference name="AutoHideSplashScreen" value="false" />
     <platform name="android">
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:networkSecurityConfig="@xml/network_security_config" />
