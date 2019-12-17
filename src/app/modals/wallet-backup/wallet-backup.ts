@@ -11,7 +11,7 @@ import { PassphraseWordTesterModal } from '../passphrase-word-tester/passphrase-
 @Component({
   selector: 'modal-wallet-backup',
   templateUrl: 'wallet-backup.html',
-  styleUrls: ['wallet-backup.scss']
+  styleUrls: ['wallet-backup.pcss']
 })
 export class WalletBackupModal implements OnInit {
   @Input()
