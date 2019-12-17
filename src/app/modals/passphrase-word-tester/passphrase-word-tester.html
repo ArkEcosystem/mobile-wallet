@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header no-shadow no-border>
 
   <ion-toolbar>
     <ion-title>{{ 'WALLETS_PAGE.CREATE_WALLET' | translate }}</ion-title>
@@ -24,7 +24,7 @@
   </ion-grid>
 </ion-content>
 
-<ion-footer class="text-center ion-padding">
+<ion-footer class="text-center ion-padding" no-shadow no-border>
   <ion-button (click)="next()" [disabled]="!wordsForm.valid || !areAllWordsCorrect()">
     {{ 'NEXT' | translate }}
   </ion-button>
