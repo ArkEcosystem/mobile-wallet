@@ -29,7 +29,7 @@ export class GenerateEntropyModal implements OnDestroy {
     private modalCtrl: ModalController,
   ) {
     this.reset();
-    this.menuCtrl.swipeEnable(false, 'sidebarMenu');
+    this.menuCtrl.swipeGesture(false, 'sidebar');
   }
 
   panEvent(e) {
@@ -91,7 +91,7 @@ export class GenerateEntropyModal implements OnDestroy {
 
   ngOnDestroy() {
     this.reset();
-    this.menuCtrl.swipeEnable(true, 'sidebarMenu');
+    this.menuCtrl.swipeGesture(true, 'sidebar');
   }
 
 }

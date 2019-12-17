@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit, Renderer2, ElementRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2, ElementRef, QueryList, ViewChildren } from '@angular/core';
 
-import { Platform, NavController, MenuController } from '@ionic/angular';
+import { Platform, NavController, MenuController, ActionSheetController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Network } from '@ionic-native/network/ngx';
@@ -18,6 +18,7 @@ import { EventBusProvider } from './services/event-bus/event-bus';
 
 import * as constants from '@/app/app.constants';
 import moment from 'moment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,8 @@ import moment from 'moment';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnDestroy, OnInit {
+  @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
+
   private unsubscriber$: Subject<void> = new Subject<void>();
   private lastPauseTimestamp: Date;
 
@@ -51,7 +54,11 @@ export class AppComponent implements OnDestroy, OnInit {
     public element: ElementRef,
     private renderer: Renderer2,
     private eventBus: EventBusProvider,
-    private screenOrientation: ScreenOrientation
+    private screenOrientation: ScreenOrientation,
+    private actionSheetCtrl: ActionSheetController,
+    private modalCtrl: ModalController,
+    private router: Router,
+    private alertCtrl: AlertController
   ) {
     this.initializeApp();
   }
@@ -62,6 +69,7 @@ export class AppComponent implements OnDestroy, OnInit {
       this.initTheme();
       this.initalConfig();
       this.initSessionCheck();
+      this.initBackButton();
       this.splashScreen.hide();
 
       this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
@@ -89,6 +97,72 @@ export class AppComponent implements OnDestroy, OnInit {
     });
   }
 
+  async closeOverlays() {
+    try {
+      const current = await this.actionSheetCtrl.getTop();
+      if (current) {
+        current.dismiss();
+        return;
+      }
+    } catch {}
+
+    try {
+      const current = await this.modalCtrl.getTop();
+      if (current) {
+        current.dismiss();
+        return;
+      }
+    } catch {}
+
+    if (this.menuCtrl && this.menuCtrl.isOpen()) {
+      this.menuCtrl.close();
+    }
+  }
+
+  initBackButton() {
+    this.platform.backButton.subscribe(async () => {
+      await this.closeOverlays();
+      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+        if (outlet && outlet.canGoBack()) {
+          outlet.pop();
+        } else {
+          const path = this.router.url;
+          if (path === "/login" || path === "/intro") {
+            this.showConfirmation(this.exitText).then(() => {
+              navigator['app'].exitApp();
+            });
+          } else {
+            this.showConfirmation(this.signOutText).then(() => {
+              this.logout();
+            });
+          }
+        }
+      });
+    });
+  }
+
+  private showConfirmation(title: string): Promise<void> {
+    return new Promise((resolve) => {
+      this.translateService.get(['NO', 'YES']).subscribe(async (translation) => {
+        const alert = await this.alertCtrl.create({
+          subHeader: title,
+          buttons: [
+            {
+              text: translation.NO,
+              role: 'cancel',
+              handler: () => {}
+            },
+            {
+              text: translation.YES,
+              handler: () => resolve()
+            }
+          ]
+        });
+        alert.present();
+      });
+    });
+  }
+
   initTheme() {
     this.settingsDataProvider.settings.subscribe(settings => {
       if (settings.darkMode) {
@@ -105,14 +179,12 @@ export class AppComponent implements OnDestroy, OnInit {
         this.lastPauseTimestamp = moment().toDate();
       });
   
-      this.platform.resume.subscribe(() => {
+      this.platform.resume.subscribe(async () => {
         const now = moment();
         const diff = now.diff(this.lastPauseTimestamp);
   
         if (diff >= constants.APP_TIMEOUT_DESTROY) {
-          if (this.menuCtrl && this.menuCtrl.isOpen()) {
-            this.menuCtrl.close();
-          }
+          await this.closeOverlays();
           this.logout();
         }
       });
