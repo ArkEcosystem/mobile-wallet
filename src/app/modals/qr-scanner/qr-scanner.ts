@@ -16,8 +16,6 @@ import { EventBusProvider } from '@/services/event-bus/event-bus';
 })
 export class QRScannerModal implements OnDestroy {
 
-  private ionApp: HTMLElement;
-
   constructor(
     private eventBus: EventBusProvider,
     private qrScanner: QRScanner,
@@ -32,28 +30,27 @@ export class QRScannerModal implements OnDestroy {
     this.qrScanner.prepare()
     .then((status: QRScannerStatus) => {
       if (status.authorized) {
-        this.ionApp = <HTMLElement>document.getElementsByTagName('ion-app')[0];
         const scanSub = this.qrScanner.scan().subscribe((qrCode: string) => {
           this.vibration.vibrate(constants.VIBRATION_TIME_MS);
-
+          
           let response;
-
+          
           try {
             response = JSON.parse(qrCode);
           } catch {
             response = qrCode;
           }
-
+          
           this.hideCamera();
           scanSub.unsubscribe();
           this.dismiss(response);
         });
-
-        this.ionApp.classList.add('transparent');
+        
         this.showCamera();
       } else if (status.denied) {
         this.toastProvider.error('QR_CODE.PERMISSION_PERMANENTLY_DENIED');
         this.dismiss();
+        this.qrScanner.openSettings();
       } else {
         this.toastProvider.error('QR_CODE.PERMISSION_DENIED');
         this.dismiss();
@@ -66,11 +63,15 @@ export class QRScannerModal implements OnDestroy {
   }
 
   private showCamera() {
+    const rootElement = <HTMLElement>document.getElementsByTagName('html')[0];
+    rootElement.classList.add('qr-scanner-open');
     this.qrScanner.show();
     this.eventBus.emit('qrScanner:show');
   }
 
   private hideCamera() {
+    const rootElement = <HTMLElement>document.getElementsByTagName('html')[0];
+    rootElement.classList.remove('qr-scanner-open');
     this.qrScanner.hide();
     this.eventBus.emit('qrScanner:hide');
   }
@@ -80,7 +81,6 @@ export class QRScannerModal implements OnDestroy {
       if (status.showing) {
         this.hideCamera();
       }
-      this.ionApp.classList.remove('transparent');
     });
 
     this.modalCtrl.dismiss(qrCode);

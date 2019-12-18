@@ -1,9 +1,11 @@
-<ion-content no-bounce padding>
-  <close-popup color="dark" large="true" (onClose)="dismiss()"></close-popup>
+<ion-content no-scroll padding>
+  <div id="close-scanner-button" class="text-right">
+    <close-popup color="dark" large="true" (onClose)="dismiss()"></close-popup>
+  </div>
   <ion-grid>
     <ion-row>
-      <ion-col class="ion-text-center">
-        <img class="qr-placeholder" src="./assets/img/scan.svg">
+      <ion-col class="text-center">
+        <img class="qr-placeholder" src="/assets/img/scan.svg">
       </ion-col>
     </ion-row>
   </ion-grid>
