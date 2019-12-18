@@ -1,7 +1,5 @@
-modal-qr-scanner {
-  .content {
-    background: transparent !important;
-
+:host {
+  ion-content {
     ion-row {
       align-items: center;
 

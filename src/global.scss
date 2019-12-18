@@ -23,6 +23,7 @@
 @import "../node_modules/tailwindcss/utilities.css";
 
 @import "./assets/styles/auto-complete.pcss";
+@import "./assets/styles/app.pcss";
 
 ion-grid {
   --ion-grid-padding: 0;
@@ -30,6 +31,10 @@ ion-grid {
 
 ion-toolbar * {
   box-sizing: border-box;
+}
+
+.text-selectable {
+  user-select: auto!important;
 }
 
 .note-toolbar {
