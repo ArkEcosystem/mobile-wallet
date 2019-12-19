@@ -122,7 +122,7 @@ export class TopWalletDetailsPage implements OnDestroy {
         )
         .subscribe((response) => {
           if (response && response.success) {
-            this.topWallet.loadTransactions(response.transactions, this.arkApiProvider.network);
+            this.topWallet.loadTransactions(response.transactions);
             this.topWallet.lastUpdate = new Date().getTime();
             this.topWallet.isCold = lodash.isEmpty(response.transactions);
           }

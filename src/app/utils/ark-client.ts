@@ -118,7 +118,7 @@ export default class ApiClient {
             ...transaction,
             recipientId: transaction.recipient,
             senderId: transaction.sender,
-            timestamp: transaction.timestamp.epoch
+            timestamp: transaction.timestamp.unix
           })),
           count: response.meta.totalCount.toString()
         });

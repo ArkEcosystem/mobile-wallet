@@ -213,7 +213,7 @@ export class UserDataProvider {
 
     if (profile.wallets[address]) {
       wallet = wallet.deserialize(profile.wallets[address]);
-      wallet.loadTransactions(wallet.transactions, this.currentNetwork);
+      wallet.loadTransactions(wallet.transactions);
       return wallet;
     }
 

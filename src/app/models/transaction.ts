@@ -49,7 +49,7 @@ export class Transaction extends TransactionModel {
   public version?: number;
   public date: Date;
 
-  constructor(public address: string, private network: StoredNetwork) {
+  constructor(public address: string) {
     super();
   }
 
@@ -60,7 +60,7 @@ export class Transaction extends TransactionModel {
       self[prop] = input[prop];
     }
 
-    this.date = new Date(this.getTimestamp() * 1000);
+    this.date = new Date(this.timestamp * 1000);
     this.amount = new BigNumber(input['amount']).toNumber();
     this.fee = new BigNumber(input['fee']).toNumber();
     delete self.network;
@@ -94,12 +94,6 @@ export class Transaction extends TransactionModel {
     const raw = amount * price;
 
     return isNaN(raw) ? 0 : raw;
-  }
-
-  getTimestamp() {
-    const blockchainTime = new Date(this.network.epoch).getTime() / 1000;
-
-    return this.timestamp + blockchainTime;
   }
 
   getAppropriateAddress() {
