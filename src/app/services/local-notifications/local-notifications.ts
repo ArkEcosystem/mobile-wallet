@@ -94,7 +94,7 @@ export class LocalNotificationsProvider {
             const w = new Wallet();
             Object.assign(w, wallet);
 
-            w.loadTransactions(response.transactions, this.arkApiProvider.network);
+            w.loadTransactions(response.transactions);
 
             this.userDataProvider.updateWallet(w, wallet.profileId);
 

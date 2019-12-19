@@ -11,7 +11,7 @@ import {
 
 import { Subject } from 'rxjs';
 
-import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory, WalletKeys, TransactionEntity } from '@/models/model';
+import { Profile, Wallet, Transaction, MarketTicker, MarketCurrency, MarketHistory, WalletKeys, TransactionEntity, StoredNetwork } from '@/models/model';
 import { UserDataProvider } from '@/services/user-data/user-data';
 import { ArkApiProvider } from '@/services/ark-api/ark-api';
 import { MarketDataProvider } from '@/services/market-data/market-data';
@@ -56,7 +56,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
   confirmTransaction: ConfirmTransactionComponent;
 
   public profile: Profile;
-  public network: Network;
+  public network: StoredNetwork;
   public fees: Fees;
   public wallet: Wallet;
 
@@ -468,7 +468,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
       )
       .subscribe((response) => {
         if (response && response.success) {
-          this.wallet.loadTransactions(response.transactions, this.arkApiProvider.network);
+          this.wallet.loadTransactions(response.transactions);
           this.setWallet(this.wallet);
           this.wallet.lastUpdate = new Date().getTime();
           this.wallet.isCold = lodash.isEmpty(response.transactions);

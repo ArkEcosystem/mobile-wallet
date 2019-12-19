@@ -67,7 +67,7 @@
               <div class="flex flex-col text-right mr-1">
                 <span class="text-sm font-semibold">{{ tx?.isSender ? '-' : '+' }}{{ tx?.totalAmount | unitsSatoshi }} {{ network?.token | uppercase }}</span>
                 <ion-text color="medium">
-                  <p class="timestamp text-xs mt-1">{{ tx?.date | timezone | timestampHuman }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
+                  <p class="timestamp text-xs mt-1">{{ tx?.timestamp | timezone | timestampHuman }} | {{ (tx?.confirmations <= minConfirmations) && tx?.confirmations || minConfirmations+'+' }}</p>
                 </ion-text>
               </div>
               <ion-icon *ngIf="tx?.isSender" name="ios-arrow-round-up" class="icon-rotate-right text-3xl" color="danger"></ion-icon>

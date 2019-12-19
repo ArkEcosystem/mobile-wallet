@@ -77,14 +77,14 @@ export class Wallet extends Account {
     this.isCold = false;
   }
 
-  loadTransactions(transactions: any, network: StoredNetwork) {
+  loadTransactions(transactions: any) {
     if (!Array.isArray(transactions) || transactions.length <= 0) { return; }
 
     this.transactions = [];
 
     for (const tx of transactions) {
-      const transaction = new Transaction(this.address, network);
-      transaction.deserialize(tx);
+      const transaction = new Transaction(this.address).deserialize(tx);
+      // transaction.deserialize(tx);
 
       this.transactions.push(transaction);
     }

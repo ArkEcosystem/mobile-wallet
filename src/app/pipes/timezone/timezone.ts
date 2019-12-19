@@ -1,13 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import moment from 'moment-timezone';
+import moment from 'moment';
 
 @Pipe({
   name: 'timezone',
 })
 export class TimezonePipe implements PipeTransform {
 
-  transform(value: string, ...args) {
-    return moment(value).tz(moment.tz.guess()).format();
+  transform(value: number) {
+    return moment.unix(value).local()
   }
 
 }

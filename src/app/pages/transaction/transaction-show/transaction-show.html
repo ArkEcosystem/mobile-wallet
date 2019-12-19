@@ -65,7 +65,7 @@
             <ion-label>
               <div class="item-title">{{ 'DATE' | translate}}</div>
               <div class="item-content">
-                {{ transaction?.date | timezone | date: 'dd.MM.yy | hh:mm a' }}
+                {{ transaction?.timestamp | timezone | date: 'dd.MM.yy | hh:mm a' }}
               </div>
             </ion-label>
           </ion-item>

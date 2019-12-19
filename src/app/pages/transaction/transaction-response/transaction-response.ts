@@ -45,7 +45,7 @@ export class TransactionResponsePage {
     if (!this.response) { this.navCtrl.pop(); }
 
     if (transaction) {
-      this.transaction = new Transaction(this.wallet.address, this.currentNetwork).deserialize(transaction);
+      this.transaction = new Transaction(this.wallet.address).deserialize(transaction);
     }
   }
 
