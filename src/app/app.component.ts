@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, Renderer2, ElementRef, QueryList, ViewChildren } from '@angular/core';
 
-import { Platform, NavController, MenuController, ActionSheetController, IonRouterOutlet, ModalController, AlertController } from '@ionic/angular';
+import { Platform, NavController, MenuController, ActionSheetController, IonRouterOutlet, ModalController, AlertController, Config } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Network } from '@ionic-native/network/ngx';
@@ -58,7 +58,8 @@ export class AppComponent implements OnDestroy, OnInit {
     private actionSheetCtrl: ActionSheetController,
     private modalCtrl: ModalController,
     private router: Router,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private config: Config
   ) {
     this.initializeApp();
   }
@@ -67,7 +68,7 @@ export class AppComponent implements OnDestroy, OnInit {
     this.platform.ready().then(() => {
       this.initTranslation();
       this.initTheme();
-      this.initalConfig();
+      this.initConfig();
       this.initSessionCheck();
       this.initBackButton();
       this.splashScreen.hide();
@@ -191,10 +192,13 @@ export class AppComponent implements OnDestroy, OnInit {
     }
   }
 
-  initalConfig() {
+  initConfig() {
     if (this.platform.is('cordova')) {
+      this.config.set("scrollAssist", false);
+
       if (this.platform.is('ios')) {
         this.statusBar.styleDefault();
+        this.config.set("scrollPadding", false);
       }
   
       if (this.platform.is('android')) {

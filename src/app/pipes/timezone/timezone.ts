@@ -7,7 +7,7 @@ import moment from 'moment';
 export class TimezonePipe implements PipeTransform {
 
   transform(value: number) {
-    return moment.unix(value).local()
+    return moment.unix(value).local().toString()
   }
 
 }
