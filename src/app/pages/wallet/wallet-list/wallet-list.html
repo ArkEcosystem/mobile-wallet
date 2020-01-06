@@ -19,8 +19,8 @@
   <empty-list *ngIf="wallets?.length === 0" message="WALLETS_PAGE.ADD_WALLET_TEXT" (onClickButton)="presentActionSheet()"></empty-list>
 
   <ion-grid class="h-full flex flex-col justify-between" *ngIf="wallets?.length > 0">
-    <ion-row class="flex-1 flex flex-col py-5">
-      <ion-row class="flex flex-col px-5">
+    <div class="flex-1 flex flex-col py-5">
+      <div class="flex flex-col px-5">
         <ion-text color="medium">
           <p class="mb-1 text-xs uppercase font-semibold">{{ 'WALLETS_PAGE.TOTAL_BALANCE' | translate }}</p>
         </ion-text>
@@ -37,9 +37,9 @@
             <ion-skeleton-text *ngIf="!fiatCurrency?.price" animated class="w-10 ml-2"></ion-skeleton-text>
           </div>
         </div>
-      </ion-row>
+      </div>
 
-      <ion-row class="p-0 mt-4">
+      <div class="block p-0 mt-4">
         <ion-slides class="w-full ml-5" [options]="slideOptions" #walletSlider (ionSlideDidChange)="onSlideChanged()">
           <ion-slide class="flex justify-start" *ngFor="let wallet of wallets" tappable (tap)="openWalletDashboard(wallet)">
             <ion-item lines="none" [ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}">
@@ -59,8 +59,8 @@
             </ion-item>
           </ion-slide>
         </ion-slides>
-      </ion-row>
-    </ion-row>
+      </div>
+    </div>
 
     <ion-row class="flex-1 flex items-end p-5">
       <ion-col appMarketNetOnly>
