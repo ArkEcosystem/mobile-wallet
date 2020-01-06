@@ -51,7 +51,7 @@ export class WalletBackupModal implements OnInit {
     const wordTesterModal = await this.modalCtrl.create({
       component: PassphraseWordTesterModal,
       componentProps: {
-        passphrase: this.account.mnemonic,
+        passphraseReference: this.account.mnemonic,
         wordlistLanguage: this.wordlistLanguage
       }
     });

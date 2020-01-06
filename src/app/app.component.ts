@@ -204,10 +204,11 @@ export class AppComponent implements OnDestroy, OnInit {
       if (this.platform.is('android')) {
         this.statusBar.show();
       }
+
+      this.screenOrientation.lock("portrait");
     }
 
     this.menuCtrl.enable(false, 'sidebar');
-    this.screenOrientation.lock("portrait");
     
     this.eventBus.$subject.subscribe((event) => {
       switch (event.key) {
