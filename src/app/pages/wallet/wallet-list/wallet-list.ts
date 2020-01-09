@@ -157,7 +157,7 @@ export class WalletListPage implements OnDestroy {
         }
       });
 
-      showModal.onDidDismiss().then((account) => {
+      showModal.onDidDismiss().then(({ data: account }) => {
         if (!account) { return; }
 
         this.storeWallet(account);
@@ -196,10 +196,10 @@ export class WalletListPage implements OnDestroy {
       }
     });
 
-    modal.onDidDismiss().then(({ data }) => {
-      if (!data.password) { return; }
+    modal.onDidDismiss().then(({ data: password }) => {
+      if (!password) { return; }
 
-      this.userDataProvider.addWallet(wallet, account.mnemonic, data.password).pipe(
+      this.userDataProvider.addWallet(wallet, account.mnemonic, password).pipe(
         takeUntil(this.unsubscriber$)
       ).subscribe(() => {
         this.loadWallets();
