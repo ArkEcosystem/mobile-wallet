@@ -11,8 +11,10 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "lab": "ionic serve --lab",
-    "run:ios": "PLATFORM=ios ionic cordova run ios --address=0.0.0.0 --debug --consolelogs -l",
-    "build:ios": "PLATFORM=ios ionic cordova build ios --prod --release"
+    "debug:ios": "PLATFORM=ios ionic cordova run ios --address=0.0.0.0 --debug --consolelogs -l",
+    "build:ios": "PLATFORM=ios ionic cordova build ios --prod --release",
+    "debug:android": "ionic cordova run android --debug --consolelogs -l",
+    "build:android": "ionic cordova build android --prod --release"
   },
   "private": true,
   "dependencies": {

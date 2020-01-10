@@ -13,80 +13,122 @@
 
 > Lead Maintainer: [Lúcio Rubens](https://github.com/luciorubeens)
 
-ARK’s mobile wallet is a hybrid application (using the same codebase for Android and iOS which helps with coordinated development). Created using Ionic framework and ARK’s [TypeScript API](https://github.com/ArkEcosystem/ark-ts) to interact with the ARK network via your mobile phone, anytime, anywhere (as long as you have an internet connection).
+ARK’s mobile wallet is a hybrid application (using the same codebase for Android and iOS which helps with coordinated development).
 
 ## Download
 
 - [Google Play](https://play.google.com/store/apps/details?id=io.ark.wallet.mobile)
 - [App Store](https://itunes.apple.com/us/app/mobile-ark/id1324625967)
 
-## Features
+## Installation
 
-- Import your existing passphrase (import by QR Scanner or write/paste your passphrase).
-- Generate a new passphrase.
-- Encrypt access to your profile with a custom 6 digit PIN (AES256+PBKDF2).
-- Most transaction types are available: send, receive, vote, unvote, register a delegate.
-- Connects to both mainnet and devnet.
-- Option for additional profiles (separate profiles for different ARK addresses or networks).
-- Option to add contacts and easily transact with them.
-- Total balance of your combined ARK addresses.
-- Wallet backup - input your selected PIN to decrypt your wallet and gain view of your private data.
-- Change PIN - if you want to change your encryption/decryption PIN you can easily do so.
-- Clear Data - you can clear all your data from the phone.
-- Overview of network status with an option to change peer.
-- Current market value, along with weekly movements.
-- Support for showing data in different FIAT currencies.
+### Node Setup
+
+Download and install [Node.js](https://nodejs.org/).
+
+Then follow the steps below:
+
+```bash
+npm install -g ionic cordova
+npm install -g cordova-res native-run
+npm install
+ionic cordova prepare
+```
+
+### iOS Setup
+
+Download and install [Xcode](https://developer.apple.com/xcode/).
+
+Then make sure the command-line tools are selected for use:
+
+```bash
+xcode-select --install
+```
+
+And you need to install some utilities:
+
+```bash
+npm install -g ios-sim
+npm install -g ios-deploy
+```
+
+### Android Setup
+
+Download and install:
+
+- [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [Gradle](https://gradle.org/install/)
+- [Android Studio](https://developer.android.com/studio/)
+
+Then install Android SDK (API 28) on Android Studio and configure the [environment variables](https://developer.android.com/studio/command-line/variables) (`ANDROID_SDK_ROOT`).
+
+## Usage
+
+Debug in device:
+
+```bash
+npm run debug:ios
+npm run debug:android
+```
+
+Debug in browser (without Cordova plugins):
+
+```bash
+npm start
+```
 
 ## Build
 
-First follow the steps below to install the dependencies:
+Run the command to create a build for the specific platform:
 
 ```bash
-$ npm install -g ionic cordova@7.1.0
-$ npm install
-$ ionic cordova prepare
+npm run build:ios
+npm run build:android
 ```
 
-Run on device:
+### iOS Deploy
+
+- Download the `Development` and `Distribution` certificates in [Apple's member center](https://developer.apple.com/membercenter)
+- Open Xcode and import the workspace file in `/platforms/ios`
+- Check the `Signing and Capabilities` tab to ensure that the `Provisioning Profile` is set correctly
+- Go to `Product` > `Archive` in menu.
+- Proceed in `Distribute App` wizard.
+- `App Store Connect` > `Upload`. Then it will be listed on [iTunes Connect](https://itunesconnect.apple.com/)
+- `App Store Connect` > `Export` to create the `.ipa` file
+
+### Android Deploy
+
+- Open the output directory `cd platforms/android/build/outputs/apk`
+- Generate a private key to sign the APK (skip this if you already have one):
 
 ```bash
-$ ionic cordova run ios
-$ ionic cordova run android
+keytool -genkey -v -keystore release-key.keystore -alias ark -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-Debug in browser:
+- Sign the unsigned APK:
 
 ```bash
-$ npm run ionic:serve
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ./release-key.keystore app-release-unsigned.apk mobile-app
 ```
+
+- Optimize the APK:
+
+```bash
+zipalign -v 4 app-release-unsigned.apk AppRelease.apk
+```
+
+- Open the [Google Play Store Developer Console](https://play.google.com/apps/publish) and upload the `AppRelease.apk`
 
 ## Testing
 
-To run the unit tests:
 ```bash
-$ npm test
-```
-
-To run the unit tests and watch them:
-```bash
-$ npm run test:unit
-```
-
-To run the unit tests and generate a coverage report:
-```bash
-$ npm run test:coverage
-```
-
-To run the E2E (end to end) tests:
-```bash
-$ npm run test:e2e
+npm test
 ```
 
 ## Contributing
 
 - If you find any bugs, submit an [issue](../../issues) or open [pull-request](../../pulls), helping us catch and fix them.
 - Engage with other users and developers on [ARK Slack](https://ark.io/slack/).
-- Join to our [gitter](https://gitter.im/ark-developers/Lobby).
 - [Contribution bounties](https://docs.ark.io/guidebook/contribution-guidelines/contributing.html).
 - [Help translate](./TRANSLATING.md).
 
