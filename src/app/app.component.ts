@@ -122,17 +122,18 @@ export class AppComponent implements OnDestroy, OnInit {
 
   initBackButton() {
     this.platform.backButton.subscribe(async () => {
+      const path = this.router.url;
       await this.closeOverlays();
+
       this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
         if (outlet && outlet.canGoBack()) {
           outlet.pop();
         } else {
-          const path = this.router.url;
           if (path === "/login" || path === "/intro") {
             this.showConfirmation(this.exitText).then(() => {
               navigator['app'].exitApp();
             });
-          } else {
+          } else if (path === "/wallets") {
             this.showConfirmation(this.signOutText).then(() => {
               this.logout();
             });
