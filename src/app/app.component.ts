@@ -169,8 +169,10 @@ export class AppComponent implements OnDestroy, OnInit {
     this.settingsDataProvider.settings.subscribe(settings => {
       if (settings.darkMode) {
         this.renderer.addClass(this.element.nativeElement.parentNode, 'dark-theme');
+        this.statusBar.styleBlackTranslucent();
       } else {
         this.renderer.removeClass(this.element.nativeElement.parentNode, 'dark-theme');
+        this.statusBar.styleDefault();
       }
     });
   }
@@ -195,10 +197,11 @@ export class AppComponent implements OnDestroy, OnInit {
 
   initConfig() {
     if (this.platform.is('cordova')) {
+      this.statusBar.styleDefault();
+
       this.config.set("scrollAssist", false);
 
       if (this.platform.is('ios')) {
-        this.statusBar.styleDefault();
         this.config.set("scrollPadding", false);
       }
   

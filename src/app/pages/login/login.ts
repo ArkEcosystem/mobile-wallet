@@ -21,7 +21,7 @@ export class LoginPage {
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     private authProvider: AuthProvider,
-    private userDataProvider: UserDataProvider,
+    private userDataProvider: UserDataProvider
   ) {
     this.authProvider.getMasterPassword().subscribe(master => {
       this.hasProfiles = master && !isNil(this.userDataProvider.profiles);

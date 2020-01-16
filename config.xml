@@ -27,6 +27,8 @@
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="KeyboardDisplayRequiresUserAction" value="false" />
     <preference name="KeyboardResizeMode" value="native" />
+    <preference name="Orientation" value="portrait" />
+    <preference name="target-device" value="handset" />
     <platform name="android">
         <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:networkSecurityConfig="@xml/network_security_config" />
@@ -54,6 +56,12 @@
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
     </platform>
     <platform name="ios">
+        <config-file parent="UIUserInterfaceStyle" target="*-Info.plist">
+            <string>Light</string>
+        </config-file>
+        <config-file parent="UIViewControllerBasedStatusBarAppearance" target="*-Info.plist">
+            <true />
+        </config-file>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
