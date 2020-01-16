@@ -34,14 +34,17 @@ export function createTranslateLoader(http: HttpClient) {
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {
-          provide: TranslateLoader,
-          useFactory: createTranslateLoader,
-          deps: [HttpClient]
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
       }
     }),
     AppRoutingModule,
     ChartsModule
- ],
+  ],
+  exports: [
+    TranslateModule
+  ],
   providers: [
     StatusBar,
     SplashScreen,

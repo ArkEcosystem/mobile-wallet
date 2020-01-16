@@ -1,15 +1,39 @@
-import { async } from '@angular/core/testing'
-import { TestHelpers } from '../../../test/helpers'
-import { IntroPage } from './intro'
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-describe('Pages: Intro', () => {
-  let instance: any = null;
+import { IntroPage } from './intro';
+import { IonicModule } from '@ionic/angular';
+import { SharedModule } from '@/app/shared.module';
+import { RouterModule } from '@angular/router';
+import { IonicStorageModule } from '@ionic/storage';
+import { TranslateModule } from '@ngx-translate/core';
 
-  beforeEach(async(() => TestHelpers.beforeEachCompiler([IntroPage]).then(compiled => {
-    instance = compiled.instance;
-  })));
 
-  it('should create the Intro page', () => {
-    expect(instance).toBeDefined();
+describe('IntroPage', () => {
+  let component: IntroPage;
+  let fixture: ComponentFixture<IntroPage>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      declarations: [IntroPage],
+      imports: [
+        IonicModule,
+        IonicStorageModule.forRoot(),
+        TranslateModule.forRoot(),
+        SharedModule,
+        RouterModule.forRoot([])
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    }).compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(IntroPage);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 });
