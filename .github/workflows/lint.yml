@@ -1,0 +1,29 @@
+name: Lint
+
+on:
+	push:
+		branches:
+			- "**"
+	pull_request:
+		types: [ready_for_review, synchronize, opened]
+
+jobs:
+	source:
+		runs-on: ubuntu-latest
+
+		strategy:
+			matrix:
+				node-version: [12.x]
+
+		steps:
+			- uses: actions/checkout@v1
+			- name: Use Node.js ${{ matrix.node-version }}
+			  uses: actions/setup-node@v1
+			  with:
+				node-version: ${{ matrix.node-version }}
+			- name: Install pre dependencies
+			  run: npm install -g ionic cordova
+			- name: Install
+			  run: npm rebuild node-sass && npm install
+			- name: Lint
+			  run: npm run lint
