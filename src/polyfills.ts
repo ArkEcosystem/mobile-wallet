@@ -52,27 +52,25 @@
  *
  */
 
-import './zone-flags.ts';
+import "./zone-flags.ts";
 
 /***************************************************************************************************
  * Zone JS is required by default for Angular itself.
  */
 
-import 'zone.js/dist/zone';  // Included with Angular CLI.
-
+import "zone.js/dist/zone"; // Included with Angular CLI.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
 
-
 /**
-  * TODO: Remove when angular supports TypeScript >3.7
-  * @see: https://github.com/angular/angular-cli/issues/16071#issuecomment-553227215
-*/
+ * TODO: Remove when angular supports TypeScript >3.7
+ * @see: https://github.com/angular/angular-cli/issues/16071#issuecomment-553227215
+ */
 
 // @ts-ignore
+// tslint:disable-next-line: only-arrow-functions
 window.__importDefault = function(mod) {
-  return mod && mod.__esModule ? mod : { default: mod };
+	return mod && mod.__esModule ? mod : { default: mod };
 };
- 

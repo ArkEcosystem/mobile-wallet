@@ -1,41 +1,62 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import forge from 'node-forge';
+import forge from "node-forge";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class ForgeProvider {
+	private keySize = 32; // AES-256
+	private interations = 5000;
+	// private scryptParams = {N: 4096, r: 8, p: 8};
 
-  private keySize = 32; // AES-256
-  private interations = 5000;
-  // private scryptParams = {N: 4096, r: 8, p: 8};
+	constructor() {}
 
-  constructor() { }
+	public generateIv() {
+		return forge.util.encode64(forge.random.getBytesSync(16));
+	}
 
-  public generateIv() {
-    return forge.util.encode64(forge.random.getBytesSync(16));
-  }
+	public encrypt(
+		message: string,
+		password: string,
+		address: string,
+		iv: any,
+	) {
+		const derivedKey = forge.pkcs5.pbkdf2(
+			password,
+			address,
+			this.interations,
+			this.keySize,
+		);
+		const cipher = forge.cipher.createCipher("AES-CBC", derivedKey);
+		cipher.start({ iv: forge.util.decode64(iv) });
+		cipher.update(forge.util.createBuffer(message));
+		cipher.finish();
 
-  public encrypt(message: string, password: string, address: string, iv: any) {
-    const derivedKey = forge.pkcs5.pbkdf2(password, address, this.interations, this.keySize);
-    const cipher = forge.cipher.createCipher('AES-CBC', derivedKey);
-    cipher.start({ iv: forge.util.decode64(iv) });
-    cipher.update(forge.util.createBuffer(message));
-    cipher.finish();
+		return forge.util.encode64(cipher.output.getBytes());
+	}
 
-    return forge.util.encode64(cipher.output.getBytes());
-  }
+	public decrypt(
+		cipherText: string,
+		password: string,
+		address: string,
+		iv: any,
+	) {
+		const derivedKey = forge.pkcs5.pbkdf2(
+			password,
+			address,
+			this.interations,
+			this.keySize,
+		);
+		const decipher = forge.cipher.createDecipher("AES-CBC", derivedKey);
+		decipher.start({ iv: forge.util.decode64(iv) });
+		decipher.update(
+			forge.util.createBuffer(forge.util.decode64(cipherText)),
+		);
+		decipher.finish();
 
-  public decrypt(cipherText: string, password: string, address: string, iv: any) {
-    const derivedKey = forge.pkcs5.pbkdf2(password, address, this.interations, this.keySize);
-    const decipher = forge.cipher.createDecipher('AES-CBC', derivedKey);
-    decipher.start({ iv: forge.util.decode64(iv) });
-    decipher.update(forge.util.createBuffer(forge.util.decode64(cipherText)));
-    decipher.finish();
+		return decipher.output.toString();
+	}
 
-    return decipher.output.toString();
-  }
-
-  /* DEPRECATED: Due to the slowness on devices was replaced by pbkdf2
+	/* DEPRECATED: Due to the slowness on devices was replaced by pbkdf2
   public encryptBip38(wif: string, password: string, network: Network): string {
     let key = PrivateKey.fromWIF(wif, network);
 
@@ -50,5 +71,4 @@ export class ForgeProvider {
     return wifString;
   }
   */
-
 }

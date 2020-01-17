@@ -26,18 +26,18 @@
 @import "./assets/styles/app.pcss";
 
 ion-grid {
-  --ion-grid-padding: 0;
+	--ion-grid-padding: 0;
 }
 
 ion-toolbar * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .text-selectable {
-  user-select: auto!important;
+	user-select: auto !important;
 }
 
 .note-toolbar {
-  padding: 1em;
-  background-color: rgba(var(--ion-color-warning-rgb), .5);
+	padding: 1em;
+	background-color: rgba(var(--ion-color-warning-rgb), 0.5);
 }

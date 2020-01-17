@@ -1,13 +1,13 @@
 :host {
-  #sidebar {
-    ion-item {
-      --border-width: 0;
+	#sidebar {
+		ion-item {
+			--border-width: 0;
 
-      font-weight: 500;
+			font-weight: 500;
 
-      ion-icon {
-        color: var(--ion-color-primary)
-      }
-    }
-  }
+			ion-icon {
+				color: var(--ion-color-primary);
+			}
+		}
+	}
 }

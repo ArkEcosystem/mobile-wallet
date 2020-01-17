@@ -1,24 +1,31 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { UserDataProvider } from '@/services/user-data/user-data';
-import { ContactsProvider } from '@/services/contacts/contacts';
+import { ContactsProvider } from "@/services/contacts/contacts";
+import { UserDataProvider } from "@/services/user-data/user-data";
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: 'accountLabel',
+	name: "accountLabel",
 })
 export class AccountLabelPipe implements PipeTransform {
+	constructor(
+		private userDataProvider: UserDataProvider,
+		private contactsProvider: ContactsProvider,
+	) {}
 
-  constructor(private userDataProvider: UserDataProvider, private contactsProvider: ContactsProvider) {
-  }
+	transform(value: string, defaultText?: string) {
+		const contact = this.contactsProvider.getContactByAddress(value);
+		if (contact) {
+			return contact.name;
+		}
 
-  transform(value: string, defaultText?: string) {
-    const contact = this.contactsProvider.getContactByAddress(value);
-    if (contact) { return contact.name; }
+		const label = this.userDataProvider.getWalletLabel(value);
+		if (label) {
+			return label;
+		}
 
-    const label = this.userDataProvider.getWalletLabel(value);
-    if (label) { return label; }
+		if (defaultText) {
+			return defaultText;
+		}
 
-    if (defaultText) { return defaultText; }
-
-    return value;
-  }
+		return value;
+	}
 }

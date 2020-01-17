@@ -1,28 +1,26 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController } from '@ionic/angular';
+import { Component } from "@angular/core";
+import { ModalController, NavController, NavParams } from "@ionic/angular";
 
 @Component({
-  selector: 'page-set-label',
-  templateUrl: 'set-label.html',
+	selector: "page-set-label",
+	templateUrl: "set-label.html",
 })
 export class SetLabelPage {
+	public label;
 
-  public label;
+	constructor(
+		public navCtrl: NavController,
+		public navParams: NavParams,
+		public modalCtrl: ModalController,
+	) {
+		this.label = this.navParams.get("label") || "";
+	}
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public modalCtrl: ModalController,
-  ) {
-    this.label = this.navParams.get('label') || '';
-  }
+	closeModal() {
+		this.modalCtrl.dismiss();
+	}
 
-  closeModal() {
-    this.modalCtrl.dismiss();
-  }
-
-  submitForm() {
-    this.modalCtrl.dismiss(this.label, 'submit');
-  }
-
+	submitForm() {
+		this.modalCtrl.dismiss(this.label, "submit");
+	}
 }

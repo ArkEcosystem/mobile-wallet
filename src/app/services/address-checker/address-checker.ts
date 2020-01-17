@@ -1,84 +1,126 @@
-import { Injectable } from '@angular/core';
-import { NetworkProvider } from '@/services/network/network';
-import { Observable, Subscriber } from 'rxjs';
-import { UserDataProvider } from '@/services/user-data/user-data';
-import { ArkApiProvider } from '@/services/ark-api/ark-api';
-import { NeoApiProvider } from '@/services/neo-api/neo-api';
-import { CompleteHandler } from '../../utils/complete-handler';
-import { AddressCheckResultType } from '@/services/address-checker/address-check-result-type';
-import { AddressCheckResult } from '@/services/address-checker/address-check-result';
-import { map } from 'rxjs/operators';
+import { AddressCheckResult } from "@/services/address-checker/address-check-result";
+import { AddressCheckResultType } from "@/services/address-checker/address-check-result-type";
+import { ArkApiProvider } from "@/services/ark-api/ark-api";
+import { NeoApiProvider } from "@/services/neo-api/neo-api";
+import { NetworkProvider } from "@/services/network/network";
+import { UserDataProvider } from "@/services/user-data/user-data";
+import { Injectable } from "@angular/core";
+import { Observable, Subscriber } from "rxjs";
+import { map } from "rxjs/operators";
+import { CompleteHandler } from "../../utils/complete-handler";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AddressCheckerProvider {
+	public constructor(
+		private networkProvider: NetworkProvider,
+		private userDataProvider: UserDataProvider,
+		private arkApiProvider: ArkApiProvider,
+		private neoApiProvider: NeoApiProvider,
+	) {}
 
-  public constructor(private networkProvider: NetworkProvider,
-                     private userDataProvider: UserDataProvider,
-                     private arkApiProvider: ArkApiProvider,
-                     private neoApiProvider: NeoApiProvider) {
-  }
+	private static createError(
+		key: string,
+		parameters?: any,
+	): AddressCheckResult {
+		return AddressCheckerProvider.createReturnObjectType(
+			AddressCheckResultType.Error,
+			key,
+			parameters,
+		);
+	}
 
-  public checkAddress(address: string): Observable<AddressCheckResult> {
-    return Observable.create((observer: Subscriber<AddressCheckResult>) => {
-      const handler = new CompleteHandler<AddressCheckResult>(observer, 2);
+	private static createWarning(
+		key: string,
+		parameters?: any,
+	): AddressCheckResult {
+		return AddressCheckerProvider.createReturnObjectType(
+			AddressCheckResultType.Warning,
+			key,
+			parameters,
+		);
+	}
 
-      if (!this.isValidAddress(address)) {
-        handler.complete(AddressCheckerProvider.createError('VALIDATION.INVALID_ADDRESS'));
-        return;
-      }
+	private static createReturnObjectType(
+		type: AddressCheckResultType,
+		key: string,
+		parameters?: any,
+	): AddressCheckResult {
+		return new AddressCheckResult(type, { key, parameters });
+	}
 
-      if (this.isOwnAddress(address)) {
-        handler.complete(AddressCheckerProvider.createWarning('VALIDATION.IS_OWN_ADDRESS'));
-        return;
-      }
+	public checkAddress(address: string): Observable<AddressCheckResult> {
+		return new Observable((observer: Subscriber<AddressCheckResult>) => {
+			const handler = new CompleteHandler<AddressCheckResult>(
+				observer,
+				2,
+			);
 
-      this.hasTransactions(address).subscribe(hasTxs => {
-        if (hasTxs) {
-          handler.complete();
-        } else {
-          handler.completeAsLast(AddressCheckerProvider.createWarning('VALIDATION.NO_TRANSACTIONS'));
-        }
-      }, () => handler.softComplete());
+			if (!this.isValidAddress(address)) {
+				handler.complete(
+					AddressCheckerProvider.createError(
+						"VALIDATION.INVALID_ADDRESS",
+					),
+				);
+				return;
+			}
 
-      this.neoApiProvider.doesAddressExist(address).subscribe(exists => {
-        if (exists) {
-          handler.complete(AddressCheckerProvider.createWarning('VALIDATION.IS_NEO_ADDRESS'));
-        } else {
-          handler.softComplete();
-        }
-      }, () => handler.softComplete());
-    });
-  }
+			if (this.isOwnAddress(address)) {
+				handler.complete(
+					AddressCheckerProvider.createWarning(
+						"VALIDATION.IS_OWN_ADDRESS",
+					),
+				);
+				return;
+			}
 
-  public isValidAddress(address: string): boolean {
-    return this.networkProvider.isValidAddress(address);
-  }
+			this.hasTransactions(address).subscribe(
+				hasTxs => {
+					if (hasTxs) {
+						handler.complete();
+					} else {
+						handler.completeAsLast(
+							AddressCheckerProvider.createWarning(
+								"VALIDATION.NO_TRANSACTIONS",
+							),
+						);
+					}
+				},
+				() => handler.softComplete(),
+			);
 
-  public isOwnAddress(address: string): boolean {
-    return this.userDataProvider.currentWallet.address === address;
-  }
+			this.neoApiProvider.doesAddressExist(address).subscribe(
+				exists => {
+					if (exists) {
+						handler.complete(
+							AddressCheckerProvider.createWarning(
+								"VALIDATION.IS_NEO_ADDRESS",
+							),
+						);
+					} else {
+						handler.softComplete();
+					}
+				},
+				() => handler.softComplete(),
+			);
+		});
+	}
 
-  public hasTransactions(address: string): Observable<boolean> {
-    return this.arkApiProvider.client.getTransactionList(address).pipe(
-      map(txs => {
-        if (!txs.success) {
-          throw Error();
-        }
-       return txs.transactions && txs.transactions.length > 0;
-      })
-    )
-  }
+	public isValidAddress(address: string): boolean {
+		return this.networkProvider.isValidAddress(address);
+	}
 
-  private static createError(key: string, parameters?: Object): AddressCheckResult {
-    return AddressCheckerProvider.createReturnObjectType(AddressCheckResultType.Error, key, parameters);
-  }
+	public isOwnAddress(address: string): boolean {
+		return this.userDataProvider.currentWallet.address === address;
+	}
 
-  private static createWarning(key: string, parameters?: Object): AddressCheckResult {
-    return AddressCheckerProvider.createReturnObjectType(AddressCheckResultType.Warning, key, parameters);
-  }
-
-  private static createReturnObjectType(type: AddressCheckResultType, key: string, parameters?: Object): AddressCheckResult {
-    return new AddressCheckResult(type, {key, parameters});
-  }
-
+	public hasTransactions(address: string): Observable<boolean> {
+		return this.arkApiProvider.client.getTransactionList(address).pipe(
+			map(txs => {
+				if (!txs.success) {
+					throw Error();
+				}
+				return txs.transactions && txs.transactions.length > 0;
+			}),
+		);
+	}
 }

@@ -1,19 +1,20 @@
-import { Component, Input, HostBinding, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
-  selector: 'empty-list',
-  templateUrl: 'empty-list.html',
-  styleUrls: ['empty-list.scss']
+	selector: "empty-list",
+	templateUrl: "empty-list.html",
+	styleUrls: ["empty-list.scss"],
 })
 export class EmptyListComponent {
+	@Input()
+	message: string;
 
-  @Input() message: string;
-  @Output() onClickButton = new EventEmitter();
+	@Output()
+	clickButton = new EventEmitter();
 
-  constructor() {}
+	constructor() {}
 
-  submit() {
-    this.onClickButton.emit();
-  }
-
+	submit() {
+		this.clickButton.emit();
+	}
 }

@@ -1,61 +1,82 @@
 <ion-header no-shadow no-border>
-
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>{{ 'PROFILES_PAGE.CREATE_PROFILE' | translate }}</ion-title>
-  </ion-toolbar>
-
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title>{{ 'PROFILES_PAGE.CREATE_PROFILE' | translate }}</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <form #createProfileForm="ngForm" class="h-full">
-    <ion-grid class="h-full">
-      <ion-row class="px-6 mt-4">
-        <ion-col class="p-0">
-          <ion-item class="p-0">
-            <ion-label position="floating">{{ 'NAME' | translate }}</ion-label>
-            <ion-input type="text" name="name" [(ngModel)]="newProfile.name" required></ion-input>
-          </ion-item>
-        </ion-col>
-      </ion-row>
+	<form #createProfileForm="ngForm" class="h-full">
+		<ion-grid class="h-full">
+			<ion-row class="px-6 mt-4">
+				<ion-col class="p-0">
+					<ion-item class="p-0">
+						<ion-label position="floating"
+							>{{ 'NAME' | translate }}</ion-label
+						>
+						<ion-input
+							type="text"
+							name="name"
+							[(ngModel)]="newProfile.name"
+							required
+						></ion-input>
+					</ion-item>
+				</ion-col>
+			</ion-row>
 
-      <ion-row class="mt-6">
-        <ion-col class="p-0">
-          <ion-toolbar color="light" (click)="toggleAdvanced()">
-            {{ 'SHOW_ADVANCED' | translate }}
-            <ion-buttons slot="end">
-              <ion-button color="primary" fill="clear">
-                <ion-icon [name]="showAdvancedOptions ? 'arrow-dropup' : 'arrow-dropdown'"></ion-icon>
-              </ion-button>
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-col>
-      </ion-row>
+			<ion-row class="mt-6">
+				<ion-col class="p-0">
+					<ion-toolbar color="light" (click)="toggleAdvanced()">
+						{{ 'SHOW_ADVANCED' | translate }}
+						<ion-buttons slot="end">
+							<ion-button color="primary" fill="clear">
+								<ion-icon
+									[name]="showAdvancedOptions ? 'arrow-dropup' : 'arrow-dropdown'"
+								></ion-icon>
+							</ion-button>
+						</ion-buttons>
+					</ion-toolbar>
+				</ion-col>
+			</ion-row>
 
-      <ion-row class="px-6 mt-2" *ngIf="showAdvancedOptions">
-        <ion-list lines="full" inset class="w-full">
-          <ion-item>
-            <ion-label>{{ 'NETWORKS_PAGE.NETWORK_TYPE' | translate }}</ion-label>
-            <ion-select (ionChange)="onSelectNetwork($event)">
-              <ion-select-option *ngFor="let networkChoice of networkChoices" [value]="networkChoice" [selected]="networkChoice.id === activeNetworkChoice.id">
-                <span class="capitalize">{{ networkChoice.name }}</span>
-              </ion-select-option>
-            </ion-select>
-          </ion-item>
-        </ion-list>
+			<ion-row class="px-6 mt-2" *ngIf="showAdvancedOptions">
+				<ion-list lines="full" inset class="w-full">
+					<ion-item>
+						<ion-label
+							>{{ 'NETWORKS_PAGE.NETWORK_TYPE' | translate
+							}}</ion-label
+						>
+						<ion-select (ionChange)="onSelectNetwork($event)">
+							<ion-select-option
+								*ngFor="let networkChoice of networkChoices"
+								[value]="networkChoice"
+								[selected]="networkChoice.id === activeNetworkChoice.id"
+							>
+								<span class="capitalize"
+									>{{ networkChoice.name }}</span
+								>
+							</ion-select-option>
+						</ion-select>
+					</ion-item>
+				</ion-list>
 
-        <ion-row *ngIf="activeNetworkChoice && !activeNetworkChoice.id">
-          <customNetwork (onNetworkChange)="onCustomNetworkChange($event)"></customNetwork>
-        </ion-row>
-      </ion-row>
-    </ion-grid>
-  </form>
+				<ion-row *ngIf="activeNetworkChoice && !activeNetworkChoice.id">
+					<customNetwork
+						(networkChange)="onCustomNetworkChange($event)"
+					></customNetwork>
+				</ion-row>
+			</ion-row>
+		</ion-grid>
+	</form>
 </ion-content>
 
 <ion-footer class="text-center py-3" no-shadow no-border>
-  <ion-button [disabled]="!createProfileForm.form.valid || !newProfile.networkId" (click)="submitForm()">
-    {{ 'NEXT' | translate }}
-  </ion-button>
+	<ion-button
+		[disabled]="!createProfileForm.form.valid || !newProfile.networkId"
+		(click)="submitForm()"
+	>
+		{{ 'NEXT' | translate }}
+	</ion-button>
 </ion-footer>

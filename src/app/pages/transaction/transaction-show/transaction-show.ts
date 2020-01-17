@@ -1,125 +1,152 @@
-import { Component } from '@angular/core';
-import { NavController, ActionSheetController, Platform } from '@ionic/angular';
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Component } from "@angular/core";
+import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
+import { ActionSheetController, NavController } from "@ionic/angular";
 
-import { Transaction, TransactionEntity } from '@/models/transaction';
-import { UserDataProvider } from '@/services/user-data/user-data';
-import { ContactsProvider } from '@/services/contacts/contacts';
-import { TranslateService } from '@ngx-translate/core';
-import { TruncateMiddlePipe } from '@/pipes/truncate-middle/truncate-middle';
-import { Wallet, StoredNetwork } from '@/models/model';
-import { ActivatedRoute } from '@angular/router';
+import { StoredNetwork, Wallet } from "@/models/model";
+import { TransactionEntity } from "@/models/transaction";
+import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
+import { ContactsProvider } from "@/services/contacts/contacts";
+import { UserDataProvider } from "@/services/user-data/user-data";
+import { ActivatedRoute } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component({
-  selector: 'page-transaction-show',
-  templateUrl: 'transaction-show.html',
-  styleUrls: ['transaction-show.pcss'],
-  providers: [InAppBrowser, TruncateMiddlePipe],
+	selector: "page-transaction-show",
+	templateUrl: "transaction-show.html",
+	styleUrls: ["transaction-show.pcss"],
+	providers: [InAppBrowser, TruncateMiddlePipe],
 })
 export class TransactionShowPage {
+	public transaction: TransactionEntity;
+	public equivalentAmount: string;
+	public equivalentSymbol: string;
 
-  public transaction: TransactionEntity;
-  public equivalentAmount: string;
-  public equivalentSymbol: string;
+	public showOptions = false;
+	public currentNetwork: StoredNetwork;
+	private currentWallet: Wallet;
 
-  public showOptions = false;
-  public currentNetwork: StoredNetwork;
-  private currentWallet: Wallet;
+	public isSender: boolean;
+	public totalAmount: number;
+	public typeLabel: string;
 
-  public isSender: boolean;
-  public totalAmount: number;
-  public typeLabel: string;
+	constructor(
+		private navCtrl: NavController,
+		private route: ActivatedRoute,
+		private userDataProvider: UserDataProvider,
+		private contactsProvider: ContactsProvider,
+		private inAppBrowser: InAppBrowser,
+		private actionSheetCtrl: ActionSheetController,
+		private translateService: TranslateService,
+		private truncateMiddlePipe: TruncateMiddlePipe,
+	) {
+		this.currentNetwork = this.userDataProvider.currentNetwork;
+		this.currentWallet = this.userDataProvider.currentWallet;
 
-  constructor(
-    private navCtrl: NavController,
-    private route: ActivatedRoute,
-    private userDataProvider: UserDataProvider,
-    private contactsProvider: ContactsProvider,
-    private inAppBrowser: InAppBrowser,
-    private actionSheetCtrl: ActionSheetController,
-    private translateService: TranslateService,
-    private truncateMiddlePipe: TruncateMiddlePipe,
-  ) {
-    this.currentNetwork = this.userDataProvider.currentNetwork;
-    this.currentWallet = this.userDataProvider.currentWallet;
-    
-    const transaction = this.route.snapshot.queryParamMap.get('transaction');
-    this.equivalentAmount = this.route.snapshot.queryParamMap.get('equivalentAmount');
-    this.equivalentSymbol = this.route.snapshot.queryParamMap.get('equivalentSymbol');
+		const transaction = this.route.snapshot.queryParamMap.get(
+			"transaction",
+		);
+		this.equivalentAmount = this.route.snapshot.queryParamMap.get(
+			"equivalentAmount",
+		);
+		this.equivalentSymbol = this.route.snapshot.queryParamMap.get(
+			"equivalentSymbol",
+		);
 
-    if (!transaction) { this.navCtrl.pop(); }
+		if (!transaction) {
+			this.navCtrl.pop();
+		}
 
-    const transactionMap = JSON.parse(transaction);
-    this.transaction = transactionMap;
-    this.shouldShowOptions();
-  }
+		const transactionMap = JSON.parse(transaction);
+		this.transaction = transactionMap;
+		this.shouldShowOptions();
+	}
 
-  openInExplorer() {
-    const url = `${this.currentNetwork.explorer}/transaction/${this.transaction.id}`;
-    return this.inAppBrowser.create(url, '_system');
-  }
+	openInExplorer() {
+		const url = `${this.currentNetwork.explorer}/transaction/${this.transaction.id}`;
+		return this.inAppBrowser.create(url, "_system");
+	}
 
-  presentOptions() {
-    const address = this.transaction.appropriateAddress;
-    const addressTruncated = this.truncateMiddlePipe.transform(address, 10, null);
-    const contact = this.contactsProvider.getContactByAddress(address);
-    const contactOrAddress = contact ? contact['name'] : addressTruncated;
+	presentOptions() {
+		const address = this.transaction.appropriateAddress;
+		const addressTruncated = this.truncateMiddlePipe.transform(
+			address,
+			10,
+			null,
+		);
+		const contact = this.contactsProvider.getContactByAddress(address);
+		const contactOrAddress = contact ? contact.name : addressTruncated;
 
-    this.translateService
-      .get(
-        [
-          'TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS',
-          'TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS',
-        ],
-        { address: contactOrAddress, token: this.currentNetwork.token }
-      )
-      .subscribe(async (translation) => {
-        const buttons = [];
+		this.translateService
+			.get(
+				[
+					"TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS",
+					"TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS",
+				],
+				{ address: contactOrAddress, token: this.currentNetwork.token },
+			)
+			.subscribe(async translation => {
+				const buttons = [];
 
-        if (!contact) {
-          buttons.push({
-            text: translation['TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS'],
-            role: 'contact',
-            icon: 'person-add',
-            handler: () => {
-              this.addToContacts(address);
-            }
-          });
-        }
+				if (!contact) {
+					buttons.push({
+						text:
+							translation[
+								"TRANSACTIONS_PAGE.ADD_ADDRESS_TO_CONTACTS"
+							],
+						role: "contact",
+						icon: "person-add",
+						handler: () => {
+							this.addToContacts(address);
+						},
+					});
+				}
 
-        if (this.currentWallet && !this.currentWallet.isWatchOnly) {
-          buttons.push({
-            text: translation['TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS'],
-            role: 'send',
-            icon: 'send',
-            handler: () => {
-              this.sendToAddress(address);
-            }
-          });
-        }
+				if (this.currentWallet && !this.currentWallet.isWatchOnly) {
+					buttons.push({
+						text:
+							translation[
+								"TRANSACTIONS_PAGE.SEND_TOKEN_TO_ADDRESS"
+							],
+						role: "send",
+						icon: "send",
+						handler: () => {
+							this.sendToAddress(address);
+						},
+					});
+				}
 
-        const action = await this.actionSheetCtrl.create({ buttons })
-        action.present();
-      });
-  }
+				const action = await this.actionSheetCtrl.create({ buttons });
+				action.present();
+			});
+	}
 
-  addToContacts(address: string) {
-    this.navCtrl.navigateForward('/contacts/create', { queryParams: {
-      address
-    }});
-  }
+	addToContacts(address: string) {
+		this.navCtrl.navigateForward("/contacts/create", {
+			queryParams: {
+				address,
+			},
+		});
+	}
 
-  sendToAddress(address: string) {
-    this.navCtrl.navigateForward('/transaction/send', { queryParams: {
-      address
-    }});
-  }
+	sendToAddress(address: string) {
+		this.navCtrl.navigateForward("/transaction/send", {
+			queryParams: {
+				address,
+			},
+		});
+	}
 
-  private shouldShowOptions() {
-    if (this.transaction.isTransfer) {
-      const contact = this.contactsProvider.getContactByAddress(this.transaction.appropriateAddress);
-      if (!contact || (this.currentWallet && !this.currentWallet.isWatchOnly)) { return this.showOptions = true; }
-    }
-  }
-
+	private shouldShowOptions() {
+		if (this.transaction.isTransfer) {
+			const contact = this.contactsProvider.getContactByAddress(
+				this.transaction.appropriateAddress,
+			);
+			if (
+				!contact ||
+				(this.currentWallet && !this.currentWallet.isWatchOnly)
+			) {
+				return (this.showOptions = true);
+			}
+		}
+	}
 }

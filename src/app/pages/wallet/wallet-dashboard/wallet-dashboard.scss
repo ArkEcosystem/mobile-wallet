@@ -1,63 +1,63 @@
 :host {
-  ion-toolbar {
-    --background: transparent;
-    --ion-toolbar-color: #fff;
+	ion-toolbar {
+		--background: transparent;
+		--ion-toolbar-color: #fff;
 
-    ion-menu-button,
-    ion-button,
-    ion-icon {
-      --color: #fff;
-    }
-  }
+		ion-menu-button,
+		ion-button,
+		ion-icon {
+			--color: #fff;
+		}
+	}
 
-  ion-header {
-    background-size: cover;
+	ion-header {
+		background-size: cover;
 
-    &.default-wallet {
-      background-image: url('/assets/img/light/wallet/wallet-balance.png');
-    }
+		&.default-wallet {
+			background-image: url("/assets/img/light/wallet/wallet-balance.png");
+		}
 
-    &.delegate-wallet {
-      background-image: url('/assets/img/light/wallet/delegate-balance.png');
-    }
+		&.delegate-wallet {
+			background-image: url("/assets/img/light/wallet/delegate-balance.png");
+		}
 
-    .dark-navbar > .toolbar-background {
-      background-color: transparent;
-    }
-  }
+		.dark-navbar > .toolbar-background {
+			background-color: transparent;
+		}
+	}
 
-  .stats-toolbar {
-    min-height: 160px;
-    transition: all .3s linear;
-  }
+	.stats-toolbar {
+		min-height: 160px;
+		transition: all 0.3s linear;
+	}
 
-  .icon-rotate-right {
-    transform: rotate(30deg);
-  }
+	.icon-rotate-right {
+		transform: rotate(30deg);
+	}
 
-  .transactions {
-    ion-item {
-      --padding-start: 0;
-      --inner-padding-end: 0;
-      --inner-padding-top: 1.3rem;
-      --inner-padding-bottom: 1.3rem;
-    }
-  }
+	.transactions {
+		ion-item {
+			--padding-start: 0;
+			--inner-padding-end: 0;
+			--inner-padding-top: 1.3rem;
+			--inner-padding-bottom: 1.3rem;
+		}
+	}
 }
 
 :host-context(.dark-theme) {
-  ion-refresher * {
-    color: #fff;
-    stroke: #fff;
-  }
+	ion-refresher * {
+		color: #fff;
+		stroke: #fff;
+	}
 
-  ion-header {
-    &.default-wallet {
-      background-image: url('/assets/img/dark/wallet/wallet-balance.png');
-    }
+	ion-header {
+		&.default-wallet {
+			background-image: url("/assets/img/dark/wallet/wallet-balance.png");
+		}
 
-    &.delegate-wallet {
-      background-image: url('/assets/img/dark/wallet/delegate-balance.png');
-    }
-  }
+		&.delegate-wallet {
+			background-image: url("/assets/img/dark/wallet/delegate-balance.png");
+		}
+	}
 }
