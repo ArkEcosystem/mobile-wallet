@@ -23,6 +23,7 @@
 		<div class="flex items-center">
 			<ion-col class="flex-1">
 				<ion-button
+					id="skip"
 					fill="clear"
 					(click)="startApp()"
 					[disabled]="!showSkip"
@@ -44,10 +45,18 @@
 				</ion-grid>
 			</ion-col>
 			<ion-col class="flex-1 text-right">
-				<ion-button fill="clear" (click)="goNext()" *ngIf="showSkip"
+				<ion-button
+					id="next"
+					fill="clear"
+					(click)="goNext()"
+					*ngIf="showSkip"
 					>{{ 'NEXT' | translate | uppercase }}</ion-button
 				>
-				<ion-button fill="clear" (click)="startApp()" *ngIf="!showSkip"
+				<ion-button
+					id="done"
+					fill="clear"
+					(click)="startApp()"
+					*ngIf="!showSkip"
 					>{{ 'DONE' | translate | uppercase }}</ion-button
 				>
 			</ion-col>
