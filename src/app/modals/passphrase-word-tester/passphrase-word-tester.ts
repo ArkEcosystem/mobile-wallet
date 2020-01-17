@@ -1,50 +1,52 @@
-import {Component, ViewChild, Input} from '@angular/core';
-import { NavController, ModalController } from '@ionic/angular';
-import { UserDataProvider } from '@/services/user-data/user-data';
-import { PassphraseInputComponent } from '@/components/passphrase-input/passphrase-input';
+import { PassphraseInputComponent } from "@/components/passphrase-input/passphrase-input";
+import { UserDataProvider } from "@/services/user-data/user-data";
+import { Component, Input, ViewChild } from "@angular/core";
+import { ModalController, NavController } from "@ionic/angular";
 
 @Component({
-  selector: 'modal-passphrase-word-tester',
-  templateUrl: 'passphrase-word-tester.html',
-  styleUrls: ['passphrase-word-tester.scss']
+	selector: "modal-passphrase-word-tester",
+	templateUrl: "passphrase-word-tester.html",
+	styleUrls: ["passphrase-word-tester.scss"],
 })
 export class PassphraseWordTesterModal {
-  @Input()
-  public passphraseReference: string;
-  
-  @Input()
-  public wordlistLanguage: string;
+	@Input()
+	public passphraseReference: string;
 
-  public passphraseInit: string;
-  public isDevNet: boolean;
+	@Input()
+	public wordlistLanguage: string;
 
-  @ViewChild('passphrase', { read: PassphraseInputComponent, static: true })
-  passphraseInput: PassphraseInputComponent;
+	public passphraseInit: string;
+	public isDevNet: boolean;
 
-  public constructor(public navCtrl: NavController,
-              private modalCtrl: ModalController,
-              private userDataProvider: UserDataProvider) {
+	@ViewChild("passphrase", { read: PassphraseInputComponent, static: true })
+	passphraseInput: PassphraseInputComponent;
 
-    if (!this.passphraseReference) {
-      this.dismiss();
-    }
+	public constructor(
+		public navCtrl: NavController,
+		private modalCtrl: ModalController,
+		private userDataProvider: UserDataProvider,
+	) {
+		if (!this.passphraseReference) {
+			this.dismiss();
+		}
 
-    this.isDevNet = this.userDataProvider.isDevNet;
-    if (this.isDevNet) {
-      this.passphraseInit = this.passphraseReference;
-    }
-  }
+		this.isDevNet = this.userDataProvider.isDevNet;
+		if (this.isDevNet) {
+			this.passphraseInit = this.passphraseReference;
+		}
+	}
 
-  public areAllWordsCorrect(): boolean {
-    return this.passphraseInput.validatePassphrase(this.passphraseReference);
-  }
+	public areAllWordsCorrect(): boolean {
+		return this.passphraseInput.validatePassphrase(
+			this.passphraseReference,
+		);
+	}
 
-  public next(): void {
-    this.dismiss(this.areAllWordsCorrect());
-  }
+	public next(): void {
+		this.dismiss(this.areAllWordsCorrect());
+	}
 
-  public dismiss(validationSuccess?: boolean): void {
-    this.modalCtrl.dismiss(validationSuccess);
-  }
-
+	public dismiss(validationSuccess?: boolean): void {
+		this.modalCtrl.dismiss(validationSuccess);
+	}
 }

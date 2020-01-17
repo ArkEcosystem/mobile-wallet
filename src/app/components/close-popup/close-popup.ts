@@ -1,23 +1,32 @@
-import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
+import {
+	Component,
+	EventEmitter,
+	HostBinding,
+	Input,
+	Output,
+} from "@angular/core";
 
 @Component({
-  selector: 'close-popup',
-  templateUrl: 'close-popup.html',
-  styleUrls: ['close-popup.scss']
+	selector: "close-popup",
+	templateUrl: "close-popup.html",
+	styleUrls: ["close-popup.scss"],
 })
 export class ClosePopupComponent {
+	@HostBinding("style.z-index")
+	style = 1000;
 
-  @HostBinding('style.z-index') style = 1000;
+	@Input()
+	large: boolean;
 
-  @Input('large') large: boolean;
-  @Input('color') color: string;
-  @Output('onClose') onClose: EventEmitter<void> = new EventEmitter();
+	@Input()
+	color: string;
 
-  constructor() {
-  }
+	@Output()
+	close: EventEmitter<void> = new EventEmitter();
 
-  close() {
-    this.onClose.emit();
-  }
+	constructor() {}
 
+	onClose() {
+		this.close.emit();
+	}
 }

@@ -1,4 +1,4 @@
 export interface TranslatableObject {
-  key: string;
-  parameters?: Object;
+	key: string;
+	parameters?: any;
 }

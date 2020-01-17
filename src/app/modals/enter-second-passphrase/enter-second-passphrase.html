@@ -1,26 +1,40 @@
 <ion-header no-shadow no-border>
-
-  <ion-toolbar>
-    <ion-title>{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="dismiss()">
-        <ion-icon slot="icon-only" name="close"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-
+	<ion-toolbar>
+		<ion-title
+			>{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</ion-title
+		>
+		<ion-buttons slot="end">
+			<ion-button (click)="dismiss()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content padding #content>
-  <form #ngForm="ngForm">
-    <ion-item>
-      <ion-label position="stacked">{{ 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE' | translate }}</ion-label>
-      <ion-input autocapitalize="off" name="secondPassphrase" [type]="displayType" [(ngModel)]="passphrase"></ion-input>
-      <ion-icon slot="end" [name]="iconName" (click)='hideShow()'></ion-icon>
-    </ion-item>
-  </form>
+	<form #ngForm="ngForm">
+		<ion-item>
+			<ion-label position="stacked"
+				>{{ 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE' | translate
+				}}</ion-label
+			>
+			<ion-input
+				autocapitalize="off"
+				name="secondPassphrase"
+				[type]="displayType"
+				[(ngModel)]="passphrase"
+			></ion-input>
+			<ion-icon
+				slot="end"
+				[name]="iconName"
+				(click)="hideShow()"
+			></ion-icon>
+		</ion-item>
+	</form>
 </ion-content>
 
 <ion-footer class="ion-padding text-center" no-shadow no-border>
-  <ion-button (click)="submit()" [disabled]="!ngForm.form.valid">{{ 'CONFIRM' | translate }}</ion-button>
+	<ion-button (click)="submit()" [disabled]="!ngForm.form.valid"
+		>{{ 'CONFIRM' | translate }}</ion-button
+	>
 </ion-footer>

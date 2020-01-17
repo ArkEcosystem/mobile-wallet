@@ -1,40 +1,40 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, ModalController } from '@ionic/angular';
-import { PinCodeComponent } from '@/components/pin-code/pin-code';
-import { AuthProvider } from '@/services/auth/auth';
-import { UserDataProvider } from '@/services/user-data/user-data';
+import { PinCodeComponent } from "@/components/pin-code/pin-code";
+import { AuthProvider } from "@/services/auth/auth";
+import { UserDataProvider } from "@/services/user-data/user-data";
+import { Component, ViewChild } from "@angular/core";
+import { ModalController, NavController } from "@ionic/angular";
 
-import { isNil } from 'lodash';
+import { isNil } from "lodash";
 
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html',
-  styleUrls: ['login.scss']
+	selector: "page-login",
+	templateUrl: "login.html",
+	styleUrls: ["login.scss"],
 })
 export class LoginPage {
-  @ViewChild('pinCode', { read: PinCodeComponent, static: true }) pinCode: PinCodeComponent;
+	@ViewChild("pinCode", { read: PinCodeComponent, static: true })
+	pinCode: PinCodeComponent;
 
-  public hasProfiles = false;
-  public isReady = false;
+	public hasProfiles = false;
+	public isReady = false;
 
-  constructor(
-    public navCtrl: NavController,
-    public modalCtrl: ModalController,
-    private authProvider: AuthProvider,
-    private userDataProvider: UserDataProvider
-  ) {
-    this.authProvider.getMasterPassword().subscribe(master => {
-      this.hasProfiles = master && !isNil(this.userDataProvider.profiles);
-      this.isReady = true;
-    });
-  }
+	constructor(
+		public navCtrl: NavController,
+		public modalCtrl: ModalController,
+		private authProvider: AuthProvider,
+		private userDataProvider: UserDataProvider,
+	) {
+		this.authProvider.getMasterPassword().subscribe(master => {
+			this.hasProfiles = master && !isNil(this.userDataProvider.profiles);
+			this.isReady = true;
+		});
+	}
 
-  openProfileSignin() {
-    this.pinCode.createUpdatePinCode('/profile/signin');
-  }
+	openProfileSignin() {
+		this.pinCode.createUpdatePinCode("/profile/signin");
+	}
 
-  openProfileCreate() {
-    this.pinCode.createUpdatePinCode('/profile/create');
-  }
-
+	openProfileCreate() {
+		this.pinCode.createUpdatePinCode("/profile/create");
+	}
 }

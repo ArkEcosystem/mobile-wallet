@@ -1,4 +1,4 @@
 export interface Amount {
-  amount: number;
-  amountEquivalent?: number;
+	amount: number;
+	amountEquivalent?: number;
 }

@@ -1,146 +1,165 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { TransactionType } from 'ark-ts';
+import {
+	Component,
+	EventEmitter,
+	Input,
+	OnDestroy,
+	OnInit,
+	Output,
+} from "@angular/core";
+import { TransactionType } from "ark-ts";
 
-import { FeeStatistic } from '@/models/stored-network';
-import { ArkApiProvider } from '@/services/ark-api/ark-api';
-import { ArkUtility } from '../../utils/ark-utility';
+import { FeeStatistic } from "@/models/stored-network";
+import { ArkApiProvider } from "@/services/ark-api/ark-api";
+import { ArkUtility } from "../../utils/ark-utility";
 
-import { Subscription } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
-import { switchMap } from 'rxjs/operators';
+import { TranslateService } from "@ngx-translate/core";
+import { Subscription } from "rxjs";
+import { switchMap } from "rxjs/operators";
 
 @Component({
-  selector: 'input-fee',
-  templateUrl: 'input-fee.html',
-  styleUrls: ['input-fee.scss']
+	selector: "input-fee",
+	templateUrl: "input-fee.html",
+	styleUrls: ["input-fee.scss"],
 })
 export class InputFeeComponent implements OnInit, OnDestroy {
-  @Input()
-  public transactionType: number;
+	@Input()
+	public transactionType: number;
 
-  @Output()
-  public onChange: EventEmitter<number> = new EventEmitter();
-  @Output()
-  public onError: EventEmitter<boolean> = new EventEmitter();
+	@Output()
+	public change: EventEmitter<number> = new EventEmitter();
 
-  public step: number;
-  public v1Fee: number;
-  public v2Fee: FeeStatistic;
-  public rangeFee: number;
-  public inputFee: string;
-  public min: number;
-  public max: number;
-  public avg: number;
-  public symbol: string;
-  public isStaticFee = false;
-  public warningMessage: string;
-  public errorMessage: string;
-  public limitFee: number;
-  public subscription: Subscription;
+	@Output()
+	public error: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(
-    private arkApiProvider: ArkApiProvider,
-    private translateService: TranslateService
-  ) {
-    this.step = 1;
-    this.min = this.step;
-    this.symbol = this.arkApiProvider.network.symbol;
-  }
+	public step: number;
+	public v1Fee: number;
+	public v2Fee: FeeStatistic;
+	public rangeFee: number;
+	public inputFee: string;
+	public min: number;
+	public max: number;
+	public avg: number;
+	public symbol: string;
+	public isStaticFee = false;
+	public warningMessage: string;
+	public errorMessage: string;
+	public limitFee: number;
+	public subscription: Subscription;
 
-  ngOnInit() {
-    this.prepareFeeStatistics();
-  }
+	constructor(
+		private arkApiProvider: ArkApiProvider,
+		private translateService: TranslateService,
+	) {
+		this.step = 1;
+		this.min = this.step;
+		this.symbol = this.arkApiProvider.network.symbol;
+	}
 
-  public get maxArktoshi() {
-    return ArkUtility.subToUnit(this.max);
-  }
+	ngOnInit() {
+		this.prepareFeeStatistics();
+	}
 
-  public prepareFeeStatistics() {
-    this.subscription = this.arkApiProvider.fees.pipe(
-      switchMap(fees => {
-        switch (Number(this.transactionType)) {
-          case TransactionType.SendArk:
-            this.v1Fee = fees.send;
-            break;
-          case TransactionType.Vote:
-            this.v1Fee = fees.vote;
-            break;
-          case TransactionType.CreateDelegate:
-            this.v1Fee = fees.delegate;
-            break;
-        }
-  
-        this.max = this.v1Fee;
-        this.avg = this.v1Fee;
-        this.limitFee = this.max * 10;
-        this.setRangeFee(this.avg);
-  
-        return this.arkApiProvider.feeStatistics;
-      })
-    ).subscribe(fees => {
-      this.v2Fee = fees.find(fee => fee.type === Number(this.transactionType));
-      if (!this.v2Fee || this.v2Fee.fees.avgFee > this.max) {
-        this.isStaticFee = true;
-        return;
-      }
-      if (this.v2Fee.fees.maxFee > this.max) {
-        this.max = this.v2Fee.fees.maxFee;
-      }
-      this.avg = this.v2Fee.fees.avgFee;
-      this.setRangeFee(this.avg);
-    });
-  }
+	public get maxArktoshi() {
+		return ArkUtility.subToUnit(this.max);
+	}
 
-  public setRangeFee(value: number) {
-    this.rangeFee = value;
-    this.onInputRange();
-    this.emitChange();
-  }
+	public prepareFeeStatistics() {
+		this.subscription = this.arkApiProvider.fees
+			.pipe(
+				switchMap(fees => {
+					switch (Number(this.transactionType)) {
+						case TransactionType.SendArk:
+							this.v1Fee = fees.send;
+							break;
+						case TransactionType.Vote:
+							this.v1Fee = fees.vote;
+							break;
+						case TransactionType.CreateDelegate:
+							this.v1Fee = fees.delegate;
+							break;
+					}
 
-  public onInputRange() {
-    const fee = ArkUtility.subToUnit(this.rangeFee);
-    this.inputFee = fee;
+					this.max = this.v1Fee;
+					this.avg = this.v1Fee;
+					this.limitFee = this.max * 10;
+					this.setRangeFee(this.avg);
 
-    const translateParams = {
-      symbol: this.symbol,
-      fee: ArkUtility.subToUnit(this.limitFee)
-    };
+					return this.arkApiProvider.feeStatistics;
+				}),
+			)
+			.subscribe(fees => {
+				this.v2Fee = fees.find(
+					fee => fee.type === Number(this.transactionType),
+				);
+				if (!this.v2Fee || this.v2Fee.fees.avgFee > this.max) {
+					this.isStaticFee = true;
+					return;
+				}
+				if (this.v2Fee.fees.maxFee > this.max) {
+					this.max = this.v2Fee.fees.maxFee;
+				}
+				this.avg = this.v2Fee.fees.avgFee;
+				this.setRangeFee(this.avg);
+			});
+	}
 
-    this.translateService.get([
-      'INPUT_FEE.ERROR.MORE_THAN_MAXIMUM',
-      'INPUT_FEE.LOW_FEE_NOTICE',
-      'INPUT_FEE.ADVANCED_NOTICE'
-    ], translateParams).subscribe(translation => {
-      this.errorMessage = null;
-      this.warningMessage = null;
+	public setRangeFee(value: number) {
+		this.rangeFee = value;
+		this.onInputRange();
+		this.emitChange();
+	}
 
-      if (this.avg > this.rangeFee) {
-        this.warningMessage = translation['INPUT_FEE.LOW_FEE_NOTICE'];
-      } else if (this.rangeFee > this.limitFee) {
-        this.errorMessage = translation['INPUT_FEE.ERROR.MORE_THAN_MAXIMUM'];
-      } else if (this.rangeFee > this.max) {
-        this.warningMessage = translation['INPUT_FEE.ADVANCED_NOTICE'];
-      }
-      this.onError.next(!!this.errorMessage || !fee.length);
-    });
-  }
+	public onInputRange() {
+		const fee = ArkUtility.subToUnit(this.rangeFee);
+		this.inputFee = fee;
 
-  public onInputText() {
-    const arktoshi = parseInt(ArkUtility.unitToSub(this.inputFee));
+		const translateParams = {
+			symbol: this.symbol,
+			fee: ArkUtility.subToUnit(this.limitFee),
+		};
 
-    if (arktoshi !== this.rangeFee) {
-      this.rangeFee = arktoshi;
-    }
+		this.translateService
+			.get(
+				[
+					"INPUT_FEE.ERROR.MORE_THAN_MAXIMUM",
+					"INPUT_FEE.LOW_FEE_NOTICE",
+					"INPUT_FEE.ADVANCED_NOTICE",
+				],
+				translateParams,
+			)
+			.subscribe(translation => {
+				this.errorMessage = null;
+				this.warningMessage = null;
 
-    this.emitChange();
-  }
+				if (this.avg > this.rangeFee) {
+					this.warningMessage =
+						translation["INPUT_FEE.LOW_FEE_NOTICE"];
+				} else if (this.rangeFee > this.limitFee) {
+					this.errorMessage =
+						translation["INPUT_FEE.ERROR.MORE_THAN_MAXIMUM"];
+				} else if (this.rangeFee > this.max) {
+					this.warningMessage =
+						translation["INPUT_FEE.ADVANCED_NOTICE"];
+				}
+				this.error.next(!!this.errorMessage || !fee.length);
+			});
+	}
 
-  public emitChange() {
-    this.onChange.next(this.rangeFee);
-  }
+	public onInputText() {
+		const arktoshi = parseInt(ArkUtility.unitToSub(this.inputFee));
 
-  ngOnDestroy () {
-    this.subscription.unsubscribe();
-  }
+		if (arktoshi !== this.rangeFee) {
+			this.rangeFee = arktoshi;
+		}
 
+		this.emitChange();
+	}
+
+	public emitChange() {
+		this.change.next(this.rangeFee);
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+	}
 }

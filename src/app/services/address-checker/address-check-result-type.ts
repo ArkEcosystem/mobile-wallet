@@ -1,4 +1,4 @@
 export enum AddressCheckResultType {
-  Warning,
-  Error
+	Warning,
+	Error,
 }

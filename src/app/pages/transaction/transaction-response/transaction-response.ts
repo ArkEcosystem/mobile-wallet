@@ -1,109 +1,115 @@
-import { Component, ViewChild } from '@angular/core';
-import { NavController, ModalController, IonContent } from '@ionic/angular';
+import { Component } from "@angular/core";
+import { ModalController, NavController } from "@ionic/angular";
 
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { Clipboard } from "@ionic-native/clipboard/ngx";
+import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 
-import { UserDataProvider } from '@/services/user-data/user-data';
-import { ToastProvider } from '@/services/toast/toast';
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
-import { Transaction, Wallet, WalletKeys, StoredNetwork } from '@/models/model';
-import { TransactionType, Network } from 'ark-ts';
-import { PinCodeModal } from '@/app/modals/pin-code/pin-code';
-import { ActivatedRoute } from '@angular/router';
+import { StoredNetwork, Transaction, Wallet } from "@/models/model";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'page-transaction-response',
-  templateUrl: 'transaction-response.html',
-  styleUrls: ['transaction-response.scss'],
-  providers: [Clipboard, InAppBrowser],
+	selector: "page-transaction-response",
+	templateUrl: "transaction-response.html",
+	styleUrls: ["transaction-response.scss"],
+	providers: [Clipboard, InAppBrowser],
 })
 export class TransactionResponsePage {
-  public transaction: Transaction;
-  public wallet: Wallet;
-  // public keys: WalletKeys = {};
-  public response: any = { status: false, message: '' };
+	public transaction: Transaction;
+	public wallet: Wallet;
+	// public keys: WalletKeys = {};
+	public response: any = { status: false, message: "" };
 
-  // public showKeepSecondPassphrase = true;
-  public currentNetwork: StoredNetwork;
+	// public showKeepSecondPassphrase = true;
+	public currentNetwork: StoredNetwork;
 
-  constructor(
-    public navCtrl: NavController,
-    private clipboard: Clipboard,
-    private modalCtrl: ModalController,
-    private userDataProvider: UserDataProvider,
-    private toastProvider: ToastProvider,
-    private iab: InAppBrowser,
-    private route: ActivatedRoute
-  ) {
-    this.wallet = this.userDataProvider.currentWallet;
-    this.currentNetwork = this.userDataProvider.currentNetwork;
-  
-    this.response = this.route.snapshot.queryParamMap.get('response');
-    const transaction = this.route.snapshot.queryParamMap.get('transaction');
+	constructor(
+		public navCtrl: NavController,
+		private clipboard: Clipboard,
+		private modalCtrl: ModalController,
+		private userDataProvider: UserDataProvider,
+		private toastProvider: ToastProvider,
+		private iab: InAppBrowser,
+		private route: ActivatedRoute,
+	) {
+		this.wallet = this.userDataProvider.currentWallet;
+		this.currentNetwork = this.userDataProvider.currentNetwork;
 
-    if (!this.response) { this.navCtrl.pop(); }
+		this.response = this.route.snapshot.queryParamMap.get("response");
+		const transaction = this.route.snapshot.queryParamMap.get(
+			"transaction",
+		);
 
-    if (transaction) {
-      this.transaction = new Transaction(this.wallet.address).deserialize(transaction);
-    }
-  }
+		if (!this.response) {
+			this.navCtrl.pop();
+		}
 
-  copyTxid() {
-    this.clipboard.copy(this.transaction.id).then(
-      () => this.toastProvider.success('COPIED_CLIPBOARD'),
-      () => this.toastProvider.error('COPY_CLIPBOARD_FAILED'));
-  }
+		if (transaction) {
+			this.transaction = new Transaction(this.wallet.address).deserialize(
+				transaction,
+			);
+		}
+	}
 
-  openInExplorer() {
-    const url = `${this.currentNetwork.explorer}/transaction/${this.transaction.id}`;
-    return this.iab.create(url, '_system');
-  }
+	copyTxid() {
+		this.clipboard.copy(this.transaction.id).then(
+			() => this.toastProvider.success("COPIED_CLIPBOARD"),
+			() => this.toastProvider.error("COPY_CLIPBOARD_FAILED"),
+		);
+	}
 
-  presentEncryptedAlert() {
-    this.toastProvider.success('WALLETS_PAGE.ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE');
-  }
+	openInExplorer() {
+		const url = `${this.currentNetwork.explorer}/transaction/${this.transaction.id}`;
+		return this.iab.create(url, "_system");
+	}
 
-  // async saveSecondPassphrase() {
-  //   const modal = await this.modalCtrl.create({
-  //     component: PinCodeModal,
-  //     componentProps: {
-  //       message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
-  //       outputPassword: true,
-  //       validatePassword: true,
-  //     }
-  //   });
+	presentEncryptedAlert() {
+		this.toastProvider.success(
+			"WALLETS_PAGE.ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE",
+		);
+	}
 
-  //   modal.onDidDismiss().then((({ data }) => {
-  //     if (!data.password) { return; }
+	// async saveSecondPassphrase() {
+	//   const modal = await this.modalCtrl.create({
+	//     component: PinCodeModal,
+	//     componentProps: {
+	//       message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
+	//       outputPassword: true,
+	//       validatePassword: true,
+	//     }
+	//   });
 
-  //     this.userDataProvider.encryptSecondPassphrase(this.wallet, data.password, this.keys.secondPassphrase).subscribe(() => {
-  //       this.wallet = this.userDataProvider.getWalletByAddress(this.wallet.address);
+	//   modal.onDidDismiss().then((({ data }) => {
+	//     if (!data.password) { return; }
 
-  //       this.showKeepSecondPassphrase = false;
-  //       this.presentEncryptedAlert();
-  //     });
-  //   }));
+	//     this.userDataProvider.encryptSecondPassphrase(this.wallet, data.password, this.keys.secondPassphrase).subscribe(() => {
+	//       this.wallet = this.userDataProvider.getWalletByAddress(this.wallet.address);
 
-  //   modal.present();
-  // }
+	//       this.showKeepSecondPassphrase = false;
+	//       this.presentEncryptedAlert();
+	//     });
+	//   }));
 
-  // verifySecondPassphrasHasEncrypted() {
-  //   if (!this.transaction) { return; }
+	//   modal.present();
+	// }
 
-  //   if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondPublicKey && !this.wallet.cipherSecondKey)) {
-  //     if (this.response.status) { return this.showKeepSecondPassphrase = true; }
-  //   }
+	// verifySecondPassphrasHasEncrypted() {
+	//   if (!this.transaction) { return; }
 
-  //   this.showKeepSecondPassphrase = false;
-  // }
+	//   if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondPublicKey && !this.wallet.cipherSecondKey)) {
+	//     if (this.response.status) { return this.showKeepSecondPassphrase = true; }
+	//   }
 
-  dismiss() {
-    if (this.response && this.response.status) {
-      this.navCtrl.navigateRoot('/wallets/dashboard')
-    } else {
-      this.modalCtrl.dismiss();
-    }
-  }
-  
+	//   this.showKeepSecondPassphrase = false;
+	// }
+
+	dismiss() {
+		if (this.response && this.response.status) {
+			this.navCtrl.navigateRoot("/wallets/dashboard");
+		} else {
+			this.modalCtrl.dismiss();
+		}
+	}
 }

@@ -1,92 +1,122 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ArkApiProvider } from '@/services/ark-api/ark-api';
-import { ModalController, NavController } from '@ionic/angular';
-import { Wallet, WalletKeys, Transaction, TranslatableObject } from '@/models/model';
-import { TranslateService } from '@ngx-translate/core';
+import {
+	Transaction,
+	TranslatableObject,
+	Wallet,
+	WalletKeys,
+} from "@/models/model";
+import { ArkApiProvider } from "@/services/ark-api/ark-api";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { ModalController, NavController } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
 
-import lodash from 'lodash';
-import { AddressCheckResult } from '@/services/address-checker/address-check-result';
-import { ConfirmTransactionModal } from '@/app/modals/confirm-transaction/confirm-transaction';
+import { ConfirmTransactionModal } from "@/app/modals/confirm-transaction/confirm-transaction";
+import { AddressCheckResult } from "@/services/address-checker/address-check-result";
+import lodash from "lodash";
 
 @Component({
-  selector: 'confirm-transaction',
-  templateUrl: 'confirm-transaction.html'
+	selector: "confirm-transaction",
+	templateUrl: "confirm-transaction.html",
 })
 export class ConfirmTransactionComponent {
+	@Input()
+	wallet: Wallet;
 
-  @Input('wallet') wallet: Wallet;
+	@Output()
+	close: EventEmitter<string> = new EventEmitter();
 
-  @Output('onClosed') onClosed: EventEmitter<string> = new EventEmitter();
-  @Output('onError') onError: EventEmitter<string> = new EventEmitter();
-  @Output('onConfirm') onConfirm: EventEmitter<Transaction> = new EventEmitter();
+	@Output()
+	error: EventEmitter<string> = new EventEmitter();
 
-  constructor(
-    private arkApiProvider: ArkApiProvider,
-    private modalCtrl: ModalController,
-    private navCtrl: NavController,
-    private translateService: TranslateService
-  ) { }
+	@Output()
+	confirm: EventEmitter<Transaction> = new EventEmitter();
 
-  open(transaction: any, keys: WalletKeys, addressCheckResult?: AddressCheckResult, extra = {}) {
-    transaction = new Transaction(this.wallet.address).deserialize(transaction);
+	constructor(
+		private arkApiProvider: ArkApiProvider,
+		private modalCtrl: ModalController,
+		private navCtrl: NavController,
+		private translateService: TranslateService,
+	) {}
 
-    this.arkApiProvider.createTransaction(transaction, keys.key, keys.secondKey, keys.secondPassphrase)
-      .subscribe(async (tx) => {
-        const modal = await this.modalCtrl.create({
-          component: ConfirmTransactionModal,
-          componentProps: {
-            transaction: tx,
-            addressCheckResult: addressCheckResult,
-            extra: extra
-          },
-          backdropDismiss: true
-        });
+	open(
+		transaction: any,
+		keys: WalletKeys,
+		addressCheckResult?: AddressCheckResult,
+		extra = {},
+	) {
+		transaction = new Transaction(this.wallet.address).deserialize(
+			transaction,
+		);
 
-        modal.onDidDismiss().then(({ data }) => {
-          if (lodash.isUndefined(data)) {
-            return this.onClosed.emit();
-          }
+		this.arkApiProvider
+			.createTransaction(
+				transaction,
+				keys.key,
+				keys.secondKey,
+				keys.secondPassphrase,
+			)
+			.subscribe(
+				async tx => {
+					const modal = await this.modalCtrl.create({
+						component: ConfirmTransactionModal,
+						componentProps: {
+							transaction: tx,
+							addressCheckResult,
+							extra,
+						},
+						backdropDismiss: true,
+					});
 
-          if (!data.status) {
-            this.onClosed.emit();
+					modal.onDidDismiss().then(({ data }) => {
+						if (lodash.isUndefined(data)) {
+							return this.close.emit();
+						}
 
-            return this.presentWrongModal(data);
-          }
+						if (!data.status) {
+							this.close.emit();
 
-          this.onConfirm.emit(tx);
+							return this.presentWrongModal(data);
+						}
 
-          this.navCtrl.navigateForward('/transaction/response', {
-            queryParams: {
-              transaction: tx,
-              keys,
-              response: data,
-              wallet: this.wallet,
-            },
-            replaceUrl: true
-          });
-        });
+						this.confirm.emit(tx);
 
-        modal.present();
-      }, (error: TranslatableObject) => {
-        this.translateService.get(error.key || (error as any).message || error as any, error.parameters)
-          .subscribe((errorMessage) => {
-            this.onError.emit(errorMessage);
-            this.presentWrongModal({
-              status: false,
-              message: errorMessage
-            });
-          });
-      });
-  }
+						this.navCtrl.navigateForward("/transaction/response", {
+							queryParams: {
+								transaction: tx,
+								keys,
+								response: data,
+								wallet: this.wallet,
+							},
+							replaceUrl: true,
+						});
+					});
 
-  async presentWrongModal(response) {
-    // TODO:
-    // const responseModal = await this.modalCtrl.create({
-    //   component: TransactionResponsePage,
-    //   componentProps: response
-    // });
+					modal.present();
+				},
+				(error: TranslatableObject) => {
+					this.translateService
+						.get(
+							error.key ||
+								(error as any).message ||
+								(error as any),
+							error.parameters,
+						)
+						.subscribe(errorMessage => {
+							this.error.emit(errorMessage);
+							this.presentWrongModal({
+								status: false,
+								message: errorMessage,
+							});
+						});
+				},
+			);
+	}
 
-    // responseModal.present();
-  }
-
+	async presentWrongModal(response) {
+		// TODO:
+		// const responseModal = await this.modalCtrl.create({
+		//   component: TransactionResponsePage,
+		//   componentProps: response
+		// });
+		// responseModal.present();
+	}
 }

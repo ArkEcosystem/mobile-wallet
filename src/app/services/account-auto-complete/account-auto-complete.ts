@@ -1,67 +1,90 @@
-import { AutoCompleteService } from 'ionic4-auto-complete';
-import { Injectable } from '@angular/core';
-import lodash from 'lodash';
+import { Injectable } from "@angular/core";
+import { AutoCompleteService } from "ionic4-auto-complete";
+import lodash from "lodash";
 
-import { UserDataProvider } from '@/services/user-data/user-data';
-import { PublicKey } from 'ark-ts/core';
-import { AutoCompleteAccount, AutoCompleteAccountType, Contact } from '@/models/contact';
-import { Wallet } from '@/models/wallet';
+import {
+	AutoCompleteAccount,
+	AutoCompleteAccountType,
+	Contact,
+} from "@/models/contact";
+import { Wallet } from "@/models/wallet";
+import { UserDataProvider } from "@/services/user-data/user-data";
+import { PublicKey } from "ark-ts/core";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AccountAutoCompleteService implements AutoCompleteService {
+	public constructor(private userDataProvider: UserDataProvider) {}
 
-  // even though this fields are unused, they are required by the AutoCompleteService!
-  public labelAttribute = 'address';
-  public formValueAttribute = 'address';
+	// even though this fields are unused, they are required by the AutoCompleteService!
+	public labelAttribute = "address";
+	public formValueAttribute = "address";
 
-  public constructor(private userDataProvider: UserDataProvider) {
-  }
+	private static sortContacts(
+		a: AutoCompleteAccount,
+		b: AutoCompleteAccount,
+	): number {
+		if (a.name !== a.address && b.name === b.address) {
+			return -1;
+		}
 
-  getResults(keyword: string): AutoCompleteAccount[] {
-    keyword = keyword.toLowerCase();
+		if (a.name === a.address && b.name !== b.address) {
+			return 1;
+		}
 
-    const contacts: AutoCompleteAccount[] = lodash.map(this.userDataProvider.currentProfile.contacts, (contact: Contact) => {
-      return {
-        address: contact.address,
-        name: contact.name,
-        iconName: 'contacts',
-        type: AutoCompleteAccountType.Contact
-      } as AutoCompleteAccount;
-    });
+		return a.name.localeCompare(b.name);
+	}
 
-    const wallets: AutoCompleteAccount[] = lodash.map(this.userDataProvider.currentProfile.wallets, (wallet: Wallet) => {
-      const address = wallet.address;
-      const label = this.userDataProvider.getWalletLabel(wallet) || wallet.address;
-      if (address) {
-        return {
-          address: address,
-          name: label,
-          iconName: 'wallet',
-          type: AutoCompleteAccountType.Wallet
-        } as AutoCompleteAccount;
-      }
-    });
+	getResults(keyword: string): AutoCompleteAccount[] {
+		keyword = keyword.toLowerCase();
 
-    return contacts.sort(AccountAutoCompleteService.sortContacts)
-                   .concat(wallets.sort(AccountAutoCompleteService.sortContacts))
-                   .filter(c => this.isValidContact(c, keyword));
-  }
+		const contacts: AutoCompleteAccount[] = lodash.map(
+			this.userDataProvider.currentProfile.contacts,
+			(contact: Contact) => {
+				return {
+					address: contact.address,
+					name: contact.name,
+					iconName: "contacts",
+					type: AutoCompleteAccountType.Contact,
+				} as AutoCompleteAccount;
+			},
+		);
 
-  private static sortContacts(a: AutoCompleteAccount, b: AutoCompleteAccount): number {
-    if (a.name !== a.address && b.name === b.address) {
-      return -1;
-    }
+		const wallets: AutoCompleteAccount[] = lodash.map(
+			this.userDataProvider.currentProfile.wallets,
+			(wallet: Wallet) => {
+				const address = wallet.address;
+				const label =
+					this.userDataProvider.getWalletLabel(wallet) ||
+					wallet.address;
+				if (address) {
+					return {
+						address,
+						name: label,
+						iconName: "wallet",
+						type: AutoCompleteAccountType.Wallet,
+					} as AutoCompleteAccount;
+				}
+			},
+		);
 
-    if (a.name === a.address && b.name !== b.address) {
-      return 1;
-    }
+		return contacts
+			.sort(AccountAutoCompleteService.sortContacts)
+			.concat(wallets.sort(AccountAutoCompleteService.sortContacts))
+			.filter(c => this.isValidContact(c, keyword));
+	}
 
-    return a.name.localeCompare(b.name);
-  }
-
-  private isValidContact(contact: AutoCompleteAccount, keyword: string): boolean {
-    return PublicKey.validateAddress(contact.address, this.userDataProvider.currentNetwork)
-           && (contact.address.toLowerCase().indexOf(keyword) > -1
-               || (contact.name && contact.name.toLowerCase().indexOf(keyword) > -1));
-  }
+	private isValidContact(
+		contact: AutoCompleteAccount,
+		keyword: string,
+	): boolean {
+		return (
+			PublicKey.validateAddress(
+				contact.address,
+				this.userDataProvider.currentNetwork,
+			) &&
+			(contact.address.toLowerCase().indexOf(keyword) > -1 ||
+				(contact.name &&
+					contact.name.toLowerCase().indexOf(keyword) > -1))
+		);
+	}
 }

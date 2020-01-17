@@ -1,412 +1,495 @@
-import { Component, OnInit, ViewChild, NgZone } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
-import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { LoadingController } from "@ionic/angular";
 
-import { Contact, Wallet, SendTransactionForm, WalletKeys, QRCodeScheme, StoredNetwork } from '@/models/model';
+import {
+	Contact,
+	QRCodeScheme,
+	SendTransactionForm,
+	StoredNetwork,
+	Wallet,
+	WalletKeys,
+} from "@/models/model";
 
-import { UserDataProvider } from '@/services/user-data/user-data';
-import { ContactsProvider } from '@/services/contacts/contacts';
-import { ArkApiProvider } from '@/services/ark-api/ark-api';
-import { ToastProvider } from '@/services/toast/toast';
+import { ArkApiProvider } from "@/services/ark-api/ark-api";
+import { ContactsProvider } from "@/services/contacts/contacts";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
-import { AccountAutoCompleteService } from '@/services/account-auto-complete/account-auto-complete';
+import { AccountAutoCompleteService } from "@/services/account-auto-complete/account-auto-complete";
 
-import { PublicKey } from 'ark-ts/core';
-import { Subject } from 'rxjs';
+import { PublicKey } from "ark-ts/core";
+import { Subject } from "rxjs";
 
-import { TruncateMiddlePipe } from '@/pipes/truncate-middle/truncate-middle';
-import { PinCodeComponent } from '@/components/pin-code/pin-code';
-import { ConfirmTransactionComponent } from '@/components/confirm-transaction/confirm-transaction';
-import { QRScannerComponent } from '@/components/qr-scanner/qr-scanner';
-import * as constants from '@/app/app.constants';
-import { TransactionSend, TransactionType } from 'ark-ts';
+import * as constants from "@/app/app.constants";
+import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
+import { PinCodeComponent } from "@/components/pin-code/pin-code";
+import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
+import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
+import { TransactionSend, TransactionType } from "ark-ts";
 
-import { AutoCompleteComponent } from 'ionic4-auto-complete';
-import { AutoCompleteAccount, AutoCompleteAccountType } from '@/models/contact';
-import { TranslatableObject } from '@/models/translate';
-import BigNumber from '@/utils/bignumber';
-import { ArkUtility } from '@/utils/ark-utility';
-import { AddressCheckerProvider} from '@/services/address-checker/address-checker';
-import { AddressCheckResult } from '@/services/address-checker/address-check-result';
-import { AmountComponent } from '@/components/amount/amount';
-import { Amount } from '@/components/amount/amount.model';
-import { TranslateService } from '@ngx-translate/core';
-import { takeUntil } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
+import { AmountComponent } from "@/components/amount/amount";
+import { Amount } from "@/components/amount/amount.model";
+import { AutoCompleteAccount, AutoCompleteAccountType } from "@/models/contact";
+import { TranslatableObject } from "@/models/translate";
+import { AddressCheckResult } from "@/services/address-checker/address-check-result";
+import { AddressCheckerProvider } from "@/services/address-checker/address-checker";
+import { ArkUtility } from "@/utils/ark-utility";
+import BigNumber from "@/utils/bignumber";
+import { ActivatedRoute } from "@angular/router";
+import { TranslateService } from "@ngx-translate/core";
+import { AutoCompleteComponent } from "ionic4-auto-complete";
+import { takeUntil } from "rxjs/operators";
 
 class CombinedResult {
-  public checkerDone: boolean;
-  public checkerResult: AddressCheckResult;
-  public pinCodeDone: boolean;
-  public keys: WalletKeys;
+	public checkerDone: boolean;
+	public checkerResult: AddressCheckResult;
+	public pinCodeDone: boolean;
+	public keys: WalletKeys;
 
-  public constructor(public loader: HTMLIonLoadingElement) {
-  }
+	public constructor(public loader: HTMLIonLoadingElement) {}
 }
 
 enum AddressType {
-  Unknown,
-  Contact,
-  WalletWithLabel,
-  WalletWithoutLabel
+	Unknown,
+	Contact,
+	WalletWithLabel,
+	WalletWithoutLabel,
 }
 
 @Component({
-  selector: 'page-transaction-send',
-  templateUrl: 'transaction-send.html',
-  styleUrls: ['transaction-send.scss'],
-  providers: [TruncateMiddlePipe],
+	selector: "page-transaction-send",
+	templateUrl: "transaction-send.html",
+	styleUrls: ["transaction-send.scss"],
+	providers: [TruncateMiddlePipe],
 })
-export class TransactionSendPage implements OnInit {
-  @ViewChild('sendTransactionForm', { static: true })
-  sendTransactionHTMLForm: HTMLFormElement;
+export class TransactionSendPage implements OnInit, OnDestroy {
+	@ViewChild("sendTransactionForm", { static: true })
+	sendTransactionHTMLForm: HTMLFormElement;
 
-  @ViewChild('pinCode', { read: PinCodeComponent, static: true})
-  pinCode: PinCodeComponent;
+	@ViewChild("pinCode", { read: PinCodeComponent, static: true })
+	pinCode: PinCodeComponent;
 
-  @ViewChild('confirmTransaction', { read: ConfirmTransactionComponent, static: true })
-  confirmTransaction: ConfirmTransactionComponent;
-  
-  @ViewChild('qrScanner', { read: QRScannerComponent, static: true })
-  qrScanner: QRScannerComponent;
+	@ViewChild("confirmTransaction", {
+		read: ConfirmTransactionComponent,
+		static: true,
+	})
+	confirmTransaction: ConfirmTransactionComponent;
 
-  @ViewChild('searchBar', { read: AutoCompleteComponent, static: true })
-  searchBar: AutoCompleteComponent;
+	@ViewChild("qrScanner", { read: QRScannerComponent, static: true })
+	qrScanner: QRScannerComponent;
 
-  @ViewChild('amount', { read: AmountComponent, static: true })
-  private amountComponent: AmountComponent;
+	@ViewChild("searchBar", { read: AutoCompleteComponent, static: true })
+	searchBar: AutoCompleteComponent;
 
-  sendForm: FormGroup;
-  transaction: SendTransactionForm = {};
+	@ViewChild("amount", { read: AmountComponent, static: true })
+	private amountComponent: AmountComponent;
 
-  currentWallet: Wallet;
-  currentNetwork: StoredNetwork;
-  fee: number;
-  hasFeeError = false;
-  addressType: AddressType = AddressType.Unknown;
-  addressTypes = AddressType;
-  isRecipientNameAutoSet: boolean;
-  hasSent = false;
-  sendAllEnabled = false;
-  transactionType = TransactionType.SendArk;
+	sendForm: FormGroup;
+	transaction: SendTransactionForm = {};
 
-  private currentAutoCompleteFieldValue: string;
-  private unsubscriber$: Subject<void> = new Subject<void>();
+	currentWallet: Wallet;
+	currentNetwork: StoredNetwork;
+	fee: number;
+	hasFeeError = false;
+	addressType: AddressType = AddressType.Unknown;
+	addressTypes = AddressType;
+	isRecipientNameAutoSet: boolean;
+	hasSent = false;
+	sendAllEnabled = false;
+	transactionType = TransactionType.SendArk;
 
-  constructor(
-    private userDataProvider: UserDataProvider,
-    private contactsProvider: ContactsProvider,
-    private arkApiProvider: ArkApiProvider,
-    private toastProvider: ToastProvider,
-    public contactsAutoCompleteService: AccountAutoCompleteService,
-    private truncateMiddlePipe: TruncateMiddlePipe,
-    private addressChecker: AddressCheckerProvider,
-    private loadingCtrl: LoadingController,
-    private translateService: TranslateService,
-    private ngZone: NgZone,
-    private route: ActivatedRoute
-  ) {
-    this.currentWallet = this.userDataProvider.currentWallet;
-    this.currentNetwork = this.userDataProvider.currentNetwork;
-  }
+	private currentAutoCompleteFieldValue: string;
+	private unsubscriber$: Subject<void> = new Subject<void>();
 
-  toggleSendAll () {
-    this.sendAllEnabled = !this.sendAllEnabled;
+	constructor(
+		private userDataProvider: UserDataProvider,
+		private contactsProvider: ContactsProvider,
+		private arkApiProvider: ArkApiProvider,
+		private toastProvider: ToastProvider,
+		public contactsAutoCompleteService: AccountAutoCompleteService,
+		private truncateMiddlePipe: TruncateMiddlePipe,
+		private addressChecker: AddressCheckerProvider,
+		private loadingCtrl: LoadingController,
+		private translateService: TranslateService,
+		private ngZone: NgZone,
+		private route: ActivatedRoute,
+	) {
+		this.currentWallet = this.userDataProvider.currentWallet;
+		this.currentNetwork = this.userDataProvider.currentNetwork;
+	}
 
-    if (this.sendAllEnabled) {
-      this.sendAll();
-    }
-  }
+	toggleSendAll() {
+		this.sendAllEnabled = !this.sendAllEnabled;
 
-  get vendorFieldLength () {
-    return this.currentNetwork.vendorFieldLength || 255;
-  }
+		if (this.sendAllEnabled) {
+			this.sendAll();
+		}
+	}
 
-  sendAll() {
-    const balance = Number(this.currentWallet.balance);
-    const sendableAmount = balance - this.fee;
+	get vendorFieldLength() {
+		return this.currentNetwork.vendorFieldLength || 255;
+	}
 
-    if (sendableAmount <= 0) {
-      this.toastProvider.error({
-          key: 'API.BALANCE_TOO_LOW_DETAIL',
-          parameters: {
-            token: this.currentNetwork.token,
-            fee: ArkUtility.arktoshiToArk(this.fee),
-            amount: ArkUtility.arktoshiToArk(balance),
-            totalAmount: ArkUtility.arktoshiToArk(balance + this.fee),
-            balance: ArkUtility.arktoshiToArk(balance)
-          }
-        } as TranslatableObject,
-        10000);
-      return;
-    }
+	sendAll() {
+		const balance = Number(this.currentWallet.balance);
+		const sendableAmount = balance - this.fee;
 
-    this.transaction.amount = ArkUtility.arktoshiToArk(sendableAmount, true);
-    this.amountComponent.setAmount(this.transaction.amount);
-  }
+		if (sendableAmount <= 0) {
+			this.toastProvider.error(
+				{
+					key: "API.BALANCE_TOO_LOW_DETAIL",
+					parameters: {
+						token: this.currentNetwork.token,
+						fee: ArkUtility.arktoshiToArk(this.fee),
+						amount: ArkUtility.arktoshiToArk(balance),
+						totalAmount: ArkUtility.arktoshiToArk(
+							balance + this.fee,
+						),
+						balance: ArkUtility.arktoshiToArk(balance),
+					},
+				} as TranslatableObject,
+				10000,
+			);
+			return;
+		}
 
-  send() {
-    if (!this.validForm()) {
-      this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_FORM_ERROR');
-    } else if (!this.validAddress()) {
-      this.toastProvider.error('TRANSACTIONS_PAGE.INVALID_ADDRESS_ERROR');
-    } else {
-      this.ngZone.run(() => {
-        this.hasSent = true;
-        this.createContactOrLabel();
+		this.transaction.amount = ArkUtility.arktoshiToArk(
+			sendableAmount,
+			true,
+		);
+		this.amountComponent.setAmount(this.transaction.amount);
+	}
 
-        this.translateService
-          .get('TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS')
-          .subscribe(async (translation) => {
-            const loader = await this.loadingCtrl.create({message: translation});
-            const combinedResult: CombinedResult = new CombinedResult(loader);
-            this.addressChecker.checkAddress(this.transaction.recipientAddress).subscribe(checkerResult => {
-              combinedResult.checkerDone = true;
-              combinedResult.checkerResult = checkerResult;
-              this.createTransactionAndShowConfirm(combinedResult);
-            });
-            this.pinCode.open('PIN_CODE.TYPE_PIN_SIGN_TRANSACTION', true, true, (keys: WalletKeys) => {
-              combinedResult.pinCodeDone = true;
-              combinedResult.keys = keys;
-              this.createTransactionAndShowConfirm(combinedResult);
-            });
-          });
-        });
-    }
-  }
+	send() {
+		if (!this.validForm()) {
+			this.toastProvider.error("TRANSACTIONS_PAGE.INVALID_FORM_ERROR");
+		} else if (!this.validAddress()) {
+			this.toastProvider.error("TRANSACTIONS_PAGE.INVALID_ADDRESS_ERROR");
+		} else {
+			this.ngZone.run(() => {
+				this.hasSent = true;
+				this.createContactOrLabel();
 
-  public hasNotSent(): void {
-    this.hasSent = false;
-  }
+				this.translateService
+					.get(
+						"TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS",
+					)
+					.subscribe(async translation => {
+						const loader = await this.loadingCtrl.create({
+							message: translation,
+						});
+						const combinedResult: CombinedResult = new CombinedResult(
+							loader,
+						);
+						this.addressChecker
+							.checkAddress(this.transaction.recipientAddress)
+							.subscribe(checkerResult => {
+								combinedResult.checkerDone = true;
+								combinedResult.checkerResult = checkerResult;
+								this.createTransactionAndShowConfirm(
+									combinedResult,
+								);
+							});
+						this.pinCode.open(
+							"PIN_CODE.TYPE_PIN_SIGN_TRANSACTION",
+							true,
+							true,
+							(keys: WalletKeys) => {
+								combinedResult.pinCodeDone = true;
+								combinedResult.keys = keys;
+								this.createTransactionAndShowConfirm(
+									combinedResult,
+								);
+							},
+						);
+					});
+			});
+		}
+	}
 
-  public onSearchItem(account: AutoCompleteAccount): void {
-    if (!account || !account.address) {
-      return;
-    }
+	public hasNotSent(): void {
+		this.hasSent = false;
+	}
 
-    this.transaction.recipientAddress = account.address;
-    this.currentAutoCompleteFieldValue = account.name;
-    this.isRecipientNameAutoSet = true;
+	public onSearchItem(account: AutoCompleteAccount): void {
+		if (!account || !account.address) {
+			return;
+		}
 
-    if (account.name !== account.address) {
-      this.addressType = account.type === AutoCompleteAccountType.Wallet ? AddressType.WalletWithLabel : AddressType.Contact;
-      this.transaction.recipientName = account.name;
-    } else {
-      this.addressType = account.type === AutoCompleteAccountType.Wallet ? AddressType.WalletWithoutLabel : AddressType.Unknown;
-      this.transaction.recipientName = null;
-    }
-  }
+		this.transaction.recipientAddress = account.address;
+		this.currentAutoCompleteFieldValue = account.name;
+		this.isRecipientNameAutoSet = true;
 
-  public onSearchInput(input: string): void {
-    // this check is needed because clicking into the field, also triggers this method
-    // and then the recipientName is set to null, even though nothing has changed
-    if (input === this.currentAutoCompleteFieldValue) {
-      return;
-    }
+		if (account.name !== account.address) {
+			this.addressType =
+				account.type === AutoCompleteAccountType.Wallet
+					? AddressType.WalletWithLabel
+					: AddressType.Contact;
+			this.transaction.recipientName = account.name;
+		} else {
+			this.addressType =
+				account.type === AutoCompleteAccountType.Wallet
+					? AddressType.WalletWithoutLabel
+					: AddressType.Unknown;
+			this.transaction.recipientName = null;
+		}
+	}
 
-    this.setRecipientByAddress(input);
-  }
+	public onSearchInput(input: string): void {
+		// this check is needed because clicking into the field, also triggers this method
+		// and then the recipientName is set to null, even though nothing has changed
+		if (input === this.currentAutoCompleteFieldValue) {
+			return;
+		}
 
-  public showFullAddress(): void {
-    // When field has focus, show full address
-    this.searchBar.setValue(this.transaction.recipientAddress);
-  }
+		this.setRecipientByAddress(input);
+	}
 
-  public truncateAddressMiddle(): void {
-    // When field loses focus, use ellipses to show beginning and end of address
-    const addressString = this.transaction.recipientAddress;
-    setTimeout(() => {
-      this.searchBar.setValue(this.truncateMiddlePipe.transform(addressString, constants.TRANSACTION_ADDRESS_SIZE, addressString));
-    }, 0);
-  }
+	public showFullAddress(): void {
+		// When field has focus, show full address
+		this.searchBar.setValue(this.transaction.recipientAddress);
+	}
 
-  private validAddress(): boolean {
-    const isValid = PublicKey.validateAddress(this.transaction.recipientAddress, this.currentNetwork);
-    this.sendTransactionHTMLForm.form.controls['recipientAddress'].setErrors({ incorrect: !isValid });
+	public truncateAddressMiddle(): void {
+		// When field loses focus, use ellipses to show beginning and end of address
+		const addressString = this.transaction.recipientAddress;
+		setTimeout(() => {
+			this.searchBar.setValue(
+				this.truncateMiddlePipe.transform(
+					addressString,
+					constants.TRANSACTION_ADDRESS_SIZE,
+					addressString,
+				),
+			);
+		}, 0);
+	}
 
-    return isValid;
-  }
+	private validAddress(): boolean {
+		const isValid = PublicKey.validateAddress(
+			this.transaction.recipientAddress,
+			this.currentNetwork,
+		);
+		this.sendTransactionHTMLForm.form.controls.recipientAddress.setErrors({
+			incorrect: !isValid,
+		});
 
-  private validForm(): boolean {
-    let isValid = true;
-    if (
-      !this.sendTransactionHTMLForm.form.controls['amount'].value
-      || this.sendTransactionHTMLForm.form.controls['amount'].value <= 0
-      || (this.sendTransactionHTMLForm.form.controls['smartBridge'].value || '').length > this.vendorFieldLength
-    ) {
-      isValid = false;
-    }
+		return isValid;
+	}
 
-    return isValid;
-  }
+	private validForm(): boolean {
+		let isValid = true;
+		if (
+			!this.sendTransactionHTMLForm.form.controls.amount.value ||
+			this.sendTransactionHTMLForm.form.controls.amount.value <= 0 ||
+			(this.sendTransactionHTMLForm.form.controls.smartBridge.value || "")
+				.length > this.vendorFieldLength
+		) {
+			isValid = false;
+		}
 
-  createContactOrLabel() {
-    if (this.addressType === AddressType.Contact || this.addressType === AddressType.WalletWithLabel || !this.transaction.recipientName) {
-      return;
-    }
+		return isValid;
+	}
 
-    const validAddress = this.validAddress();
-    const validName = new RegExp('^[a-zA-Z0-9]+[a-zA-Z0-9- ]+$').test(this.transaction.recipientName);
+	createContactOrLabel() {
+		if (
+			this.addressType === AddressType.Contact ||
+			this.addressType === AddressType.WalletWithLabel ||
+			!this.transaction.recipientName
+		) {
+			return;
+		}
 
-    if (validAddress && validName) {
-      if (this.addressType === AddressType.Unknown) {
-        this.contactsProvider.addContact(this.transaction.recipientAddress, this.transaction.recipientName).subscribe();
-      } else {
-        this.userDataProvider
-            .setWalletLabel(this.userDataProvider.getWalletByAddress(this.transaction.recipientAddress),
-                            this.transaction.recipientName)
-            .subscribe();
-      }
-    }
-  }
+		const validAddress = this.validAddress();
+		const validName = new RegExp("^[a-zA-Z0-9]+[a-zA-Z0-9- ]+$").test(
+			this.transaction.recipientName,
+		);
 
-  scanQRCode() {
-    this.qrScanner.open(true);
-  }
+		if (validAddress && validName) {
+			if (this.addressType === AddressType.Unknown) {
+				this.contactsProvider
+					.addContact(
+						this.transaction.recipientAddress,
+						this.transaction.recipientName,
+					)
+					.subscribe();
+			} else {
+				this.userDataProvider
+					.setWalletLabel(
+						this.userDataProvider.getWalletByAddress(
+							this.transaction.recipientAddress,
+						),
+						this.transaction.recipientName,
+					)
+					.subscribe();
+			}
+		}
+	}
 
-  private createTransactionAndShowConfirm(result: CombinedResult) {
-    if (!result.pinCodeDone) {
-      return;
-    }
+	scanQRCode() {
+		this.qrScanner.open(true);
+	}
 
-    if (!result.checkerDone) {
-      result.loader.present();
-      return;
-    }
+	private createTransactionAndShowConfirm(result: CombinedResult) {
+		if (!result.pinCodeDone) {
+			return;
+		}
 
-    result.loader.dismiss();
+		if (!result.checkerDone) {
+			result.loader.present();
+			return;
+		}
 
-    const amount = new BigNumber(this.transaction.amount);
-    const data: TransactionSend = {
-      amount: amount.times(constants.WALLET_UNIT_TO_SATOSHI).toNumber(),
-      vendorField: this.transaction.smartBridge,
-      passphrase: result.keys.key,
-      secondPassphrase: result.keys.secondKey,
-      recipientId: this.transaction.recipientAddress,
-      fee: this.fee
-    };
+		result.loader.dismiss();
 
-    this.arkApiProvider.transactionBuilder.createTransaction(data).subscribe((transaction) => {
-      // The transaction will be signed again;
-      this.confirmTransaction.open(transaction, result.keys, result.checkerResult);
-    }, () => {
-      this.toastProvider.error('TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR');
-      this.hasNotSent();
-    });
-  }
+		const amount = new BigNumber(this.transaction.amount);
+		const data: TransactionSend = {
+			amount: amount.times(constants.WALLET_UNIT_TO_SATOSHI).toNumber(),
+			vendorField: this.transaction.smartBridge,
+			passphrase: result.keys.key,
+			secondPassphrase: result.keys.secondKey,
+			recipientId: this.transaction.recipientAddress,
+			fee: this.fee,
+		};
 
-  onScanQRCode(qrCode: QRCodeScheme) {
-    if (qrCode.address) {
-      this.setFormValuesFromAddress(qrCode.address, qrCode.label);
-      const amount = Number(qrCode.amount);
-      if (!!amount) {
-        this.amountComponent.setAmount(amount);
-      }
-      if (qrCode.vendorField) {
-        this.transaction.smartBridge = qrCode.vendorField;
-      }
-    } else {
-      this.toastProvider.error('QR_CODE.INVALID_QR_ERROR');
-    }
-  }
+		this.arkApiProvider.transactionBuilder
+			.createTransaction(data)
+			.subscribe(
+				transaction => {
+					// The transaction will be signed again;
+					this.confirmTransaction.open(
+						transaction,
+						result.keys,
+						result.checkerResult,
+					);
+				},
+				() => {
+					this.toastProvider.error(
+						"TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR",
+					);
+					this.hasNotSent();
+				},
+			);
+	}
 
-  ngOnInit(): void {
-    this.hasNotSent();
-    
-    this.pinCode.onClosed.pipe(
-      takeUntil(this.unsubscriber$)
-    ).subscribe(() => {
-      this.hasNotSent();
-    });
-    this.confirmTransaction.onError.pipe(
-      takeUntil(this.unsubscriber$)
-    ).subscribe(() => {
-      this.hasNotSent();
-    });
-    this.confirmTransaction.onClosed.pipe(
-      takeUntil(this.unsubscriber$)
-    ).subscribe(() => {
-      this.hasNotSent();
-    });
+	onScanQRCode(qrCode: QRCodeScheme) {
+		if (qrCode.address) {
+			this.setFormValuesFromAddress(qrCode.address, qrCode.label);
+			const amount = Number(qrCode.amount);
+			if (!!amount) {
+				this.amountComponent.setAmount(amount);
+			}
+			if (qrCode.vendorField) {
+				this.transaction.smartBridge = qrCode.vendorField;
+			}
+		} else {
+			this.toastProvider.error("QR_CODE.INVALID_QR_ERROR");
+		}
+	}
 
-    this.sendForm = new FormGroup({
-      recipientAddress: new FormControl(''),
-      recipientName: new FormControl(''),
-      amount: new FormControl('', [
-        Validators.required
-      ]),
-      amountEquivalent: new FormControl(''),
-      smartBridge: new FormControl('')
-    });
+	ngOnInit(): void {
+		this.hasNotSent();
 
-    this.setFormValuesFromAddress(this.route.snapshot.queryParamMap.get('address') || '');
-  }
+		this.pinCode.close.pipe(takeUntil(this.unsubscriber$)).subscribe(() => {
+			this.hasNotSent();
+		});
+		this.confirmTransaction.error
+			.pipe(takeUntil(this.unsubscriber$))
+			.subscribe(() => {
+				this.hasNotSent();
+			});
+		this.confirmTransaction.close
+			.pipe(takeUntil(this.unsubscriber$))
+			.subscribe(() => {
+				this.hasNotSent();
+			});
 
-  ngOnDestroy() {
-    this.unsubscriber$.next();
-    this.unsubscriber$.complete();
-  }
+		this.sendForm = new FormGroup({
+			recipientAddress: new FormControl(""),
+			recipientName: new FormControl(""),
+			amount: new FormControl("", [Validators.required]),
+			amountEquivalent: new FormControl(""),
+			smartBridge: new FormControl(""),
+		});
 
-  public onAmountChange(newAmounts: Amount) {
-    this.transaction.amount = newAmounts.amount;
-    this.transaction.amountEquivalent = newAmounts.amountEquivalent;
-  }
+		this.setFormValuesFromAddress(
+			this.route.snapshot.queryParamMap.get("address") || "",
+		);
+	}
 
-  public onFeeChange(newFee: number) {
-    this.fee = newFee;
+	ngOnDestroy() {
+		this.unsubscriber$.next();
+		this.unsubscriber$.complete();
+	}
 
-    if (this.sendAllEnabled) {
-      this.sendAll();
-    }
-  }
+	public onAmountChange(newAmounts: Amount) {
+		this.transaction.amount = newAmounts.amount;
+		this.transaction.amountEquivalent = newAmounts.amountEquivalent;
+	}
 
-  public onFeeError(hasError: boolean) {
-    this.hasFeeError = hasError;
-  }
+	public onFeeChange(newFee: number) {
+		this.fee = newFee;
 
-  private setFormValuesFromAddress(address: string, alternativeRecipientName?: string): void {
-    if (!address) {
-      return;
-    }
+		if (this.sendAllEnabled) {
+			this.sendAll();
+		}
+	}
 
-    this.sendForm.patchValue({recipientAddress: address});
-    this.setRecipientByAddress(address, alternativeRecipientName);
-    this.truncateAddressMiddle();
-  }
+	public onFeeError(hasError: boolean) {
+		this.hasFeeError = hasError;
+	}
 
-  private setRecipientByAddress(input: string, alternativeRecipientName?: string): void {
-    if (input.indexOf('...') !== -1) {
-      return;
-    }
+	private setFormValuesFromAddress(
+		address: string,
+		alternativeRecipientName?: string,
+	): void {
+		if (!address) {
+			return;
+		}
 
-    this.currentAutoCompleteFieldValue = input;
-    this.transaction.recipientAddress = input;
+		this.sendForm.patchValue({ recipientAddress: address });
+		this.setRecipientByAddress(address, alternativeRecipientName);
+		this.truncateAddressMiddle();
+	}
 
-    const contact: Contact = this.contactsProvider.getContactByAddress(input);
-    if (contact) {
-      this.addressType = AddressType.Contact;
-      this.isRecipientNameAutoSet = true;
-      this.transaction.recipientName = contact.name;
-      return;
-    }
+	private setRecipientByAddress(
+		input: string,
+		alternativeRecipientName?: string,
+	): void {
+		if (input.indexOf("...") !== -1) {
+			return;
+		}
 
-    const walletLabel = this.userDataProvider.getWalletLabel(input);
-    if (walletLabel) {
-      this.addressType = AddressType.WalletWithLabel;
-      this.isRecipientNameAutoSet = true;
-      this.transaction.recipientName = walletLabel;
-      return;
-    }
+		this.currentAutoCompleteFieldValue = input;
+		this.transaction.recipientAddress = input;
 
-    this.addressType = this.userDataProvider.getWalletByAddress(input)
-                         ? AddressType.WalletWithoutLabel
-                         : AddressType.Unknown;
+		const contact: Contact = this.contactsProvider.getContactByAddress(
+			input,
+		);
+		if (contact) {
+			this.addressType = AddressType.Contact;
+			this.isRecipientNameAutoSet = true;
+			this.transaction.recipientName = contact.name;
+			return;
+		}
 
-    if (alternativeRecipientName) {
-      this.isRecipientNameAutoSet = true;
-      this.transaction.recipientName = alternativeRecipientName;
-    } else if (this.isRecipientNameAutoSet) {
-      this.transaction.recipientName = null;
-    }
-  }
+		const walletLabel = this.userDataProvider.getWalletLabel(input);
+		if (walletLabel) {
+			this.addressType = AddressType.WalletWithLabel;
+			this.isRecipientNameAutoSet = true;
+			this.transaction.recipientName = walletLabel;
+			return;
+		}
+
+		this.addressType = this.userDataProvider.getWalletByAddress(input)
+			? AddressType.WalletWithoutLabel
+			: AddressType.Unknown;
+
+		if (alternativeRecipientName) {
+			this.isRecipientNameAutoSet = true;
+			this.transaction.recipientName = alternativeRecipientName;
+		} else if (this.isRecipientNameAutoSet) {
+			this.transaction.recipientName = null;
+		}
+	}
 }

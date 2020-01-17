@@ -1,32 +1,39 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { AddressMap } from '@/models/contact';
+import { AddressMap } from "@/models/contact";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
-  selector: 'address-list',
-  templateUrl: 'address-list.html',
-  styleUrls: ['address-list.pcss']
+	selector: "address-list",
+	templateUrl: "address-list.html",
+	styleUrls: ["address-list.pcss"],
 })
 export class AddressListComponent {
-  @Input() map: AddressMap[];
-  @Input() icon: string;
-  @Input() circleProperty = 'key'; // key or value
+	@Input()
+	map: AddressMap[];
+	@Input()
+	icon: string;
+	@Input()
+	circleProperty = "key"; // key or value
 
-  @Output() onTap: EventEmitter<string> = new EventEmitter<string>();
-  @Output() onPress: EventEmitter<string> = new EventEmitter<string>();
-  @Output() onMore: EventEmitter<string> = new EventEmitter<string>();
+	@Output()
+	tapItem: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor() { }
+	@Output()
+	pressItem: EventEmitter<string> = new EventEmitter<string>();
 
-  tap(key: string) {
-    this.onTap.emit(key);
-  }
+	@Output()
+	more: EventEmitter<string> = new EventEmitter<string>();
 
-  press(key: string) {
-    this.onPress.emit(key);
-  }
+	constructor() {}
 
-  more(key: string) {
-    this.onMore.emit(key);
-  }
+	onTap(key: string) {
+		this.tapItem.emit(key);
+	}
 
+	onPress(key: string) {
+		this.pressItem.emit(key);
+	}
+
+	onMore(key: string) {
+		this.more.emit(key);
+	}
 }
