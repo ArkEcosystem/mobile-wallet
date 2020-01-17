@@ -5054,10 +5054,10 @@ ionic2-auto-complete@^1.6.2-alpha:
   resolved "https://registry.yarnpkg.com/ionic2-auto-complete/-/ionic2-auto-complete-1.6.2-alpha.tgz#407b84813c51b6051bc016fc672c0b20b945e744"
   integrity sha1-QHuEgTxRtgUbwBb8ZywLILlF50Q=
 
-ionicons@^3:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-3.0.0.tgz#40b8daf4fd7a31150bd002160f66496e22a98c3c"
-  integrity sha1-QLja9P16MRUL0AIWD2ZJbiKpjDw=
+ionicons@^4.0.0:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-4.6.3.tgz#e4f3a3e9b66761eb8c0db27798cc1a8ce97777d2"
+  integrity sha512-cgP+VIr2cTJpMfFyVHTerq6n2jeoiGboVoe3GlaAo5zoSBDAEXORwUZhv6m+lCyxlsHCS3nqPUE+MKyZU71t8Q==
 
 ios-sim@^8.0.1:
   version "8.0.1"
