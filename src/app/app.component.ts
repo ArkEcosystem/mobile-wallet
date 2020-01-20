@@ -85,8 +85,8 @@ export class AppComponent implements OnDestroy, OnInit {
 	initializeApp() {
 		this.platform.ready().then(() => {
 			this.initTranslation();
-			this.initTheme();
 			this.initConfig();
+			this.initTheme();
 			this.initSessionCheck();
 			this.initBackButton();
 			this.splashScreen.hide();
@@ -204,7 +204,7 @@ export class AppComponent implements OnDestroy, OnInit {
 					this.element.nativeElement.parentNode,
 					"dark-theme",
 				);
-				this.statusBar.styleDefault();
+				this.statusBar.styleLightContent();
 			}
 		});
 	}
