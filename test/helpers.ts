@@ -7,7 +7,6 @@ import {
 	TestBedStatic,
 } from "@angular/core/testing";
 import { BrowserModule } from "@angular/platform-browser";
-import { BrowserDynamicTestingModule } from "@angular/platform-browser-dynamic/testing";
 import { RouterModule } from "@angular/router";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { Network } from "@ionic-native/network/ngx";
