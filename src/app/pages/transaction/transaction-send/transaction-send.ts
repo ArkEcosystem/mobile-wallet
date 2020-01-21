@@ -37,6 +37,7 @@ import { AddressCheckerProvider } from "@/services/address-checker/address-check
 import { ArkUtility } from "@/utils/ark-utility";
 import BigNumber from "@/utils/bignumber";
 import { ActivatedRoute } from "@angular/router";
+import { Keyboard, KeyboardResizeMode } from "@ionic-native/keyboard/ngx";
 import { TranslateService } from "@ngx-translate/core";
 import { AutoCompleteComponent } from "ionic4-auto-complete";
 import { takeUntil } from "rxjs/operators";
@@ -114,7 +115,9 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		private translateService: TranslateService,
 		private ngZone: NgZone,
 		private route: ActivatedRoute,
+		private keyboard: Keyboard,
 	) {
+		this.keyboard.setResizeMode(KeyboardResizeMode.None);
 		this.currentWallet = this.userDataProvider.currentWallet;
 		this.currentNetwork = this.userDataProvider.currentNetwork;
 	}
