@@ -35,6 +35,10 @@ import { SettingsDataProvider } from "./services/settings-data/settings-data";
 
 import * as constants from "@/app/app.constants";
 import { Router } from "@angular/router";
+import {
+	Keyboard,
+	KeyboardStyle,
+} from "@ionic-native/keyboard/ngx";
 import moment from "moment";
 
 @Component({
@@ -78,6 +82,7 @@ export class AppComponent implements OnDestroy, OnInit {
 		private router: Router,
 		private alertCtrl: AlertController,
 		private config: Config,
+		private keyboard: Keyboard,
 	) {
 		this.initializeApp();
 	}
@@ -198,13 +203,20 @@ export class AppComponent implements OnDestroy, OnInit {
 					this.element.nativeElement.parentNode,
 					"dark-theme",
 				);
+				this.keyboard.setKeyboardStyle(KeyboardStyle.Dark);
 				this.statusBar.styleBlackTranslucent();
 			} else {
 				this.renderer.removeClass(
 					this.element.nativeElement.parentNode,
 					"dark-theme",
 				);
-				this.statusBar.styleLightContent();
+				this.keyboard.setKeyboardStyle(KeyboardStyle.Light);
+
+				if (this.platform.is("android")) {
+					this.statusBar.styleLightContent();
+				} else {
+					this.statusBar.styleDefault();
+				}
 			}
 		});
 	}
