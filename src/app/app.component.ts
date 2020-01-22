@@ -35,10 +35,7 @@ import { SettingsDataProvider } from "./services/settings-data/settings-data";
 
 import * as constants from "@/app/app.constants";
 import { Router } from "@angular/router";
-import {
-	Keyboard,
-	KeyboardStyle,
-} from "@ionic-native/keyboard/ngx";
+import { Keyboard, KeyboardStyle } from "@ionic-native/keyboard/ngx";
 import moment from "moment";
 
 @Component({
@@ -59,6 +56,8 @@ export class AppComponent implements OnDestroy, OnInit {
 	public exitText: string;
 	public signOutText: string;
 	public hideRouter = false;
+
+	public menuId = "sidebar";
 
 	constructor(
 		private platform: Platform,
@@ -130,45 +129,59 @@ export class AppComponent implements OnDestroy, OnInit {
 		try {
 			const current = await this.actionSheetCtrl.getTop();
 			if (current) {
-				current.dismiss();
-				return;
+				await current.dismiss();
+				return true;
 			}
 		} catch {}
 
 		try {
 			const current = await this.modalCtrl.getTop();
 			if (current) {
-				current.dismiss();
-				return;
+				await current.dismiss();
+				return true;
 			}
 		} catch {}
 
-		if (this.menuCtrl && this.menuCtrl.isOpen()) {
-			this.menuCtrl.close();
+		if (this.menuCtrl && (await this.menuCtrl.isOpen(this.menuId))) {
+			await this.menuCtrl.close(this.menuId);
+			return true;
 		}
 	}
 
 	initBackButton() {
 		this.platform.backButton.subscribe(async () => {
 			const path = this.router.url;
-			await this.closeOverlays();
 
-			this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-				if (outlet && outlet.canGoBack()) {
-					outlet.pop();
-				} else {
-					if (path === "/login" || path === "/intro") {
-						this.showConfirmation(this.exitText).then(() => {
-							// tslint:disable-next-line: no-string-literal
-							navigator["app"].exitApp();
-						});
-					} else if (path === "/wallets") {
-						this.showConfirmation(this.signOutText).then(() => {
-							this.logout();
-						});
-					}
+			const hadAnyOpen = await this.closeOverlays();
+
+			if (hadAnyOpen) {
+				return;
+			}
+
+			// The `modalCtrl.getTop` method does not capture open modals on subpages
+			// then it checks if the current route is the same from the next tick
+			setTimeout(() => {
+				if (path !== this.router.url) {
+					return;
 				}
-			});
+
+				this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+					if (outlet && outlet.canGoBack()) {
+						outlet.pop();
+					} else {
+						if (path === "/login" || path === "/intro") {
+							this.showConfirmation(this.exitText).then(() => {
+								// tslint:disable-next-line: no-string-literal
+								navigator["app"].exitApp();
+							});
+						} else if (path === "/wallets") {
+							this.showConfirmation(this.signOutText).then(() => {
+								this.logout();
+							});
+						}
+					}
+				});
+			}, 0);
 		});
 	}
 
@@ -256,7 +269,7 @@ export class AppComponent implements OnDestroy, OnInit {
 			this.screenOrientation.lock("portrait");
 		}
 
-		this.menuCtrl.enable(false, "sidebar");
+		this.menuCtrl.enable(false, this.menuId);
 
 		this.eventBus.$subject.subscribe(event => {
 			switch (event.key) {
@@ -271,7 +284,7 @@ export class AppComponent implements OnDestroy, OnInit {
 	}
 
 	openPage(path: string, rootPage: boolean = true) {
-		this.menuCtrl.close();
+		this.menuCtrl.close(this.menuId);
 		if (rootPage) {
 			this.navController.navigateRoot(path);
 		} else {
@@ -307,7 +320,7 @@ export class AppComponent implements OnDestroy, OnInit {
 				this.profile = this.userDataProvider.currentProfile;
 				this.network = this.userDataProvider.currentNetwork;
 
-				return this.menuCtrl.enable(true, "sidebar");
+				return this.menuCtrl.enable(true, this.menuId);
 			});
 	}
 
@@ -317,7 +330,7 @@ export class AppComponent implements OnDestroy, OnInit {
 			.subscribe(() => {
 				this.userDataProvider.clearCurrentWallet();
 
-				this.menuCtrl.enable(false, "sidebar");
+				this.menuCtrl.enable(false, this.menuId);
 				return this.openPage("/login");
 			});
 	}
