@@ -249,9 +249,17 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		this.setRecipientByAddress(input);
 	}
 
+	public onSearchPaste(input: ClipboardEvent) {
+		this.setFormValuesFromAddress(input.clipboardData.getData("text"));
+	}
+
 	public showFullAddress(): void {
 		// When field has focus, show full address
 		this.searchBar.setValue(this.transaction.recipientAddress);
+	}
+
+	public onSearchBlur(input: CustomEvent): void {
+		this.truncateAddressMiddle();
 	}
 
 	public truncateAddressMiddle(): void {
