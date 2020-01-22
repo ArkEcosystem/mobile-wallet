@@ -45,8 +45,9 @@
 							formControlName="recipientAddress"
 							(itemSelected)="onSearchItem($event)"
 							(ionAutoInput)="onSearchInput($event)"
+							(autoBlur)="onSearchBlur($event)"
 							(autoFocus)="showFullAddress()"
-							(autoBlur)="truncateAddressMiddle()"
+							(paste)="onSearchPaste($event)"
 							[template]="contactsTemplate"
 							#searchBar
 						>
