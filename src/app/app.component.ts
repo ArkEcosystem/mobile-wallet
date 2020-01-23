@@ -35,7 +35,11 @@ import { SettingsDataProvider } from "./services/settings-data/settings-data";
 
 import * as constants from "@/app/app.constants";
 import { Router } from "@angular/router";
-import { Keyboard, KeyboardStyle } from "@ionic-native/keyboard/ngx";
+import {
+	Keyboard,
+	KeyboardResizeMode,
+	KeyboardStyle,
+} from "@ionic-native/keyboard/ngx";
 import moment from "moment";
 
 @Component({
@@ -259,6 +263,7 @@ export class AppComponent implements OnDestroy, OnInit {
 			this.config.set("scrollAssist", false);
 
 			if (this.platform.is("ios")) {
+				this.keyboard.setResizeMode(KeyboardResizeMode.None);
 				this.config.set("scrollPadding", false);
 			}
 
