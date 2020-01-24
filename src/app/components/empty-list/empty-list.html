@@ -1,0 +1,16 @@
+<ion-content class="h-full ion-padding">
+	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+		<ion-fab-button (click)="submit()">
+			<ion-icon name="add"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+
+	<ion-grid class="h-full flex flex-col justify-center items-center">
+		<div>
+			<img class="image" />
+			<ion-text color="dark" class="text-center">
+				<p class="leading-normal py-2">{{ message | translate }}</p>
+			</ion-text>
+		</div>
+	</ion-grid>
+</ion-content>

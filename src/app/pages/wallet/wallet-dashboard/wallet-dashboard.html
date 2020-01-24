@@ -1,0 +1,156 @@
+<ion-header
+	no-shadow
+	no-border
+	[ngClass]="{'delegate-wallet': wallet?.isDelegate, 'default-wallet': wallet ? !wallet.isDelegate : false}"
+>
+	<ion-toolbar no-border-bottom no-shadow>
+		<ion-menu-button slot="start"></ion-menu-button>
+		<ion-title
+			>{{ wallet?.username || wallet?.label || ('WALLETS_PAGE.MY_WALLET' |
+			translate) }}</ion-title
+		>
+		<ion-buttons slot="end">
+			<ion-button (click)="presentWalletActionSheet()">
+				<ion-icon slot="icon-only" name="more"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+
+	<ion-toolbar
+		class="stats-toolbar flex items-center"
+		no-border-top
+		[appHeaderScroller]="content"
+	>
+		<ion-grid>
+			<ion-row
+				class="mt-2 mb-4 flex flex-col justify-center items-center"
+			>
+				<h1 class="text-2xl font-bold my-2">
+					{{ network?.symbol }} {{ wallet?.getBalance() | number:
+					'1.0-8' }}
+				</h1>
+				<h4 class="text-lg font-semibold" appMarketNetOnly>
+					{{ marketCurrency?.symbol }}{{
+					(wallet?.getBalanceEquivalent(marketCurrency) |
+					marketNumber) || 0 }}
+				</h4>
+				<p
+					(click)="copyAddress()"
+					tappable
+					class="toolbar-address flex items-center mt-3 opacity-75"
+				>
+					<ion-icon name="copy" class="mr-1"></ion-icon>
+					{{ wallet?.address }}
+				</p>
+				<ion-badge
+					class="mt-2"
+					color="primary"
+					*ngIf="wallet?.isWatchOnly"
+				>
+					{{ 'WATCH_ONLY' | translate }}
+				</ion-badge>
+			</ion-row>
+		</ion-grid>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content #content [scrollEvents]="true">
+	<ion-refresher #refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="{{ 'PULL_REFRESH' | translate }}"
+			refreshingSpinner="circles"
+			refreshingText="{{ 'REFRESHING' | translate }}"
+		>
+		</ion-refresher-content>
+	</ion-refresher>
+
+	<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+		<ion-fab-button color="primary" (click)="presentAddActionSheet()">
+			<ion-icon name="add"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+
+	<ion-grid class="h-full">
+		<ion-row
+			class="h-full flex items-center justify-center"
+			*ngIf="emptyTransactions"
+		>
+			<ion-text color="dark">
+				<h5 class="text-lg font-semibold">
+					{{ 'WALLETS_PAGE.NO_TRANSACTIONS' | translate }}
+				</h5>
+			</ion-text>
+		</ion-row>
+
+		<ion-row *ngIf="!emptyTransactions">
+			<ion-col class="transactions px-3">
+				<ion-item
+					*ngFor="let tx of transactions"
+					(click)="openTransactionShow(tx)"
+				>
+					<div
+						class="flex w-full justify-between flex-no-wrap items-center"
+					>
+						<div class="flex flex-col">
+							<ion-text color="medium">
+								<span
+									*ngIf="tx.isTransfer"
+									class="text-xs font-semibold"
+									>{{ tx?.activityLabel | translate }}</span
+								>
+							</ion-text>
+							<h3 class="text-sm">
+								{{ tx?.isTransfer && (tx?.appropriateAddress |
+								accountLabel | truncateMiddle: 12 :
+								tx?.appropriateAddress) || (tx?.typeLabel |
+								translate) }}
+							</h3>
+						</div>
+
+						<div class="flex items-center">
+							<div class="flex flex-col text-right mr-1">
+								<span class="text-sm font-semibold"
+									>{{ tx?.isSender ? '-' : '+' }}{{
+									tx?.totalAmount | unitsSatoshi }} {{
+									network?.token | uppercase }}</span
+								>
+								<ion-text color="medium">
+									<p class="timestamp text-xs mt-1">
+										{{ tx?.timestamp | timezone |
+										timestampHuman }} | {{
+										(tx?.confirmations <= minConfirmations)
+										&& tx?.confirmations ||
+										minConfirmations+'+' }}
+									</p>
+								</ion-text>
+							</div>
+							<ion-icon
+								*ngIf="tx?.isSender"
+								name="ios-arrow-round-up"
+								class="icon-rotate-right text-3xl"
+								color="danger"
+							></ion-icon>
+							<ion-icon
+								*ngIf="!tx?.isSender"
+								name="ios-arrow-round-down"
+								class="icon-rotate-right text-3xl"
+								color="success"
+							></ion-icon>
+						</div>
+					</div>
+				</ion-item>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+<pin-code
+	[wallet]="wallet"
+	(success)="onEnterPinCode($event)"
+	#pinCode
+></pin-code>
+<confirm-transaction
+	[wallet]="wallet"
+	#confirmTransaction
+></confirm-transaction>

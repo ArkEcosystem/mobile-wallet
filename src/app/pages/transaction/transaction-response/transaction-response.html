@@ -1,0 +1,64 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-title *ngIf="response?.status"
+			>{{ transaction?.getTypeLabel() | translate }}</ion-title
+		>
+		<ion-title *ngIf="!response?.status"
+			>{{ 'FAILED' | translate }}</ion-title
+		>
+
+		<ion-buttons slot="end">
+			<ion-button (click)="dismiss()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content forceOverscroll="false" fullscreen class="ion-padding">
+	<ion-grid class="h-full flex flex-col justify-center">
+		<ion-row>
+			<ion-col
+				class="flex-1 flex flex-col items-center justify-center"
+				*ngIf="response?.status"
+			>
+				<ion-grid class="success-container">
+					<ion-row>
+						<ion-col class="text-center">
+							<img class="image tx-success" />
+							<p class="font-semibold text-lg mt-2">
+								{{ 'TRANSACTIONS_PAGE.SENT_SUCCESS' | translate
+								}}
+							</p>
+						</ion-col>
+					</ion-row>
+					<ion-row>
+						<ion-col class="text-center">
+							<ion-button
+								fill="outline"
+								color="primary"
+								*ngIf="currentNetwork?.explorer"
+								(click)="openInExplorer()"
+								class="mt-2"
+							>
+								{{ 'TRANSACTIONS_PAGE.OPEN_EXPLORER' | translate
+								}}
+							</ion-button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-col>
+
+			<ion-col
+				*ngIf="!response?.status"
+				class="flex items-center justify-center"
+			>
+				<img class="image tx-error" />
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+<ion-footer class="note-toolbar" padding *ngIf="!response.status">
+	<p>{{ response?.message }}</p>
+</ion-footer>

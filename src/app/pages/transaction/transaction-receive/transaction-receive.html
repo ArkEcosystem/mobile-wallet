@@ -1,0 +1,51 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title
+			>{{ 'TRANSACTIONS_PAGE.RECEIVE_TOKEN' | translate:tokenParam
+			}}</ion-title
+		>
+		<ion-buttons slot="end">
+			<ion-button (click)="share()">
+				<ion-icon slot="icon-only" name="share"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid class="ion-padding">
+		<ion-row>
+			<ion-col class="text-center">
+				<p class="text-base leading-normal">
+					{{ 'TRANSACTIONS_PAGE.QRCODE_COPY' | translate }}
+				</p>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col class="text-center">
+				<ion-button
+					class="text-sm"
+					fill="clear"
+					color="primary"
+					(click)="copyAddress()"
+				>
+					{{ address }}
+				</ion-button>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col class="text-center">
+				<ark-qr-code
+					wrapper="true"
+					[address]="address"
+					[amount]="amount ? amount : null"
+					[size]="140"
+				></ark-qr-code>
+			</ion-col>
+		</ion-row>
+		<amount (change)="setAmount($event.amount)"></amount>
+	</ion-grid>
+</ion-content>

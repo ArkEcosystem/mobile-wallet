@@ -1,0 +1,41 @@
+ion-footer {
+	button {
+		font-weight: 500;
+	}
+}
+
+.slide-pagination {
+	max-width: 100px;
+
+	span {
+		@apply w-3 h-3 border bg-transparent rounded-full relative inline-block text-center;
+		border-color: var(--ion-color-medium);
+	}
+
+	.active span {
+		border-color: var(--ion-color-primary);
+		background-color: var(--ion-color-primary);
+	}
+}
+
+.slide-zoom {
+	height: 100%;
+}
+
+.slide-image {
+	max-height: 80%;
+	max-width: 60%;
+	margin: 2em 0;
+
+	&.anytime {
+		content: url("/assets/img/light/intro/anytime.png");
+	}
+
+	&.pincode {
+		content: url("/assets/img/light/intro/pincode.png");
+	}
+
+	&.fast-easy {
+		content: url("/assets/img/light/intro/fast-easy.png");
+	}
+}

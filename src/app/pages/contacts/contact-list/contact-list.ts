@@ -1,0 +1,148 @@
+import { Component, OnInit } from "@angular/core";
+import {
+	ActionSheetController,
+	AlertController,
+	NavController,
+	Platform,
+} from "@ionic/angular";
+
+import { ContactsProvider } from "@/services/contacts/contacts";
+import { UserDataProvider } from "@/services/user-data/user-data";
+
+import { TranslateService } from "@ngx-translate/core";
+
+import { Subject } from "rxjs";
+
+import { AddressMap } from "@/models/contact";
+import lodash from "lodash";
+import { takeUntil } from "rxjs/operators";
+
+@Component({
+	selector: "page-contact-list",
+	templateUrl: "contact-list.html",
+	styleUrls: ["contact-list.scss"],
+})
+export class ContactListPage implements OnInit {
+	public profile;
+	public network;
+	public addresses: AddressMap[];
+
+	private unsubscriber$: Subject<void> = new Subject<void>();
+
+	constructor(
+		private platform: Platform,
+		private navCtrl: NavController,
+		private userDataProvider: UserDataProvider,
+		private contactsProvider: ContactsProvider,
+		private translateService: TranslateService,
+		private alertCtrl: AlertController,
+		private actionSheetCtrl: ActionSheetController,
+	) {}
+
+	ngOnInit(): void {
+		this._load();
+	}
+
+	presentContactActionSheet(address) {
+		this.translateService
+			.get(["EDIT", "DELETE"])
+			.pipe(takeUntil(this.unsubscriber$))
+			.subscribe(async translation => {
+				const buttons = [
+					{
+						text: translation.EDIT,
+						role: "label",
+						icon: this.platform.is("ios")
+							? "ios-create-outline"
+							: "md-create",
+						handler: () => {
+							this.openEditPage(address);
+						},
+					},
+					{
+						text: translation.DELETE,
+						role: "label",
+						icon: this.platform.is("ios")
+							? "ios-trash-outline"
+							: "md-trash",
+						handler: () => {
+							this.showDeleteConfirm(address);
+						},
+					},
+				];
+
+				const action = await this.actionSheetCtrl.create({ buttons });
+				action.present();
+			});
+	}
+
+	showDeleteConfirm(address) {
+		const contactName = this.contactsProvider.getContactByAddress(address)
+			.name;
+		this.translateService
+			.get(
+				[
+					"CANCEL",
+					"CONFIRM",
+					"ARE_YOU_SURE",
+					"CONTACTS_PAGE.DELETE_CONTACT",
+				],
+				{ name: contactName },
+			)
+			.subscribe(async translation => {
+				const alert = await this.alertCtrl.create({
+					header: translation.ARE_YOU_SURE,
+					message: translation["CONTACTS_PAGE.DELETE_CONTACT"],
+					buttons: [
+						{
+							text: translation.CANCEL,
+						},
+						{
+							text: translation.CONFIRM,
+							handler: () => {
+								this.delete(address);
+							},
+						},
+					],
+				});
+
+				alert.present();
+			});
+	}
+
+	isEmpty() {
+		return lodash.isEmpty(this.addresses);
+	}
+
+	delete(address) {
+		this.contactsProvider.removeContactByAddress(address);
+		this._load();
+	}
+
+	openEditPage(address) {
+		const contact = this.contactsProvider.getContactByAddress(address);
+
+		return this.navCtrl.navigateForward("/contacts/create", {
+			queryParams: {
+				contact: JSON.stringify(contact),
+			},
+		});
+	}
+
+	openCreatePage() {
+		return this.navCtrl.navigateForward("/contacts/create");
+	}
+
+	private _load() {
+		this.profile = this.userDataProvider.currentProfile;
+		this.network = this.userDataProvider.currentNetwork;
+
+		this.addresses = lodash(this.profile.contacts)
+			.mapValues("name")
+			.transform((result, key, value) => {
+				result.push({ index: value, value, key });
+			}, [])
+			.value()
+			.sort((a, b) => a.key.localeCompare(b.key));
+	}
+}

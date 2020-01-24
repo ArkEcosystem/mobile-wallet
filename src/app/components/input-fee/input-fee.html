@@ -1,0 +1,92 @@
+<ion-grid
+	class="input-fee"
+	[ngClass]="{'input-fee--warning': !!warningMessage, 'input-fee--danger': !!errorMessage}"
+>
+	<ion-row class="input-fee__wrapper flex flex-col">
+		<ion-label position="stacked" class="input-fee__label" color=""
+			>Fee</ion-label
+		>
+		<ion-item lines="none" class="input-fee__input">
+			<ion-label>{{ symbol }}</ion-label>
+			<ion-input
+				[(ngModel)]="inputFee"
+				name="fee-input"
+				[step]="step"
+				[min]="min"
+				[max]="max"
+				(ionChange)="onInputText()"
+				type="string"
+			>
+			</ion-input>
+		</ion-item>
+		<ion-item lines="none" class="input-fee__range">
+			<ion-range
+				[(ngModel)]="rangeFee"
+				name="fee-range"
+				[step]="step"
+				[min]="min"
+				[max]="max"
+				(ionChange)="onInputRange()"
+			>
+			</ion-range>
+		</ion-item>
+	</ion-row>
+
+	<ion-label
+		*ngIf="warningMessage"
+		class="input-fee__helper--warning no-margin"
+	>
+		{{ warningMessage }}
+	</ion-label>
+
+	<ion-label *ngIf="errorMessage" class="input-fee__helper--danger no-margin">
+		{{ errorMessage }}
+	</ion-label>
+
+	<ion-label
+		*ngIf="isStaticFee && !warningMessage && !errorMessage"
+		class="input-fee__helper"
+		translate
+		[translateParams]="{fee: maxArktoshi}"
+	>
+		INPUT_FEE.STATIC_FEE
+	</ion-label>
+
+	<ion-grid>
+		<ion-row nowrap class="p-0">
+			<ion-col>
+				<ion-button
+					size="small"
+					expand="block"
+					[fill]="min !== rangeFee ? 'outline' : 'solid'"
+					color="primary"
+					(click)="setRangeFee(min)"
+				>
+					{{ 'INPUT_FEE.MIN' | translate }}
+				</ion-button>
+			</ion-col>
+			<ion-col *ngIf="!isStaticFee">
+				<ion-button
+					size="small"
+					expand="block"
+					[fill]="avg !== rangeFee ? 'outline' : 'solid'"
+					color="primary"
+					(click)="setRangeFee(avg)"
+				>
+					{{ 'INPUT_FEE.AVERAGE' | translate }}
+				</ion-button>
+			</ion-col>
+			<ion-col>
+				<ion-button
+					size="small"
+					expand="block"
+					[fill]="max !== rangeFee ? 'outline' : 'solid'"
+					color="primary"
+					(click)="setRangeFee(max)"
+				>
+					{{ 'INPUT_FEE.MAX' | translate }}
+				</ion-button>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-grid>

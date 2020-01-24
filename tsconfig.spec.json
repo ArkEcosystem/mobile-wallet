@@ -1,0 +1,14 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./out-tsc/spec",
+		"types": ["jasmine", "node"]
+	},
+	"files": ["src/test.ts", "src/zone-flags.ts", "src/polyfills.ts"],
+	"include": [
+		"src/**/*.spec.ts",
+		"src/**/*.d.ts",
+		"node_modules/ark-ts/node_modules/json-typescript-mapper/libs/utils.ts",
+		"node_modules/json-typescript-mapper/libs/utils.ts"
+	]
+}

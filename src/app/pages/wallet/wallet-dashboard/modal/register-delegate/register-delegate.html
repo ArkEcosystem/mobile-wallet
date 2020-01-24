@@ -1,0 +1,65 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-title>
+			{{ 'DELEGATES_PAGE.REGISTER_DELEGATE' | translate }}
+		</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="closeModal()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content forceOverscroll="false" fullscreen class="ion-padding">
+	<ion-grid class="h-full flex flex-col justify-center items-center">
+		<ion-row class="w-full">
+			<ion-col>
+				<form #registerDelegateForm="ngForm">
+					<ion-item>
+						<ion-label position="floating"
+							>{{ 'DELEGATES_PAGE.DELEGATE_NAME' | translate
+							}}</ion-label
+						>
+						<ion-input
+							rows="2"
+							type="text"
+							name="name"
+							[(ngModel)]="name"
+							maxlength="20"
+							[pattern]="allowedDelegateNameChars"
+							(input)="validateName()"
+							required
+						></ion-input>
+					</ion-item>
+					<ion-item lines="none" class="no-border" *ngIf="isExists">
+						<p class="error-message">
+							{{ 'DELEGATES_PAGE.USERNAME_ALREADY_EXISTS' |
+							translate }}
+						</p>
+					</ion-item>
+
+					<ion-row class="mt-5">
+						<ion-col>
+							<input-fee
+								[transactionType]="transactionType"
+								(change)="onFeeChange($event)"
+							></input-fee>
+						</ion-col>
+					</ion-row>
+				</form>
+
+				<ion-row class="mt-5">
+					<ion-col class="text-center">
+						<ion-button
+							color="primary"
+							[disabled]="!registerDelegateForm.form.valid || isExists"
+							(click)="submitForm()"
+							>{{ 'CREATE' | translate }}</ion-button
+						>
+					</ion-col>
+				</ion-row>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>

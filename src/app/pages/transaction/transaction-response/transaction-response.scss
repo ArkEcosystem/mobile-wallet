@@ -1,0 +1,38 @@
+:host {
+	.image {
+		display: block;
+		margin: 1em auto;
+		max-width: 70%;
+		height: auto;
+
+		&.tx-success {
+			content: url("/assets/img/light/transaction/transfer-success.png");
+		}
+
+		&.tx-error {
+			content: url("/assets/img/light/transaction/transfer-error.png");
+		}
+	}
+
+	.success-container {
+		.row {
+			flex: 1 auto;
+		}
+	}
+}
+
+:host-context(.dark-theme) {
+	.encrypt-message {
+		color: #fff;
+	}
+
+	.image {
+		&.tx-success {
+			content: url("/assets/img/dark/transaction/transfer-success.png");
+		}
+
+		&.tx-error {
+			content: url("/assets/img/dark/transaction/transfer-error.png");
+		}
+	}
+}
