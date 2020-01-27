@@ -452,6 +452,13 @@ export class ArkApiProvider {
 		});
 	}
 
+	public validateAddress(address: string) {
+		return ArkCrypto.Identities.Address.validate(
+			address,
+			parseInt(this._network.version.toString()),
+		);
+	}
+
 	public postTransaction(
 		transaction: arkts.Transaction,
 		peer: arkts.Peer = this._network.activePeer,
