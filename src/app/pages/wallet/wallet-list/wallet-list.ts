@@ -20,7 +20,6 @@ import {
 	Profile,
 	Wallet,
 } from "@/models/model";
-import { PublicKey } from "ark-ts/core";
 import { Network } from "ark-ts/model";
 
 import { TranslateService } from "@ngx-translate/core";
@@ -29,6 +28,7 @@ import * as constants from "@/app/app.constants";
 import { GenerateEntropyModal } from "@/app/modals/generate-entropy/generate-entropy";
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
 import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
+import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import lodash from "lodash";
 import { BaseChartDirective } from "ng2-charts";
 import { takeUntil } from "rxjs/operators";
@@ -86,6 +86,7 @@ export class WalletListPage implements OnDestroy {
 		private translateService: TranslateService,
 		private settingsDataProvider: SettingsDataProvider,
 		private ngZone: NgZone,
+		private arkApiProvider: ArkApiProvider,
 	) {
 		this.loadUserData();
 
@@ -252,9 +253,10 @@ export class WalletListPage implements OnDestroy {
 		const list = [];
 		for (const w of lodash.values(this.currentProfile.wallets)) {
 			const wallet = new Wallet().deserialize(w);
-			if (
-				PublicKey.validateAddress(wallet.address, this.currentNetwork)
-			) {
+			const isValidAddress = this.arkApiProvider.validateAddress(
+				wallet.address,
+			);
+			if (isValidAddress) {
 				list.push(wallet);
 			}
 		}
