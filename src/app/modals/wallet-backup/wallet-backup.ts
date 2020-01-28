@@ -62,7 +62,11 @@ export class WalletBackupModal implements OnInit {
 		});
 
 		wordTesterModal.onDidDismiss().then(({ data }) => {
-			setTimeout(() => this.dismiss(data ? this.account : null), 0);
+			setTimeout(() => {
+				if (data) {
+					this.dismiss(this.account);
+				}
+			}, 0);
 		});
 
 		wordTesterModal.present();
