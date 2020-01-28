@@ -18,7 +18,10 @@ import { AppComponent } from "./app.component";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { NgxsModule } from "@ngxs/store";
 import { ChartsModule } from "ng2-charts";
+import { environment } from "./../environments/environment";
+import { SettingsModule } from "./settings/settings.module";
 
 export function createTranslateLoader(http: HttpClient) {
 	return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -28,10 +31,13 @@ export function createTranslateLoader(http: HttpClient) {
 	declarations: [AppComponent],
 	entryComponents: [],
 	imports: [
-		IonicModule.forRoot(),
-		IonicStorageModule.forRoot(),
 		BrowserModule,
 		HttpClientModule,
+		IonicModule.forRoot(),
+		IonicStorageModule.forRoot(),
+		NgxsModule.forRoot([], {
+			developmentMode: !environment.production,
+		}),
 		TranslateModule.forRoot({
 			loader: {
 				provide: TranslateLoader,
@@ -39,8 +45,9 @@ export function createTranslateLoader(http: HttpClient) {
 				deps: [HttpClient],
 			},
 		}),
-		AppRoutingModule,
 		ChartsModule,
+		SettingsModule,
+		AppRoutingModule,
 	],
 	exports: [TranslateModule],
 	providers: [

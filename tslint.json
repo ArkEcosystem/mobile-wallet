@@ -2,6 +2,7 @@
 	"extends": ["tslint:recommended", "tslint-config-prettier"],
 	"rulesDirectory": ["codelyzer"],
 	"rules": {
+		"no-namespace": false,
 		"radix": false,
 		"variable-name": {
 			"options": [

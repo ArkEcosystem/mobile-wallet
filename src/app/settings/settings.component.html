@@ -1,0 +1,6 @@
+<div>
+	<div *ngIf="settings$ | async as settings">
+		<p>Language: {{ settings.language }}</p>
+		<p>Currency: {{ settings.currency }}</p>
+	</div>
+</div>
