@@ -131,6 +131,14 @@ export class AppComponent implements OnDestroy, OnInit {
 
 	async closeOverlays() {
 		try {
+			const current = await this.alertCtrl.getTop();
+			if (current) {
+				await current.dismiss();
+				return true;
+			}
+		} catch {}
+
+		try {
 			const current = await this.actionSheetCtrl.getTop();
 			if (current) {
 				await current.dismiss();
