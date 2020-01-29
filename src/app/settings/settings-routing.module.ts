@@ -5,7 +5,7 @@ import { SettingsComponent } from "./settings.component";
 @NgModule({
 	imports: [
 		RouterModule.forChild([
-			{ path: "settings2", component: SettingsComponent },
+			{ path: "settings", component: SettingsComponent },
 		]),
 	],
 	exports: [RouterModule],

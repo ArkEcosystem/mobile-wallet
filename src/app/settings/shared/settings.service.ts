@@ -1,15 +1,19 @@
-import { StorageService } from "@/app/shared/storage.service";
+import { StorageService } from "@/app/core/storage.service";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { SETTINGS_TOKEN } from "../settings.config";
-import { SettingsStateModel } from "./settings.model";
+import { SettingsConfig } from "../settings.config";
+import { SettingsStateModel } from "./settings.type";
 
 @Injectable({ providedIn: "root" })
 export class SettingsService {
 	constructor(private storageService: StorageService) {}
 
-	public load(): Observable<SettingsStateModel | undefined> {
-		return this.storageService.getObject(SETTINGS_TOKEN);
+	public save(payload: SettingsStateModel): Observable<void> {
+		return this.storageService.set(SettingsConfig.TOKEN, payload);
+	}
+
+	public load(): Observable<Partial<SettingsStateModel>> {
+		return this.storageService.getObject(SettingsConfig.TOKEN);
 	}
 
 	public clear(): Observable<void> {

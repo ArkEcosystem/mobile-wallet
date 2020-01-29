@@ -1,4 +1,4 @@
-import { SettingsStateModel } from "./settings.model";
+import { SettingsStateModel } from "./settings.type";
 
 export namespace SettingsActions {
 	export class Load {
@@ -7,15 +7,10 @@ export namespace SettingsActions {
 
 	export class Update {
 		public static readonly type = "[Settings] Update";
-		constructor(public key: string, public value: string) {}
+		constructor(public payload: Partial<SettingsStateModel>) {}
 	}
 
 	export class Clear {
 		public static readonly type = "[Settings] Clear";
-	}
-
-	export class Save {
-		public static readonly type = "[Settings] Save";
-		constructor(public context: SettingsStateModel) {}
 	}
 }

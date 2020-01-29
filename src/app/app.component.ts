@@ -27,11 +27,10 @@ import {
 	Platform,
 } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { debounceTime, takeUntil } from "rxjs/operators";
 import { ArkApiProvider } from "./services/ark-api/ark-api";
 import { EventBusProvider } from "./services/event-bus/event-bus";
-import { SettingsDataProvider } from "./services/settings-data/settings-data";
 
 import * as constants from "@/app/app.constants";
 import { Router } from "@angular/router";
@@ -40,7 +39,11 @@ import {
 	KeyboardResizeMode,
 	KeyboardStyle,
 } from "@ionic-native/keyboard/ngx";
+import { Select } from "@ngxs/store";
 import moment from "moment";
+import {
+	SettingsState,
+} from "./settings/shared/settings.state";
 
 @Component({
 	selector: "app-root",
@@ -48,6 +51,12 @@ import moment from "moment";
 	styleUrls: ["app.component.scss"],
 })
 export class AppComponent implements OnDestroy, OnInit {
+	@Select(SettingsState.language)
+	public language$: Observable<string>;
+
+	@Select(SettingsState.darkMode)
+	public darkMode$: Observable<boolean>;
+
 	@ViewChildren(IonRouterOutlet)
 	routerOutlets: QueryList<IonRouterOutlet>;
 
@@ -75,8 +84,7 @@ export class AppComponent implements OnDestroy, OnInit {
 		private menuCtrl: MenuController,
 		private userDataProvider: UserDataProvider,
 		private arkApiProvider: ArkApiProvider,
-		private settingsDataProvider: SettingsDataProvider,
-		public element: ElementRef,
+		private element: ElementRef,
 		private renderer: Renderer2,
 		private eventBus: EventBusProvider,
 		private screenOrientation: ScreenOrientation,
@@ -111,8 +119,8 @@ export class AppComponent implements OnDestroy, OnInit {
 
 	initTranslation() {
 		this.translateService.setDefaultLang("en");
-		this.settingsDataProvider.settings.subscribe(settings => {
-			this.translateService.use(settings.language);
+		this.language$.subscribe(language => {
+			this.translateService.use(language);
 
 			this.translateService
 				.get([
@@ -221,8 +229,8 @@ export class AppComponent implements OnDestroy, OnInit {
 	}
 
 	initTheme() {
-		this.settingsDataProvider.settings.subscribe(settings => {
-			if (settings.darkMode) {
+		this.darkMode$.subscribe(darkMode => {
+			if (darkMode) {
 				this.renderer.addClass(
 					this.element.nativeElement.parentNode,
 					"dark-theme",
@@ -362,11 +370,6 @@ export class AppComponent implements OnDestroy, OnInit {
 		this.verifyNetwork();
 
 		this.onCreateWallet();
-
-		this.settingsDataProvider.onUpdate$.subscribe(() => {
-			this.initTranslation();
-			this.initTheme();
-		});
 	}
 
 	ngOnDestroy() {
