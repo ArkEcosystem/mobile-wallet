@@ -41,9 +41,7 @@ import {
 } from "@ionic-native/keyboard/ngx";
 import { Select } from "@ngxs/store";
 import moment from "moment";
-import {
-	SettingsState,
-} from "./settings/shared/settings.state";
+import { SettingsState } from "./settings/shared/settings.state";
 
 @Component({
 	selector: "app-root",
@@ -108,11 +106,11 @@ export class AppComponent implements OnDestroy, OnInit {
 			this.splashScreen.hide();
 
 			this.authProvider.hasSeenIntro().subscribe(hasSeenIntro => {
-				// if (!hasSeenIntro) {
-				// 	this.openPage("/intro", true);
-				// 	return;
-				// }
-				// this.openPage("/login", true);
+				if (!hasSeenIntro) {
+					this.openPage("/intro", true);
+					return;
+				}
+				this.openPage("/login", true);
 			});
 		});
 	}
