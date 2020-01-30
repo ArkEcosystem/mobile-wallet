@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { SettingsConfig } from "../settings.config";
 import { SettingsStateModel } from "./settings.type";
 
-@Injectable({ providedIn: "root" })
+@Injectable()
 export class SettingsService {
 	constructor(private storageService: StorageService) {}
 

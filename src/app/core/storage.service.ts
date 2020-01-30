@@ -3,7 +3,6 @@ import { Storage } from "@ionic/storage";
 
 import { from, Observable, Subject } from "rxjs";
 
-import { isObject, isString, toString } from "lodash";
 import { map, tap } from "rxjs/operators";
 
 @Injectable({ providedIn: "root" })
@@ -12,7 +11,7 @@ export class StorageService {
 
 	constructor(private storage: Storage) {}
 
-	public get(key: string): Observable<string> {
+	public get(key: string): Observable<string | undefined> {
 		return from(this.storage.get(key));
 	}
 
@@ -23,14 +22,12 @@ export class StorageService {
 	}
 
 	public set<T = string>(key: string, value: T): Observable<void> {
-		let raw: string;
+		let raw: any;
 
-		if (isObject(value)) {
+		try {
 			raw = JSON.stringify(value);
-		}
-
-		if (value && !isString(value)) {
-			raw = toString(value);
+		} catch {
+			raw = value;
 		}
 
 		return from(this.storage.set(key, raw));

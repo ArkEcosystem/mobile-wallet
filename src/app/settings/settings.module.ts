@@ -7,10 +7,12 @@ import { NgxsModule } from "@ngxs/store";
 import { SharedModule } from "../shared/shared.module";
 import { SettingsRoutingModule } from "./settings-routing.module";
 import { SettingsComponent } from "./settings.component";
+import { SettingsService } from "./shared/settings.service";
 import { SettingsState } from "./shared/settings.state";
 
 @NgModule({
 	declarations: [SettingsComponent],
+	providers: [SettingsService],
 	imports: [
 		SharedModule,
 		SettingsRoutingModule,
