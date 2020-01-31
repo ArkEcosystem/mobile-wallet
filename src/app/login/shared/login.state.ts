@@ -50,7 +50,7 @@ export class LoginState implements NgxsOnInit {
 		);
 	}
 
-	@Action(LoginActions.Login)
+	@Action(LoginActions.Logout)
 	public logout(ctx: StateContext<LoginStateModel>): Observable<void> {
 		return this.loginService.logout().pipe(
 			tap(() => {

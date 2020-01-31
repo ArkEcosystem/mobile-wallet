@@ -108,6 +108,7 @@
 		"@ionic-native-mocks/splash-screen": "^2.0.12",
 		"@ionic/angular-toolkit": "~2.1.2",
 		"@ionic/lab": "^2.0.19",
+		"@ngxs/devtools-plugin": "^3.6.1",
 		"@types/bcryptjs": "^2.4.2",
 		"@types/bip39": "^3.0.0",
 		"@types/bytebuffer": "^5.0.40",
