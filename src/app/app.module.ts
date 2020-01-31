@@ -21,8 +21,8 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { NgxsModule } from "@ngxs/store";
 import { ChartsModule } from "ng2-charts";
 import { environment } from "./../environments/environment";
+import { AuthModule } from "./auth/auth.module";
 import { LoginModule } from "./login/login.module";
-import { PinModule } from "./pin/pin.module";
 import { SettingsModule } from "./settings/settings.module";
 
 export function createTranslateLoader(http: HttpClient) {
@@ -50,7 +50,7 @@ export function createTranslateLoader(http: HttpClient) {
 		SettingsModule,
 		LoginModule,
 		AppRoutingModule,
-		PinModule,
+		AuthModule,
 	],
 	exports: [TranslateModule],
 	providers: [

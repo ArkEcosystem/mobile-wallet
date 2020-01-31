@@ -1,4 +1,4 @@
-import { PinActions } from "@/app/pin/shared/pin.actions";
+import { AuthActions } from "@/app/auth/shared/auth.actions";
 import {
 	Action,
 	NgxsOnInit,
@@ -39,7 +39,7 @@ export class LoginState implements NgxsOnInit {
 		ctx: StateContext<LoginStateModel>,
 		action: LoginActions.Login,
 	): Observable<void> {
-		return ctx.dispatch(new PinActions.Request()).pipe(
+		return ctx.dispatch(new AuthActions.Request()).pipe(
 			switchMap(() => {
 				return this.loginService.login(action.id).pipe(
 					tap(() => {

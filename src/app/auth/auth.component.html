@@ -1,0 +1,11 @@
+<div>
+	<div *ngIf="(state$ | async).isPending">
+		<ion-button (click)="setPin()">Pin</ion-button>
+	</div>
+</div>
+
+<auth-pin
+	*ngIf="isPinMethod$ | async"
+	(authorized)="authorize()"
+	(denied)="deny()"
+></auth-pin>
