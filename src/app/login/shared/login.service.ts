@@ -3,10 +3,10 @@ import { Injectable } from "@angular/core";
 import moment from "moment";
 import { Observable, of } from "rxjs";
 import { switchMap } from "rxjs/operators";
-import { AuthConfig } from "../auth.config";
+import { LoginConfig } from "../login.config";
 
 @Injectable()
-export class AuthService {
+export class LoginService {
 	constructor(private storage: StorageService) {}
 
 	public isLoggedIn(): Observable<boolean> {
@@ -31,13 +31,13 @@ export class AuthService {
 
 	public login(profileId: string): Observable<void> {
 		const expiresIn = moment()
-			.add(AuthConfig.EXPIRES_IN_SECONDS, "s")
+			.add(LoginConfig.EXPIRES_IN_SECONDS, "s")
 			.toDate();
 
-		return this.storage.set(AuthConfig.STORAGE_SESSION_ID, profileId).pipe(
+		return this.storage.set(LoginConfig.STORAGE_SESSION_ID, profileId).pipe(
 			switchMap(() => {
 				return this.storage.set(
-					AuthConfig.STORAGE_EXPIRES_AT,
+					LoginConfig.STORAGE_EXPIRES_AT,
 					expiresIn,
 				);
 			}),
@@ -45,10 +45,10 @@ export class AuthService {
 	}
 
 	public logout(): Observable<void> {
-		return this.storage.set(AuthConfig.STORAGE_SESSION_ID, undefined).pipe(
+		return this.storage.set(LoginConfig.STORAGE_SESSION_ID, undefined).pipe(
 			switchMap(() => {
 				return this.storage.set(
-					AuthConfig.STORAGE_EXPIRES_AT,
+					LoginConfig.STORAGE_EXPIRES_AT,
 					undefined,
 				);
 			}),
@@ -56,10 +56,10 @@ export class AuthService {
 	}
 
 	public getSessionId(): Observable<string | undefined> {
-		return this.storage.get(AuthConfig.STORAGE_SESSION_ID);
+		return this.storage.get(LoginConfig.STORAGE_SESSION_ID);
 	}
 
 	private getExpiration(): Observable<string | undefined> {
-		return this.storage.get(AuthConfig.STORAGE_EXPIRES_AT);
+		return this.storage.get(LoginConfig.STORAGE_EXPIRES_AT);
 	}
 }
