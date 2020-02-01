@@ -1,5 +1,5 @@
-<div>
-	<div *ngIf="(state$ | async).isPending">
+<div [ngClass]="{ overlay: state.isPending }">
+	<div *ngIf="state.isPending">
 		<ion-button (click)="setPin()">Pin</ion-button>
 	</div>
 </div>

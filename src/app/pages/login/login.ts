@@ -4,8 +4,7 @@ import { UserDataProvider } from "@/services/user-data/user-data";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { ModalController, NavController } from "@ionic/angular";
 
-import { AuthActions } from "@/app/auth/shared/auth.actions";
-import { Store } from "@ngxs/store";
+import { AuthController } from "@/app/auth/shared/auth.controller";
 import { isNil } from "lodash";
 
 @Component({
@@ -25,7 +24,7 @@ export class LoginPage implements OnInit {
 		public modalCtrl: ModalController,
 		private authProvider: AuthProvider,
 		private userDataProvider: UserDataProvider,
-		private store: Store,
+		private authController: AuthController,
 	) {}
 
 	ngOnInit() {
@@ -36,7 +35,7 @@ export class LoginPage implements OnInit {
 	}
 
 	openProfileSignin() {
-		this.store.dispatch(new AuthActions.Request());
+		this.authController.request().subscribe();
 	}
 
 	openProfileCreate() {

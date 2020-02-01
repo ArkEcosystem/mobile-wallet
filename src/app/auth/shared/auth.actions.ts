@@ -10,4 +10,31 @@ export namespace AuthActions {
 		static readonly type = "[Auth] SetMethod";
 		constructor(public method: AuthMethod) {}
 	}
+
+	export class Dismiss {
+		static readonly type = "[Auth] Dismiss";
+		constructor() {}
+	}
+
+	export class Authorize {
+		static readonly type = "[Auth] Authorize";
+		constructor() {}
+	}
+
+	export class Deny {
+		static readonly type = "[Auth] Deny";
+		constructor() {}
+	}
+}
+
+export namespace AuthEvents {
+	export class Authorized {
+		static readonly type = "[Auth] Authorized";
+		constructor() {}
+	}
+
+	export class Denied {
+		static readonly type = "[Auth] Denied";
+		constructor() {}
+	}
 }
