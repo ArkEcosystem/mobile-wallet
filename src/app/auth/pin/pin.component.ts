@@ -11,6 +11,9 @@ export class AuthPinComponent {
 	@Output()
 	public denied = new EventEmitter();
 
+	@Output()
+	public failed = new EventEmitter();
+
 	constructor() {}
 
 	public authorize() {
@@ -19,5 +22,9 @@ export class AuthPinComponent {
 
 	public deny() {
 		this.denied.next();
+	}
+
+	public fail() {
+		this.failed.next();
 	}
 }

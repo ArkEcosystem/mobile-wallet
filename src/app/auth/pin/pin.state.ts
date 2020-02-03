@@ -5,6 +5,8 @@ import {
 	StateContext,
 	StateToken,
 } from "@ngxs/store";
+import { EMPTY, Observable } from "rxjs";
+import { switchMapTo, tap } from "rxjs/operators";
 import { AuthPinActions } from "./pin.actions";
 import { AuthPinConfig } from "./pin.config";
 import { AuthPinService } from "./pin.service";
@@ -28,11 +30,14 @@ export class AuthPinState implements NgxsOnInit {
 	}
 
 	@Action(AuthPinActions.Load)
-	public load(ctx: StateContext<AuthPinStateModel>): void {
-		this.authPinService.getEncryptedPassword().subscribe(password => {
-			ctx.patchState({
-				isRegistered: !!password,
-			});
-		});
+	public load(ctx: StateContext<AuthPinStateModel>): Observable<never> {
+		return this.authPinService.getEncryptedPassword().pipe(
+			tap(password =>
+				ctx.patchState({
+					isRegistered: !!password,
+				}),
+			),
+			switchMapTo(EMPTY),
+		);
 	}
 }

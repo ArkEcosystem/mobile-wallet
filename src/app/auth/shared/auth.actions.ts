@@ -25,6 +25,11 @@ export namespace AuthActions {
 		static readonly type = "[Auth] Deny";
 		constructor() {}
 	}
+
+	export class IncreaseAttempts {
+		static readonly type = "[Auth] Increase Attempts";
+		constructor() {}
+	}
 }
 
 export namespace AuthEvents {

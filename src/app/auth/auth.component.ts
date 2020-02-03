@@ -28,6 +28,10 @@ export class AuthComponent implements OnInit {
 		this.store.dispatch(new AuthActions.SetMethod(AuthMethod.Pin));
 	}
 
+	public fail() {
+		this.store.dispatch(new AuthActions.IncreaseAttempts());
+	}
+
 	public authorize() {
 		this.store.dispatch(new AuthActions.Authorize());
 	}

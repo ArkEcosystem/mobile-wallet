@@ -5,10 +5,12 @@ export enum AuthMethod {
 }
 
 export interface AuthRequestOptions {
-	withPassword: boolean;
+	message: string;
+	outputPassword: boolean;
 }
 
 export interface AuthStateModel {
+	attempts: number;
 	isPending: boolean;
 	method: AuthMethod | undefined;
 }

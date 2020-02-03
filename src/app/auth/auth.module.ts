@@ -4,11 +4,12 @@ import { SharedModule } from "../shared/shared.module";
 import { AuthComponent } from "./auth.component";
 import { AuthPinModule } from "./pin/pin.module";
 import { AuthPinService } from "./pin/pin.service";
+import { AuthService } from "./shared/auth.service";
 import { AuthState } from "./shared/auth.state";
 
 @NgModule({
 	declarations: [AuthComponent],
-	providers: [AuthPinService],
+	providers: [AuthService, AuthPinService],
 	imports: [SharedModule, NgxsModule.forFeature([AuthState]), AuthPinModule],
 	exports: [AuthComponent],
 })

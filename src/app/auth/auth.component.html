@@ -8,4 +8,5 @@
 	*ngIf="isPinMethod$ | async"
 	(authorized)="authorize()"
 	(denied)="deny()"
+	(failed)="fail()"
 ></auth-pin>
