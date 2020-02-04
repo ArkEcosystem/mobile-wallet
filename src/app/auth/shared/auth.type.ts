@@ -9,8 +9,12 @@ export interface AuthRequestOptions {
 	outputPassword: boolean;
 }
 
-export interface AuthStateModel {
+export interface AuthPersistedData {
 	attempts: number;
+	unlockDate: Date | undefined;
+}
+
+export interface AuthStateModel extends AuthPersistedData {
 	isPending: boolean;
 	method: AuthMethod | undefined;
 }

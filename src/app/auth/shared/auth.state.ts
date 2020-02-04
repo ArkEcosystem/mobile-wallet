@@ -1,12 +1,14 @@
+import { VOID } from "@/app/core/operators";
 import {
 	Action,
 	NgxsOnInit,
+	Selector,
 	State,
 	StateContext,
 	StateToken,
 } from "@ngxs/store";
 import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import { switchMapTo, tap } from "rxjs/operators";
 import { AuthConfig } from "../auth.config";
 import { AuthActions, AuthEvents } from "./auth.actions";
 import { AuthService } from "./auth.service";
@@ -20,6 +22,7 @@ const defaultState: AuthStateModel = {
 	attempts: 0,
 	isPending: false,
 	method: undefined,
+	unlockDate: undefined,
 };
 
 @State({
@@ -27,36 +30,48 @@ const defaultState: AuthStateModel = {
 	defaults: defaultState,
 })
 export class AuthState implements NgxsOnInit {
+	@Selector()
+	static isBlocked(state: AuthStateModel): boolean {
+		return !!state.unlockDate;
+	}
+
 	constructor(private authService: AuthService) {}
 
 	public ngxsOnInit(ctx: StateContext<AuthStateModel>) {
-		this.authService.getAttempts().subscribe(attempts =>
+		this.authService.load().subscribe(data =>
 			ctx.patchState({
-				attempts,
+				attempts: data.attempts,
+				unlockDate: data.unlockDate,
 			}),
 		);
 	}
 
 	@Action(AuthActions.Authorize)
-	public authorize(ctx: StateContext<AuthStateModel>) {
-		return ctx.dispatch([AuthActions.Dismiss, AuthEvents.Authorized]);
+	public authorize(ctx: StateContext<AuthStateModel>): Observable<void> {
+		return this.authService
+			.reset()
+			.pipe(
+				switchMapTo(
+					ctx.dispatch([AuthActions.Dismiss, AuthEvents.Authorized]),
+				),
+			);
 	}
 
 	@Action(AuthActions.Deny)
-	public deny(ctx: StateContext<AuthStateModel>) {
+	public deny(ctx: StateContext<AuthStateModel>): Observable<void> {
 		return ctx.dispatch([AuthActions.Dismiss, AuthEvents.Denied]);
 	}
 
 	@Action(AuthActions.Request)
-	public request(ctx: StateContext<AuthStateModel>) {
+	public request(ctx: StateContext<AuthStateModel>): void {
 		ctx.patchState({
 			isPending: true,
 		});
 	}
 
 	@Action(AuthActions.Dismiss)
-	public dismiss(ctx: StateContext<AuthStateModel>) {
-		ctx.patchState(defaultState);
+	public dismiss(ctx: StateContext<AuthStateModel>): void {
+		ctx.setState(defaultState);
 	}
 
 	@Action(AuthActions.IncreaseAttempts)
@@ -65,12 +80,15 @@ export class AuthState implements NgxsOnInit {
 	): Observable<void> {
 		const { attempts } = ctx.getState();
 		const newAttempts = attempts + 1;
-		return this.authService.setAttempts(newAttempts).pipe(
-			tap(() =>
+
+		return this.authService.increaseAttempts(newAttempts).pipe(
+			tap(data =>
 				ctx.patchState({
-					attempts: newAttempts,
+					attempts: data.attempts,
+					unlockDate: data.unlockDate,
 				}),
 			),
+			switchMapTo(VOID),
 		);
 	}
 
@@ -78,7 +96,7 @@ export class AuthState implements NgxsOnInit {
 	public setMethod(
 		ctx: StateContext<AuthStateModel>,
 		action: AuthActions.SetMethod,
-	) {
+	): void {
 		ctx.patchState({
 			method: action.method,
 		});
