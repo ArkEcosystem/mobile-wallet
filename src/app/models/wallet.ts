@@ -43,6 +43,10 @@ export class Wallet extends Account {
 	isWatchOnly?: boolean;
 	iv?: any;
 	isCold?: boolean;
+	attributes?: {
+		secondPublicKey?: string;
+		vote?: string;
+	};
 	// bip38?: string;
 	// secondBip38?: string;
 

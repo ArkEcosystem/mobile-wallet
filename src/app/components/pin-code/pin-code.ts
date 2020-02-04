@@ -100,7 +100,11 @@ export class PinCodeComponent {
 		passphrases: WalletKeys,
 		onSuccess: (keys: WalletKeys) => void,
 	) {
-		if (this.wallet.secondPublicKey && !this.wallet.cipherSecondKey) {
+		const hasSecondPublicKey = !!(
+			this.wallet.attributes?.secondPublicKey ||
+			this.wallet.secondPublicKey
+		);
+		if (hasSecondPublicKey && !this.wallet.cipherSecondKey) {
 			const modal = await this.modalCtrl.create({
 				component: EnterSecondPassphraseModal,
 			});
