@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 
 import { AuthProvider } from "@/services/auth/auth";
 import { TranslateService } from "@ngx-translate/core";
+import { Navigate } from "@ngxs/router-plugin";
 import { IntroActions } from "./shared/intro.actions";
 import { INTRO_STATE_TOKEN } from "./shared/intro.state";
 import { IntroStateModel } from "./shared/intro.type";
@@ -32,6 +33,14 @@ export class IntroPage {
 		private translateService: TranslateService,
 		private store: Store,
 	) {
+		const hasFinishedIntro = this.store
+			.select(state => state.intro.isFinished)
+			.subscribe(isFinished => isFinished);
+
+		if (hasFinishedIntro) {
+			this.store.dispatch(new Navigate(["/login"]));
+		}
+
 		platform.ready().then(() => {
 			this.translateService
 				.get([
