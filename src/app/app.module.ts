@@ -19,6 +19,7 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
+import { NgxsRouterPluginModule } from "@ngxs/router-plugin";
 import { NgxsModule } from "@ngxs/store";
 import { ChartsModule } from "ng2-charts";
 import { environment } from "./../environments/environment";
@@ -41,6 +42,7 @@ export function createTranslateLoader(http: HttpClient) {
 		NgxsModule.forRoot([], {
 			developmentMode: !environment.production,
 		}),
+		NgxsRouterPluginModule.forRoot(),
 		NgxsReduxDevtoolsPluginModule.forRoot(),
 		TranslateModule.forRoot({
 			loader: {
