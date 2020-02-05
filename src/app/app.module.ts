@@ -23,6 +23,7 @@ import { NgxsModule } from "@ngxs/store";
 import { ChartsModule } from "ng2-charts";
 import { environment } from "./../environments/environment";
 import { AuthModule } from "./auth/auth.module";
+import { IntroModule } from "./intro/intro.module";
 import { LoginModule } from "./login/login.module";
 import { SettingsModule } from "./settings/settings.module";
 
@@ -50,6 +51,7 @@ export function createTranslateLoader(http: HttpClient) {
 		}),
 		ChartsModule,
 		SettingsModule,
+		IntroModule,
 		LoginModule,
 		AppRoutingModule,
 		AuthModule,
