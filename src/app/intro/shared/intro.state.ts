@@ -19,6 +19,7 @@ export const INTRO_STATE_TOKEN = new StateToken<IntroStateModel>(
 
 const defaultState: IntroStateModel = {
 	activeIndex: 0,
+	isFinished: false,
 };
 
 @State<IntroStateModel>({
@@ -30,6 +31,11 @@ export class IntroState implements NgxsOnInit {
 	static activeIndex(state: IntroStateModel): number {
 		return state.activeIndex;
 	}
+	@Selector()
+	static isFinished(state: IntroStateModel): boolean {
+		return state.isFinished;
+	}
+
 	constructor(private introService: IntroService) {}
 
 	public ngxsOnInit(ctx: StateContext<IntroStateModel>): void {
@@ -57,9 +63,11 @@ export class IntroState implements NgxsOnInit {
 		);
 	}
 
-	@Action(IntroActions.Skip)
-	public skip(ctx: StateContext<IntroStateModel>): Observable<void> {
-		return;
+	@Action(IntroActions.Done)
+	public done(ctx: StateContext<IntroStateModel>): Observable<void> {
+		const newState = ctx.patchState({ isFinished: true });
+
+		return this.introService.save(newState);
 	}
 
 	private get defaults(): IntroStateModel {

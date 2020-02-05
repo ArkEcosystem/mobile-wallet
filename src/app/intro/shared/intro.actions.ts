@@ -10,7 +10,7 @@ export namespace IntroActions {
 		constructor(public payload: Partial<IntroStateModel>) {}
 	}
 
-	export class Skip {
-		public static readonly type = "[Intro] Skip";
+	export class Done {
+		public static readonly type = "[Intro] Done";
 	}
 }
