@@ -23,7 +23,6 @@ export class IntroPage {
 
 	public showSkip = true;
 	public slides: any;
-	public activeIndex: Observable<number>;
 
 	constructor(
 		platform: Platform,
@@ -32,7 +31,6 @@ export class IntroPage {
 		private translateService: TranslateService,
 		private store: Store,
 	) {
-		this.activeIndex = store.select(state => state.activeIndex);
 		platform.ready().then(() => {
 			this.translateService
 				.get([

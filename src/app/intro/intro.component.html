@@ -38,7 +38,7 @@
 					>
 						<ion-col
 							*ngFor="let page of slides; let i = index"
-							[class.active]="activeIndex == i"
+							[class.active]="(intro$ | async).activeIndex == i"
 						>
 							<span></span>
 						</ion-col>
