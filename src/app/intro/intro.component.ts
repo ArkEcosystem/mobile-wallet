@@ -17,6 +17,7 @@ import { IntroStateModel } from "./shared/intro.type";
 export class IntroPage {
 	@Select(INTRO_STATE_TOKEN)
 	public intro$: Observable<IntroStateModel>;
+	public isFinished$: Observable<IntroStateModel>;
 
 	@ViewChild("slider", { read: IonSlides, static: true })
 	slider: IonSlides;
@@ -70,6 +71,8 @@ export class IntroPage {
 			animated: true,
 			replaceUrl: true,
 		});
+
+		return this.store.dispatch(new IntroActions.Done());
 	}
 
 	goNext() {
@@ -84,7 +87,11 @@ export class IntroPage {
 			return;
 		}
 
-		this.store.dispatch(new IntroActions.Update({ activeIndex }));
-		this.showSkip = !(await this.slider.isEnd());
+		const isFinished = await this.slider.isEnd();
+		this.showSkip = !isFinished;
+
+		return this.store.dispatch(
+			new IntroActions.Update({ activeIndex, isFinished }),
+		);
 	}
 }
