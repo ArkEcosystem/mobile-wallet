@@ -68,9 +68,9 @@ export class SettingsPage implements OnInit, OnDestroy {
 		});
 
 		await modal.present();
-		modal.onDidDismiss().then(({ data }) => {
-			if (data.password) {
-				this.pinCode.createUpdatePinCode(null, data.password);
+		modal.onDidDismiss().then(({ data: password }) => {
+			if (password) {
+				this.pinCode.createUpdatePinCode(null, password);
 			}
 		});
 	}
