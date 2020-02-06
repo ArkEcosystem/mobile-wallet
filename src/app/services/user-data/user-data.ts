@@ -317,7 +317,7 @@ export class UserDataProvider {
 		notificate: boolean = false,
 	): Observable<any> {
 		if (lodash.isUndefined(profileId)) {
-			return;
+			return EMPTY;
 		}
 
 		const profile = this.getProfileById(profileId);
