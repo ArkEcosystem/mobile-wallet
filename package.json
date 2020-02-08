@@ -94,7 +94,7 @@
     "iod": "^1.1.1",
     "ionic-angular": "^3.9.8",
     "ionic2-auto-complete": "^1.6.2-alpha",
-    "ionicons": "^3",
+    "ionicons": "^5.0.0",
     "is-url": "^1.2.4",
     "json-typescript-mapper": "github:luciorubeens/json-typescript-mapper#master",
     "lodash": "^4.17.15",
