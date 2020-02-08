@@ -6508,10 +6508,12 @@ ng2-charts@^1.6.0:
   dependencies:
     chart.js "^2.6.0"
 
-ngx-filter-pipe@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/ngx-filter-pipe/-/ngx-filter-pipe-1.0.2.tgz#61c107473f0d5770b234dffc2edeb3eb3c044ea4"
-  integrity sha512-4HL+XVLC1fI7gEkatwpkRTbVfVUHY8oqMYNMfmP6yDH2oDVaJIiAiI/HCw9cQ8F29FnstvRBdAmRZidhLt3YXA==
+ngx-filter-pipe@^2.0.0:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/ngx-filter-pipe/-/ngx-filter-pipe-2.1.2.tgz#d3368f22bf45c74d5fcdae3701501db15fb90399"
+  integrity sha512-YEXvjEw+Mpg5jL+yqSnFWKiY0P9XtRAJ2Dk3n9sC4stnsuhPzPRwIkF58aBvqYfoi3vrb7KQFImgbmfFAQqnFw==
+  dependencies:
+    tslib "^1.7.1"
 
 nice-try@^1.0.4:
   version "1.0.5"
