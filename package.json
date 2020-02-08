@@ -144,7 +144,7 @@
     "protractor": "^5.4.2",
     "rimraf": "^2.6.3",
     "serve-static": "^1.13.1",
-    "ts-node": "6.2.0",
+    "ts-node": "8.6.2",
     "typescript": "2.8.4"
   },
   "resolutions": {
