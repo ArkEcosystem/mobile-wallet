@@ -68,7 +68,7 @@
     "big-integer": "^1.6.48",
     "bignumber.js": "^9.0.0",
     "bip38": "^2.0.3",
-    "bip39": "^2.5.0",
+    "bip39": "^3.0.0",
     "chart.js": "^2.8.0",
     "cordova-allow-background-audio": "^1.0.2",
     "cordova-android": "8.1.0",
