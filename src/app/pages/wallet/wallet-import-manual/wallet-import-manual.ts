@@ -17,6 +17,7 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import * as constants from "@/app/app.constants";
 import { ActivatedRoute } from "@angular/router";
 import * as bip39 from "bip39";
+import { finalize } from "rxjs/operators";
 
 @Component({
 	selector: "page-wallet-import-passphrase",
@@ -96,7 +97,9 @@ export class WalletManualImportPage extends BaseWalletImport {
 			this.useAddress ? this.addressOrPassphrase : null,
 			this.useAddress ? null : this.addressOrPassphrase,
 			!this.nonBIP39Passphrase,
-		);
+		)
+			.pipe(finalize(() => (this.submitted = false)))
+			.subscribe();
 	}
 
 	initFormValidation() {

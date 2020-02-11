@@ -60,7 +60,10 @@ export class WalletImportPage extends BaseWalletImport implements OnInit {
 
 	onScanQRCode(qrCode: QRCodeScheme) {
 		if (qrCode.address || qrCode.passphrase) {
-			this.import(qrCode.address || null, qrCode.passphrase || null);
+			this.import(
+				qrCode.address || null,
+				qrCode.passphrase || null,
+			).subscribe();
 		} else {
 			this.toastProvider.error("QR_CODE.INVALID_QRCODE");
 		}

@@ -9,6 +9,7 @@ import { ActivatedRoute } from "@angular/router";
 import { ModalController, NavController } from "@ionic/angular";
 import { PrivateKey, PublicKey } from "ark-ts";
 import * as bip39 from "bip39";
+import { EMPTY, Observable } from "rxjs";
 import { finalize } from "rxjs/operators";
 
 export abstract class BaseWalletImport {
@@ -35,7 +36,7 @@ export abstract class BaseWalletImport {
 		address?: string,
 		passphrase?: string,
 		checkBIP39Passphrase?: boolean,
-	): void {
+	): Observable<never> {
 		let privateKey;
 		let publicKey;
 
@@ -72,44 +73,48 @@ export abstract class BaseWalletImport {
 				},
 				4000,
 			);
-			return;
+			return EMPTY;
 		}
 
 		if (!publicKey) {
-			return;
+			return EMPTY;
 		}
 
 		let newWallet = new Wallet(!privateKey);
 
-		this.arkApiProvider.client
-			.getWallet(address)
-			.pipe(
-				finalize(() => {
-					if (!privateKey) {
-						this.addWallet(newWallet);
-					} else {
-						// if we are converting watch-only to full wallet, keep label from existing watch-only wallet
-						const existingWallet = this.userDataProvider.getWalletByAddress(
-							address,
-						);
-						if (existingWallet && existingWallet.label) {
-							newWallet.label = existingWallet.label;
-						}
+		return new Observable(observer => {
+			this.arkApiProvider.client
+				.getWallet(address)
+				.pipe(
+					finalize(() => {
+						if (!privateKey) {
+							this.addWallet(newWallet);
+						} else {
+							// if we are converting watch-only to full wallet, keep label from existing watch-only wallet
+							const existingWallet = this.userDataProvider.getWalletByAddress(
+								address,
+							);
+							if (existingWallet && existingWallet.label) {
+								newWallet.label = existingWallet.label;
+							}
 
-						this.verifyWithPinCode(newWallet, passphrase);
-					}
-				}),
-			)
-			.subscribe(
-				response => {
-					newWallet = newWallet.deserialize(response);
-				},
-				() => {
-					// Empty wallet
-					newWallet.address = address;
-					newWallet.publicKey = publicKey.toHex();
-				},
-			);
+							this.verifyWithPinCode(newWallet, passphrase);
+						}
+						observer.next();
+						observer.complete();
+					}),
+				)
+				.subscribe(
+					response => {
+						newWallet = newWallet.deserialize(response);
+					},
+					() => {
+						// Empty wallet
+						newWallet.address = address;
+						newWallet.publicKey = publicKey.toHex();
+					},
+				);
+		});
 	}
 
 	private async verifyWithPinCode(
