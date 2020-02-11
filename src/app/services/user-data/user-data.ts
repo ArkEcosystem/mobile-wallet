@@ -204,7 +204,7 @@ export class UserDataProvider {
 			profile.wallets[wallet.address].isWatchOnly
 		) {
 			this.onCreateWallet$.next(wallet);
-			return this.saveWallet(wallet, profileId);
+			return this.saveWallet(wallet, profileId, true);
 		}
 
 		return this.saveProfiles();

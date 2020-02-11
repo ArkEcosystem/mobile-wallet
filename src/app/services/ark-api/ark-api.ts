@@ -376,6 +376,7 @@ export class ArkApiProvider {
 			transaction.senderPublicKey = keys.publicKey;
 			transaction.signature = null;
 			transaction.id = null;
+			transaction.senderId = transaction.address;
 
 			const data: ArkCrypto.Interfaces.ITransactionData = {
 				network: this._network.version,

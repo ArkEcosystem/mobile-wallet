@@ -94,8 +94,10 @@ export abstract class BaseWalletImport {
 							const existingWallet = this.userDataProvider.getWalletByAddress(
 								address,
 							);
-							if (existingWallet && existingWallet.label) {
+							if (existingWallet) {
 								newWallet.label = existingWallet.label;
+								newWallet.transactions =
+									existingWallet.transactions;
 							}
 
 							this.verifyWithPinCode(newWallet, passphrase);
