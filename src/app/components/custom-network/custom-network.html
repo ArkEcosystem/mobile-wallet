@@ -1,0 +1,53 @@
+<ion-grid>
+	<ion-row *ngIf="networkChoices && networkChoices.length > 0">
+		<ion-col class="text-center">
+			<ion-text color="dark">
+				<p>{{ 'CUSTOM_NETWORK.CHOOSE_EXISTING' | translate}}</p>
+			</ion-text>
+		</ion-col>
+	</ion-row>
+
+	<ion-row *ngIf="networkChoices && networkChoices.length > 0">
+		<ion-col>
+			<ion-item>
+				<ion-label
+					>{{ 'CUSTOM_NETWORK.CUSTOM_NETWORK' | translate}}</ion-label
+				>
+				<ion-select
+					[(ngModel)]="activeNetworkChoice"
+					(ionChange)="onActiveNetworkChange()"
+				>
+					<ion-select-option
+						*ngFor="let choice of networkChoices"
+						[value]="choice"
+						>{{choice.name}}</ion-select-option
+					>
+				</ion-select>
+			</ion-item>
+		</ion-col>
+	</ion-row>
+
+	<ion-row *ngIf="networkChoices && networkChoices.length > 0">
+		<ion-col class="text-center">
+			<ion-text color="dark">
+				<p>{{ 'CUSTOM_NETWORK.OR_CREATE_NEW' | translate}}</p>
+			</ion-text>
+		</ion-col>
+	</ion-row>
+
+	<ion-row *ngIf="!networkChoices || networkChoices.length == 0">
+		<ion-col class="text-center">
+			<ion-text color="dark">
+				<p>{{ 'CUSTOM_NETWORK.NO_NETWORK_CONFIGURED' | translate}}</p>
+			</ion-text>
+		</ion-col>
+	</ion-row>
+
+	<ion-row>
+		<ion-col class="text-center">
+			<ion-button fill="outline" (click)="createNewModal()">
+				{{ 'CUSTOM_NETWORK.CREATE_NEW' | translate}}
+			</ion-button>
+		</ion-col>
+	</ion-row>
+</ion-grid>

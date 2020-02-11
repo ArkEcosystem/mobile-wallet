@@ -1,0 +1,24 @@
+:host {
+	ion-content {
+		ion-grid {
+			&,
+			* {
+				touch-action: none !important;
+			}
+
+			.image {
+				pointer-events: none;
+				display: block;
+				margin: 3em auto;
+				width: 20rem;
+				content: url("/assets/img/light/wallet/hand-swipe.png");
+			}
+		}
+	}
+}
+
+:host-context(.dark-theme) {
+	.image {
+		content: url("/assets/img/dark/wallet/hand-swipe.png") !important;
+	}
+}

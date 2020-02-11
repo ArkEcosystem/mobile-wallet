@@ -1,0 +1,27 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-title>{{ 'WALLETS_PAGE.GENERATE_ENTROPY' | translate }}</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="dismiss()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content forceOverscroll="false" fullscreen class="ion-padding">
+	<ion-grid
+		class="h-full flex flex-col justify-center items-center"
+		(pan)="panEvent($event)"
+	>
+		<div class="text-center">
+			<img class="image" />
+			<p class="my-2">
+				{{ 'WALLETS_PAGE.ENTROPY_RANDOM_BYTES' | translate }}
+			</p>
+			<div class="p-2">
+				<progress-bar [progress]="progress"></progress-bar>
+			</div>
+		</div>
+	</ion-grid>
+</ion-content>

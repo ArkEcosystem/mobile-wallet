@@ -1,0 +1,45 @@
+:host {
+	ion-list ion-item {
+		--padding-start: 0;
+		--inner-padding-top: 0.5rem;
+		--inner-padding-bottom: 0.5rem;
+	}
+
+	.item-title {
+		@apply text-xs font-semibold tracking-wide;
+		color: var(--ion-color-medium);
+	}
+
+	.item-content {
+		@apply text-sm whitespace-normal mt-1;
+		color: var(--ion-color-dark);
+	}
+
+	.header-row {
+		position: relative;
+	}
+
+	.header-toolbar {
+		background-color: var(--ion-toolbar-background);
+
+		.header-background {
+			position: absolute;
+			background-image: url("/assets/img/light/transaction/send-confirm.png");
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center center;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			opacity: 0.1;
+		}
+	}
+}
+
+:host-context(.dark-theme) {
+	.header-toolbar {
+		.header-background {
+			background-image: url("/assets/img/dark/transaction/send-confirm.png");
+		}
+	}
+}

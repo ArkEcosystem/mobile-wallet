@@ -1,0 +1,164 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title
+			>{{ (useAddress ? 'WALLETS_PAGE.ADDRESS' :
+			'WALLETS_PAGE.SECRET_PASSPHRASE') | translate }}</ion-title
+		>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" #content>
+	<form #importWalletManual="ngForm" [formGroup]="manualImportFormGroup">
+		<ion-item>
+			<ion-label position="floating">
+				{{ (useAddress ? 'WALLETS_PAGE.ENTER_ADDRESS' :
+				'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE') | translate }}
+			</ion-label>
+			<ion-input
+				*ngIf="useAddress || !hidePassphrase"
+				#inputAddressOrPassphrase
+				name="addressOrPassphrase"
+				rows="2"
+				[ngModel]="addressOrPassphrase"
+				(ngModelChange)="addressOrPassphraseChange($event)"
+				formControlName="controlAddressOrPassphrase"
+				autocomplete="off"
+				autocorrect="off"
+				autocapitalize="off"
+				spellcheck="false"
+				(keyup.enter)="handleKeyEnter()"
+				required
+			></ion-input>
+			<ion-input
+				*ngIf="!useAddress && hidePassphrase"
+				#inputPassphraseHidden
+				name="passphraseHidden"
+				rows="2"
+				[ngModel]="passphraseHidden"
+				(ngModelChange)="passphraseHiddenChange($event)"
+				[ngModelOptions]="{standalone: true}"
+				autocomplete="off"
+				autocorrect="off"
+				autocapitalize="off"
+				spellcheck="false"
+				(keyup.enter)="handleKeyEnter()"
+				required
+			></ion-input>
+			<ion-button
+				*ngIf="!useAddress"
+				fill="clear"
+				slot="end"
+				(click)="showHidePassphrase()"
+				style="height:100%;"
+			>
+				<ion-icon
+					*ngIf="!hidePassphrase"
+					name="eye"
+					style="font-size:200%;"
+				></ion-icon>
+				<ion-icon
+					*ngIf="hidePassphrase"
+					name="eye-off"
+					style="font-size:200%;"
+				></ion-icon>
+			</ion-button>
+		</ion-item>
+		<ion-button
+			shape="round"
+			size="small"
+			(click)="suggestionClick(0)"
+			*ngIf="wordSuggestions[0]"
+			color="light"
+			name="wordSuggestion0"
+			>{{ wordSuggestions[0] }}</ion-button
+		>
+		<ion-button
+			shape="round"
+			size="small"
+			(click)="suggestionClick(1)"
+			*ngIf="wordSuggestions[1]"
+			color="light"
+			name="wordSuggestion1"
+			>{{ wordSuggestions[1] }}</ion-button
+		>
+		<ion-button
+			shape="round"
+			size="small"
+			(click)="suggestionClick(2)"
+			*ngIf="wordSuggestions[2]"
+			color="light"
+			name="wordSuggestion2"
+			>{{ wordSuggestions[2] }}</ion-button
+		>
+		<p
+			*ngIf="manualImportFormGroup.valid && !nonBIP39Passphrase"
+			class="text-right mt-2 font-semibold text-sm"
+		>
+			<ion-label color="success"
+				>{{ (useAddress ? 'WALLETS_PAGE.VALID_ADDRESS' :
+				'WALLETS_PAGE.VALID_PASSPHRASE') | translate }}</ion-label
+			>
+		</p>
+		<p
+			*ngIf="!manualImportFormGroup.valid && manualImportFormGroup.errors"
+			class="text-right mt-2 font-semibold text-sm"
+		>
+			<ion-label
+				*ngIf="manualImportFormGroup.errors.invalidWordNumber"
+				color="danger"
+				>{{ 'WALLETS_PAGE.INVALID_WORD_NUMBER' | translate }}</ion-label
+			>
+			<ion-label
+				*ngIf="manualImportFormGroup.errors.invalidMnemonic"
+				color="danger"
+				>{{ 'WALLETS_PAGE.INVALID_MNEMONIC' | translate }}</ion-label
+			>
+		</p>
+		<p
+			*ngIf="!manualImportFormGroup.controls.controlAddressOrPassphrase.valid"
+			class="text-right mt-2 font-semibold text-sm"
+		>
+			<ion-label
+				*ngIf="manualImportFormGroup.controls.controlAddressOrPassphrase.errors.invalidAddress"
+				color="danger"
+			>
+				{{ 'WALLETS_PAGE.INVALID_ADDRESS' | translate }}
+			</ion-label>
+		</p>
+		<ion-item
+			*ngIf="!useAddress"
+			no-padding
+			lines="none"
+			class="bg-transparent"
+		>
+			<ion-label
+				>{{ 'WALLETS_PAGE.CUSTOM_PASSPHRASE' | translate |
+				translateCut:0 }}
+				<a (click)="openBIP39DocURL()"
+					>{{ 'WALLETS_PAGE.CUSTOM_PASSPHRASE' | translate |
+					translateCut:1 }}</a
+				>
+				{{ 'WALLETS_PAGE.CUSTOM_PASSPHRASE' | translate | translateCut:2
+				}}</ion-label
+			>
+			<ion-toggle
+				name="nonBIP39Passphrase"
+				[(ngModel)]="nonBIP39Passphrase"
+				formControlName="controlNonBIP39"
+			></ion-toggle>
+		</ion-item>
+	</form>
+	<img class="image" />
+</ion-content>
+
+<ion-footer no-shadow no-border class="py-3 text-center">
+	<ion-button
+		[disabled]="!importWalletManual.form.valid || submitted"
+		(click)="submitForm()"
+	>
+		{{ 'IMPORT' | translate }}
+	</ion-button>
+</ion-footer>

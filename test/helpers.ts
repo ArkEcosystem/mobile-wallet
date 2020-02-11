@@ -1,117 +1,78 @@
-// This file is required by karma.conf.js and loads recursively all the .spec and framework files
-
-import 'zone.js/dist/long-stack-trace-zone';
-import 'zone.js/dist/proxy.js';
-import 'zone.js/dist/sync-test';
-// // @see https://github.com/angular/zone.js/issues/1015
-import 'zone.js/dist/jasmine-patch';
-import 'zone.js/dist/async-test';
-import 'zone.js/dist/fake-async-test';
-
-import { getTestBed, TestBed } from '@angular/core/testing';
-import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
-import { ConfigMock, PlatformMock } from 'ionic-mocks';
-
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { SharedModule } from "@/app/shared.module";
+import { HttpClientModule } from "@angular/common/http";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import {
-  App,
-  Config,
-  DeepLinker,
-  Form,
-  IonicModule,
-  Keyboard,
-  DomController,
-  MenuController,
-  NavController,
-  ModalController,
-  GestureController,
-  LoadingController,
-  Platform,
-} from 'ionic-angular';
-
-// import { ArkApiProvider } from '@providers/ark-api/ark-api';
-import { AuthProvider } from '@providers/auth/auth';
-import { ToastProvider } from '@providers/toast/toast';
-import { UserDataProvider } from '@providers/user-data/user-data';
-
+	ComponentFixture,
+	TestBed,
+	TestBedStatic,
+} from "@angular/core/testing";
+import { BrowserModule } from "@angular/platform-browser";
+import { RouterModule } from "@angular/router";
+import { Keyboard } from "@ionic-native/keyboard/ngx";
+import { Network } from "@ionic-native/network/ngx";
+import { QRScanner } from "@ionic-native/qr-scanner/ngx";
+import { ScreenOrientation } from "@ionic-native/screen-orientation/ngx";
+import { SocialSharing } from "@ionic-native/social-sharing/ngx";
+import { SplashScreen } from "@ionic-native/splash-screen/ngx";
+import { StatusBar } from "@ionic-native/status-bar/ngx";
+import { IonicModule } from "@ionic/angular";
+import { IonicStorageModule } from "@ionic/storage";
+import { TranslateModule } from "@ngx-translate/core";
 import {
-  ArkApiProviderMock,
-  AuthProviderMock,
-  DeepLinkerMock,
-  ToastProviderMock,
-  TranslateLoaderMock,
-  UserDataProviderMock
-} from './mocks';
+	KeyboardMock,
+	NetworkMock,
+	QRScannerMock,
+	ScreenOrientationMock,
+	SocialSharingMock,
+	SplashScreenMock,
+	StatusBarMock,
+} from "./mocks";
 
-declare const require: any;
-
-// First, initialize the Angular testing environment.
-getTestBed().initTestEnvironment(
-  BrowserDynamicTestingModule,
-  platformBrowserDynamicTesting(),
-);
-// Then we find all the tests.
-const context: any = require.context('../src/', true, /\.spec\.ts$/);
-// And load the modules.
-context.keys().map(context);
+interface Compilation<T> {
+	fixture: ComponentFixture<T>;
+	component: T;
+}
 
 export class TestHelpers {
+	public static async beforeEachCompiler<T>(
+		components: Array<any>,
+	): Promise<Compilation<T>> {
+		const testingModule = TestHelpers.configureIonicTestingModule(
+			components,
+		);
 
-  public static beforeEachCompiler(components: Array<any>): Promise<{fixture: any, instance: any}> {
-    const testingModule = TestHelpers.configureIonicTestingModule(components)
-    const testComponents = testingModule.compileComponents()
+		await testingModule.compileComponents();
 
-    return new Promise((resolve, reject) => {
-      testComponents
-        .then(() => {
-          let fixture: any = TestBed.createComponent(components[0]);
-          resolve({
-            fixture,
-            instance: fixture.debugElement.componentInstance,
-          });
-        })
-        .catch(reject)
-    })
-  }
+		const fixture = TestBed.createComponent<T>(components[0]);
+		const component = fixture.componentInstance;
 
-  public static configureIonicTestingModule(components: Array<any>): typeof TestBed {
-    return TestBed.configureTestingModule({
-      declarations: [
-        ...components,
-      ],
-      imports: [
-        FormsModule,
-        IonicModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useClass: TranslateLoaderMock
-          }
-        }),
-      ],
-      providers: [
-        App, Form, Keyboard, DomController, MenuController, NavController, ModalController, GestureController, LoadingController,
-        {provide: Platform, useFactory: () => PlatformMock.instance()},
-        {provide: Config, useFactory: () => ConfigMock.instance()},
-        {provide: DeepLinker, useClass: DeepLinkerMock},
-        // {provide: ArkApiProvider, useClass: ArkApiProviderMock},
-        {provide: AuthProvider, useClass: AuthProviderMock},
-        {provide: ToastProvider, useClass: ToastProviderMock},
-        {provide: UserDataProvider, useClass: UserDataProviderMock},
-      ],
-    });
-  }
+		return { fixture, component };
+	}
 
-  // http://stackoverflow.com/questions/2705583/how-to-simulate-a-click-with-javascript
-  public static eventFire(el: any, etype: string): void {
-    if (el.fireEvent) {
-      el.fireEvent('on' + etype);
-    } else {
-      let evObj: any = document.createEvent('Events');
-      evObj.initEvent(etype, true, false);
-      el.dispatchEvent(evObj);
-    }
-  }
+	public static configureIonicTestingModule(
+		components: Array<any>,
+	): TestBedStatic {
+		return TestBed.configureTestingModule({
+			declarations: [...components],
+			imports: [
+				IonicModule,
+				IonicStorageModule.forRoot(),
+				BrowserModule,
+				HttpClientModule,
+				TranslateModule.forRoot(),
+				SharedModule,
+				RouterModule.forRoot([]),
+			],
+			providers: [
+				{ provide: SplashScreen, useClass: SplashScreenMock },
+				{ provide: StatusBar, useClass: StatusBarMock },
+				{ provide: QRScanner, useClass: QRScannerMock },
+				{ provide: Network, useClass: NetworkMock },
+				{ provide: Keyboard, useClass: KeyboardMock },
+				{ provide: ScreenOrientation, useClass: ScreenOrientationMock },
+				{ provide: SocialSharing, useClass: SocialSharingMock },
+			],
+			schemas: [CUSTOM_ELEMENTS_SCHEMA],
+		});
+	}
 }

@@ -1,0 +1,41 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title>{{ 'WALLETS_PAGE.IMPORT_WALLET' | translate }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content forceOverscroll="false" fullscreen class="ion-padding">
+	<ion-grid class="h-full flex flex-col">
+		<ion-row class="flex-grow">
+			<ion-col class="text-center">
+				<img class="image" />
+				<p class="p-4 leading-normal">
+					{{ 'WALLETS_PAGE.SCAN_QRCODE_TEXT' | translate }}
+				</p>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col class="text-center">
+				<ion-grid>
+					<ion-row>
+						<ion-col>
+							<ion-button
+								color="primary"
+								(click)="scanQRCode()"
+								text-center
+								class="button-continue"
+								>{{ 'WALLETS_PAGE.SCAN_QRCODE' | translate
+								}}</ion-button
+							>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+<qr-scanner (success)="onScanQRCode($event)" #qrScanner></qr-scanner>

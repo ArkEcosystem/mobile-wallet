@@ -1,0 +1,91 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-title
+			>{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</ion-title
+		>
+		<ion-buttons slot="end">
+			<ion-button (click)="dismiss()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" #content>
+	<ion-grid class="h-full" *ngIf="step == 1">
+		<ion-row>
+			<ion-col>
+				<ion-item>
+					<ion-label stacked
+						>{{ 'WALLETS_PAGE.PASSPHRASE' | translate }}</ion-label
+					>
+					<ion-textarea
+						name="passphrase"
+						[(ngModel)]="passphrase"
+						rows="4"
+					></ion-textarea>
+				</ion-item>
+			</ion-col>
+		</ion-row>
+		<ion-row class="controls-container">
+			<ion-col class="ion-align-self-end ion-text-center">
+				<ion-button (click)="next()" class="button-continue"
+					>{{ 'NEXT' | translate }}</ion-button
+				>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+
+	<ion-grid class="h-full" *ngIf="step == 2">
+		<ion-row>
+			<ion-col>
+				<ion-item>
+					<ion-label stacked
+						>{{ 'WALLETS_PAGE.RE_ENTER_PASSPHRASE' | translate
+						}}</ion-label
+					>
+					<ion-textarea
+						name="repassphrase"
+						[(ngModel)]="repassphrase"
+						rows="4"
+					></ion-textarea>
+				</ion-item>
+				<p class="error" *ngIf="isWrong" ion-text color="danger">
+					{{ 'WALLETS_PAGE.PASSPHRASE_NOT_MATCH' | translate }}
+				</p>
+			</ion-col>
+		</ion-row>
+		<ion-row class="controls-container">
+			<ion-col class="ion-align-self-end ion-text-center">
+				<ion-grid>
+					<ion-row>
+						<ion-col text-right>
+							<ion-button fill="clear" (click)="prev()"
+								>{{ 'BACK_BUTTON_TEXT' | translate
+								}}</ion-button
+							>
+						</ion-col>
+						<ion-col>
+							<ion-button (click)="create()"
+								>{{ 'CREATE' | translate }} ({{
+								currentNetwork?.symbol }}{{
+								fees?.secondsignature | unitsSatoshi
+								}})</ion-button
+							>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+<ion-footer class="note-toolbar" no-shadow no-border>
+	<p *ngIf="step == 1">
+		{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE_SECURELY_RETYPE_TEXT' |
+		translate }}
+	</p>
+	<p *ngIf="step == 2">
+		{{ 'WALLETS_PAGE.BACKUP_SECOND_PASSPHRASE' | translate }}
+	</p>
+</ion-footer>

@@ -1,0 +1,19 @@
+:host {
+	.item-title {
+		@apply text-xs font-semibold tracking-wide;
+		color: var(--ion-color-medium);
+	}
+
+	.item-content {
+		@apply text-sm whitespace-normal mt-1;
+		color: var(--ion-color-dark);
+	}
+
+	ion-list {
+		ion-item {
+			--padding-start: 0;
+			--inner-padding-top: 0.5rem;
+			--inner-padding-bottom: 0.5rem;
+		}
+	}
+}
