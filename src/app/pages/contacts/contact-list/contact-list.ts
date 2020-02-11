@@ -22,7 +22,7 @@ import { takeUntil } from "rxjs/operators";
 	templateUrl: "contact-list.html",
 	styleUrls: ["contact-list.scss"],
 })
-export class ContactListPage implements OnInit {
+export class ContactListPage {
 	public profile;
 	public network;
 	public addresses: AddressMap[];
@@ -39,7 +39,7 @@ export class ContactListPage implements OnInit {
 		private actionSheetCtrl: ActionSheetController,
 	) {}
 
-	ngOnInit(): void {
+	ionViewDidEnter(): void {
 		this._load();
 	}
 
