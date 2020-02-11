@@ -4,6 +4,7 @@ import moment from "moment";
 
 import { MarketCurrency, MarketHistory, MarketTicker } from "@/models/market";
 
+import { TRANSACTION_GROUPS } from "@/app/app.constants";
 import { ArkUtility } from "../utils/ark-utility";
 
 const TX_TYPES = {
@@ -97,6 +98,7 @@ export class Transaction extends TransactionModel {
 		this.date = new Date(this.timestamp * 1000);
 		this.amount = new BigNumber(input.amount).toNumber();
 		this.fee = new BigNumber(input.fee).toNumber();
+		this.typeGroup = input.typeGroup || 1;
 		delete self.network;
 		return self;
 	}
@@ -154,8 +156,8 @@ export class Transaction extends TransactionModel {
 		}
 	}
 
-	getTypeLabel(group = 1): string {
-		let type = TX_TYPES[group][this.type];
+	getTypeLabel(): string {
+		let type = TX_TYPES[this.typeGroup][this.type];
 
 		if (this.isTransfer() && !this.isSender()) {
 			type = "TRANSACTIONS_PAGE.RECEIVED";
@@ -167,8 +169,8 @@ export class Transaction extends TransactionModel {
 		return type;
 	}
 
-	getActivityLabel(group = 1) {
-		let type = TX_TYPES_ACTIVITY[group][this.type];
+	getActivityLabel() {
+		let type = TX_TYPES_ACTIVITY[this.typeGroup][this.type];
 
 		if (this.isTransfer() && !this.isSender()) {
 			type = "TRANSACTIONS_PAGE.RECEIVED_FROM";
@@ -181,7 +183,10 @@ export class Transaction extends TransactionModel {
 	}
 
 	isTransfer(): boolean {
-		return this.type === TransactionType.SendArk;
+		return (
+			this.type === TransactionType.SendArk &&
+			this.typeGroup === TRANSACTION_GROUPS.STANDARD
+		);
 	}
 
 	isSender(): boolean {

@@ -74,12 +74,11 @@
 					[options]="slideOptions"
 					#walletSlider
 					(ionSlideDidChange)="onSlideChanged()"
+					(ionSlideTap)="onSlideTap()"
 				>
 					<ion-slide
 						class="flex justify-start"
 						*ngFor="let wallet of wallets"
-						tappable
-						(tap)="openWalletDashboard(wallet)"
 					>
 						<ion-item
 							lines="none"

@@ -100,6 +100,10 @@ export class WalletListPage implements OnDestroy {
 		);
 	}
 
+	onSlideTap() {
+		setTimeout(() => this.openWalletDashboard(this.selectedWallet), 0);
+	}
+
 	openWalletDashboard(wallet: Wallet) {
 		this.navCtrl
 			.navigateForward("/wallets/dashboard", {

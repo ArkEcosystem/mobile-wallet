@@ -78,7 +78,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	public marketHistory: MarketHistory;
 	public marketCurrency: MarketCurrency;
 
-	public onEnterPinCode;
+	public onEnterPinCode: (keys: WalletKeys) => void;
 	private newDelegateName: string;
 	private newDelegateFee: number;
 	private newSecondPassphrase: string;
@@ -433,8 +433,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 			isTransfer: transaction.isTransfer(),
 			isSender: transaction.isSender(),
 			appropriateAddress: transaction.getAppropriateAddress(),
-			activityLabel: transaction.getActivityLabel(transaction.typeGroup),
-			typeLabel: transaction.getTypeLabel(transaction.typeGroup),
+			activityLabel: transaction.getActivityLabel(),
+			typeLabel: transaction.getTypeLabel(),
 			totalAmount: transaction.getAmount(),
 			date: transaction.date,
 			amountEquivalent: transaction.getAmountEquivalent(

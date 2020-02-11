@@ -34,14 +34,15 @@
 					(wallet?.getBalanceEquivalent(marketCurrency) |
 					marketNumber) || 0 }}
 				</h4>
-				<p
+				<ion-button
 					(click)="copyAddress()"
-					tappable
+					fill="clear"
+					mode="ios"
 					class="toolbar-address flex items-center mt-3 opacity-75"
 				>
 					<ion-icon name="copy" class="mr-1"></ion-icon>
 					{{ wallet?.address }}
-				</p>
+				</ion-button>
 				<ion-badge
 					class="mt-2"
 					color="primary"
