@@ -229,7 +229,7 @@
 		"INVALID_ADDRESS_ERROR": "Invalid Address",
 		"INVALID_CONTACT_ERROR": "Invalid Contact",
 		"INVALID_FORM_ERROR": "Invalid Form Data",
-		"MULTISIGNATURE_CREATION": "Multisignature Creation",
+		"MULTISIGNATURE_REGISTRATION": "Multisignature Registration",
 		"NEW_CONTACT_NAME": "New Contact's Name (optional)",
 		"NEW_WALLET_LABEL": "Wallet label (optional)",
 		"OPEN_EXPLORER": "Open in Explorer",
