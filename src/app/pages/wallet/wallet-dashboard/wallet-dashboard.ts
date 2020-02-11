@@ -224,11 +224,15 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 						role: "label",
 						icon: "git-compare",
 						handler: () => {
-							this.navCtrl.navigateForward("/wallets/import", {
-								queryParams: {
-									address: this.wallet.address,
+							this.navCtrl.navigateForward(
+								"/wallets/import-manual",
+								{
+									queryParams: {
+										type: "passphrase",
+										address: this.wallet.address,
+									},
 								},
-							});
+							);
 						},
 					});
 				}
