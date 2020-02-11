@@ -144,14 +144,14 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 				"WALLETS_PAGE.TOP_WALLETS",
 			])
 			.subscribe(async translation => {
-				const delegateItem = {
-					text: translation["DELEGATES_PAGE.REGISTER_DELEGATE"],
-					role: "delegate",
-					icon: "contact",
-					handler: () => {
-						this.presentRegisterDelegateModal();
-					},
-				};
+				// const delegateItem = {
+				// 	text: translation["DELEGATES_PAGE.REGISTER_DELEGATE"],
+				// 	role: "delegate",
+				// 	icon: "contact",
+				// 	handler: () => {
+				// 		this.presentRegisterDelegateModal();
+				// 	},
+				// };
 
 				const delegatesItem = {
 					text: translation["DELEGATES_PAGE.DELEGATES"],
@@ -208,10 +208,11 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 				// if (!this.wallet.isWatchOnly) { buttons.unshift(topWalletsItem); }
 				if (!this.wallet.isWatchOnly) {
 					buttons.unshift(delegatesItem);
-				} // "Watch Only" address can't vote
-				if (!this.wallet.isWatchOnly && !this.wallet.isDelegate) {
-					buttons.unshift(delegateItem);
 				}
+				// "Watch Only" address can't vote
+				// if (!this.wallet.isWatchOnly && !this.wallet.isDelegate) {
+				// 	buttons.unshift(delegateItem);
+				// }
 				if (!this.wallet.isWatchOnly) {
 					buttons.splice(buttons.length - 1, 0, backupItem);
 				}
