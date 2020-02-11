@@ -258,7 +258,19 @@
 		"ERROR": {
 			"NOTHING_SENT": "The transaction could not be sent. Please check your network connection or change peer",
 			"FEE_TOO_LOW": "Transaction could not be sent because the fee ({{ fee }}) is too low"
-		}
+		},
+		"IPFS": "IPFS",
+		"MULTI_PAYMENT": "Multipayment",
+		"DELEGATE_RESIGNATION": "Delegate Resignation",
+		"HTLC_LOCK": "Timelock",
+		"HTLC_CLAIM": "Timelock Claim",
+		"HTLC_REFUND": "Timelock Refund",
+		"BUSINESS_REGISTRATION": "Business Registration",
+		"BUSINESS_RESIGNATION": "Business Resignation",
+		"BUSINESS_UPDATE": "Business Update",
+		"BRIDGECHAIN_REGISTRATION": "Bridgechain Registration",
+		"BRIDGECHAIN_RESIGNATION": "Bridgechain Resignation",
+		"BRIDGECHAIN_UPDATE": "Bridgechain Update"
 	},
 	"TYPE": "Type",
 	"VALIDATION": {

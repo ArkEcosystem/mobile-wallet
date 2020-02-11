@@ -433,8 +433,8 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 			isTransfer: transaction.isTransfer(),
 			isSender: transaction.isSender(),
 			appropriateAddress: transaction.getAppropriateAddress(),
-			activityLabel: transaction.getActivityLabel(),
-			typeLabel: transaction.getTypeLabel(),
+			activityLabel: transaction.getActivityLabel(transaction.typeGroup),
+			typeLabel: transaction.getTypeLabel(transaction.typeGroup),
 			totalAmount: transaction.getAmount(),
 			date: transaction.date,
 			amountEquivalent: transaction.getAmountEquivalent(
