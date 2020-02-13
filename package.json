@@ -58,7 +58,6 @@
 		"cordova-custom-config": "^5.1.0",
 		"cordova-ios": "5.1.1",
 		"cordova-plugin-add-swift-support": "^2.0.2",
-		"cordova-plugin-background-mode": "^0.7.3",
 		"cordova-plugin-badge": "^0.8.8",
 		"cordova-plugin-device": "^2.0.3",
 		"cordova-plugin-inappbrowser": "^3.2.0",
@@ -153,7 +152,6 @@
 				"ANDROID_SUPPORT_V4_VERSION": "24.1.1+"
 			},
 			"cordova-plugin-local-notification": {},
-			"cordova-plugin-background-mode": {},
 			"cordova-sqlite-storage": {},
 			"cordova-plugin-network-information": {},
 			"cordova-plugin-screen-orientation": {},
