@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-toolbar>
 		<ion-title>
 			{{ 'DELEGATES_PAGE.REGISTER_DELEGATE' | translate }}
@@ -32,7 +32,11 @@
 							required
 						></ion-input>
 					</ion-item>
-					<ion-item lines="none" class="no-border" *ngIf="isExists">
+					<ion-item
+						lines="none"
+						class="ion-no-border ion-no-shadow"
+						*ngIf="isExists"
+					>
 						<p class="error-message">
 							{{ 'DELEGATES_PAGE.USERNAME_ALREADY_EXISTS' |
 							translate }}

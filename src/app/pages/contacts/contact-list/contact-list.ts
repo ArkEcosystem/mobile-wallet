@@ -3,7 +3,6 @@ import {
 	ActionSheetController,
 	AlertController,
 	NavController,
-	Platform,
 } from "@ionic/angular";
 
 import { ContactsProvider } from "@/services/contacts/contacts";
@@ -30,7 +29,6 @@ export class ContactListPage {
 	private unsubscriber$: Subject<void> = new Subject<void>();
 
 	constructor(
-		private platform: Platform,
 		private navCtrl: NavController,
 		private userDataProvider: UserDataProvider,
 		private contactsProvider: ContactsProvider,
@@ -52,9 +50,7 @@ export class ContactListPage {
 					{
 						text: translation.EDIT,
 						role: "label",
-						icon: this.platform.is("ios")
-							? "ios-create-outline"
-							: "md-create",
+						icon: "create",
 						handler: () => {
 							this.openEditPage(address);
 						},
@@ -62,9 +58,7 @@ export class ContactListPage {
 					{
 						text: translation.DELETE,
 						role: "label",
-						icon: this.platform.is("ios")
-							? "ios-trash-outline"
-							: "md-trash",
+						icon: "trash",
 						handler: () => {
 							this.showDeleteConfirm(address);
 						},

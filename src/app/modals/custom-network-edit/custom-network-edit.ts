@@ -20,7 +20,7 @@ export interface EditNetworkResult {
 	templateUrl: "custom-network-edit.html",
 })
 export class CustomNetworkEditModal {
-	public network: StoredNetwork = new StoredNetwork();
+	public network: StoredNetwork;
 	public apiPort: number;
 	public p2pPort: number;
 	public networkId: string;
@@ -37,7 +37,7 @@ export class CustomNetworkEditModal {
 		const defaultNetworksNames = this.userDataProvider.defaultNetworks.map(
 			item => item.name,
 		);
-		this.network = this.navParams.get("network");
+		this.network = this.navParams.get("network") || new StoredNetwork();
 		this.networkId = this.navParams.get("id");
 
 		this.isDefault = defaultNetworksNames.includes(this.network.name);

@@ -139,7 +139,7 @@ export class WalletListPage implements OnDestroy {
 						{
 							text: translation["WALLETS_PAGE.SCAN_QRCODE"],
 							role: "qrcode",
-							icon: "qr-scanner",
+							icon: "qr-code",
 							handler: () => {
 								this.presentWalletImport("qrcode");
 							},

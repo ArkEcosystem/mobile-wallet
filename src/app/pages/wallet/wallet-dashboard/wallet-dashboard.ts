@@ -272,7 +272,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 					{
 						text: translation["TRANSACTIONS_PAGE.RECEIVE"],
 						role: "receive",
-						icon: "arrow-round-down",
+						icon: "arrow-down",
 						handler: () => {
 							return this.openTransactionReceive();
 						},
@@ -282,7 +282,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 					buttons.push({
 						text: translation["TRANSACTIONS_PAGE.SEND"],
 						role: "send",
-						icon: "arrow-round-up",
+						icon: "arrow-up",
 						handler: () => {
 							return this.navCtrl.navigateForward(
 								"/transaction/send",

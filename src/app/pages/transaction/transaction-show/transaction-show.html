@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-toolbar>
 		<ion-buttons slot="start">
 			<ion-back-button></ion-back-button>
@@ -6,7 +6,7 @@
 		<ion-title>{{ 'TRANSACTIONS_PAGE.TRANSACTION' | translate }}</ion-title>
 		<ion-buttons slot="end">
 			<ion-button *ngIf="showOptions" (click)="presentOptions()">
-				<ion-icon slot="icon-only" name="more"></ion-icon>
+				<ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
 			</ion-button>
 		</ion-buttons>
 	</ion-toolbar>

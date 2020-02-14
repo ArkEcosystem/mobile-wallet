@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-toolbar>
 		<ion-buttons slot="start">
 			<ion-back-button></ion-back-button>
@@ -10,7 +10,7 @@
 <ion-content>
 	<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="!isEmpty()">
 		<ion-fab-button color="primary" (click)="openProfileCreate()">
-			<ion-icon name="md-add"></ion-icon>
+			<ion-icon name="add"></ion-icon>
 		</ion-fab-button>
 	</ion-fab>
 
@@ -25,7 +25,7 @@
 			<ion-col>
 				<address-list
 					[map]="addresses"
-					[icon]="platform.is('ios') ? 'ios-more' : 'md-more'"
+					icon="ellipsis-vertical"
 					circleProperty="value"
 					(tapItem)="verify($event)"
 					(pressItem)="presentProfileActionSheet($event)"
