@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-toolbar>
 		<ion-buttons slot="start">
 			<ion-back-button></ion-back-button>
@@ -154,7 +154,7 @@
 	<img class="image" />
 </ion-content>
 
-<ion-footer no-shadow no-border class="py-3 text-center">
+<ion-footer class="ion-no-border ion-no-shadow py-3 text-center">
 	<ion-button
 		[disabled]="!importWalletManual.form.valid || submitted"
 		(click)="submitForm()"

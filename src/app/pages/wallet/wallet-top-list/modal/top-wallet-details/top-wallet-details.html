@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-grid class="no-padding">
 		<ion-row>
 			<ion-col class="no-padding">
@@ -90,14 +90,14 @@
 						<ion-icon
 							*ngIf="tx?.isSender()"
 							slot="end"
-							name="ios-arrow-round-up"
+							name="arrow-up"
 							class="icon-rotate-right"
 							style="color: red"
 						></ion-icon>
 						<ion-icon
 							*ngIf="!tx?.isSender()"
 							slot="end"
-							name="ios-arrow-round-down"
+							name="arrow-down"
 							class="icon-rotate-right"
 							style="color: green"
 						></ion-icon>
