@@ -56,9 +56,7 @@ export class ProfileSigninPage implements OnDestroy {
 					{
 						text: translation.DELETE,
 						role: "delete",
-						icon: this.platform.is("ios")
-							? "ios-trash-outline"
-							: "md-trash",
+						icon: "trash",
 						handler: () => {
 							if (!this.profileHasWallets(profileId)) {
 								this.showDeleteConfirm(profileId);

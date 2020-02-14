@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-toolbar>
 		<ion-buttons slot="start">
 			<ion-back-button></ion-back-button>
@@ -48,11 +48,13 @@
 							>{{ 'NETWORKS_PAGE.NETWORK_TYPE' | translate
 							}}</ion-label
 						>
-						<ion-select (ionChange)="onSelectNetwork($event)">
+						<ion-select
+							(ionChange)="onSelectNetwork($event)"
+							[value]="activeNetworkChoice.id"
+						>
 							<ion-select-option
 								*ngFor="let networkChoice of networkChoices"
-								[value]="networkChoice"
-								[selected]="networkChoice.id === activeNetworkChoice.id"
+								[value]="networkChoice.id"
 							>
 								<span class="capitalize"
 									>{{ networkChoice.name }}</span
@@ -72,7 +74,7 @@
 	</form>
 </ion-content>
 
-<ion-footer class="text-center py-3" no-shadow no-border>
+<ion-footer class="text-center py-3 ion-no-border ion-no-shadow">
 	<ion-button
 		[disabled]="!createProfileForm.form.valid || !newProfile.networkId"
 		(click)="submitForm()"

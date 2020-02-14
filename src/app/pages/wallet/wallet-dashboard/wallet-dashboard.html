@@ -1,9 +1,8 @@
 <ion-header
-	no-shadow
-	no-border
+	class="ion-no-border ion-no-shadow"
 	[ngClass]="{'delegate-wallet': wallet?.isDelegate, 'default-wallet': wallet ? !wallet.isDelegate : false}"
 >
-	<ion-toolbar no-border-bottom no-shadow>
+	<ion-toolbar class="ion-no-border-bottom ion-no-shadow">
 		<ion-menu-button slot="start"></ion-menu-button>
 		<ion-title
 			>{{ wallet?.username || wallet?.label || ('WALLETS_PAGE.MY_WALLET' |
@@ -11,14 +10,13 @@
 		>
 		<ion-buttons slot="end">
 			<ion-button (click)="presentWalletActionSheet()">
-				<ion-icon slot="icon-only" name="more"></ion-icon>
+				<ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
 			</ion-button>
 		</ion-buttons>
 	</ion-toolbar>
 
 	<ion-toolbar
-		class="stats-toolbar flex items-center"
-		no-border-top
+		class="stats-toolbar flex items-center ion-no-border-top"
 		[appHeaderScroller]="content"
 	>
 		<ion-grid>
@@ -128,13 +126,13 @@
 							</div>
 							<ion-icon
 								*ngIf="tx?.isSender"
-								name="ios-arrow-round-up"
+								src="/assets/svg/arrow-down.svg"
 								class="icon-rotate-right text-3xl"
 								color="danger"
 							></ion-icon>
 							<ion-icon
 								*ngIf="!tx?.isSender"
-								name="ios-arrow-round-down"
+								src="/assets/svg/arrow-up.svg"
 								class="icon-rotate-right text-3xl"
 								color="success"
 							></ion-icon>

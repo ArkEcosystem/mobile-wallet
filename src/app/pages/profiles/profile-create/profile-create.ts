@@ -41,8 +41,10 @@ export class ProfileCreatePage implements OnDestroy {
 
 	onSelectNetwork(event: any) {
 		const detail = event.detail.value;
-		this.activeNetworkChoice = detail;
-		this.newProfile.networkId = detail.id;
+		this.activeNetworkChoice = this.networkChoices.find(
+			item => item.id === detail,
+		);
+		this.newProfile.networkId = this.activeNetworkChoice.id;
 	}
 
 	submitForm() {

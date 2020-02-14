@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-toolbar>
 		<ion-buttons slot="start">
 			<ion-back-button></ion-back-button>
@@ -10,7 +10,7 @@
 <ion-content forceOverscroll="false" fullscreen>
 	<ion-fab *ngIf="!isEmpty()" vertical="bottom" horizontal="end" slot="fixed">
 		<ion-fab-button color="primary" (click)="openCreatePage()">
-			<ion-icon name="md-add"></ion-icon>
+			<ion-icon name="add"></ion-icon>
 		</ion-fab-button>
 	</ion-fab>
 
@@ -24,7 +24,7 @@
 			<ion-col>
 				<address-list
 					[map]="addresses"
-					icon="more"
+					icon="ellipsis-vertical"
 					(tapItem)="presentContactActionSheet($event)"
 					(pressItem)="presentContactActionSheet($event)"
 					(more)="presentContactActionSheet($event)"

@@ -35,17 +35,17 @@
 					{{ "NETWORKS_PAGE.NETWORK_STATUS" | translate }}
 				</ion-item>
 				<ion-item detail (click)="openPage('/settings', false)">
-					<ion-icon name="settings" slot="start"></ion-icon>
+					<ion-icon ios="cog" md="settings" slot="start"></ion-icon>
 					{{ "SETTINGS_PAGE.SETTINGS" | translate }}
 				</ion-item>
 				<ion-item detail (click)="openPage('/contacts', false)">
-					<ion-icon name="contact" slot="start"></ion-icon>
+					<ion-icon name="people" slot="start"></ion-icon>
 					{{ "CONTACTS_PAGE.CONTACTS" | translate }}
 				</ion-item>
 			</ion-list>
 		</ion-content>
 
-		<ion-footer no-border no-shadow>
+		<ion-footer class="ion-no-border ion-no-shadow">
 			<ion-list inset lines="none">
 				<ion-item detail (click)="logout()">
 					<ion-icon name="log-out" slot="start"></ion-icon>
