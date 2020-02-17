@@ -1,120 +1,225 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
 
-// Font path is used to include ionicons,
-// roboto, and noto sans fonts
-$font-path: "../assets/fonts";
+/** Ionic CSS Variables **/
+:root {
+	--ion-background-color: #fefefe;
+	--ion-background-color-rgb: 254, 254, 254;
 
+	--ion-text-color: #1a202c;
+	--ion-text-color-rgb: 26, 32, 44;
 
-// The app direction is used to include
-// rtl styles in your app. For more info, please see:
-// http://ionicframework.com/docs/theming/rtl-support/
-$app-direction: ltr;
+	--wallet-normal-gradient-rgb: 217, 199, 201;
+	--wallet-delegate-gradient-rgb: 210, 219, 242;
 
+	/** primary **/
+	--ion-color-primary: #3880ff;
+	--ion-color-primary-rgb: 56, 128, 255;
+	--ion-color-primary-contrast: #ffffff;
+	--ion-color-primary-contrast-rgb: 255, 255, 255;
+	--ion-color-primary-shade: #3171e0;
+	--ion-color-primary-tint: #4c8dff;
 
-@import "ionic.globals";
+	/** secondary **/
+	--ion-color-secondary: #0cd1e8;
+	--ion-color-secondary-rgb: 12, 209, 232;
+	--ion-color-secondary-contrast: #ffffff;
+	--ion-color-secondary-contrast-rgb: 255, 255, 255;
+	--ion-color-secondary-shade: #0bb8cc;
+	--ion-color-secondary-tint: #24d6ea;
 
+	/** tertiary **/
+	--ion-color-tertiary: #7044ff;
+	--ion-color-tertiary-rgb: 112, 68, 255;
+	--ion-color-tertiary-contrast: #ffffff;
+	--ion-color-tertiary-contrast-rgb: 255, 255, 255;
+	--ion-color-tertiary-shade: #633ce0;
+	--ion-color-tertiary-tint: #7e57ff;
 
-// Shared Variables
-// --------------------------------------------------
-// To customize the look and feel of this app, you can override
-// the Sass variables found in Ionic's source scss files.
-// To view all the possible Ionic variables, see:
-// http://ionicframework.com/docs/theming/overriding-ionic-variables/
+	/** success **/
+	--ion-color-success: #10dc60;
+	--ion-color-success-rgb: 16, 220, 96;
+	--ion-color-success-contrast: #ffffff;
+	--ion-color-success-contrast-rgb: 255, 255, 255;
+	--ion-color-success-shade: #0ec254;
+	--ion-color-success-tint: #28e070;
 
+	/** warning **/
+	--ion-color-warning: #ffce00;
+	--ion-color-warning-rgb: 255, 206, 0;
+	--ion-color-warning-contrast: #ffffff;
+	--ion-color-warning-contrast-rgb: 255, 255, 255;
+	--ion-color-warning-shade: #e0b500;
+	--ion-color-warning-tint: #ffd31a;
 
+	/** danger **/
+	--ion-color-danger: #f04141;
+	--ion-color-danger-rgb: 245, 61, 61;
+	--ion-color-danger-contrast: #ffffff;
+	--ion-color-danger-contrast-rgb: 255, 255, 255;
+	--ion-color-danger-shade: #d33939;
+	--ion-color-danger-tint: #f25454;
 
+	/** dark **/
+	--ion-color-dark: #222428;
+	--ion-color-dark-rgb: 34, 34, 34;
+	--ion-color-dark-contrast: #ffffff;
+	--ion-color-dark-contrast-rgb: 255, 255, 255;
+	--ion-color-dark-shade: #1e2023;
+	--ion-color-dark-tint: #383a3e;
 
-// Named Color Variables
-// --------------------------------------------------
-// Named colors makes it easy to reuse colors on various components.
-// It's highly recommended to change the default colors
-// to match your app's branding. Ionic uses a Sass map of
-// colors so you can add, rename and remove colors as needed.
-// The "primary" color is the only required color in the map.
+	/** medium **/
+	--ion-color-medium: #989aa2;
+	--ion-color-medium-rgb: 152, 154, 162;
+	--ion-color-medium-contrast: #ffffff;
+	--ion-color-medium-contrast-rgb: 255, 255, 255;
+	--ion-color-medium-shade: #86888f;
+	--ion-color-medium-tint: #a2a4ab;
 
-$colors: (
-  primary: #345ff2,
-  secondary:  #32db64,
-  success:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222,
-  danger-alternative: #ca284a,
-  primary-background: #edf2f5,
-  secondary-background: #fff,
-  warning: #ffeaa5,
-  wallet-normal-gradient: #d9c7c9,
-  wallet-delegate-gradient: #d2dbf2
-);
+	/** light **/
+	--ion-color-light: #f4f5f8;
+	--ion-color-light-rgb: 244, 244, 244;
+	--ion-color-light-contrast: #000000;
+	--ion-color-light-contrast-rgb: 0, 0, 0;
+	--ion-color-light-shade: #d7d8da;
+	--ion-color-light-tint: #f5f6f9;
+}
 
-$darkColors: (
-  primary:    #345ff2,
-  secondary:  #8891bc,
-  success:    #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #474f7c,
-  danger-alternative: #ca284a,
-  primary-background: #090c21,
-  secondary-background: #0e1335,
-  warning: #ffeaa5,
-  wallet-normal-gradient: #604145,
-  wallet-delegate-gradient: #2c4b99
-);
+.dark-theme {
+	--wallet-normal-gradient-rgb: 96, 65, 69;
+	--wallet-delegate-gradient-rgb: 44, 75, 153;
 
+	--ion-color-primary: #428cff;
+	--ion-color-primary-rgb: 66, 140, 255;
+	--ion-color-primary-contrast: #ffffff;
+	--ion-color-primary-contrast-rgb: 255, 255, 255;
+	--ion-color-primary-shade: #3a7be0;
+	--ion-color-primary-tint: #5598ff;
 
-// App iOS Variables
-// --------------------------------------------------
-// iOS only Sass variables can go here
-$content-ios-transition-background: transparent;
+	--ion-color-secondary: #50c8ff;
+	--ion-color-secondary-rgb: 80, 200, 255;
+	--ion-color-secondary-contrast: #ffffff;
+	--ion-color-secondary-contrast-rgb: 255, 255, 255;
+	--ion-color-secondary-shade: #46b0e0;
+	--ion-color-secondary-tint: #62ceff;
 
+	--ion-color-tertiary: #6a64ff;
+	--ion-color-tertiary-rgb: 106, 100, 255;
+	--ion-color-tertiary-contrast: #ffffff;
+	--ion-color-tertiary-contrast-rgb: 255, 255, 255;
+	--ion-color-tertiary-shade: #5d58e0;
+	--ion-color-tertiary-tint: #7974ff;
 
+	--ion-color-success: #2fdf75;
+	--ion-color-success-rgb: 47, 223, 117;
+	--ion-color-success-contrast: #000000;
+	--ion-color-success-contrast-rgb: 0, 0, 0;
+	--ion-color-success-shade: #29c467;
+	--ion-color-success-tint: #44e283;
 
-// App Material Design Variables
-// --------------------------------------------------
-// Material Design only Sass variables can go here
-$searchbar-md-input-box-shadow: none;
-$searchbar-md-input-background-color: transparent;
-$item-md-detail-push-show: true;
+	--ion-color-warning: #ffd534;
+	--ion-color-warning-rgb: 255, 213, 52;
+	--ion-color-warning-contrast: #000000;
+	--ion-color-warning-contrast-rgb: 0, 0, 0;
+	--ion-color-warning-shade: #e0bb2e;
+	--ion-color-warning-tint: #ffd948;
 
-// App Windows Variables
-// --------------------------------------------------
-// Windows only Sass variables can go here
+	--ion-color-danger: #ff4961;
+	--ion-color-danger-rgb: 255, 73, 97;
+	--ion-color-danger-contrast: #ffffff;
+	--ion-color-danger-contrast-rgb: 255, 255, 255;
+	--ion-color-danger-shade: #e04055;
+	--ion-color-danger-tint: #ff5b71;
 
+	--ion-color-dark: #f4f5f8;
+	--ion-color-dark-rgb: 244, 245, 248;
+	--ion-color-dark-contrast: #000000;
+	--ion-color-dark-contrast-rgb: 0, 0, 0;
+	--ion-color-dark-shade: #d7d8da;
+	--ion-color-dark-tint: #f5f6f9;
 
+	--ion-color-medium: #989aa2;
+	--ion-color-medium-rgb: 152, 154, 162;
+	--ion-color-medium-contrast: #000000;
+	--ion-color-medium-contrast-rgb: 0, 0, 0;
+	--ion-color-medium-shade: #86888f;
+	--ion-color-medium-tint: #a2a4ab;
 
+	--ion-color-light: #222428;
+	--ion-color-light-rgb: 34, 36, 40;
+	--ion-color-light-contrast: #ffffff;
+	--ion-color-light-contrast-rgb: 255, 255, 255;
+	--ion-color-light-shade: #1e2023;
+	--ion-color-light-tint: #383a3e;
+}
 
-// App Theme
-// --------------------------------------------------
-// Ionic apps can have different themes applied, which can
-// then be future customized. This import comes last
-// so that the above variables are used and Ionic's
-// default are overridden.
+/*
+ * iOS Dark Theme
+ * -------------------------------------------
+ * @see: https://ionicframework.com/docs/theming/dark-mode
+ */
 
-@import "ionic.theme.default";
+.ios .dark-theme {
+	--ion-background-color: #000000;
+	--ion-background-color-rgb: 0, 0, 0;
 
+	--ion-text-color: #ffffff;
+	--ion-text-color-rgb: 255, 255, 255;
 
-// Ionicons
-// --------------------------------------------------
-// The premium icon font for Ionic. For more info, please see:
-// http://ionicframework.com/docs/ionicons/
+	--ion-color-step-50: #0d0d0d;
+	--ion-color-step-100: #1a1a1a;
+	--ion-color-step-150: #262626;
+	--ion-color-step-200: #333333;
+	--ion-color-step-250: #404040;
+	--ion-color-step-300: #4d4d4d;
+	--ion-color-step-350: #595959;
+	--ion-color-step-400: #666666;
+	--ion-color-step-450: #737373;
+	--ion-color-step-500: #808080;
+	--ion-color-step-550: #8c8c8c;
+	--ion-color-step-600: #999999;
+	--ion-color-step-650: #a6a6a6;
+	--ion-color-step-700: #b3b3b3;
+	--ion-color-step-750: #bfbfbf;
+	--ion-color-step-800: #cccccc;
+	--ion-color-step-850: #d9d9d9;
+	--ion-color-step-900: #e6e6e6;
+	--ion-color-step-950: #f2f2f2;
 
-@import "ionic.ionicons";
+	--ion-toolbar-background: #0d0d0d;
+}
 
+/*
+ * Material Design Dark Theme
+ * -------------------------------------------
+ */
 
-// Fonts
-// --------------------------------------------------
+.md .dark-theme {
+	--ion-background-color: #121212;
+	--ion-background-color-rgb: 18, 18, 18;
 
-@import "roboto";
-@import "noto-sans";
+	--ion-text-color: #ffffff;
+	--ion-text-color-rgb: 255, 255, 255;
 
-// OVERRIDE
+	--ion-border-color: #222222;
 
-$background-ios-color: color($colors, primary-background, base);
-$background-md-color: color($colors, primary-background, base);
-$background-wp-color: color($colors, primary-background, base);
-
-$range-ios-knob-width: 20px;
-$range-md-knob-width: 20px;
-$range-wp-knob-width: 20px;
+	--ion-color-step-50: #1e1e1e;
+	--ion-color-step-100: #2a2a2a;
+	--ion-color-step-150: #363636;
+	--ion-color-step-200: #414141;
+	--ion-color-step-250: #4d4d4d;
+	--ion-color-step-300: #595959;
+	--ion-color-step-350: #656565;
+	--ion-color-step-400: #717171;
+	--ion-color-step-450: #7d7d7d;
+	--ion-color-step-500: #898989;
+	--ion-color-step-550: #949494;
+	--ion-color-step-600: #a0a0a0;
+	--ion-color-step-650: #acacac;
+	--ion-color-step-700: #b8b8b8;
+	--ion-color-step-750: #c4c4c4;
+	--ion-color-step-800: #d0d0d0;
+	--ion-color-step-850: #dbdbdb;
+	--ion-color-step-900: #e7e7e7;
+	--ion-color-step-950: #f3f3f3;
+}

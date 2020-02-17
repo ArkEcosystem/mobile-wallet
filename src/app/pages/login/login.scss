@@ -1,0 +1,14 @@
+:host {
+	.content-background {
+		background-image: url("/assets/img/light/login/login-pattern.png");
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: top center;
+	}
+}
+
+:host-context(.dark-theme) {
+	.content-background {
+		background-image: url("/assets/img/dark/login/login-pattern.png");
+	}
+}

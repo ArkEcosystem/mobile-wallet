@@ -1,0 +1,154 @@
+:host {
+	close-popup {
+		@apply text-right opacity-75;
+	}
+
+	.password-char {
+		span {
+			@apply w-4 h-4 border-2 inline-block relative text-center rounded-full;
+			border-color: var(--ion-color-light-shade);
+			background-color: transparent;
+		}
+
+		&.active span {
+			border-color: var(--ion-color-danger);
+			background-color: var(--ion-color-danger);
+		}
+	}
+
+	.button-round {
+		@apply w-20 h-20 font-semibold text-3xl border relative overflow-hidden rounded-full;
+		border-color: var(--ion-color-light-shade);
+		color: var(--ion-text-color) !important;
+
+		&.activated {
+			color: var(--ion-text-color);
+		}
+
+		&.help-item {
+			border-color: transparent;
+		}
+	}
+
+	.miss {
+		-webkit-animation: miss 0.8s ease-out 1;
+		animation: miss 0.8s ease-out 1;
+	}
+
+	@-webkit-keyframes miss {
+		0% {
+			-webkit-transform: translate(0, 0);
+			transform: translate(0, 0);
+		}
+		10% {
+			-webkit-transform: translate(-25px, 0);
+			transform: translate(-25px, 0);
+		}
+		20% {
+			-webkit-transform: translate(25px, 0);
+			transform: translate(25px, 0);
+		}
+		30% {
+			-webkit-transform: translate(-20px, 0);
+			transform: translate(-20px, 0);
+		}
+		40% {
+			-webkit-transform: translate(20px, 0);
+			transform: translate(20px, 0);
+		}
+		50% {
+			-webkit-transform: translate(-10px, 0);
+			transform: translate(-10px, 0);
+		}
+		60% {
+			-webkit-transform: translate(10px, 0);
+			transform: translate(10px, 0);
+		}
+		70% {
+			-webkit-transform: translate(-5px, 0);
+			transform: translate(-5px, 0);
+		}
+		80% {
+			-webkit-transform: translate(5px, 0);
+			transform: translate(5px, 0);
+		}
+		100% {
+			-webkit-transform: translate(0, 0);
+			transform: translate(0, 0);
+		}
+	}
+
+	@keyframes miss {
+		0% {
+			-webkit-transform: translate(0, 0);
+			transform: translate(0, 0);
+		}
+		10% {
+			-webkit-transform: translate(-25px, 0);
+			transform: translate(-25px, 0);
+		}
+		20% {
+			-webkit-transform: translate(25px, 0);
+			transform: translate(25px, 0);
+		}
+		30% {
+			-webkit-transform: translate(-20px, 0);
+			transform: translate(-20px, 0);
+		}
+		40% {
+			-webkit-transform: translate(20px, 0);
+			transform: translate(20px, 0);
+		}
+		50% {
+			-webkit-transform: translate(-10px, 0);
+			transform: translate(-10px, 0);
+		}
+		60% {
+			-webkit-transform: translate(10px, 0);
+			transform: translate(10px, 0);
+		}
+		70% {
+			-webkit-transform: translate(-5px, 0);
+			transform: translate(-5px, 0);
+		}
+		80% {
+			-webkit-transform: translate(5px, 0);
+			transform: translate(5px, 0);
+		}
+		100% {
+			-webkit-transform: translate(0, 0);
+			transform: translate(0, 0);
+		}
+	}
+}
+
+.dark-theme {
+	:host {
+		close-popup {
+			/* // color: lighten(color($darkColors, primary-background, base), 50%); */
+		}
+
+		.button-round {
+			/* // border-color: color($darkColors, secondary, base); */
+		}
+
+		.password-char {
+			span {
+				/* // border-color: color($darkColors, secondary, base); */
+			}
+
+			&.active span {
+				/* // border-color: color($darkColors, primary, base);
+        // background-color: color($darkColors, primary, base); */
+			}
+		}
+
+		.button-round {
+			color: #f4e7d7;
+		}
+
+		&.activated {
+			color: #f4e7d7;
+		}
+	}
+}

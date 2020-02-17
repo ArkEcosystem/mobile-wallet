@@ -1,11 +1,11 @@
 name: Lint
 
 on:
-    push:
-        branches:
-            - '**'
-    pull_request:
-        types: [ready_for_review, synchronize, opened]
+  push:
+    branches:
+      - "**"
+  pull_request:
+    types: [ready_for_review, synchronize, opened]
 
 jobs:
   source:
@@ -13,17 +13,17 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+            node-version: ${{ matrix.node-version }}
       - name: Install pre dependencies
-        run: yarn global add ionic@4.x cordova@8.x
+        run: npm install -g ionic cordova
       - name: Install
-        run: npm rebuild node-sass && yarn install --frozen-lockfile
+        run: npm rebuild node-sass && npm install
       - name: Lint
-        run: npm run lint --bailOnLintError true
+        run: npm run lint

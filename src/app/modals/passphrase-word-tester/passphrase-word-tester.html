@@ -1,0 +1,36 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-title>{{ 'WALLETS_PAGE.CREATE_WALLET' | translate }}</ion-title>
+
+		<ion-buttons slot="end">
+			<ion-button (click)="dismiss()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+	<ion-grid class="flex flex-col justify-center items-center">
+		<p class="text-center">{{ 'PASSPHRASE_TEST.INFO' | translate }}</p>
+		<div *ngIf="isDevNet" class="note-message-default">
+			<p>{{ 'PASSPHRASE_TEST.DEVNET_WORDS_NOTICE' | translate }}</p>
+		</div>
+		<form #wordsForm="ngForm">
+			<passphrase-input
+				#passphrase
+				[wordlistLanguage]="wordlistLanguage"
+				[passphraseInit]="passphraseInit"
+			></passphrase-input>
+		</form>
+	</ion-grid>
+</ion-content>
+
+<ion-footer class="text-center ion-padding" no-shadow no-border>
+	<ion-button
+		(click)="next()"
+		[disabled]="!wordsForm.valid || !areAllWordsCorrect()"
+	>
+		{{ 'NEXT' | translate }}
+	</ion-button>
+</ion-footer>

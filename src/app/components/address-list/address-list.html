@@ -1,0 +1,23 @@
+<ion-list>
+	<ion-item *ngFor="let item of map">
+		<div class="avatar" [class.highlight]="item.highlight" slot="start">
+			{{ item[circleProperty].charAt(0) }}
+		</div>
+
+		<ion-label (click)="onTap(item.index)" (press)="onPress(item.index)">
+			<h3 class="item-title">{{ item.key }}</h3>
+			<p class="item-subtitle">{{ item.value }}</p>
+		</ion-label>
+
+		<ion-button
+			slot="end"
+			color="medium"
+			fill="clear"
+			class="more disable-hover"
+			*ngIf="icon"
+			(click)="onMore(item.index)"
+		>
+			<ion-icon slot="icon-only" [name]="icon"></ion-icon>
+		</ion-button>
+	</ion-item>
+</ion-list>

@@ -1,0 +1,61 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-title>{{ 'CUSTOM_NETWORK.CREATE_NETWORK' | translate }}</ion-title>
+		<ion-buttons slot="end">
+			<ion-button (click)="dismiss()">
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content forceOverscroll="false" class="ion-padding">
+	<form #createForm="ngForm">
+		<ion-grid>
+			<ion-row>
+				<ion-col>
+					<ion-item>
+						<ion-label position="stacked"
+							>{{ 'CUSTOM_NETWORK.NAME' | translate }}</ion-label
+						>
+						<ion-input
+							type="text"
+							required
+							name="Name"
+							[(ngModel)]="name"
+						>
+						</ion-input>
+					</ion-item>
+				</ion-col>
+			</ion-row>
+
+			<ion-row>
+				<ion-col>
+					<ion-item>
+						<ion-label position="stacked"
+							>{{ 'CUSTOM_NETWORK.SEED_SERVER' | translate
+							}}</ion-label
+						>
+						<ion-input
+							type="text"
+							required
+							name="PeerServer"
+							placeholder="http://1.2.3.4:4001"
+							[(ngModel)]="seedServer"
+						>
+						</ion-input>
+					</ion-item>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</form>
+</ion-content>
+
+<ion-footer class="py-3 text-center" no-shadow no-border>
+	<ion-button
+		[disabled]="!createForm.valid || !getSeedServerUrl()"
+		(click)="configure()"
+	>
+		{{ 'CUSTOM_NETWORK.CONFIGURE' | translate }}
+	</ion-button>
+</ion-footer>

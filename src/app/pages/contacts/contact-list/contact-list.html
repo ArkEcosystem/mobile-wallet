@@ -1,0 +1,35 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title>{{ 'CONTACTS_PAGE.CONTACTS' | translate }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content forceOverscroll="false" fullscreen>
+	<ion-fab *ngIf="!isEmpty()" vertical="bottom" horizontal="end" slot="fixed">
+		<ion-fab-button color="primary" (click)="openCreatePage()">
+			<ion-icon name="md-add"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+
+	<empty-list
+		*ngIf="isEmpty()"
+		message="CONTACTS_PAGE.ADD_CONTACT_TEXT"
+		(clickButton)="openCreatePage()"
+	></empty-list>
+	<ion-grid *ngIf="!isEmpty()">
+		<ion-row>
+			<ion-col>
+				<address-list
+					[map]="addresses"
+					icon="more"
+					(tapItem)="presentContactActionSheet($event)"
+					(pressItem)="presentContactActionSheet($event)"
+					(more)="presentContactActionSheet($event)"
+				></address-list>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>

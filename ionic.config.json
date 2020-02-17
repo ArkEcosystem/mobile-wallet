@@ -1,6 +1,6 @@
 {
-  "name": "ark-ionic",
-  "integrations": {
-    "cordova": {}
-  }
+	"name": "ark-ionic",
+	"integrations": {
+		"cordova": {}
+	}
 }

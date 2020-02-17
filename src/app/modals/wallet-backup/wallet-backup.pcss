@@ -1,0 +1,28 @@
+:host {
+	ion-list {
+		background: transparent;
+		--padding-top: 0;
+
+		ion-item {
+			--padding-start: 0;
+			--inner-padding-top: 0.5rem;
+			--inner-padding-bottom: 0.5rem;
+			--background: transparent;
+		}
+	}
+
+	.note-message {
+		@apply font-semibold text-white bg-red-600 p-4 my-4 text-sm text-center leading-normal;
+	}
+
+	.item-title {
+		@apply text-sm tracking-wide mb-1 !important;
+		color: var(--ion-color-medium);
+	}
+
+	.account-container {
+		background-image: url("/assets/img/light/wallet/dark-wallet-balance.png");
+		background-size: cover;
+		background-repeat: repeat;
+	}
+}

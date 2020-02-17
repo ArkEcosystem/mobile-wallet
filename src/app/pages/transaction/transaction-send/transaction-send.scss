@@ -1,0 +1,26 @@
+:host {
+	ion-item {
+		--padding-start: 0;
+	}
+
+	.item-address {
+		overflow: unset;
+	}
+
+	.qr-container {
+		height: 100%;
+		padding-top: 20px;
+		margin-left: 8px !important;
+
+		.image {
+			width: 30px;
+			content: url("/assets/img/light/wallet/qr-code-button.png");
+		}
+	}
+}
+
+:host-context(.dark-theme) {
+	.qr-container .image {
+		content: url("/assets/img/dark/wallet/qr-code-button.png");
+	}
+}

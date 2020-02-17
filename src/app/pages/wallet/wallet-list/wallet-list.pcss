@@ -1,0 +1,88 @@
+:host {
+	ion-toolbar {
+		--background: transparent;
+	}
+
+	ion-content {
+		transition: all 0.1s linear;
+		&.normal {
+			--background: linear-gradient(
+				0deg,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(var(--wallet-normal-gradient-rgb), 0.5) 80%,
+				rgba(var(--wallet-normal-gradient-rgb), 1) 100%
+			);
+		}
+
+		&.delegate {
+			--background: linear-gradient(
+				0deg,
+				rgba(0, 0, 0, 0) 0%,
+				rgba(var(--wallet-delegate-gradient-rgb), 0.5) 50%,
+				rgba(var(--wallet-delegate-gradient-rgb), 1) 100%
+			);
+		}
+	}
+
+	ion-slides ion-item {
+		--border-radius: 5px;
+		--padding-start: 0;
+		--inner-padding-start: 1.5rem;
+		--inner-padding-end: 1.5rem;
+		--inner-padding-top: 2rem;
+		--inner-padding-bottom: 2rem;
+		--color: white;
+
+		&.normal {
+			--background: url("/assets/img/light/wallet/normal-block.png")
+				no-repeat center center / cover;
+		}
+
+		&.delegate {
+			--background: url("/assets/img/light/wallet/delegate-block.png")
+				no-repeat center center / cover;
+		}
+	}
+
+	.fiat-balance {
+		color: var(--ion-color-dark-tint);
+	}
+
+	.bullet {
+		@apply rounded-full w-2 h-2 inline-block ml-2;
+
+		&.fiat {
+			background-color: #394cf8;
+		}
+
+		&.btc {
+			background-color: #f3a447;
+		}
+	}
+}
+
+:host-context(.ios) {
+	ion-slides ion-item {
+		width: 75%;
+	}
+}
+
+:host-context(.md) {
+	ion-slides ion-item {
+		width: 75%;
+	}
+}
+
+:host-context(.dark-theme) {
+	ion-slides ion-item {
+		&.normal {
+			--background: url("/assets/img/dark/wallet/normal-block.png")
+				no-repeat center center / cover;
+		}
+
+		&.delegate {
+			--background: url("/assets/img/dark/wallet/delegate-block.png")
+				no-repeat center center / cover;
+		}
+	}
+}

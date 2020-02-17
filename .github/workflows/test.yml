@@ -1,11 +1,11 @@
 name: Test
 
 on:
-    push:
-        branches:
-            - '**'
-    pull_request:
-        types: [ready_for_review, synchronize, opened]
+  push:
+    branches:
+      - "**"
+  pull_request:
+    types: [ready_for_review, synchronize, opened]
 
 jobs:
   unit:
@@ -13,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x]
+        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v1
@@ -22,9 +22,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install pre dependencies
-        run: yarn global add ionic@4.x cordova@8.x
+        run: npm i -g ionic cordova
       - name: Install
-        run: npm rebuild node-sass && yarn install --frozen-lockfile
+        run: npm rebuild node-sass && npm install
       - name: Test
         run: npm run test:coverage
       - name: Build
@@ -35,7 +35,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 11.x, 12.x]
+        node-version: [12.x]
 
     steps:
       - uses: actions/checkout@v1
@@ -44,9 +44,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install pre dependencies
-        run: yarn global add ionic@4.x cordova@8.x
+        run: npm i -g ionic cordova
       - name: Install
-        run: npm rebuild node-sass && yarn install --frozen-lockfile
+        run: npm rebuild node-sass && npm install
       - name: Test
         run: npm run test:e2e
       - name: Build

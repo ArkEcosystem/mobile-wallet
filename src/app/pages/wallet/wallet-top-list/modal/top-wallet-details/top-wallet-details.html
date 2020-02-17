@@ -1,0 +1,109 @@
+<ion-header no-shadow no-border>
+	<ion-grid class="no-padding">
+		<ion-row>
+			<ion-col class="no-padding">
+				<ion-toolbar class="info-toolbar ion-text-wrap">
+					<close-popup
+						color="light"
+						large="true"
+						(close)="dismiss()"
+					></close-popup>
+					<h3 class="username">
+						{{ topWallet?.username ? topWallet?.username :
+						topWallet?.address }}
+					</h3>
+					<ark-qr-code
+						[address]="topWallet?.address"
+						size="100"
+					></ark-qr-code>
+					<h5 (click)="copyAddress()">
+						{{ topWallet?.address | truncateMiddle: 20}}
+					</h5>
+					<ion-row>
+						<ion-col>
+							<ion-label position="stacked">
+								<p>{{ 'WALLETS_PAGE.BALANCE' | translate }}</p>
+								<h5>
+									{{ currentNetwork?.symbol }} {{
+									topWallet?.getBalance() | number: '1.0-8' }}
+								</h5>
+							</ion-label>
+						</ion-col>
+					</ion-row>
+				</ion-toolbar>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-header>
+
+<ion-content appHeaderScroller>
+	<ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+		<ion-refresher-content
+			pullingIcon="arrow-dropdown"
+			pullingText="{{ 'PULL_REFRESH' | translate }}"
+			refreshingSpinner="circles"
+			refreshingText="{{ 'REFRESHING' | translate }}"
+		>
+		</ion-refresher-content>
+	</ion-refresher>
+
+	<ion-grid class="no-padding">
+		<ion-row
+			class="ion-justify-content-center ion-align-items-center full-height"
+			*ngIf="emptyTransactions"
+		>
+			<ion-col class="ion-text-center">
+				<h5>{{ 'WALLETS_PAGE.NO_TRANSACTIONS' | translate }}</h5>
+			</ion-col>
+		</ion-row>
+
+		<ion-row *ngIf="!emptyTransactions">
+			<ion-col>
+				<ion-card
+					*ngFor="let tx of topWallet?.transactions"
+					class="tx"
+					(click)="openTransactionShow(tx)"
+				>
+					<ion-item>
+						<h3 *ngIf="tx.isTransfer()" class="type">
+							{{ tx?.getActivityLabel() | translate }}
+						</h3>
+						<h3 class="address">
+							{{ (tx?.isTransfer()) &&
+							(tx?.getAppropriateAddress() | accountLabel |
+							truncateMiddle: 12 : tx?.getAppropriateAddress()) ||
+							(tx?.getTypeLabel() | translate) }}
+						</h3>
+
+						<div class="ion-text-right" slot="end">
+							<h3 class="amount">
+								{{ tx?.isSender() ? '-' : '+' }}{{
+								tx?.getAmount() | unitsSatoshi }} {{
+								currentNetwork?.token | uppercase }}
+							</h3>
+							<p class="timestamp">
+								{{ tx?.date | timezone | timestampHuman }} | {{
+								(tx?.confirmations <= minConfirmations) &&
+								tx?.confirmations || minConfirmations+'+' }}
+							</p>
+						</div>
+						<ion-icon
+							*ngIf="tx?.isSender()"
+							slot="end"
+							name="ios-arrow-round-up"
+							class="icon-rotate-right"
+							style="color: red"
+						></ion-icon>
+						<ion-icon
+							*ngIf="!tx?.isSender()"
+							slot="end"
+							name="ios-arrow-round-down"
+							class="icon-rotate-right"
+							style="color: green"
+						></ion-icon>
+					</ion-item>
+				</ion-card>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>

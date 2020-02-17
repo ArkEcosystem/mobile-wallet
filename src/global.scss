@@ -1,0 +1,43 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "../node_modules/@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "../node_modules/@ionic/angular/css/structure.css";
+@import "../node_modules/@ionic/angular/css/normalize.css";
+@import "../node_modules/@ionic/angular/css/padding.css";
+
+@import "../node_modules/tailwindcss/base.css";
+
+@import "../node_modules/tailwindcss/components.css";
+@import "../node_modules/tailwindcss/utilities.css";
+
+@import "./assets/styles/auto-complete.pcss";
+@import "./assets/styles/app.pcss";
+
+ion-grid {
+	--ion-grid-padding: 0;
+}
+
+ion-toolbar * {
+	box-sizing: border-box;
+}
+
+.text-selectable {
+	user-select: auto !important;
+}
+
+.note-toolbar {
+	padding: 1em;
+	background-color: rgba(var(--ion-color-warning-rgb), 0.5);
+}

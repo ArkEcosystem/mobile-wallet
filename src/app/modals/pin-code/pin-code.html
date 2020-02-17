@@ -1,0 +1,204 @@
+<ion-content forceOverscroll="false" class="ion-padding">
+	<ion-grid class="h-full flex flex-col">
+		<close-popup (close)="dismiss(false)" color="dark"></close-popup>
+
+		<ion-row>
+			<ion-col class="text-center px-2">
+				<ion-text color="dark">
+					<p class="text-lg font-semibold opacity-75">
+						{{ message || 'PIN_CODE.DEFAULT_MESSAGE' | translate }}
+					</p>
+				</ion-text>
+				<p *ngIf="unlockDiff > 0">
+					{{ 'PIN_CODE.WAIT_TO_TRY' | translate: { time: unlockDiff |
+					date: 'mm:ss' } }}
+				</p>
+				<ion-grid
+					fixed
+					class="w-48 relative my-2"
+					[class.miss]="isWrong"
+				>
+					<ion-row>
+						<ion-col
+							class="password-char"
+							[class.active]="password.length>0"
+						>
+							<span></span>
+						</ion-col>
+						<ion-col
+							class="password-char"
+							[class.active]="password.length>1"
+						>
+							<span></span>
+						</ion-col>
+						<ion-col
+							class="password-char"
+							[class.active]="password.length>2"
+						>
+							<span></span>
+						</ion-col>
+						<ion-col
+							class="password-char"
+							[class.active]="password.length>3"
+						>
+							<span></span>
+						</ion-col>
+						<ion-col
+							class="password-char"
+							[class.active]="password.length>4"
+						>
+							<span></span>
+						</ion-col>
+						<ion-col
+							class="password-char"
+							[class.active]="password.length>5"
+						>
+							<span></span>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-col>
+		</ion-row>
+
+		<ion-row class="flex-1">
+			<ion-col class="text-center flex items-center">
+				<ion-grid class="grid-keyboard" [class.locked]="unlockDiff > 0">
+					<ion-row class="flex flex-no-wrap">
+						<ion-col size="4" class="p-0">
+							<ion-button
+								class="button-round"
+								shape="round"
+								fill="clear"
+								(click)="add(1)"
+								[disabled]="unlockDiff > 0"
+							>
+								1
+							</ion-button>
+						</ion-col>
+						<ion-col size="4" class="p-0">
+							<ion-button
+								class="button-round"
+								shape="round"
+								fill="clear"
+								(click)="add(2)"
+								[disabled]="unlockDiff > 0"
+							>
+								2
+							</ion-button>
+						</ion-col>
+						<ion-col size="4" class="p-0">
+							<ion-button
+								class="button-round"
+								shape="round"
+								fill="clear"
+								(click)="add(3)"
+								[disabled]="unlockDiff > 0"
+							>
+								3
+							</ion-button>
+						</ion-col>
+					</ion-row>
+
+					<ion-row class="flex flex-no-wrap mt-2">
+						<ion-col size="4" class="p-0">
+							<ion-button
+								class="button-round"
+								shape="round"
+								fill="clear"
+								(click)="add(4)"
+								[disabled]="unlockDiff > 0"
+							>
+								4
+							</ion-button>
+						</ion-col>
+						<ion-col size="4" class="p-0">
+							<ion-button
+								class="button-round"
+								shape="round"
+								fill="clear"
+								(click)="add(5)"
+								[disabled]="unlockDiff > 0"
+							>
+								5
+							</ion-button>
+						</ion-col>
+						<ion-col size="4" class="p-0">
+							<ion-button
+								class="button-round"
+								shape="round"
+								fill="clear"
+								(click)="add(6)"
+								[disabled]="unlockDiff > 0"
+							>
+								6
+							</ion-button>
+						</ion-col>
+					</ion-row>
+
+					<ion-row class="flex flex-no-wrap mt-2">
+						<ion-col size="4" class="p-0">
+							<ion-button
+								class="button-round"
+								shape="round"
+								fill="clear"
+								(click)="add(7)"
+								[disabled]="unlockDiff > 0"
+							>
+								7
+							</ion-button>
+						</ion-col>
+						<ion-col size="4" class="p-0">
+							<ion-button
+								class="button-round"
+								shape="round"
+								fill="clear"
+								(click)="add(8)"
+								[disabled]="unlockDiff > 0"
+							>
+								8
+							</ion-button>
+						</ion-col>
+						<ion-col size="4" class="p-0">
+							<ion-button
+								class="button-round"
+								shape="round"
+								fill="clear"
+								(click)="add(9)"
+								[disabled]="unlockDiff > 0"
+							>
+								9
+							</ion-button>
+						</ion-col>
+					</ion-row>
+
+					<ion-row class="flex flex-no-wrap mt-2">
+						<ion-col size="4" class="p-0 help-item"></ion-col>
+						<ion-col size="4" class="p-0">
+							<ion-button
+								class="button-round"
+								shape="round"
+								fill="clear"
+								(click)="add(0)"
+								[disabled]="unlockDiff > 0"
+							>
+								0
+							</ion-button>
+						</ion-col>
+						<ion-col size="4" class="p-0">
+							<ion-button
+								color="medium"
+								shape="round"
+								fill="clear"
+								(click)="delete()"
+								class="button-round help-item"
+								[disabled]="unlockDiff > 0"
+							>
+								<ion-icon name="backspace"></ion-icon>
+							</ion-button>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>

@@ -1,0 +1,28 @@
+#close-scanner-button {
+	display: none;
+}
+
+ion-app {
+	background: var(--ion-background-color);
+}
+
+html.qr-scanner-open {
+	ion-app,
+	ion-content {
+		height: 70px !important;
+	}
+
+	ion-content {
+		--overflow: hidden !important;
+	}
+
+	ion-header,
+	ion-footer,
+	ion-content > *:not(#close-scanner-button) {
+		display: none;
+	}
+
+	#close-scanner-button {
+		display: block;
+	}
+}
