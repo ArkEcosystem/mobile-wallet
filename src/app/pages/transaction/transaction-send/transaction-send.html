@@ -95,11 +95,7 @@
 					</ion-item>
 				</ion-col>
 			</ion-row>
-			<amount
-				#amount
-				[formGroup]="sendForm"
-				(change)="onAmountChange($event)"
-			></amount>
+			<input-amount></input-amount>
 			<ion-row>
 				<ion-col>
 					<ion-item>

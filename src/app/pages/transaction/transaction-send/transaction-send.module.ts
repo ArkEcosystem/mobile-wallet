@@ -11,7 +11,7 @@ import { TranslateModule } from "@ngx-translate/core";
 
 import { DirectivesModule } from "@/directives/directives.module";
 
-import { AmountComponentModule } from "@/components/amount/amount.module";
+import { InputAmountComponentModule } from "@/components/input-amount/input-amount.module";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
@@ -32,7 +32,7 @@ import { AutoCompleteModule } from "ionic4-auto-complete";
 		QRScannerComponentModule,
 		DirectivesModule,
 		AutoCompleteModule,
-		AmountComponentModule,
+		InputAmountComponentModule,
 		InputFeeComponentModule,
 	],
 })

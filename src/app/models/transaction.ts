@@ -1,4 +1,4 @@
-import BigNumber from "@/utils/bignumber";
+import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
 import { Transaction as TransactionModel, TransactionType } from "ark-ts/model";
 import moment from "moment";
 
