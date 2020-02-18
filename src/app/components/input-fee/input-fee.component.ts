@@ -18,8 +18,8 @@ import { switchMap } from "rxjs/operators";
 
 @Component({
 	selector: "input-fee",
-	templateUrl: "input-fee.html",
-	styleUrls: ["input-fee.scss"],
+	templateUrl: "input-fee.component.html",
+	styleUrls: ["input-fee.component.scss"],
 })
 export class InputFeeComponent implements OnInit, OnDestroy {
 	@Input()

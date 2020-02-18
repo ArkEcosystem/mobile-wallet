@@ -1,5 +1,5 @@
 import { ARKTOSHI_DP } from "@/app/app.constants";
-import { SafeBigNumber } from "@/utils/bignumber";
+import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
 import {
 	Component,
 	EventEmitter,

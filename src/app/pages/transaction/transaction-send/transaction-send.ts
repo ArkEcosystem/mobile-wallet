@@ -28,14 +28,12 @@ import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
 import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
 import { TransactionSend, TransactionType } from "ark-ts";
 
-import { AmountComponent } from "@/components/amount/amount";
-import { Amount } from "@/components/amount/amount.model";
 import { AutoCompleteAccount, AutoCompleteAccountType } from "@/models/contact";
 import { TranslatableObject } from "@/models/translate";
 import { AddressCheckResult } from "@/services/address-checker/address-check-result";
 import { AddressCheckerProvider } from "@/services/address-checker/address-checker";
 import { ArkUtility } from "@/utils/ark-utility";
-import BigNumber from "@/utils/bignumber";
+import { SafeBigNumber } from "@/utils/bignumber";
 import { ActivatedRoute } from "@angular/router";
 import { TranslateService } from "@ngx-translate/core";
 import { AutoCompleteComponent } from "ionic4-auto-complete";
@@ -81,9 +79,6 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 
 	@ViewChild("searchBar", { read: AutoCompleteComponent, static: true })
 	searchBar: AutoCompleteComponent;
-
-	@ViewChild("amount", { read: AmountComponent, static: true })
-	private amountComponent: AmountComponent;
 
 	sendForm: FormGroup;
 	transaction: SendTransactionForm = {};
@@ -158,7 +153,8 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 			sendableAmount,
 			true,
 		);
-		this.amountComponent.setAmount(this.transaction.amount);
+
+		this.sendForm.controls.amount.setValue(this.transaction.amount);
 	}
 
 	send() {
@@ -349,10 +345,11 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		}
 
 		result.loader.dismiss();
-
-		const amount = new BigNumber(this.transaction.amount);
+		const amount = this.sendForm.get("amount").value;
 		const data: TransactionSend = {
-			amount: amount.times(constants.WALLET_UNIT_TO_SATOSHI).toNumber(),
+			amount: new SafeBigNumber(amount)
+				.times(constants.WALLET_UNIT_TO_SATOSHI)
+				.toNumber(),
 			vendorField: this.transaction.smartBridge,
 			passphrase: result.keys.key,
 			secondPassphrase: result.keys.secondKey,
@@ -385,7 +382,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 			this.setFormValuesFromAddress(qrCode.address, qrCode.label);
 			const amount = Number(qrCode.amount);
 			if (!!amount) {
-				this.amountComponent.setAmount(amount);
+				this.sendForm.controls.amount.setValue(amount);
 			}
 			if (qrCode.vendorField) {
 				this.transaction.smartBridge = qrCode.vendorField;
@@ -428,11 +425,6 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 	ngOnDestroy() {
 		this.unsubscriber$.next();
 		this.unsubscriber$.complete();
-	}
-
-	public onAmountChange(newAmounts: Amount) {
-		this.transaction.amount = newAmounts.amount;
-		this.transaction.amountEquivalent = newAmounts.amountEquivalent;
 	}
 
 	public onFeeChange(newFee: number) {

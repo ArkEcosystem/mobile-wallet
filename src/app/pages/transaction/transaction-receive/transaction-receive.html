@@ -16,7 +16,7 @@
 </ion-header>
 
 <ion-content>
-	<ion-grid class="ion-padding">
+	<ion-grid class="ion-padding" [formGroup]="formGroup">
 		<ion-row>
 			<ion-col class="text-center">
 				<p class="text-base leading-normal">
@@ -46,6 +46,6 @@
 				></ark-qr-code>
 			</ion-col>
 		</ion-row>
-		<amount (change)="setAmount($event.amount)"></amount>
+		<input-amount></input-amount>
 	</ion-grid>
 </ion-content>

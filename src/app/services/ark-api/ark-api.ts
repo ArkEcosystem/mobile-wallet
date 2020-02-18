@@ -18,7 +18,7 @@ import {
 import * as constants from "@/app/app.constants";
 import { FeeStatistic, StoredNetwork } from "@/models/stored-network";
 import { PeerDiscovery } from "@/utils/ark-peer-discovery";
-import BigNumber from "@/utils/bignumber";
+import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
 import * as ArkCrypto from "@arkecosystem/crypto";
 import * as arkts from "ark-ts";
 import arktsConfig from "ark-ts/config";
