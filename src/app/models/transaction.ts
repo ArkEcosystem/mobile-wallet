@@ -112,10 +112,7 @@ export class Transaction extends TransactionModel {
 			amount = amount.plus(this.fee);
 		}
 
-		if (
-			this.typeGroup === TRANSACTION_GROUPS.STANDARD &&
-			this.type === TRANSACTION_TYPES.GROUP_1.MULTI_PAYMENT
-		) {
+		if (this.isMultipayment()) {
 			for (const payment of this.asset.payments) {
 				amount = amount.plus(payment.amount);
 			}
@@ -191,6 +188,13 @@ export class Transaction extends TransactionModel {
 		}
 
 		return type;
+	}
+
+	isMultipayment(): boolean {
+		return (
+			this.type === TRANSACTION_TYPES.GROUP_1.MULTI_PAYMENT &&
+			this.typeGroup === TRANSACTION_GROUPS.STANDARD
+		);
 	}
 
 	isTransfer(): boolean {
