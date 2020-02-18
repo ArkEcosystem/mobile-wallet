@@ -140,7 +140,7 @@ export class ContactListPage {
 		this.addresses = lodash(this.profile.contacts)
 			.mapValues("name")
 			.transform((result, key, value) => {
-				result.push({ index: value, value, key });
+				result.push({ index: value, value, key, hasMore: true });
 			}, [])
 			.value()
 			.sort((a, b) => a.key.localeCompare(b.key));

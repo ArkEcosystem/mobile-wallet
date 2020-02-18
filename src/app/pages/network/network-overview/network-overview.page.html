@@ -1,0 +1,39 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title
+			>{{ 'NETWORKS_PAGE.NETWORK_OVERVIEW' | translate }}</ion-title
+		>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="!isEmpty()">
+		<ion-fab-button color="primary" (click)="openCreateNetworkDialog()">
+			<ion-icon name="add"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+
+	<ion-grid class="h-full ion-no-padding">
+		<empty-list
+			message="NETWORKS_PAGE.EMPTY_NETWORKS"
+			(clickButton)="openCreateNetworkDialog()"
+			*ngIf="isEmpty()"
+		></empty-list>
+
+		<ion-row *ngIf="!isEmpty()">
+			<ion-col>
+				<address-list
+					[map]="networksMap"
+					icon="more"
+					circleProperty="key"
+					(tapItem)="editNetwork($event)"
+					(pressItem)="presentActionSheet($event)"
+					(more)="presentActionSheet($event)"
+				></address-list>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>

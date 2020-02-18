@@ -3,6 +3,7 @@ export interface AddressMap {
 	key: string;
 	value: string;
 	highlight?: boolean;
+	hasMore?: boolean;
 }
 
 export enum AutoCompleteAccountType {

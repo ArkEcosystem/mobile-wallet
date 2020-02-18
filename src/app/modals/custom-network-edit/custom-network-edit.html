@@ -168,12 +168,20 @@
 	<ion-grid>
 		<ion-row class="text-center">
 			<ion-col>
-				<ion-button [disabled]="!manageForm.valid" (click)="save()">
+				<ion-button
+					[disabled]="!manageForm.valid || isDefault"
+					(click)="save()"
+				>
 					{{ 'SAVE' | translate }}
 				</ion-button>
 			</ion-col>
 			<ion-col *ngIf="networkId">
-				<ion-button (click)="prepareDelete()">
+				<ion-button
+					(click)="prepareDelete()"
+					fill="outline"
+					color="danger"
+					[disabled]="isDefault"
+				>
 					{{ 'DELETE' | translate }}
 				</ion-button>
 			</ion-col>
