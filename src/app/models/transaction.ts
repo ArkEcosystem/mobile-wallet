@@ -4,7 +4,7 @@ import moment from "moment";
 
 import { MarketCurrency, MarketHistory, MarketTicker } from "@/models/market";
 
-import { TRANSACTION_GROUPS } from "@/app/app.constants";
+import { TRANSACTION_GROUPS, TRANSACTION_TYPES } from "@/app/app.constants";
 import { ArkUtility } from "../utils/ark-utility";
 
 const TX_TYPES = {
@@ -66,6 +66,8 @@ export type TransactionEntity = TransactionModel & {
 	amountEquivalent: number;
 };
 
+export type TransactionAssetKeys = "payments" | "votes" | "delegate";
+
 export interface SendTransactionForm {
 	amount?: number;
 	amountEquivalent?: number;
@@ -80,7 +82,7 @@ export class Transaction extends TransactionModel {
 	public typeGroup?: number;
 	public version?: number;
 	public date: Date;
-	public asset: any;
+	public asset: Record<TransactionAssetKeys, any>;
 
 	constructor(public address: string) {
 		super();
@@ -104,13 +106,22 @@ export class Transaction extends TransactionModel {
 	}
 
 	getAmount(forceFee?: boolean) {
-		let amount = this.amount;
+		let amount = new BigNumber(this.amount);
 
 		if (this.isSender() || forceFee) {
-			amount = this.amount + this.fee;
+			amount = amount.plus(this.fee);
 		}
 
-		return amount;
+		if (
+			this.typeGroup === TRANSACTION_GROUPS.STANDARD &&
+			this.type === TRANSACTION_TYPES.GROUP_1.MULTI_PAYMENT
+		) {
+			for (const payment of this.asset.payments) {
+				amount = amount.plus(payment.amount);
+			}
+		}
+
+		return amount.toNumber();
 	}
 
 	getAmountEquivalent(
