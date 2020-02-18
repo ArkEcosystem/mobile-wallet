@@ -56,7 +56,7 @@ export class UserDataProvider {
 	}
 
 	public profiles: { [key: string]: Profile } = {};
-	public networks = {};
+	public networks: Record<string, StoredNetwork> = {};
 
 	public currentProfile: Profile;
 	public currentNetwork: StoredNetwork;
@@ -81,7 +81,7 @@ export class UserDataProvider {
 	};
 
 	addOrUpdateNetwork(
-		network: Network,
+		network: StoredNetwork,
 		networkId?: string,
 	): Observable<{ network: Network; id: string }> {
 		if (!networkId) {
@@ -431,7 +431,7 @@ export class UserDataProvider {
 		);
 	}
 
-	loadNetworks() {
+	loadNetworks(): Observable<Record<string, StoredNetwork>> {
 		return new Observable(observer => {
 			// Return defaults networks from arkts
 			this.storageProvider

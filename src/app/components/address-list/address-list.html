@@ -14,7 +14,7 @@
 			color="medium"
 			fill="clear"
 			class="more disable-hover"
-			*ngIf="icon"
+			*ngIf="icon && item.hasMore"
 			(click)="onMore(item.index)"
 		>
 			<ion-icon slot="icon-only" [name]="icon"></ion-icon>

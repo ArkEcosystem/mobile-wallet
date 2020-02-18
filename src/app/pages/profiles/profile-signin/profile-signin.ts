@@ -156,6 +156,7 @@ export class ProfileSigninPage implements OnDestroy {
 					key: data[0],
 					value: networkName,
 					highlight: isMainnet,
+					hasMore: true,
 				});
 			}, [])
 			.value();
