@@ -5,6 +5,7 @@ import moment from "moment";
 import { MarketCurrency, MarketHistory, MarketTicker } from "@/models/market";
 
 import { TRANSACTION_GROUPS, TRANSACTION_TYPES } from "@/app/app.constants";
+import { Interfaces } from "@arkecosystem/crypto";
 import { ArkUtility } from "../utils/ark-utility";
 
 const TX_TYPES = {
@@ -58,15 +59,15 @@ const TX_TYPES_ACTIVITY = {
 export type TransactionEntity = TransactionModel & {
 	isSender: boolean;
 	isTransfer: boolean;
+	isMultipayment: boolean;
 	appropriateAddress: string;
 	activityLabel: string;
 	typeLabel: string;
 	totalAmount: number;
 	date: Date;
+	asset: Interfaces.ITransactionAsset;
 	amountEquivalent: number;
 };
-
-export type TransactionAssetKeys = "payments" | "votes" | "delegate";
 
 export interface SendTransactionForm {
 	amount?: number;
@@ -82,7 +83,7 @@ export class Transaction extends TransactionModel {
 	public typeGroup?: number;
 	public version?: number;
 	public date: Date;
-	public asset: Record<TransactionAssetKeys, any>;
+	public asset: Interfaces.ITransactionAsset;
 
 	constructor(public address: string) {
 		super();
@@ -114,6 +115,7 @@ export class Transaction extends TransactionModel {
 
 		if (this.isMultipayment()) {
 			for (const payment of this.asset.payments) {
+				// @ts-ignore
 				amount = amount.plus(payment.amount);
 			}
 		}
