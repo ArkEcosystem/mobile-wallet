@@ -274,6 +274,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 			this.transaction.recipientAddress,
 			this.currentNetwork,
 		);
+
 		this.sendTransactionHTMLForm.form.controls.recipientAddress.setErrors({
 			incorrect: !isValid,
 		});
