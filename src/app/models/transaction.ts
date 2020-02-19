@@ -115,6 +115,14 @@ export class Transaction extends TransactionModel {
 
 		if (this.isMultipayment()) {
 			for (const payment of this.asset.payments) {
+				if (this.isSender() && this.address === payment.recipientId) {
+					continue;
+				} else if (
+					!this.isSender() &&
+					this.address !== payment.recipientId
+				) {
+					continue;
+				}
 				// @ts-ignore
 				amount = amount.plus(payment.amount);
 			}
