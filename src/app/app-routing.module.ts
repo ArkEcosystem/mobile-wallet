@@ -12,9 +12,16 @@ const routes: Routes = [
 	{
 		path: "network-status",
 		loadChildren: () =>
-			import("./pages/network-status/network-status.module").then(
+			import("./pages/network/network-status/network-status.module").then(
 				m => m.NetworkStatusPageModule,
 			),
+	},
+	{
+		path: "network-overview",
+		loadChildren: () =>
+			import(
+				"./pages/network/network-overview/network-overview.module"
+			).then(m => m.NetworkOverviewPageModule),
 	},
 	{
 		path: "login",
