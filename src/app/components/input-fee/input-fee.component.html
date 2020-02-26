@@ -14,20 +14,15 @@
 		>
 		<ion-item lines="none" class="input-fee__input pt-0">
 			<ion-label>{{ symbol }}</ion-label>
-			<input-currency
-				[(ngModel)]="inputFee"
-				(updated)="onInputText()"
-				name="fee-input"
-			></input-currency>
+			<input-currency formControlName="fee" name="fee"></input-currency>
 		</ion-item>
 		<ion-item lines="none" class="input-fee__range">
 			<ion-range
-				[(ngModel)]="rangeFee"
+				formControlName="feeRange"
 				name="fee-range"
 				[step]="step"
 				[min]="min"
 				[max]="max"
-				(ionChange)="onInputRange()"
 			>
 			</ion-range>
 		</ion-item>

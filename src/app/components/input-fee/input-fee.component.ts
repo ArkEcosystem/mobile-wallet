@@ -12,6 +12,11 @@ import { FeeStatistic } from "@/models/stored-network";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { ArkUtility } from "../../utils/ark-utility";
 
+import {
+	ControlContainer,
+	FormControl,
+	FormGroupDirective,
+} from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
 import { Subscription } from "rxjs";
 import { switchMap } from "rxjs/operators";
@@ -20,6 +25,12 @@ import { switchMap } from "rxjs/operators";
 	selector: "input-fee",
 	templateUrl: "input-fee.component.html",
 	styleUrls: ["input-fee.component.scss"],
+	viewProviders: [
+		{
+			provide: ControlContainer,
+			useExisting: FormGroupDirective,
+		},
+	],
 })
 export class InputFeeComponent implements OnInit, OnDestroy {
 	@Input()
@@ -35,7 +46,6 @@ export class InputFeeComponent implements OnInit, OnDestroy {
 	public v1Fee: number;
 	public v2Fee: FeeStatistic;
 	public rangeFee: number;
-	public inputFee: string;
 	public min: number;
 	public max: number;
 	public avg: number;
@@ -49,6 +59,7 @@ export class InputFeeComponent implements OnInit, OnDestroy {
 	constructor(
 		private arkApiProvider: ArkApiProvider,
 		private translateService: TranslateService,
+		private parentForm: FormGroupDirective,
 	) {
 		this.step = 1;
 		this.min = this.step;
@@ -56,6 +67,17 @@ export class InputFeeComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
+		this.parentForm.form.addControl("fee", new FormControl("fee"));
+		this.parentForm.form.addControl(
+			"feeRange",
+			new FormControl("feeRange"),
+		);
+		this.parentForm.form.controls.fee.valueChanges.subscribe(value =>
+			this.onInputText(value),
+		);
+		this.parentForm.form.controls.feeRange.valueChanges.subscribe(value =>
+			this.onInputRange(value),
+		);
 		this.prepareFeeStatistics();
 	}
 
@@ -104,14 +126,17 @@ export class InputFeeComponent implements OnInit, OnDestroy {
 	}
 
 	public setRangeFee(value: number) {
-		this.rangeFee = value;
-		this.onInputRange();
+		this.parentForm.form.controls.feeRange.setValue(value);
 		this.emitChange();
 	}
 
-	public onInputRange() {
-		const fee = ArkUtility.subToUnit(this.rangeFee);
-		this.inputFee = fee;
+	public onInputRange(rangeFee?: number) {
+		this.rangeFee = rangeFee;
+		const fee = ArkUtility.subToUnit(rangeFee);
+
+		this.parentForm.form.controls.fee.setValue(fee, {
+			emitEvent: false,
+		});
 
 		const translateParams = {
 			symbol: this.symbol,
@@ -131,13 +156,13 @@ export class InputFeeComponent implements OnInit, OnDestroy {
 				this.errorMessage = null;
 				this.warningMessage = null;
 
-				if (this.avg > this.rangeFee) {
+				if (this.avg > rangeFee) {
 					this.warningMessage =
 						translation["INPUT_FEE.LOW_FEE_NOTICE"];
-				} else if (this.rangeFee > this.limitFee) {
+				} else if (rangeFee > this.limitFee) {
 					this.errorMessage =
 						translation["INPUT_FEE.ERROR.MORE_THAN_MAXIMUM"];
-				} else if (this.rangeFee > this.max) {
+				} else if (rangeFee > this.max) {
 					this.warningMessage =
 						translation["INPUT_FEE.ADVANCED_NOTICE"];
 				}
@@ -145,18 +170,19 @@ export class InputFeeComponent implements OnInit, OnDestroy {
 			});
 	}
 
-	public onInputText() {
-		const arktoshi = parseInt(ArkUtility.unitToSub(this.inputFee));
+	public onInputText(fee?: string) {
+		const arktoshi = parseInt(ArkUtility.unitToSub(fee));
 
-		if (arktoshi !== this.rangeFee) {
-			this.rangeFee = arktoshi;
-		}
+		this.parentForm.form.controls.feeRange.setValue(arktoshi, {
+			emitEvent: false,
+		});
 
 		this.emitChange();
 	}
 
 	public emitChange() {
-		this.change.next(this.rangeFee);
+		const rangeFee = this.parentForm.form.get("feeRange");
+		this.change.next(rangeFee.value);
 	}
 
 	ngOnDestroy() {

@@ -147,7 +147,7 @@ export class WalletListPage implements OnDestroy {
 						{
 							text: translation.IMPORT_PASSPHRASE,
 							role: "passphrase",
-							icon: "lock",
+							icon: "lock-closed",
 							handler: () => {
 								this.presentWalletImport("passphrase");
 							},
