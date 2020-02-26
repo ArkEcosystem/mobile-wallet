@@ -101,7 +101,7 @@
 		"@angular/compiler-cli": "~8.2.14",
 		"@angular/language-service": "~8.2.14",
 		"@ionic-native-mocks/splash-screen": "^2.0.12",
-		"@ionic/angular-toolkit": "~2.1.2",
+		"@ionic/angular-toolkit": "~2.2.0",
 		"@ionic/lab": "^3.0.1",
 		"@types/bcryptjs": "^2.4.2",
 		"@types/bip39": "^3.0.0",
