@@ -1,3 +1,3 @@
 export interface AuthPinStateModel {
-	isRegistered: boolean;
+	hasPasswordRegistered: boolean;
 }

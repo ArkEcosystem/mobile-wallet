@@ -11,6 +11,16 @@ export namespace AuthActions {
 		constructor(public method: AuthMethod) {}
 	}
 
+	export class Block {
+		static readonly type = "[Auth] Block";
+		constructor() {}
+	}
+
+	export class Unblock {
+		static readonly type = "[Auth] Unblock";
+		constructor() {}
+	}
+
 	export class Dismiss {
 		static readonly type = "[Auth] Dismiss";
 		constructor() {}

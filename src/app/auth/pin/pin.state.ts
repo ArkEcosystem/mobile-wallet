@@ -19,7 +19,7 @@ export const AUTH_PIN_STATE_TOKEN = new StateToken<AuthPinState>(
 @State<AuthPinStateModel>({
 	name: AUTH_PIN_STATE_TOKEN,
 	defaults: {
-		isRegistered: false,
+		hasPasswordRegistered: false,
 	},
 })
 export class AuthPinState implements NgxsOnInit {
@@ -31,10 +31,10 @@ export class AuthPinState implements NgxsOnInit {
 
 	@Action(AuthPinActions.Load)
 	public load(ctx: StateContext<AuthPinStateModel>): Observable<never> {
-		return this.authPinService.getEncryptedPassword().pipe(
-			tap(password =>
+		return this.authPinService.hasPasswordRegisterd().pipe(
+			tap(hasPasswordRegistered =>
 				ctx.patchState({
-					isRegistered: !!password,
+					hasPasswordRegistered,
 				}),
 			),
 			switchMapTo(EMPTY),
