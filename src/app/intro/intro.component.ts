@@ -1,27 +1,36 @@
 import { Component, ViewChild } from "@angular/core";
 import { IonSlides, NavController, Platform } from "@ionic/angular";
+import { Select, Store } from "@ngxs/store";
+import { Observable } from "rxjs";
 
 import { AuthProvider } from "@/services/auth/auth";
 import { TranslateService } from "@ngx-translate/core";
+import { IntroActions } from "./shared/intro.actions";
+import { INTRO_STATE_TOKEN } from "./shared/intro.state";
+import { IntroStateModel } from "./shared/intro.type";
 
 @Component({
 	selector: "page-intro",
-	templateUrl: "intro.html",
+	templateUrl: "intro.component.html",
 	styleUrls: ["intro.pcss"],
 })
 export class IntroPage {
+	@Select(INTRO_STATE_TOKEN)
+	public intro$: Observable<IntroStateModel>;
+	public isFinished$: Observable<IntroStateModel>;
+
 	@ViewChild("slider", { read: IonSlides, static: true })
 	slider: IonSlides;
 
 	public showSkip = true;
 	public slides: any;
-	public activeIndex = 0;
 
 	constructor(
 		platform: Platform,
 		private navCtrl: NavController,
 		private authProvider: AuthProvider,
 		private translateService: TranslateService,
+		private store: Store,
 	) {
 		platform.ready().then(() => {
 			this.translateService
@@ -62,6 +71,8 @@ export class IntroPage {
 			animated: true,
 			replaceUrl: true,
 		});
+
+		return this.store.dispatch(new IntroActions.Done());
 	}
 
 	goNext() {
@@ -76,7 +87,11 @@ export class IntroPage {
 			return;
 		}
 
-		this.activeIndex = activeIndex;
-		this.showSkip = !(await this.slider.isEnd());
+		const isFinished = await this.slider.isEnd();
+		this.showSkip = !isFinished;
+
+		return this.store.dispatch(
+			new IntroActions.Update({ activeIndex, isFinished }),
+		);
 	}
 }

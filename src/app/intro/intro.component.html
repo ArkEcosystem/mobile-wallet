@@ -27,7 +27,8 @@
 					fill="clear"
 					(click)="startApp()"
 					[disabled]="!showSkip"
-					>{{ 'SKIP' | translate | uppercase }}</ion-button
+				>
+					{{ "SKIP" | translate | uppercase }}</ion-button
 				>
 			</ion-col>
 			<ion-col class="w-32">
@@ -37,7 +38,7 @@
 					>
 						<ion-col
 							*ngFor="let page of slides; let i = index"
-							[class.active]="activeIndex == i"
+							[class.active]="(intro$ | async).activeIndex == i"
 						>
 							<span></span>
 						</ion-col>
@@ -50,14 +51,16 @@
 					fill="clear"
 					(click)="goNext()"
 					*ngIf="showSkip"
-					>{{ 'NEXT' | translate | uppercase }}</ion-button
+				>
+					{{ "NEXT" | translate | uppercase }}</ion-button
 				>
 				<ion-button
 					id="done"
 					fill="clear"
 					(click)="startApp()"
 					*ngIf="!showSkip"
-					>{{ 'DONE' | translate | uppercase }}</ion-button
+				>
+					{{ "DONE" | translate | uppercase }}</ion-button
 				>
 			</ion-col>
 		</div>

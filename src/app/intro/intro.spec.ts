@@ -1,7 +1,7 @@
 import { ComponentFixture } from "@angular/core/testing";
 
 import { TestHelpers } from "@@/test/helpers";
-import { IntroPage } from "./intro";
+import { IntroPage } from "./intro.component";
 
 describe("IntroPage", () => {
 	let pageComponent: IntroPage;
