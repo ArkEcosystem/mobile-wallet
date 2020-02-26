@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 import { InputCurrencyComponentModule } from "../input-currency/input-currency.module";
@@ -11,6 +11,7 @@ import { InputFeeComponent } from "./input-fee.component";
 	imports: [
 		IonicModule,
 		FormsModule,
+		ReactiveFormsModule,
 		InputCurrencyComponentModule,
 		TranslateModule,
 		CommonModule,
