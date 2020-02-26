@@ -1,9 +1,8 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
 import { EMPTY, Observable, of, Subject, throwError } from "rxjs";
 
-import { HttpUtils } from "@/app/utils/http-utils";
 import { StorageProvider } from "@/services/storage/storage";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataProvider } from "@/services/user-data/user-data";
@@ -12,7 +11,6 @@ import {
 	INodeConfiguration,
 	Transaction,
 	TranslatableObject,
-	Wallet,
 } from "@/models/model";
 
 import * as constants from "@/app/app.constants";
@@ -54,7 +52,6 @@ export class ArkApiProvider {
 	public onSendTransaction$: Subject<arkts.Transaction> = new Subject<
 		arkts.Transaction
 	>();
-	public onUpdateTopWallets$: Subject<Wallet[]> = new Subject<Wallet[]>();
 
 	private _network: StoredNetwork;
 	private _api: arkts.Client;
@@ -115,10 +112,6 @@ export class ArkApiProvider {
 		}
 
 		return this.fetchDelegates(this._network.activeDelegates * 2);
-	}
-
-	public get topWallets(): Observable<Wallet[]> {
-		return this.fetchTopWallets(constants.TOP_WALLETS_TO_FETCH);
 	}
 
 	public setNetwork(network: StoredNetwork) {
@@ -291,35 +284,6 @@ export class ArkApiProvider {
 					if (data.success) {
 						delegates = [...delegates, ...data.delegates];
 					}
-				});
-		});
-	}
-
-	fetchTopWallets(
-		numberWalletsToGet: number,
-		page?: number,
-	): Observable<Wallet[]> {
-		if (!this._network || !this._network.isV2) {
-			return EMPTY;
-		}
-
-		let topWallets: Wallet[] = [];
-
-		const queryParams: HttpParams = HttpUtils.buildQueryParams({
-			limit: numberWalletsToGet,
-			page,
-		});
-
-		return new Observable(observer => {
-			this.httpClient
-				.get<{ data: Wallet[]; meta: any }>(
-					`${this._network.getPeerAPIUrl()}/api/v2/wallets/top`,
-					{ params: queryParams },
-				)
-				.subscribe(response => {
-					topWallets = response.data;
-					this.onUpdateTopWallets$.next(topWallets);
-					observer.next(topWallets);
 				});
 		});
 	}

@@ -13,8 +13,6 @@ import { WalletBackupModalModule } from "@/app/modals/wallet-backup/wallet-backu
 import { DirectivesModule } from "@/directives/directives.module";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
-import { RegisterDelegatePage } from "./modal/register-delegate/register-delegate";
-import { RegisterDelegatePageModule } from "./modal/register-delegate/register-delegate.module";
 import { SetLabelPage } from "./modal/set-label/set-label";
 import { SetLabelPageModule } from "./modal/set-label/set-label.module";
 
@@ -29,10 +27,9 @@ import { SetLabelPageModule } from "./modal/set-label/set-label.module";
 		PinCodeComponentModule,
 		ConfirmTransactionComponentModule,
 		DirectivesModule,
-		RegisterDelegatePageModule,
 		SetLabelPageModule,
 		WalletBackupModalModule,
 	],
-	entryComponents: [RegisterDelegatePage, SetLabelPage, WalletBackupModal],
+	entryComponents: [SetLabelPage, WalletBackupModal],
 })
 export class WalletDashboardPageModule {}

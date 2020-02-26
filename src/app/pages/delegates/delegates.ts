@@ -28,7 +28,7 @@ import { DelegateDetailPage } from "./delegate-detail/delegate-detail";
 	styleUrls: ["delegates.pcss"],
 })
 export class DelegatesPage implements OnDestroy {
-	@ViewChild("delegateSlider", { read: IonSlides, static: false })
+	@ViewChild("delegateSlider", { read: IonSlides })
 	slider: IonSlides;
 
 	@ViewChild("pinCode", { read: PinCodeComponent, static: true })
@@ -40,7 +40,7 @@ export class DelegatesPage implements OnDestroy {
 	})
 	confirmTransaction: ConfirmTransactionComponent;
 
-	@ViewChild("searchbar", { read: IonSearchbar, static: false })
+	@ViewChild("searchbar", { read: IonSearchbar })
 	searchbar: IonSearchbar;
 
 	public isSearch = false;

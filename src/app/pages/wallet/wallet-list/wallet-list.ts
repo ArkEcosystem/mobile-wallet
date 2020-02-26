@@ -39,13 +39,13 @@ import { takeUntil } from "rxjs/operators";
 	styleUrls: ["wallet-list.pcss"],
 })
 export class WalletListPage implements OnDestroy {
-	@ViewChild("walletSlider", { read: IonSlides, static: false })
+	@ViewChild("walletSlider", { read: IonSlides })
 	slider: IonSlides;
 
 	@ViewChild("content", { read: IonContent, static: true })
 	content: IonContent;
 
-	@ViewChild(BaseChartDirective, { static: false })
+	@ViewChild(BaseChartDirective)
 	chart: BaseChartDirective;
 
 	public currentProfile: Profile;
