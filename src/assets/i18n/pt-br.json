@@ -263,16 +263,16 @@
 		},
 		"IPFS": "IPFS",
 		"MULTI_PAYMENT": "Pagamento Múltiplo",
-		"DELEGATE_RESIGNATION": "Delegar Renúncia",
+		"DELEGATE_RESIGNATION": "Renúncia de Delegado",
 		"HTLC_LOCK": "Bloqueio de tempo",
 		"HTLC_CLAIM": "Reivindicação do bloqueio de tempo",
 		"HTLC_REFUND": "Reembolso do bloqueio de tempo",
-		"BUSINESS_REGISTRATION": "Registo comercial",
-		"BUSINESS_RESIGNATION": "Renúncia de Negócios",
-		"BUSINESS_UPDATE": "Atualização de Negócios",
-		"BRIDGECHAIN_REGISTRATION": "Registro Bridgechain",
-		"BRIDGECHAIN_RESIGNATION": "Renúncia Bridgechain",
-		"BRIDGECHAIN_UPDATE": "Atualização Bridgechain"
+		"BUSINESS_REGISTRATION": "Registro de Negócio",
+		"BUSINESS_RESIGNATION": "Renúncia de Negócio",
+		"BUSINESS_UPDATE": "Atualização de Negócio",
+		"BRIDGECHAIN_REGISTRATION": "Registro de Bridgechain",
+		"BRIDGECHAIN_RESIGNATION": "Renúncia de Bridgechain",
+		"BRIDGECHAIN_UPDATE": "Atualização de Bridgechain"
 	},
 	"TYPE": "Tipo",
 	"VALIDATION": {
