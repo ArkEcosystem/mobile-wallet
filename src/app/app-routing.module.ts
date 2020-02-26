@@ -124,13 +124,6 @@ const routes: Routes = [
 			).then(m => m.WalletManualImportPageModule),
 	},
 	{
-		path: "wallets/top",
-		loadChildren: () =>
-			import(
-				"./pages/wallet/wallet-top-list/wallet-top-list.module"
-			).then(m => m.WalletTopListPageModule),
-	},
-	{
 		path: "wallets",
 		loadChildren: () =>
 			import("./pages/wallet/wallet-list/wallet-list.module").then(

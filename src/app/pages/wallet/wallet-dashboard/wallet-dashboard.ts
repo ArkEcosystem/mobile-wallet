@@ -17,7 +17,6 @@ import {
 	MarketTicker,
 	Profile,
 	StoredNetwork,
-	Transaction,
 	TransactionEntity,
 	Wallet,
 	WalletKeys,
@@ -29,7 +28,7 @@ import { UserDataProvider } from "@/services/user-data/user-data";
 
 import lodash from "lodash";
 
-import { Fees, PrivateKey, TransactionDelegate, TransactionType } from "ark-ts";
+import { Fees } from "ark-ts";
 
 import { TranslateService } from "@ngx-translate/core";
 
@@ -41,8 +40,6 @@ import { ToastProvider } from "@/services/toast/toast";
 import { ActivatedRoute } from "@angular/router";
 import { Clipboard } from "@ionic-native/clipboard/ngx";
 import { catchError, debounceTime, finalize, takeUntil } from "rxjs/operators";
-import { RegisterDelegatePage } from "./modal/register-delegate/register-delegate";
-import { RegisterSecondPassphrasePage } from "./modal/register-second-passphrase/register-second-passphrase";
 import { SetLabelPage } from "./modal/set-label/set-label";
 
 @Component({
@@ -79,9 +76,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	public marketCurrency: MarketCurrency;
 
 	public onEnterPinCode: (keys: WalletKeys) => void;
-	private newDelegateName: string;
-	private newDelegateFee: number;
-	private newSecondPassphrase: string;
 
 	public emptyTransactions = false;
 	public minConfirmations = constants.WALLET_MIN_NUMBER_CONFIRMATIONS;
@@ -136,23 +130,12 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 			.get([
 				"WALLETS_PAGE.LABEL",
 				"DELEGATES_PAGE.DELEGATES",
-				"DELEGATES_PAGE.REGISTER_DELEGATE",
-				"WALLETS_PAGE.SECOND_PASSPHRASE",
 				"SETTINGS_PAGE.WALLET_BACKUP",
 				"WALLETS_PAGE.REMOVE_WALLET",
 				"WALLETS_PAGE.CONVERT_TO_FULL_WALLET",
 				"WALLETS_PAGE.TOP_WALLETS",
 			])
 			.subscribe(async translation => {
-				// const delegateItem = {
-				// 	text: translation["DELEGATES_PAGE.REGISTER_DELEGATE"],
-				// 	role: "delegate",
-				// 	icon: "contact",
-				// 	handler: () => {
-				// 		this.presentRegisterDelegateModal();
-				// 	},
-				// };
-
 				const delegatesItem = {
 					text: translation["DELEGATES_PAGE.DELEGATES"],
 					role: "label",
@@ -194,25 +177,10 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 					},
 				};
 
-				// const topWalletsItem = {
-				//   text: translation['WALLETS_PAGE.TOP_WALLETS'],
-				//   role: 'label',
-				//   icon: 'filing',
-				//   handler: () => {
-				//     this.presentTopWalletsModal();
-				//   }
-				// };
-
-				// DEPRECATED:
-				// if (!this.wallet.isWatchOnly && !this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
-				// if (!this.wallet.isWatchOnly) { buttons.unshift(topWalletsItem); }
 				if (!this.wallet.isWatchOnly) {
 					buttons.unshift(delegatesItem);
 				}
-				// "Watch Only" address can't vote
-				// if (!this.wallet.isWatchOnly && !this.wallet.isDelegate) {
-				// 	buttons.unshift(delegateItem);
-				// }
+
 				if (!this.wallet.isWatchOnly) {
 					buttons.splice(buttons.length - 1, 0, backupItem);
 				}
@@ -348,43 +316,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 		modal.present();
 	}
 
-	async presentRegisterDelegateModal() {
-		const modal = await this.modalCtrl.create({
-			component: RegisterDelegatePage,
-		});
-
-		modal.onDidDismiss().then(({ data }) => {
-			if (lodash.isEmpty(name)) {
-				return;
-			}
-
-			this.newDelegateName = data.name;
-			this.newDelegateFee = data.fee;
-			this.onEnterPinCode = this.createDelegate;
-			this.pinCode.open("PIN_CODE.TYPE_PIN_SIGN_TRANSACTION", true, true);
-		});
-
-		modal.present();
-	}
-
-	async presentRegisterSecondPassphraseModal() {
-		const modal = await this.modalCtrl.create({
-			component: RegisterSecondPassphrasePage,
-		});
-
-		modal.onDidDismiss().then(({ data }) => {
-			if (lodash.isEmpty(data)) {
-				return;
-			}
-
-			this.newSecondPassphrase = data;
-			this.onEnterPinCode = this.createSignature;
-			this.pinCode.open("PIN_CODE.TYPE_PIN_SIGN_TRANSACTION", true);
-		});
-
-		modal.present();
-	}
-
 	presentDeleteWalletConfirm() {
 		this.translateService
 			.get([
@@ -454,59 +385,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 		// }
 
 		this.transactions = transactions;
-	}
-
-	// presentTopWalletsModal() {
-	//   this.navCtrl.navigateForward('/wallets/top');
-	// }
-
-	private createDelegate(keys: WalletKeys) {
-		const publicKey =
-			this.wallet.publicKey ||
-			PrivateKey.fromSeed(keys.key)
-				.getPublicKey()
-				.toHex();
-
-		const transaction = {
-			passphrase: keys.key,
-			secondPassphrase: keys.secondKey,
-			username: this.newDelegateName,
-			fee: this.newDelegateFee,
-			publicKey,
-		} as TransactionDelegate;
-
-		this.arkApiProvider.transactionBuilder
-			.createDelegate(transaction)
-			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(data => {
-				this.confirmTransaction.open(data, keys);
-			});
-	}
-
-	private onTransactionConfirm = (tx: Transaction): void => {
-		switch (tx.type) {
-			case TransactionType.CreateDelegate:
-				const userName =
-					tx.asset && tx.asset.delegate
-						? tx.asset.delegate.username
-						: null;
-				this.userDataProvider.ensureWalletDelegateProperties(
-					this.wallet,
-					userName,
-				);
-				break;
-		}
-	};
-
-	private createSignature(keys: WalletKeys) {
-		keys.secondPassphrase = this.newSecondPassphrase;
-
-		this.arkApiProvider.transactionBuilder
-			.createSignature(keys.key, keys.secondPassphrase)
-			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(data => {
-				this.confirmTransaction.open(data, keys);
-			});
 	}
 
 	private saveWallet() {
@@ -647,7 +525,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	ngOnInit(): void {
 		this.confirmTransaction.confirm
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(this.onTransactionConfirm);
+			.subscribe();
 		this.load();
 		this.refreshAllData();
 		this.refreshPrice();
