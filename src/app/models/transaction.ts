@@ -1,10 +1,11 @@
-import BigNumber from "@/utils/bignumber";
+import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
 import { Transaction as TransactionModel, TransactionType } from "ark-ts/model";
 import moment from "moment";
 
 import { MarketCurrency, MarketHistory, MarketTicker } from "@/models/market";
 
-import { TRANSACTION_GROUPS } from "@/app/app.constants";
+import { TRANSACTION_GROUPS, TRANSACTION_TYPES } from "@/app/app.constants";
+import { Interfaces } from "@arkecosystem/crypto";
 import { ArkUtility } from "../utils/ark-utility";
 
 const TX_TYPES = {
@@ -58,11 +59,13 @@ const TX_TYPES_ACTIVITY = {
 export type TransactionEntity = TransactionModel & {
 	isSender: boolean;
 	isTransfer: boolean;
+	isMultipayment: boolean;
 	appropriateAddress: string;
 	activityLabel: string;
 	typeLabel: string;
 	totalAmount: number;
 	date: Date;
+	asset: Interfaces.ITransactionAsset;
 	amountEquivalent: number;
 };
 
@@ -80,7 +83,7 @@ export class Transaction extends TransactionModel {
 	public typeGroup?: number;
 	public version?: number;
 	public date: Date;
-	public asset: any;
+	public asset: Interfaces.ITransactionAsset;
 
 	constructor(public address: string) {
 		super();
@@ -104,13 +107,28 @@ export class Transaction extends TransactionModel {
 	}
 
 	getAmount(forceFee?: boolean) {
-		let amount = this.amount;
+		let amount = new BigNumber(this.amount);
 
 		if (this.isSender() || forceFee) {
-			amount = this.amount + this.fee;
+			amount = amount.plus(this.fee);
 		}
 
-		return amount;
+		if (this.isMultipayment()) {
+			for (const payment of this.asset.payments) {
+				if (this.isSender() && this.address === payment.recipientId) {
+					continue;
+				} else if (
+					!this.isSender() &&
+					this.address !== payment.recipientId
+				) {
+					continue;
+				}
+				// @ts-ignore
+				amount = amount.plus(payment.amount);
+			}
+		}
+
+		return amount.toNumber();
 	}
 
 	getAmountEquivalent(
@@ -180,6 +198,13 @@ export class Transaction extends TransactionModel {
 		}
 
 		return type;
+	}
+
+	isMultipayment(): boolean {
+		return (
+			this.type === TRANSACTION_TYPES.GROUP_1.MULTI_PAYMENT &&
+			this.typeGroup === TRANSACTION_GROUPS.STANDARD
+		);
 	}
 
 	isTransfer(): boolean {

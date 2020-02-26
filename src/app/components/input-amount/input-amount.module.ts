@@ -1,20 +1,22 @@
-import { AmountComponent } from "@/components/amount/amount";
+import { InputAmountComponent } from "@/components/input-amount/input-amount.component";
 import { DirectivesModule } from "@/directives/directives.module";
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
+import { InputCurrencyComponentModule } from "../input-currency/input-currency.module";
 
 @NgModule({
-	declarations: [AmountComponent],
+	declarations: [InputAmountComponent],
 	imports: [
 		IonicModule,
 		FormsModule,
 		CommonModule,
+		InputCurrencyComponentModule,
 		ReactiveFormsModule,
 		DirectivesModule,
 		CommonModule,
 	],
-	exports: [AmountComponent],
+	exports: [InputAmountComponent],
 })
-export class AmountComponentModule {}
+export class InputAmountComponentModule {}

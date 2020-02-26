@@ -15,7 +15,6 @@ import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 
 import * as constants from "@/app/app.constants";
-import { CustomNetworkCreateModal } from "@/app/modals/custom-network-create/custom-network-create";
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
 import { UserDataProvider } from "@/services/user-data/user-data";
 import { takeUntil, tap } from "rxjs/operators";
@@ -75,12 +74,8 @@ export class SettingsPage implements OnInit, OnDestroy {
 		});
 	}
 
-	async openManageNetworksPage() {
-		const modal = await this.modalCtrl.create({
-			component: CustomNetworkCreateModal,
-		});
-
-		modal.present();
+	openManageNetworksPage() {
+		this.navCtrl.navigateForward("/network-overview");
 	}
 
 	openPrivacyPolicy() {

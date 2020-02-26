@@ -24,6 +24,7 @@ export class CustomNetworkEditModal {
 	public apiPort: number;
 	public p2pPort: number;
 	public networkId: string;
+	public isDefault: boolean;
 
 	public constructor(
 		public navParams: NavParams,
@@ -33,8 +34,13 @@ export class CustomNetworkEditModal {
 		private translateService: TranslateService,
 		private toastProvider: ToastProvider,
 	) {
+		const defaultNetworksNames = this.userDataProvider.defaultNetworks.map(
+			item => item.name,
+		);
 		this.network = this.navParams.get("network") || new StoredNetwork();
 		this.networkId = this.navParams.get("id");
+
+		this.isDefault = defaultNetworksNames.includes(this.network.name);
 		this.apiPort = this.network.isV2
 			? this.network.apiPort
 			: this.network.activePeer.port;

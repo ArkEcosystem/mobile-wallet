@@ -2,7 +2,7 @@ import { MarketCurrency, MarketTicker } from "@/models/model";
 import { UserSettings } from "@/models/settings";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import BigNumber from "@/utils/bignumber";
+import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
 import { OnDestroy, Pipe, PipeTransform } from "@angular/core";
 import { Subject } from "rxjs";
 import { finalize, takeUntil, tap } from "rxjs/operators";

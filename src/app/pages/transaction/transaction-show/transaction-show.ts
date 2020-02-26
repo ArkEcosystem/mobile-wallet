@@ -25,10 +25,6 @@ export class TransactionShowPage {
 	public currentNetwork: StoredNetwork;
 	private currentWallet: Wallet;
 
-	public isSender: boolean;
-	public totalAmount: number;
-	public typeLabel: string;
-
 	constructor(
 		private navCtrl: NavController,
 		private route: ActivatedRoute,

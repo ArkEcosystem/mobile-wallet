@@ -1,0 +1,33 @@
+<ion-row>
+	<ion-col>
+		<ion-grid no-padding class="amount-container">
+			<ion-row>
+				<ion-col class="pl-0">
+					<ion-item>
+						<ion-label position="stacked">{{
+							currentNetwork?.token
+						}}</ion-label>
+						<input-currency
+							name="amount"
+							formControlName="amount"
+							[fractionDigits]="tokenFractionDigits"
+							placeholder="0"
+						></input-currency>
+					</ion-item>
+				</ion-col>
+				<ion-col class="ml-1 pr-0" appMarketNetOnly>
+					<ion-item>
+						<ion-label position="stacked">{{
+							marketCurrency?.code | uppercase
+						}}</ion-label>
+						<input-currency
+							name="amountEquivalent"
+							formControlName="amountEquivalent"
+							[fractionDigits]="fiatFractionDigits"
+						></input-currency>
+					</ion-item>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</ion-col>
+</ion-row>

@@ -20,7 +20,7 @@
 			>
 				<span>{{ transaction.typeLabel | translate }}</span>
 				<ion-text
-					[color]="isSender ? 'danger' : 'success'"
+					[color]="transaction.isSender ? 'danger' : 'success'"
 					class="text-xl font-semibold my-3"
 				>
 					{{ transaction.isSender ? '-' : '+' }} {{
@@ -118,6 +118,30 @@
 							</div>
 							<div class="item-content">
 								{{ transaction?.id }}
+							</div>
+						</ion-label>
+					</ion-item>
+				</ion-list>
+
+				<ion-list
+					inset
+					*ngIf="transaction?.isMultipayment"
+					class="mt-5 list-selectable"
+				>
+					<ion-list-header class="pl-0">
+						<ion-label
+							>{{ 'TRANSACTIONS_PAGE.RECIPIENTS' | translate
+							}}</ion-label
+						>
+					</ion-list-header>
+					<ion-item *ngFor="let item of transaction?.asset?.payments">
+						<ion-label>
+							<div class="item-content flex justify-between">
+								<span
+									>{{ item?.recipientId | truncateMiddle: 12
+									}}</span
+								>
+								<span>{{ item?.amount | unitsSatoshi }}</span>
 							</div>
 						</ion-label>
 					</ion-item>

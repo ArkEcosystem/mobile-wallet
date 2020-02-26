@@ -84,7 +84,7 @@
 							lines="none"
 							[ngClass]="{delegate: wallet?.isDelegate, normal: !wallet?.isDelegate}"
 						>
-							<div class="flex flex-col text-white">
+							<div class="flex flex-col text-white w-full">
 								<h2 class="font-semibold">
 									{{ currentNetwork?.symbol }} {{
 									(wallet?.balance | unitsSatoshi) || 0 }}
@@ -95,7 +95,6 @@
 										wallet?.address) | truncateMiddle: 15 }}
 									</span>
 									<ion-badge
-										class="w-1/4"
 										[color]="wallet?.isDelegate ? 'primary' : 'danger-alternative'"
 										*ngIf="wallet.isWatchOnly"
 									>
