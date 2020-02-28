@@ -247,6 +247,7 @@ export class WalletListPage implements OnDestroy {
 			!this.currentProfile ||
 			lodash.isEmpty(this.currentProfile.wallets)
 		) {
+			this.wallets = [];
 			return;
 		}
 
