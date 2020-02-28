@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { Network } from "@ionic-native/network/ngx";
 import { QRScanner, QRScannerStatus } from "@ionic-native/qr-scanner/ngx";
@@ -7,11 +8,13 @@ import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { Observable } from "rxjs";
 
+@Injectable()
 export class SplashScreenMock extends SplashScreen {
 	show(): void {}
 	hide(): void {}
 }
 
+@Injectable()
 export class StatusBarMock extends StatusBar {
 	isVisible: boolean;
 	overlaysWebView(doesOverlay: boolean): void {}
@@ -25,6 +28,7 @@ export class StatusBarMock extends StatusBar {
 	show(): void {}
 }
 
+@Injectable()
 export class QRScannerMock extends QRScanner {
 	prepare(): Promise<QRScannerStatus> {
 		return Promise.resolve(undefined);
@@ -48,6 +52,7 @@ export class QRScannerMock extends QRScanner {
 	openSettings(): void {}
 }
 
+@Injectable()
 export class KeyboardMock extends Keyboard {
 	hideKeyboardAccessoryBar(hide: boolean): void {}
 	show(): void {}
@@ -67,6 +72,7 @@ export class KeyboardMock extends Keyboard {
 	}
 }
 
+@Injectable()
 export class NetworkMock extends Network {
 	type = "cellular";
 	downlinkMax: string;
@@ -90,6 +96,7 @@ export class NetworkMock extends Network {
 	}
 }
 
+@Injectable()
 export class SocialSharingMock extends SocialSharing {
 	share(
 		message?: string,
@@ -101,6 +108,7 @@ export class SocialSharingMock extends SocialSharing {
 	}
 }
 
+@Injectable()
 export class ScreenOrientationMock extends ScreenOrientation {
 	type: string;
 	ORIENTATIONS: {

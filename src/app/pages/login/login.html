@@ -1,5 +1,5 @@
 <ion-content forceOverscroll="false" fullscreen>
-	<ion-grid class="h-full flex flex-col content-background">
+	<ion-grid class="h-full flex flex-col c-login">
 		<ion-row class="flex-1 flex justify-center items-center">
 			<img src="./assets/img/light/login/logo.png" class="w-48 h-48" />
 		</ion-row>
@@ -15,11 +15,13 @@
 		</ion-row>
 		<ion-row class="flex-1 p-6">
 			<ion-col
+				data-testid="c-login__controls"
 				class="flex flex-col items-center justify-end"
 				*ngIf="isReady"
 			>
 				<ion-row>
 					<ion-button
+						data-testid="c-login__controls__sign-in"
 						fill="solid"
 						(click)="openProfileSignin()"
 						[hidden]="!hasProfiles"
@@ -28,11 +30,12 @@
 				</ion-row>
 				<ion-row>
 					<ion-button
+						data-testid="c-login__controls__create-profile"
 						[fill]="hasProfiles ? 'clear' : 'solid'"
 						(click)="openProfileCreate()"
-						>{{ 'SIGN_IN_PAGE.CREATE_PROFILE' | translate
-						}}</ion-button
 					>
+						{{ 'SIGN_IN_PAGE.CREATE_PROFILE' | translate }}
+					</ion-button>
 				</ion-row>
 			</ion-col>
 		</ion-row>

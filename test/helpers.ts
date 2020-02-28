@@ -1,5 +1,6 @@
 import { SharedModule } from "@/app/shared.module";
-import { HttpClientModule } from "@angular/common/http";
+import { APP_BASE_HREF } from "@angular/common";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import {
 	ComponentFixture,
@@ -64,6 +65,7 @@ export class TestHelpers {
 				RouterModule.forRoot([]),
 			],
 			providers: [
+				{ provide: APP_BASE_HREF, useValue: "/" },
 				{ provide: SplashScreen, useClass: SplashScreenMock },
 				{ provide: StatusBar, useClass: StatusBarMock },
 				{ provide: QRScanner, useClass: QRScannerMock },

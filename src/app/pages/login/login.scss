@@ -1,5 +1,5 @@
 :host {
-	.content-background {
+	.c-login {
 		background-image: url("/assets/img/light/login/login-pattern.png");
 		background-size: contain;
 		background-repeat: no-repeat;
@@ -8,7 +8,7 @@
 }
 
 :host-context(.dark-theme) {
-	.content-background {
+	.c-login {
 		background-image: url("/assets/img/dark/login/login-pattern.png");
 	}
 }
