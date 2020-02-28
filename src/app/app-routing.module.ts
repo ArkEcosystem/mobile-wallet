@@ -1,13 +1,20 @@
 import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
+import { IntroGuard } from "./pages/intro/intro.guard";
 
 const routes: Routes = [
-	{ path: "", redirectTo: "login", pathMatch: "full" },
+	{ path: "", redirectTo: "intro", pathMatch: "full" },
 
 	{
 		path: "intro",
+		canActivate: [IntroGuard],
 		loadChildren: () =>
 			import("./pages/intro/intro.module").then(m => m.IntroPageModule),
+	},
+	{
+		path: "login",
+		loadChildren: () =>
+			import("./pages/login/login.module").then(m => m.LoginPageModule),
 	},
 	{
 		path: "network-status",
@@ -22,11 +29,6 @@ const routes: Routes = [
 			import(
 				"./pages/network/network-overview/network-overview.module"
 			).then(m => m.NetworkOverviewPageModule),
-	},
-	{
-		path: "login",
-		loadChildren: () =>
-			import("./pages/login/login.module").then(m => m.LoginPageModule),
 	},
 	{
 		path: "settings",

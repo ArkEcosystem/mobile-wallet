@@ -19,6 +19,7 @@ import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { ChartsModule } from "ng2-charts";
+import { IntroGuard } from "./pages/intro/intro.guard";
 
 export function createTranslateLoader(http: HttpClient) {
 	return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -44,6 +45,7 @@ export function createTranslateLoader(http: HttpClient) {
 	],
 	exports: [TranslateModule],
 	providers: [
+		IntroGuard,
 		StatusBar,
 		SplashScreen,
 		QRScanner,
