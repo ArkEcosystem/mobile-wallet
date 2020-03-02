@@ -14,15 +14,18 @@
 			"BackupWebStorage": "none",
 			"BackgroundColor": "0xffedf2f5",
 			"SplashMaintainAspectRatio": "true",
-			"FadeSplashScreenDuration": "300",
 			"SplashShowOnlyFirstTime": "false",
-			"SplashScreenSpinnerColor": "#0000ff",
-			"SplashScreen": "screen",
-			"AutoHideSplashScreen": "false",
 			"KeyboardDisplayRequiresUserAction": "false",
 			"KeyboardResizeMode": "native",
 			"Orientation": "portrait",
 			"target-device": "handset"
+		}
+	},
+	"plugins": {
+		"SplashScreen": {
+			"launchAutoHide": false,
+			"backgroundColor": "#0000ff",
+			"showSpinner": true
 		}
 	}
 }

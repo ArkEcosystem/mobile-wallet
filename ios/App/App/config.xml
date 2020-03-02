@@ -57,11 +57,7 @@
   <preference name="BackupWebStorage" value="none" />
   <preference name="BackgroundColor" value="0xffedf2f5" />
   <preference name="SplashMaintainAspectRatio" value="true" />
-  <preference name="FadeSplashScreenDuration" value="300" />
   <preference name="SplashShowOnlyFirstTime" value="false" />
-  <preference name="SplashScreenSpinnerColor" value="#0000ff" />
-  <preference name="SplashScreen" value="screen" />
-  <preference name="AutoHideSplashScreen" value="false" />
   <preference name="KeyboardDisplayRequiresUserAction" value="false" />
   <preference name="KeyboardResizeMode" value="native" />
   <preference name="Orientation" value="portrait" />

@@ -1,6 +1,8 @@
 {
 	"name": "ark-ionic",
 	"integrations": {
-		"cordova": {}
-	}
+		"cordova": {},
+		"capacitor": {}
+	},
+	"type": "angular"
 }

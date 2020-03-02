@@ -14,7 +14,6 @@ import { ToastProvider } from "@/services/toast/toast";
 import { UserDataProvider } from "@/services/user-data/user-data";
 import { Network } from "@ionic-native/network/ngx";
 import { ScreenOrientation } from "@ionic-native/screen-orientation/ngx";
-import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import {
 	ActionSheetController,
@@ -35,12 +34,14 @@ import { SettingsDataProvider } from "./services/settings-data/settings-data";
 
 import * as constants from "@/app/app.constants";
 import { Router } from "@angular/router";
+import { Plugins } from "@capacitor/core";
 import {
 	Keyboard,
 	KeyboardResizeMode,
 	KeyboardStyle,
 } from "@ionic-native/keyboard/ngx";
 import moment from "moment";
+const { SplashScreen } = Plugins;
 
 @Component({
 	selector: "app-root",
@@ -65,7 +66,6 @@ export class AppComponent implements OnDestroy, OnInit {
 
 	constructor(
 		private platform: Platform,
-		private splashScreen: SplashScreen,
 		private statusBar: StatusBar,
 		private navController: NavController,
 		private translateService: TranslateService,
@@ -91,22 +91,23 @@ export class AppComponent implements OnDestroy, OnInit {
 	}
 
 	initializeApp() {
-		this.platform.ready().then(() => {
-			this.initTranslation();
-			this.initConfig();
-			this.initTheme();
-			this.initSessionCheck();
-			this.initBackButton();
-			this.splashScreen.hide();
+		if (this.platform.is("capacitor")) {
+			SplashScreen.hide();
+		}
 
-			this.authProvider.hasSeenIntro().subscribe(hasSeenIntro => {
-				if (!hasSeenIntro) {
-					this.openPage("/intro", true);
-					return;
-				}
+		this.initTranslation();
+		this.initConfig();
+		this.initTheme();
+		this.initSessionCheck();
+		this.initBackButton();
 
-				this.openPage("/login", true);
-			});
+		this.authProvider.hasSeenIntro().subscribe(hasSeenIntro => {
+			if (!hasSeenIntro) {
+				this.openPage("/intro", true);
+				return;
+			}
+
+			this.openPage("/login", true);
 		});
 	}
 
