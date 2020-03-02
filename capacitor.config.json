@@ -1,0 +1,28 @@
+{
+	"appId": "io.ark.wallet.mobile",
+	"appName": "ARK Mobile Wallet",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "www",
+	"cordova": {
+		"preferences": {
+			"ScrollEnabled": "false",
+			"fullscreen": "false",
+			"UseSwiftLanguageVersion": "5",
+			"android-minSdkVersion": "19",
+			"android-targetSdkVersion": "28",
+			"BackupWebStorage": "none",
+			"BackgroundColor": "0xffedf2f5",
+			"SplashMaintainAspectRatio": "true",
+			"FadeSplashScreenDuration": "300",
+			"SplashShowOnlyFirstTime": "false",
+			"SplashScreenSpinnerColor": "#0000ff",
+			"SplashScreen": "screen",
+			"AutoHideSplashScreen": "false",
+			"KeyboardDisplayRequiresUserAction": "false",
+			"KeyboardResizeMode": "native",
+			"Orientation": "portrait",
+			"target-device": "handset"
+		}
+	}
+}

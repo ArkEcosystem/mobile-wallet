@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ARK Mobile Wallet</string>
+    <string name="title_activity_main">ARK Mobile Wallet</string>
+    <string name="package_name">io.ark.wallet.mobile</string>
+    <string name="custom_url_scheme">io.ark.wallet.mobile</string>
+</resources>
