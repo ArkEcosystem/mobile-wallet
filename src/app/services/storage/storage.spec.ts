@@ -28,13 +28,13 @@ fdescribe("Storage service", () => {
 			expect(storedValue).toEqual(TO_BE_STORED);
 			done();
 		});
-    });
-    
-    it('should clear the storage', done => {
-        storageProvider.clear()
-        storageProvider.getObject('TEST_STORAGE_KEY').subscribe(storedValue => {
-            expect(storedValue).toEqual({})
-            done();
-        })
-    })
+	});
+
+	it("should clear the storage", done => {
+		storageProvider.clear();
+		storageProvider.getObject("TEST_STORAGE_KEY").subscribe(storedValue => {
+			expect(storedValue).toEqual({});
+			done();
+		});
+	});
 });
