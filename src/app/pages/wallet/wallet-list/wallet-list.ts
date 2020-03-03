@@ -1,4 +1,4 @@
-import { Component, NgZone, OnDestroy, ViewChild } from "@angular/core";
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import {
 	ActionSheetController,
 	IonContent,
@@ -38,7 +38,7 @@ import { takeUntil } from "rxjs/operators";
 	templateUrl: "wallet-list.html",
 	styleUrls: ["wallet-list.pcss"],
 })
-export class WalletListPage implements OnDestroy {
+export class WalletListPage implements OnInit, OnDestroy {
 	@ViewChild("walletSlider", { read: IonSlides })
 	slider: IonSlides;
 
@@ -87,7 +87,9 @@ export class WalletListPage implements OnDestroy {
 		private settingsDataProvider: SettingsDataProvider,
 		private ngZone: NgZone,
 		private arkApiProvider: ArkApiProvider,
-	) {
+	) {}
+
+	ngOnInit() {
 		this.loadUserData();
 
 		this.userDataProvider.clearCurrentWallet();

@@ -1,6 +1,10 @@
 <ion-list>
 	<ion-item *ngFor="let item of map">
-		<div class="avatar" [class.highlight]="item.highlight" slot="start">
+		<div
+			class="c-avatar c-avatar--large"
+			[class.c-avatar--highlight]="item.highlight"
+			slot="start"
+		>
 			{{ item[circleProperty].charAt(0) }}
 		</div>
 

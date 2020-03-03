@@ -360,10 +360,6 @@ export class UserDataProvider {
 			} as TranslatableObject);
 		}
 
-		if (wallet.label === label) {
-			return EMPTY;
-		}
-
 		if (
 			lodash.some(
 				this.currentProfile.wallets,

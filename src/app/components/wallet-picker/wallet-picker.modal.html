@@ -1,0 +1,16 @@
+<ion-content class="ion-padding">
+	<wallet-picker
+		[symbol]="symbol"
+		title="WALLETS_PAGE.WALLETS"
+		[wallets]="wallets"
+		(walletPickerPick)="onPick($event)"
+	></wallet-picker>
+	<div class="mt-2" *ngIf="contacts.length">
+		<wallet-picker
+			[symbol]="symbol"
+			title="CONTACTS_PAGE.CONTACTS"
+			[wallets]="contacts"
+			(walletPickerPick)="onPick($event)"
+		></wallet-picker>
+	</div>
+</ion-content>

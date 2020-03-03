@@ -15,83 +15,35 @@
 </ion-header>
 
 <ion-content fullscreen class="ion-padding">
-	<form [formGroup]="sendForm" #sendTransactionForm="ngForm" class="h-full">
+	<form [formGroup]="sendForm" class="h-full">
 		<ion-grid class="h-full flex flex-col">
 			<ion-row class="row-contacts">
 				<ion-col>
 					<ion-item class="item-address">
+						<div slot="end" class="flex items-center h-full">
+							<ion-button
+								fill="clear"
+								color="medium"
+								(click)="scanQRCode()"
+							>
+								<ion-icon name="qr-code"></ion-icon>
+							</ion-button>
+							<ion-button
+								fill="clear"
+								color="medium"
+								(click)="presetWalletPickerModal()"
+							>
+								<ion-icon name="person"></ion-icon>
+							</ion-button>
+						</div>
 						<ion-label position="floating" class="pb-2">
 							{{ 'WALLETS_PAGE.ADDRESS' | translate }}
 						</ion-label>
-						<ng-template #contactsTemplate let-attrs="attrs">
-							<ion-item lines="none">
-								<div>
-									<h2
-										class="item-title"
-										[innerHTML]="attrs.data.name | escapeHTML | boldprefix:attrs.keyword"
-									></h2>
-									<p
-										class="item-subtitle"
-										*ngIf="attrs.data.name !== attrs.data.address"
-										[innerHTML]="attrs.data.address | escapeHTML | boldprefix:attrs.keyword"
-									></p>
-								</div>
-							</ion-item>
-						</ng-template>
-						<ion-auto-complete
-							[dataProvider]="contactsAutoCompleteService"
-							[showResultsFirst]="true"
-							[options]="{placeholder: '', mode: 'md'}"
-							formControlName="recipientAddress"
-							(itemSelected)="onSearchItem($event)"
-							(ionAutoInput)="onSearchInput($event)"
-							(autoBlur)="onSearchBlur($event)"
-							(autoFocus)="showFullAddress()"
-							(paste)="onSearchPaste($event)"
-							[template]="contactsTemplate"
-							#searchBar
-						>
-						</ion-auto-complete>
-						<div class="qr-container" slot="end">
-							<img class="image" tappable (tap)="scanQRCode()" />
-						</div>
-					</ion-item>
-				</ion-col>
-			</ion-row>
-			<ion-row *ngIf="transaction.recipientAddress">
-				<ion-col>
-					<ion-item>
-						<ion-label position="floating" [ngSwitch]="addressType">
-							<ng-container *ngSwitchCase="addressTypes.Unknown"
-								>{{ 'TRANSACTIONS_PAGE.NEW_CONTACT_NAME' |
-								translate }}
-							</ng-container>
-							<ng-container
-								*ngSwitchCase="addressTypes.WalletWithoutLabel"
-							>
-								{{ 'TRANSACTIONS_PAGE.NEW_WALLET_LABEL' |
-								translate }}</ng-container
-							>
-							<ng-container
-								*ngSwitchCase="addressTypes.WalletWithLabel"
-							>
-								{{ 'TRANSACTIONS_PAGE.EXISTING_WALLET' |
-								translate }}</ng-container
-							>
-							<ng-container *ngSwitchCase="addressTypes.Contact"
-								>{{ 'TRANSACTIONS_PAGE.EXISTING_CONTACT' |
-								translate }}
-							</ng-container>
-						</ion-label>
 						<ion-input
 							type="text"
-							formControlName="recipientName"
-							name="recipientName"
-							[disabled]="addressType === addressTypes.Contact || addressType === addressTypes.WalletWithLabel"
-							[(ngModel)]="transaction.recipientName"
-							(keyup)="isRecipientNameAutoSet = false"
-						>
-						</ion-input>
+							formControlName="recipientAddress"
+							name="recipientAddress"
+						></ion-input>
 					</ion-item>
 				</ion-col>
 			</ion-row>
@@ -105,9 +57,8 @@
 						>
 						<ion-input
 							type="text"
-							formControlName="smartBridge"
-							name="smartBridge"
-							[(ngModel)]="transaction.smartBridge"
+							formControlName="vendorField"
+							name="vendorField"
 							[maxlength]="vendorFieldLength"
 						></ion-input>
 					</ion-item>
