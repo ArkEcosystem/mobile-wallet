@@ -109,6 +109,7 @@
 				"test": {
 					"builder": "@angular-builders/custom-webpack:karma",
 					"options": {
+						"codeCoverage": true,
 						"customWebpackConfig": {
 							"path": "./webpack.config.js"
 						},
