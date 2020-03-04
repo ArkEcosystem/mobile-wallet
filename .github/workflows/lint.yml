@@ -21,8 +21,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
             node-version: ${{ matrix.node-version }}
-      - name: Install pre dependencies
-        run: npm install -g ionic cordova
       - name: Install
         run: npm rebuild node-sass && npm install
       - name: Lint
