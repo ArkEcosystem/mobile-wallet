@@ -4,6 +4,6 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TranslateModule } from "@ngx-translate/core";
 
 @NgModule({
-	exports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule],
+    exports: [CommonModule, FormsModule, ReactiveFormsModule, TranslateModule],
 })
 export class SharedModule {}

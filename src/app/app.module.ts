@@ -21,38 +21,38 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { ChartsModule } from "ng2-charts";
 
 export function createTranslateLoader(http: HttpClient) {
-	return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
+    return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
 }
 
 @NgModule({
-	declarations: [AppComponent],
-	entryComponents: [],
-	imports: [
-		IonicModule.forRoot(),
-		IonicStorageModule.forRoot(),
-		BrowserModule,
-		HttpClientModule,
-		TranslateModule.forRoot({
-			loader: {
-				provide: TranslateLoader,
-				useFactory: createTranslateLoader,
-				deps: [HttpClient],
-			},
-		}),
-		AppRoutingModule,
-		ChartsModule,
-	],
-	exports: [TranslateModule],
-	providers: [
-		StatusBar,
-		SplashScreen,
-		QRScanner,
-		Keyboard,
-		SocialSharing,
-		Network,
-		ScreenOrientation,
-		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-	],
-	bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    entryComponents: [],
+    imports: [
+        IonicModule.forRoot(),
+        IonicStorageModule.forRoot(),
+        BrowserModule,
+        HttpClientModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: createTranslateLoader,
+                deps: [HttpClient],
+            },
+        }),
+        AppRoutingModule,
+        ChartsModule,
+    ],
+    exports: [TranslateModule],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        QRScanner,
+        Keyboard,
+        SocialSharing,
+        Network,
+        ScreenOrientation,
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
