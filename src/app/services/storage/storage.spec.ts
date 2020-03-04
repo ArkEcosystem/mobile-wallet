@@ -8,7 +8,7 @@ const NONOBJECT_TO_BE_STORED = 123456;
 const TEST_STORAGE_KEY = "TEST_STORAGE_KEY";
 const TEST_NONOBJECT_STORAGE_KEY = "TEST_NONOBJECT_STORAGE_KEY";
 
-fdescribe("Storage service", () => {
+describe("Storage service", () => {
 	beforeEach(() => {
 		const storage = new Storage({
 			name: "__mydb",
