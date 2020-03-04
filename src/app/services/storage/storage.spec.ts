@@ -6,7 +6,7 @@ let storageProvider = null;
 const OBJECT_TO_BE_STORED = { context: "I am been stored" };
 const NONOBJECT_TO_BE_STORED = 123456;
 const TEST_STORAGE_KEY = "TEST_STORAGE_KEY";
-const TEST_STORAGE_KEY_2 = "TEST_STORAGE_KEY_2";
+const TEST_NONOBJECT_STORAGE_KEY = "TEST_NONOBJECT_STORAGE_KEY";
 
 fdescribe("Storage service", () => {
 	beforeEach(() => {
@@ -23,12 +23,12 @@ fdescribe("Storage service", () => {
 
 		const result = storageProvider.get(TEST_STORAGE_KEY);
 		expect(result).toBeInstanceOf(Observable);
-    });
-    
-	it("should set a non object value in a key", () => {
-		storageProvider.set(TEST_STORAGE_KEY_2, NONOBJECT_TO_BE_STORED);
+	});
 
-		const result = storageProvider.get(TEST_STORAGE_KEY_2);
+	it("should set a non object value in a key", () => {
+		storageProvider.set(TEST_NONOBJECT_STORAGE_KEY, NONOBJECT_TO_BE_STORED);
+
+		const result = storageProvider.get(TEST_NONOBJECT_STORAGE_KEY);
 		expect(result).toBeInstanceOf(Observable);
 	});
 
@@ -45,6 +45,5 @@ fdescribe("Storage service", () => {
 			expect(storedValue).toEqual({});
 			done();
 		});
-    });
-
+	});
 });
