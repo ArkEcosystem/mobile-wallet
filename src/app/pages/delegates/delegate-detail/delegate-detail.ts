@@ -13,6 +13,7 @@ import { Delegate, Network, TransactionType } from "ark-ts";
 import { Wallet } from "@/models/wallet";
 
 import { ToastProvider } from "@/services/toast/toast";
+import { FormGroup } from "@angular/forms";
 import { Clipboard } from "@ionic-native/clipboard/ngx";
 import { TranslateService } from "@ngx-translate/core";
 import lodash from "lodash";
@@ -31,6 +32,7 @@ export class DelegateDetailPage {
 	public walletVote: Delegate;
 	public transactionType = TransactionType.Vote;
 	public fee: number;
+	public voteForm = new FormGroup({});
 
 	constructor(
 		public navCtrl: NavController,

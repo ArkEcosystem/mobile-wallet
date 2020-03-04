@@ -59,7 +59,7 @@
 			</ion-col>
 		</ion-row>
 
-		<form #voteForm="ngForm" class="p-5">
+		<form [formGroup]="voteForm" class="p-5">
 			<ion-row *ngIf="isWalletSelected()" class="vote-wrapper p-0">
 				<ion-grid>
 					<ion-row class="vote-wrapper__slider">
