@@ -3,8 +3,10 @@ import { Observable } from "rxjs";
 import { StorageProvider } from "./storage";
 
 let storageProvider = null;
-const TO_BE_STORED = { context: "I am been stored" };
+const OBJECT_TO_BE_STORED = { context: "I am been stored" };
+const NONOBJECT_TO_BE_STORED = 123456;
 const TEST_STORAGE_KEY = "TEST_STORAGE_KEY";
+const TEST_STORAGE_KEY_2 = "TEST_STORAGE_KEY_2";
 
 fdescribe("Storage service", () => {
 	beforeEach(() => {
@@ -16,16 +18,23 @@ fdescribe("Storage service", () => {
 		storageProvider = new StorageProvider(storage);
 	});
 
-	it("should set a value in a key", () => {
-		storageProvider.set(TEST_STORAGE_KEY, TO_BE_STORED);
+	it("should set a object value in a key", () => {
+		storageProvider.set(TEST_STORAGE_KEY, OBJECT_TO_BE_STORED);
 
 		const result = storageProvider.get(TEST_STORAGE_KEY);
+		expect(result).toBeInstanceOf(Observable);
+    });
+    
+	it("should set a non object value in a key", () => {
+		storageProvider.set(TEST_STORAGE_KEY_2, NONOBJECT_TO_BE_STORED);
+
+		const result = storageProvider.get(TEST_STORAGE_KEY_2);
 		expect(result).toBeInstanceOf(Observable);
 	});
 
 	it("should retrieve the stored value from a key", done => {
 		storageProvider.getObject(TEST_STORAGE_KEY).subscribe(storedValue => {
-			expect(storedValue).toEqual(TO_BE_STORED);
+			expect(storedValue).toEqual(OBJECT_TO_BE_STORED);
 			done();
 		});
 	});
@@ -36,5 +45,6 @@ fdescribe("Storage service", () => {
 			expect(storedValue).toEqual({});
 			done();
 		});
-	});
+    });
+
 });
