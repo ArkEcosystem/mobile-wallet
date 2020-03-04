@@ -19,32 +19,10 @@
 		<ion-grid class="h-full flex flex-col">
 			<ion-row class="row-contacts">
 				<ion-col>
-					<ion-item class="item-address">
-						<div slot="end" class="flex items-center h-full">
-							<ion-button
-								fill="clear"
-								color="medium"
-								(click)="scanQRCode()"
-							>
-								<ion-icon name="qr-code"></ion-icon>
-							</ion-button>
-							<ion-button
-								fill="clear"
-								color="medium"
-								(click)="presetWalletPickerModal()"
-							>
-								<ion-icon name="person"></ion-icon>
-							</ion-button>
-						</div>
-						<ion-label position="floating" class="pb-2">
-							{{ 'WALLETS_PAGE.ADDRESS' | translate }}
-						</ion-label>
-						<ion-input
-							type="text"
-							formControlName="recipientAddress"
-							name="recipientAddress"
-						></ion-input>
-					</ion-item>
+					<input-address
+						(inputAddressContactClick)="presetWalletPickerModal()"
+						(inputAddressQRCodeClick)="scanQRCode()"
+					></input-address>
 				</ion-col>
 			</ion-row>
 			<input-amount></input-amount>

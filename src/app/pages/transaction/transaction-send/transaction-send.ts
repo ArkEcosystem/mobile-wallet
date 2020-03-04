@@ -155,7 +155,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 						);
 						this.addressChecker
 							.checkAddress(
-								this.sendForm.get("recipientAddress").value,
+								this.sendForm.get("recipientId").value,
 							)
 							.subscribe(checkerResult => {
 								combinedResult.checkerDone = true;
@@ -188,18 +188,18 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 	public onPasteAddress(input: ClipboardEvent) {
 		const value = input.clipboardData.getData("text");
 		this.sendForm.patchValue({
-			recipientAddress: value,
+			recipientId: value,
 		});
 	}
 
 	private validAddress(): boolean {
-		const recipientAddress = this.sendForm.get("recipientAddress").value;
+		const recipientId = this.sendForm.get("recipientId").value;
 		const isValid = PublicKey.validateAddress(
-			recipientAddress,
+			recipientId,
 			this.currentNetwork,
 		);
 
-		this.sendForm.controls.recipientAddress.setErrors({
+		this.sendForm.controls.recipientId.setErrors({
 			incorrect: !isValid,
 		});
 
@@ -238,7 +238,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		modal.onDidDismiss().then(({ data }) => {
 			if (data) {
 				this.sendForm.patchValue({
-					recipientAddress: data.address,
+					recipientId: data.address,
 				});
 			}
 		});
@@ -263,10 +263,9 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 			vendorField: this.sendForm.get("vendorField").value,
 			passphrase: result.keys.key,
 			secondPassphrase: result.keys.secondKey,
-			recipientId: this.sendForm.get("recipientAddress").value,
+			recipientId: this.sendForm.get("recipientId").value,
 			fee: this.fee,
 		};
-
 		this.arkApiProvider.transactionBuilder
 			.createTransaction(data)
 			.subscribe(
@@ -319,13 +318,13 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 			});
 
 		this.sendForm = new FormGroup({
-			recipientAddress: new FormControl(""),
+			recipientId: new FormControl(""),
 			amount: new FormControl("", [Validators.required]),
 			amountEquivalent: new FormControl(""),
 			vendorField: new FormControl(""),
 		});
 
-		this.sendForm.controls.recipientAddress.setValue(
+		this.sendForm.controls.recipientId.setValue(
 			this.route.snapshot.queryParamMap.get("address") || "",
 		);
 	}

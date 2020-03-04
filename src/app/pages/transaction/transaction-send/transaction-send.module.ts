@@ -11,6 +11,7 @@ import { TranslateModule } from "@ngx-translate/core";
 
 import { DirectivesModule } from "@/directives/directives.module";
 
+import { InputAddressComponentModule } from "@/components/input-address/input-address.module";
 import { InputAmountComponentModule } from "@/components/input-amount/input-amount.module";
 import { WalletPickerModalModule } from "@/components/wallet-picker/wallet-picker.modal.module";
 import { CommonModule } from "@angular/common";
@@ -34,6 +35,7 @@ import { RouterModule } from "@angular/router";
 		InputAmountComponentModule,
 		InputFeeComponentModule,
 		WalletPickerModalModule,
+		InputAddressComponentModule,
 	],
 })
 export class TransactionSendPageModule {}
