@@ -111,6 +111,7 @@
 		"@types/node": "^13.7.1",
 		"@types/node-forge": "^0.9.2",
 		"@types/semver": "^7.1.0",
+		"codecov": "^3.6.5",
 		"codelyzer": "^5.2.1",
 		"husky": "^4.2.3",
 		"ionic": "^5.4.16",
