@@ -27,7 +27,13 @@ module.exports = function(config) {
 			fixWebpackSourcePaths: true,
 		},
 		coverageReporter: {
-			include: ["src/**/*.ts"],
+			include: [
+				"src/**/*.ts",
+				"!src/main.(ts|js)",
+				"!src/**/*.spec.(ts|js)",
+				"!src/**/*.module.(ts|js)",
+				"!src/**/environment*.(ts|js)",
+			],
 		},
 		customLaunchers: {
 			ChromeHeadlessNoSandbox: {
