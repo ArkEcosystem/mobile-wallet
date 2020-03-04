@@ -4,9 +4,8 @@
 		"outDir": "./out-tsc/app",
 		"types": []
 	},
+	"files": ["src/main.ts", "src/polyfills.ts", "src/zone-flags.ts"],
 	"include": [
-		"src/**/*.ts",
 		"node_modules/ark-ts/node_modules/json-typescript-mapper/libs/utils.ts"
-	],
-	"exclude": ["src/test.ts", "src/**/*.spec.ts"]
+	]
 }
