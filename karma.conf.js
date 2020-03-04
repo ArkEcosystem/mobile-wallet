@@ -13,6 +13,7 @@ module.exports = function(config) {
 			require("karma-jasmine-html-reporter"),
 			require("karma-coverage-istanbul-reporter"),
 			require("@angular-devkit/build-angular/plugins/karma"),
+			require("karma-sabarivka-reporter"),
 		],
 		client: {
 			clearContext: false, // leave Jasmine Spec Runner output visible in browser
@@ -25,6 +26,15 @@ module.exports = function(config) {
 			reports: ["html", "lcovonly", "text-summary"],
 			fixWebpackSourcePaths: true,
 		},
+		coverageReporter: {
+			include: [
+				"src/**/*.ts",
+				"!src/main.(ts|js)",
+				"!src/**/*.spec.(ts|js)",
+				"!src/**/*.module.(ts|js)",
+				"!src/**/environment*.(ts|js)",
+			],
+		},
 		customLaunchers: {
 			ChromeHeadlessNoSandbox: {
 				base: "ChromeHeadless",
@@ -35,7 +45,7 @@ module.exports = function(config) {
 				],
 			},
 		},
-		reporters: ["progress", "kjhtml"],
+		reporters: ["progress", "kjhtml", "sabarivka"],
 		port: 9876,
 		colors: true,
 		logLevel: config.LOG_INFO,
