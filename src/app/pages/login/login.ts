@@ -2,7 +2,6 @@ import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { AuthProvider } from "@/services/auth/auth";
 import { UserDataProvider } from "@/services/user-data/user-data";
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { ModalController, NavController } from "@ionic/angular";
 
 import { isNil } from "lodash";
 
@@ -19,8 +18,6 @@ export class LoginPage implements OnInit {
 	public isReady = false;
 
 	constructor(
-		public navCtrl: NavController,
-		public modalCtrl: ModalController,
 		private authProvider: AuthProvider,
 		private userDataProvider: UserDataProvider,
 	) {}

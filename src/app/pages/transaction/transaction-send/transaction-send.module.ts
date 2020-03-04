@@ -11,11 +11,12 @@ import { TranslateModule } from "@ngx-translate/core";
 
 import { DirectivesModule } from "@/directives/directives.module";
 
+import { InputAddressComponentModule } from "@/components/input-address/input-address.module";
 import { InputAmountComponentModule } from "@/components/input-amount/input-amount.module";
+import { WalletPickerModalModule } from "@/components/wallet-picker/wallet-picker.modal.module";
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
-import { AutoCompleteModule } from "ionic4-auto-complete";
 
 @NgModule({
 	declarations: [TransactionSendPage],
@@ -31,9 +32,10 @@ import { AutoCompleteModule } from "ionic4-auto-complete";
 		ConfirmTransactionComponentModule,
 		QRScannerComponentModule,
 		DirectivesModule,
-		AutoCompleteModule,
 		InputAmountComponentModule,
 		InputFeeComponentModule,
+		WalletPickerModalModule,
+		InputAddressComponentModule,
 	],
 })
 export class TransactionSendPageModule {}

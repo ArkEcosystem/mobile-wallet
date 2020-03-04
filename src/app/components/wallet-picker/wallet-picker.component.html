@@ -1,0 +1,21 @@
+<ion-list>
+	<ion-list-header class="font-bold capitalize pl-0" mode="md">
+		{{ title | translate }}
+	</ion-list-header>
+	<ion-item button (click)="onTap(wallet)" *ngFor="let wallet of wallets">
+		<div class="c-avatar" slot="start">
+			{{ wallet?.name?.charAt(0) || symbol }}
+		</div>
+		<ion-label>
+			<ng-template [ngIf]="wallet.name" [ngIfElse]="onlyAddress">
+				<h3 class="font-semibold">{{ wallet.name }}</h3>
+				<p>{{ wallet.address | truncateMiddle: 10 }}</p>
+			</ng-template>
+			<ng-template #onlyAddress>
+				<h3 class="font-bold">
+					{{ wallet.address | truncateMiddle: 15 }}
+				</h3>
+			</ng-template>
+		</ion-label>
+	</ion-item>
+</ion-list>
