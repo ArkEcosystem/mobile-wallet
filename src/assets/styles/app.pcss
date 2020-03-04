@@ -2,6 +2,10 @@
 	display: none;
 }
 
+body:not(.backdrop-no-scroll) ion-app {
+	background: var(--ion-background-color);
+}
+
 .c-avatar {
 	@apply w-10 h-10 mr-2 rounded-full flex justify-center items-center font-bold text-base;
 	background-color: var(--ion-color-light-shade);
