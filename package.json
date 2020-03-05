@@ -161,7 +161,7 @@
 			"cordova-plugin-ionic-keyboard": {},
 			"cordova-plugin-ionic": {
 				"APP_ID": "efb289f2",
-				"CHANNEL_NAME": "Master",
+				"CHANNEL_NAME": "Production",
 				"UPDATE_METHOD": "background",
 				"MAX_STORE": "2",
 				"MIN_BACKGROUND_DURATION": "30",
