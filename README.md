@@ -17,8 +17,8 @@ ARK’s mobile wallet is a hybrid application (using the same codebase for Andro
 
 ## Download
 
-- [Google Play](https://play.google.com/store/apps/details?id=io.ark.wallet.mobile)
-- [App Store](https://itunes.apple.com/us/app/mobile-ark/id1324625967)
+-   [Google Play](https://play.google.com/store/apps/details?id=io.ark.wallet.mobile)
+-   [App Store](https://itunes.apple.com/us/app/mobile-ark/id1324625967)
 
 ## Installation
 
@@ -29,7 +29,7 @@ Download and install [Node.js](https://nodejs.org/).
 Then follow the steps below:
 
 ```bash
-npm install -g ionic cordova
+npm install -g @ionic/cli cordova
 npm install -g cordova-res native-run
 npm install
 ionic cordova prepare
@@ -56,9 +56,9 @@ npm install -g ios-deploy
 
 Download and install:
 
-- [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
-- [Gradle](https://gradle.org/install/)
-- [Android Studio](https://developer.android.com/studio/)
+-   [JDK8](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+-   [Gradle](https://gradle.org/install/)
+-   [Android Studio](https://developer.android.com/studio/)
 
 Then install Android SDK (API 28) on Android Studio and configure the [environment variables](https://developer.android.com/studio/command-line/variables) (`ANDROID_SDK_ROOT`).
 
@@ -88,36 +88,36 @@ npm run build:android
 
 ### iOS Deploy
 
-- Download the `Development` and `Distribution` certificates in [Apple's member center](https://developer.apple.com/membercenter)
-- Open Xcode and import the workspace file in `/platforms/ios`
-- Check the `Signing and Capabilities` tab to ensure that the `Provisioning Profile` is set correctly
-- Go to `Product` > `Archive` in menu.
-- Proceed in `Distribute App` wizard.
-- `App Store Connect` > `Upload`. Then it will be listed on [iTunes Connect](https://itunesconnect.apple.com/)
-- `App Store Connect` > `Export` to create the `.ipa` file
+-   Download the `Development` and `Distribution` certificates in [Apple's member center](https://developer.apple.com/membercenter)
+-   Open Xcode and import the workspace file in `/platforms/ios`
+-   Check the `Signing and Capabilities` tab to ensure that the `Provisioning Profile` is set correctly
+-   Go to `Product` > `Archive` in menu.
+-   Proceed in `Distribute App` wizard.
+-   `App Store Connect` > `Upload`. Then it will be listed on [iTunes Connect](https://itunesconnect.apple.com/)
+-   `App Store Connect` > `Export` to create the `.ipa` file
 
 ### Android Deploy
 
-- Open the output directory `cd platforms/android/build/outputs/apk`
-- Generate a private key to sign the APK (skip this if you already have one):
+-   Open the output directory `cd platforms/android/build/outputs/apk`
+-   Generate a private key to sign the APK (skip this if you already have one):
 
 ```bash
 keytool -genkey -v -keystore release-key.keystore -alias ark -keyalg RSA -keysize 2048 -validity 10000
 ```
 
-- Sign the unsigned APK:
+-   Sign the unsigned APK:
 
 ```bash
 jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ./release-key.keystore app-release-unsigned.apk mobile-app
 ```
 
-- Optimize the APK:
+-   Optimize the APK:
 
 ```bash
 zipalign -v 4 app-release-unsigned.apk AppRelease.apk
 ```
 
-- Open the [Google Play Store Developer Console](https://play.google.com/apps/publish) and upload the `AppRelease.apk`
+-   Open the [Google Play Store Developer Console](https://play.google.com/apps/publish) and upload the `AppRelease.apk`
 
 ## Testing
 
@@ -127,10 +127,10 @@ npm test
 
 ## Contributing
 
-- If you find any bugs, submit an [issue](../../issues) or open [pull-request](../../pulls), helping us catch and fix them.
-- Engage with other users and developers on [ARK Slack](https://ark.io/slack/).
-- [Contribution bounties](https://docs.ark.io/guidebook/contribution-guidelines/contributing.html).
-- [Help translate](./TRANSLATING.md).
+-   If you find any bugs, submit an [issue](../../issues) or open [pull-request](../../pulls), helping us catch and fix them.
+-   Engage with other users and developers on [ARK Slack](https://ark.io/slack/).
+-   [Contribution bounties](https://docs.ark.io/guidebook/contribution-guidelines/contributing.html).
+-   [Help translate](./TRANSLATING.md).
 
 ## Security
 
