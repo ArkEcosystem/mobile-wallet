@@ -2,5 +2,7 @@
 	"name": "ark-ionic",
 	"integrations": {
 		"cordova": {}
-	}
+	},
+	"type": "angular",
+	"id": "4beef805"
 }
