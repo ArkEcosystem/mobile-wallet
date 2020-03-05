@@ -95,8 +95,8 @@
 	"devDependencies": {
 		"@angular-builders/custom-webpack": "^9.0.0",
 		"@angular-devkit/architect": "~0.900.2",
-		"@angular-devkit/build-angular": "~0.900.2",
-		"@angular/cli": "^9.0.2",
+		"@angular-devkit/build-angular": "~0.900.5",
+		"@angular/cli": "^9.0.5",
 		"@angular/compiler-cli": "~9.0.1",
 		"@angular/language-service": "~9.0.1",
 		"@ionic/angular-toolkit": "^2.2.0",
