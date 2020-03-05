@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ModalController, NavController } from "@ionic/angular";
+import { PrivateKey } from "ark-ts/core";
+import * as bip39 from "bip39";
 
 import { AccountBackup, WalletKeys } from "@/models/model";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { PrivateKey } from "ark-ts/core";
-import * as bip39 from "bip39";
+
 import { PassphraseWordTesterModal } from "../passphrase-word-tester/passphrase-word-tester";
 
 @Component({

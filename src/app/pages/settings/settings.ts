@@ -6,18 +6,15 @@ import {
 	NavController,
 	Platform,
 } from "@ionic/angular";
-
-import { Subject } from "rxjs";
-
 import { TranslateService } from "@ngx-translate/core";
-
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
-import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { Subject } from "rxjs";
+import { takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
+import { PinCodeComponent } from "@/components/pin-code/pin-code";
+import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { takeUntil, tap } from "rxjs/operators";
 
 const packageJson = require("@@/package.json");
 
@@ -118,11 +115,6 @@ export class SettingsPage implements OnInit, OnDestroy {
 			});
 	}
 
-	private clearData() {
-		this.settingsDataProvider.clearData();
-		this.navCtrl.navigateRoot("/intro");
-	}
-
 	onUpdate() {
 		this.settingsDataProvider.save(this.currentSettings);
 	}
@@ -146,5 +138,10 @@ export class SettingsPage implements OnInit, OnDestroy {
 	ngOnDestroy() {
 		this.unsubscriber$.next();
 		this.unsubscriber$.complete();
+	}
+
+	private clearData() {
+		this.settingsDataProvider.clearData();
+		this.navCtrl.navigateRoot("/intro");
 	}
 }

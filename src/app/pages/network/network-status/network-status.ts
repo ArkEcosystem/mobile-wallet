@@ -1,14 +1,12 @@
 import { Component, NgZone, OnDestroy, OnInit } from "@angular/core";
 import { LoadingController } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
+import { Network, Peer } from "ark-ts";
+import { Subject, throwError } from "rxjs";
+import { catchError, debounceTime, takeUntil, tap } from "rxjs/operators";
 
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
-import { Subject, throwError } from "rxjs";
-
-import { Network, Peer } from "ark-ts";
-
 import { ToastProvider } from "@/services/toast/toast";
-import { TranslateService } from "@ngx-translate/core";
-import { catchError, debounceTime, takeUntil, tap } from "rxjs/operators";
 
 @Component({
 	selector: "page-network-status",
@@ -67,6 +65,22 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
 			});
 	}
 
+	ngOnInit() {
+		this.onUpdatePeer();
+		this.refreshData();
+
+		this.refreshIntervalListener = setInterval(() => {
+			this.refreshData();
+		}, 30 * 1000);
+	}
+
+	ngOnDestroy() {
+		clearInterval(this.refreshIntervalListener);
+
+		this.unsubscriber$.next();
+		this.unsubscriber$.complete();
+	}
+
 	private refreshData() {
 		this.arkApiProvider.client
 			.getPeerConfig(this.currentPeer.ip, this.currentNetwork.p2pPort)
@@ -109,21 +123,5 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
 				}),
 			)
 			.subscribe();
-	}
-
-	ngOnInit() {
-		this.onUpdatePeer();
-		this.refreshData();
-
-		this.refreshIntervalListener = setInterval(() => {
-			this.refreshData();
-		}, 30 * 1000);
-	}
-
-	ngOnDestroy() {
-		clearInterval(this.refreshIntervalListener);
-
-		this.unsubscriber$.next();
-		this.unsubscriber$.complete();
 	}
 }

@@ -1,5 +1,3 @@
-import { ARKTOSHI_DP } from "@/app/app.constants";
-import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
 import {
 	Component,
 	EventEmitter,
@@ -14,6 +12,9 @@ import {
 	NG_VALUE_ACCESSOR,
 } from "@angular/forms";
 
+import { ARKTOSHI_DP } from "@/app/app.constants";
+import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
+
 export interface IInputCurrencyOutput {
 	display: string;
 	value: BigNumber;
@@ -26,6 +27,7 @@ export interface IInputCurrencyOutput {
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,
+			/* eslint-disable-next-line */
 			useExisting: forwardRef(() => InputCurrencyComponent),
 			multi: true,
 		},
@@ -48,9 +50,10 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 
 	public isDisabled: boolean;
 	public input: (value: BigNumber) => void;
-	public onTouched = () => {};
 
 	constructor() {}
+
+	public onTouched = () => {};
 
 	writeValue(value: string | number | BigNumber): void {
 		if (SafeBigNumber.isBigNumber(value)) {
@@ -102,7 +105,7 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 
 		for (let i = 0; i < input.length; i++) {
 			const char = input[i];
-			if (numbers.indexOf(char) !== -1) {
+			if (numbers.includes(char)) {
 				if (decimals >= 0) {
 					decimals++;
 					if (decimals > this.fractionDigits) {
@@ -110,7 +113,7 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 					}
 				}
 				display += char;
-			} else if (decimals === -1 && separatos.indexOf(char) !== -1) {
+			} else if (decimals === -1 && separatos.includes(char)) {
 				if (i === 0) {
 					display = "0";
 				}

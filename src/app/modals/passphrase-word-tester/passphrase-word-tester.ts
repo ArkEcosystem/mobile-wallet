@@ -1,7 +1,8 @@
-import { PassphraseInputComponent } from "@/components/passphrase-input/passphrase-input";
-import { UserDataProvider } from "@/services/user-data/user-data";
 import { Component, Input, ViewChild } from "@angular/core";
 import { ModalController, NavController } from "@ionic/angular";
+
+import { PassphraseInputComponent } from "@/components/passphrase-input/passphrase-input";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 @Component({
 	selector: "modal-passphrase-word-tester",

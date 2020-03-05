@@ -1,5 +1,6 @@
-import { UserDataProvider } from "@/services/user-data/user-data";
 import { Directive, ElementRef, OnInit } from "@angular/core";
+
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 @Directive({
 	selector: "[appMarketNetOnly]",

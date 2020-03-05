@@ -1,14 +1,15 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
-import { SettingsPage } from "./settings";
+import { TranslateModule } from "@ngx-translate/core";
 
 import { CustomNetworkCreateModal } from "@/app/modals/custom-network-create/custom-network-create";
 import { CustomNetworkCreateModalModule } from "@/app/modals/custom-network-create/custom-network-create.module";
 import { PinCodeComponentModule } from "@/components/pin-code/pin-code.module";
-import { CommonModule } from "@angular/common";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
-import { TranslateModule } from "@ngx-translate/core";
+
+import { SettingsPage } from "./settings";
 
 @NgModule({
 	declarations: [SettingsPage],

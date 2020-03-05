@@ -1,8 +1,9 @@
-import { UserDataProvider } from "@/services/user-data/user-data";
 import { Injectable } from "@angular/core";
 import { Network } from "ark-ts";
 import { PublicKey } from "ark-ts/core";
 import { isNil } from "lodash";
+
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 @Injectable({ providedIn: "root" })
 export class NetworkProvider {

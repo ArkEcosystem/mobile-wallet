@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { ToastController } from "@ionic/angular";
-
 import { TranslateService } from "@ngx-translate/core";
 
 import * as constants from "@/app/app.constants";
@@ -78,10 +77,10 @@ export class ToastProvider {
 		let message: string;
 		let parameters: any;
 		if (typeof messageOrObj === "string") {
-			message = messageOrObj as string;
+			message = messageOrObj;
 			parameters = null;
 		} else {
-			const obj = messageOrObj as TranslatableObject;
+			const obj = messageOrObj;
 			message = obj.key;
 			parameters = obj.parameters;
 		}

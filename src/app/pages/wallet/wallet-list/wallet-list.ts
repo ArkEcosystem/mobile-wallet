@@ -6,13 +6,17 @@ import {
 	ModalController,
 	NavController,
 } from "@ionic/angular";
-
+import { TranslateService } from "@ngx-translate/core";
+import { Network } from "ark-ts/model";
+import lodash from "lodash";
+import { BaseChartDirective } from "ng2-charts";
 import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
-import { MarketDataProvider } from "@/services/market-data/market-data";
-import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
+import * as constants from "@/app/app.constants";
+import { GenerateEntropyModal } from "@/app/modals/generate-entropy/generate-entropy";
+import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
+import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
 import {
 	MarketCurrency,
 	MarketHistory,
@@ -20,18 +24,10 @@ import {
 	Profile,
 	Wallet,
 } from "@/models/model";
-import { Network } from "ark-ts/model";
-
-import { TranslateService } from "@ngx-translate/core";
-
-import * as constants from "@/app/app.constants";
-import { GenerateEntropyModal } from "@/app/modals/generate-entropy/generate-entropy";
-import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
-import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
-import lodash from "lodash";
-import { BaseChartDirective } from "ng2-charts";
-import { takeUntil } from "rxjs/operators";
+import { MarketDataProvider } from "@/services/market-data/market-data";
+import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 @Component({
 	selector: "page-wallet-list",
@@ -167,6 +163,20 @@ export class WalletListPage implements OnInit, OnDestroy {
 
 				actionSheet.present();
 			});
+	}
+
+	ionViewDidEnter() {
+		this.loadWallets();
+		this.onCreateUpdateWallet();
+		this.initMarketHistory();
+		this.initTicker();
+
+		// this.content.resize();
+	}
+
+	ngOnDestroy() {
+		this.unsubscriber$.next();
+		this.unsubscriber$.complete();
 	}
 
 	private async presentWalletGenerate() {
@@ -446,15 +456,6 @@ export class WalletListPage implements OnInit, OnDestroy {
 		});
 	}
 
-	ionViewDidEnter() {
-		this.loadWallets();
-		this.onCreateUpdateWallet();
-		this.initMarketHistory();
-		this.initTicker();
-
-		// this.content.resize();
-	}
-
 	private initTicker() {
 		// just set the data from cache first
 		if (this.marketDataProvider.cachedTicker) {
@@ -472,10 +473,5 @@ export class WalletListPage implements OnInit, OnDestroy {
 			() => this.marketDataProvider.refreshTicker(),
 			constants.WALLET_REFRESH_PRICE_MILLISECONDS,
 		);
-	}
-
-	ngOnDestroy() {
-		this.unsubscriber$.next();
-		this.unsubscriber$.complete();
 	}
 }

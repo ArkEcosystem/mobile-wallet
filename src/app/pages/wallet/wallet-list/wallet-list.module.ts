@@ -1,20 +1,19 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
-import { WalletListPage } from "./wallet-list";
-
-import { EmptyListComponentModule } from "@/components/empty-list/empty-list.module";
-import { PipesModule } from "@/pipes/pipes.module";
 import { TranslateModule } from "@ngx-translate/core";
-
-import { DirectivesModule } from "@/directives/directives.module";
+import { ChartsModule } from "ng2-charts";
 
 import { GenerateEntropyModal } from "@/app/modals/generate-entropy/generate-entropy";
 import { GenerateEntropyModalModule } from "@/app/modals/generate-entropy/generate-entropy.module";
 import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
 import { WalletBackupModalModule } from "@/app/modals/wallet-backup/wallet-backup.module";
-import { CommonModule } from "@angular/common";
-import { RouterModule } from "@angular/router";
-import { ChartsModule } from "ng2-charts";
+import { EmptyListComponentModule } from "@/components/empty-list/empty-list.module";
+import { DirectivesModule } from "@/directives/directives.module";
+import { PipesModule } from "@/pipes/pipes.module";
+
+import { WalletListPage } from "./wallet-list";
 
 @NgModule({
 	declarations: [WalletListPage],

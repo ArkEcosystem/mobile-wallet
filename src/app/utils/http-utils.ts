@@ -1,6 +1,5 @@
-import { isNil, isPlainObject } from "lodash";
-
 import { HttpParams } from "@angular/common/http";
+import { isNil, isPlainObject } from "lodash";
 
 export class HttpUtils {
 	static buildQueryParams(source: object): HttpParams {

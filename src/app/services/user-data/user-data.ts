@@ -1,21 +1,18 @@
-import { AuthProvider } from "@/services/auth/auth";
-import { ForgeProvider } from "@/services/forge/forge";
-import { StorageProvider } from "@/services/storage/storage";
 import { Injectable } from "@angular/core";
-
-import { EMPTY, Observable, Subject, throwError } from "rxjs";
-
-import { Contact, Profile, Wallet, WalletKeys } from "@/models/model";
-
+import { Delegate } from "ark-ts";
 import { Network, NetworkType } from "ark-ts/model";
 import * as lodash from "lodash";
+import { EMPTY, Observable, Subject, throwError } from "rxjs";
+import { debounceTime, map } from "rxjs/operators";
 import { v4 as uuid } from "uuid";
 
 import * as constants from "@/app/app.constants";
+import { Contact, Profile, Wallet, WalletKeys } from "@/models/model";
 import { StoredNetwork } from "@/models/stored-network";
 import { TranslatableObject } from "@/models/translate";
-import { Delegate } from "ark-ts";
-import { debounceTime, map } from "rxjs/operators";
+import { AuthProvider } from "@/services/auth/auth";
+import { ForgeProvider } from "@/services/forge/forge";
+import { StorageProvider } from "@/services/storage/storage";
 
 @Injectable({ providedIn: "root" })
 export class UserDataProvider {
@@ -40,21 +37,6 @@ export class UserDataProvider {
 		return this._defaultNetworks;
 	}
 
-	constructor(
-		private storageProvider: StorageProvider,
-		private authProvider: AuthProvider,
-		private forgeProvider: ForgeProvider,
-	) {
-		this.loadAllData();
-
-		this.onLogin();
-		this.onClearStorage();
-
-		this.onUpdateNetwork$.subscribe(
-			network => (this.currentNetwork = network),
-		);
-	}
-
 	public profiles: { [key: string]: Profile } = {};
 	public networks: Record<string, StoredNetwork> = {};
 
@@ -69,6 +51,21 @@ export class UserDataProvider {
 	public onSelectProfile$: Subject<Profile> = new Subject();
 
 	private _defaultNetworks: Network[];
+
+	constructor(
+		private storageProvider: StorageProvider,
+		private authProvider: AuthProvider,
+		private forgeProvider: ForgeProvider,
+	) {
+		this.loadAllData();
+
+		this.onLogin();
+		this.onClearStorage();
+
+		this.onUpdateNetwork$.subscribe(
+			network => (this.currentNetwork = network),
+		);
+	}
 
 	// this method is required to "migrate" contacts, in the first version of the app the contact's didnt't include an address property
 	private static mapContact = (

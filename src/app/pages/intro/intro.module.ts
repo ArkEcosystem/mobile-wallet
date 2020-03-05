@@ -1,9 +1,10 @@
 import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
-import { IntroPage } from "./intro";
 
 import { SharedModule } from "@/app/shared.module";
-import { RouterModule } from "@angular/router";
+
+import { IntroPage } from "./intro";
 
 @NgModule({
 	declarations: [IntroPage],

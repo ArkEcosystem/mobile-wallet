@@ -1,6 +1,7 @@
-import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { Pipe, PipeTransform } from "@angular/core";
 import moment from "moment";
+
+import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 
 @Pipe({
 	name: "timestampHuman",

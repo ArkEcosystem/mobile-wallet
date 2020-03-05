@@ -6,20 +6,19 @@ import {
 	NavController,
 	Platform,
 } from "@ionic/angular";
-
-import { ArkApiProvider } from "@/services/ark-api/ark-api";
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
 import { Delegate, TransactionVote, VoteType } from "ark-ts";
 import { Subject } from "rxjs";
-
-import { Wallet, WalletKeys } from "@/models/model";
-import { StoredNetwork } from "@/models/stored-network";
+import { takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
 import { PinCodeComponent } from "@/components/pin-code/pin-code";
-import { takeUntil, tap } from "rxjs/operators";
+import { Wallet, WalletKeys } from "@/models/model";
+import { StoredNetwork } from "@/models/stored-network";
+import { ArkApiProvider } from "@/services/ark-api/ark-api";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataProvider } from "@/services/user-data/user-data";
+
 import { DelegateDetailPage } from "./delegate-detail/delegate-detail";
 
 @Component({
@@ -57,11 +56,11 @@ export class DelegatesPage implements OnDestroy {
 	public rankStatus = "active";
 	public currentNetwork: StoredNetwork;
 	public slides: string[] = ["active", "standBy"];
+	public currentWallet: Wallet;
 
 	private selectedDelegate: Delegate;
 	private selectedFee: number;
 
-	public currentWallet: Wallet;
 	private walletVote: Delegate;
 
 	private unsubscriber$: Subject<void> = new Subject<void>();
@@ -166,37 +165,6 @@ export class DelegatesPage implements OnDestroy {
 			});
 	}
 
-	private fetchCurrentVote() {
-		if (!this.currentWallet) {
-			return;
-		}
-
-		this.arkApiProvider.client
-			.getWalletVotes(this.currentWallet.address)
-			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(
-				data => {
-					if (data.success && data.delegates.length > 0) {
-						this.walletVote = data.delegates[0];
-					}
-				},
-				() => {
-					this.toastProvider.error("DELEGATES_PAGE.VOTE_FETCH_ERROR");
-				},
-			);
-	}
-
-	private onUpdateDelegates() {
-		this.arkApiProvider.onUpdateDelegates$
-			.pipe(
-				takeUntil(this.unsubscriber$),
-				tap(delegates => {
-					this.zone.run(() => (this.delegates = delegates));
-				}),
-			)
-			.subscribe();
-	}
-
 	ionViewDidEnter() {
 		this.currentNetwork = this.arkApiProvider.network;
 		this.currentWallet = this.userDataProvider.currentWallet;
@@ -232,5 +200,36 @@ export class DelegatesPage implements OnDestroy {
 
 		this.unsubscriber$.next();
 		this.unsubscriber$.complete();
+	}
+
+	private fetchCurrentVote() {
+		if (!this.currentWallet) {
+			return;
+		}
+
+		this.arkApiProvider.client
+			.getWalletVotes(this.currentWallet.address)
+			.pipe(takeUntil(this.unsubscriber$))
+			.subscribe(
+				data => {
+					if (data.success && data.delegates.length > 0) {
+						this.walletVote = data.delegates[0];
+					}
+				},
+				() => {
+					this.toastProvider.error("DELEGATES_PAGE.VOTE_FETCH_ERROR");
+				},
+			);
+	}
+
+	private onUpdateDelegates() {
+		this.arkApiProvider.onUpdateDelegates$
+			.pipe(
+				takeUntil(this.unsubscriber$),
+				tap(delegates => {
+					this.zone.run(() => (this.delegates = delegates));
+				}),
+			)
+			.subscribe();
 	}
 }

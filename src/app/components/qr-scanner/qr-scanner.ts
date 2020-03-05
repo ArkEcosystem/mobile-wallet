@@ -1,11 +1,11 @@
-import { QRCodeScheme } from "@/models/model";
 import { Component, EventEmitter, Output } from "@angular/core";
 import { ModalController } from "@ionic/angular";
+import * as bip39 from "bip39";
+import lodash from "lodash";
 
 import * as constants from "@/app/app.constants";
 import { QRScannerModal } from "@/app/modals/qr-scanner/qr-scanner";
-import * as bip39 from "bip39";
-import lodash from "lodash";
+import { QRCodeScheme } from "@/models/model";
 
 @Component({
 	selector: "qr-scanner",

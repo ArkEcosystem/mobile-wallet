@@ -1,9 +1,9 @@
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { isNil } from "lodash";
+
 import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { AuthProvider } from "@/services/auth/auth";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { Component, OnInit, ViewChild } from "@angular/core";
-
-import { isNil } from "lodash";
 
 @Component({
 	selector: "page-login",

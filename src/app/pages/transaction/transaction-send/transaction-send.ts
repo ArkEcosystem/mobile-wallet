@@ -1,41 +1,37 @@
 import { Component, NgZone, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import {
 	IonRouterOutlet,
 	LoadingController,
 	ModalController,
 } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
+import { TransactionSend, TransactionType } from "ark-ts";
+import { PublicKey } from "ark-ts/core";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
+import * as constants from "@/app/app.constants";
+import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
+import { PinCodeComponent } from "@/components/pin-code/pin-code";
+import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
+import { WalletPickerModal } from "@/components/wallet-picker/wallet-picker.modal";
 import {
 	QRCodeScheme,
 	StoredNetwork,
 	Wallet,
 	WalletKeys,
 } from "@/models/model";
-
+import { TranslatableObject } from "@/models/translate";
+import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
+import { AddressCheckResult } from "@/services/address-checker/address-check-result";
+import { AddressCheckerProvider } from "@/services/address-checker/address-checker";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataProvider } from "@/services/user-data/user-data";
-
-import { PublicKey } from "ark-ts/core";
-import { Subject } from "rxjs";
-
-import * as constants from "@/app/app.constants";
-import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
-import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
-import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
-import { TransactionSend, TransactionType } from "ark-ts";
-
-import { WalletPickerModal } from "@/components/wallet-picker/wallet-picker.modal";
-import { TranslatableObject } from "@/models/translate";
-import { AddressCheckResult } from "@/services/address-checker/address-check-result";
-import { AddressCheckerProvider } from "@/services/address-checker/address-checker";
 import { ArkUtility } from "@/utils/ark-utility";
 import { SafeBigNumber } from "@/utils/bignumber";
-import { ActivatedRoute } from "@angular/router";
-import { TranslateService } from "@ngx-translate/core";
-import { takeUntil } from "rxjs/operators";
 
 class CombinedResult {
 	public checkerDone: boolean;
@@ -192,34 +188,6 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		});
 	}
 
-	private validAddress(): boolean {
-		const recipientId = this.sendForm.get("recipientId").value;
-		const isValid = PublicKey.validateAddress(
-			recipientId,
-			this.currentNetwork,
-		);
-
-		this.sendForm.controls.recipientId.setErrors({
-			incorrect: !isValid,
-		});
-
-		return isValid;
-	}
-
-	private validForm(): boolean {
-		let isValid = true;
-		if (
-			!this.sendForm.controls.amount.value ||
-			this.sendForm.controls.amount.value <= 0 ||
-			(this.sendForm.controls.vendorField.value || "").length >
-				this.vendorFieldLength
-		) {
-			isValid = false;
-		}
-
-		return isValid;
-	}
-
 	scanQRCode() {
 		this.qrScanner.open(true);
 	}
@@ -244,52 +212,10 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		});
 	}
 
-	private createTransactionAndShowConfirm(result: CombinedResult) {
-		if (!result.pinCodeDone) {
-			return;
-		}
-
-		if (!result.checkerDone) {
-			result.loader.present();
-			return;
-		}
-
-		result.loader.dismiss();
-		const amount = this.sendForm.get("amount").value;
-		const data: TransactionSend = {
-			amount: new SafeBigNumber(amount)
-				.times(constants.WALLET_UNIT_TO_SATOSHI)
-				.toNumber(),
-			vendorField: this.sendForm.get("vendorField").value,
-			passphrase: result.keys.key,
-			secondPassphrase: result.keys.secondKey,
-			recipientId: this.sendForm.get("recipientId").value,
-			fee: this.fee,
-		};
-		this.arkApiProvider.transactionBuilder
-			.createTransaction(data)
-			.subscribe(
-				transaction => {
-					// The transaction will be signed again;
-					this.confirmTransaction.open(
-						transaction,
-						result.keys,
-						result.checkerResult,
-					);
-				},
-				() => {
-					this.toastProvider.error(
-						"TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR",
-					);
-					this.hasNotSent();
-				},
-			);
-	}
-
 	onScanQRCode(qrCode: QRCodeScheme) {
 		if (qrCode.address) {
 			const amount = Number(qrCode.amount);
-			if (!!amount) {
+			if (amount) {
 				this.sendForm.controls.amount.setValue(amount);
 			}
 			if (qrCode.vendorField) {
@@ -344,5 +270,75 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 
 	public onFeeError(hasError: boolean) {
 		this.hasFeeError = hasError;
+	}
+
+	private validAddress(): boolean {
+		const recipientId = this.sendForm.get("recipientId").value;
+		const isValid = PublicKey.validateAddress(
+			recipientId,
+			this.currentNetwork,
+		);
+
+		this.sendForm.controls.recipientId.setErrors({
+			incorrect: !isValid,
+		});
+
+		return isValid;
+	}
+
+	private validForm(): boolean {
+		let isValid = true;
+		if (
+			!this.sendForm.controls.amount.value ||
+			this.sendForm.controls.amount.value <= 0 ||
+			(this.sendForm.controls.vendorField.value || "").length >
+				this.vendorFieldLength
+		) {
+			isValid = false;
+		}
+
+		return isValid;
+	}
+
+	private createTransactionAndShowConfirm(result: CombinedResult) {
+		if (!result.pinCodeDone) {
+			return;
+		}
+
+		if (!result.checkerDone) {
+			result.loader.present();
+			return;
+		}
+
+		result.loader.dismiss();
+		const amount = this.sendForm.get("amount").value;
+		const data: TransactionSend = {
+			amount: new SafeBigNumber(amount)
+				.times(constants.WALLET_UNIT_TO_SATOSHI)
+				.toNumber(),
+			vendorField: this.sendForm.get("vendorField").value,
+			passphrase: result.keys.key,
+			secondPassphrase: result.keys.secondKey,
+			recipientId: this.sendForm.get("recipientId").value,
+			fee: this.fee,
+		};
+		this.arkApiProvider.transactionBuilder
+			.createTransaction(data)
+			.subscribe(
+				transaction => {
+					// The transaction will be signed again;
+					this.confirmTransaction.open(
+						transaction,
+						result.keys,
+						result.checkerResult,
+					);
+				},
+				() => {
+					this.toastProvider.error(
+						"TRANSACTIONS_PAGE.CREATE_TRANSACTION_ERROR",
+					);
+					this.hasNotSent();
+				},
+			);
 	}
 }

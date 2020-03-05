@@ -1,4 +1,5 @@
 import * as constants from "@/app/app.constants";
+
 import { SafeBigNumber as BigNumber } from "./bignumber";
 
 export class ArkUtility {

@@ -1,14 +1,14 @@
 import { Component } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { ActionSheetController, NavController } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
 
 import { StoredNetwork, Wallet } from "@/models/model";
 import { TransactionEntity } from "@/models/transaction";
 import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
 import { ContactsProvider } from "@/services/contacts/contacts";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { ActivatedRoute } from "@angular/router";
-import { TranslateService } from "@ngx-translate/core";
 
 @Component({
 	selector: "page-transaction-show",

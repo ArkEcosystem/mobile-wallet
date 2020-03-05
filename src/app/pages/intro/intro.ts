@@ -1,8 +1,8 @@
 import { Component, ViewChild } from "@angular/core";
 import { IonSlides, NavController, Platform } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
 
 import { AuthProvider } from "@/services/auth/auth";
-import { TranslateService } from "@ngx-translate/core";
 
 @Component({
 	selector: "page-intro",
