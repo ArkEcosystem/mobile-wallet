@@ -1,7 +1,8 @@
+import { Pipe, PipeTransform } from "@angular/core";
+
 import { AccountLabelPipe } from "@/pipes/account-label/account-label";
 import { ContactsProvider } from "@/services/contacts/contacts";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
 	name: "hasAccountLabel",

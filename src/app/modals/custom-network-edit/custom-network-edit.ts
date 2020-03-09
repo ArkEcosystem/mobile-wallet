@@ -1,10 +1,11 @@
-import { StoredNetwork } from "@/models/stored-network";
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
 import { Component } from "@angular/core";
 import { AlertController, ModalController, NavParams } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
 import lodash from "lodash";
+
+import { StoredNetwork } from "@/models/stored-network";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 export enum EditNetworkAction {
 	Update,

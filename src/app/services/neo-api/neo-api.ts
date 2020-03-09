@@ -1,8 +1,9 @@
-import { NetworkProvider } from "@/services/network/network";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
+
+import { NetworkProvider } from "@/services/network/network";
 
 @Injectable({ providedIn: "root" })
 export class NeoApiProvider {

@@ -1,3 +1,8 @@
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { ModalController } from "@ionic/angular";
+import { Network } from "ark-ts/model";
+import lodash from "lodash";
+
 import { CustomNetworkCreateModal } from "@/app/modals/custom-network-create/custom-network-create";
 import {
 	CustomNetworkEditModal,
@@ -5,10 +10,6 @@ import {
 } from "@/app/modals/custom-network-edit/custom-network-edit";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { ModalController } from "@ionic/angular";
-import { Network } from "ark-ts/model";
-import lodash from "lodash";
 
 @Component({
 	selector: "customNetwork",
@@ -40,21 +41,6 @@ export class CustomNetworkComponent implements OnInit {
 		this.loadNetworks();
 	}
 
-	private loadNetworks(): void {
-		this.networks = this.userDataProvider.networks;
-		this.networksIds = lodash.keys(this.networks);
-		this.networkChoices = this.networksIds
-			.filter(id =>
-				this.userDataProvider.defaultNetworks.every(
-					defaultNetwork =>
-						this.networks[id].name !== defaultNetwork.name,
-				),
-			)
-			.map(id => {
-				return { name: this.networks[id].name, id };
-			});
-	}
-
 	public async createNewModal() {
 		const modal = await this.modalCtrl.create({
 			component: CustomNetworkCreateModal,
@@ -68,6 +54,32 @@ export class CustomNetworkComponent implements OnInit {
 		});
 
 		modal.present();
+	}
+
+	public onActiveNetworkChange(): void {
+		if (this.openManageDialogOnSelect) {
+			this.openManageDialog(
+				this.networks[this.activeNetworkChoice.id],
+				this.activeNetworkChoice.id,
+			);
+		} else {
+			this.emitActiveNetwork();
+		}
+	}
+
+	private loadNetworks(): void {
+		this.networks = this.userDataProvider.networks;
+		this.networksIds = lodash.keys(this.networks);
+		this.networkChoices = this.networksIds
+			.filter(id =>
+				this.userDataProvider.defaultNetworks.every(
+					defaultNetwork =>
+						this.networks[id].name !== defaultNetwork.name,
+				),
+			)
+			.map(id => {
+				return { name: this.networks[id].name, id };
+			});
 	}
 
 	private async openManageDialog(network: Network, networkId?: string) {
@@ -109,17 +121,6 @@ export class CustomNetworkComponent implements OnInit {
 			this.emitActiveNetwork();
 		});
 		modal.present();
-	}
-
-	public onActiveNetworkChange(): void {
-		if (this.openManageDialogOnSelect) {
-			this.openManageDialog(
-				this.networks[this.activeNetworkChoice.id],
-				this.activeNetworkChoice.id,
-			);
-		} else {
-			this.emitActiveNetwork();
-		}
 	}
 
 	private emitActiveNetwork() {

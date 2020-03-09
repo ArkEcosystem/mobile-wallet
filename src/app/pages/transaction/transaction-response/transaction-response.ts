@@ -1,14 +1,12 @@
 import { Component } from "@angular/core";
-import { ModalController, NavController } from "@ionic/angular";
-
+import { ActivatedRoute } from "@angular/router";
 import { Clipboard } from "@ionic-native/clipboard/ngx";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
-
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { ModalController, NavController } from "@ionic/angular";
 
 import { StoredNetwork, Transaction, Wallet } from "@/models/model";
-import { ActivatedRoute } from "@angular/router";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 @Component({
 	selector: "page-transaction-response",

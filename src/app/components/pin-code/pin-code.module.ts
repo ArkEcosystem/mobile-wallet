@@ -1,14 +1,15 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
-import { PinCodeComponent } from "./pin-code";
+import { TranslateModule } from "@ngx-translate/core";
 
 import { EnterSecondPassphraseModal } from "@/app/modals/enter-second-passphrase/enter-second-passphrase";
 import { EnterSecondPassphraseModalModule } from "@/app/modals/enter-second-passphrase/enter-second-passphrase.module";
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
 import { PinCodeModalModule } from "@/app/modals/pin-code/pin-code.module";
-import { CommonModule } from "@angular/common";
-import { TranslateModule } from "@ngx-translate/core";
+
 import { ClosePopupComponentModule } from "../close-popup/close-popup.module";
+import { PinCodeComponent } from "./pin-code";
 
 @NgModule({
 	declarations: [PinCodeComponent],

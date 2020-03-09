@@ -5,7 +5,6 @@ import {
 	NavController,
 	NavParams,
 } from "@ionic/angular";
-
 import { Crypto } from "ark-ts/utils";
 
 @Component({

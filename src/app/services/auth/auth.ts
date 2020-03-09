@@ -1,12 +1,11 @@
-import { StorageProvider } from "@/services/storage/storage";
 import { Injectable } from "@angular/core";
-
-import { Observable, Subject } from "rxjs";
-
-import * as constants from "@/app/app.constants";
 import * as bcrypt from "bcryptjs";
 import * as moment from "moment";
+import { Observable, Subject } from "rxjs";
 import { map, mergeMap } from "rxjs/operators";
+
+import * as constants from "@/app/app.constants";
+import { StorageProvider } from "@/services/storage/storage";
 
 @Injectable({ providedIn: "root" })
 export class AuthProvider {
@@ -106,7 +105,7 @@ export class AuthProvider {
 			"987654",
 			"098765",
 		];
-		return weakPasswords.indexOf(password) > -1;
+		return weakPasswords.includes(password);
 	}
 
 	getUnlockTimestamp() {

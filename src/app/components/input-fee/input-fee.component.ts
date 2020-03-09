@@ -6,20 +6,20 @@ import {
 	OnInit,
 	Output,
 } from "@angular/core";
-import { TransactionType } from "ark-ts";
-
-import { FeeStatistic } from "@/models/stored-network";
-import { ArkApiProvider } from "@/services/ark-api/ark-api";
-import { ArkUtility } from "../../utils/ark-utility";
-
 import {
 	ControlContainer,
 	FormControl,
 	FormGroupDirective,
 } from "@angular/forms";
 import { TranslateService } from "@ngx-translate/core";
+import { TransactionType } from "ark-ts";
 import { Subscription } from "rxjs";
 import { switchMap } from "rxjs/operators";
+
+import { FeeStatistic } from "@/models/stored-network";
+import { ArkApiProvider } from "@/services/ark-api/ark-api";
+
+import { ArkUtility } from "../../utils/ark-utility";
 
 @Component({
 	selector: "input-fee",

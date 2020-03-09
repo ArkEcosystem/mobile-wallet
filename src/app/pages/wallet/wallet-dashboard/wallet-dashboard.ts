@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Clipboard } from "@ionic-native/clipboard/ngx";
 import {
 	ActionSheetController,
 	AlertController,
@@ -8,9 +10,16 @@ import {
 	ModalController,
 	NavController,
 } from "@ionic/angular";
-
+import { TranslateService } from "@ngx-translate/core";
+import { Fees } from "ark-ts";
+import lodash from "lodash";
 import { Subject, throwError } from "rxjs";
+import { catchError, debounceTime, finalize, takeUntil } from "rxjs/operators";
 
+import * as constants from "@/app/app.constants";
+import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
+import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
+import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import {
 	MarketCurrency,
 	MarketHistory,
@@ -24,22 +33,9 @@ import {
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { ToastProvider } from "@/services/toast/toast";
 import { UserDataProvider } from "@/services/user-data/user-data";
 
-import lodash from "lodash";
-
-import { Fees } from "ark-ts";
-
-import { TranslateService } from "@ngx-translate/core";
-
-import * as constants from "@/app/app.constants";
-import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
-import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
-import { ToastProvider } from "@/services/toast/toast";
-import { ActivatedRoute } from "@angular/router";
-import { Clipboard } from "@ionic-native/clipboard/ngx";
-import { catchError, debounceTime, finalize, takeUntil } from "rxjs/operators";
 import { SetLabelPage } from "./modal/set-label/set-label";
 
 @Component({
@@ -79,13 +75,12 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
 	public emptyTransactions = false;
 	public minConfirmations = constants.WALLET_MIN_NUMBER_CONFIRMATIONS;
+	public transactions: TransactionEntity[] = [];
 
 	private unsubscriber$: Subject<void> = new Subject<void>();
 
 	private refreshDataIntervalListener;
 	private refreshTickerIntervalListener;
-
-	public transactions: TransactionEntity[] = [];
 
 	constructor(
 		private navCtrl: NavController,
@@ -214,22 +209,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	presentWalletBackupPage() {
 		this.onEnterPinCode = this.showBackup;
 		this.pinCode.open("PIN_CODE.DEFAULT_MESSAGE", true);
-	}
-
-	private async showBackup(keys: WalletKeys) {
-		if (!keys) {
-			return;
-		}
-
-		const modal = await this.modalCtrl.create({
-			component: WalletBackupModal,
-			componentProps: {
-				title: "SETTINGS_PAGE.WALLET_BACKUP",
-				keys,
-			},
-		});
-
-		modal.present();
 	}
 
 	presentAddActionSheet() {
@@ -387,6 +366,35 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 		this.transactions = transactions;
 	}
 
+	ngOnInit(): void {
+		this.confirmTransaction.confirm
+			.pipe(takeUntil(this.unsubscriber$))
+			.subscribe();
+		this.load();
+		this.refreshAllData();
+		this.refreshPrice();
+		this.onUpdateWallet();
+		this.onUpdateMarket();
+		// this.content.resize();
+
+		this.refreshDataIntervalListener = setInterval(
+			() => this.refreshAllData(),
+			constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS,
+		);
+		this.refreshTickerIntervalListener = setInterval(
+			() => this.refreshPrice(),
+			constants.WALLET_REFRESH_PRICE_MILLISECONDS,
+		);
+	}
+
+	ngOnDestroy() {
+		clearInterval(this.refreshDataIntervalListener);
+		clearInterval(this.refreshTickerIntervalListener);
+
+		this.unsubscriber$.next();
+		this.unsubscriber$.complete();
+	}
+
 	private saveWallet() {
 		this.userDataProvider.updateWallet(this.wallet, this.profile.profileId);
 	}
@@ -522,32 +530,19 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 		}
 	}
 
-	ngOnInit(): void {
-		this.confirmTransaction.confirm
-			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe();
-		this.load();
-		this.refreshAllData();
-		this.refreshPrice();
-		this.onUpdateWallet();
-		this.onUpdateMarket();
-		// this.content.resize();
+	private async showBackup(keys: WalletKeys) {
+		if (!keys) {
+			return;
+		}
 
-		this.refreshDataIntervalListener = setInterval(
-			() => this.refreshAllData(),
-			constants.WALLET_REFRESH_TRANSACTIONS_MILLISECONDS,
-		);
-		this.refreshTickerIntervalListener = setInterval(
-			() => this.refreshPrice(),
-			constants.WALLET_REFRESH_PRICE_MILLISECONDS,
-		);
-	}
+		const modal = await this.modalCtrl.create({
+			component: WalletBackupModal,
+			componentProps: {
+				title: "SETTINGS_PAGE.WALLET_BACKUP",
+				keys,
+			},
+		});
 
-	ngOnDestroy() {
-		clearInterval(this.refreshDataIntervalListener);
-		clearInterval(this.refreshTickerIntervalListener);
-
-		this.unsubscriber$.next();
-		this.unsubscriber$.complete();
+		modal.present();
 	}
 }

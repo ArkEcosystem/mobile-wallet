@@ -1,15 +1,11 @@
-import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
-import {
-	Component,
-	EventEmitter,
-	OnInit,
-	Output,
-} from "@angular/core";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import {
 	ControlContainer,
 	FormControl,
 	FormGroupDirective,
 } from "@angular/forms";
+
+import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
 
 @Component({
 	selector: "input-address",

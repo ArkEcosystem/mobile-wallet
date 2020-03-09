@@ -1,3 +1,9 @@
+import { Component } from "@angular/core";
+import { ActionSheetController, ModalController } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
+import { NetworkType } from "ark-ts";
+import lodash from "lodash";
+
 import { CustomNetworkCreateModal } from "@/app/modals/custom-network-create/custom-network-create";
 import {
 	CustomNetworkEditModal,
@@ -6,11 +12,6 @@ import {
 import { AddressMap, StoredNetwork } from "@/models/model";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { Component } from "@angular/core";
-import { ActionSheetController, ModalController } from "@ionic/angular";
-import { TranslateService } from "@ngx-translate/core";
-import { NetworkType } from "ark-ts";
-import lodash from "lodash";
 
 @Component({
 	templateUrl: "network-overview.page.html",
@@ -88,6 +89,14 @@ export class NetworkOverviewPage {
 		modal.present();
 	}
 
+	isEmpty() {
+		return lodash.isEmpty(this.networksMap);
+	}
+
+	ionViewWillEnter() {
+		this.load();
+	}
+
 	private async openEditNetworkDialog(
 		networkId: string,
 		network: StoredNetwork,
@@ -115,13 +124,5 @@ export class NetworkOverviewPage {
 		});
 
 		modal.present();
-	}
-
-	isEmpty() {
-		return lodash.isEmpty(this.networksMap);
-	}
-
-	ionViewWillEnter() {
-		this.load();
 	}
 }

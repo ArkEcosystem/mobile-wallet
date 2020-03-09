@@ -1,5 +1,7 @@
-import { ConfirmTransactionComponentModule } from "@/components/confirm-transaction/confirm-transaction.module";
 import { NgModule } from "@angular/core";
+
+import { ConfirmTransactionComponentModule } from "@/components/confirm-transaction/confirm-transaction.module";
+
 import { AddressListComponentModule } from "./address-list/address-list.module";
 import { ClosePopupComponentModule } from "./close-popup/close-popup.module";
 import { EmptyListComponentModule } from "./empty-list/empty-list.module";

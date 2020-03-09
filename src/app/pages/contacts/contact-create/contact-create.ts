@@ -1,19 +1,16 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { AlertController, NavController } from "@ionic/angular";
-
-import { ContactsProvider } from "@/services/contacts/contacts";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
-import { QRCodeScheme } from "@/models/model";
+import { TranslateService } from "@ngx-translate/core";
 import { PublicKey } from "ark-ts/core";
+import lodash from "lodash";
 
 import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
-
+import { QRCodeScheme } from "@/models/model";
 import { TranslatableObject } from "@/models/translate";
+import { ContactsProvider } from "@/services/contacts/contacts";
 import { ToastProvider } from "@/services/toast/toast";
-import { ActivatedRoute } from "@angular/router";
-import { TranslateService } from "@ngx-translate/core";
-import lodash from "lodash";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 @Component({
 	selector: "page-contact-create",
@@ -111,14 +108,6 @@ export class ContactCreatePage implements OnInit {
 		}
 	}
 
-	private closeAndLoadContactList = (): void => {
-		this.navCtrl.navigateForward("/contacts", { replaceUrl: true });
-	};
-
-	private showErrorMessage = (error: TranslatableObject): void => {
-		this.toastProvider.error(error, 5000);
-	};
-
 	scanQRCode() {
 		this.qrScanner.open(true);
 	}
@@ -134,6 +123,14 @@ export class ContactCreatePage implements OnInit {
 			this.toastProvider.error("QR_CODE.INVALID_QR_ERROR");
 		}
 	}
+
+	private closeAndLoadContactList = (): void => {
+		this.navCtrl.navigateForward("/contacts", { replaceUrl: true });
+	};
+
+	private showErrorMessage = (error: TranslatableObject): void => {
+		this.toastProvider.error(error, 5000);
+	};
 
 	private showConfirmation(
 		titleKey: string,

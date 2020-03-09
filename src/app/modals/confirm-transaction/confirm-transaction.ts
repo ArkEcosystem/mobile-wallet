@@ -1,20 +1,18 @@
 import { Component, NgZone, OnDestroy, OnInit } from "@angular/core";
 import { ModalController, NavController } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
+import { Network } from "ark-ts/model";
+import lodash from "lodash";
+import { Subject } from "rxjs";
+import { takeUntil, tap } from "rxjs/operators";
 
 import { MarketCurrency, MarketTicker, Transaction } from "@/models/model";
+import { AddressCheckResult } from "@/services/address-checker/address-check-result";
+import { AddressCheckResultType } from "@/services/address-checker/address-check-result-type";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { Subject } from "rxjs";
-
-import { Network } from "ark-ts/model";
-
-import { AddressCheckResult } from "@/services/address-checker/address-check-result";
-import { AddressCheckResultType } from "@/services/address-checker/address-check-result-type";
 import { ArkUtility } from "@/utils/ark-utility";
-import lodash from "lodash";
-import { takeUntil, tap } from "rxjs/operators";
 
 @Component({
 	selector: "modal-confirm-transaction",
@@ -115,6 +113,24 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
 		this.modalCtrl.dismiss(response);
 	}
 
+	ngOnInit() {
+		this.address = this.transaction.address;
+
+		if (!this.transaction) {
+			this.navCtrl.pop();
+		}
+
+		this.currentNetwork = this.arkApiProvider.network;
+
+		this.onUpdateTicker();
+		this.marketDataProvider.refreshTicker();
+	}
+
+	ngOnDestroy() {
+		this.unsubscriber$.next();
+		this.unsubscriber$.complete();
+	}
+
 	private onUpdateTicker() {
 		this.marketDataProvider.onUpdateTicker$
 			.pipe(
@@ -133,23 +149,5 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
 				}),
 			)
 			.subscribe();
-	}
-
-	ngOnInit() {
-		this.address = this.transaction.address;
-
-		if (!this.transaction) {
-			this.navCtrl.pop();
-		}
-
-		this.currentNetwork = this.arkApiProvider.network;
-
-		this.onUpdateTicker();
-		this.marketDataProvider.refreshTicker();
-	}
-
-	ngOnDestroy() {
-		this.unsubscriber$.next();
-		this.unsubscriber$.complete();
 	}
 }

@@ -7,11 +7,12 @@ import {
 	Renderer2,
 	ViewChildren,
 } from "@angular/core";
-
-import { Wallet } from "@/models/model";
-import { AuthProvider } from "@/services/auth/auth";
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { Router } from "@angular/router";
+import {
+	Keyboard,
+	KeyboardResizeMode,
+	KeyboardStyle,
+} from "@ionic-native/keyboard/ngx";
 import { Network } from "@ionic-native/network/ngx";
 import { ScreenOrientation } from "@ionic-native/screen-orientation/ngx";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
@@ -27,20 +28,19 @@ import {
 	Platform,
 } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
+import moment from "moment";
 import { Subject } from "rxjs";
 import { debounceTime, takeUntil } from "rxjs/operators";
+
+import * as constants from "@/app/app.constants";
+import { Wallet } from "@/models/model";
+import { AuthProvider } from "@/services/auth/auth";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataProvider } from "@/services/user-data/user-data";
+
 import { ArkApiProvider } from "./services/ark-api/ark-api";
 import { EventBusProvider } from "./services/event-bus/event-bus";
 import { SettingsDataProvider } from "./services/settings-data/settings-data";
-
-import * as constants from "@/app/app.constants";
-import { Router } from "@angular/router";
-import {
-	Keyboard,
-	KeyboardResizeMode,
-	KeyboardStyle,
-} from "@ionic-native/keyboard/ngx";
-import moment from "moment";
 
 @Component({
 	selector: "app-root",
@@ -51,9 +51,6 @@ export class AppComponent implements OnDestroy, OnInit {
 	@ViewChildren(IonRouterOutlet)
 	routerOutlets: QueryList<IonRouterOutlet>;
 
-	private unsubscriber$: Subject<void> = new Subject<void>();
-	private lastPauseTimestamp: Date;
-
 	public profile = null;
 	public network = null;
 
@@ -62,6 +59,9 @@ export class AppComponent implements OnDestroy, OnInit {
 	public hideRouter = false;
 
 	public menuId = "sidebar";
+
+	private unsubscriber$: Subject<void> = new Subject<void>();
+	private lastPauseTimestamp: Date;
 
 	constructor(
 		private platform: Platform,
@@ -197,30 +197,6 @@ export class AppComponent implements OnDestroy, OnInit {
 		});
 	}
 
-	private showConfirmation(title: string): Promise<void> {
-		return new Promise(resolve => {
-			this.translateService
-				.get(["NO", "YES"])
-				.subscribe(async translation => {
-					const alert = await this.alertCtrl.create({
-						subHeader: title,
-						buttons: [
-							{
-								text: translation.NO,
-								role: "cancel",
-								handler: () => {},
-							},
-							{
-								text: translation.YES,
-								handler: () => resolve(),
-							},
-						],
-					});
-					alert.present();
-				});
-		});
-	}
-
 	initTheme() {
 		this.settingsDataProvider.settings.subscribe(settings => {
 			if (settings.darkMode) {
@@ -309,6 +285,49 @@ export class AppComponent implements OnDestroy, OnInit {
 		this.authProvider.logout();
 	}
 
+	ngOnInit() {
+		this.onUserLogin();
+		this.onUserLogout();
+		this.verifyNetwork();
+
+		this.onCreateWallet();
+
+		this.settingsDataProvider.onUpdate$.subscribe(() => {
+			this.initTranslation();
+			this.initTheme();
+		});
+	}
+
+	ngOnDestroy() {
+		this.unsubscriber$.next();
+		this.unsubscriber$.complete();
+		this.authProvider.logout();
+	}
+
+	private showConfirmation(title: string): Promise<void> {
+		return new Promise(resolve => {
+			this.translateService
+				.get(["NO", "YES"])
+				.subscribe(async translation => {
+					const alert = await this.alertCtrl.create({
+						subHeader: title,
+						buttons: [
+							{
+								text: translation.NO,
+								role: "cancel",
+								handler: () => {},
+							},
+							{
+								text: translation.YES,
+								handler: () => resolve(),
+							},
+						],
+					});
+					alert.present();
+				});
+		});
+	}
+
 	// Verify if new wallet is a delegate
 	private onCreateWallet() {
 		return this.userDataProvider.onCreateWallet$
@@ -355,24 +374,5 @@ export class AppComponent implements OnDestroy, OnInit {
 			.subscribe(() =>
 				this.toastProvider.error("NETWORKS_PAGE.INTERNET_DESCONNECTED"),
 			);
-	}
-
-	ngOnInit() {
-		this.onUserLogin();
-		this.onUserLogout();
-		this.verifyNetwork();
-
-		this.onCreateWallet();
-
-		this.settingsDataProvider.onUpdate$.subscribe(() => {
-			this.initTranslation();
-			this.initTheme();
-		});
-	}
-
-	ngOnDestroy() {
-		this.unsubscriber$.next();
-		this.unsubscriber$.complete();
-		this.authProvider.logout();
 	}
 }

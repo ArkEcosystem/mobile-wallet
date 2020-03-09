@@ -1,22 +1,20 @@
 import { Component } from "@angular/core";
+import { FormGroup } from "@angular/forms";
+import { Clipboard } from "@ionic-native/clipboard/ngx";
 import {
 	AlertController,
 	ModalController,
 	NavController,
 	NavParams,
 } from "@ionic/angular";
-
-import { ArkApiProvider } from "@/services/ark-api/ark-api";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { TranslateService } from "@ngx-translate/core";
 import { Delegate, Network, TransactionType } from "ark-ts";
+import lodash from "lodash";
 
 import { Wallet } from "@/models/wallet";
-
+import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { ToastProvider } from "@/services/toast/toast";
-import { FormGroup } from "@angular/forms";
-import { Clipboard } from "@ionic-native/clipboard/ngx";
-import { TranslateService } from "@ngx-translate/core";
-import lodash from "lodash";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 @Component({
 	selector: "page-delegate-detail",

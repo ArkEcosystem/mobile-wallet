@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
-
-import { from, Subject } from "rxjs";
-
 import { isObject, isString, toString } from "lodash";
+import { from, Subject } from "rxjs";
 import { map } from "rxjs/operators";
 
 @Injectable({ providedIn: "root" })

@@ -1,28 +1,26 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-
-import { EMPTY, Observable, of, Subject, throwError } from "rxjs";
-
-import { StorageProvider } from "@/services/storage/storage";
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
-import {
-	INodeConfiguration,
-	Transaction,
-	TranslatableObject,
-} from "@/models/model";
-
-import * as constants from "@/app/app.constants";
-import { FeeStatistic, StoredNetwork } from "@/models/stored-network";
-import { PeerDiscovery } from "@/utils/ark-peer-discovery";
-import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
 import * as ArkCrypto from "@arkecosystem/crypto";
 import * as arkts from "ark-ts";
 import arktsConfig from "ark-ts/config";
 import lodash from "lodash";
 import moment from "moment";
+import { EMPTY, Observable, of, Subject, throwError } from "rxjs";
 import { catchError, expand, finalize, switchMap, tap } from "rxjs/operators";
+
+import * as constants from "@/app/app.constants";
+import {
+	INodeConfiguration,
+	Transaction,
+	TranslatableObject,
+} from "@/models/model";
+import { FeeStatistic, StoredNetwork } from "@/models/stored-network";
+import { StorageProvider } from "@/services/storage/storage";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataProvider } from "@/services/user-data/user-data";
+import { PeerDiscovery } from "@/utils/ark-peer-discovery";
+import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
+
 import ArkClient, { WalletResponse } from "../../utils/ark-client";
 import { ArkUtility } from "../../utils/ark-utility";
 
@@ -157,62 +155,6 @@ export class ArkApiProvider {
 		this.userDataProvider.onUpdateNetwork$.next(this._network);
 
 		this.fetchFees().subscribe();
-	}
-
-	private refreshPeers(): Observable<void> {
-		return new Observable(observer => {
-			const network = this._network;
-			const networkLookup = ["mainnet", "devnet"];
-			const isKnowNetwork = lodash.includes(networkLookup, network.name);
-			const peerUrl = network.getPeerAPIUrl();
-
-			const networkOrHost = isKnowNetwork
-				? network.name
-				: `${peerUrl}/api/peers`;
-
-			this._peerDiscovery.find({ networkOrHost }).subscribe(
-				discovery => {
-					discovery.withLatency(300).sortBy("latency", "asc");
-
-					discovery
-						.findPeersWithPlugin("core-api", {
-							additional: ["height", "latency", "version"],
-						})
-						.pipe(
-							switchMap(peers => {
-								if (!peers.length) {
-									return discovery.findPeersWithPlugin(
-										"core-wallet-api",
-										{
-											additional: [
-												"height",
-												"latency",
-												"version",
-											],
-										},
-									);
-								}
-
-								return of(peers);
-							}),
-						)
-						.subscribe(
-							peers => {
-								if (peers.length) {
-									this._network.peerList = peers;
-									observer.next();
-								} else {
-									observer.error(
-										"No good peer could be found!",
-									);
-								}
-							},
-							e => observer.error(e),
-						);
-				},
-				e => observer.error(e),
-			);
-		});
 	}
 
 	public connectToRandomPeer(): Observable<void> {
@@ -400,20 +342,6 @@ export class ArkApiProvider {
 					}),
 				)
 				.subscribe();
-		});
-	}
-
-	private getNextWalletNonce(address: string): Observable<string> {
-		return new Observable(observer => {
-			this._client.getWallet(address).subscribe(
-				(wallet: WalletResponse) => {
-					const nonce = wallet.nonce || 0;
-					const nextNonce = new BigNumber(nonce).plus(1).toString();
-					observer.next(nextNonce);
-				},
-				() => observer.next("1"),
-				() => observer.complete(),
-			);
 		});
 	}
 
@@ -637,5 +565,75 @@ export class ArkApiProvider {
 		this.storageProvider
 			.getObject(constants.STORAGE_DELEGATES)
 			.subscribe(delegates => (this._delegates = delegates));
+	}
+
+	private getNextWalletNonce(address: string): Observable<string> {
+		return new Observable(observer => {
+			this._client.getWallet(address).subscribe(
+				(wallet: WalletResponse) => {
+					const nonce = wallet.nonce || 0;
+					const nextNonce = new BigNumber(nonce).plus(1).toString();
+					observer.next(nextNonce);
+				},
+				() => observer.next("1"),
+				() => observer.complete(),
+			);
+		});
+	}
+
+	private refreshPeers(): Observable<void> {
+		return new Observable(observer => {
+			const network = this._network;
+			const networkLookup = ["mainnet", "devnet"];
+			const isKnowNetwork = lodash.includes(networkLookup, network.name);
+			const peerUrl = network.getPeerAPIUrl();
+
+			const networkOrHost = isKnowNetwork
+				? network.name
+				: `${peerUrl}/api/peers`;
+
+			this._peerDiscovery.find({ networkOrHost }).subscribe(
+				discovery => {
+					discovery.withLatency(300).sortBy("latency", "asc");
+
+					discovery
+						.findPeersWithPlugin("core-api", {
+							additional: ["height", "latency", "version"],
+						})
+						.pipe(
+							switchMap(peers => {
+								if (!peers.length) {
+									return discovery.findPeersWithPlugin(
+										"core-wallet-api",
+										{
+											additional: [
+												"height",
+												"latency",
+												"version",
+											],
+										},
+									);
+								}
+
+								return of(peers);
+							}),
+						)
+						.subscribe(
+							peers => {
+								if (peers.length) {
+									this._network.peerList = peers;
+									observer.next();
+								} else {
+									observer.error(
+										"No good peer could be found!",
+									);
+								}
+							},
+							e => observer.error(e),
+						);
+				},
+				e => observer.error(e),
+			);
+		});
 	}
 }

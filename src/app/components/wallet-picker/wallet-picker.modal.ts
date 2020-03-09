@@ -1,8 +1,9 @@
+import { Component, OnInit } from "@angular/core";
+import { ModalController } from "@ionic/angular";
+
 import { Contact, Wallet } from "@/models/model";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { Component, OnInit } from "@angular/core";
-import { ModalController } from "@ionic/angular";
 
 @Component({
 	templateUrl: "wallet-picker.modal.html",

@@ -1,9 +1,9 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
-import { EmptyListComponent } from "./empty-list";
-
-import { CommonModule } from "@angular/common";
 import { TranslateModule } from "@ngx-translate/core";
+
+import { EmptyListComponent } from "./empty-list";
 
 @NgModule({
 	declarations: [EmptyListComponent],

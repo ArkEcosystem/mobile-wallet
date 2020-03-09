@@ -1,7 +1,9 @@
-import { PipesModule } from "@/pipes/pipes.module";
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
+
+import { PipesModule } from "@/pipes/pipes.module";
+
 import { AddressListComponent } from "./address-list";
 
 @NgModule({

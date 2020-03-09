@@ -1,9 +1,3 @@
-import * as constants from "@/app/app.constants";
-import { MarketCurrency } from "@/models/model";
-import { MarketDataProvider } from "@/services/market-data/market-data";
-import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { UserDataProvider } from "@/services/user-data/user-data";
-import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
 import { Component, OnInit } from "@angular/core";
 import {
 	ControlContainer,
@@ -11,6 +5,13 @@ import {
 	FormGroupDirective,
 } from "@angular/forms";
 import { Network } from "ark-ts/model";
+
+import * as constants from "@/app/app.constants";
+import { MarketCurrency } from "@/models/model";
+import { MarketDataProvider } from "@/services/market-data/market-data";
+import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { UserDataProvider } from "@/services/user-data/user-data";
+import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
 
 @Component({
 	selector: "input-amount",

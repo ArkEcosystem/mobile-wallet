@@ -1,4 +1,3 @@
-import { AuthProvider } from "@/services/auth/auth";
 import { Component, Input, NgZone, OnDestroy, OnInit } from "@angular/core";
 import { Vibration } from "@ionic-native/vibration/ngx";
 import {
@@ -8,16 +7,14 @@ import {
 	NavParams,
 	Platform,
 } from "@ionic/angular";
-
-import { Subscription, timer } from "rxjs";
-
 import { TranslateService } from "@ngx-translate/core";
-
 import lodash from "lodash";
 import moment from "moment";
+import { Subscription, timer } from "rxjs";
+import { finalize, map, takeWhile } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
-import { finalize, map, takeWhile } from "rxjs/operators";
+import { AuthProvider } from "@/services/auth/auth";
 
 @Component({
 	selector: "modal-pin-code",
@@ -193,6 +190,19 @@ export class PinCodeModal implements OnInit, OnDestroy {
 		this.modalCtrl.dismiss(status);
 	}
 
+	ngOnInit() {
+		this.authProvider
+			.getAttempts()
+			.subscribe(attempts => (this.attempts = attempts));
+		this.loadUnlockTime();
+	}
+
+	ngOnDestroy() {
+		if (this.unlockCountdown$) {
+			this.unlockCountdown$.unsubscribe();
+		}
+	}
+
 	private loadUnlockTime() {
 		this.authProvider.getUnlockTimestamp().subscribe(timestamp => {
 			if (!timestamp || lodash.isEmpty(timestamp)) {
@@ -228,18 +238,5 @@ export class PinCodeModal implements OnInit, OnDestroy {
 				)
 				.subscribe();
 		});
-	}
-
-	ngOnInit() {
-		this.authProvider
-			.getAttempts()
-			.subscribe(attempts => (this.attempts = attempts));
-		this.loadUnlockTime();
-	}
-
-	ngOnDestroy() {
-		if (this.unlockCountdown$) {
-			this.unlockCountdown$.unsubscribe();
-		}
 	}
 }

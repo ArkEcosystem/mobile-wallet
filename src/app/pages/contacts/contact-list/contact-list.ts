@@ -4,17 +4,14 @@ import {
 	AlertController,
 	NavController,
 } from "@ionic/angular";
-
-import { ContactsProvider } from "@/services/contacts/contacts";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
 import { TranslateService } from "@ngx-translate/core";
-
+import lodash from "lodash";
 import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 import { AddressMap } from "@/models/contact";
-import lodash from "lodash";
-import { takeUntil } from "rxjs/operators";
+import { ContactsProvider } from "@/services/contacts/contacts";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 @Component({
 	selector: "page-contact-list",

@@ -1,11 +1,12 @@
+import { Injectable } from "@angular/core";
+import lodash from "lodash";
+import { Observable, throwError } from "rxjs";
+
 import { Contact } from "@/models/contact";
 import { TranslatableObject } from "@/models/model";
 import { Profile } from "@/models/profile";
 import { NetworkProvider } from "@/services/network/network";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { Injectable } from "@angular/core";
-import lodash from "lodash";
-import { Observable, throwError } from "rxjs";
 
 @Injectable({ providedIn: "root" })
 export class ContactsProvider {

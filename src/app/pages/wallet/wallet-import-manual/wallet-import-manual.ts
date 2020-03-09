@@ -1,23 +1,20 @@
 import { Component, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { ModalController, NavController } from "@ionic/angular";
-
-import { ArkApiProvider } from "@/services/ark-api/ark-api";
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
-import { BaseWalletImport } from "@/app/pages/wallet/wallet-import/wallet-import.base";
-import { NetworkProvider } from "@/services/network/network";
-import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-
-import { AddressValidator } from "@/app/validators/address/address";
-import { PassphraseValidator } from "@/app/validators/passphrase/passphrase";
-import { FormBuilder, FormGroup } from "@angular/forms";
-
-import * as constants from "@/app/app.constants";
-import { ActivatedRoute } from "@angular/router";
 import * as bip39 from "bip39";
 import { finalize } from "rxjs/operators";
+
+import * as constants from "@/app/app.constants";
+import { BaseWalletImport } from "@/app/pages/wallet/wallet-import/wallet-import.base";
+import { AddressValidator } from "@/app/validators/address/address";
+import { PassphraseValidator } from "@/app/validators/passphrase/passphrase";
+import { ArkApiProvider } from "@/services/ark-api/ark-api";
+import { NetworkProvider } from "@/services/network/network";
+import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 @Component({
 	selector: "page-wallet-import-passphrase",
@@ -35,9 +32,6 @@ export class WalletManualImportPage extends BaseWalletImport {
 	public manualImportFormGroup: FormGroup;
 	public submitted = false;
 
-	private wordlist;
-	private suggestLanguageFound = false;
-
 	@ViewChild("inputAddressOrPassphrase", { static: true })
 	inputAddressOrPassphrase;
 
@@ -46,6 +40,9 @@ export class WalletManualImportPage extends BaseWalletImport {
 
 	@ViewChild("importWalletManual", { static: true })
 	importWalletManual: HTMLFormElement;
+
+	private wordlist;
+	private suggestLanguageFound = false;
 
 	constructor(
 		route: ActivatedRoute,
@@ -163,8 +160,8 @@ export class WalletManualImportPage extends BaseWalletImport {
 			]) {
 				// we want to find a word which is in one wordlist and not in the other
 				if (
-					bip39.wordlists[lang1].indexOf(word) !== -1 &&
-					bip39.wordlists[lang2].indexOf(word) === -1
+					bip39.wordlists[lang1].includes(word) &&
+					!bip39.wordlists[lang2].includes(word)
 				) {
 					this.wordlist = bip39.wordlists[lang1];
 					this.suggestLanguageFound = true;

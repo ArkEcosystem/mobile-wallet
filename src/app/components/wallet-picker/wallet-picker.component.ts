@@ -1,5 +1,6 @@
-import { Contact } from "@/models/model";
 import { Component, EventEmitter, Input, Output } from "@angular/core";
+
+import { Contact } from "@/models/model";
 
 @Component({
 	selector: "wallet-picker",

@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-
-import { Observable, of, Subject } from "rxjs";
-
 import lodash from "lodash";
+import { Observable, of, Subject } from "rxjs";
 
 import * as constants from "@/app/app.constants";
 import { UserSettings } from "@/models/settings";
@@ -12,9 +10,6 @@ import { StorageProvider } from "@/services/storage/storage";
 @Injectable({ providedIn: "root" })
 export class SettingsDataProvider {
 	public onUpdate$: Subject<UserSettings> = new Subject();
-
-	private _settings: UserSettings;
-
 	public AVALIABLE_OPTIONS = {
 		languages: {
 			en: "English",
@@ -63,6 +58,7 @@ export class SettingsDataProvider {
 			chinese_traditional: "Chinese traditional",
 		},
 	};
+	private _settings: UserSettings;
 
 	constructor(
 		private _storageProvider: StorageProvider,

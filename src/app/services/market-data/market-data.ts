@@ -1,16 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-
 import { Observable, of, Subject } from "rxjs";
-
-import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { StorageProvider } from "@/services/storage/storage";
+import { flatMap, map } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import * as model from "@/models/market";
 import { UserSettings } from "@/models/settings";
+import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { StorageProvider } from "@/services/storage/storage";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { flatMap, map } from "rxjs/operators";
 
 @Injectable({ providedIn: "root" })
 export class MarketDataProvider {
@@ -76,36 +74,6 @@ export class MarketDataProvider {
 		});
 	}
 
-	private fetchTicker(): Observable<model.MarketTicker> {
-		const url = `${constants.API_MARKET_URL}/data/pricemultifull?fsyms=${this.marketTickerName}&tsyms=`;
-
-		const currenciesList = model.CURRENCIES_LIST.map(currency => {
-			return currency.code.toUpperCase();
-		}).join(",");
-
-		return this.http.get(url + currenciesList).pipe(
-			map((response: any) => {
-				const json =
-					response.RAW[this.marketTickerName] ||
-					response.RAW[this.marketTickerName.toUpperCase()];
-				const tickerObject = {
-					symbol: json.BTC.FROMSYMBOL,
-					currencies: json,
-				};
-
-				this.marketTicker = new model.MarketTicker().deserialize(
-					tickerObject,
-				);
-				this.storageProvider.set(
-					this.getKey(constants.STORAGE_MARKET_TICKER),
-					tickerObject,
-				);
-
-				return this.marketTicker;
-			}),
-		);
-	}
-
 	fetchHistory(): Observable<model.MarketHistory> {
 		const url = `${constants.API_MARKET_URL}/data/histoday?fsym=${this.marketTickerName}&allData=true&tsym=`;
 		const myCurrencyCode = (!this.settings || !this.settings.currency
@@ -136,6 +104,36 @@ export class MarketDataProvider {
 					}),
 				),
 			),
+		);
+	}
+
+	private fetchTicker(): Observable<model.MarketTicker> {
+		const url = `${constants.API_MARKET_URL}/data/pricemultifull?fsyms=${this.marketTickerName}&tsyms=`;
+
+		const currenciesList = model.CURRENCIES_LIST.map(currency => {
+			return currency.code.toUpperCase();
+		}).join(",");
+
+		return this.http.get(url + currenciesList).pipe(
+			map((response: any) => {
+				const json =
+					response.RAW[this.marketTickerName] ||
+					response.RAW[this.marketTickerName.toUpperCase()];
+				const tickerObject = {
+					symbol: json.BTC.FROMSYMBOL,
+					currencies: json,
+				};
+
+				this.marketTicker = new model.MarketTicker().deserialize(
+					tickerObject,
+				);
+				this.storageProvider.set(
+					this.getKey(constants.STORAGE_MARKET_TICKER),
+					tickerObject,
+				);
+
+				return this.marketTicker;
+			}),
 		);
 	}
 

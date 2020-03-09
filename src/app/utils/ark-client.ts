@@ -1,5 +1,3 @@
-import { TRANSACTION_GROUPS } from "@/app/app.constants";
-import { INodeConfiguration } from "@/models/node";
 import { HttpClient } from "@angular/common/http";
 import {
 	AccountResponse,
@@ -17,6 +15,9 @@ import {
 import lodash from "lodash";
 import { Observable, of } from "rxjs";
 import { timeout } from "rxjs/operators";
+
+import { TRANSACTION_GROUPS } from "@/app/app.constants";
+import { INodeConfiguration } from "@/models/node";
 
 export interface PeerApiResponse extends Peer {
 	latency?: number;
@@ -39,38 +40,6 @@ export default class ApiClient {
 	constructor(host: string, httpClient: HttpClient) {
 		this.host = host;
 		this.httpClient = httpClient;
-	}
-
-	private get defaultHeaders() {
-		return { "API-Version": "2" };
-	}
-
-	private get(
-		path: string,
-		options: any = {},
-		host: string = this.host,
-		timeoutMs: number = 5000,
-	) {
-		return this.httpClient
-			.request("GET", `${host}/api/${path}`, {
-				...options,
-				headers: this.defaultHeaders,
-			})
-			.pipe(timeout(timeoutMs));
-	}
-
-	private post(
-		path: string,
-		body: any | null,
-		options: any = {},
-		host: string = this.host,
-	) {
-		return this.httpClient
-			.post(`${this.host}/api/${path}`, body, {
-				...options,
-				headers: this.defaultHeaders,
-			})
-			.pipe(timeout(5000));
 	}
 
 	getWallet(address: string): Observable<WalletResponse> {
@@ -396,5 +365,37 @@ export default class ApiClient {
 		}
 
 		return delegate;
+	}
+
+	private get defaultHeaders() {
+		return { "API-Version": "2" };
+	}
+
+	private get(
+		path: string,
+		options: any = {},
+		host: string = this.host,
+		timeoutMs: number = 5000,
+	) {
+		return this.httpClient
+			.request("GET", `${host}/api/${path}`, {
+				...options,
+				headers: this.defaultHeaders,
+			})
+			.pipe(timeout(timeoutMs));
+	}
+
+	private post(
+		path: string,
+		body: any | null,
+		options: any = {},
+		host: string = this.host,
+	) {
+		return this.httpClient
+			.post(`${this.host}/api/${path}`, body, {
+				...options,
+				headers: this.defaultHeaders,
+			})
+			.pipe(timeout(5000));
 	}
 }

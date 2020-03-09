@@ -1,5 +1,6 @@
 import { Storage } from "@ionic/storage";
 import { Observable } from "rxjs";
+
 import { StorageProvider } from "./storage";
 
 let storageProvider = null;

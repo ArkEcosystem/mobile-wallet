@@ -1,6 +1,7 @@
-import { ToastProvider } from "@/services/toast/toast";
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import * as bip39 from "bip39";
+
+import { ToastProvider } from "@/services/toast/toast";
 
 @Component({
 	selector: "passphrase-input",
@@ -130,8 +131,8 @@ export class PassphraseInputComponent implements OnInit {
 		) {
 			// we just want one letter to be different - only "manual" typing, don't suggest on copy/paste stuff
 			const wordlist = bip39.wordlists[this.wordlistLanguage];
-			this.wordSuggestions = wordlist.filter(
-				word => word.indexOf(lastWordPassphrase) === 0,
+			this.wordSuggestions = wordlist.filter(word =>
+				word.startsWith(lastWordPassphrase),
 			);
 		}
 	}

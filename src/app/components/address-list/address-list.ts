@@ -1,5 +1,6 @@
-import { AddressMap } from "@/models/contact";
 import { Component, EventEmitter, Input, Output } from "@angular/core";
+
+import { AddressMap } from "@/models/contact";
 
 @Component({
 	selector: "address-list",

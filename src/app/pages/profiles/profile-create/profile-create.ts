@@ -1,15 +1,14 @@
 import { Component, OnDestroy, ViewChild } from "@angular/core";
 import { AlertController, NavController } from "@ionic/angular";
-
+import { TranslateService } from "@ngx-translate/core";
+import { Network } from "ark-ts/model";
+import lodash from "lodash";
 import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 import { Profile } from "@/models/profile";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { TranslateService } from "@ngx-translate/core";
-import { Network } from "ark-ts/model";
-import lodash from "lodash";
-import { takeUntil } from "rxjs/operators";
 
 @Component({
 	selector: "page-profile-create",

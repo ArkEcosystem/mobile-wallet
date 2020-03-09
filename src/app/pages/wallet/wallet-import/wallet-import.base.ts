@@ -1,3 +1,10 @@
+import { ActivatedRoute } from "@angular/router";
+import { ModalController, NavController } from "@ionic/angular";
+import { PrivateKey, PublicKey } from "ark-ts";
+import * as bip39 from "bip39";
+import { EMPTY, Observable } from "rxjs";
+import { finalize } from "rxjs/operators";
+
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
 import { Wallet } from "@/models/model";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
@@ -5,12 +12,6 @@ import { NetworkProvider } from "@/services/network/network";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataProvider } from "@/services/user-data/user-data";
-import { ActivatedRoute } from "@angular/router";
-import { ModalController, NavController } from "@ionic/angular";
-import { PrivateKey, PublicKey } from "ark-ts";
-import * as bip39 from "bip39";
-import { EMPTY, Observable } from "rxjs";
-import { finalize } from "rxjs/operators";
 
 export abstract class BaseWalletImport {
 	public existingAddress: string;

@@ -4,22 +4,19 @@ import {
 	AlertController,
 	NavController,
 } from "@ionic/angular";
-
-import { Subject } from "rxjs";
-
-import { AuthProvider } from "@/services/auth/auth";
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
-import { TranslateService } from "@ngx-translate/core";
-
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
-import { AddressMap } from "@/models/model";
 import { Platform } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
 import { PublicKey } from "ark-ts/core";
 import { NetworkType } from "ark-ts/model";
 import lodash from "lodash";
+import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+
+import { PinCodeComponent } from "@/components/pin-code/pin-code";
+import { AddressMap } from "@/models/model";
+import { AuthProvider } from "@/services/auth/auth";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataProvider } from "@/services/user-data/user-data";
 
 @Component({
 	selector: "page-profile-signin",
