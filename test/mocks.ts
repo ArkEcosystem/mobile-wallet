@@ -7,6 +7,8 @@ import { SocialSharing } from "@ionic-native/social-sharing/ngx";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { Observable } from "rxjs";
+import { StoredNetwork, Wallet, Profile } from '@/models/model';
+import { IUserDataProvider } from '@/services/user-data/user-data.interface';
 
 @Injectable()
 export class SplashScreenMock extends SplashScreen {
@@ -131,4 +133,14 @@ export class ScreenOrientationMock extends ScreenOrientation {
 		});
 	}
 	unlock(): void {}
+}
+
+@Injectable()
+export class UserDataProviderMock implements IUserDataProvider {
+	public currentNetwork: StoredNetwork;
+	public currentWallet: Wallet;
+	public currentProfile: Profile;
+
+	public profiles: Record<string, Profile>;
+	public networks: Record<string, StoredNetwork>;
 }
