@@ -29,7 +29,7 @@ import { AddressCheckResult } from "@/services/address-checker/address-check-res
 import { AddressCheckerProvider } from "@/services/address-checker/address-checker";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 import { ArkUtility } from "@/utils/ark-utility";
 import { SafeBigNumber } from "@/utils/bignumber";
 
@@ -74,7 +74,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 	private unsubscriber$: Subject<void> = new Subject<void>();
 
 	constructor(
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private arkApiProvider: ArkApiProvider,
 		private toastProvider: ToastProvider,
 		private modalCtrl: ModalController,
@@ -85,8 +85,8 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		private route: ActivatedRoute,
 		private routerOutlet: IonRouterOutlet,
 	) {
-		this.currentWallet = this.userDataProvider.currentWallet;
-		this.currentNetwork = this.userDataProvider.currentNetwork;
+		this.currentWallet = this.userDataService.currentWallet;
+		this.currentNetwork = this.userDataService.currentNetwork;
 	}
 
 	toggleSendAll() {

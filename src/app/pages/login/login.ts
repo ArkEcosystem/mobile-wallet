@@ -3,7 +3,7 @@ import { isNil } from "lodash";
 
 import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { AuthProvider } from "@/services/auth/auth";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-login",
@@ -19,12 +19,12 @@ export class LoginPage implements OnInit {
 
 	constructor(
 		private authProvider: AuthProvider,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 	) {}
 
 	ngOnInit() {
 		this.authProvider.getMasterPassword().subscribe(master => {
-			this.hasProfiles = master && !isNil(this.userDataProvider.profiles);
+			this.hasProfiles = master && !isNil(this.userDataService.profiles);
 			this.isReady = true;
 		});
 	}

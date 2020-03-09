@@ -36,7 +36,7 @@ import * as constants from "@/app/app.constants";
 import { Wallet } from "@/models/model";
 import { AuthProvider } from "@/services/auth/auth";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { ArkApiProvider } from "./services/ark-api/ark-api";
 import { EventBusProvider } from "./services/event-bus/event-bus";
@@ -73,7 +73,7 @@ export class AppComponent implements OnDestroy, OnInit {
 		private toastProvider: ToastProvider,
 		private authProvider: AuthProvider,
 		private menuCtrl: MenuController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private arkApiProvider: ArkApiProvider,
 		private settingsDataProvider: SettingsDataProvider,
 		public element: ElementRef,
@@ -330,13 +330,13 @@ export class AppComponent implements OnDestroy, OnInit {
 
 	// Verify if new wallet is a delegate
 	private onCreateWallet() {
-		return this.userDataProvider.onCreateWallet$
+		return this.userDataService.onCreateWallet$
 			.pipe(takeUntil(this.unsubscriber$), debounceTime(500))
 			.subscribe((wallet: Wallet) => {
 				this.arkApiProvider
 					.getDelegateByPublicKey(wallet.publicKey)
 					.subscribe(delegate =>
-						this.userDataProvider.ensureWalletDelegateProperties(
+						this.userDataService.ensureWalletDelegateProperties(
 							wallet,
 							delegate,
 						),
@@ -349,8 +349,8 @@ export class AppComponent implements OnDestroy, OnInit {
 		this.authProvider.onLogin$
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe(() => {
-				this.profile = this.userDataProvider.currentProfile;
-				this.network = this.userDataProvider.currentNetwork;
+				this.profile = this.userDataService.currentProfile;
+				this.network = this.userDataService.currentNetwork;
 
 				return this.menuCtrl.enable(true, this.menuId);
 			});
@@ -360,7 +360,7 @@ export class AppComponent implements OnDestroy, OnInit {
 		this.authProvider.onLogout$
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe(() => {
-				this.userDataProvider.clearCurrentWallet();
+				this.userDataService.clearCurrentWallet();
 
 				this.menuCtrl.enable(false, this.menuId);
 				return this.openPage("/login");

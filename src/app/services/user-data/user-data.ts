@@ -14,8 +14,10 @@ import { AuthProvider } from "@/services/auth/auth";
 import { ForgeProvider } from "@/services/forge/forge";
 import { StorageProvider } from "@/services/storage/storage";
 
-@Injectable({ providedIn: "root" })
-export class UserDataProvider {
+import { UserDataService } from "./user-data.interface";
+
+@Injectable()
+export class UserDataServiceImpl implements UserDataService {
 	public get isDevNet(): boolean {
 		return (
 			this.currentNetwork &&
@@ -416,7 +418,7 @@ export class UserDataProvider {
 					profileId,
 					contacts: lodash.transform(
 						profile.contacts,
-						UserDataProvider.mapContact,
+						UserDataServiceImpl.mapContact,
 						{},
 					),
 				}));

@@ -16,7 +16,7 @@ import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { AddressMap } from "@/models/model";
 import { AuthProvider } from "@/services/auth/auth";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-profile-signin",
@@ -37,7 +37,7 @@ export class ProfileSigninPage implements OnDestroy {
 	constructor(
 		public platform: Platform,
 		public navCtrl: NavController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private translateService: TranslateService,
 		private authProvider: AuthProvider,
 		private toastProvider: ToastProvider,
@@ -98,7 +98,7 @@ export class ProfileSigninPage implements OnDestroy {
 	}
 
 	delete(profileId: string) {
-		return this.userDataProvider
+		return this.userDataService
 			.removeProfileById(profileId)
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe(() => {
@@ -133,8 +133,8 @@ export class ProfileSigninPage implements OnDestroy {
 	}
 
 	load() {
-		this.profiles = this.userDataProvider.profiles;
-		this.networks = this.userDataProvider.networks;
+		this.profiles = this.userDataService.profiles;
+		this.networks = this.userDataService.networks;
 
 		this.addresses = lodash(this.profiles)
 			.mapValues(o => [o.name, o.networkId])

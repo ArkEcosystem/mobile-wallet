@@ -17,7 +17,7 @@ import {
 import { FeeStatistic, StoredNetwork } from "@/models/stored-network";
 import { StorageProvider } from "@/services/storage/storage";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 import { PeerDiscovery } from "@/utils/ark-peer-discovery";
 import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
 
@@ -61,13 +61,13 @@ export class ArkApiProvider {
 
 	constructor(
 		private httpClient: HttpClient,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private storageProvider: StorageProvider,
 		private toastProvider: ToastProvider,
 	) {
 		this.loadData();
 
-		this.userDataProvider.onActivateNetwork$.subscribe(network => {
+		this.userDataService.onActivateNetwork$.subscribe(network => {
 			if (lodash.isEmpty(network)) {
 				return;
 			}
@@ -152,7 +152,7 @@ export class ArkApiProvider {
 			)
 			.subscribe();
 
-		this.userDataProvider.onUpdateNetwork$.next(this._network);
+		this.userDataService.onUpdateNetwork$.next(this._network);
 
 		this.fetchFees().subscribe();
 	}
@@ -250,7 +250,7 @@ export class ArkApiProvider {
 				return observer.complete();
 			}
 
-			const wallet = this.userDataProvider.getWalletByAddress(
+			const wallet = this.userDataService.getWalletByAddress(
 				transaction.address,
 			);
 
@@ -435,9 +435,9 @@ export class ArkApiProvider {
 			this.onUpdatePeer$.next(peer);
 		}
 		// Save in localStorage
-		this.userDataProvider.addOrUpdateNetwork(
+		this.userDataService.addOrUpdateNetwork(
 			this._network,
-			this.userDataProvider.currentProfile.networkId,
+			this.userDataService.currentProfile.networkId,
 		);
 		this._api = new arkts.Client(this._network);
 		this._client = new ArkClient(

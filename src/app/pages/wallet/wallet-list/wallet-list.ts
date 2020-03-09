@@ -27,7 +27,7 @@ import {
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-wallet-list",
@@ -75,7 +75,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 
 	constructor(
 		public navCtrl: NavController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private marketDataProvider: MarketDataProvider,
 		private modalCtrl: ModalController,
 		private actionSheetCtrl: ActionSheetController,
@@ -88,12 +88,12 @@ export class WalletListPage implements OnInit, OnDestroy {
 	ngOnInit() {
 		this.loadUserData();
 
-		this.userDataProvider.clearCurrentWallet();
+		this.userDataService.clearCurrentWallet();
 	}
 
 	async onSlideChanged() {
 		const realIndex = await this.slider.getActiveIndex();
-		this.selectedWallet = this.userDataProvider.getWalletByAddress(
+		this.selectedWallet = this.userDataService.getWalletByAddress(
 			this.wallets[realIndex].address,
 		);
 	}
@@ -106,7 +106,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 				},
 			})
 			.then(() => {
-				this.userDataProvider
+				this.userDataService
 					.updateWallet(wallet, this.currentProfile.profileId)
 					.subscribe(() => {
 						this.loadWallets();
@@ -242,7 +242,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 				return;
 			}
 
-			this.userDataProvider
+			this.userDataService
 				.addWallet(wallet, account.mnemonic, password)
 				.pipe(takeUntil(this.unsubscriber$))
 				.subscribe(() => {
@@ -284,22 +284,22 @@ export class WalletListPage implements OnInit, OnDestroy {
 
 		this.wallets = lodash.orderBy(list, ["lastUpdate"], ["desc"]);
 		if (!this.selectedWallet && this.wallets.length) {
-			this.selectedWallet = this.userDataProvider.getWalletByAddress(
+			this.selectedWallet = this.userDataService.getWalletByAddress(
 				this.wallets[0].address,
 			);
 		}
 	}
 
 	private loadUserData() {
-		this.currentNetwork = this.userDataProvider.currentNetwork;
-		this.currentProfile = this.userDataProvider.currentProfile;
+		this.currentNetwork = this.userDataService.currentNetwork;
+		this.currentProfile = this.userDataService.currentProfile;
 	}
 
 	private onCreateUpdateWallet() {
-		this.userDataProvider.onCreateWallet$
+		this.userDataService.onCreateWallet$
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe(() => this.loadWallets());
-		this.userDataProvider.onUpdateWallet$
+		this.userDataService.onUpdateWallet$
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe(() => this.loadWallets());
 	}

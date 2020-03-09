@@ -10,7 +10,7 @@ import * as constants from "@/app/app.constants";
 import { MarketCurrency } from "@/models/model";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
 
 @Component({
@@ -31,12 +31,12 @@ export class InputAmountComponent implements OnInit {
 	public currentNetwork: Network;
 
 	public constructor(
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private marketDataProvider: MarketDataProvider,
 		private settingsDataProvider: SettingsDataProvider,
 		private parentForm: FormGroupDirective,
 	) {
-		this.currentNetwork = this.userDataProvider.currentNetwork;
+		this.currentNetwork = this.userDataService.currentNetwork;
 	}
 
 	public ngOnInit() {

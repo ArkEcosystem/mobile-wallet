@@ -9,7 +9,7 @@ import {
 	EditNetworkAction,
 } from "@/app/modals/custom-network-edit/custom-network-edit";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "customNetwork",
@@ -32,7 +32,7 @@ export class CustomNetworkComponent implements OnInit {
 	public activeNetworkChoice: { name: string; id?: string };
 
 	public constructor(
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private modalCtrl: ModalController,
 		private toastProvider: ToastProvider,
 	) {}
@@ -68,11 +68,11 @@ export class CustomNetworkComponent implements OnInit {
 	}
 
 	private loadNetworks(): void {
-		this.networks = this.userDataProvider.networks;
+		this.networks = this.userDataService.networks;
 		this.networksIds = lodash.keys(this.networks);
 		this.networkChoices = this.networksIds
 			.filter(id =>
-				this.userDataProvider.defaultNetworks.every(
+				this.userDataService.defaultNetworks.every(
 					defaultNetwork =>
 						this.networks[id].name !== defaultNetwork.name,
 				),

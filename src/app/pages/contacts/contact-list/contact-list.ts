@@ -11,7 +11,7 @@ import { takeUntil } from "rxjs/operators";
 
 import { AddressMap } from "@/models/contact";
 import { ContactsProvider } from "@/services/contacts/contacts";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-contact-list",
@@ -27,7 +27,7 @@ export class ContactListPage {
 
 	constructor(
 		private navCtrl: NavController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private contactsProvider: ContactsProvider,
 		private translateService: TranslateService,
 		private alertCtrl: AlertController,
@@ -125,8 +125,8 @@ export class ContactListPage {
 	}
 
 	private _load() {
-		this.profile = this.userDataProvider.currentProfile;
-		this.network = this.userDataProvider.currentNetwork;
+		this.profile = this.userDataService.currentProfile;
+		this.network = this.userDataService.currentNetwork;
 
 		this.addresses = lodash(this.profile.contacts)
 			.mapValues("name")
