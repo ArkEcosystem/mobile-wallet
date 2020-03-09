@@ -12,7 +12,7 @@ import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
 import { Wallet, WalletKeys } from "@/models/model";
 import { AuthProvider } from "@/services/auth/auth";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "pin-code",
@@ -32,7 +32,7 @@ export class PinCodeComponent {
 	close: EventEmitter<void> = new EventEmitter();
 
 	constructor(
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private authProvider: AuthProvider,
 		private toastProvider: ToastProvider,
 		private modalCtrl: ModalController,
@@ -77,7 +77,7 @@ export class PinCodeComponent {
 				return this.executeOnSuccess(onSuccess);
 			}
 
-			const passphrases = this.userDataProvider.getKeysByWallet(
+			const passphrases = this.userDataService.getKeysByWallet(
 				this.wallet,
 				data,
 			);
@@ -143,7 +143,7 @@ export class PinCodeComponent {
 													{ message: updatingText },
 												);
 												loading.present().then(() => {
-													this.userDataProvider.updateWalletEncryption(
+													this.userDataService.updateWalletEncryption(
 														oldPassword,
 														password,
 													);

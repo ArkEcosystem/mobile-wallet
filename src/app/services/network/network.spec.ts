@@ -1,6 +1,7 @@
+import { UserDataProviderMock } from "@@/test/mocks";
+import { StoredNetwork } from "@/models/model";
+
 import { NetworkProvider } from "./network";
-import { UserDataProviderMock } from '@@/test/mocks';
-import { StoredNetwork } from '@/models/model';
 
 const VALID_ADDRESS = "D8x2Rno1CxrE5kRoVHS1EooQnfTL3v5ZyM";
 const INVALID_ADDRESS = "D8x2Rno1CxrE5kRoVHS1EooQnfTL3v5z12";
@@ -26,7 +27,7 @@ describe("Network service", () => {
 		expect(networkProvider.isValidAddress(VALID_ADDRESS)).toBe(true);
 	});
 
-	it('should return the current network', () => {
+	it("should return the current network", () => {
 		expect(networkProvider.currentNetwork).toEqual(network);
 	});
 });

@@ -14,7 +14,7 @@ import lodash from "lodash";
 import { Wallet } from "@/models/wallet";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-delegate-detail",
@@ -38,7 +38,7 @@ export class DelegateDetailPage {
 		private arkApiProvider: ArkApiProvider,
 		private modalCtrl: ModalController,
 		private clipboard: Clipboard,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private alertCtrl: AlertController,
 		private translateService: TranslateService,
 		private toastProvider: ToastProvider,
@@ -48,7 +48,7 @@ export class DelegateDetailPage {
 
 		this.qraddress = `'{a: "${this.delegate.address}"}'`;
 		this.currentNetwork = this.arkApiProvider.network;
-		this.currentWallet = this.userDataProvider.currentWallet;
+		this.currentWallet = this.userDataService.currentWallet;
 
 		if (!this.delegate) {
 			this.navCtrl.pop();

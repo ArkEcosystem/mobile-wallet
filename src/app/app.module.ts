@@ -17,6 +17,8 @@ import { ChartsModule } from "ng2-charts";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
+import { UserDataServiceImpl } from "./services/user-data/user-data";
+import { UserDataService } from "./services/user-data/user-data.interface";
 
 export function createTranslateLoader(http: HttpClient) {
 	return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -49,6 +51,7 @@ export function createTranslateLoader(http: HttpClient) {
 		SocialSharing,
 		Network,
 		ScreenOrientation,
+		{ provide: UserDataService, useClass: UserDataServiceImpl },
 		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
 	],
 	bootstrap: [AppComponent],

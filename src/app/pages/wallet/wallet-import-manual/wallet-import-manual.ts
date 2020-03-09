@@ -14,7 +14,7 @@ import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { NetworkProvider } from "@/services/network/network";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-wallet-import-passphrase",
@@ -47,7 +47,7 @@ export class WalletManualImportPage extends BaseWalletImport {
 	constructor(
 		route: ActivatedRoute,
 		navCtrl: NavController,
-		userDataProvider: UserDataProvider,
+		userDataProvider: UserDataService,
 		arkApiProvider: ArkApiProvider,
 		toastProvider: ToastProvider,
 		modalCtrl: ModalController,

@@ -11,7 +11,7 @@ import {
 } from "@/app/modals/custom-network-edit/custom-network-edit";
 import { AddressMap, StoredNetwork } from "@/models/model";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	templateUrl: "network-overview.page.html",
@@ -24,7 +24,7 @@ export class NetworkOverviewPage {
 		private translateService: TranslateService,
 		private actionSheetCtrl: ActionSheetController,
 		private toastProvider: ToastProvider,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private modalCtrl: ModalController,
 	) {}
 
@@ -52,8 +52,8 @@ export class NetworkOverviewPage {
 	}
 
 	load() {
-		this.networks = this.userDataProvider.networks;
-		const defaultNetworks = this.userDataProvider.defaultNetworks.map(
+		this.networks = this.userDataService.networks;
+		const defaultNetworks = this.userDataService.defaultNetworks.map(
 			item => item.name,
 		);
 

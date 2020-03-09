@@ -14,7 +14,7 @@ import * as constants from "@/app/app.constants";
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
 import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 const packageJson = require("@@/package.json");
 
@@ -47,10 +47,10 @@ export class SettingsPage implements OnInit, OnDestroy {
 		private translateService: TranslateService,
 		private modalCtrl: ModalController,
 		private inAppBrowser: InAppBrowser,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 	) {
 		this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
-		this.currentWallet = this.userDataProvider.currentWallet;
+		this.currentWallet = this.userDataService.currentWallet;
 	}
 
 	async openChangePinPage() {

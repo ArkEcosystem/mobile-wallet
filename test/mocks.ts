@@ -6,9 +6,11 @@ import { ScreenOrientation } from "@ionic-native/screen-orientation/ngx";
 import { SocialSharing } from "@ionic-native/social-sharing/ngx";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
-import { Observable } from "rxjs";
-import { StoredNetwork, Wallet, Profile } from '@/models/model';
-import { IUserDataProvider } from '@/services/user-data/user-data.interface';
+import { Delegate, Network as ArkNetwork } from "ark-ts";
+import { Observable, Subject } from "rxjs";
+
+import { Profile, StoredNetwork, Wallet, WalletKeys } from "@/models/model";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Injectable()
 export class SplashScreenMock extends SplashScreen {
@@ -136,11 +138,124 @@ export class ScreenOrientationMock extends ScreenOrientation {
 }
 
 @Injectable()
-export class UserDataProviderMock implements IUserDataProvider {
+export class UserDataProviderMock implements UserDataService {
 	public currentNetwork: StoredNetwork;
 	public currentWallet: Wallet;
 	public currentProfile: Profile;
-
 	public profiles: Record<string, Profile>;
 	public networks: Record<string, StoredNetwork>;
+	public onActivateNetwork$: Subject<StoredNetwork>;
+	public onUpdateNetwork$: Subject<StoredNetwork>;
+	public onCreateWallet$: Subject<Wallet>;
+	public onUpdateWallet$: Subject<Wallet>;
+	public onSelectProfile$: Subject<Profile>;
+
+	public get isDevNet(): boolean {
+		throw new Error("Method not implemented.");
+	}
+	public get isMainNet(): boolean {
+		throw new Error("Method not implemented.");
+	}
+	public get defaultNetworks(): ArkNetwork[] {
+		throw new Error("Method not implemented.");
+	}
+	public addOrUpdateNetwork(
+		network: StoredNetwork,
+		networkId?: string,
+	): Observable<{ network: ArkNetwork; id: string }> {
+		throw new Error("Method not implemented.");
+	}
+	public getNetworkById(networkId: string): StoredNetwork {
+		throw new Error("Method not implemented.");
+	}
+	public removeNetworkById(networkId: string) {
+		throw new Error("Method not implemented.");
+	}
+	public addProfile(profile: Profile) {
+		throw new Error("Method not implemented.");
+	}
+	public getProfileByName(name: string) {
+		throw new Error("Method not implemented.");
+	}
+	public getProfileById(profileId: string) {
+		throw new Error("Method not implemented.");
+	}
+	public removeProfileById(profileId: string) {
+		throw new Error("Method not implemented.");
+	}
+	public saveProfiles(profiles?: { [key: string]: any }) {
+		throw new Error("Method not implemented.");
+	}
+	public encryptSecondPassphrase(
+		wallet: Wallet,
+		pinCode: string,
+		secondPassphrase: string,
+		profileId?: string,
+	) {
+		throw new Error("Method not implemented.");
+	}
+	public addWallet(
+		wallet: Wallet,
+		passphrase: string,
+		pinCode: string,
+		profileId?: string,
+	) {
+		throw new Error("Method not implemented.");
+	}
+	public updateWalletEncryption(oldPassword: string, newPassword: string) {
+		throw new Error("Method not implemented.");
+	}
+	public removeWalletByAddress(address: string, profileId?: string): void {
+		throw new Error("Method not implemented.");
+	}
+	public ensureWalletDelegateProperties(
+		wallet: Wallet,
+		delegateOrUserName: string | Delegate,
+	): void {
+		throw new Error("Method not implemented.");
+	}
+	public getWalletByAddress(address: string, profileId?: string): Wallet {
+		throw new Error("Method not implemented.");
+	}
+	public updateWallet(
+		wallet: Wallet,
+		profileId: string,
+		notificate?: boolean,
+	): Observable<any> {
+		throw new Error("Method not implemented.");
+	}
+	public saveWallet(
+		wallet: Wallet,
+		profileId?: string,
+		notificate?: boolean,
+	) {
+		throw new Error("Method not implemented.");
+	}
+	public setWalletLabel(wallet: Wallet, label: string): Observable<any> {
+		throw new Error("Method not implemented.");
+	}
+	public getWalletLabel(
+		walletOrAddress: string | Wallet,
+		profileId?: string,
+	): string {
+		throw new Error("Method not implemented.");
+	}
+	public setCurrentWallet(wallet: Wallet): void {
+		throw new Error("Method not implemented.");
+	}
+	public clearCurrentWallet(): void {
+		throw new Error("Method not implemented.");
+	}
+	public getCurrentProfile(): Profile {
+		throw new Error("Method not implemented.");
+	}
+	public loadProfiles() {
+		throw new Error("Method not implemented.");
+	}
+	public loadNetworks(): Observable<Record<string, StoredNetwork>> {
+		throw new Error("Method not implemented.");
+	}
+	public getKeysByWallet(wallet: Wallet, password: string): WalletKeys {
+		throw new Error("Method not implemented.");
+	}
 }

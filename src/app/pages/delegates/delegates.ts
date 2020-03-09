@@ -17,7 +17,7 @@ import { Wallet, WalletKeys } from "@/models/model";
 import { StoredNetwork } from "@/models/stored-network";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { DelegateDetailPage } from "./delegate-detail/delegate-detail";
 
@@ -72,7 +72,7 @@ export class DelegatesPage implements OnDestroy {
 		private arkApiProvider: ArkApiProvider,
 		private zone: NgZone,
 		private modalCtrl: ModalController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private toastProvider: ToastProvider,
 	) {}
 
@@ -167,7 +167,7 @@ export class DelegatesPage implements OnDestroy {
 
 	ionViewDidEnter() {
 		this.currentNetwork = this.arkApiProvider.network;
-		this.currentWallet = this.userDataProvider.currentWallet;
+		this.currentWallet = this.userDataService.currentWallet;
 		this.zone.runOutsideAngular(() => {
 			this.arkApiProvider.delegates.subscribe(data =>
 				this.zone.run(() => {

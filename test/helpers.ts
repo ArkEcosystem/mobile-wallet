@@ -1,4 +1,3 @@
-import { SharedModule } from "@/app/shared.module";
 import { HttpClientModule } from "@angular/common/http";
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import {
@@ -18,6 +17,11 @@ import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { IonicModule } from "@ionic/angular";
 import { IonicStorageModule } from "@ionic/storage";
 import { TranslateModule } from "@ngx-translate/core";
+
+import { SharedModule } from "@/app/shared.module";
+import { UserDataServiceImpl } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
+
 import {
 	KeyboardMock,
 	NetworkMock,
@@ -26,6 +30,7 @@ import {
 	SocialSharingMock,
 	SplashScreenMock,
 	StatusBarMock,
+	UserDataProviderMock,
 } from "./mocks";
 
 interface Compilation<T> {
@@ -64,6 +69,7 @@ export class TestHelpers {
 				RouterModule.forRoot([]),
 			],
 			providers: [
+				{ provide: UserDataService, useClass: UserDataServiceImpl },
 				{ provide: SplashScreen, useClass: SplashScreenMock },
 				{ provide: StatusBar, useClass: StatusBarMock },
 				{ provide: QRScanner, useClass: QRScannerMock },

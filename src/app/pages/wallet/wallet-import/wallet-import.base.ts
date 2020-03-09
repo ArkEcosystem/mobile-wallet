@@ -11,7 +11,7 @@ import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { NetworkProvider } from "@/services/network/network";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 export abstract class BaseWalletImport {
 	public existingAddress: string;
@@ -20,7 +20,7 @@ export abstract class BaseWalletImport {
 	constructor(
 		protected route: ActivatedRoute,
 		protected navCtrl: NavController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private arkApiProvider: ArkApiProvider,
 		protected toastProvider: ToastProvider,
 		private modalCtrl: ModalController,
@@ -92,7 +92,7 @@ export abstract class BaseWalletImport {
 							this.addWallet(newWallet);
 						} else {
 							// if we are converting watch-only to full wallet, keep label from existing watch-only wallet
-							const existingWallet = this.userDataProvider.getWalletByAddress(
+							const existingWallet = this.userDataService.getWalletByAddress(
 								address,
 							);
 							if (existingWallet) {
@@ -149,7 +149,7 @@ export abstract class BaseWalletImport {
 		passphrase?: string,
 		password?: string,
 	): void {
-		this.userDataProvider
+		this.userDataService
 			.addWallet(newWallet, passphrase, password)
 			.subscribe(() => {
 				this.navCtrl.navigateRoot("/wallets/dashboard", {

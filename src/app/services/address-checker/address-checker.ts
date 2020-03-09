@@ -7,7 +7,7 @@ import { AddressCheckResultType } from "@/services/address-checker/address-check
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { NeoApiProvider } from "@/services/neo-api/neo-api";
 import { NetworkProvider } from "@/services/network/network";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { CompleteHandler } from "../../utils/complete-handler";
 
@@ -15,7 +15,7 @@ import { CompleteHandler } from "../../utils/complete-handler";
 export class AddressCheckerProvider {
 	public constructor(
 		private networkProvider: NetworkProvider,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private arkApiProvider: ArkApiProvider,
 		private neoApiProvider: NeoApiProvider,
 	) {}
@@ -112,7 +112,7 @@ export class AddressCheckerProvider {
 	}
 
 	public isOwnAddress(address: string): boolean {
-		return this.userDataProvider.currentWallet.address === address;
+		return this.userDataService.currentWallet.address === address;
 	}
 
 	public hasTransactions(address: string): Observable<boolean> {

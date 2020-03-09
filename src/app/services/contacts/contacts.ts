@@ -6,12 +6,12 @@ import { Contact } from "@/models/contact";
 import { TranslatableObject } from "@/models/model";
 import { Profile } from "@/models/profile";
 import { NetworkProvider } from "@/services/network/network";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Injectable({ providedIn: "root" })
 export class ContactsProvider {
 	public constructor(
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private networkProvider: NetworkProvider,
 	) {}
 
@@ -49,7 +49,7 @@ export class ContactsProvider {
 		contacts[address] = { address, name } as Contact;
 		profile.contacts = contacts;
 
-		return this.userDataProvider.saveProfiles();
+		return this.userDataService.saveProfiles();
 	}
 
 	public editContact(address: string, name: string): Observable<any> {
@@ -78,7 +78,7 @@ export class ContactsProvider {
 		contact.name = name;
 		const profile = this.getProfile();
 		profile.contacts[address] = contact;
-		return this.userDataProvider.saveProfiles();
+		return this.userDataService.saveProfiles();
 	}
 
 	public removeContactByAddress(address: string): Observable<any> {
@@ -86,7 +86,7 @@ export class ContactsProvider {
 
 		profile.contacts = lodash.omit(profile.contacts, [address]);
 
-		return this.userDataProvider.saveProfiles();
+		return this.userDataService.saveProfiles();
 	}
 
 	public getContactByAddress(address: string, profileId?: string): Contact {
@@ -115,10 +115,10 @@ export class ContactsProvider {
 
 	private getProfile(profileId?: string): Profile {
 		if (profileId) {
-			return this.userDataProvider.getProfileById(profileId);
+			return this.userDataService.getProfileById(profileId);
 		}
 
-		const profile: Profile = this.userDataProvider.getCurrentProfile();
+		const profile: Profile = this.userDataService.getCurrentProfile();
 		if (!profile) {
 			throw new Error(
 				"This service can only be used if a current profile is set!",

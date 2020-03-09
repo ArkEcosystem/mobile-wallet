@@ -34,7 +34,7 @@ import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { SetLabelPage } from "./modal/set-label/set-label";
 
@@ -85,7 +85,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	constructor(
 		private navCtrl: NavController,
 		private route: ActivatedRoute,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private arkApiProvider: ArkApiProvider,
 		private actionSheetCtrl: ActionSheetController,
 		private translateService: TranslateService,
@@ -103,9 +103,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 			this.navCtrl.pop();
 		}
 
-		this.profile = this.userDataProvider.currentProfile;
-		this.network = this.userDataProvider.currentNetwork;
-		this.setWallet(this.userDataProvider.getWalletByAddress(this.address));
+		this.profile = this.userDataService.currentProfile;
+		this.network = this.userDataService.currentNetwork;
+		this.setWallet(this.userDataService.getWalletByAddress(this.address));
 	}
 
 	copyAddress() {
@@ -280,7 +280,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
 		modal.onDidDismiss().then(({ data, role }) => {
 			if (role === "submit") {
-				this.userDataProvider
+				this.userDataService
 					.setWalletLabel(this.wallet, data)
 					.pipe(
 						catchError(error => {
@@ -396,11 +396,11 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	}
 
 	private saveWallet() {
-		this.userDataProvider.updateWallet(this.wallet, this.profile.profileId);
+		this.userDataService.updateWallet(this.wallet, this.profile.profileId);
 	}
 
 	private deleteWallet() {
-		this.userDataProvider.removeWalletByAddress(this.wallet.address);
+		this.userDataService.removeWalletByAddress(this.wallet.address);
 		this.navCtrl.navigateRoot("/wallets");
 	}
 
@@ -453,7 +453,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 				this.arkApiProvider
 					.getDelegateByPublicKey(this.wallet.publicKey)
 					.subscribe(delegate =>
-						this.userDataProvider.ensureWalletDelegateProperties(
+						this.userDataService.ensureWalletDelegateProperties(
 							this.wallet,
 							delegate,
 						),
@@ -482,7 +482,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	}
 
 	private onUpdateWallet() {
-		this.userDataProvider.onUpdateWallet$
+		this.userDataService.onUpdateWallet$
 			.pipe(takeUntil(this.unsubscriber$), debounceTime(500))
 			.subscribe(wallet => {
 				if (
@@ -508,7 +508,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 			return;
 		}
 
-		this.userDataProvider.setCurrentWallet(this.wallet);
+		this.userDataService.setCurrentWallet(this.wallet);
 
 		const transactions = this.wallet.transactions;
 		this.emptyTransactions = lodash.isEmpty(transactions);

@@ -6,7 +6,7 @@ import { ModalController, NavController } from "@ionic/angular";
 
 import { StoredNetwork, Transaction, Wallet } from "@/models/model";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-transaction-response",
@@ -27,13 +27,13 @@ export class TransactionResponsePage {
 		public navCtrl: NavController,
 		private clipboard: Clipboard,
 		private modalCtrl: ModalController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private toastProvider: ToastProvider,
 		private iab: InAppBrowser,
 		private route: ActivatedRoute,
 	) {
-		this.wallet = this.userDataProvider.currentWallet;
-		this.currentNetwork = this.userDataProvider.currentNetwork;
+		this.wallet = this.userDataService.currentWallet;
+		this.currentNetwork = this.userDataService.currentNetwork;
 
 		this.response = this.route.snapshot.queryParamMap.get("response");
 		const transaction = this.route.snapshot.queryParamMap.get(
@@ -82,8 +82,8 @@ export class TransactionResponsePage {
 	//   modal.onDidDismiss().then((({ data }) => {
 	//     if (!data.password) { return; }
 
-	//     this.userDataProvider.encryptSecondPassphrase(this.wallet, data.password, this.keys.secondPassphrase).subscribe(() => {
-	//       this.wallet = this.userDataProvider.getWalletByAddress(this.wallet.address);
+	//     this.userDataService.encryptSecondPassphrase(this.wallet, data.password, this.keys.secondPassphrase).subscribe(() => {
+	//       this.wallet = this.userDataService.getWalletByAddress(this.wallet.address);
 
 	//       this.showKeepSecondPassphrase = false;
 	//       this.presentEncryptedAlert();

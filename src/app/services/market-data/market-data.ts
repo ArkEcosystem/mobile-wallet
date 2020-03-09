@@ -8,7 +8,7 @@ import * as model from "@/models/market";
 import { UserSettings } from "@/models/settings";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { StorageProvider } from "@/services/storage/storage";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Injectable({ providedIn: "root" })
 export class MarketDataProvider {
@@ -24,14 +24,14 @@ export class MarketDataProvider {
 	private marketHistory: model.MarketHistory;
 
 	private get marketTickerName(): string {
-		return this.userDataProvider.currentNetwork.marketTickerName || "ARK";
+		return this.userDataService.currentNetwork.marketTickerName || "ARK";
 	}
 
 	constructor(
 		private http: HttpClient,
 		private storageProvider: StorageProvider,
 		private settingsDataProvider: SettingsDataProvider,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 	) {
 		this.loadData();
 		this.fetchTicker();

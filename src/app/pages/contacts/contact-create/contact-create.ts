@@ -10,7 +10,7 @@ import { QRCodeScheme } from "@/models/model";
 import { TranslatableObject } from "@/models/translate";
 import { ContactsProvider } from "@/services/contacts/contacts";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-contact-create",
@@ -33,7 +33,7 @@ export class ContactCreatePage implements OnInit {
 	constructor(
 		private navCtrl: NavController,
 		private route: ActivatedRoute,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private contactsProvider: ContactsProvider,
 		private translateService: TranslateService,
 		private alertCtrl: AlertController,
@@ -41,7 +41,7 @@ export class ContactCreatePage implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.currentNetwork = this.userDataProvider.currentNetwork;
+		this.currentNetwork = this.userDataService.currentNetwork;
 
 		const contact = this.route.snapshot.queryParamMap.get("contact");
 		this.address = this.route.snapshot.queryParamMap.get("address");
@@ -54,7 +54,7 @@ export class ContactCreatePage implements OnInit {
 			this.address = contactMap.address;
 		}
 
-		this.currentNetwork = this.userDataProvider.currentNetwork;
+		this.currentNetwork = this.userDataService.currentNetwork;
 	}
 
 	validateAddress() {

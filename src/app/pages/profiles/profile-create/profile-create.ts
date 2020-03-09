@@ -8,7 +8,7 @@ import { takeUntil } from "rxjs/operators";
 
 import { Profile } from "@/models/profile";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-profile-create",
@@ -33,7 +33,7 @@ export class ProfileCreatePage implements OnDestroy {
 	constructor(
 		public navCtrl: NavController,
 		private alertCtrl: AlertController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private toastProvider: ToastProvider,
 		private translateService: TranslateService,
 	) {}
@@ -47,7 +47,7 @@ export class ProfileCreatePage implements OnDestroy {
 	}
 
 	submitForm() {
-		const existingProfile = this.userDataProvider.getProfileByName(
+		const existingProfile = this.userDataService.getProfileByName(
 			this.newProfile.name,
 		);
 
@@ -63,7 +63,7 @@ export class ProfileCreatePage implements OnDestroy {
 			profile.name = this.newProfile.name;
 			profile.networkId = this.newProfile.networkId;
 
-			this.userDataProvider
+			this.userDataService
 				.addProfile(profile)
 				.pipe(takeUntil(this.unsubscriber$))
 				.subscribe(
@@ -83,11 +83,11 @@ export class ProfileCreatePage implements OnDestroy {
 		this.translateService
 			.get("PROFILES_PAGE.CUSTOM")
 			.subscribe(customTrans => {
-				this.networks = this.userDataProvider.networks;
+				this.networks = this.userDataService.networks;
 				this.networksIds = lodash.keys(this.networks);
 				this.networkChoices = this.networksIds
 					.filter(id =>
-						this.userDataProvider.defaultNetworks.some(
+						this.userDataService.defaultNetworks.some(
 							defaultNetwork =>
 								this.networks[id].name === defaultNetwork.name,
 						),
