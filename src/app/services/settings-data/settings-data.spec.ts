@@ -6,7 +6,7 @@ import { UserSettings } from "@/models/settings";
 
 import { SettingsDataProvider } from "./settings-data";
 
-fdescribe("Settings Service", () => {
+describe("Settings Service", () => {
 	let settingsService: SettingsDataProvider;
 
 	beforeAll(() => {
