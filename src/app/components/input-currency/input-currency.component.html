@@ -5,5 +5,7 @@
 	[disabled]="isDisabled"
 	(ionBlur)="onTouched()"
 	inputmode="decimal"
+	appPasteClipboardValue
+	[ngClass]="{ 'c-input-currency--relaxed': isRelaxed }"
 >
 </ion-input>

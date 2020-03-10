@@ -1,88 +1,48 @@
-<ion-grid
-	class="input-fee"
-	[ngClass]="{
-		'input-fee--warning': !!warningMessage,
-		'input-fee--danger': !!errorMessage
-	}"
->
-	<ion-row class="input-fee__wrapper flex flex-col">
-		<ion-label
-			position="stacked"
-			class="input-fee__label pb-3 pt-4"
-			color=""
-			>Fee</ion-label
+<ion-item class="overflow-visible">
+	<div slot="end" class="flex items-center h-full">
+		<ion-button
+			[fill]="currentFee === min ? 'solid' : 'outline'"
+			color="medium"
+			(click)="onMin()"
+			mode="ios"
 		>
-		<ion-item lines="none" class="input-fee__input pt-0">
-			<ion-label>{{ symbol }}</ion-label>
-			<input-currency formControlName="fee" name="fee"></input-currency>
-		</ion-item>
-		<ion-item lines="none" class="input-fee__range">
-			<ion-range
-				formControlName="feeRange"
-				name="fee-range"
-				[step]="step"
-				[min]="min"
-				[max]="max"
-			>
-			</ion-range>
-		</ion-item>
-	</ion-row>
+			{{ "INPUT_FEE.MIN" | translate }}
+		</ion-button>
+		<ion-button
+			[fill]="currentFee === avg ? 'solid' : 'outline'"
+			color="medium"
+			(click)="onAvg()"
+			mode="ios"
+		>
+			{{ "INPUT_FEE.AVG" | translate }}
+		</ion-button>
+		<ion-button
+			[fill]="currentFee === max ? 'solid' : 'outline'"
+			color="medium"
+			(click)="onMax()"
+			mode="ios"
+		>
+			{{ "INPUT_FEE.MAX" | translate }}
+		</ion-button>
+	</div>
 
-	<ion-label
-		*ngIf="warningMessage"
-		class="input-fee__helper--warning no-margin"
-	>
-		{{ warningMessage }}
+	<ion-label position="floating">
+		{{ "TRANSACTIONS_PAGE.FEE" | translate }}
 	</ion-label>
 
-	<ion-label *ngIf="errorMessage" class="input-fee__helper--danger no-margin">
-		{{ errorMessage }}
-	</ion-label>
+	<input-currency
+		[isRelaxed]="true"
+		formControlName="fee"
+		name="fee"
+		(inputCurrencyUpdate)="emitUpdate($event)"
+	></input-currency>
 
-	<ion-label
-		*ngIf="isStaticFee && !warningMessage && !errorMessage"
-		class="input-fee__helper"
-		translate
-		[translateParams]="{ fee: maxArktoshi }"
-	>
-		INPUT_FEE.STATIC_FEE
-	</ion-label>
-
-	<ion-grid>
-		<ion-row nowrap class="p-0">
-			<ion-col>
-				<ion-button
-					size="small"
-					expand="block"
-					[fill]="min !== rangeFee ? 'outline' : 'solid'"
-					color="primary"
-					(click)="setRangeFee(min)"
-				>
-					{{ "INPUT_FEE.MIN" | translate }}
-				</ion-button>
-			</ion-col>
-			<ion-col *ngIf="!isStaticFee">
-				<ion-button
-					size="small"
-					expand="block"
-					[fill]="avg !== rangeFee ? 'outline' : 'solid'"
-					color="primary"
-					(click)="setRangeFee(avg)"
-				>
-					{{ "INPUT_FEE.AVERAGE" | translate }}
-				</ion-button>
-			</ion-col>
-			<ion-col>
-				<ion-button
-					size="small"
-					expand="block"
-					[fill]="max !== rangeFee ? 'outline' : 'solid'"
-					color="primary"
-					(click)="setRangeFee(max)"
-				>
-					{{ "INPUT_FEE.MAX" | translate }}
-				</ion-button>
-			</ion-col>
-		</ion-row>
-	</ion-grid>
-</ion-grid>
+	<ion-range
+		step="0.000000001"
+		[min]="min"
+		[max]="max"
+		pin="false"
+		class="absolute py-0 w-full"
+		[formControl]="rangeControl"
+	></ion-range>
+</ion-item>

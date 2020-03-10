@@ -15,7 +15,7 @@ import {
 import { ARKTOSHI_DP } from "@/app/app.constants";
 import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
 
-export interface IInputCurrencyOutput {
+export interface InputCurrencyOutput {
 	display: string;
 	value: BigNumber;
 	satoshi: BigNumber;
@@ -24,6 +24,7 @@ export interface IInputCurrencyOutput {
 @Component({
 	selector: "input-currency",
 	templateUrl: "input-currency.component.html",
+	styleUrls: ["input-currency.component.scss"],
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,
@@ -34,10 +35,10 @@ export interface IInputCurrencyOutput {
 	],
 })
 export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
-	public formControl = new FormControl("");
+	public formControl = new FormControl(0);
 
 	@Output()
-	public updated = new EventEmitter<IInputCurrencyOutput>();
+	public inputCurrencyUpdate = new EventEmitter<InputCurrencyOutput>();
 
 	@Input()
 	public name: string;
@@ -47,6 +48,9 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 
 	@Input()
 	public fractionDigits = ARKTOSHI_DP;
+
+	@Input()
+	public isRelaxed = false;
 
 	public isDisabled: boolean;
 	public input: (value: BigNumber) => void;
@@ -89,14 +93,14 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 	private format(value: string) {
 		const sanitized = this.sanitizeInput(value);
 		this.formControl.setValue(sanitized.display, { emitEvent: false });
-		this.updated.emit(sanitized);
+		this.inputCurrencyUpdate.emit(sanitized);
 		return sanitized;
 	}
 
 	/**
 	 * Copied from https://github.com/LedgerHQ/ledger-live-desktop with changes
 	 */
-	private sanitizeInput(input: string): IInputCurrencyOutput {
+	private sanitizeInput(input: string): InputCurrencyOutput {
 		const numbers = "0123456789";
 		const separatos = ".,";
 
