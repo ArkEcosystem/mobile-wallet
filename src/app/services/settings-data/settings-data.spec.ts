@@ -2,6 +2,8 @@ import { TestBed } from "@angular/core/testing";
 import { IonicStorageModule } from "@ionic/storage";
 import { TranslateModule } from "@ngx-translate/core";
 
+import { UserSettings } from "@/models/settings";
+
 import { SettingsDataProvider } from "./settings-data";
 
 fdescribe("Settings Service", () => {
@@ -28,5 +30,17 @@ fdescribe("Settings Service", () => {
 			);
 			done();
 		});
+	});
+
+	it("should return the default settings", () => {
+		expect(settingsService.getDefaults()).toEqual(
+			jasmine.objectContaining({
+				language: "en",
+				currency: "usd",
+				wordlistLanguage: "english",
+				darkMode: false,
+				notification: false,
+			}),
+		);
 	});
 });
