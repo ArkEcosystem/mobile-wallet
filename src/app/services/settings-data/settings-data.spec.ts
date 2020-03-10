@@ -44,7 +44,7 @@ fdescribe("Settings Service", () => {
 		);
 	});
 
-	it("should update a prop in settings", done => {
+	it("should update settings", done => {
 		const newSettings = new UserSettings();
 		newSettings.language = "pt-BR";
 		newSettings.currency = "BRL";
