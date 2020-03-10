@@ -1,6 +1,6 @@
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
-import { BrowserModule } from "@angular/platform-browser";
+import { BrowserModule, HammerModule } from "@angular/platform-browser";
 import { RouteReuseStrategy } from "@angular/router";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
 import { Network } from "@ionic-native/network/ngx";
@@ -41,6 +41,7 @@ export function createTranslateLoader(http: HttpClient) {
 		}),
 		AppRoutingModule,
 		ChartsModule,
+		HammerModule,
 	],
 	exports: [TranslateModule],
 	providers: [
