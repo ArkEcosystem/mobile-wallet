@@ -14,6 +14,7 @@ import { takeUntil } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
+import { InputCurrencyOutput } from "@/components/input-currency/input-currency.component";
 import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
 import { WalletPickerModal } from "@/components/wallet-picker/wallet-picker.modal";
@@ -265,8 +266,8 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		this.unsubscriber$.complete();
 	}
 
-	public onFeeChange(newFee: number) {
-		this.fee = newFee;
+	public onFeeChange(output: InputCurrencyOutput) {
+		this.fee = output.satoshi.toNumber();
 
 		if (this.sendAllEnabled) {
 			this.sendAll();
