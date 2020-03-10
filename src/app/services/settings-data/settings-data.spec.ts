@@ -9,7 +9,7 @@ import { SettingsDataProvider } from "./settings-data";
 fdescribe("Settings Service", () => {
 	let settingsService: SettingsDataProvider;
 
-	beforeEach(() => {
+	beforeAll(() => {
 		TestBed.configureTestingModule({
 			imports: [TranslateModule.forRoot(), IonicStorageModule.forRoot()],
 			providers: [SettingsDataProvider],
@@ -42,5 +42,29 @@ fdescribe("Settings Service", () => {
 				notification: false,
 			}),
 		);
+	});
+
+	it("should update a prop in settings", done => {
+		const newSettings = new UserSettings();
+		newSettings.language = "pt-BR";
+		newSettings.currency = "BRL";
+		newSettings.wordlistLanguage = "portuguese";
+		newSettings.darkMode = true;
+		newSettings.notification = true;
+
+		settingsService.save(newSettings);
+
+		settingsService.settings.subscribe(data => {
+			expect(data).toEqual(
+				jasmine.objectContaining({
+					language: "pt-BR",
+					currency: "BRL",
+					wordlistLanguage: "portuguese",
+					darkMode: true,
+					notification: true,
+				}),
+			);
+			done();
+		});
 	});
 });
