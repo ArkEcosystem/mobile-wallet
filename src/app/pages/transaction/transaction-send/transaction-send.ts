@@ -65,6 +65,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 
 	currentWallet: Wallet;
 	currentNetwork: StoredNetwork;
+	nodeFees: any;
 	fee: number;
 	hasFeeError = false;
 	hasSent = false;
@@ -227,6 +228,10 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		this.arkApiProvider.prepareFeesByType(0).subscribe(result => {
+			this.nodeFees = result;
+		});
+
 		this.hasNotSent();
 
 		this.pinCode.close.pipe(takeUntil(this.unsubscriber$)).subscribe(() => {
