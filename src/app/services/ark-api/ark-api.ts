@@ -430,7 +430,7 @@ export class ArkApiProvider {
 				const feeStatic = Number(respStatic[feeNameMap[type]]);
 
 				let max = feeStatic;
-				let avg = feeStatic / 2;
+				let avg = feeStatic;
 				let min = 1;
 				let isStatic = true;
 

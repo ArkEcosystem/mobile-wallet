@@ -1,5 +1,5 @@
 <ion-item class="overflow-visible">
-	<div slot="end" class="flex items-center h-full">
+	<div *ngIf="hasRange" slot="end" class="flex items-center h-full">
 		<ion-button
 			[fill]="currentFee === min ? 'solid' : 'outline'"
 			color="medium"
@@ -9,6 +9,7 @@
 			{{ "INPUT_FEE.MIN" | translate }}
 		</ion-button>
 		<ion-button
+			*ngIf="!isStatic && avg"
 			[fill]="currentFee === avg ? 'solid' : 'outline'"
 			color="medium"
 			(click)="onAvg()"
@@ -38,7 +39,8 @@
 	></input-currency>
 
 	<ion-range
-		step="0.000000001"
+		*ngIf="hasRange"
+		step="1"
 		[min]="min"
 		[max]="max"
 		pin="false"
@@ -46,3 +48,15 @@
 		[formControl]="rangeControl"
 	></ion-range>
 </ion-item>
+
+<p *ngIf="isStatic" class="c-input-fee__hint c-input-fee__hint--info">
+	{{ "INPUT_FEE.STATIC_FEE" | translate }}
+</p>
+
+<p *ngIf="currentFee < min" class="c-input-fee__hint c-input-fee__hint--warn">
+	{{ "INPUT_FEE.LOW_FEE_NOTICE" | translate }}
+</p>
+
+<p *ngIf="currentFee > max" class="c-input-fee__hint c-input-fee__hint--warn">
+	{{ "INPUT_FEE.ADVANCED_NOTICE" | translate }}
+</p>

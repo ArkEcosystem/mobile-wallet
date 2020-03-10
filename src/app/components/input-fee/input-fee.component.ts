@@ -2,6 +2,7 @@ import {
 	Component,
 	EventEmitter,
 	Input,
+	OnChanges,
 	OnDestroy,
 	OnInit,
 	Output,
@@ -20,7 +21,7 @@ import { InputCurrencyOutput } from "../input-currency/input-currency.component"
 @Component({
 	selector: "input-fee",
 	templateUrl: "input-fee.component.html",
-	styleUrls: ["input-fee.component.scss"],
+	styleUrls: ["input-fee.component.pcss"],
 	viewProviders: [
 		{
 			provide: ControlContainer,
@@ -28,13 +29,13 @@ import { InputCurrencyOutput } from "../input-currency/input-currency.component"
 		},
 	],
 })
-export class InputFeeComponent implements OnInit {
+export class InputFeeComponent implements OnInit, OnChanges {
 	@Output()
 	public inputFeeUpdate = new EventEmitter<InputCurrencyOutput>();
 
 	// Arktoshi
 	@Input()
-	public min: number;
+	public min = 1;
 
 	// Arktoshi
 	@Input()
@@ -42,16 +43,24 @@ export class InputFeeComponent implements OnInit {
 
 	// Arktoshi
 	@Input()
-	public max: number;
+	public max = 1;
 
 	// Arktoshi
 	@Input()
 	public last: number;
 
+	@Input()
+	public isStatic = true;
+
+	public hasRange = true;
 	public rangeControl = new FormControl(0);
 	public currentFee: number;
 
 	constructor(private parentForm: FormGroupDirective) {}
+
+	ngOnChanges() {
+		this.hasRange = this.min !== this.max;
+	}
 
 	ngOnInit() {
 		this.parentForm.form.addControl("fee", new FormControl());
