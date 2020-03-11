@@ -47,9 +47,22 @@ describe("Settings Service", () => {
 		);
 	});
 
-	it("should return settings taking browserLang and cultureLang in consideration", () => {
-		spyOn(translate, "getBrowserLang").and.returnValue("");
+	it("should return settings taking cultureLang in consideration", () => {
 		spyOn(translate, "getBrowserCultureLang").and.returnValue("en");
+
+		expect(settingsService.getDefaults()).toEqual(
+			jasmine.objectContaining({
+				language: "en",
+				currency: "usd",
+				wordlistLanguage: "english",
+				darkMode: false,
+				notification: false,
+			}),
+		);
+	});
+
+	it("should return settings taking browserLang in consideration", () => {
+		spyOn(translate, "getBrowserLang").and.returnValue("");
 
 		expect(settingsService.getDefaults()).toEqual(
 			jasmine.objectContaining({
