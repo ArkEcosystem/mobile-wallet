@@ -53,11 +53,16 @@ fdescribe("Auth Service", () => {
 	});
 
 	it("should set intro as seen", done => {
-		authService.saveIntro();
-
-		authService.hasSeenIntro().subscribe(data => {
-			expect(data).toBe(true);
-			done();
-		});
+		authService
+			.saveIntro()
+			.pipe(
+				switchMap(() =>
+					storageService.get(constants.STORAGE_INTROSEEN),
+				),
+			)
+			.subscribe(introSeen => {
+				expect(introSeen).toEqual("true");
+				done();
+			});
 	});
 });
