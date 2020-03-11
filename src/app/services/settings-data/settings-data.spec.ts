@@ -1,6 +1,7 @@
 import { TestBed } from "@angular/core/testing";
 import { IonicStorageModule } from "@ionic/storage";
 import { TranslateModule } from "@ngx-translate/core";
+import { switchMap } from "rxjs/operators";
 
 import { UserSettings } from "@/models/settings";
 
@@ -66,5 +67,21 @@ describe("Settings Service", () => {
 			);
 			done();
 		});
+	});
+
+	it("should clear settings", done => {
+		settingsService.settings
+			.pipe(
+				switchMap(data => {
+					expect(data.language).toEqual("pt-BR");
+					return settingsService
+						.clearData()
+						.pipe(switchMap(() => settingsService.settings));
+				}),
+			)
+			.subscribe(newData => {
+				expect(newData.language).toEqual("en");
+				done();
+			});
 	});
 });
