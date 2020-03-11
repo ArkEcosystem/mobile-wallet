@@ -22,6 +22,7 @@
 	},
 	"private": true,
 	"dependencies": {
+		"@angular/animations": "^9.0.6",
 		"@angular/common": "~9.0.5",
 		"@angular/compiler": "^9.0.5",
 		"@angular/core": "~9.0.5",
@@ -103,6 +104,7 @@
 		"@angular/language-service": "~9.0.5",
 		"@ionic/angular-toolkit": "^2.2.0",
 		"@ionic/lab": "^3.1.1",
+		"@testing-library/angular": "^8.2.0",
 		"@types/bcryptjs": "^2.4.2",
 		"@types/bip39": "^3.0.0",
 		"@types/bytebuffer": "^5.0.40",

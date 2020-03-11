@@ -35,7 +35,7 @@ export interface InputCurrencyOutput {
 	],
 })
 export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
-	public formControl = new FormControl(0);
+	public formControl: FormControl;
 
 	@Output()
 	public inputCurrencyUpdate = new EventEmitter<InputCurrencyOutput>();
@@ -80,6 +80,10 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 	}
 
 	ngOnInit() {
+		this.formControl = new FormControl({
+			value: 0,
+			disabled: this.isDisabled,
+		});
 		this.formControl.valueChanges.subscribe((value: string) => {
 			const formatted = this.format(value);
 			this.input(formatted.value);

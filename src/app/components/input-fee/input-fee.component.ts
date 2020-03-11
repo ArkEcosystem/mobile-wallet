@@ -1,15 +1,8 @@
-import {
-	Component,
-	EventEmitter,
-	Input,
-	OnChanges,
-	OnDestroy,
-	OnInit,
-	Output,
-} from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {
 	ControlContainer,
 	FormControl,
+	FormGroup,
 	FormGroupDirective,
 } from "@angular/forms";
 
@@ -29,9 +22,12 @@ import { InputCurrencyOutput } from "../input-currency/input-currency.component"
 		},
 	],
 })
-export class InputFeeComponent implements OnInit, OnChanges {
+export class InputFeeComponent implements OnInit {
 	@Output()
 	public inputFeeUpdate = new EventEmitter<InputCurrencyOutput>();
+
+	@Input()
+	public parent = new FormGroup({});
 
 	// Arktoshi
 	@Input()
@@ -60,14 +56,10 @@ export class InputFeeComponent implements OnInit, OnChanges {
 	// Arktoshi
 	public currentFee: number;
 
-	constructor(private parentForm: FormGroupDirective) {}
-
-	ngOnChanges() {
-		this.checkRange();
-	}
+	constructor() {}
 
 	ngOnInit() {
-		this.parentForm.form.addControl("fee", this.inputControl);
+		this.parent.addControl("fee", this.inputControl);
 		this.inputControl.valueChanges.subscribe((value: BigNumber) => {
 			// The range value should be in arktoshi
 			this.currentFee = value.shiftedBy(ARKTOSHI_DP).toNumber();
@@ -105,7 +97,7 @@ export class InputFeeComponent implements OnInit, OnChanges {
 			this.limitMin = this.min;
 		}
 		// Hide range if the minimum is equal to maximum
-		this.hasRange = this.limitMin !== this.max;
+		this.hasRange = this.max > this.limitMin;
 	}
 
 	private setInputValue(value: number, emitEvent = true) {
