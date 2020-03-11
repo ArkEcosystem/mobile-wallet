@@ -27,7 +27,7 @@ function createComponent(props?: Partial<InputFeeComponent>) {
 	});
 }
 
-fdescribe("Input Fee Component", () => {
+describe("Input Fee Component", () => {
 	it("should create", async () => {
 		const component = await createComponent();
 		expect(component.fixture.componentInstance.isStatic).toBeTrue();
