@@ -32,4 +32,9 @@ fdescribe("Auth Service", () => {
 			done();
 		});
 	});
+
+	it("should logout an user", () => {
+		authService.logout();
+		expect(authService.loggedProfileId).toEqual(undefined);
+	});
 });
