@@ -229,9 +229,12 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.arkApiProvider.prepareFeesByType(0).subscribe(result => {
-			this.nodeFees = result;
-		});
+		this.arkApiProvider
+			.prepareFeesByType(TransactionType.SendArk)
+			.pipe(takeUntil(this.unsubscriber$))
+			.subscribe(data => {
+				this.nodeFees = data;
+			});
 
 		this.hasNotSent();
 

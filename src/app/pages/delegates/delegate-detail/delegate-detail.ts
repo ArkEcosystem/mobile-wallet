@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormGroup } from "@angular/forms";
 import { Clipboard } from "@ionic-native/clipboard/ngx";
 import {
@@ -10,7 +10,10 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { Delegate, Network, TransactionType } from "ark-ts";
 import lodash from "lodash";
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
+import { InputCurrencyOutput } from "@/components/input-currency/input-currency.component";
 import { Wallet } from "@/models/wallet";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { ToastProvider } from "@/services/toast/toast";
@@ -22,7 +25,7 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 	styleUrls: ["delegate-detail.pcss"],
 	providers: [Clipboard],
 })
-export class DelegateDetailPage {
+export class DelegateDetailPage implements OnInit, OnDestroy {
 	public delegate: Delegate;
 	public qraddress = '{a: ""}';
 	public currentNetwork: Network;
@@ -31,6 +34,9 @@ export class DelegateDetailPage {
 	public transactionType = TransactionType.Vote;
 	public fee: number;
 	public voteForm = new FormGroup({});
+	public nodeFees: any;
+
+	private unsubscriber$: Subject<void> = new Subject<void>();
 
 	constructor(
 		public navCtrl: NavController,
@@ -53,6 +59,20 @@ export class DelegateDetailPage {
 		if (!this.delegate) {
 			this.navCtrl.pop();
 		}
+	}
+
+	ngOnInit() {
+		this.arkApiProvider
+			.prepareFeesByType(TransactionType.Vote)
+			.pipe(takeUntil(this.unsubscriber$))
+			.subscribe(data => {
+				this.nodeFees = data;
+			});
+	}
+
+	ngOnDestroy() {
+		this.unsubscriber$.next();
+		this.unsubscriber$.complete();
 	}
 
 	isSameDelegate() {
@@ -125,8 +145,8 @@ export class DelegateDetailPage {
 		}
 	}
 
-	onInputFee(fee) {
-		this.fee = fee;
+	onInputFee(output: InputCurrencyOutput) {
+		this.fee = output.satoshi.toNumber();
 	}
 
 	unvote() {

@@ -425,7 +425,9 @@ export class ArkApiProvider {
 			map(([respStatic, respDynamic]) => {
 				const feeNameMap = {
 					0: "send",
-					1: "vote",
+					1: "secondsignature",
+					2: "delegate",
+					3: "vote",
 				};
 				const feeStatic = Number(respStatic[feeNameMap[type]]);
 

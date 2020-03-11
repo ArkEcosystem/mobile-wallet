@@ -16,7 +16,7 @@
 		</ion-button>
 		<ion-button
 			data-testid="c-input-fee__controls__avg"
-			*ngIf="avg"
+			*ngIf="avg && avg !== max"
 			[fill]="currentFee === avg ? 'solid' : 'outline'"
 			color="medium"
 			(click)="handleClickButton(avg)"

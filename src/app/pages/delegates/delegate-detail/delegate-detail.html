@@ -63,11 +63,13 @@
 			<ion-row *ngIf="isWalletSelected()" class="vote-wrapper p-0">
 				<ion-grid>
 					<ion-row class="vote-wrapper__slider">
-						<!-- <input-fee
-							class="w-full"
-							[transactionType]="transactionType"
-							(change)="onInputFee($event)"
-						></input-fee> -->
+						<input-fee
+							[isStatic]="nodeFees.isStatic"
+							[min]="nodeFees.min"
+							[avg]="nodeFees.avg"
+							[max]="nodeFees.max"
+							(inputFeeUpdate)="onInputFee($event)"
+						></input-fee>
 					</ion-row>
 					<ion-row>
 						<ion-col class="mt-5 text-center">
