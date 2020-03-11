@@ -44,4 +44,13 @@ fdescribe("Auth Service", () => {
 			done();
 		});
 	});
+
+	it("should set intro as seen", done => {
+		authService.saveIntro();
+
+		authService.hasSeenIntro().subscribe(data => {
+			expect(data).toBe(true);
+			done();
+		});
+	});
 });
