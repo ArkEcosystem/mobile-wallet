@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { IonicStorageModule } from "@ionic/storage";
-import { TranslateModule } from "@ngx-translate/core";
+import { TranslateModule, TranslateService } from "@ngx-translate/core";
 import { switchMap } from "rxjs/operators";
 
 import { UserSettings } from "@/models/settings";
@@ -13,7 +13,7 @@ describe("Settings Service", () => {
 	beforeAll(() => {
 		TestBed.configureTestingModule({
 			imports: [TranslateModule.forRoot(), IonicStorageModule.forRoot()],
-			providers: [SettingsDataProvider],
+			providers: [SettingsDataProvider, TranslateService],
 		});
 
 		settingsService = TestBed.inject(SettingsDataProvider);
@@ -34,6 +34,22 @@ describe("Settings Service", () => {
 	});
 
 	it("should return the default settings", () => {
+		expect(settingsService.getDefaults()).toEqual(
+			jasmine.objectContaining({
+				language: "en",
+				currency: "usd",
+				wordlistLanguage: "english",
+				darkMode: false,
+				notification: false,
+			}),
+		);
+	});
+
+	it("should return settings taking browserLang and cultureLang in consideration", () => {
+		const translate = TestBed.get(TranslateService);
+		spyOn(translate, "getBrowserLang").and.returnValue("");
+		spyOn(translate, "getCultureLang").and.returnValue("en");
+
 		expect(settingsService.getDefaults()).toEqual(
 			jasmine.objectContaining({
 				language: "en",
