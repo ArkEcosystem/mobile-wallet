@@ -1,5 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { IonicStorageModule } from "@ionic/storage";
+import { switchMap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { StorageProvider } from "@/services/storage/storage";
@@ -26,11 +27,17 @@ fdescribe("Auth Service", () => {
 
 	it("should login an user", done => {
 		const USER_ID = "12341231212312312312312";
-
-		authService.login(USER_ID).subscribe(authData => {
-			expect(authService.loggedProfileId).toEqual(USER_ID);
-			done();
-		});
+		authService
+			.login(USER_ID)
+			.pipe(
+				switchMap(() =>
+					storageService.get(constants.STORAGE_ACTIVE_PROFILE),
+				),
+			)
+			.subscribe(id => {
+				expect(id).toBe(USER_ID);
+				done();
+			});
 	});
 
 	it("should logout an user", () => {
