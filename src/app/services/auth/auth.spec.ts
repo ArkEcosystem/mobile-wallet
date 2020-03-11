@@ -23,4 +23,13 @@ fdescribe("Auth Service", () => {
 	beforeEach(function() {
 		storageService.clear();
 	});
+
+	it("should login an user", done => {
+		const USER_ID = "12341231212312312312312";
+
+		authService.login(USER_ID).subscribe(authData => {
+			expect(authService.loggedProfileId).toEqual(USER_ID);
+			done();
+		});
+	});
 });
