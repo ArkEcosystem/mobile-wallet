@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import lodash from "lodash";
 import { Observable, of, Subject } from "rxjs";
+import { tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { UserSettings } from "@/models/settings";
@@ -107,8 +108,12 @@ export class SettingsDataProvider {
 		);
 	}
 
-	public clearData(): void {
-		this._storageProvider.clear();
+	public clearData() {
+		return this._storageProvider.clear().pipe(
+			tap(() => {
+				this._settings = undefined;
+			}),
+		);
 	}
 
 	private load(): Observable<UserSettings> {

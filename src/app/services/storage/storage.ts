@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 import { isObject, isString, toString } from "lodash";
 import { from, Subject } from "rxjs";
-import { map } from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 
 @Injectable({ providedIn: "root" })
 export class StorageProvider {
@@ -33,7 +33,10 @@ export class StorageProvider {
 	}
 
 	public clear() {
-		from(this._storage.clear());
-		return this.onClear$.next();
+		return from(this._storage.clear()).pipe(
+			tap(() => {
+				this.onClear$.next();
+			}),
+		);
 	}
 }

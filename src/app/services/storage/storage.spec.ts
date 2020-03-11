@@ -1,9 +1,10 @@
 import { Storage } from "@ionic/storage";
 import { Observable } from "rxjs";
+import { switchMapTo } from "rxjs/operators";
 
 import { StorageProvider } from "./storage";
 
-let storageProvider = null;
+let storageProvider: StorageProvider;
 const OBJECT_TO_BE_STORED = { context: "I am been stored" };
 const NONOBJECT_TO_BE_STORED = 123456;
 const TEST_STORAGE_KEY = "TEST_STORAGE_KEY";
@@ -41,10 +42,20 @@ describe("Storage service", () => {
 	});
 
 	it("should clear the storage", done => {
-		storageProvider.clear();
-		storageProvider.getObject("TEST_STORAGE_KEY").subscribe(storedValue => {
-			expect(storedValue).toEqual({});
+		storageProvider
+			.clear()
+			.pipe(switchMapTo(storageProvider.getObject("TEST_STORAGE_KEY")))
+			.subscribe(storedValue => {
+				expect(storedValue).toEqual({});
+				done();
+			});
+	});
+
+	it("should emit notification when storage is cleaned", done => {
+		storageProvider.onClear$.subscribe(() => {
+			expect().nothing();
 			done();
 		});
+		storageProvider.clear().subscribe();
 	});
 });

@@ -17,7 +17,9 @@ module.exports = function(config) {
 			"karma-chrome-launcher",
 			"@angular-devkit/build-angular/plugins/karma",
 		],
-		reporters: ["spec", isCoverageEnabled ? "sabarivka" : null],
+		reporters: ["spec", isCoverageEnabled ? "sabarivka" : null].filter(
+			Boolean,
+		),
 		client: {
 			clearContext: false, // leave Jasmine Spec Runner output visible in browser
 			jasmine: {
