@@ -9,6 +9,7 @@ import { SettingsDataProvider } from "./settings-data";
 
 describe("Settings Service", () => {
 	let settingsService: SettingsDataProvider;
+	let translate: TranslateService;
 
 	beforeAll(() => {
 		TestBed.configureTestingModule({
@@ -16,6 +17,7 @@ describe("Settings Service", () => {
 			providers: [SettingsDataProvider, TranslateService],
 		});
 
+		translate = TestBed.get(TranslateService);
 		settingsService = TestBed.inject(SettingsDataProvider);
 	});
 
@@ -46,9 +48,8 @@ describe("Settings Service", () => {
 	});
 
 	it("should return settings taking browserLang and cultureLang in consideration", () => {
-		const translate = TestBed.get(TranslateService);
 		spyOn(translate, "getBrowserLang").and.returnValue("");
-		spyOn(translate, "getCultureLang").and.returnValue("en");
+		spyOn(translate, "getBrowserCultureLang").and.returnValue("en");
 
 		expect(settingsService.getDefaults()).toEqual(
 			jasmine.objectContaining({
