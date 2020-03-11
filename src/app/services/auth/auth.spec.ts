@@ -37,4 +37,11 @@ fdescribe("Auth Service", () => {
 		authService.logout();
 		expect(authService.loggedProfileId).toEqual(undefined);
 	});
+
+	it("should verify if user has seen intro", done => {
+		authService.hasSeenIntro().subscribe(data => {
+			expect(data).toBe(false);
+			done();
+		});
+	});
 });
