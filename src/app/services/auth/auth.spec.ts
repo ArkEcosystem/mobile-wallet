@@ -8,7 +8,7 @@ import { StorageProvider } from "@/services/storage/storage";
 import { AuthProvider } from "./auth";
 const MASTER_PASSWORD = "master_password_test";
 
-fdescribe("Auth Service", () => {
+describe("Auth Service", () => {
 	let authService: AuthProvider;
 	let storageService: StorageProvider;
 
