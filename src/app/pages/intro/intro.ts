@@ -56,7 +56,7 @@ export class IntroPage {
 	}
 
 	startApp() {
-		this.authProvider.saveIntro();
+		this.authProvider.saveIntro().subscribe();
 
 		this.navCtrl.navigateForward("/login", {
 			animated: true,
