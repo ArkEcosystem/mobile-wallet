@@ -34,10 +34,13 @@ module.exports = function(config) {
 		coverageReporter: {
 			include: [
 				"src/**/*.ts",
-				"!src/main.(ts|js)",
-				"!src/**/*.spec.(ts|js)",
-				"!src/**/*.module.(ts|js)",
-				"!src/**/environment*.(ts|js)",
+				"!src/main.ts",
+				"!src/test.ts",
+				"!src/polyfills.ts",
+				"!src/app/app.constants.ts",
+				"!src/**/*.spec.ts",
+				"!src/**/*.module.ts",
+				"!src/**/environment*.ts",
 			],
 		},
 		customLaunchers: {
