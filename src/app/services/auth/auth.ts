@@ -2,7 +2,14 @@ import { Injectable } from "@angular/core";
 import * as bcrypt from "bcryptjs";
 import * as moment from "moment";
 import { Observable, Subject } from "rxjs";
-import { map, mapTo, mergeMap, mergeMapTo, tap } from "rxjs/operators";
+import {
+	map,
+	mapTo,
+	mergeMap,
+	mergeMapTo,
+	switchMapTo,
+	tap,
+} from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { StorageProvider } from "@/services/storage/storage";
@@ -150,8 +157,13 @@ export class AuthProvider {
 		});
 	}
 
-	clearAttempts() {
-		this.storage.set(constants.STORAGE_AUTH_UNLOCK_TIMESTAMP, null);
-		this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, 0);
+	clearAttempts(): Observable<any> {
+		return this.storage
+			.set(constants.STORAGE_AUTH_UNLOCK_TIMESTAMP, null)
+			.pipe(
+				switchMapTo(
+					this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, 0),
+				),
+			);
 	}
 }

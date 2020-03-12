@@ -179,7 +179,7 @@ export class PinCodeModal implements OnInit, OnDestroy {
 
 		// When logged in, the attempts are restarted
 		if (status) {
-			this.authProvider.clearAttempts();
+			this.authProvider.clearAttempts().subscribe();
 		}
 
 		if (this.outputPassword) {
@@ -215,7 +215,7 @@ export class PinCodeModal implements OnInit, OnDestroy {
 			const diff = moment(timestamp).diff(now, "seconds");
 
 			if (diff <= 0) {
-				this.authProvider.clearAttempts();
+				this.authProvider.clearAttempts().subscribe();
 				this.attempts = 0;
 				return this.loadUnlockTime();
 			}
