@@ -12,7 +12,7 @@ describe("Auth Service", () => {
 	let authService: AuthProvider;
 	let storageService: StorageProvider;
 
-	beforeAll(() => {
+	beforeEach(() => {
 		TestBed.configureTestingModule({
 			imports: [IonicStorageModule.forRoot()],
 			providers: [AuthProvider, StorageProvider],
