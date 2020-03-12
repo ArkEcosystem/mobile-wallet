@@ -46,6 +46,11 @@ fdescribe("Auth Service", () => {
 		expect(authService.loggedProfileId).toEqual(undefined);
 	});
 
+	it("should logout an user without broadcast", () => {
+		authService.logout(false);
+		expect(authService.loggedProfileId).toEqual(undefined);
+	});
+
 	it("should verify if user has seen intro", done => {
 		authService.hasSeenIntro().subscribe(data => {
 			expect(data).toBe(false);
@@ -87,6 +92,17 @@ fdescribe("Auth Service", () => {
 		});
 	});
 
+	it("should validate the master password with a wrong one", done => {
+		authService.saveMasterPassword(MASTER_PASSWORD).subscribe(() => {
+			authService
+				.validateMasterPassword("asjdaidsa")
+				.subscribe(result => {
+					expect(result).toEqual(false);
+				});
+			done();
+		});
+	});
+
 	it("should validate password as weak", () => {
 		const WEAK_PASSWORD = "000000";
 		expect(authService.isWeakPassword(WEAK_PASSWORD)).toEqual(true);
@@ -95,5 +111,49 @@ fdescribe("Auth Service", () => {
 	it("should validate password as not weak", () => {
 		const WEAK_PASSWORD = "AB@#$5";
 		expect(authService.isWeakPassword(WEAK_PASSWORD)).toEqual(false);
+	});
+
+	it("should rerturn the unlock timestamp", done => {
+		authService.getUnlockTimestamp().subscribe(unlockTime => {
+			expect(unlockTime).toEqual({});
+			done();
+		});
+	});
+
+	it("should rerturn the attempts", done => {
+		authService.getAttempts().subscribe(attempts => {
+			expect(attempts).toEqual(null);
+			done();
+		});
+	});
+
+	it("should increase attemps", done => {
+		authService
+			.increaseAttempts()
+			.pipe(
+				switchMap(() =>
+					storageService.get(constants.STORAGE_AUTH_ATTEMPTS),
+				),
+			)
+			.subscribe(attempts => {
+				expect(attempts).toBe("1");
+				done();
+			});
+	});
+
+	it("should increase unlock timestamp", done => {
+		authService.increaseUnlockTimestamp().then(newTimestamp => {
+			expect(newTimestamp).not.toBe(null);
+			done();
+		});
+	});
+
+	it("should clear attempts", done => {
+		authService.clearAttempts().subscribe(() => {
+			authService.getAttempts().subscribe(attempts => {
+				expect(attempts).toEqual(0);
+				done();
+			});
+		});
 	});
 });
