@@ -1,11 +1,13 @@
 import { TestBed } from "@angular/core/testing";
 import { IonicStorageModule } from "@ionic/storage";
+import * as bcrypt from "bcryptjs";
 import { switchMap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { StorageProvider } from "@/services/storage/storage";
 
 import { AuthProvider } from "./auth";
+
 const MASTER_PASSWORD = "master_password_test";
 
 describe("Auth Service", () => {
@@ -76,8 +78,24 @@ describe("Auth Service", () => {
 		authService.saveMasterPassword(MASTER_PASSWORD).subscribe(() => {
 			authService.getMasterPassword().subscribe(masterPassword => {
 				expect(masterPassword).not.toEqual(null);
+				done();
 			});
-			done();
+		});
+	});
+
+	it("should get an error on master password validation", done => {
+		// @ts-ignore
+		spyOn(bcrypt, "compare").and.callFake((_, __, callback) => {
+			callback(new Error("Failed"));
+		});
+
+		authService.saveMasterPassword(MASTER_PASSWORD).subscribe(() => {
+			authService
+				.validateMasterPassword(MASTER_PASSWORD)
+				.subscribe(null, (e: Error) => {
+					expect(e.message).toBe("Failed");
+					done();
+				});
 		});
 	});
 
@@ -87,8 +105,8 @@ describe("Auth Service", () => {
 				.validateMasterPassword(MASTER_PASSWORD)
 				.subscribe(result => {
 					expect(result).toEqual(true);
+					done();
 				});
-			done();
 		});
 	});
 
@@ -98,8 +116,8 @@ describe("Auth Service", () => {
 				.validateMasterPassword("asjdaidsa")
 				.subscribe(result => {
 					expect(result).toEqual(false);
+					done();
 				});
-			done();
 		});
 	});
 
