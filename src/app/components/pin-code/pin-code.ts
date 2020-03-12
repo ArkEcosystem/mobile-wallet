@@ -132,9 +132,10 @@ export class PinCodeComponent {
 								};
 
 								if (status) {
-									this.authProvider.saveMasterPassword(
-										password,
-									);
+									this.authProvider
+										.saveMasterPassword(password)
+										.subscribe();
+
 									if (oldPassword) {
 										this.translateService
 											.get("PIN_CODE.UPDATING")

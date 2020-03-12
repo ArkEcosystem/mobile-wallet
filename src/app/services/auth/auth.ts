@@ -58,10 +58,10 @@ export class AuthProvider {
 		return this.storage.get(constants.STORAGE_MASTERPASSWORD);
 	}
 
-	saveMasterPassword(password: string): void {
+	saveMasterPassword(password: string): Observable<any> {
 		const hash = bcrypt.hashSync(password, 8);
 
-		this.storage.set(constants.STORAGE_MASTERPASSWORD, hash);
+		return this.storage.set(constants.STORAGE_MASTERPASSWORD, hash);
 	}
 
 	validateMasterPassword(password: string): Observable<any> {
