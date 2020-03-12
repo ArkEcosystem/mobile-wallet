@@ -5,8 +5,25 @@ import * as arkts from "ark-ts";
 import arktsConfig from "ark-ts/config";
 import lodash from "lodash";
 import moment from "moment";
-import { EMPTY, Observable, of, Subject, throwError } from "rxjs";
-import { catchError, expand, finalize, switchMap, tap } from "rxjs/operators";
+import {
+	EMPTY,
+	forkJoin,
+	Observable,
+	of,
+	Subject,
+	throwError,
+	zip,
+} from "rxjs";
+import {
+	catchError,
+	expand,
+	finalize,
+	map,
+	mergeMap,
+	mergeMapTo,
+	switchMap,
+	tap,
+} from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import {
@@ -399,6 +416,50 @@ export class ArkApiProvider {
 		}
 
 		return this.client.getDelegateByPublicKey(publicKey);
+	}
+
+	public prepareFeesByType(
+		type: number,
+	): Observable<NodeFees & { isStatic: boolean }> {
+		return zip(this.fees, this.feeStatistics).pipe(
+			map(([respStatic, respDynamic]) => {
+				const feeNameMap = {
+					0: "send",
+					1: "secondsignature",
+					2: "delegate",
+					3: "vote",
+				};
+				const feeStatic = Number(respStatic[feeNameMap[type]]);
+
+				let max = feeStatic;
+				let avg = feeStatic;
+				let min = 1;
+				let isStatic = true;
+
+				const feeDynamic = respDynamic.find(item => item.type === type);
+
+				if (feeDynamic) {
+					isStatic = feeDynamic.fees.avgFee > max;
+
+					if (!isStatic) {
+						if (feeDynamic.fees.maxFee > max) {
+							max = feeDynamic.fees.maxFee;
+						}
+
+						avg = feeDynamic.fees.avgFee;
+						min = feeDynamic.fees.minFee;
+					}
+				}
+
+				return {
+					type,
+					isStatic,
+					min,
+					avg,
+					max,
+				};
+			}),
+		);
 	}
 
 	private isSuccessfulResponse(response) {

@@ -64,9 +64,11 @@
 				<ion-grid>
 					<ion-row class="vote-wrapper__slider">
 						<input-fee
-							class="w-full"
-							[transactionType]="transactionType"
-							(change)="onInputFee($event)"
+							[isStatic]="nodeFees.isStatic"
+							[min]="nodeFees.min"
+							[avg]="nodeFees.avg"
+							[max]="nodeFees.max"
+							(inputFeeUpdate)="onInputFee($event)"
 						></input-fee>
 					</ion-row>
 					<ion-row>

@@ -45,9 +45,12 @@
 			<ion-row class="flex-grow">
 				<ion-col>
 					<input-fee
-						[transactionType]="transactionType"
-						(change)="onFeeChange($event)"
-						(error)="onFeeError($event)"
+						[parent]="sendForm"
+						[isStatic]="nodeFees.isStatic"
+						[min]="nodeFees.min"
+						[avg]="nodeFees.avg"
+						[max]="nodeFees.max"
+						(inputFeeUpdate)="onFeeChange($event)"
 					></input-fee>
 				</ion-col>
 			</ion-row>

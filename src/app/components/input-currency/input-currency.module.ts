@@ -3,12 +3,13 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
 
 import { SharedModule } from "@/app/shared.module";
+import { DirectivesModule } from "@/directives/directives.module";
 
 import { InputCurrencyComponent } from "./input-currency.component";
 
 @NgModule({
 	declarations: [InputCurrencyComponent],
-	imports: [IonicModule, ReactiveFormsModule, SharedModule],
+	imports: [IonicModule, SharedModule, DirectivesModule],
 	exports: [InputCurrencyComponent],
 })
 export class InputCurrencyComponentModule {}

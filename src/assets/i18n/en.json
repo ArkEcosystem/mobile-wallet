@@ -160,6 +160,7 @@
 	},
 	"INPUT_FEE": {
 		"MIN": "Min",
+		"AVG": "Avg",
 		"AVERAGE": "Average",
 		"MAX": "Max",
 		"LOW_FEE_NOTICE": "Transactions with low fees may never get confirmed",
