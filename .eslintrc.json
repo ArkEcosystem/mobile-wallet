@@ -3,7 +3,7 @@
 	"parserOptions": {
 		"project": "./tsconfig.eslint.json"
 	},
-	"plugins": ["simple-import-sort", "html"],
+	"plugins": ["@typescript-eslint", "prettier", "simple-import-sort", "html"],
 	"extends": [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
