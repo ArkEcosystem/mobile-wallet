@@ -1,6 +1,13 @@
-<ion-content forceOverscroll="false" class="ion-padding">
-	<ion-slides class="h-full" #slider (ionSlideDidChange)="onSlideChanged()">
-		<ion-slide *ngFor="let slide of slides">
+<ion-content data-testid="c-intro" forceOverscroll="false" class="ion-padding">
+	<ion-slides
+		data-testid="c-intro__slides"
+		class="h-full"
+		(ionSlideDidChange)="onSlideChanged()"
+	>
+		<ion-slide
+			data-testid="c-intro__slides__slide"
+			*ngFor="let slide of slides"
+		>
 			<ion-grid class="h-full flex flex-col justify-center items-center">
 				<div class="flex flex-col justify-center items-center">
 					<img [class]="'slide-image ' + slide.image" />
@@ -23,6 +30,7 @@
 		<div class="flex items-center">
 			<ion-col class="flex-1">
 				<ion-button
+					data-testid="c-intro__skip"
 					id="skip"
 					fill="clear"
 					(click)="startApp()"
@@ -31,11 +39,16 @@
 				>
 			</ion-col>
 			<ion-col class="w-32">
-				<ion-grid fixed class="slide-pagination h-full text-center">
+				<ion-grid
+					data-testid="c-intro__pagination"
+					fixed
+					class="slide-pagination h-full text-center"
+				>
 					<ion-row
 						class="flex items-center justify-center flex-shrink-0"
 					>
 						<ion-col
+							data-testid="c-intro__pagination__page"
 							*ngFor="let page of slides; let i = index"
 							[class.active]="activeIndex == i"
 						>
@@ -46,6 +59,7 @@
 			</ion-col>
 			<ion-col class="flex-1 text-right">
 				<ion-button
+					data-testid="c-intro__next"
 					id="next"
 					fill="clear"
 					(click)="goNext()"
@@ -53,6 +67,7 @@
 					>{{ 'NEXT' | translate | uppercase }}</ion-button
 				>
 				<ion-button
+					data-testid="c-intro__done"
 					id="done"
 					fill="clear"
 					(click)="startApp()"
