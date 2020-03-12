@@ -6,6 +6,7 @@ import * as constants from "@/app/app.constants";
 import { StorageProvider } from "@/services/storage/storage";
 
 import { AuthProvider } from "./auth";
+const MASTER_PASSWORD = "master_password_test";
 
 fdescribe("Auth Service", () => {
 	let authService: AuthProvider;
@@ -64,5 +65,35 @@ fdescribe("Auth Service", () => {
 				expect(introSeen).toEqual("true");
 				done();
 			});
+	});
+
+	it("should save and get the stored master password", done => {
+		authService.saveMasterPassword(MASTER_PASSWORD).subscribe(() => {
+			authService.getMasterPassword().subscribe(masterPassword => {
+				expect(masterPassword).not.toEqual(null);
+			});
+			done();
+		});
+	});
+
+	it("should validate the master password", done => {
+		authService.saveMasterPassword(MASTER_PASSWORD).subscribe(() => {
+			authService
+				.validateMasterPassword(MASTER_PASSWORD)
+				.subscribe(result => {
+					expect(result).toEqual(true);
+				});
+			done();
+		});
+	});
+
+	it("should validate password as weak", () => {
+		const WEAK_PASSWORD = "000000";
+		expect(authService.isWeakPassword(WEAK_PASSWORD)).toEqual(true);
+	});
+
+	it("should validate password as not weak", () => {
+		const WEAK_PASSWORD = "AB@#$5";
+		expect(authService.isWeakPassword(WEAK_PASSWORD)).toEqual(false);
 	});
 });
