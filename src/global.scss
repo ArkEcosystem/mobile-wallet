@@ -32,6 +32,10 @@ ion-toolbar * {
 	box-sizing: border-box;
 }
 
+ion-item {
+	--highlight-height: 0;
+}
+
 .text-selectable {
 	user-select: auto !important;
 }
