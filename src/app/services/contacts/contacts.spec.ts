@@ -26,7 +26,7 @@ fdescribe("Contacts service", () => {
 	});
 
 	it("should throw invalid address error", done => {
-		contactsService.addContact("a", "b").subscribe(
+		contactsService.addContact(INVALID_ADDRESS, "b").subscribe(
 			() => {},
 			error => {
 				expect(error.key).toEqual("CONTACTS_PAGE.INVALID_ADDRESS");
