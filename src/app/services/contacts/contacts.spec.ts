@@ -1,6 +1,8 @@
 import { TestBed } from "@angular/core/testing";
+import { IonicStorageModule } from "@ionic/storage";
 
-import { StoredNetwork } from "@/models/model";
+import { UserDataProviderMock } from "@@/test/mocks";
+import { Profile, StoredNetwork } from "@/models/model";
 import { NetworkProvider } from "@/services/network/network";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
@@ -12,14 +14,20 @@ const INVALID_ADDRESS = "D8x2Rno1CxrE5kRoVHS1EooQnfTL3v5z12";
 fdescribe("Contacts service", () => {
 	let contactsService: ContactsProvider;
 	let userDataService: UserDataService;
+	let userProfile: Profile;
 
 	beforeEach(function() {
 		TestBed.configureTestingModule({
-			// imports: [IonicStorageModule.forRoot()],
-			providers: [ContactsProvider, NetworkProvider, UserDataService],
+			imports: [IonicStorageModule.forRoot()],
+			providers: [
+				ContactsProvider,
+				NetworkProvider,
+				{ provide: UserDataService, useClass: UserDataProviderMock },
+			],
 		});
 		contactsService = TestBed.inject(ContactsProvider);
 		userDataService = TestBed.inject(UserDataService);
+		// Mock network
 		const network = new StoredNetwork();
 		network.version = 30;
 		userDataService.currentNetwork = network;
@@ -40,6 +48,20 @@ fdescribe("Contacts service", () => {
 			() => {},
 			error => {
 				expect(error.key).toEqual("CONTACTS_PAGE.CONTACT_NAME_EMPTY");
+				done();
+			},
+		);
+	});
+
+	it("should throw existent address error", done => {
+		console.log({ profiles: userDataService.profiles });
+		console.log({ currentProfile: userDataService.currentProfile });
+
+		contactsService.addContact(VALID_ADDRESS, "Caio");
+		contactsService.addContact(VALID_ADDRESS, "Caio").subscribe(
+			data => {},
+			error => {
+				console.log({ error });
 				done();
 			},
 		);

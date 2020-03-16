@@ -137,6 +137,16 @@ export class ScreenOrientationMock extends ScreenOrientation {
 	unlock(): void {}
 }
 
+const generateMockProfile = () => {
+	const userProfile = new Profile();
+	userProfile.contacts = [];
+	userProfile.name = "Test profile";
+	userProfile.networkId = "30";
+	userProfile.wallets = [];
+
+	return userProfile;
+};
+
 @Injectable()
 export class UserDataProviderMock implements UserDataService {
 	public currentNetwork: StoredNetwork;
@@ -149,6 +159,12 @@ export class UserDataProviderMock implements UserDataService {
 	public onCreateWallet$: Subject<Wallet>;
 	public onUpdateWallet$: Subject<Wallet>;
 	public onSelectProfile$: Subject<Profile>;
+
+	constructor() {
+		const mockProfile = generateMockProfile();
+		this.profiles = { ["test_profile_id"]: mockProfile };
+		this.currentProfile = mockProfile;
+	}
 
 	public get isDevNet(): boolean {
 		throw new Error("Method not implemented.");
@@ -184,8 +200,28 @@ export class UserDataProviderMock implements UserDataService {
 		throw new Error("Method not implemented.");
 	}
 	public saveProfiles(profiles?: { [key: string]: any }) {
-		throw new Error("Method not implemented.");
+		const currentProfile = this.getCurrentProfile();
+
+		if (currentProfile) {
+			this.setCurrentProfile(currentProfile.profileId, false);
+		}
+		// return this.storageProvider.set(constants.STORAGE_PROFILES, profiles);
 	}
+	public setCurrentProfile(
+		profileId: string,
+		broadcast: boolean = true,
+	): void {
+		if (profileId && this.profiles[profileId]) {
+			const profile = new Profile().deserialize(this.profiles[profileId]);
+			this.currentProfile = profile;
+			if (broadcast) {
+				this.onSelectProfile$.next(profile);
+			}
+		} else {
+			this.currentProfile = null;
+		}
+	}
+
 	public encryptSecondPassphrase(
 		wallet: Wallet,
 		pinCode: string,
@@ -247,7 +283,7 @@ export class UserDataProviderMock implements UserDataService {
 		throw new Error("Method not implemented.");
 	}
 	public getCurrentProfile(): Profile {
-		throw new Error("Method not implemented.");
+		return this.currentProfile;
 	}
 	public loadProfiles() {
 		throw new Error("Method not implemented.");
