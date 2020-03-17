@@ -1,5 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { IonicStorageModule } from "@ionic/storage";
+import { switchMapTo } from "rxjs/operators";
 
 import { UserDataProviderMock } from "@@/test/mocks";
 import { Profile, StoredNetwork } from "@/models/model";
@@ -57,14 +58,18 @@ fdescribe("Contacts service", () => {
 		console.log({ profiles: userDataService.profiles });
 		console.log({ currentProfile: userDataService.currentProfile });
 
-		contactsService.addContact(VALID_ADDRESS, "Caio");
-		contactsService.addContact(VALID_ADDRESS, "Caio").subscribe(
-			data => {},
-			error => {
-				console.log({ error });
-				done();
-			},
-		);
+		contactsService
+			.addContact(VALID_ADDRESS, "Caio")
+			.pipe(
+				switchMapTo(contactsService.addContact(VALID_ADDRESS, "Caio")),
+			)
+			.subscribe(
+				data => {},
+				error => {
+					console.log({ error });
+					done();
+				},
+			);
 	});
 
 	// it("should edit a contact", () => {

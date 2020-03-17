@@ -7,7 +7,7 @@ import { SocialSharing } from "@ionic-native/social-sharing/ngx";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { Delegate, Network as ArkNetwork } from "ark-ts";
-import { Observable, Subject } from "rxjs";
+import { Observable, of, Subject } from "rxjs";
 
 import { Profile, StoredNetwork, Wallet, WalletKeys } from "@/models/model";
 import { UserDataService } from "@/services/user-data/user-data.interface";
@@ -200,26 +200,17 @@ export class UserDataProviderMock implements UserDataService {
 		throw new Error("Method not implemented.");
 	}
 	public saveProfiles(profiles?: { [key: string]: any }) {
-		const currentProfile = this.getCurrentProfile();
-
-		if (currentProfile) {
-			this.setCurrentProfile(currentProfile.profileId, false);
+		if (profiles) {
+			this.profiles = profiles;
 		}
-		// return this.storageProvider.set(constants.STORAGE_PROFILES, profiles);
+
+		return of(true);
 	}
 	public setCurrentProfile(
 		profileId: string,
 		broadcast: boolean = true,
 	): void {
-		if (profileId && this.profiles[profileId]) {
-			const profile = new Profile().deserialize(this.profiles[profileId]);
-			this.currentProfile = profile;
-			if (broadcast) {
-				this.onSelectProfile$.next(profile);
-			}
-		} else {
-			this.currentProfile = null;
-		}
+		this.currentProfile = this.profiles[profileId];
 	}
 
 	public encryptSecondPassphrase(
