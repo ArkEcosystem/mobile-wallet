@@ -65,20 +65,19 @@ export class ContactsProvider {
 			} as TranslatableObject);
 		}
 
+		const contactByName = this.getContactByName(name);
+		if (contactByName && contactByName.address !== address) {
+			return throwError({
+				key: "CONTACTS_PAGE.CONTACT_EXISTS_NAME",
+				parameters: { name },
+			} as TranslatableObject);
+		}
 		const contact = this.getContactByAddress(address);
 
 		if (!contact) {
 			return throwError({
 				key: "CONTACTS_PAGE.CONTACT_NOT_EXISTS_ADDRESS",
 				parameters: { address },
-			} as TranslatableObject);
-		}
-
-		const existingContact = this.getContactByName(name);
-		if (existingContact && existingContact.address !== address) {
-			return throwError({
-				key: "CONTACTS_PAGE.CONTACT_EXISTS_NAME",
-				parameters: { name },
 			} as TranslatableObject);
 		}
 
