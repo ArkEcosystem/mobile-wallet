@@ -46,6 +46,4 @@ jobs:
       - name: Install
         run: npm install --ignore-scripts
       - name: Test
-        run: npm run test:e2e
-      - name: Build
-        run: npm run build -- --prod
+        run: npm run test:e2e -- --prod
