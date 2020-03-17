@@ -9,9 +9,9 @@ describe("AppComponent", () => {
 	let pageFixture: ComponentFixture<AppComponent>;
 
 	beforeEach(async () => {
-		const { fixture, component } = await TestHelpers.beforeEachCompiler([
-			AppComponent,
-		]);
+		const { fixture, component } = await TestHelpers.beforeEachCompiler<
+			AppComponent
+		>([AppComponent]);
 		pageFixture = fixture;
 		pageComponent = component;
 		pageFixture.detectChanges();
