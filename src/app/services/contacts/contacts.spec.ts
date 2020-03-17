@@ -143,7 +143,7 @@ fdescribe("Contacts service", () => {
 
 		it("should throw existent name error", done => {
 			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
-				contactsService.editContact(VALID_ADDRESS, "Lilo").subscribe(
+				contactsService.editContact(VALID_ADDRESS_2, "Lilo").subscribe(
 					() => {},
 					error => {
 						expect(error.key).toEqual(
@@ -184,23 +184,61 @@ fdescribe("Contacts service", () => {
 		});
 	});
 
-	// it("should edit a contact", () => {
-	//     expect().toBe();
-	// });
+	describe("By address", () => {
+		it("should remove a contact by address", done => {
+			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
+				contactsService
+					.removeContactByAddress(VALID_ADDRESS)
+					.subscribe(() => {
+						const contact = contactsService.getContactByName(
+							"Lilo",
+						);
+						expect(contact).toEqual(undefined);
+					});
+				done();
+			});
+		});
 
-	// it("should remove a contact by address", () => {
-	//     expect().toBe();
-	// });
+		it("should get a contact by address", done => {
+			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
+				const contact = contactsService.getContactByAddress(
+					VALID_ADDRESS,
+				);
+				expect(contact).toEqual({
+					address: VALID_ADDRESS,
+					name: "Lilo",
+				});
+				done();
+			});
+		});
 
-	// it("should get a contact by address", () => {
-	//     expect().toBe();
-	// });
+		it("should return null if no address provided", done => {
+			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
+				const contact = contactsService.getContactByAddress(null);
+				expect(contact).toEqual(null);
+				done();
+			});
+		});
+	});
 
-	// it("should get a contact by name", () => {
-	//     expect().toBe();
-	// });
+	describe("By name", () => {
+		it("should get a contact by name", done => {
+			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
+				const contact = contactsService.getContactByName("Lilo");
+				expect(contact).toEqual({
+					address: VALID_ADDRESS,
+					name: "Lilo",
+				});
+				done();
+			});
+		});
 
-	// it("should get the profile" () => {
-	//     expect().toBe();
-	// });
+		it("should return null if no name provided", done => {
+			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
+				const contact = contactsService.getContactByName(null);
+				expect(contact).toEqual(null);
+				done();
+			});
+		});
+	});
 });
