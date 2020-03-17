@@ -13,7 +13,7 @@ const VALID_ADDRESS = "D8x2Rno1CxrE5kRoVHS1EooQnfTL3v5ZyM";
 const VALID_ADDRESS_2 = "DBk4cPYpqp7EBcvkstVDpyX7RQJNHxpMg8";
 const INVALID_ADDRESS = "D8x2Rno1CxrE5kRoVHS1EooQnfTL3v5z12";
 
-fdescribe("Contacts service", () => {
+describe("Contacts service", () => {
 	let contactsService: ContactsProvider;
 	let userDataService: UserDataService;
 	let userProfile: Profile;
