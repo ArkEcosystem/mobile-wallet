@@ -22,7 +22,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install
-        run: npm install
+        run: npm install --ignore-scripts
+      - name: Postinstall
+        run: node ./node_modules/puppeteer/install.js
       - name: Test
         run: npm run test:coverage
       - name: Build
@@ -43,10 +45,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install pre dependencies
-        run: npm i -g ionic cordova
       - name: Install
-        run: npm rebuild node-sass && npm install
+        run: npm install --ignore-scripts
+      - name: Postinstall
+        run: node ./node_modules/puppeteer/install.js
       - name: Test
         run: npm run test:e2e
       - name: Build
