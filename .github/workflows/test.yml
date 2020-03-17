@@ -23,8 +23,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install
         run: npm install --ignore-scripts
-      - name: Postinstall
-        run: node ./node_modules/puppeteer/install.js
       - name: Test
         run: npm run test:coverage
       - name: Build
@@ -47,8 +45,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install
         run: npm install --ignore-scripts
-      - name: Postinstall
-        run: node ./node_modules/puppeteer/install.js
       - name: Test
         run: npm run test:e2e
       - name: Build
