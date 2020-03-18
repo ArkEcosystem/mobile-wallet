@@ -131,11 +131,14 @@ export class UserDataServiceImpl implements UserDataService {
 	}
 
 	getProfileById(profileId: string) {
-		return new Profile().deserialize(this.profiles[profileId]);
+		if (this.profiles[profileId]) {
+			return new Profile().deserialize(this.profiles[profileId]);
+		}
 	}
 
 	removeProfileById(profileId: string) {
-		delete this.profiles[profileId];
+		const { [profileId]: _, ...profiles } = this.profiles;
+		this.profiles = profiles;
 
 		return this.saveProfiles();
 	}

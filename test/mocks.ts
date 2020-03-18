@@ -184,19 +184,19 @@ export class UserDataProviderMock implements UserDataService {
 	public getNetworkById(networkId: string): StoredNetwork {
 		throw new Error("Method not implemented.");
 	}
-	public removeNetworkById(networkId: string) {
+	public removeNetworkById(networkId: string): Observable<boolean> {
 		throw new Error("Method not implemented.");
 	}
-	public addProfile(profile: Profile) {
+	public addProfile(profile: Profile): Observable<boolean> {
 		throw new Error("Method not implemented.");
 	}
-	public getProfileByName(name: string) {
+	public getProfileByName(name: string): Profile {
 		throw new Error("Method not implemented.");
 	}
-	public getProfileById(profileId: string) {
+	public getProfileById(profileId: string): Profile {
 		throw new Error("Method not implemented.");
 	}
-	public removeProfileById(profileId: string) {
+	public removeProfileById(profileId: string): Observable<boolean> {
 		throw new Error("Method not implemented.");
 	}
 	public saveProfiles(profiles?: { [key: string]: any }) {

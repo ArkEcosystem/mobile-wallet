@@ -31,11 +31,11 @@ export abstract class UserDataService {
 		id: string;
 	}>;
 	public abstract getNetworkById(networkId: string): StoredNetwork;
-	public abstract removeNetworkById(networkId: string): any;
-	public abstract addProfile(profile: Profile): any;
-	public abstract getProfileByName(name: string): any;
-	public abstract getProfileById(profileId: string): any;
-	public abstract removeProfileById(profileId: string): any;
+	public abstract removeNetworkById(networkId: string): Observable<boolean>;
+	public abstract addProfile(profile: Profile): Observable<boolean>;
+	public abstract getProfileByName(name: string): Profile;
+	public abstract getProfileById(profileId: string): Profile;
+	public abstract removeProfileById(profileId: string): Observable<boolean>;
 	public abstract saveProfiles(profiles?: { [key: string]: any }): any;
 	public abstract encryptSecondPassphrase(
 		wallet: Wallet,

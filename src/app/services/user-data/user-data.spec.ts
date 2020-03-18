@@ -6,11 +6,12 @@ import {
 	SpyObject,
 } from "@ngneat/spectator";
 import { of, Subject } from "rxjs";
+import { map, mapTo, switchMapTo } from "rxjs/operators";
 
 import * as networksFixtures from "@@/test/fixture/networks.fixture";
 import * as profilesFixtures from "@@/test/fixture/profiles.fixture";
 import { STORAGE_NETWORKS, STORAGE_PROFILES } from "@/app/app.constants";
-import { StoredNetwork } from "@/models/model";
+import { Profile, StoredNetwork } from "@/models/model";
 
 import { AuthProvider } from "../auth/auth";
 import { ForgeProvider } from "../forge/forge";
@@ -73,6 +74,49 @@ fdescribe("User Data Service", () => {
 		});
 	});
 
+	it("should add profile", done => {
+		const newProfile = new Profile().deserialize({
+			name: "Profile 3",
+			networkId: "mainnet",
+		});
+		userDataService.addProfile(newProfile).subscribe(() => {
+			expect(
+				userDataService.getProfileByName(newProfile.name),
+			).toBeTruthy();
+			done();
+		});
+	});
+
+	it("should get profile by name", () => {
+		const { profile1 } = profilesFixtures;
+		expect(userDataService.getProfileByName(profile1.name)).toEqual(
+			jasmine.objectContaining({
+				name: profile1.name,
+				networkId: profile1.networkId,
+			}),
+		);
+	});
+
+	it("should get profile by id", () => {
+		const { profile1 } = profilesFixtures;
+		expect(userDataService.getProfileById("profile1")).toEqual(
+			jasmine.objectContaining({
+				name: profile1.name,
+				networkId: profile1.networkId,
+			}),
+		);
+	});
+
+	it("should remove profile by id", done => {
+		userDataService
+			.removeProfileById("profile1")
+			.pipe(mapTo(userDataService.getProfileById("profile1")))
+			.subscribe(profile => {
+				expect(profile).toBeUndefined();
+				done();
+			});
+	});
+
 	describe("Logged in", () => {
 		let authService: SpyObject<AuthProvider>;
 
@@ -130,7 +174,7 @@ fdescribe("User Data Service", () => {
 			spyOn(storageProvider, "getObject").and.returnValue(of(undefined));
 		});
 
-		it("should reset profiles list and current profile", fakeAsync(() => {
+		it("should reset profiles list and the current profile", fakeAsync(() => {
 			storageProvider.onClear$.next();
 			tick(100);
 			expect(userDataService.profiles).toEqual(jasmine.empty());
