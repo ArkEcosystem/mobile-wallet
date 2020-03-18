@@ -10,6 +10,7 @@ import { map, mapTo, switchMapTo } from "rxjs/operators";
 
 import * as networksFixtures from "@@/test/fixture/networks.fixture";
 import * as profilesFixtures from "@@/test/fixture/profiles.fixture";
+import * as walletsFixtures from "@@/test/fixture/wallets.fixture";
 import { STORAGE_NETWORKS, STORAGE_PROFILES } from "@/app/app.constants";
 import { Profile, StoredNetwork, Wallet } from "@/models/model";
 
@@ -19,7 +20,7 @@ import { StorageProvider } from "../storage/storage";
 import { UserDataServiceImpl } from "./user-data";
 import { UserDataService } from "./user-data.interface";
 
-fdescribe("User Data Service", () => {
+describe("User Data Service", () => {
 	let userDataService: UserDataService;
 	let spectator: SpectatorService<UserDataServiceImpl>;
 
@@ -161,19 +162,76 @@ fdescribe("User Data Service", () => {
 
 	describe("Wallet", () => {
 		it("should set the current wallet", () => {
-			const wallet = new Wallet();
-			wallet.address = "test";
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
 			userDataService.setCurrentWallet(wallet);
 			expect(userDataService.currentWallet).toEqual(wallet);
 		});
 
 		it("should clear the current wallet", () => {
-			const wallet = new Wallet();
-			wallet.address = "test";
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
 			userDataService.setCurrentWallet(wallet);
 			expect(userDataService.currentWallet).toEqual(wallet);
 			userDataService.clearCurrentWallet();
 			expect(userDataService.currentWallet).toBeUndefined();
+		});
+
+		it("should fail if the profile is not specified", done => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			userDataService
+				.addWallet(wallet, null, null)
+				.subscribe(null, error => {
+					expect(error).toBe("EMPTY_PROFILE_ID");
+					done();
+				});
+		});
+
+		it("should fail if the profile is not found", done => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			userDataService
+				.addWallet(wallet, null, null, "custom")
+				.subscribe(null, error => {
+					expect(error).toBe("PROFILE_NOT_FOUND");
+					done();
+				});
+		});
+
+		it("should add wallet with encryption", done => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			const profileId = "profile1";
+			const passphrase = "ark";
+			const pinCode = "123";
+			const forgeProvider = spectator.get<ForgeProvider>(ForgeProvider);
+			forgeProvider.generateIv.and.returnValue("iv");
+			forgeProvider.encrypt.and.returnValue("secret");
+			userDataService
+				.addWallet(wallet, passphrase, pinCode, profileId)
+				.pipe(mapTo(userDataService.getProfileById(profileId)))
+				.subscribe(profile => {
+					expect(Object.keys(profile.wallets).length).toBe(1);
+					expect(profile.wallets[wallet.address]).toEqual(
+						jasmine.objectContaining({
+							iv: "iv",
+							cipherKey: "secret",
+						}),
+					);
+					done();
+				});
+		});
+
+		it("should get the wallet label", () => {
+			const walletWithLabel = new Wallet().deserialize({
+				...walletsFixtures.wallet1,
+				label: "My Label",
+			});
+			const walletWithUsername = new Wallet().deserialize(
+				walletsFixtures.wallet2,
+			);
+			expect(userDataService.getWalletLabel(walletWithUsername)).toBe(
+				walletWithUsername.username,
+			);
+			expect(userDataService.getWalletLabel(walletWithLabel)).toBe(
+				walletWithLabel.label,
+			);
 		});
 	});
 

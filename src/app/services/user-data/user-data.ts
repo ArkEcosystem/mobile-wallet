@@ -185,14 +185,17 @@ export class UserDataServiceImpl implements UserDataService {
 		profileId: string = this.authProvider.loggedProfileId,
 	) {
 		if (lodash.isUndefined(profileId)) {
-			return;
+			return throwError("EMPTY_PROFILE_ID");
 		}
 
 		const profile = this.getProfileById(profileId);
 
-		const iv = this.forgeProvider.generateIv();
+		if (!profile) {
+			return throwError("PROFILE_NOT_FOUND");
+		}
 
 		if (passphrase) {
+			const iv = this.forgeProvider.generateIv();
 			wallet.iv = iv;
 			const cipherKey = this.forgeProvider.encrypt(
 				passphrase,
