@@ -276,7 +276,7 @@ export class UserDataProviderMock implements UserDataService {
 	public getCurrentProfile(): Profile {
 		return this.currentProfile;
 	}
-	public loadProfiles() {
+	public loadProfiles(): Observable<Record<string, Profile>> {
 		throw new Error("Method not implemented.");
 	}
 	public loadNetworks(): Observable<Record<string, StoredNetwork>> {

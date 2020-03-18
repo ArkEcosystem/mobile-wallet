@@ -106,7 +106,8 @@ export class UserDataServiceImpl implements UserDataService {
 	}
 
 	removeNetworkById(networkId: string) {
-		delete this.networks[networkId];
+		const { [networkId]: _, ...networks } = this.networks;
+		this.networks = networks;
 		return this.storageProvider.set(
 			constants.STORAGE_NETWORKS,
 			this.networks,
