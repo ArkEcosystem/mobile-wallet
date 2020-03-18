@@ -87,7 +87,9 @@ export class UserDataServiceImpl implements UserDataService {
 			networkId = this.generateUniqueId();
 		}
 
-		this.networks[networkId] = network;
+		const { [networkId]: _, ...networks } = this.networks;
+		networks[networkId] = network;
+		this.networks = networks;
 
 		return this.storageProvider
 			.set(constants.STORAGE_NETWORKS, this.networks)
@@ -406,10 +408,6 @@ export class UserDataServiceImpl implements UserDataService {
 
 	clearCurrentWallet() {
 		this.currentWallet = undefined;
-	}
-
-	public getCurrentProfile(): Profile {
-		return this.profiles[this.authProvider.loggedProfileId];
 	}
 
 	loadProfiles() {

@@ -85,7 +85,6 @@ export abstract class UserDataService {
 	): string;
 	public abstract setCurrentWallet(wallet: Wallet): void;
 	public abstract clearCurrentWallet(): void;
-	public abstract getCurrentProfile(): Profile;
 	public abstract loadProfiles(): Observable<Record<string, Profile>>;
 	public abstract loadNetworks(): Observable<Record<string, StoredNetwork>>;
 	public abstract getKeysByWallet(

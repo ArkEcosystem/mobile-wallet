@@ -124,7 +124,7 @@ export class ContactsProvider {
 			return this.userDataService.getProfileById(profileId);
 		}
 
-		const profile: Profile = this.userDataService.getCurrentProfile();
+		const profile: Profile = this.userDataService.currentProfile;
 		if (!profile) {
 			throw new Error(
 				"This service can only be used if a current profile is set!",

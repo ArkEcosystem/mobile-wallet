@@ -11,7 +11,7 @@ import { map, mapTo, switchMapTo } from "rxjs/operators";
 import * as networksFixtures from "@@/test/fixture/networks.fixture";
 import * as profilesFixtures from "@@/test/fixture/profiles.fixture";
 import { STORAGE_NETWORKS, STORAGE_PROFILES } from "@/app/app.constants";
-import { Profile, StoredNetwork } from "@/models/model";
+import { Profile, StoredNetwork, Wallet } from "@/models/model";
 
 import { AuthProvider } from "../auth/auth";
 import { ForgeProvider } from "../forge/forge";
@@ -59,62 +59,122 @@ fdescribe("User Data Service", () => {
 		);
 	});
 
-	it("should get the network by id", () => {
-		expect(userDataService.getNetworkById("mainnet")).toEqual(
-			jasmine.objectContaining({
-				name: "mainnet",
-			}),
-		);
-	});
-
-	it("should remove the network by id", done => {
-		userDataService.removeNetworkById("mainnet").subscribe(() => {
-			expect(userDataService.getNetworkById("mainnet")).toBeUndefined();
-			done();
-		});
-	});
-
-	it("should add profile", done => {
-		const newProfile = new Profile().deserialize({
-			name: "Profile 3",
-			networkId: "mainnet",
-		});
-		userDataService.addProfile(newProfile).subscribe(() => {
-			expect(
-				userDataService.getProfileByName(newProfile.name),
-			).toBeTruthy();
-			done();
-		});
-	});
-
-	it("should get profile by name", () => {
-		const { profile1 } = profilesFixtures;
-		expect(userDataService.getProfileByName(profile1.name)).toEqual(
-			jasmine.objectContaining({
-				name: profile1.name,
-				networkId: profile1.networkId,
-			}),
-		);
-	});
-
-	it("should get profile by id", () => {
-		const { profile1 } = profilesFixtures;
-		expect(userDataService.getProfileById("profile1")).toEqual(
-			jasmine.objectContaining({
-				name: profile1.name,
-				networkId: profile1.networkId,
-			}),
-		);
-	});
-
-	it("should remove profile by id", done => {
-		userDataService
-			.removeProfileById("profile1")
-			.pipe(mapTo(userDataService.getProfileById("profile1")))
-			.subscribe(profile => {
-				expect(profile).toBeUndefined();
+	describe("Profile", () => {
+		it("should add profile", done => {
+			const newProfile = new Profile().deserialize({
+				name: "Profile 3",
+				networkId: "mainnet",
+			});
+			userDataService.addProfile(newProfile).subscribe(() => {
+				expect(
+					userDataService.getProfileByName(newProfile.name),
+				).toBeTruthy();
 				done();
 			});
+		});
+
+		it("should get profile by name", () => {
+			const { profile1 } = profilesFixtures;
+			expect(userDataService.getProfileByName(profile1.name)).toEqual(
+				jasmine.objectContaining({
+					name: profile1.name,
+					networkId: profile1.networkId,
+				}),
+			);
+		});
+
+		it("should get profile by id", () => {
+			const { profile1 } = profilesFixtures;
+			expect(userDataService.getProfileById("profile1")).toEqual(
+				jasmine.objectContaining({
+					name: profile1.name,
+					networkId: profile1.networkId,
+				}),
+			);
+		});
+
+		it("should remove profile by id", done => {
+			userDataService
+				.removeProfileById("profile1")
+				.pipe(mapTo(userDataService.getProfileById("profile1")))
+				.subscribe(profile => {
+					expect(profile).toBeUndefined();
+					done();
+				});
+		});
+	});
+
+	describe("Network", () => {
+		it("should get the network by id", () => {
+			expect(userDataService.getNetworkById("mainnet")).toEqual(
+				jasmine.objectContaining({
+					name: "mainnet",
+				}),
+			);
+		});
+
+		it("should remove the network by id", done => {
+			userDataService.removeNetworkById("mainnet").subscribe(() => {
+				expect(
+					userDataService.getNetworkById("mainnet"),
+				).toBeUndefined();
+				done();
+			});
+		});
+
+		it("should add network", done => {
+			const customNetwork = new StoredNetwork();
+			customNetwork.name = "testnet";
+			userDataService
+				.addOrUpdateNetwork(customNetwork)
+				.subscribe(result => {
+					expect(result).toEqual(
+						jasmine.objectContaining({
+							id: jasmine.any(String),
+							network: jasmine.objectContaining({
+								name: customNetwork.name,
+							}),
+						}),
+					);
+					done();
+				});
+		});
+
+		it("should update network", done => {
+			const id = "mainnet";
+			const network = new StoredNetwork();
+			network.name = "Custom Mainnet";
+
+			userDataService
+				.addOrUpdateNetwork(network, id)
+				.pipe(mapTo(userDataService.getNetworkById(id)))
+				.subscribe(result => {
+					expect(result).toEqual(
+						jasmine.objectContaining({
+							name: network.name,
+						}),
+					);
+					done();
+				});
+		});
+	});
+
+	describe("Wallet", () => {
+		it("should set the current wallet", () => {
+			const wallet = new Wallet();
+			wallet.address = "test";
+			userDataService.setCurrentWallet(wallet);
+			expect(userDataService.currentWallet).toEqual(wallet);
+		});
+
+		it("should clear the current wallet", () => {
+			const wallet = new Wallet();
+			wallet.address = "test";
+			userDataService.setCurrentWallet(wallet);
+			expect(userDataService.currentWallet).toEqual(wallet);
+			userDataService.clearCurrentWallet();
+			expect(userDataService.currentWallet).toBeUndefined();
+		});
 	});
 
 	describe("Logged in", () => {
