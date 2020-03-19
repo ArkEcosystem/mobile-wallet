@@ -184,19 +184,19 @@ export class UserDataProviderMock implements UserDataService {
 	public getNetworkById(networkId: string): StoredNetwork {
 		throw new Error("Method not implemented.");
 	}
-	public removeNetworkById(networkId: string) {
+	public removeNetworkById(networkId: string): Observable<boolean> {
 		throw new Error("Method not implemented.");
 	}
-	public addProfile(profile: Profile) {
+	public addProfile(profile: Profile): Observable<boolean> {
 		throw new Error("Method not implemented.");
 	}
-	public getProfileByName(name: string) {
+	public getProfileByName(name: string): Profile {
 		throw new Error("Method not implemented.");
 	}
-	public getProfileById(profileId: string) {
+	public getProfileById(profileId: string): Profile {
 		throw new Error("Method not implemented.");
 	}
-	public removeProfileById(profileId: string) {
+	public removeProfileById(profileId: string): Observable<boolean> {
 		throw new Error("Method not implemented.");
 	}
 	public saveProfiles(profiles?: { [key: string]: any }) {
@@ -232,13 +232,16 @@ export class UserDataProviderMock implements UserDataService {
 	public updateWalletEncryption(oldPassword: string, newPassword: string) {
 		throw new Error("Method not implemented.");
 	}
-	public removeWalletByAddress(address: string, profileId?: string): void {
+	public removeWalletByAddress(
+		address: string,
+		profileId?: string,
+	): Observable<boolean> {
 		throw new Error("Method not implemented.");
 	}
 	public ensureWalletDelegateProperties(
 		wallet: Wallet,
 		delegateOrUserName: string | Delegate,
-	): void {
+	): Observable<boolean> {
 		throw new Error("Method not implemented.");
 	}
 	public getWalletByAddress(address: string, profileId?: string): Wallet {
@@ -273,10 +276,7 @@ export class UserDataProviderMock implements UserDataService {
 	public clearCurrentWallet(): void {
 		throw new Error("Method not implemented.");
 	}
-	public getCurrentProfile(): Profile {
-		return this.currentProfile;
-	}
-	public loadProfiles() {
+	public loadProfiles(): Observable<Record<string, Profile>> {
 		throw new Error("Method not implemented.");
 	}
 	public loadNetworks(): Observable<Record<string, StoredNetwork>> {

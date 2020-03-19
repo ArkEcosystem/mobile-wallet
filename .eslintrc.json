@@ -3,7 +3,13 @@
 	"parserOptions": {
 		"project": "./tsconfig.eslint.json"
 	},
-	"plugins": ["@typescript-eslint", "prettier", "simple-import-sort", "html"],
+	"plugins": [
+		"@typescript-eslint",
+		"prettier",
+		"simple-import-sort",
+		"html",
+		"unused-imports"
+	],
 	"extends": [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/eslint-recommended",
@@ -47,6 +53,7 @@
 		],
 		"prettier/prettier": "error",
 		"require-atomic-updates": "off",
-		"simple-import-sort/sort": "error"
+		"simple-import-sort/sort": "error",
+		"unused-imports/no-unused-imports-ts": "error"
 	}
 }

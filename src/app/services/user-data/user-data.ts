@@ -87,7 +87,9 @@ export class UserDataServiceImpl implements UserDataService {
 			networkId = this.generateUniqueId();
 		}
 
-		this.networks[networkId] = network;
+		const { [networkId]: _, ...networks } = this.networks;
+		networks[networkId] = network;
+		this.networks = networks;
 
 		return this.storageProvider
 			.set(constants.STORAGE_NETWORKS, this.networks)
@@ -106,7 +108,8 @@ export class UserDataServiceImpl implements UserDataService {
 	}
 
 	removeNetworkById(networkId: string) {
-		delete this.networks[networkId];
+		const { [networkId]: _, ...networks } = this.networks;
+		this.networks = networks;
 		return this.storageProvider.set(
 			constants.STORAGE_NETWORKS,
 			this.networks,
@@ -130,11 +133,14 @@ export class UserDataServiceImpl implements UserDataService {
 	}
 
 	getProfileById(profileId: string) {
-		return new Profile().deserialize(this.profiles[profileId]);
+		if (this.profiles[profileId]) {
+			return new Profile().deserialize(this.profiles[profileId]);
+		}
 	}
 
 	removeProfileById(profileId: string) {
-		delete this.profiles[profileId];
+		const { [profileId]: _, ...profiles } = this.profiles;
+		this.profiles = profiles;
 
 		return this.saveProfiles();
 	}
@@ -179,14 +185,17 @@ export class UserDataServiceImpl implements UserDataService {
 		profileId: string = this.authProvider.loggedProfileId,
 	) {
 		if (lodash.isUndefined(profileId)) {
-			return;
+			return throwError("EMPTY_PROFILE_ID");
 		}
 
 		const profile = this.getProfileById(profileId);
 
-		const iv = this.forgeProvider.generateIv();
+		if (!profile) {
+			return throwError("PROFILE_NOT_FOUND");
+		}
 
 		if (passphrase) {
+			const iv = this.forgeProvider.generateIv();
 			wallet.iv = iv;
 			const cipherKey = this.forgeProvider.encrypt(
 				passphrase,
@@ -261,18 +270,18 @@ export class UserDataServiceImpl implements UserDataService {
 	removeWalletByAddress(
 		address: string,
 		profileId: string = this.authProvider.loggedProfileId,
-	): void {
+	): Observable<boolean> {
 		delete this.profiles[profileId].wallets[address];
 
-		this.saveProfiles();
+		return this.saveProfiles();
 	}
 
 	ensureWalletDelegateProperties(
 		wallet: Wallet,
 		delegateOrUserName: string | Delegate,
-	): void {
+	): Observable<boolean> {
 		if (!wallet) {
-			return;
+			return throwError("WALLET_EMPTY");
 		}
 
 		const userName: string =
@@ -280,13 +289,17 @@ export class UserDataServiceImpl implements UserDataService {
 				? (delegateOrUserName as string)
 				: delegateOrUserName.username;
 
-		if (!userName || (wallet.isDelegate && wallet.username === userName)) {
-			return;
+		if (!userName) {
+			return throwError("USERNAME_EMPTY");
+		}
+
+		if (wallet.isDelegate && wallet.username === userName) {
+			return EMPTY;
 		}
 
 		wallet.isDelegate = true;
 		wallet.username = userName;
-		this.updateWallet(wallet, this.currentProfile.profileId, true);
+		return this.updateWallet(wallet, this.currentProfile.profileId, true);
 	}
 
 	getWalletByAddress(
@@ -316,7 +329,7 @@ export class UserDataServiceImpl implements UserDataService {
 		notificate: boolean = false,
 	): Observable<any> {
 		if (lodash.isUndefined(profileId)) {
-			return EMPTY;
+			return throwError("EMPTY_PROFILE_ID");
 		}
 
 		const profile = this.getProfileById(profileId);
@@ -333,7 +346,7 @@ export class UserDataServiceImpl implements UserDataService {
 		notificate: boolean = false,
 	) {
 		if (lodash.isUndefined(profileId)) {
-			return;
+			return throwError("EMPTY_PROFILE_ID");
 		}
 
 		const profile = this.getProfileById(profileId);
@@ -402,10 +415,6 @@ export class UserDataServiceImpl implements UserDataService {
 
 	clearCurrentWallet() {
 		this.currentWallet = undefined;
-	}
-
-	public getCurrentProfile(): Profile {
-		return this.profiles[this.authProvider.loggedProfileId];
 	}
 
 	loadProfiles() {

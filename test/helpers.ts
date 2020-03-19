@@ -30,7 +30,6 @@ import {
 	SocialSharingMock,
 	SplashScreenMock,
 	StatusBarMock,
-	UserDataProviderMock,
 } from "./mocks";
 
 interface Compilation<T> {

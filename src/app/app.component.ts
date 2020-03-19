@@ -30,7 +30,7 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import moment from "moment";
 import { Subject } from "rxjs";
-import { debounceTime, takeUntil } from "rxjs/operators";
+import { debounceTime, switchMap, takeUntil } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { Wallet } from "@/models/model";
@@ -335,12 +335,15 @@ export class AppComponent implements OnDestroy, OnInit {
 			.subscribe((wallet: Wallet) => {
 				this.arkApiProvider
 					.getDelegateByPublicKey(wallet.publicKey)
-					.subscribe(delegate =>
-						this.userDataService.ensureWalletDelegateProperties(
-							wallet,
-							delegate,
+					.pipe(
+						switchMap(delegate =>
+							this.userDataService.ensureWalletDelegateProperties(
+								wallet,
+								delegate,
+							),
 						),
-					);
+					)
+					.subscribe();
 			});
 	}
 

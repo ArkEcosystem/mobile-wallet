@@ -31,11 +31,11 @@ export abstract class UserDataService {
 		id: string;
 	}>;
 	public abstract getNetworkById(networkId: string): StoredNetwork;
-	public abstract removeNetworkById(networkId: string): any;
-	public abstract addProfile(profile: Profile): any;
-	public abstract getProfileByName(name: string): any;
-	public abstract getProfileById(profileId: string): any;
-	public abstract removeProfileById(profileId: string): any;
+	public abstract removeNetworkById(networkId: string): Observable<boolean>;
+	public abstract addProfile(profile: Profile): Observable<boolean>;
+	public abstract getProfileByName(name: string): Profile;
+	public abstract getProfileById(profileId: string): Profile;
+	public abstract removeProfileById(profileId: string): Observable<boolean>;
 	public abstract saveProfiles(profiles?: { [key: string]: any }): any;
 	public abstract encryptSecondPassphrase(
 		wallet: Wallet,
@@ -56,11 +56,11 @@ export abstract class UserDataService {
 	public abstract removeWalletByAddress(
 		address: string,
 		profileId?: string,
-	): void;
+	): Observable<boolean>;
 	public abstract ensureWalletDelegateProperties(
 		wallet: Wallet,
 		delegateOrUserName: string | Delegate,
-	): void;
+	): Observable<boolean>;
 	public abstract getWalletByAddress(
 		address: string,
 		profileId?: string,
@@ -85,8 +85,7 @@ export abstract class UserDataService {
 	): string;
 	public abstract setCurrentWallet(wallet: Wallet): void;
 	public abstract clearCurrentWallet(): void;
-	public abstract getCurrentProfile(): Profile;
-	public abstract loadProfiles(): any;
+	public abstract loadProfiles(): Observable<Record<string, Profile>>;
 	public abstract loadNetworks(): Observable<Record<string, StoredNetwork>>;
 	public abstract getKeysByWallet(
 		wallet: Wallet,
