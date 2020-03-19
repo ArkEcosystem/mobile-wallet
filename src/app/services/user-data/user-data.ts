@@ -346,7 +346,7 @@ export class UserDataServiceImpl implements UserDataService {
 		notificate: boolean = false,
 	) {
 		if (lodash.isUndefined(profileId)) {
-			return;
+			return throwError("EMPTY_PROFILE_ID");
 		}
 
 		const profile = this.getProfileById(profileId);

@@ -353,6 +353,32 @@ describe("User Data Service", () => {
 					done();
 				});
 		});
+
+		it("should not get the wallet keys if there is no encripted key", () => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			expect(
+				userDataService.getKeysByWallet(wallet, "secret"),
+			).toBeUndefined();
+		});
+
+		it("should fail to get the decrypted keys if there is no encripted key", () => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			expect(
+				userDataService.getKeysByWallet(wallet, "123"),
+			).toBeUndefined();
+		});
+
+		it("should get the decrypted keys", () => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			wallet.cipherKey = "terces";
+			const forgeProvider = spectator.get<ForgeProvider>(ForgeProvider);
+			forgeProvider.decrypt.and.returnValue("secret");
+			expect(userDataService.getKeysByWallet(wallet, "123")).toEqual(
+				jasmine.objectContaining({
+					key: "secret",
+				}),
+			);
+		});
 	});
 
 	describe("Logged in", () => {
@@ -424,6 +450,51 @@ describe("User Data Service", () => {
 				)
 				.subscribe(wallet => {
 					expect(wallet.label).toEqual(label);
+					done();
+				});
+		});
+
+		it("should fail to set the wallet label if the wallet is not specified", done => {
+			userDataService
+				.setWalletLabel(undefined, "test")
+				.subscribe(null, error => {
+					expect(error).toEqual(
+						jasmine.objectContaining({
+							key: "VALIDATION.INVALID_WALLET",
+						}),
+					);
+					done();
+				});
+		});
+
+		it("should fail to set the wallet label if it already exists", done => {
+			const profileId = "profile1";
+			authService.onLogin$.next(profileId);
+			authService.loggedProfileId = profileId;
+			const wallet1 = new Wallet().deserialize(walletsFixtures.wallet1);
+			wallet1.label = "one";
+			const wallet2 = new Wallet().deserialize(walletsFixtures.wallet2);
+			userDataService
+				.addWallet(wallet1, null, null, profileId)
+				.pipe(
+					switchMap(() =>
+						userDataService.addWallet(
+							wallet2,
+							null,
+							null,
+							profileId,
+						),
+					),
+					switchMap(() =>
+						userDataService.setWalletLabel(wallet2, "one"),
+					),
+				)
+				.subscribe(null, error => {
+					expect(error).toEqual(
+						jasmine.objectContaining({
+							key: "VALIDATION.LABEL_EXISTS",
+						}),
+					);
 					done();
 				});
 		});
