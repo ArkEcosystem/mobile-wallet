@@ -56,11 +56,11 @@ export abstract class UserDataService {
 	public abstract removeWalletByAddress(
 		address: string,
 		profileId?: string,
-	): void;
+	): Observable<boolean>;
 	public abstract ensureWalletDelegateProperties(
 		wallet: Wallet,
 		delegateOrUserName: string | Delegate,
-	): void;
+	): Observable<boolean>;
 	public abstract getWalletByAddress(
 		address: string,
 		profileId?: string,

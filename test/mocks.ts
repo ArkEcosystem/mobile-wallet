@@ -232,13 +232,16 @@ export class UserDataProviderMock implements UserDataService {
 	public updateWalletEncryption(oldPassword: string, newPassword: string) {
 		throw new Error("Method not implemented.");
 	}
-	public removeWalletByAddress(address: string, profileId?: string): void {
+	public removeWalletByAddress(
+		address: string,
+		profileId?: string,
+	): Observable<boolean> {
 		throw new Error("Method not implemented.");
 	}
 	public ensureWalletDelegateProperties(
 		wallet: Wallet,
 		delegateOrUserName: string | Delegate,
-	): void {
+	): Observable<boolean> {
 		throw new Error("Method not implemented.");
 	}
 	public getWalletByAddress(address: string, profileId?: string): Wallet {

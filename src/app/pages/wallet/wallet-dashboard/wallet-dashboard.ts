@@ -14,7 +14,13 @@ import { TranslateService } from "@ngx-translate/core";
 import { Fees } from "ark-ts";
 import lodash from "lodash";
 import { Subject, throwError } from "rxjs";
-import { catchError, debounceTime, finalize, takeUntil } from "rxjs/operators";
+import {
+	catchError,
+	debounceTime,
+	finalize,
+	switchMap,
+	takeUntil,
+} from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
@@ -400,7 +406,9 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	}
 
 	private deleteWallet() {
-		this.userDataService.removeWalletByAddress(this.wallet.address);
+		this.userDataService
+			.removeWalletByAddress(this.wallet.address)
+			.subscribe();
 		this.navCtrl.navigateRoot("/wallets");
 	}
 
@@ -452,12 +460,15 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
 				this.arkApiProvider
 					.getDelegateByPublicKey(this.wallet.publicKey)
-					.subscribe(delegate =>
-						this.userDataService.ensureWalletDelegateProperties(
-							this.wallet,
-							delegate,
+					.pipe(
+						switchMap(delegate =>
+							this.userDataService.ensureWalletDelegateProperties(
+								this.wallet,
+								delegate,
+							),
 						),
-					);
+					)
+					.subscribe();
 			});
 	}
 

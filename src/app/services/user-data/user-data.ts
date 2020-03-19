@@ -270,18 +270,18 @@ export class UserDataServiceImpl implements UserDataService {
 	removeWalletByAddress(
 		address: string,
 		profileId: string = this.authProvider.loggedProfileId,
-	): void {
+	): Observable<boolean> {
 		delete this.profiles[profileId].wallets[address];
 
-		this.saveProfiles();
+		return this.saveProfiles();
 	}
 
 	ensureWalletDelegateProperties(
 		wallet: Wallet,
 		delegateOrUserName: string | Delegate,
-	): void {
+	): Observable<boolean> {
 		if (!wallet) {
-			return;
+			return throwError("WALLET_EMPTY");
 		}
 
 		const userName: string =
@@ -289,13 +289,17 @@ export class UserDataServiceImpl implements UserDataService {
 				? (delegateOrUserName as string)
 				: delegateOrUserName.username;
 
-		if (!userName || (wallet.isDelegate && wallet.username === userName)) {
-			return;
+		if (!userName) {
+			return throwError("USERNAME_EMPTY");
+		}
+
+		if (wallet.isDelegate && wallet.username === userName) {
+			return EMPTY;
 		}
 
 		wallet.isDelegate = true;
 		wallet.username = userName;
-		this.updateWallet(wallet, this.currentProfile.profileId, true);
+		return this.updateWallet(wallet, this.currentProfile.profileId, true);
 	}
 
 	getWalletByAddress(

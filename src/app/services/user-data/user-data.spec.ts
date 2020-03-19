@@ -6,7 +6,7 @@ import {
 	SpyObject,
 } from "@ngneat/spectator";
 import { of, Subject } from "rxjs";
-import { map, mapTo, switchMap } from "rxjs/operators";
+import { catchError, map, mapTo, switchMap } from "rxjs/operators";
 
 import * as networksFixtures from "@@/test/fixture/networks.fixture";
 import * as profilesFixtures from "@@/test/fixture/profiles.fixture";
@@ -328,6 +328,31 @@ describe("User Data Service", () => {
 					done();
 				});
 		});
+
+		it("should remove wallet by address", done => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			const profileId = "profile1";
+			userDataService
+				.addWallet(wallet, null, null, profileId)
+				.pipe(
+					switchMap(() => {
+						return userDataService.removeWalletByAddress(
+							wallet.address,
+							profileId,
+						);
+					}),
+					map(() =>
+						userDataService.getWalletByAddress(
+							wallet.address,
+							profileId,
+						),
+					),
+				)
+				.subscribe(wallet => {
+					expect(wallet).toBeNull();
+					done();
+				});
+		});
 	});
 
 	describe("Logged in", () => {
@@ -399,6 +424,58 @@ describe("User Data Service", () => {
 				)
 				.subscribe(wallet => {
 					expect(wallet.label).toEqual(label);
+					done();
+				});
+		});
+
+		it("should convert wallet into delegate", done => {
+			const profileId = "profile1";
+			authService.onLogin$.next(profileId);
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			const username = "delegate";
+			userDataService
+				.addWallet(wallet, null, null, profileId)
+				.pipe(
+					switchMap(() => {
+						return userDataService.ensureWalletDelegateProperties(
+							wallet,
+							username,
+						);
+					}),
+					map(() =>
+						userDataService.getWalletByAddress(
+							wallet.address,
+							profileId,
+						),
+					),
+				)
+				.subscribe(wallet => {
+					expect(wallet).toEqual(
+						jasmine.objectContaining({
+							isDelegate: true,
+							username,
+						}),
+					);
+					done();
+				});
+		});
+
+		it("should fail to convert wallet into delegate", done => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+
+			userDataService
+				.ensureWalletDelegateProperties(undefined, "delegate")
+				.pipe(
+					catchError(error => {
+						expect(error).toBe("WALLET_EMPTY");
+						return userDataService.ensureWalletDelegateProperties(
+							wallet,
+							undefined,
+						);
+					}),
+				)
+				.subscribe(null, error => {
+					expect(error).toBe("USERNAME_EMPTY");
 					done();
 				});
 		});
