@@ -1,10 +1,4 @@
-import {
-	AfterViewInit,
-	Component,
-	OnInit,
-	ViewChild,
-	ViewEncapsulation,
-} from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { IonSlides, NavController } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
 

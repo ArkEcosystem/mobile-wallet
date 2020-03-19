@@ -5,22 +5,12 @@ import * as arkts from "ark-ts";
 import arktsConfig from "ark-ts/config";
 import lodash from "lodash";
 import moment from "moment";
-import {
-	EMPTY,
-	forkJoin,
-	Observable,
-	of,
-	Subject,
-	throwError,
-	zip,
-} from "rxjs";
+import { EMPTY, Observable, of, Subject, throwError, zip } from "rxjs";
 import {
 	catchError,
 	expand,
 	finalize,
 	map,
-	mergeMap,
-	mergeMapTo,
 	switchMap,
 	tap,
 } from "rxjs/operators";
