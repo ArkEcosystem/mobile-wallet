@@ -53,25 +53,31 @@ export class ContactsProvider {
 	}
 
 	public editContact(address: string, name: string): Observable<any> {
-		const contact = this.getContactByAddress(address);
-		if (!contact) {
-			return throwError({
-				key: "CONTACTS_PAGE.CONTACT_NOT_EXISTS_ADDRESS",
-				parameters: { address },
-			} as TranslatableObject);
-		}
-
 		if (!name) {
 			return throwError({
 				key: "CONTACTS_PAGE.CONTACT_NAME_EMPTY",
 			} as TranslatableObject);
 		}
 
-		const existingContact = this.getContactByName(name);
-		if (existingContact && existingContact.address !== address) {
+		if (!address) {
+			return throwError({
+				key: "CONTACTS_PAGE.CONTACT_ADDRESS_EMPTY",
+			} as TranslatableObject);
+		}
+
+		const contactByName = this.getContactByName(name);
+		if (contactByName && contactByName.address !== address) {
 			return throwError({
 				key: "CONTACTS_PAGE.CONTACT_EXISTS_NAME",
 				parameters: { name },
+			} as TranslatableObject);
+		}
+		const contact = this.getContactByAddress(address);
+
+		if (!contact) {
+			return throwError({
+				key: "CONTACTS_PAGE.CONTACT_NOT_EXISTS_ADDRESS",
+				parameters: { address },
 			} as TranslatableObject);
 		}
 

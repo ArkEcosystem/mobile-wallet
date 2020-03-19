@@ -7,7 +7,7 @@ import { SocialSharing } from "@ionic-native/social-sharing/ngx";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { Delegate, Network as ArkNetwork } from "ark-ts";
-import { Observable, Subject } from "rxjs";
+import { Observable, of, Subject } from "rxjs";
 
 import { Profile, StoredNetwork, Wallet, WalletKeys } from "@/models/model";
 import { UserDataService } from "@/services/user-data/user-data.interface";
@@ -137,6 +137,16 @@ export class ScreenOrientationMock extends ScreenOrientation {
 	unlock(): void {}
 }
 
+const generateMockProfile = () => {
+	const userProfile = new Profile();
+	userProfile.contacts = [];
+	userProfile.name = "Test profile";
+	userProfile.networkId = "30";
+	userProfile.wallets = [];
+
+	return userProfile;
+};
+
 @Injectable()
 export class UserDataProviderMock implements UserDataService {
 	public currentNetwork: StoredNetwork;
@@ -149,6 +159,12 @@ export class UserDataProviderMock implements UserDataService {
 	public onCreateWallet$: Subject<Wallet>;
 	public onUpdateWallet$: Subject<Wallet>;
 	public onSelectProfile$: Subject<Profile>;
+
+	constructor() {
+		const mockProfile = generateMockProfile();
+		this.profiles = { ["test_profile_id"]: mockProfile };
+		this.currentProfile = mockProfile;
+	}
 
 	public get isDevNet(): boolean {
 		throw new Error("Method not implemented.");
@@ -184,8 +200,19 @@ export class UserDataProviderMock implements UserDataService {
 		throw new Error("Method not implemented.");
 	}
 	public saveProfiles(profiles?: { [key: string]: any }) {
-		throw new Error("Method not implemented.");
+		if (profiles) {
+			this.profiles = profiles;
+		}
+
+		return of(true);
 	}
+	public setCurrentProfile(
+		profileId: string,
+		broadcast: boolean = true,
+	): void {
+		this.currentProfile = this.profiles[profileId];
+	}
+
 	public encryptSecondPassphrase(
 		wallet: Wallet,
 		pinCode: string,
@@ -247,7 +274,7 @@ export class UserDataProviderMock implements UserDataService {
 		throw new Error("Method not implemented.");
 	}
 	public getCurrentProfile(): Profile {
-		throw new Error("Method not implemented.");
+		return this.currentProfile;
 	}
 	public loadProfiles() {
 		throw new Error("Method not implemented.");

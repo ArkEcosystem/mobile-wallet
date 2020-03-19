@@ -17,6 +17,7 @@
 		"CONTACTS": "Contacts",
 		"INVALID_ADDRESS": "The address '{{ address }}' is invalid!",
 		"CONTACT_NAME_EMPTY": "The contact name is empty!",
+		"CONTACT_ADDRESS_EMPTY": "The contact address is empty!",
 		"CONTACT_EXISTS_ADDRESS": "There is already a contact with the address '{{ address }}'!",
 		"CONTACT_NOT_EXISTS_ADDRESS": "A contact with the address '{{ address }}' doesn't exist!",
 		"CONTACT_EXISTS_NAME": "There is already a contact with the name '{{ name }}'!",
