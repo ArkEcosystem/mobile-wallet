@@ -6,7 +6,7 @@ import {
 	SpyObject,
 } from "@ngneat/spectator";
 import { of, Subject } from "rxjs";
-import { mapTo, switchMap } from "rxjs/operators";
+import { map, mapTo, switchMap } from "rxjs/operators";
 
 import * as networksFixtures from "@@/test/fixture/networks.fixture";
 import * as profilesFixtures from "@@/test/fixture/profiles.fixture";
@@ -275,6 +275,59 @@ describe("User Data Service", () => {
 				walletWithLabel.label,
 			);
 		});
+
+		it("should get the wallet label by address", done => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			wallet.label = "test";
+			const profileId = "profile1";
+			userDataService
+				.addWallet(wallet, null, null, profileId)
+				.pipe(
+					mapTo(
+						userDataService.getWalletLabel(
+							wallet.address,
+							profileId,
+						),
+					),
+				)
+				.subscribe(label => {
+					expect(label).toEqual(wallet.label);
+					done();
+				});
+		});
+
+		it("should update the wallet", done => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			const profileId = "profile1";
+			userDataService
+				.addWallet(wallet, null, null, profileId)
+				.pipe(
+					switchMap(() => {
+						wallet.label = "test";
+						return userDataService.updateWallet(wallet, profileId);
+					}),
+					mapTo(
+						userDataService.getWalletByAddress(
+							wallet.address,
+							profileId,
+						),
+					),
+				)
+				.subscribe(wallet => {
+					expect(wallet.label).toEqual(wallet.label);
+					done();
+				});
+		});
+
+		it("should fail to update the wallet if no profileId is specified", done => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			userDataService
+				.updateWallet(wallet, undefined)
+				.subscribe(null, error => {
+					expect(error).toBe("EMPTY_PROFILE_ID");
+					done();
+				});
+		});
 	});
 
 	describe("Logged in", () => {
@@ -323,6 +376,31 @@ describe("User Data Service", () => {
 		it("should return true if the current network is devnet", () => {
 			authService.onLogin$.next("profile2");
 			expect(userDataService.isDevNet).toBe(true);
+		});
+
+		it("should set the wallet label", done => {
+			const profileId = "profile1";
+			authService.onLogin$.next(profileId);
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			const label = "test";
+
+			userDataService
+				.addWallet(wallet, null, null, profileId)
+				.pipe(
+					switchMap(() => {
+						return userDataService.setWalletLabel(wallet, label);
+					}),
+					map(() =>
+						userDataService.getWalletByAddress(
+							wallet.address,
+							profileId,
+						),
+					),
+				)
+				.subscribe(wallet => {
+					expect(wallet.label).toEqual(label);
+					done();
+				});
 		});
 	});
 
