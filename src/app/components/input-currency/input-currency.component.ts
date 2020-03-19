@@ -81,12 +81,12 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 
 	ngOnInit() {
 		this.formControl = new FormControl({
-			value: 0,
+			value: undefined,
 			disabled: this.isDisabled,
 		});
 		this.formControl.valueChanges.subscribe((value: string) => {
 			const formatted = this.format(value);
-			this.input(formatted.value);
+			this.input?.(formatted.value);
 		});
 
 		if (!this.placeholder) {

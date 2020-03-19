@@ -27,7 +27,6 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
 	declarations: [AppComponent],
-	entryComponents: [],
 	imports: [
 		IonicModule.forRoot(),
 		IonicStorageModule.forRoot(),
@@ -45,7 +44,6 @@ export function createTranslateLoader(http: HttpClient) {
 		ChartsModule,
 		HammerModule,
 	],
-	exports: [TranslateModule],
 	providers: [
 		StatusBar,
 		SplashScreen,

@@ -18,7 +18,8 @@
 		"build:ios": "PLATFORM=ios ionic cordova build ios --prod --release",
 		"debug:android": "ionic cordova run android --debug --consolelogs -l",
 		"build:android": "ionic cordova build android --prod --release",
-		"missing-translations": "node missing-translations"
+		"missing-translations": "node missing-translations",
+		"storybook": "start-storybook"
 	},
 	"private": true,
 	"dependencies": {
@@ -105,6 +106,7 @@
 		"@ionic/angular-toolkit": "^2.2.0",
 		"@ionic/lab": "^3.1.2",
 		"@ngneat/spectator": "^5.3.1",
+		"@storybook/angular": "^5.3.17",
 		"@testing-library/angular": "^8.2.0",
 		"@types/bcryptjs": "^2.4.2",
 		"@types/bip39": "^3.0.0",
