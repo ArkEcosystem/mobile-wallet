@@ -36,6 +36,7 @@ module.exports = function(config) {
 				"!src/test.ts",
 				"!src/polyfills.ts",
 				"!src/app/app.constants.ts",
+				"!src/**/*.stories.ts",
 				"!src/**/*.spec.ts",
 				"!src/**/*.module.ts",
 				"!src/**/environment*.ts",
