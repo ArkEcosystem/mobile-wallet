@@ -1,4 +1,4 @@
-import { fakeAsync, flushMicrotasks, tick } from "@angular/core/testing";
+import { fakeAsync, tick } from "@angular/core/testing";
 import {
 	createServiceFactory,
 	mockProvider,
@@ -6,7 +6,7 @@ import {
 	SpyObject,
 } from "@ngneat/spectator";
 import { of, Subject } from "rxjs";
-import { map, mapTo, switchMapTo } from "rxjs/operators";
+import { mapTo, switchMap } from "rxjs/operators";
 
 import * as networksFixtures from "@@/test/fixture/networks.fixture";
 import * as profilesFixtures from "@@/test/fixture/profiles.fixture";
@@ -215,6 +215,48 @@ describe("User Data Service", () => {
 						}),
 					);
 					done();
+				});
+		});
+
+		it("should add wallet and skip encryption if no passphrase is specified", () => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			const profileId = "profile1";
+
+			userDataService
+				.addWallet(wallet, null, null, profileId)
+				.pipe(mapTo(userDataService.getProfileById(profileId)))
+				.subscribe(profile => {
+					expect(profile.wallets[wallet.address]).toEqual(
+						jasmine.objectContaining(walletsFixtures.wallet1),
+					);
+				});
+		});
+
+		it("should not add wallet if the address already exists", () => {
+			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+			const profileId = "profile1";
+
+			userDataService
+				.addWallet(wallet, null, null, profileId)
+				.pipe(
+					switchMap(() => {
+						const otherWallet = new Wallet().deserialize(
+							walletsFixtures.wallet1,
+						);
+						otherWallet.label = "test";
+						return userDataService.addWallet(
+							otherWallet,
+							null,
+							null,
+							profileId,
+						);
+					}),
+					mapTo(userDataService.getProfileById(profileId)),
+				)
+				.subscribe(profile => {
+					expect(profile.wallets[wallet.address].label).not.toBe(
+						"test",
+					);
 				});
 		});
 
