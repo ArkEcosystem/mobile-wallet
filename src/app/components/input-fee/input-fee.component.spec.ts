@@ -71,7 +71,7 @@ describe("Input Fee Component", () => {
 		});
 	});
 
-	describe("Controls", () => {
+	xdescribe("Controls", () => {
 		it("should hide the controls if max is equals to min", async () => {
 			const component = await createComponent({
 				min: 1,
