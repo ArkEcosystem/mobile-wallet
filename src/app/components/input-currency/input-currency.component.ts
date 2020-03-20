@@ -52,7 +52,8 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 	@Input()
 	public isRelaxed = false;
 
-	public isDisabled: boolean;
+	@Input()
+	public isDisabled = false;
 	public input: (value: BigNumber) => void;
 
 	constructor() {}
