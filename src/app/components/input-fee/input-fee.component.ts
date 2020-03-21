@@ -6,7 +6,7 @@ import {
 	FormGroupDirective,
 } from "@angular/forms";
 
-import { ARKTOSHI_DP } from "@/app/app.constants";
+import { WALLET_UNIT_TO_SATOSHI } from "@/app/app.constants";
 import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
 
 import { InputCurrencyOutput } from "../input-currency/input-currency.component";
@@ -62,7 +62,9 @@ export class InputFeeComponent implements OnInit {
 		this.parent.addControl("fee", this.inputControl);
 		this.inputControl.valueChanges.subscribe((value: BigNumber) => {
 			// The range value should be in arktoshi
-			this.currentFee = value.shiftedBy(ARKTOSHI_DP).toNumber();
+			this.currentFee = value
+				.multipliedBy(WALLET_UNIT_TO_SATOSHI)
+				.toNumber();
 			this.rangeControl.setValue(this.currentFee, {
 				emitEvent: false,
 			});
@@ -102,7 +104,9 @@ export class InputFeeComponent implements OnInit {
 
 	private setInputValue(value: number, emitEvent = true) {
 		// The input value should be in human
-		const satoshi = new SafeBigNumber(value).shiftedBy(ARKTOSHI_DP * -1);
+		const satoshi = new SafeBigNumber(value).dividedBy(
+			WALLET_UNIT_TO_SATOSHI,
+		);
 		this.inputControl.setValue(satoshi, {
 			emitEvent,
 		});

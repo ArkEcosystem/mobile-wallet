@@ -134,7 +134,9 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 		const zero = new SafeBigNumber(0);
 		const value = display ? new SafeBigNumber(display) : zero;
 
-		const satoshi = display ? value.shiftedBy(this.fractionDigits) : zero;
+		const satoshi = display
+			? value.multipliedBy(Math.pow(10, this.fractionDigits))
+			: zero;
 
 		return { display, value, satoshi };
 	}
