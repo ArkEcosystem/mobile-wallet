@@ -9,7 +9,7 @@ import { PipesModule } from "@/pipes/pipes.module";
 import { InputCurrencyComponentModule } from "../input-currency/input-currency.module";
 import { InputFeeComponent } from "./input-fee.component";
 
-fdescribe("Input Fee", () => {
+describe("Input Fee", () => {
 	let spectator: SpectatorHost<InputFeeComponent>;
 	const createHost = createHostFactory({
 		component: InputFeeComponent,
