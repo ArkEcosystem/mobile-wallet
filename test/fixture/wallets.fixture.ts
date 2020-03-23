@@ -12,3 +12,9 @@ export const wallet2 = {
 	balance: "874989914806052",
 	username: "test",
 };
+
+export const wallet3 = {
+	address: "AdS7WvzqusoP759qRo6HDmUz2L34u4fMHz",
+	iv: "hdHE1DvMuuHd7o4n/vmsPA=",
+	cipherKey: "3cetEU2KRIwKQlllmguZTg==",
+};
