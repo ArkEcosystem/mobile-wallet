@@ -6,9 +6,8 @@ import {
 
 // Fixtures
 import * as walletsFixtures from "@@/test/fixture/wallets.fixture";
-// Constants
 // Models
-import { Profile, StoredNetwork, Wallet } from "@/models/model";
+import { Wallet } from "@/models/model";
 // Services
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { NeoApiProvider } from "@/services/neo-api/neo-api";
@@ -29,15 +28,6 @@ fdescribe("Address checker service", () => {
 	let addressChecker: AddressCheckerProvider;
 
 	const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
-	// Mock network
-	const network = new StoredNetwork();
-	network.version = 30;
-	// Mock profile
-	const profile = new Profile();
-	profile.name = "Tester";
-	profile.profileId = "Tester";
-	profile.networkId = "devnet";
-	profile.wallets = wallet;
 
 	const createAddressCheckerMock = createServiceFactory({
 		service: AddressCheckerProvider,
@@ -45,8 +35,6 @@ fdescribe("Address checker service", () => {
 		providers: [
 			mockProvider(UserDataService, {
 				currentWallet: wallet,
-				currentNetwork: network,
-				currentProfile: profile,
 			}),
 		],
 	});
@@ -65,15 +53,21 @@ fdescribe("Address checker service", () => {
 		});
 
 		it("should return the check for own address", done => {
+			const networkProvider = addressSpectator.get(NetworkProvider);
+			networkProvider.isValidAddress.and.returnValue(true);
 			addressChecker.checkAddress(WALLET_ADDRESS).subscribe(data => {
 				expect(data.message.key).toEqual("VALIDATION.IS_OWN_ADDRESS");
 				done();
 			});
 		});
 
-		it("should return the transactions check", done => {
-			addressChecker.checkAddress(VALID_ADDRESS).subscribe(data => {
-				expect(data.message.key).toEqual("VALIDATION.NO_TRANSACTIONS");
+		it("should return the check for neo address", done => {
+			const networkProvider = addressSpectator.get(NetworkProvider);
+			const neoApiProvider = addressSpectator.get(NeoApiProvider);
+			networkProvider.isValidAddress.and.returnValue(true);
+			neoApiProvider.doesAddressExist.and.returnValue(true);
+			addressChecker.checkAddress(WALLET_ADDRESS).subscribe(data => {
+				expect(data.message.key).toEqual("VALIDATION.IS_OWN_ADDRESS");
 				done();
 			});
 		});
