@@ -223,3 +223,21 @@
 	--ion-color-step-900: #e7e7e7;
 	--ion-color-step-950: #f3f3f3;
 }
+
+.ion-color-success-light {
+	--ion-color-base: rgba(var(--ion-color-success-rgb), 0.2);
+	--ion-color-contrast: var(--ion-color-success-shade);
+	--ion-color-shade: rgba(var(--ion-color-success-rgb), 0.3);
+	--ion-color-tint: rgba(var(--ion-color-success-rgb), 0.1);
+}
+
+.ion-color-primary-light {
+	--ion-color-base: rgba(var(--ion-color-primary-rgb), 0.2);
+	--ion-color-contrast: var(--ion-color-primary-shade);
+	--ion-color-shade: rgba(var(--ion-color-primary-rgb), 0.3);
+	--ion-color-tint: rgba(var(--ion-color-primary-rgb), 0.1);
+
+	&.button-outline {
+		--ion-color-base: rgba(var(--ion-color-primary-rgb), 0.7);
+	}
+}

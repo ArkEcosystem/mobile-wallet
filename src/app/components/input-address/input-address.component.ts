@@ -1,9 +1,18 @@
-import { Component, EventEmitter, OnInit, Output } from "@angular/core";
+import {
+	AfterViewInit,
+	Component,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	ViewChild,
+} from "@angular/core";
 import {
 	ControlContainer,
 	FormControl,
 	FormGroupDirective,
 } from "@angular/forms";
+import { IonInput } from "@ionic/angular";
 
 import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
 
@@ -18,13 +27,20 @@ import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
 		},
 	],
 })
-export class InputAddressComponent implements OnInit {
+export class InputAddressComponent implements OnInit, AfterViewInit {
+	@ViewChild(IonInput)
+	public input: IonInput;
+
 	@Output()
 	public inputAddressQRCodeClick = new EventEmitter();
 
 	@Output()
 	public inputAddressContactClick = new EventEmitter();
 
+	@Input()
+	public address: string;
+
+	public formControl: FormControl;
 	public displayAddress: string;
 
 	constructor(
@@ -33,22 +49,26 @@ export class InputAddressComponent implements OnInit {
 	) {}
 
 	public ngOnInit() {
-		this.parentForm.form.addControl("recipientId", new FormControl());
-		this.parentForm.form.controls.recipientId.valueChanges.subscribe(
-			value => {
-				this.displayAddress = this.truncateMiddlePipe.transform(
-					value,
-					15,
-				);
-			},
-		);
+		this.formControl = new FormControl();
+		this.formControl.valueChanges.subscribe(value => {
+			this.displayAddress = this.truncateMiddlePipe.transform(value, 15);
+		});
+		this.parentForm.form?.addControl("recipientId", this.formControl);
 	}
 
 	public onPaste(input: ClipboardEvent) {
 		const value = input.clipboardData.getData("text");
-		this.parentForm.form.patchValue({
-			recipientAddress: value,
-		});
+		this.formControl.setValue(value);
+	}
+
+	async ngAfterViewInit() {
+		if (this.address) {
+			this.formControl.setValue(this.address);
+			// Workaround to truncate the address
+			const inputEl = await this.input.getInputElement();
+			inputEl.focus();
+			inputEl.blur();
+		}
 	}
 
 	public emitContactClick() {

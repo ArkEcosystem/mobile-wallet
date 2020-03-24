@@ -1,5 +1,5 @@
 <ion-item>
-	<div slot="end" class="flex items-center h-full">
+	<div slot="end" class="ml-3 flex items-center h-full">
 		<ion-button fill="clear" color="medium" (click)="emitQRCodeClick()">
 			<ion-icon name="qr-code"></ion-icon>
 		</ion-button>
@@ -8,15 +8,15 @@
 		</ion-button>
 	</div>
 
-	<ion-label position="floating">
+	<ion-label position="stacked">
 		{{ "WALLETS_PAGE.ADDRESS" | translate }}
 	</ion-label>
 
 	<ion-input
 		type="text"
-		formControlName="recipientId"
+		[formControl]="formControl"
 		name="recipientId"
-		(paste)="onPaste($event)"
+		appPasteClipboardValue
 		[appValueMaskOnBlur]="displayAddress"
 	></ion-input>
 </ion-item>

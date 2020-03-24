@@ -32,8 +32,36 @@ ion-toolbar * {
 	box-sizing: border-box;
 }
 
+ion-button {
+	font-weight: 500;
+}
+
+ion-label {
+	font-weight: 500;
+	--color: var(--ion-color-dark-tint) !important;
+
+	&.label-floating,
+	&.label-stacked {
+		transform: scale(0.75) !important;
+	}
+}
+
 ion-item {
 	--highlight-height: 0;
+	--padding-end: 0;
+	--inner-padding-end: 0;
+	&.item-interactive {
+		--border-color: transparent;
+	}
+}
+
+ion-input {
+	border: 1px solid var(--ion-color-light-shade);
+	border-radius: 0.4rem;
+	input {
+		--padding-start: 1rem;
+		--padding-end: 1rem;
+	}
 }
 
 .text-selectable {
