@@ -3,6 +3,7 @@ import {
 	mockProvider,
 	SpectatorService,
 } from "@ngneat/spectator";
+import { of } from "rxjs";
 
 // Fixtures
 import * as walletsFixtures from "@@/test/fixture/wallets.fixture";
@@ -31,10 +32,15 @@ fdescribe("Address checker service", () => {
 
 	const createAddressCheckerMock = createServiceFactory({
 		service: AddressCheckerProvider,
-		mocks: [NetworkProvider, ArkApiProvider, NeoApiProvider],
+		mocks: [NetworkProvider, NeoApiProvider],
 		providers: [
 			mockProvider(UserDataService, {
 				currentWallet: wallet,
+			}),
+			mockProvider(ArkApiProvider, {
+				client: {
+					getTransactionList: () => of([]),
+				},
 			}),
 		],
 	});
@@ -67,6 +73,16 @@ fdescribe("Address checker service", () => {
 			networkProvider.isValidAddress.and.returnValue(true);
 			neoApiProvider.doesAddressExist.and.returnValue(true);
 			addressChecker.checkAddress(WALLET_ADDRESS).subscribe(data => {
+				expect(data.message.key).toEqual("VALIDATION.IS_OWN_ADDRESS");
+				done();
+			});
+		});
+
+		it("should return the check for no transactions", done => {
+			const networkProvider = addressSpectator.get(NetworkProvider);
+			networkProvider.isValidAddress.and.returnValue(true);
+
+			addressChecker.checkAddress(VALID_ADDRESS).subscribe(data => {
 				expect(data.message.key).toEqual("VALIDATION.IS_OWN_ADDRESS");
 				done();
 			});
