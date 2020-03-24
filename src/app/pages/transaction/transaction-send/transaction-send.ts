@@ -183,13 +183,6 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		this.hasSent = false;
 	}
 
-	public onPasteAddress(input: ClipboardEvent) {
-		const value = input.clipboardData.getData("text");
-		this.sendForm.patchValue({
-			recipientId: value,
-		});
-	}
-
 	scanQRCode() {
 		this.qrScanner.open(true);
 	}

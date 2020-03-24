@@ -10,6 +10,7 @@ import {
 import {
 	ControlContainer,
 	FormControl,
+	FormGroup,
 	FormGroupDirective,
 } from "@angular/forms";
 import { IonInput } from "@ionic/angular";
@@ -31,6 +32,9 @@ export class InputAddressComponent implements OnInit, AfterViewInit {
 	@ViewChild(IonInput)
 	public input: IonInput;
 
+	@Input()
+	public parent = new FormGroup({});
+
 	@Output()
 	public inputAddressQRCodeClick = new EventEmitter();
 
@@ -40,30 +44,26 @@ export class InputAddressComponent implements OnInit, AfterViewInit {
 	@Input()
 	public address: string;
 
-	public formControl: FormControl;
+	public inputControl = new FormControl();
 	public displayAddress: string;
 
-	constructor(
-		private parentForm: FormGroupDirective,
-		private truncateMiddlePipe: TruncateMiddlePipe,
-	) {}
+	constructor(private truncateMiddlePipe: TruncateMiddlePipe) {}
 
 	public ngOnInit() {
-		this.formControl = new FormControl();
-		this.formControl.valueChanges.subscribe(value => {
+		this.parent.addControl("recipientId", this.inputControl);
+		this.parent.get("recipientId").valueChanges.subscribe(value => {
 			this.displayAddress = this.truncateMiddlePipe.transform(value, 15);
 		});
-		this.parentForm.form?.addControl("recipientId", this.formControl);
 	}
 
 	public onPaste(input: ClipboardEvent) {
 		const value = input.clipboardData.getData("text");
-		this.formControl.setValue(value);
+		this.inputControl.setValue(value);
 	}
 
 	async ngAfterViewInit() {
 		if (this.address) {
-			this.formControl.setValue(this.address);
+			this.inputControl.setValue(this.address);
 			// Workaround to truncate the address
 			const inputEl = await this.input.getInputElement();
 			inputEl.focus();

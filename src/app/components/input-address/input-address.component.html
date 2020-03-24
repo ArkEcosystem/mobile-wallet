@@ -1,4 +1,4 @@
-<ion-item>
+<ion-item [formGroup]="parent">
 	<div slot="end" class="ml-3 self-end flex items-center">
 		<ion-button fill="clear" color="medium" (click)="emitQRCodeClick()">
 			<ion-icon name="qr-code"></ion-icon>
@@ -14,7 +14,7 @@
 
 	<ion-input
 		type="text"
-		[formControl]="formControl"
+		formControlName="recipientId"
 		name="recipientId"
 		appPasteClipboardValue
 		[appValueMaskOnBlur]="displayAddress"
