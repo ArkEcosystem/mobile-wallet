@@ -39,7 +39,7 @@ fdescribe("Address checker service", () => {
 			}),
 			mockProvider(ArkApiProvider, {
 				client: {
-					getTransactionList: () => of([]),
+					getTransactionList: () => of({}),
 				},
 			}),
 		],
@@ -71,7 +71,7 @@ fdescribe("Address checker service", () => {
 			const networkProvider = addressSpectator.get(NetworkProvider);
 			const neoApiProvider = addressSpectator.get(NeoApiProvider);
 			networkProvider.isValidAddress.and.returnValue(true);
-			neoApiProvider.doesAddressExist.and.returnValue(true);
+			neoApiProvider.doesAddressExist.and.returnValue(of(true));
 			addressChecker.checkAddress(WALLET_ADDRESS).subscribe(data => {
 				expect(data.message.key).toEqual("VALIDATION.IS_OWN_ADDRESS");
 				done();
@@ -80,12 +80,17 @@ fdescribe("Address checker service", () => {
 
 		it("should return the check for no transactions", done => {
 			const networkProvider = addressSpectator.get(NetworkProvider);
+			const neoApiProvider = addressSpectator.get(NeoApiProvider);
 			networkProvider.isValidAddress.and.returnValue(true);
-
-			addressChecker.checkAddress(VALID_ADDRESS).subscribe(data => {
-				expect(data.message.key).toEqual("VALIDATION.IS_OWN_ADDRESS");
-				done();
-			});
+			neoApiProvider.doesAddressExist.and.returnValue(of(false));
+			addressChecker
+				.checkAddress(walletsFixtures.wallet2.address)
+				.subscribe(data => {
+					expect(data.message.key).toEqual(
+						"VALIDATION.NO_TRANSACTIONS",
+					);
+					done();
+				});
 		});
 	});
 });
