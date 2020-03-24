@@ -39,8 +39,13 @@ ion-button {
 ion-label {
 	font-weight: 500;
 	--color: var(--ion-color-dark-tint) !important;
+}
 
-	&.label-floating,
+.label-floating {
+	transform: scale(0.75) !important;
+}
+
+.md ion-label {
 	&.label-stacked {
 		transform: scale(0.75) !important;
 	}
@@ -61,6 +66,12 @@ ion-input {
 	input {
 		--padding-start: 1rem;
 		--padding-end: 1rem;
+	}
+}
+
+.dark-theme {
+	ion-input {
+		border-color: var(--ion-color-light-tint);
 	}
 }
 
