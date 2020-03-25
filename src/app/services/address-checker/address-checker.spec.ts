@@ -7,6 +7,7 @@ import {
 import { of, throwError } from "rxjs";
 
 // Fixtures
+import transactions from "@@/test/fixture/transactions.fixture";
 import * as walletsFixtures from "@@/test/fixture/wallets.fixture";
 // Models
 import { Wallet } from "@/models/model";
@@ -97,6 +98,52 @@ fdescribe("Address checker service", () => {
 			networkProvider.isValidAddress.and.returnValue(true);
 			neoApiProvider.doesAddressExist.and.returnValue(of(false));
 			apiClient.getTransactionList.and.returnValue(throwError("ERROR"));
+			addressChecker
+				.checkAddress(walletsFixtures.wallet2.address)
+				.subscribe(data => {
+					expect(data).toBeUndefined();
+					done();
+				});
+		});
+
+		it("should not throw error if the checked address has transactions", done => {
+			const networkProvider = addressSpectator.get(NetworkProvider);
+			const neoApiProvider = addressSpectator.get(NeoApiProvider);
+			networkProvider.isValidAddress.and.returnValue(true);
+			neoApiProvider.doesAddressExist.and.returnValue(of(false));
+			apiClient.getTransactionList.and.returnValue(
+				of({ success: true, transactions }),
+			);
+			addressChecker
+				.checkAddress(walletsFixtures.wallet3.address)
+				.subscribe(data => {
+					expect(data).toBeUndefined();
+					done();
+				});
+		});
+
+		it("should use handler if it's an neo address", done => {
+			const networkProvider = addressSpectator.get(NetworkProvider);
+			const neoApiProvider = addressSpectator.get(NeoApiProvider);
+			networkProvider.isValidAddress.and.returnValue(true);
+			neoApiProvider.doesAddressExist.and.returnValue(of(true));
+
+			addressChecker
+				.checkAddress(walletsFixtures.wallet2.address)
+				.subscribe(data => {
+					expect(data).toBeUndefined();
+					done();
+				});
+		});
+
+		it("should not use handler if it isn't an neo address", done => {
+			const networkProvider = addressSpectator.get(NetworkProvider);
+			const neoApiProvider = addressSpectator.get(NeoApiProvider);
+			networkProvider.isValidAddress.and.returnValue(true);
+			neoApiProvider.doesAddressExist.and.returnValue(
+				throwError("ERROR"),
+			);
+
 			addressChecker
 				.checkAddress(walletsFixtures.wallet2.address)
 				.subscribe(data => {
