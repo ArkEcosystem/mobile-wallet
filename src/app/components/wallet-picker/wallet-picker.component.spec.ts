@@ -6,7 +6,7 @@ import { removeLogs } from "@@/test/helpers";
 
 import { WalletPickerComponent } from "./wallet-picker.component";
 
-fdescribe("Wallet Picker Component", () => {
+describe("Wallet Picker Component", () => {
 	let spectator: SpectatorHost<WalletPickerComponent>;
 	const createHost = createHostComponentFactory({
 		component: WalletPickerComponent,
