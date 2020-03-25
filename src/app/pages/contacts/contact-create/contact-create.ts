@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { AlertController, NavController } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
@@ -17,16 +18,13 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 	templateUrl: "contact-create.html",
 	styleUrls: ["contact-create.scss"],
 })
-export class ContactCreatePage implements OnInit {
-	@ViewChild("createContactForm", { static: true })
-	createContactForm: HTMLFormElement;
+export class ContactCreatePage implements OnInit, AfterViewInit {
 	@ViewChild("qrScanner", { read: QRScannerComponent, static: true })
 	qrScanner: QRScannerComponent;
 
 	public isNew: boolean;
 
-	public address: string;
-	public contactName: string;
+	public formGroup: FormGroup;
 
 	private currentNetwork;
 
@@ -41,32 +39,47 @@ export class ContactCreatePage implements OnInit {
 	) {}
 
 	ngOnInit() {
+		this.formGroup = new FormGroup({
+			name: new FormControl("", [Validators.required]),
+			address: new FormControl("", [Validators.required]),
+		});
+	}
+
+	ngAfterViewInit() {
 		this.currentNetwork = this.userDataService.currentNetwork;
 
-		const contact = this.route.snapshot.queryParamMap.get("contact");
-		this.address = this.route.snapshot.queryParamMap.get("address");
+		const contactRaw = this.route.snapshot.queryParamMap.get("contact");
+		let address = this.route.snapshot.queryParamMap.get("address");
+		let name;
 
-		this.isNew = lodash.isEmpty(contact);
+		this.isNew = lodash.isEmpty(contactRaw);
 
 		if (!this.isNew) {
-			const contactMap = JSON.parse(contact);
-			this.contactName = contactMap.name;
-			this.address = contactMap.address;
+			const contactMap = JSON.parse(contactRaw);
+			name = contactMap.name;
+			address = contactMap.address;
 		}
 
 		this.currentNetwork = this.userDataService.currentNetwork;
+		this.formGroup.patchValue({
+			name: name || "",
+			address: address || "",
+		});
+		this.formGroup.valueChanges.subscribe(x =>
+			console.log(1, x, this.formGroup),
+		);
 	}
 
 	validateAddress() {
 		const validate = PublicKey.validateAddress(
-			this.address,
+			this.formGroup.get("address").value,
 			this.currentNetwork,
 		);
-		this.createContactForm.form.controls.address.setErrors({
+		this.formGroup.controls.address.setErrors({
 			incorrect: !validate,
 		});
 		if (validate) {
-			this.createContactForm.form.controls.address.setErrors(null);
+			this.formGroup.controls.address.setErrors(null);
 		}
 
 		return validate;
@@ -76,18 +89,20 @@ export class ContactCreatePage implements OnInit {
 		if (!this.validateAddress()) {
 			return;
 		}
+		const address = this.formGroup.get("address").value;
+		const name = this.formGroup.get("name").value;
 
 		if (this.isNew) {
 			const existingContact = this.contactsProvider.getContactByAddress(
-				this.address,
+				address,
 			);
 			if (existingContact) {
 				this.showConfirmation("CONTACTS_PAGE.OVERWRITE_CONTACT", {
 					name: existingContact.name,
-					newName: this.contactName,
+					newName: name,
 				}).then(() =>
 					this.contactsProvider
-						.editContact(existingContact.address, this.contactName)
+						.editContact(existingContact.address, name)
 						.subscribe(
 							this.closeAndLoadContactList,
 							this.showErrorMessage,
@@ -95,7 +110,7 @@ export class ContactCreatePage implements OnInit {
 				);
 			} else {
 				this.contactsProvider
-					.addContact(this.address, this.contactName)
+					.addContact(address, name)
 					.subscribe(
 						this.closeAndLoadContactList,
 						this.showErrorMessage,
@@ -103,7 +118,7 @@ export class ContactCreatePage implements OnInit {
 			}
 		} else {
 			this.contactsProvider
-				.editContact(this.address, this.contactName)
+				.editContact(address, name)
 				.subscribe(this.closeAndLoadContactList, this.showErrorMessage);
 		}
 	}
@@ -114,10 +129,10 @@ export class ContactCreatePage implements OnInit {
 
 	onScanQRCode(qrCode: QRCodeScheme) {
 		if (qrCode.address) {
-			this.address = qrCode.address;
+			this.formGroup.get("address").setValue(qrCode.address);
 			this.validateAddress();
 			if (qrCode.label) {
-				this.contactName = qrCode.label;
+				this.formGroup.get("name").setValue(qrCode.label);
 			}
 		} else {
 			this.toastProvider.error("QR_CODE.INVALID_QR_ERROR");

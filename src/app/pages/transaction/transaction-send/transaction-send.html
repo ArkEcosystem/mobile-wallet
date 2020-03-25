@@ -20,7 +20,7 @@
 			<ion-row class="row-contacts">
 				<ion-col>
 					<input-address
-						[parent]="sendForm"
+						formControlName="recipientId"
 						(inputAddressContactClick)="presetWalletPickerModal()"
 						(inputAddressQRCodeClick)="scanQRCode()"
 					></input-address>

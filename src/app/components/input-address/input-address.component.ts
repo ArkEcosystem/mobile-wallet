@@ -3,16 +3,11 @@ import {
 	Component,
 	EventEmitter,
 	Input,
-	OnInit,
 	Output,
+	Self,
 	ViewChild,
 } from "@angular/core";
-import {
-	ControlContainer,
-	FormControl,
-	FormGroup,
-	FormGroupDirective,
-} from "@angular/forms";
+import { ControlValueAccessor, NgControl } from "@angular/forms";
 import { IonInput } from "@ionic/angular";
 
 import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
@@ -21,19 +16,11 @@ import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
 	selector: "input-address",
 	templateUrl: "input-address.component.html",
 	styleUrls: ["input-address.component.scss"],
-	viewProviders: [
-		{
-			provide: ControlContainer,
-			useExisting: FormGroupDirective,
-		},
-	],
 })
-export class InputAddressComponent implements OnInit, AfterViewInit {
+export class InputAddressComponent
+	implements AfterViewInit, ControlValueAccessor {
 	@ViewChild(IonInput)
-	public input: IonInput;
-
-	@Input()
-	public parent = new FormGroup({});
+	public ionInput: IonInput;
 
 	@Output()
 	public inputAddressQRCodeClick = new EventEmitter();
@@ -42,32 +29,58 @@ export class InputAddressComponent implements OnInit, AfterViewInit {
 	public inputAddressContactClick = new EventEmitter();
 
 	@Input()
-	public address: string;
+	public name = "address";
 
-	public inputControl = new FormControl();
+	@Input()
+	public disabled = false;
+
+	@Input()
+	public showQRButton = true;
+
+	@Input()
+	public showContactButton = true;
+
 	public displayAddress: string;
 
-	constructor(private truncateMiddlePipe: TruncateMiddlePipe) {}
-
-	public ngOnInit() {
-		this.parent.addControl("recipientId", this.inputControl);
-		this.parent.get("recipientId").valueChanges.subscribe(value => {
-			this.displayAddress = this.truncateMiddlePipe.transform(value, 15);
-		});
+	constructor(
+		private truncateMiddlePipe: TruncateMiddlePipe,
+		@Self() public ngControl: NgControl,
+	) {
+		this.ngControl.valueAccessor = this;
 	}
 
-	public onPaste(input: ClipboardEvent) {
-		const value = input.clipboardData.getData("text");
-		this.inputControl.setValue(value);
+	public onChange = (value: string) => {};
+	public onTouched = () => {};
+
+	writeValue(value: string): void {
+		this.formatAddress(value);
 	}
 
 	async ngAfterViewInit() {
-		if (this.address) {
-			this.inputControl.setValue(this.address);
-			// Workaround to truncate the address
-			const inputEl = await this.input.getInputElement();
-			inputEl.focus();
-			inputEl.blur();
+		const ionInput = await this.ionInput.getInputElement();
+		ionInput.focus();
+		ionInput.blur();
+	}
+
+	registerOnChange(fn: (value: string) => void): void {
+		this.onChange = fn;
+	}
+
+	registerOnTouched(fn: () => void): void {
+		this.onTouched = fn;
+	}
+
+	setDisabledState?(isDisabled: boolean): void {
+		this.disabled = isDisabled;
+	}
+
+	public onInput(event: CustomEvent) {
+		// @ts-ignore
+		const value = event.target.value;
+		this.formatAddress(value);
+
+		if (!this.ngControl.name) {
+			this.onChange(value);
 		}
 	}
 
@@ -77,5 +90,9 @@ export class InputAddressComponent implements OnInit, AfterViewInit {
 
 	public emitQRCodeClick() {
 		this.inputAddressQRCodeClick.emit();
+	}
+
+	private formatAddress(value: string) {
+		this.displayAddress = this.truncateMiddlePipe.transform(value, 15);
 	}
 }

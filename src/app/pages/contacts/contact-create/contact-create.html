@@ -8,41 +8,26 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-	<form #createContactForm="ngForm">
-		<ion-item>
+	<form [formGroup]="formGroup">
+		<ion-item class="mb-4">
 			<ion-label position="floating">{{ 'NAME' | translate }}</ion-label>
 			<ion-input
 				type="text"
 				name="name"
-				[(ngModel)]="contactName"
-				(keyup)="validateAddress()"
-				required
+				formControlName="name"
 			></ion-input>
 		</ion-item>
 
-		<ion-item class="item-address">
-			<ion-label position="floating"
-				>{{ 'WALLETS_PAGE.ADDRESS' | translate }}</ion-label
-			>
-			<ion-input
-				type="text"
-				name="address"
-				[(ngModel)]="address"
-				[disabled]="!isNew"
-				(keyup)="validateAddress()"
-				required
-			></ion-input>
-			<div class="qr-container" slot="end" *ngIf="isNew">
-				<img class="image" tappable (tap)="scanQRCode()" />
-			</div>
-		</ion-item>
+		<input-address
+			formControlName="address"
+			[showContactButton]="false"
+			(inputAddressQRCodeClick)="scanQRCode()"
+		></input-address>
 	</form>
 </ion-content>
 
 <ion-footer class="ion-padding text-center ion-no-border ion-no-shadow">
-	<ion-button
-		[disabled]="!createContactForm.form.valid"
-		(click)="submitForm()"
+	<ion-button [disabled]="!formGroup.valid" (click)="submitForm()"
 		>{{ 'SAVE' | translate }}</ion-button
 	>
 </ion-footer>
