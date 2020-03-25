@@ -23,7 +23,7 @@ import { AddressCheckerProvider } from "./address-checker";
 const INVALID_ADDRESS = "D8x2Rno1CxrE5kRoVHS1EooQnfTL3v5sM";
 const WALLET_ADDRESS = "AXzxJ8Ts3dQ2bvBR1tPE7GUee9iSEJb8HX";
 
-fdescribe("Address checker service", () => {
+describe("Address checker service", () => {
 	let addressSpectator: SpectatorService<AddressCheckerProvider>;
 	let addressChecker: AddressCheckerProvider;
 
