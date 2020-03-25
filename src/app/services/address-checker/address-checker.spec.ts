@@ -1,9 +1,10 @@
 import {
 	createServiceFactory,
+	createSpyObject,
 	mockProvider,
 	SpectatorService,
 } from "@ngneat/spectator";
-import { of } from "rxjs";
+import { of, throwError } from "rxjs";
 
 // Fixtures
 import * as walletsFixtures from "@@/test/fixture/wallets.fixture";
@@ -13,22 +14,20 @@ import { Wallet } from "@/models/model";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { NeoApiProvider } from "@/services/neo-api/neo-api";
 import { NetworkProvider } from "@/services/network/network";
-import { UserDataServiceImpl } from "@/services/user-data/user-data";
 import { UserDataService } from "@/services/user-data/user-data.interface";
+import ApiClient from "@/utils/ark-client";
 
 import { AddressCheckerProvider } from "./address-checker";
 
 const INVALID_ADDRESS = "D8x2Rno1CxrE5kRoVHS1EooQnfTL3v5sM";
-const VALID_ADDRESS = "AHJJ29sCdR5UNZjdz3BYeDpvvkZCGBjde9";
 const WALLET_ADDRESS = "AXzxJ8Ts3dQ2bvBR1tPE7GUee9iSEJb8HX";
 
 fdescribe("Address checker service", () => {
 	let addressSpectator: SpectatorService<AddressCheckerProvider>;
-	let userDataSpectator: SpectatorService<UserDataServiceImpl>;
-	let userDataService: UserDataService;
 	let addressChecker: AddressCheckerProvider;
 
 	const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
+	const apiClient = createSpyObject(ApiClient);
 
 	const createAddressCheckerMock = createServiceFactory({
 		service: AddressCheckerProvider,
@@ -38,9 +37,7 @@ fdescribe("Address checker service", () => {
 				currentWallet: wallet,
 			}),
 			mockProvider(ArkApiProvider, {
-				client: {
-					getTransactionList: () => of({}),
-				},
+				client: apiClient,
 			}),
 		],
 	});
@@ -83,12 +80,27 @@ fdescribe("Address checker service", () => {
 			const neoApiProvider = addressSpectator.get(NeoApiProvider);
 			networkProvider.isValidAddress.and.returnValue(true);
 			neoApiProvider.doesAddressExist.and.returnValue(of(false));
+			apiClient.getTransactionList.and.returnValue(of({}));
 			addressChecker
 				.checkAddress(walletsFixtures.wallet2.address)
 				.subscribe(data => {
 					expect(data.message.key).toEqual(
 						"VALIDATION.NO_TRANSACTIONS",
 					);
+					done();
+				});
+		});
+
+		it("should not throw error if the transaction request fails", done => {
+			const networkProvider = addressSpectator.get(NetworkProvider);
+			const neoApiProvider = addressSpectator.get(NeoApiProvider);
+			networkProvider.isValidAddress.and.returnValue(true);
+			neoApiProvider.doesAddressExist.and.returnValue(of(false));
+			apiClient.getTransactionList.and.returnValue(throwError("ERROR"));
+			addressChecker
+				.checkAddress(walletsFixtures.wallet2.address)
+				.subscribe(data => {
+					expect(data).toBeUndefined();
 					done();
 				});
 		});
