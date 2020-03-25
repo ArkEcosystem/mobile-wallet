@@ -5,7 +5,6 @@ import forge from "node-forge";
 export class ForgeProvider {
 	private keySize = 32; // AES-256
 	private interations = 5000;
-	// private scryptParams = {N: 4096, r: 8, p: 8};
 
 	constructor() {}
 
@@ -54,20 +53,4 @@ export class ForgeProvider {
 
 		return decipher.output.toString();
 	}
-
-	/* DEPRECATED: Due to the slowness on devices was replaced by pbkdf2
-  public encryptBip38(wif: string, password: string, network: Network): string {
-    let key = PrivateKey.fromWIF(wif, network);
-
-    return bip38.encrypt(key.hash, key.getPublicKey().isCompressed, password, null, this.scryptParams);
-  }
-
-  public decryptBip38(encryptedKey: string, password: string, network: Network): string {
-    let decrypted = bip38.decrypt(encryptedKey, password, null, this.scryptParams);
-
-    let wifString = wif.encode(network.wif, decrypted.privateKey, decrypted.compressed);
-
-    return wifString;
-  }
-  */
 }

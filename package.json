@@ -107,7 +107,6 @@
 		"@ionic/lab": "^3.1.2",
 		"@ngneat/spectator": "^5.3.1",
 		"@storybook/angular": "^5.3.17",
-		"@testing-library/angular": "^8.2.0",
 		"@types/bcryptjs": "^2.4.2",
 		"@types/bip39": "^3.0.0",
 		"@types/bytebuffer": "^5.0.40",
