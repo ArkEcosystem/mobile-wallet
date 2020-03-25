@@ -209,6 +209,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 
 	onScanQRCode(qrCode: QRCodeScheme) {
 		if (qrCode.address) {
+			this.sendForm.controls.recipientId.setValue(qrCode.address);
 			const amount = Number(qrCode.amount);
 			if (amount) {
 				this.sendForm.controls.amount.setValue(amount);
