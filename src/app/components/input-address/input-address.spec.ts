@@ -14,7 +14,7 @@ import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
 
 import { InputAddressComponent } from "./input-address.component";
 
-fdescribe("Input Address", () => {
+describe("Input Address", () => {
 	let spectator: SpectatorHost<InputAddressComponent>;
 	const createHost = createHostFactory({
 		component: InputAddressComponent,
@@ -69,7 +69,7 @@ fdescribe("Input Address", () => {
 		input.blur();
 		await sleep(100);
 		// @ts-ignore
-		expect(spectator.hostComponent.form.controls.address.value).toEqual(
+		expect(spectator.hostComponent.form.value.address).toEqual(
 			"A32108Ts3dQ2bvBR1tPE7GUee9iSEJb8HX",
 		);
 	});
