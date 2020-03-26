@@ -80,7 +80,7 @@ export class TransactionShowPage {
 				],
 				{ address: contactOrAddress, token: this.currentNetwork.token },
 			)
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const buttons = [];
 
 				if (!contact) {

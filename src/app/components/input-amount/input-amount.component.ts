@@ -46,15 +46,15 @@ export class InputAmountComponent implements OnInit {
 			new FormControl("amountEquivalent"),
 		);
 
-		this.parentForm.form.controls.amount.valueChanges.subscribe(value =>
+		this.parentForm.form.controls.amount.valueChanges.subscribe((value) =>
 			this.onInputToken(value),
 		);
 		this.parentForm.form.controls.amountEquivalent.valueChanges.subscribe(
-			value => this.onInputFiat(value),
+			(value) => this.onInputFiat(value),
 		);
 
-		this.marketDataProvider.ticker.subscribe(ticker => {
-			this.settingsDataProvider.settings.subscribe(settings => {
+		this.marketDataProvider.ticker.subscribe((ticker) => {
+			this.settingsDataProvider.settings.subscribe((settings) => {
 				this.marketCurrency = ticker.getCurrency({
 					code: settings.currency,
 				});

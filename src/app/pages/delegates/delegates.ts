@@ -111,7 +111,7 @@ export class DelegatesPage implements OnDestroy {
 	}
 
 	onSlideChanged() {
-		this.slider.getActiveIndex().then(index => {
+		this.slider.getActiveIndex().then((index) => {
 			this.rankStatus = this.slides[index];
 		});
 	}
@@ -158,7 +158,7 @@ export class DelegatesPage implements OnDestroy {
 
 		this.arkApiProvider.transactionBuilder
 			.createVote(data)
-			.subscribe(transaction => {
+			.subscribe((transaction) => {
 				this.confirmTransaction.open(transaction, keys, null, {
 					username: this.selectedDelegate.username,
 				});
@@ -169,7 +169,7 @@ export class DelegatesPage implements OnDestroy {
 		this.currentNetwork = this.arkApiProvider.network;
 		this.currentWallet = this.userDataService.currentWallet;
 		this.zone.runOutsideAngular(() => {
-			this.arkApiProvider.delegates.subscribe(data =>
+			this.arkApiProvider.delegates.subscribe((data) =>
 				this.zone.run(() => {
 					this.delegates = data;
 					this.activeDelegates = this.delegates.slice(
@@ -211,7 +211,7 @@ export class DelegatesPage implements OnDestroy {
 			.getWalletVotes(this.currentWallet.address)
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe(
-				data => {
+				(data) => {
 					if (data.success && data.delegates.length > 0) {
 						this.walletVote = data.delegates[0];
 					}
@@ -226,7 +226,7 @@ export class DelegatesPage implements OnDestroy {
 		this.arkApiProvider.onUpdateDelegates$
 			.pipe(
 				takeUntil(this.unsubscriber$),
-				tap(delegates => {
+				tap((delegates) => {
 					this.zone.run(() => (this.delegates = delegates));
 				}),
 			)

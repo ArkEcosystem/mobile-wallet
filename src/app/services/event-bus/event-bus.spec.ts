@@ -10,11 +10,11 @@ describe("Event Bus Service", () => {
 
 	beforeEach(() => (spectator = createService()));
 
-	it("should emit", async done => {
+	it("should emit", async (done) => {
 		const key = "test";
 		const data = "value";
 
-		spectator.service.$subject.subscribe(result => {
+		spectator.service.$subject.subscribe((result) => {
 			expect(result).toEqual(
 				jasmine.objectContaining({
 					key,

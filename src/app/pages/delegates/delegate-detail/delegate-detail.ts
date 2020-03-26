@@ -65,7 +65,7 @@ export class DelegateDetailPage implements OnInit, OnDestroy {
 		this.arkApiProvider
 			.prepareFeesByType(TransactionType.Vote)
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(data => {
+			.subscribe((data) => {
 				this.nodeFees = data;
 			});
 	}
@@ -118,7 +118,7 @@ export class DelegateDetailPage implements OnInit, OnDestroy {
 					],
 					{ delegate: this.walletVote.username },
 				)
-				.subscribe(async translation => {
+				.subscribe(async (translation) => {
 					const alert = await this.alertCtrl.create({
 						header: translation["DELEGATES_PAGE.UNVOTE"],
 						message:

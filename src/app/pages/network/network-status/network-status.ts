@@ -41,7 +41,7 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
 		this.translateService
 			.get("NETWORKS_PAGE.LOOKING_GOOD_PEER")
 			.pipe(debounceTime(500))
-			.subscribe(async translate => {
+			.subscribe(async (translate) => {
 				this.loader = await this.loadingCtrl.create({
 					message: translate,
 					duration: 10000,
@@ -51,7 +51,7 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
 					.connectToRandomPeer()
 					.pipe(
 						takeUntil(this.unsubscriber$),
-						catchError(e => {
+						catchError((e) => {
 							this.loader.dismiss();
 							this.toastProvider.error(
 								e || "NETWORKS_PAGE.NO_GOOD_PEER",
@@ -85,7 +85,7 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
 		this.arkApiProvider.client
 			.getPeerConfig(this.currentPeer.ip, this.currentNetwork.p2pPort)
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(response => {
+			.subscribe((response) => {
 				if (response) {
 					this.zone.run(() => {
 						this.currentPeer.version = response.data.version;
@@ -96,7 +96,7 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
 		this.arkApiProvider.client
 			.getPeerSyncing(this.getPeerUrl())
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(response => {
+			.subscribe((response) => {
 				if (response) {
 					this.zone.run(() => {
 						this.currentPeer.height = response.height;
@@ -109,13 +109,13 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
 		this.arkApiProvider.onUpdatePeer$
 			.pipe(
 				takeUntil(this.unsubscriber$),
-				tap(peer => {
+				tap((peer) => {
 					if (this.loader) {
 						this.loader.dismiss();
 					}
 					this.translateService
 						.get("NETWORKS_PAGE.PEER_SUCCESSFULLY_CHANGED")
-						.subscribe(translate =>
+						.subscribe((translate) =>
 							this.toastProvider.success(translate),
 						);
 					this.zone.run(() => (this.currentPeer = peer));

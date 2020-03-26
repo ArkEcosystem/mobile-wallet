@@ -117,7 +117,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	copyAddress() {
 		this.clipboard.copy(this.address).then(
 			() => this.toastProvider.success("COPIED_CLIPBOARD"),
-			err => this.toastProvider.error(err),
+			(err) => this.toastProvider.error(err),
 		);
 	}
 
@@ -136,7 +136,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 				"WALLETS_PAGE.CONVERT_TO_FULL_WALLET",
 				"WALLETS_PAGE.TOP_WALLETS",
 			])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const delegatesItem = {
 					text: translation["DELEGATES_PAGE.DELEGATES"],
 					role: "label",
@@ -220,7 +220,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	presentAddActionSheet() {
 		this.translateService
 			.get(["TRANSACTIONS_PAGE.SEND", "TRANSACTIONS_PAGE.RECEIVE"])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const buttons: Array<object> = [
 					{
 						text: translation["TRANSACTIONS_PAGE.RECEIVE"],
@@ -289,7 +289,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 				this.userDataService
 					.setWalletLabel(this.wallet, data)
 					.pipe(
-						catchError(error => {
+						catchError((error) => {
 							this.toastProvider.error(error, 3000);
 							return throwError(error);
 						}),
@@ -310,7 +310,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 				"WALLETS_PAGE.REMOVE_WALLET_TEXT",
 				"WALLETS_PAGE.REMOVE_WATCH_ONLY_WALLET_TEXT",
 			])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const confirm = await this.alertCtrl.create({
 					header: translation.ARE_YOU_SURE,
 					message: this.wallet.isWatchOnly
@@ -340,7 +340,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
 	setWallet(wallet: Wallet) {
 		this.wallet = wallet;
-		const transactions = this.wallet.transactions.map(transaction => ({
+		const transactions = this.wallet.transactions.map((transaction) => ({
 			id: transaction.id,
 			timestamp: transaction.timestamp,
 			recipientId: transaction.recipientId,
@@ -430,7 +430,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 				}),
 				takeUntil(this.unsubscriber$),
 			)
-			.subscribe(response => {
+			.subscribe((response) => {
 				if (response && response.success) {
 					this.wallet.loadTransactions(response.transactions);
 					this.setWallet(this.wallet);
@@ -451,7 +451,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 		this.arkApiProvider.client
 			.getWallet(this.address)
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(response => {
+			.subscribe((response) => {
 				this.wallet.deserialize(response);
 				this.saveWallet();
 				if (this.wallet.isDelegate) {
@@ -461,7 +461,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 				this.arkApiProvider
 					.getDelegateByPublicKey(this.wallet.publicKey)
 					.pipe(
-						switchMap(delegate =>
+						switchMap((delegate) =>
 							this.userDataService.ensureWalletDelegateProperties(
 								this.wallet,
 								delegate,
@@ -480,12 +480,12 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	private onUpdateMarket() {
 		this.marketDataProvider.onUpdateTicker$
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(ticker => this.setTicker(ticker));
+			.subscribe((ticker) => this.setTicker(ticker));
 	}
 
 	private setTicker(ticker) {
 		this.ticker = ticker;
-		this.settingsDataProvider.settings.subscribe(settings => {
+		this.settingsDataProvider.settings.subscribe((settings) => {
 			this.marketCurrency = this.ticker.getCurrency({
 				code: settings.currency,
 			});
@@ -495,7 +495,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	private onUpdateWallet() {
 		this.userDataService.onUpdateWallet$
 			.pipe(takeUntil(this.unsubscriber$), debounceTime(500))
-			.subscribe(wallet => {
+			.subscribe((wallet) => {
 				if (
 					!lodash.isEmpty(wallet) &&
 					this.wallet.address === wallet.address
@@ -506,12 +506,12 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	}
 
 	private load() {
-		this.arkApiProvider.fees.subscribe(fees => (this.fees = fees));
+		this.arkApiProvider.fees.subscribe((fees) => (this.fees = fees));
 		if (this.marketDataProvider.cachedTicker) {
 			this.setTicker(this.marketDataProvider.cachedTicker);
 		}
 		this.marketDataProvider.history.subscribe(
-			history => (this.marketHistory = history),
+			(history) => (this.marketHistory = history),
 		);
 
 		if (lodash.isEmpty(this.wallet)) {
@@ -529,7 +529,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 			this.translateService
 				.get("TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS")
 				.pipe(takeUntil(this.unsubscriber$))
-				.subscribe(async translation => {
+				.subscribe(async (translation) => {
 					const loader = await this.loadingCtrl.create({
 						message: `${translation}...`,
 					});

@@ -151,9 +151,7 @@ export class Transaction extends TransactionModel {
 			if (!price) {
 				price = market.getPriceByDate(
 					marketCurrency.code,
-					moment(this.date)
-						.subtract(1, "d")
-						.toDate(),
+					moment(this.date).subtract(1, "d").toDate(),
 				);
 			}
 		}

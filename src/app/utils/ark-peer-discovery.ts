@@ -25,7 +25,7 @@ export class PeerDiscovery {
 		networkOrHost: string;
 		defaultPort?: number;
 	}): Observable<PeerDiscovery> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			if (!networkOrHost || typeof networkOrHost !== "string") {
 				observer.error("No network or host provided");
 			}
@@ -33,26 +33,26 @@ export class PeerDiscovery {
 			try {
 				if (isUrl(networkOrHost)) {
 					this.getSeedsFromHost(networkOrHost, defaultPort).subscribe(
-						response => {
+						(response) => {
 							observer.next(
 								new PeerDiscovery(this.httpClient, response),
 							);
 							observer.complete();
 						},
-						e => observer.error(e),
+						(e) => observer.error(e),
 					);
 				} else {
 					this.getSeedsFromRepository(
 						networkOrHost,
 						defaultPort,
 					).subscribe(
-						response => {
+						(response) => {
 							observer.next(
 								new PeerDiscovery(this.httpClient, response),
 							);
 							observer.complete();
 						},
-						e => observer.error(e),
+						(e) => observer.error(e),
 					);
 				}
 			} catch (error) {
@@ -84,7 +84,7 @@ export class PeerDiscovery {
 	}
 
 	public findPeers(opts: any = {}): Observable<PeerApiResponse[]> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			if (!opts.retry) {
 				opts.retry = { retries: 0 };
 			}
@@ -137,7 +137,7 @@ export class PeerDiscovery {
 							);
 							observer.complete();
 						},
-						e => {
+						(e) => {
 							observer.error(e);
 						},
 					);
@@ -152,9 +152,9 @@ export class PeerDiscovery {
 		name: string,
 		opts: { additional?: string[] } = {},
 	): Observable<PeerApiResponse[]> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.findPeers(opts).subscribe(
-				response => {
+				(response) => {
 					const peers: PeerApiResponse[] = [];
 
 					for (const peer of response) {
@@ -195,7 +195,7 @@ export class PeerDiscovery {
 					observer.next(peers);
 					observer.complete();
 				},
-				e => observer.error(e),
+				(e) => observer.error(e),
 			);
 		});
 	}
@@ -204,7 +204,7 @@ export class PeerDiscovery {
 		host: string,
 		defaultPort: number,
 	): Observable<PeerApiResponse[]> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.httpClient.get(host).subscribe(
 				(body: any) => {
 					const seeds: PeerApiResponse[] = [];
@@ -229,7 +229,7 @@ export class PeerDiscovery {
 					observer.next(seeds);
 					observer.complete();
 				},
-				e => observer.error(e),
+				(e) => observer.error(e),
 			);
 		});
 	}
@@ -238,7 +238,7 @@ export class PeerDiscovery {
 		network: string,
 		defaultPort: number,
 	): Observable<PeerApiResponse[]> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.httpClient
 				.get(
 					`https://raw.githubusercontent.com/ArkEcosystem/peers/master/${network}.json`,
@@ -252,7 +252,7 @@ export class PeerDiscovery {
 						observer.next(seeds);
 						observer.complete();
 					},
-					e => observer.error(e),
+					(e) => observer.error(e),
 				);
 		});
 	}

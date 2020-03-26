@@ -43,7 +43,7 @@ export default class ApiClient {
 	}
 
 	getWallet(address: string): Observable<WalletResponse> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get(`wallets/${address}`).subscribe(
 				(response: any) => {
 					if (response && response.data) {
@@ -55,13 +55,13 @@ export default class ApiClient {
 					}
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
 
 	getWalletVotes(address: string): Observable<AccountVotesResponse> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get(`wallets/${address}/votes`).subscribe(
 				(response: any) => {
 					const data = response.data;
@@ -83,26 +83,26 @@ export default class ApiClient {
 						this.getDelegateByPublicKey(
 							delegatePublicKey,
 						).subscribe(
-							delegate => {
+							(delegate) => {
 								observer.next({
 									success: true,
 									delegates: [delegate],
 								});
 								observer.complete();
 							},
-							error => observer.error(error),
+							(error) => observer.error(error),
 						);
 					} else {
 						observer.complete();
 					}
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
 
 	getTransactionList(address: string): Observable<TransactionResponse> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get(`wallets/${address}/transactions`, {
 				params: {
 					orderBy: "timestamp:desc",
@@ -111,7 +111,7 @@ export default class ApiClient {
 				(response: any) => {
 					observer.next({
 						success: true,
-						transactions: response.data.map(transaction => ({
+						transactions: response.data.map((transaction) => ({
 							...transaction,
 							recipientId: transaction.recipient,
 							senderId: transaction.sender,
@@ -123,13 +123,13 @@ export default class ApiClient {
 					});
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
 
 	getTransactionFees(): Observable<BlockFees> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get("transactions/fees").subscribe(
 				(response: any) => {
 					const data = response.data;
@@ -149,31 +149,31 @@ export default class ApiClient {
 					});
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
 
 	getNodeCrypto(host: string): Observable<any> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get("node/configuration/crypto", {}, host).subscribe(
 				(response: any) => {
 					observer.next(response.data);
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
 
 	getNodeConfiguration(host?: string): Observable<INodeConfiguration> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get(`node/configuration`, {}, host).subscribe(
 				(response: any) => {
 					observer.next(response.data);
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
@@ -182,7 +182,7 @@ export default class ApiClient {
 		host: string,
 		timeoutMs?: number,
 	): Observable<LoaderStatusSync> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get(`node/syncing`, {}, host, timeoutMs).subscribe(
 				(response: any) => {
 					observer.next({
@@ -191,13 +191,13 @@ export default class ApiClient {
 					});
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
 
 	getPeerList(): Observable<PeerResponse> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get("peers").subscribe(
 				(response: any) => {
 					observer.next({
@@ -207,7 +207,7 @@ export default class ApiClient {
 					});
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
@@ -217,13 +217,13 @@ export default class ApiClient {
 		host?: string,
 		timeoutMs?: number,
 	): Observable<PeerApiResponse> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get(`peers/${ip}`, null, host, timeoutMs).subscribe(
 				(response: any) => {
 					observer.next(response.data);
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
@@ -233,7 +233,7 @@ export default class ApiClient {
 		port: number,
 		protocol: "http" | "https" = "http",
 	): Observable<PeerVersion2ConfigResponse> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.httpClient
 				.get(`${protocol}://${ip}:4040/config`)
 				.pipe(timeout(2000))
@@ -255,7 +255,7 @@ export default class ApiClient {
 									this.getNodeConfiguration(
 										`${protocol}://${ip}:${port}`,
 									).subscribe(
-										response => {
+										(response) => {
 											const apiPort = lodash.find(
 												response.ports,
 												(_, key) =>
@@ -272,14 +272,14 @@ export default class ApiClient {
 													apiPort,
 													protocol,
 												).subscribe(
-													r => observer.next(r),
-													e => observer.error(e),
+													(r) => observer.next(r),
+													(e) => observer.error(e),
 												);
 											} else {
 												observer.error();
 											}
 										},
-										error => observer.error(error),
+										(error) => observer.error(error),
 									);
 								},
 							);
@@ -293,7 +293,7 @@ export default class ApiClient {
 		peer: Peer,
 		protocol: "http" | "https" = "http",
 	): Observable<TransactionPostResponse> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.post(
 				"transactions",
 				{ transactions: [transaction] },
@@ -304,7 +304,7 @@ export default class ApiClient {
 					observer.next(response);
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
@@ -312,19 +312,19 @@ export default class ApiClient {
 	getDelegateList(
 		options: any = { page: 1, limit: 100, orderBy: "rank:asc" },
 	): Observable<DelegateResponse> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get("delegates", { params: options }).subscribe(
 				(response: any) => {
 					observer.next({
 						success: true,
-						delegates: response.data.map(delegate =>
+						delegates: response.data.map((delegate) =>
 							this.__formatDelegateResponse(delegate),
 						),
 						totalCount: parseInt(response.meta.totalCount),
 					});
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
@@ -334,14 +334,14 @@ export default class ApiClient {
 			return of(null);
 		}
 
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.get(`delegates/${publicKey}`).subscribe(
 				(response: any) => {
 					const data = response.data;
 					observer.next(this.__formatDelegateResponse(data));
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}

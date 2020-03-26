@@ -71,13 +71,13 @@ export class CustomNetworkComponent implements OnInit {
 		this.networks = this.userDataService.networks;
 		this.networksIds = lodash.keys(this.networks);
 		this.networkChoices = this.networksIds
-			.filter(id =>
+			.filter((id) =>
 				this.userDataService.defaultNetworks.every(
-					defaultNetwork =>
+					(defaultNetwork) =>
 						this.networks[id].name !== defaultNetwork.name,
 				),
 			)
-			.map(id => {
+			.map((id) => {
 				return { name: this.networks[id].name, id };
 			});
 	}
@@ -111,7 +111,7 @@ export class CustomNetworkComponent implements OnInit {
 			this.loadNetworks();
 
 			const filteredNetworks = this.networkChoices.filter(
-				n => n.id === data.networkId,
+				(n) => n.id === data.networkId,
 			);
 			if (filteredNetworks.length) {
 				this.activeNetworkChoice = filteredNetworks[0];

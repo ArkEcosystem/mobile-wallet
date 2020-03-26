@@ -65,7 +65,7 @@ export class UserDataServiceImpl implements UserDataService {
 		this.onClearStorage();
 
 		this.onUpdateNetwork$.subscribe(
-			network => (this.currentNetwork = network),
+			(network) => (this.currentNetwork = network),
 		);
 	}
 
@@ -375,7 +375,7 @@ export class UserDataServiceImpl implements UserDataService {
 		if (
 			lodash.some(
 				this.currentProfile.wallets,
-				w =>
+				(w) =>
 					label &&
 					w.label &&
 					w.label.toLowerCase() === label.toLowerCase(),
@@ -419,7 +419,7 @@ export class UserDataServiceImpl implements UserDataService {
 
 	loadProfiles() {
 		return this.storageProvider.getObject(constants.STORAGE_PROFILES).pipe(
-			map(profiles => {
+			map((profiles) => {
 				// we have to create "real" contacts here, because the "address" property was not on the contact object
 				// in the first versions of the app
 				return lodash.mapValues(profiles, (profile, profileId) => ({
@@ -436,11 +436,11 @@ export class UserDataServiceImpl implements UserDataService {
 	}
 
 	loadNetworks(): Observable<Record<string, StoredNetwork>> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			// Return defaults networks from arkts
 			this.storageProvider
 				.getObject(constants.STORAGE_NETWORKS)
-				.subscribe(networks => {
+				.subscribe((networks) => {
 					if (!networks || lodash.isEmpty(networks)) {
 						const uniqueDefaults = {};
 
@@ -520,12 +520,12 @@ export class UserDataServiceImpl implements UserDataService {
 	}
 
 	private loadAllData() {
-		this.loadProfiles().subscribe(profiles => (this.profiles = profiles));
-		this.loadNetworks().subscribe(networks => (this.networks = networks));
+		this.loadProfiles().subscribe((profiles) => (this.profiles = profiles));
+		this.loadNetworks().subscribe((networks) => (this.networks = networks));
 	}
 
 	private onLogin() {
-		return this.authProvider.onLogin$.subscribe(id => {
+		return this.authProvider.onLogin$.subscribe((id) => {
 			this.setCurrentProfile(id);
 			this.setCurrentNetwork();
 		});

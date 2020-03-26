@@ -45,7 +45,7 @@ export class WalletBackupModal implements OnInit {
 
 		this.currentNetwork = this.userDataService.currentNetwork;
 		this.settingsDataProvider.settings.subscribe(
-			settings => (this.wordlistLanguage = settings.wordlistLanguage),
+			(settings) => (this.wordlistLanguage = settings.wordlistLanguage),
 		);
 	}
 

@@ -23,9 +23,9 @@ export class MarketNumberPipe implements PipeTransform, OnDestroy {
 	) {
 		this.marketDataProvider.ticker
 			.pipe(
-				tap(ticker => (this.marketTicker = ticker)),
+				tap((ticker) => (this.marketTicker = ticker)),
 				finalize(() =>
-					this.settingsDataProvider.settings.subscribe(settings =>
+					this.settingsDataProvider.settings.subscribe((settings) =>
 						this.updateCurrency(settings),
 					),
 				),
@@ -34,10 +34,10 @@ export class MarketNumberPipe implements PipeTransform, OnDestroy {
 
 		this.settingsDataProvider.onUpdate$
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(settings => this.updateCurrency(settings));
+			.subscribe((settings) => this.updateCurrency(settings));
 		this.marketDataProvider.onUpdateTicker$
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(ticker => (this.marketTicker = ticker));
+			.subscribe((ticker) => (this.marketTicker = ticker));
 	}
 
 	transform(value: number | string, forceCurrency?: MarketCurrency) {

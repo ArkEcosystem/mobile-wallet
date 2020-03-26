@@ -21,8 +21,8 @@ describe("Settings Service", () => {
 		settingsService = TestBed.inject(SettingsDataProvider);
 	});
 
-	it("should return valid settings", done => {
-		settingsService.settings.subscribe(data => {
+	it("should return valid settings", (done) => {
+		settingsService.settings.subscribe((data) => {
 			expect(data).toEqual(
 				jasmine.objectContaining({
 					language: jasmine.any(String),
@@ -75,7 +75,7 @@ describe("Settings Service", () => {
 		);
 	});
 
-	it("should update settings", done => {
+	it("should update settings", (done) => {
 		const newSettings = new UserSettings();
 		newSettings.language = "pt-BR";
 		newSettings.currency = "BRL";
@@ -85,7 +85,7 @@ describe("Settings Service", () => {
 
 		settingsService.save(newSettings);
 
-		settingsService.settings.subscribe(data => {
+		settingsService.settings.subscribe((data) => {
 			expect(data).toEqual(
 				jasmine.objectContaining({
 					language: "pt-BR",
@@ -99,17 +99,17 @@ describe("Settings Service", () => {
 		});
 	});
 
-	it("should clear settings", done => {
+	it("should clear settings", (done) => {
 		settingsService.settings
 			.pipe(
-				switchMap(data => {
+				switchMap((data) => {
 					expect(data.language).toEqual("pt-BR");
 					return settingsService
 						.clearData()
 						.pipe(switchMap(() => settingsService.settings));
 				}),
 			)
-			.subscribe(newData => {
+			.subscribe((newData) => {
 				expect(newData.language).toEqual("en");
 				done();
 			});

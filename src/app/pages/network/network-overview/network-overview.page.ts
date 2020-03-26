@@ -29,7 +29,7 @@ export class NetworkOverviewPage {
 	) {}
 
 	presentActionSheet(networkId: string) {
-		this.translateService.get(["EDIT"]).subscribe(async translation => {
+		this.translateService.get(["EDIT"]).subscribe(async (translation) => {
 			const buttons = [
 				{
 					text: translation.EDIT,
@@ -54,7 +54,7 @@ export class NetworkOverviewPage {
 	load() {
 		this.networks = this.userDataService.networks;
 		const defaultNetworks = this.userDataService.defaultNetworks.map(
-			item => item.name,
+			(item) => item.name,
 		);
 
 		const result = Object.entries(this.networks).map(([id, network]) => {

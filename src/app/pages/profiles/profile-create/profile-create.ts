@@ -41,7 +41,7 @@ export class ProfileCreatePage implements OnDestroy {
 	onSelectNetwork(event: any) {
 		const detail = event.detail.value;
 		this.activeNetworkChoice = this.networkChoices.find(
-			item => item.id === detail,
+			(item) => item.id === detail,
 		);
 		this.newProfile.networkId = this.activeNetworkChoice.id;
 	}
@@ -82,17 +82,17 @@ export class ProfileCreatePage implements OnDestroy {
 	load() {
 		this.translateService
 			.get("PROFILES_PAGE.CUSTOM")
-			.subscribe(customTrans => {
+			.subscribe((customTrans) => {
 				this.networks = this.userDataService.networks;
 				this.networksIds = lodash.keys(this.networks);
 				this.networkChoices = this.networksIds
-					.filter(id =>
+					.filter((id) =>
 						this.userDataService.defaultNetworks.some(
-							defaultNetwork =>
+							(defaultNetwork) =>
 								this.networks[id].name === defaultNetwork.name,
 						),
 					)
-					.map(id => {
+					.map((id) => {
 						return { name: this.networks[id].name, id };
 					});
 				this.networkChoices.push({ name: customTrans, id: null });
@@ -125,7 +125,7 @@ export class ProfileCreatePage implements OnDestroy {
 	private showAlert(titleKey: string, stringParams: any) {
 		this.translateService
 			.get([titleKey, "BACK_BUTTON_TEXT"], stringParams)
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const alert = await this.alertCtrl.create({
 					subHeader: translation[titleKey],
 					buttons: [translation.BACK_BUTTON_TEXT],

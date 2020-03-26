@@ -36,7 +36,7 @@ export class MarketDataProvider {
 		this.loadData();
 		this.fetchTicker();
 
-		settingsDataProvider.settings.subscribe(settings => {
+		settingsDataProvider.settings.subscribe((settings) => {
 			this.settings = settings;
 			this.fetchHistory();
 		});
@@ -69,7 +69,7 @@ export class MarketDataProvider {
 	}
 
 	refreshTicker(): void {
-		this.fetchTicker().subscribe(ticker => {
+		this.fetchTicker().subscribe((ticker) => {
 			this.onUpdateTicker$.next(ticker);
 		});
 	}
@@ -81,7 +81,7 @@ export class MarketDataProvider {
 			: this.settings.currency
 		).toUpperCase();
 		return this.http.get(url + "BTC").pipe(
-			map(btcResponse => btcResponse),
+			map((btcResponse) => btcResponse),
 			flatMap((btcResponse: any) =>
 				this.http.get(url + myCurrencyCode).pipe(
 					map((currencyResponse: any) => {
@@ -110,7 +110,7 @@ export class MarketDataProvider {
 	private fetchTicker(): Observable<model.MarketTicker> {
 		const url = `${constants.API_MARKET_URL}/data/pricemultifull?fsyms=${this.marketTickerName}&tsyms=`;
 
-		const currenciesList = model.CURRENCIES_LIST.map(currency => {
+		const currenciesList = model.CURRENCIES_LIST.map((currency) => {
 			return currency.code.toUpperCase();
 		}).join(",");
 
@@ -138,7 +138,7 @@ export class MarketDataProvider {
 	}
 
 	private onUpdateSettings() {
-		this.settingsDataProvider.onUpdate$.subscribe(settings => {
+		this.settingsDataProvider.onUpdate$.subscribe((settings) => {
 			this.settings = settings;
 			this.marketHistory = null;
 		});
@@ -147,7 +147,7 @@ export class MarketDataProvider {
 	private loadData() {
 		this.storageProvider
 			.getObject(this.getKey(constants.STORAGE_MARKET_HISTORY))
-			.subscribe(history => {
+			.subscribe((history) => {
 				if (history) {
 					this.marketHistory = new model.MarketHistory().deserialize(
 						history,
@@ -156,7 +156,7 @@ export class MarketDataProvider {
 			});
 		this.storageProvider
 			.getObject(this.getKey(constants.STORAGE_MARKET_TICKER))
-			.subscribe(ticker => {
+			.subscribe((ticker) => {
 				if (ticker) {
 					this.marketTicker = new model.MarketTicker().deserialize(
 						ticker,

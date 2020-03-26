@@ -16,7 +16,7 @@ export class StorageProvider {
 
 	public getObject(key) {
 		return from(this._storage.get(key)).pipe(
-			map(result => JSON.parse(result || "{}")),
+			map((result) => JSON.parse(result || "{}")),
 		);
 	}
 

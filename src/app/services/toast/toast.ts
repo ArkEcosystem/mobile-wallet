@@ -86,7 +86,7 @@ export class ToastProvider {
 		}
 		this.translateService
 			.get(message, parameters)
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const toast = await this.toastCtrl.create({
 					message: translation,
 					duration: hideDelay || this.hideDelay,

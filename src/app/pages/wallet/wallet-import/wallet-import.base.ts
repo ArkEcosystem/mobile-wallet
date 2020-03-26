@@ -29,7 +29,7 @@ export abstract class BaseWalletImport {
 	) {
 		this.existingAddress = route.snapshot.queryParamMap.get("address");
 		this.settingsDataProvider.settings.subscribe(
-			settings => (this.wordlistLanguage = settings.wordlistLanguage),
+			(settings) => (this.wordlistLanguage = settings.wordlistLanguage),
 		);
 	}
 
@@ -83,7 +83,7 @@ export abstract class BaseWalletImport {
 
 		let newWallet = new Wallet(!privateKey);
 
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.arkApiProvider.client
 				.getWallet(address)
 				.pipe(
@@ -108,7 +108,7 @@ export abstract class BaseWalletImport {
 					}),
 				)
 				.subscribe(
-					response => {
+					(response) => {
 						newWallet = newWallet.deserialize(response);
 					},
 					() => {

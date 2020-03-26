@@ -39,7 +39,7 @@ export class CustomNetworkCreateModal {
 			.getNodeConfiguration()
 			.pipe(finalize(() => loading.dismiss()))
 			.subscribe(
-				response => {
+				(response) => {
 					this.network.name = this.name;
 					this.network.nethash = response.nethash;
 					this.network.token = response.token;
