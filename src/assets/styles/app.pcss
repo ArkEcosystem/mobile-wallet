@@ -2,8 +2,12 @@
 	display: none;
 }
 
-body:not(.backdrop-no-scroll) ion-app {
-	background: var(--ion-background-color);
+ion-app {
+	background-color: var(--ion-background-color);
+}
+
+.backdrop-no-scroll[style*="background-color: black"] ion-app {
+	background-color: black !important;
 }
 
 .c-avatar {
