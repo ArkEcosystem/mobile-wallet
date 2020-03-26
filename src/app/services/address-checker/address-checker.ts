@@ -116,13 +116,8 @@ export class AddressCheckerProvider {
 	}
 
 	public hasTransactions(address: string): Observable<boolean> {
-		return this.arkApiProvider.client.getTransactionList(address).pipe(
-			map(txs => {
-				if (!txs.success) {
-					throw Error();
-				}
-				return txs.transactions && txs.transactions.length > 0;
-			}),
-		);
+		return this.arkApiProvider.client
+			.getTransactionList(address)
+			.pipe(map(txs => txs?.transactions?.length > 0));
 	}
 }

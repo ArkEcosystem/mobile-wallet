@@ -17,4 +17,11 @@ export const wallet3 = {
 	address: "AdS7WvzqusoP759qRo6HDmUz2L34u4fMHz",
 	iv: "hdHE1DvMuuHd7o4n/vmsPA=",
 	cipherKey: "3cetEU2KRIwKQlllmguZTg==",
+	publicKey:
+		"03e7635481b035149829ef74f972e69eca75363bc96e75be57579b0e6fb3f22192",
+	nonce: "19",
+	balance: "800000000000000",
+	attributes: {},
+	isDelegate: false,
+	isResigned: false,
 };
