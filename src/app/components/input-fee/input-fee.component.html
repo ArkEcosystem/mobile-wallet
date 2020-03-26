@@ -12,7 +12,9 @@
 			<ion-button
 				data-testid="c-input-fee__controls__min"
 				[fill]="currentFee === limitMin ? 'solid' : 'outline'"
-				[color]="currentFee === min ? 'success-light' : 'primary-light'"
+				[color]="
+					currentFee === limitMin ? 'success-light' : 'primary-light'
+				"
 				(click)="handleClickButton(limitMin)"
 				mode="ios"
 				class="flex-1 mr-2"
