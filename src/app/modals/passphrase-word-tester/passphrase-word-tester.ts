@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { ModalController, NavController } from "@ionic/angular";
 
 import { PassphraseInputComponent } from "@/components/passphrase-input/passphrase-input";
@@ -9,8 +9,7 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 	templateUrl: "passphrase-word-tester.html",
 	styleUrls: ["passphrase-word-tester.scss"],
 })
-export class PassphraseWordTesterModal {
-	@Input()
+export class PassphraseWordTesterModal implements OnInit {
 	public passphraseReference: string;
 
 	@Input()
@@ -26,7 +25,9 @@ export class PassphraseWordTesterModal {
 		public navCtrl: NavController,
 		private modalCtrl: ModalController,
 		private userDataService: UserDataService,
-	) {
+	) {}
+
+	ngOnInit() {
 		if (!this.passphraseReference) {
 			this.dismiss();
 		}

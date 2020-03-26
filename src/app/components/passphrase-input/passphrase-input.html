@@ -8,7 +8,7 @@
 			#inputPassphrase
 			name="passphrase"
 			rows="2"
-			[ngModel]="passphrase"
+			[(ngModel)]="passphrase"
 			(ngModelChange)="passphraseChange($event)"
 			autocomplete="off"
 			autocorrect="off"
@@ -22,7 +22,7 @@
 			#inputPassphraseHidden
 			name="passphraseHidden"
 			rows="2"
-			[ngModel]="passphraseHidden"
+			[(ngModel)]="passphraseHidden"
 			(ngModelChange)="passphraseHiddenChange($event)"
 			[ngModelOptions]="{standalone: true}"
 			autocomplete="off"
@@ -56,8 +56,9 @@
 		*ngIf="wordSuggestions[0]"
 		color="light"
 		name="wordSuggestion0"
-		>{{ wordSuggestions[0] }}</ion-button
 	>
+		{{ wordSuggestions[0] }}
+	</ion-button>
 	<ion-button
 		size="small"
 		shape="round"
@@ -65,8 +66,9 @@
 		*ngIf="wordSuggestions[1]"
 		color="light"
 		name="wordSuggestion1"
-		>{{ wordSuggestions[1] }}</ion-button
 	>
+		{{ wordSuggestions[1] }}
+	</ion-button>
 	<ion-button
 		size="small"
 		shape="round"
@@ -74,6 +76,7 @@
 		*ngIf="wordSuggestions[2]"
 		color="light"
 		name="wordSuggestion2"
-		>{{ wordSuggestions[2] }}</ion-button
 	>
+		{{ wordSuggestions[2] }}
+	</ion-button>
 </div>

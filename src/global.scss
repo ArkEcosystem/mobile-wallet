@@ -60,7 +60,8 @@ ion-item {
 	}
 }
 
-ion-input {
+ion-input,
+ion-textarea {
 	border: 1px solid var(--ion-color-light-shade);
 	border-radius: 0.4rem;
 
@@ -68,7 +69,8 @@ ion-input {
 		border-color: var(--ion-color-danger);
 	}
 
-	input {
+	input,
+	textarea {
 		--padding-start: 1rem;
 		--padding-end: 1rem;
 	}
