@@ -1,9 +1,4 @@
-import {
-	FormControl,
-	FormGroup,
-	FormsModule,
-	ReactiveFormsModule,
-} from "@angular/forms";
+import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
 import { byTestId, createHostFactory, SpectatorHost } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
@@ -51,14 +46,12 @@ describe("Input Address", () => {
 		);
 	});
 
-	it("should work with formGroup", async () => {
+	it("should work with formControl", async () => {
 		spectator = createHost(
-			`<div [formGroup]="form"><input-address formControlName="address"></input-address></div>`,
+			`<div><input-address [formControl]="address"></input-address></div>`,
 			{
 				hostProps: {
-					form: new FormGroup({
-						address: new FormControl(""),
-					}),
+					address: new FormControl(""),
 				},
 			},
 		);
@@ -69,7 +62,7 @@ describe("Input Address", () => {
 		input.blur();
 		await sleep(100);
 		// @ts-ignore
-		expect(spectator.hostComponent.form.value.address).toEqual(
+		expect(spectator.hostComponent.address.value).toEqual(
 			"A32108Ts3dQ2bvBR1tPE7GUee9iSEJb8HX",
 		);
 	});
