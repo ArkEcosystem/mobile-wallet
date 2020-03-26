@@ -33,7 +33,7 @@ export class ViewerLogModal implements OnInit {
 		const raw = JSON.stringify(this.logs, null, 1);
 		this.clipboard.copy(raw).then(
 			() => {
-				this.toastProvider.success("COPIED_CLIPBOARD");
+				this.toastProvider.log("COPIED_CLIPBOARD");
 			},
 			(error) => this.toastProvider.error(error),
 		);

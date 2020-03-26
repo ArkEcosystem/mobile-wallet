@@ -143,7 +143,7 @@ export class SettingsPage implements OnInit, OnDestroy {
 		this.versionClicksCount = 0;
 		this.currentSettings.devMode = true;
 		this.onUpdate();
-		this.toastProvider.success("SETTINGS_PAGE.VIEW_LOG_REPORT");
+		this.toastProvider.show("SETTINGS_PAGE.YOU_ARE_DEVELOPER");
 	}
 
 	onUpdate() {
