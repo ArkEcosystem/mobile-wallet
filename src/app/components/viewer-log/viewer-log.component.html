@@ -1,0 +1,7 @@
+<ion-virtual-scroll [items]="logs" class="select-text">
+	<div *virtualItem="let log">
+		<ion-text class="text-xs font-mono"
+			>[{{ log.time }}] ({{ log.level }}) - {{ log.msg }}</ion-text
+		>
+	</div>
+</ion-virtual-scroll>

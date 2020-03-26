@@ -5,6 +5,8 @@ import { TranslateService } from "@ngx-translate/core";
 import * as constants from "@/app/app.constants";
 import { TranslatableObject } from "@/models/translate";
 
+import { LoggerService } from "../logger/logger.service";
+
 @Injectable({ providedIn: "root" })
 export class ToastProvider {
 	private hideDelay = constants.TOAST_HIDE_DELAY;
@@ -18,11 +20,13 @@ export class ToastProvider {
 		DEBUG: 4,
 	};
 
+	private typeLogName = ["error", "info", "warn", "info", "info"];
 	private typeName = ["danger", "success", "warning", "medium", "dark"];
 
 	constructor(
 		private toastCtrl: ToastController,
 		private translateService: TranslateService,
+		private loggerService: LoggerService,
 	) {
 		translateService.setDefaultLang("en");
 		translateService.use("en");
@@ -60,14 +64,6 @@ export class ToastProvider {
 		this.show(message, this.typeEnum.LOG, hideDelay, position);
 	}
 
-	debug(
-		message: string | TranslatableObject,
-		hideDelay?: number,
-		position?: string,
-	): void {
-		this.show(message, this.typeEnum.DEBUG, hideDelay, position);
-	}
-
 	show(
 		messageOrObj: string | TranslatableObject,
 		type?: number,
@@ -96,6 +92,8 @@ export class ToastProvider {
 						| "middle",
 					color: this.typeName[type],
 				});
+				const logName = this.typeLogName[type];
+				this.loggerService[logName](message);
 
 				toast.present();
 			});
