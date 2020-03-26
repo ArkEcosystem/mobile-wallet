@@ -25,9 +25,9 @@ storiesOf("input-fee", module)
 	)
 	.add("Default", () => ({
 		component: InputFeeComponent,
-		template: `<div class="p-5"><input-fee></input-fee></div>`,
+		template: `<div class="p-5 w-64"><input-fee></input-fee></div>`,
 	}))
 	.add("Range", () => ({
 		component: InputFeeComponent,
-		template: `<div class="p-5"><input-fee min="10" max="100"></input-fee></div>`,
+		template: `<div class="p-5 w-64"><input-fee [isStatic]="false" [min]="10" [avg]="3000000" [max]="12345678"></input-fee></div>`,
 	}));

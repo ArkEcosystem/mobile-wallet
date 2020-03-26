@@ -1,50 +1,57 @@
 <ion-item [formGroup]="parent" class="overflow-visible">
-	<div
-		data-testid="c-input-fee__controls"
-		*ngIf="hasRange"
-		slot="end"
-		class="flex items-center h-full"
-	>
-		<ion-button
-			data-testid="c-input-fee__controls__min"
-			[fill]="currentFee === limitMin ? 'solid' : 'outline'"
-			color="medium"
-			(click)="handleClickButton(limitMin)"
-			mode="ios"
-		>
-			{{ "INPUT_FEE.MIN" | translate }}
-		</ion-button>
-		<ion-button
-			data-testid="c-input-fee__controls__avg"
-			*ngIf="avg && avg !== max"
-			[fill]="currentFee === avg ? 'solid' : 'outline'"
-			color="medium"
-			(click)="handleClickButton(avg)"
-			mode="ios"
-		>
-			{{ "INPUT_FEE.AVG" | translate }}
-		</ion-button>
-		<ion-button
-			data-testid="c-input-fee__controls__max"
-			[fill]="currentFee === max ? 'solid' : 'outline'"
-			color="medium"
-			(click)="handleClickButton(max)"
-			mode="ios"
-		>
-			{{ "INPUT_FEE.MAX" | translate }}
-		</ion-button>
-	</div>
-
 	<ion-label position="floating">
 		{{ "TRANSACTIONS_PAGE.FEE" | translate }}
 	</ion-label>
 
+	<div
+		data-testid="c-input-fee__controls"
+		*ngIf="hasRange"
+		class="mb-1 w-full"
+	>
+		<div class="flex items-center">
+			<ion-button
+				data-testid="c-input-fee__controls__min"
+				[fill]="currentFee === limitMin ? 'solid' : 'outline'"
+				[color]="
+					currentFee === limitMin ? 'success-light' : 'primary-light'
+				"
+				(click)="handleClickButton(limitMin)"
+				mode="ios"
+				class="flex-1 mr-2"
+			>
+				{{ "INPUT_FEE.MIN" | translate }}
+			</ion-button>
+			<ion-button
+				data-testid="c-input-fee__controls__avg"
+				*ngIf="avg && avg !== max"
+				[fill]="currentFee === avg ? 'solid' : 'outline'"
+				[color]="currentFee === avg ? 'success-light' : 'primary-light'"
+				(click)="handleClickButton(avg)"
+				mode="ios"
+				class="flex-1 mr-2"
+			>
+				{{ "INPUT_FEE.AVG" | translate }}
+			</ion-button>
+			<ion-button
+				data-testid="c-input-fee__controls__max"
+				[fill]="currentFee === max ? 'solid' : 'outline'"
+				[color]="currentFee === max ? 'success-light' : 'primary-light'"
+				(click)="handleClickButton(max)"
+				mode="ios"
+				class="flex-1"
+			>
+				{{ "INPUT_FEE.MAX" | translate }}
+			</ion-button>
+		</div>
+	</div>
+
 	<input-currency
 		data-testid="c-input-fee__currency"
-		[isRelaxed]="true"
+		[isRelaxed]="hasRange"
 		[formControl]="inputControl"
 		name="fee"
 		(inputCurrencyUpdate)="emitUpdate($event)"
+		class="w-full"
 	></input-currency>
 
 	<ion-range

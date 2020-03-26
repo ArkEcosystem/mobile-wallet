@@ -5,6 +5,10 @@ import { Pipe, PipeTransform } from "@angular/core";
 })
 export class TruncateMiddlePipe implements PipeTransform {
 	transform(value: string, limit: number, originalValue?: string) {
+		if (!value) {
+			return;
+		}
+
 		if (originalValue && value !== originalValue) {
 			return value;
 		}

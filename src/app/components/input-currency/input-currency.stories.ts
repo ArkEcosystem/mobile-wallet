@@ -15,9 +15,9 @@ storiesOf("input-currency", module)
 	)
 	.add("Default", () => ({
 		component: InputCurrencyComponent,
-		template: "<input-currency></input-currency>",
+		template: `<div class="p-5"><input-currency></input-currency></div>`,
 	}))
 	.add("Relaxed", () => ({
 		component: InputCurrencyComponent,
-		template: `<input-currency isRelaxed="true"></input-currency>`,
+		template: `<div class="p-5"><input-currency isRelaxed="true"></input-currency></div>`,
 	}));

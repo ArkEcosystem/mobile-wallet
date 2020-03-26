@@ -13,10 +13,10 @@
 <ion-content class="ion-padding">
 	<ion-grid class="flex flex-col justify-center items-center">
 		<p class="text-center">{{ 'PASSPHRASE_TEST.INFO' | translate }}</p>
-		<div *ngIf="isDevNet" class="note-message-default">
+		<ion-text color="medium" *ngIf="isDevNet" class="my-3 text-sm italic">
 			<p>{{ 'PASSPHRASE_TEST.DEVNET_WORDS_NOTICE' | translate }}</p>
-		</div>
-		<form #wordsForm="ngForm">
+		</ion-text>
+		<form #wordsForm="ngForm" class="w-full">
 			<passphrase-input
 				#passphrase
 				[wordlistLanguage]="wordlistLanguage"
