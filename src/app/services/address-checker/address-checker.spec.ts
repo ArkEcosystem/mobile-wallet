@@ -49,34 +49,34 @@ describe("Address checker service", () => {
 	});
 
 	describe("Check address", () => {
-		it("should check the address", done => {
-			addressChecker.checkAddress(INVALID_ADDRESS).subscribe(data => {
+		it("should check the address", (done) => {
+			addressChecker.checkAddress(INVALID_ADDRESS).subscribe((data) => {
 				expect(data.message.key).toEqual("VALIDATION.INVALID_ADDRESS");
 				done();
 			});
 		});
 
-		it("should return the check for own address", done => {
+		it("should return the check for own address", (done) => {
 			const networkProvider = addressSpectator.get(NetworkProvider);
 			networkProvider.isValidAddress.and.returnValue(true);
-			addressChecker.checkAddress(WALLET_ADDRESS).subscribe(data => {
+			addressChecker.checkAddress(WALLET_ADDRESS).subscribe((data) => {
 				expect(data.message.key).toEqual("VALIDATION.IS_OWN_ADDRESS");
 				done();
 			});
 		});
 
-		it("should return the check for neo address", done => {
+		it("should return the check for neo address", (done) => {
 			const networkProvider = addressSpectator.get(NetworkProvider);
 			const neoApiProvider = addressSpectator.get(NeoApiProvider);
 			networkProvider.isValidAddress.and.returnValue(true);
 			neoApiProvider.doesAddressExist.and.returnValue(of(true));
-			addressChecker.checkAddress(WALLET_ADDRESS).subscribe(data => {
+			addressChecker.checkAddress(WALLET_ADDRESS).subscribe((data) => {
 				expect(data.message.key).toEqual("VALIDATION.IS_OWN_ADDRESS");
 				done();
 			});
 		});
 
-		it("should return the check for no transactions", done => {
+		it("should return the check for no transactions", (done) => {
 			const networkProvider = addressSpectator.get(NetworkProvider);
 			const neoApiProvider = addressSpectator.get(NeoApiProvider);
 			networkProvider.isValidAddress.and.returnValue(true);
@@ -84,7 +84,7 @@ describe("Address checker service", () => {
 			apiClient.getTransactionList.and.returnValue(of({}));
 			addressChecker
 				.checkAddress(walletsFixtures.wallet2.address)
-				.subscribe(data => {
+				.subscribe((data) => {
 					expect(data.message.key).toEqual(
 						"VALIDATION.NO_TRANSACTIONS",
 					);
@@ -92,7 +92,7 @@ describe("Address checker service", () => {
 				});
 		});
 
-		it("should not throw error if the transaction request fails", done => {
+		it("should not throw error if the transaction request fails", (done) => {
 			const networkProvider = addressSpectator.get(NetworkProvider);
 			const neoApiProvider = addressSpectator.get(NeoApiProvider);
 			networkProvider.isValidAddress.and.returnValue(true);
@@ -100,13 +100,13 @@ describe("Address checker service", () => {
 			apiClient.getTransactionList.and.returnValue(throwError("ERROR"));
 			addressChecker
 				.checkAddress(walletsFixtures.wallet2.address)
-				.subscribe(data => {
+				.subscribe((data) => {
 					expect(data).toBeUndefined();
 					done();
 				});
 		});
 
-		it("should not throw error if the checked address has transactions", done => {
+		it("should not throw error if the checked address has transactions", (done) => {
 			const networkProvider = addressSpectator.get(NetworkProvider);
 			const neoApiProvider = addressSpectator.get(NeoApiProvider);
 			networkProvider.isValidAddress.and.returnValue(true);
@@ -116,13 +116,13 @@ describe("Address checker service", () => {
 			);
 			addressChecker
 				.checkAddress(walletsFixtures.wallet3.address)
-				.subscribe(data => {
+				.subscribe((data) => {
 					expect(data).toBeUndefined();
 					done();
 				});
 		});
 
-		it("should use handler if it's an neo address", done => {
+		it("should use handler if it's an neo address", (done) => {
 			const networkProvider = addressSpectator.get(NetworkProvider);
 			const neoApiProvider = addressSpectator.get(NeoApiProvider);
 			networkProvider.isValidAddress.and.returnValue(true);
@@ -130,13 +130,13 @@ describe("Address checker service", () => {
 
 			addressChecker
 				.checkAddress(walletsFixtures.wallet2.address)
-				.subscribe(data => {
+				.subscribe((data) => {
 					expect(data).toBeUndefined();
 					done();
 				});
 		});
 
-		it("should not use handler if it isn't an neo address", done => {
+		it("should not use handler if it isn't an neo address", (done) => {
 			const networkProvider = addressSpectator.get(NetworkProvider);
 			const neoApiProvider = addressSpectator.get(NeoApiProvider);
 			networkProvider.isValidAddress.and.returnValue(true);
@@ -146,7 +146,7 @@ describe("Address checker service", () => {
 
 			addressChecker
 				.checkAddress(walletsFixtures.wallet2.address)
-				.subscribe(data => {
+				.subscribe((data) => {
 					expect(data).toBeUndefined();
 					done();
 				});

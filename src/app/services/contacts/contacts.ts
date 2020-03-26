@@ -114,7 +114,7 @@ export class ContactsProvider {
 
 		return lodash
 			.chain(profile.contacts)
-			.filter(c => c.name.toLowerCase() === name.toLowerCase())
+			.filter((c) => c.name.toLowerCase() === name.toLowerCase())
 			.first()
 			.value();
 	}

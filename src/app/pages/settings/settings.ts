@@ -90,7 +90,7 @@ export class SettingsPage implements OnInit, OnDestroy {
 				"ARE_YOU_SURE",
 				"SETTINGS_PAGE.CLEAR_DATA_TEXT",
 			])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const confirm = await this.alertCtrl.create({
 					header: translation.ARE_YOU_SURE,
 					message: translation["SETTINGS_PAGE.CLEAR_DATA_TEXT"],
@@ -123,14 +123,14 @@ export class SettingsPage implements OnInit, OnDestroy {
 		this.settingsDataProvider.settings
 			.pipe(
 				takeUntil(this.unsubscriber$),
-				tap(settings => (this.currentSettings = settings)),
+				tap((settings) => (this.currentSettings = settings)),
 			)
 			.subscribe();
 
 		this.settingsDataProvider.onUpdate$
 			.pipe(
 				takeUntil(this.unsubscriber$),
-				tap(settings => (this.currentSettings = settings)),
+				tap((settings) => (this.currentSettings = settings)),
 			)
 			.subscribe();
 	}

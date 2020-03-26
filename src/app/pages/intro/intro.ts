@@ -33,7 +33,7 @@ export class IntroPage implements OnInit {
 				"INTRO_PAGE.FAST_EASY",
 				"INTRO_PAGE.TEXT_3",
 			])
-			.subscribe(translation => {
+			.subscribe((translation) => {
 				this.slides = [
 					{
 						title: translation["INTRO_PAGE.WELCOME"],

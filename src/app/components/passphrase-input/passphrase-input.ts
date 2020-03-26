@@ -137,7 +137,7 @@ export class PassphraseInputComponent implements OnInit {
 			// we just want one letter to be different - only "manual" typing, don't suggest on copy/paste stuff
 			const wordlist = bip39.wordlists[this.wordlistLanguage];
 			this.wordSuggestions = wordlist.filter(
-				word =>
+				(word) =>
 					word.startsWith(lastWordPassphrase) &&
 					word !== lastWordPassphrase,
 			);

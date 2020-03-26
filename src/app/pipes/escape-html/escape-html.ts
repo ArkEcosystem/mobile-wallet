@@ -8,7 +8,7 @@ export class EscapeHTMLPipe implements PipeTransform {
 		if (!htmlString) {
 			return htmlString;
 		}
-		return htmlString.replace(/[&"<>]/g, c => {
+		return htmlString.replace(/[&"<>]/g, (c) => {
 			return {
 				"&": "&amp;",
 				'"': "&quot;",

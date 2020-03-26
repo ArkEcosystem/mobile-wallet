@@ -65,7 +65,7 @@ export class SettingsDataProvider {
 		private _storageProvider: StorageProvider,
 		private translateService: TranslateService,
 	) {
-		this.load().subscribe(data => {
+		this.load().subscribe((data) => {
 			this._settings = data;
 			this.save();
 		});
@@ -117,10 +117,10 @@ export class SettingsDataProvider {
 	}
 
 	private load(): Observable<UserSettings> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this._storageProvider
 				.getObject(constants.STORAGE_SETTINGS)
-				.subscribe(response => {
+				.subscribe((response) => {
 					let data = response;
 
 					if (lodash.isEmpty(data)) {

@@ -48,7 +48,7 @@ export class ProfileSigninPage implements OnDestroy {
 	presentProfileActionSheet(profileId: string) {
 		this.translateService
 			.get(["EDIT", "DELETE"])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const buttons = [
 					{
 						text: translation.DELETE,
@@ -78,7 +78,7 @@ export class ProfileSigninPage implements OnDestroy {
 	showDeleteConfirm(profileId: string) {
 		this.translateService
 			.get(["ARE_YOU_SURE", "CONFIRM", "CANCEL"])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const confirm = await this.alertCtrl.create({
 					header: translation.ARE_YOU_SURE,
 					buttons: [
@@ -119,7 +119,7 @@ export class ProfileSigninPage implements OnDestroy {
 		this.authProvider
 			.login(this.profileIdSelected)
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(status => {
+			.subscribe((status) => {
 				if (status) {
 					this.navCtrl.navigateRoot("/wallets");
 				} else {
@@ -137,7 +137,7 @@ export class ProfileSigninPage implements OnDestroy {
 		this.networks = this.userDataService.networks;
 
 		this.addresses = lodash(this.profiles)
-			.mapValues(o => [o.name, o.networkId])
+			.mapValues((o) => [o.name, o.networkId])
 			.transform((result, data, id) => {
 				const network = this.networks[data[1]];
 				if (!network) {

@@ -54,6 +54,6 @@ export class TransactionReceivePage implements OnInit {
 	share() {
 		this.socialSharing
 			.share(this.address)
-			.then(null, error => this.toastProvider.error(error));
+			.then(null, (error) => this.toastProvider.error(error));
 	}
 }

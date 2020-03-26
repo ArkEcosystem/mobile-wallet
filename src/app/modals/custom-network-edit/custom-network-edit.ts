@@ -36,7 +36,7 @@ export class CustomNetworkEditModal {
 		private toastProvider: ToastProvider,
 	) {
 		const defaultNetworksNames = this.userDataService.defaultNetworks.map(
-			item => item.name,
+			(item) => item.name,
 		);
 		this.network = this.navParams.get("network") || new StoredNetwork();
 		this.networkId = this.navParams.get("id");
@@ -68,7 +68,7 @@ export class CustomNetworkEditModal {
 	public save(): void {
 		this.userDataService
 			.addOrUpdateNetwork(this.network, this.networkId)
-			.subscribe(network =>
+			.subscribe((network) =>
 				this.dismiss({
 					action: EditNetworkAction.Update,
 					networkId: network.id,
@@ -89,7 +89,7 @@ export class CustomNetworkEditModal {
 
 		this.translateService
 			.get(["CUSTOM_NETWORK.CONFIRM_DELETE", "NO", "YES"])
-			.subscribe(async translations => {
+			.subscribe(async (translations) => {
 				const alert = await this.alertCtrl.create({
 					header: translations["CUSTOM_NETWORK.CONFIRM_DELETE"],
 					buttons: [

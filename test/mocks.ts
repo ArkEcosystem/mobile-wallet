@@ -39,7 +39,7 @@ export class QRScannerMock extends QRScanner {
 	}
 
 	scan(): Observable<string> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			observer.next("");
 			observer.complete();
 		});
@@ -63,13 +63,13 @@ export class KeyboardMock extends Keyboard {
 	close(): void {}
 	disableScroll(disable: boolean): void {}
 	onKeyboardShow(): Observable<any> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			observer.next("");
 			observer.complete();
 		});
 	}
 	onKeyboardHide(): Observable<any> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			observer.next("");
 			observer.complete();
 		});
@@ -81,19 +81,19 @@ export class NetworkMock extends Network {
 	type = "cellular";
 	downlinkMax: string;
 	onchange(): Observable<any> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			observer.next("");
 			observer.complete();
 		});
 	}
 	onDisconnect(): Observable<any> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			observer.next("");
 			observer.complete();
 		});
 	}
 	onConnect(): Observable<any> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			observer.next("");
 			observer.complete();
 		});
@@ -125,7 +125,7 @@ export class ScreenOrientationMock extends ScreenOrientation {
 		ANY: string;
 	};
 	onChange(): Observable<void> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			observer.complete();
 		});
 	}

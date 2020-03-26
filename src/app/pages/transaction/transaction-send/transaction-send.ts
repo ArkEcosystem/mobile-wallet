@@ -144,7 +144,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 					.get(
 						"TRANSACTIONS_PAGE.PERFORMING_DESTINATION_ADDRESS_CHECKS",
 					)
-					.subscribe(async translation => {
+					.subscribe(async (translation) => {
 						const loader = await this.loadingCtrl.create({
 							message: translation,
 						});
@@ -155,7 +155,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 							.checkAddress(
 								this.sendForm.get("recipientId").value,
 							)
-							.subscribe(checkerResult => {
+							.subscribe((checkerResult) => {
 								combinedResult.checkerDone = true;
 								combinedResult.checkerResult = checkerResult;
 								this.createTransactionAndShowConfirm(
@@ -226,7 +226,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		this.arkApiProvider
 			.prepareFeesByType(TransactionType.SendArk)
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(data => {
+			.subscribe((data) => {
 				this.nodeFees = data;
 			});
 
@@ -328,7 +328,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		this.arkApiProvider.transactionBuilder
 			.createTransaction(data)
 			.subscribe(
-				transaction => {
+				(transaction) => {
 					// The transaction will be signed again;
 					this.confirmTransaction.open(
 						transaction,

@@ -127,10 +127,10 @@ export class ContactCreatePage implements OnInit, AfterViewInit {
 		titleKey: string,
 		stringParams: any,
 	): Promise<void> {
-		return new Promise(resolve => {
+		return new Promise((resolve) => {
 			this.translateService
 				.get([titleKey, "NO", "YES"], stringParams)
-				.subscribe(async translation => {
+				.subscribe(async (translation) => {
 					const alert = await this.alertCtrl.create({
 						subHeader: translation[titleKey],
 						buttons: [

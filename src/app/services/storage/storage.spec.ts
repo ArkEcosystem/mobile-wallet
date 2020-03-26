@@ -34,24 +34,24 @@ describe("Storage service", () => {
 		expect(result).toBeInstanceOf(Observable);
 	});
 
-	it("should retrieve the stored value from a key", done => {
-		storageProvider.getObject(TEST_STORAGE_KEY).subscribe(storedValue => {
+	it("should retrieve the stored value from a key", (done) => {
+		storageProvider.getObject(TEST_STORAGE_KEY).subscribe((storedValue) => {
 			expect(storedValue).toEqual(OBJECT_TO_BE_STORED);
 			done();
 		});
 	});
 
-	it("should clear the storage", done => {
+	it("should clear the storage", (done) => {
 		storageProvider
 			.clear()
 			.pipe(switchMapTo(storageProvider.getObject("TEST_STORAGE_KEY")))
-			.subscribe(storedValue => {
+			.subscribe((storedValue) => {
 				expect(storedValue).toEqual({});
 				done();
 			});
 	});
 
-	it("should emit notification when storage is cleaned", done => {
+	it("should emit notification when storage is cleaned", (done) => {
 		storageProvider.onClear$.subscribe(() => {
 			expect().nothing();
 			done();

@@ -123,7 +123,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 				"IMPORT_PASSPHRASE",
 				"IMPORT_ADDRESS",
 			])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const actionSheet = await this.actionSheetCtrl.create({
 					buttons: [
 						{
@@ -276,7 +276,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 
 		this.totalBalance = lodash
 			.chain(list)
-			.sumBy(w => parseInt(w.balance))
+			.sumBy((w) => parseInt(w.balance))
 			.value();
 		const wholeArk = this.totalBalance / constants.WALLET_UNIT_TO_SATOSHI;
 		this.fiatBalance =
@@ -315,14 +315,14 @@ export class WalletListPage implements OnInit, OnDestroy {
 				"WEEK_DAY.FRIDAY",
 				"WEEK_DAY.SATURDAY",
 			])
-			.subscribe(translation => {
+			.subscribe((translation) => {
 				if (lodash.isEmpty(this.wallets)) {
 					return;
 				}
 
 				const days = lodash.values(translation);
 
-				this.settingsDataProvider.settings.subscribe(settings => {
+				this.settingsDataProvider.settings.subscribe((settings) => {
 					if (this.marketDataProvider.cachedHistory) {
 						this.setChartData(
 							settings,
@@ -333,7 +333,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 
 					this.marketDataProvider.onUpdateHistory$
 						.pipe(takeUntil(this.unsubscriber$))
-						.subscribe(updatedHistory =>
+						.subscribe((updatedHistory) =>
 							this.setChartData(settings, days, updatedHistory),
 						);
 					this.marketDataProvider.fetchHistory().subscribe();
@@ -445,7 +445,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 		this.marketTicker = ticker;
 		this.btcCurrency = ticker.getCurrency({ code: "btc" });
 
-		this.settingsDataProvider.settings.subscribe(settings => {
+		this.settingsDataProvider.settings.subscribe((settings) => {
 			const currency =
 				!settings || !settings.currency
 					? this.settingsDataProvider.getDefaults().currency
@@ -465,7 +465,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 		// now let's subscribe for any future changes
 		this.marketDataProvider.onUpdateTicker$
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(updatedTicker => this.setTicker(updatedTicker));
+			.subscribe((updatedTicker) => this.setTicker(updatedTicker));
 		// let's get the up-to-date data from the internet now
 		this.marketDataProvider.refreshTicker();
 		// finally update the data in a regular interval

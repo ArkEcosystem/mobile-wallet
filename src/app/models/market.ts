@@ -229,7 +229,7 @@ export class MarketHistory {
 			.keys()
 			.takeRight(7)
 			.value()
-			.map(date => new Date(parseInt(date)));
+			.map((date) => new Date(parseInt(date)));
 		const prices = lodash(this.history[currencyCode])
 			.values()
 			.takeRight(7)

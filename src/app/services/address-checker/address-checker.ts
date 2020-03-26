@@ -76,7 +76,7 @@ export class AddressCheckerProvider {
 			}
 
 			this.hasTransactions(address).subscribe(
-				hasTxs => {
+				(hasTxs) => {
 					if (hasTxs) {
 						handler.complete();
 					} else {
@@ -91,7 +91,7 @@ export class AddressCheckerProvider {
 			);
 
 			this.neoApiProvider.doesAddressExist(address).subscribe(
-				exists => {
+				(exists) => {
 					if (exists) {
 						handler.complete(
 							AddressCheckerProvider.createWarning(
@@ -118,6 +118,6 @@ export class AddressCheckerProvider {
 	public hasTransactions(address: string): Observable<boolean> {
 		return this.arkApiProvider.client
 			.getTransactionList(address)
-			.pipe(map(txs => txs?.transactions?.length > 0));
+			.pipe(map((txs) => txs?.transactions?.length > 0));
 	}
 }

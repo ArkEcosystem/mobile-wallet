@@ -55,7 +55,7 @@ export class ConfirmTransactionComponent {
 				keys.secondPassphrase,
 			)
 			.subscribe(
-				async tx => {
+				async (tx) => {
 					const modal = await this.modalCtrl.create({
 						component: ConfirmTransactionModal,
 						componentProps: {
@@ -100,7 +100,7 @@ export class ConfirmTransactionComponent {
 								(error as any),
 							error.parameters,
 						)
-						.subscribe(errorMessage => {
+						.subscribe((errorMessage) => {
 							this.error.emit(errorMessage);
 							this.presentWrongModal({
 								status: false,

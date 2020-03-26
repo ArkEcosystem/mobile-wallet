@@ -42,7 +42,7 @@ export class ContactListPage {
 		this.translateService
 			.get(["EDIT", "DELETE"])
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const buttons = [
 					{
 						text: translation.EDIT,
@@ -80,7 +80,7 @@ export class ContactListPage {
 				],
 				{ name: contactName },
 			)
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const alert = await this.alertCtrl.create({
 					header: translation.ARE_YOU_SURE,
 					message: translation["CONTACTS_PAGE.DELETE_CONTACT"],

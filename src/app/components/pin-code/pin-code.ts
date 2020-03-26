@@ -139,7 +139,7 @@ export class PinCodeComponent {
 									if (oldPassword) {
 										this.translateService
 											.get("PIN_CODE.UPDATING")
-											.subscribe(async updatingText => {
+											.subscribe(async (updatingText) => {
 												const loading = await this.loadingCtrl.create(
 													{ message: updatingText },
 												);

@@ -54,7 +54,7 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
 				() => {
 					this.dismiss(true);
 				},
-				error => {
+				(error) => {
 					this.translateService
 						.get(
 							[
@@ -63,15 +63,16 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
 							],
 							{ fee: ArkUtility.subToUnit(this.transaction.fee) },
 						)
-						.subscribe(translations => {
+						.subscribe((translations) => {
 							let message = error.message;
 
 							if (error.errors) {
 								const errors = error.errors || {};
 								const anyLowFee = Object.keys(errors).some(
-									transactionId => {
+									(transactionId) => {
 										return errors[transactionId].some(
-											item => item.type === "ERR_LOW_FEE",
+											(item) =>
+												item.type === "ERR_LOW_FEE",
 										);
 									},
 								);
@@ -135,13 +136,13 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
 		this.marketDataProvider.onUpdateTicker$
 			.pipe(
 				takeUntil(this.unsubscriber$),
-				tap(ticker => {
+				tap((ticker) => {
 					if (!ticker) {
 						return;
 					}
 
 					this.ticker = ticker;
-					this.settingsDataProvider.settings.subscribe(settings => {
+					this.settingsDataProvider.settings.subscribe((settings) => {
 						this.marketCurrency = this.ticker.getCurrency({
 							code: settings.currency,
 						});

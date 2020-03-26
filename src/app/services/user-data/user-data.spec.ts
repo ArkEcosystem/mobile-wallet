@@ -61,7 +61,7 @@ describe("User Data Service", () => {
 	});
 
 	describe("Profile", () => {
-		it("should add profile", done => {
+		it("should add profile", (done) => {
 			const newProfile = new Profile().deserialize({
 				name: "Profile 3",
 				networkId: "mainnet",
@@ -94,11 +94,11 @@ describe("User Data Service", () => {
 			);
 		});
 
-		it("should remove profile by id", done => {
+		it("should remove profile by id", (done) => {
 			userDataService
 				.removeProfileById("profile1")
 				.pipe(mapTo(userDataService.getProfileById("profile1")))
-				.subscribe(profile => {
+				.subscribe((profile) => {
 					expect(profile).toBeUndefined();
 					done();
 				});
@@ -114,7 +114,7 @@ describe("User Data Service", () => {
 			);
 		});
 
-		it("should remove the network by id", done => {
+		it("should remove the network by id", (done) => {
 			userDataService.removeNetworkById("mainnet").subscribe(() => {
 				expect(
 					userDataService.getNetworkById("mainnet"),
@@ -123,12 +123,12 @@ describe("User Data Service", () => {
 			});
 		});
 
-		it("should add network", done => {
+		it("should add network", (done) => {
 			const customNetwork = new StoredNetwork();
 			customNetwork.name = "testnet";
 			userDataService
 				.addOrUpdateNetwork(customNetwork)
-				.subscribe(result => {
+				.subscribe((result) => {
 					expect(result).toEqual(
 						jasmine.objectContaining({
 							id: jasmine.any(String),
@@ -141,7 +141,7 @@ describe("User Data Service", () => {
 				});
 		});
 
-		it("should update network", done => {
+		it("should update network", (done) => {
 			const id = "mainnet";
 			const network = new StoredNetwork();
 			network.name = "Custom Mainnet";
@@ -149,7 +149,7 @@ describe("User Data Service", () => {
 			userDataService
 				.addOrUpdateNetwork(network, id)
 				.pipe(mapTo(userDataService.getNetworkById(id)))
-				.subscribe(result => {
+				.subscribe((result) => {
 					expect(result).toEqual(
 						jasmine.objectContaining({
 							name: network.name,
@@ -175,27 +175,27 @@ describe("User Data Service", () => {
 			expect(userDataService.currentWallet).toBeUndefined();
 		});
 
-		it("should fail if the profile is not specified", done => {
+		it("should fail if the profile is not specified", (done) => {
 			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
 			userDataService
 				.addWallet(wallet, null, null)
-				.subscribe(null, error => {
+				.subscribe(null, (error) => {
 					expect(error).toBe("EMPTY_PROFILE_ID");
 					done();
 				});
 		});
 
-		it("should fail if the profile is not found", done => {
+		it("should fail if the profile is not found", (done) => {
 			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
 			userDataService
 				.addWallet(wallet, null, null, "custom")
-				.subscribe(null, error => {
+				.subscribe(null, (error) => {
 					expect(error).toBe("PROFILE_NOT_FOUND");
 					done();
 				});
 		});
 
-		it("should add wallet with encryption", done => {
+		it("should add wallet with encryption", (done) => {
 			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
 			const profileId = "profile1";
 			const passphrase = "ark";
@@ -206,7 +206,7 @@ describe("User Data Service", () => {
 			userDataService
 				.addWallet(wallet, passphrase, pinCode, profileId)
 				.pipe(mapTo(userDataService.getProfileById(profileId)))
-				.subscribe(profile => {
+				.subscribe((profile) => {
 					expect(Object.keys(profile.wallets).length).toBe(1);
 					expect(profile.wallets[wallet.address]).toEqual(
 						jasmine.objectContaining({
@@ -225,7 +225,7 @@ describe("User Data Service", () => {
 			userDataService
 				.addWallet(wallet, null, null, profileId)
 				.pipe(mapTo(userDataService.getProfileById(profileId)))
-				.subscribe(profile => {
+				.subscribe((profile) => {
 					expect(profile.wallets[wallet.address]).toEqual(
 						jasmine.objectContaining(walletsFixtures.wallet1),
 					);
@@ -253,7 +253,7 @@ describe("User Data Service", () => {
 					}),
 					mapTo(userDataService.getProfileById(profileId)),
 				)
-				.subscribe(profile => {
+				.subscribe((profile) => {
 					expect(profile.wallets[wallet.address].label).not.toBe(
 						"test",
 					);
@@ -276,7 +276,7 @@ describe("User Data Service", () => {
 			);
 		});
 
-		it("should get the wallet label by address", done => {
+		it("should get the wallet label by address", (done) => {
 			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
 			wallet.label = "test";
 			const profileId = "profile1";
@@ -290,13 +290,13 @@ describe("User Data Service", () => {
 						),
 					),
 				)
-				.subscribe(label => {
+				.subscribe((label) => {
 					expect(label).toEqual(wallet.label);
 					done();
 				});
 		});
 
-		it("should update the wallet", done => {
+		it("should update the wallet", (done) => {
 			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
 			const profileId = "profile1";
 			userDataService
@@ -313,23 +313,23 @@ describe("User Data Service", () => {
 						),
 					),
 				)
-				.subscribe(wallet => {
+				.subscribe((wallet) => {
 					expect(wallet.label).toEqual(wallet.label);
 					done();
 				});
 		});
 
-		it("should fail to update the wallet if no profileId is specified", done => {
+		it("should fail to update the wallet if no profileId is specified", (done) => {
 			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
 			userDataService
 				.updateWallet(wallet, undefined)
-				.subscribe(null, error => {
+				.subscribe(null, (error) => {
 					expect(error).toBe("EMPTY_PROFILE_ID");
 					done();
 				});
 		});
 
-		it("should remove wallet by address", done => {
+		it("should remove wallet by address", (done) => {
 			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
 			const profileId = "profile1";
 			userDataService
@@ -348,7 +348,7 @@ describe("User Data Service", () => {
 						),
 					),
 				)
-				.subscribe(wallet => {
+				.subscribe((wallet) => {
 					expect(wallet).toBeNull();
 					done();
 				});
@@ -388,8 +388,8 @@ describe("User Data Service", () => {
 			authService = spectator.get<AuthProvider>(AuthProvider);
 		});
 
-		it("should assign the current profile", done => {
-			userDataService.onSelectProfile$.subscribe(profile => {
+		it("should assign the current profile", (done) => {
+			userDataService.onSelectProfile$.subscribe((profile) => {
 				expect(profile).toBeTruthy();
 				done();
 			});
@@ -429,7 +429,7 @@ describe("User Data Service", () => {
 			expect(userDataService.isDevNet).toBe(true);
 		});
 
-		it("should set the wallet label", done => {
+		it("should set the wallet label", (done) => {
 			const profileId = "profile1";
 			authService.onLogin$.next(profileId);
 			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
@@ -448,16 +448,16 @@ describe("User Data Service", () => {
 						),
 					),
 				)
-				.subscribe(wallet => {
+				.subscribe((wallet) => {
 					expect(wallet.label).toEqual(label);
 					done();
 				});
 		});
 
-		it("should fail to set the wallet label if the wallet is not specified", done => {
+		it("should fail to set the wallet label if the wallet is not specified", (done) => {
 			userDataService
 				.setWalletLabel(undefined, "test")
-				.subscribe(null, error => {
+				.subscribe(null, (error) => {
 					expect(error).toEqual(
 						jasmine.objectContaining({
 							key: "VALIDATION.INVALID_WALLET",
@@ -467,7 +467,7 @@ describe("User Data Service", () => {
 				});
 		});
 
-		it("should fail to set the wallet label if it already exists", done => {
+		it("should fail to set the wallet label if it already exists", (done) => {
 			const profileId = "profile1";
 			authService.onLogin$.next(profileId);
 			authService.loggedProfileId = profileId;
@@ -489,7 +489,7 @@ describe("User Data Service", () => {
 						userDataService.setWalletLabel(wallet2, "one"),
 					),
 				)
-				.subscribe(null, error => {
+				.subscribe(null, (error) => {
 					expect(error).toEqual(
 						jasmine.objectContaining({
 							key: "VALIDATION.LABEL_EXISTS",
@@ -499,7 +499,7 @@ describe("User Data Service", () => {
 				});
 		});
 
-		it("should convert wallet into delegate", done => {
+		it("should convert wallet into delegate", (done) => {
 			const profileId = "profile1";
 			authService.onLogin$.next(profileId);
 			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
@@ -520,7 +520,7 @@ describe("User Data Service", () => {
 						),
 					),
 				)
-				.subscribe(wallet => {
+				.subscribe((wallet) => {
 					expect(wallet).toEqual(
 						jasmine.objectContaining({
 							isDelegate: true,
@@ -531,13 +531,13 @@ describe("User Data Service", () => {
 				});
 		});
 
-		it("should fail to convert wallet into delegate", done => {
+		it("should fail to convert wallet into delegate", (done) => {
 			const wallet = new Wallet().deserialize(walletsFixtures.wallet1);
 
 			userDataService
 				.ensureWalletDelegateProperties(undefined, "delegate")
 				.pipe(
-					catchError(error => {
+					catchError((error) => {
 						expect(error).toBe("WALLET_EMPTY");
 						return userDataService.ensureWalletDelegateProperties(
 							wallet,
@@ -545,7 +545,7 @@ describe("User Data Service", () => {
 						);
 					}),
 				)
-				.subscribe(null, error => {
+				.subscribe(null, (error) => {
 					expect(error).toBe("USERNAME_EMPTY");
 					done();
 				});

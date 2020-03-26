@@ -18,7 +18,7 @@ describe("Contacts service", () => {
 	let userDataService: UserDataService;
 	let userProfile: Profile;
 
-	beforeEach(function() {
+	beforeEach(function () {
 		TestBed.configureTestingModule({
 			imports: [IonicStorageModule.forRoot()],
 			providers: [
@@ -38,7 +38,7 @@ describe("Contacts service", () => {
 	});
 
 	describe("Add contact", () => {
-		it("should add a contact", done => {
+		it("should add a contact", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Caio").subscribe(() => {
 				const contact = contactsService.getContactByName("Caio");
 				expect(contact).toEqual({
@@ -49,20 +49,20 @@ describe("Contacts service", () => {
 			});
 		});
 
-		it("should throw invalid address error", done => {
+		it("should throw invalid address error", (done) => {
 			contactsService.addContact(INVALID_ADDRESS, "b").subscribe(
 				() => {},
-				error => {
+				(error) => {
 					expect(error.key).toEqual("CONTACTS_PAGE.INVALID_ADDRESS");
 					done();
 				},
 			);
 		});
 
-		it("should throw invalid name empty error", done => {
+		it("should throw invalid name empty error", (done) => {
 			contactsService.addContact(VALID_ADDRESS, null).subscribe(
 				() => {},
-				error => {
+				(error) => {
 					expect(error.key).toEqual(
 						"CONTACTS_PAGE.CONTACT_NAME_EMPTY",
 					);
@@ -71,7 +71,7 @@ describe("Contacts service", () => {
 			);
 		});
 
-		it("should throw existent address error", done => {
+		it("should throw existent address error", (done) => {
 			contactsService
 				.addContact(VALID_ADDRESS, "Caio")
 				.pipe(
@@ -80,8 +80,8 @@ describe("Contacts service", () => {
 					),
 				)
 				.subscribe(
-					data => {},
-					error => {
+					(data) => {},
+					(error) => {
 						expect(error.key).toEqual(
 							"CONTACTS_PAGE.CONTACT_EXISTS_ADDRESS",
 						);
@@ -90,7 +90,7 @@ describe("Contacts service", () => {
 				);
 		});
 
-		it("should throw existent name error", done => {
+		it("should throw existent name error", (done) => {
 			contactsService
 				.addContact(VALID_ADDRESS, "Caio")
 				.pipe(
@@ -99,8 +99,8 @@ describe("Contacts service", () => {
 					),
 				)
 				.subscribe(
-					data => {},
-					error => {
+					(data) => {},
+					(error) => {
 						expect(error.key).toEqual(
 							"CONTACTS_PAGE.CONTACT_EXISTS_NAME",
 						);
@@ -111,11 +111,11 @@ describe("Contacts service", () => {
 	});
 
 	describe("Edit contact", () => {
-		it("should edit a contact name", done => {
+		it("should edit a contact name", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Caio");
 			contactsService
 				.editContact(VALID_ADDRESS, "Katy")
-				.subscribe(data => {
+				.subscribe((data) => {
 					const contact = contactsService.getContactByAddress(
 						VALID_ADDRESS,
 					);
@@ -127,11 +127,11 @@ describe("Contacts service", () => {
 				});
 		});
 
-		it("should throw inexistent address error", done => {
+		it("should throw inexistent address error", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
 				contactsService.editContact(VALID_ADDRESS_2, "Stich").subscribe(
 					() => {},
-					error => {
+					(error) => {
 						expect(error.key).toEqual(
 							"CONTACTS_PAGE.CONTACT_NOT_EXISTS_ADDRESS",
 						);
@@ -141,11 +141,11 @@ describe("Contacts service", () => {
 			});
 		});
 
-		it("should throw existent name error", done => {
+		it("should throw existent name error", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
 				contactsService.editContact(VALID_ADDRESS_2, "Lilo").subscribe(
 					() => {},
-					error => {
+					(error) => {
 						expect(error.key).toEqual(
 							"CONTACTS_PAGE.CONTACT_EXISTS_NAME",
 						);
@@ -155,11 +155,11 @@ describe("Contacts service", () => {
 			});
 		});
 
-		it("should throw empty contact name error", done => {
+		it("should throw empty contact name error", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
 				contactsService.editContact(VALID_ADDRESS, null).subscribe(
 					() => {},
-					error => {
+					(error) => {
 						expect(error.key).toEqual(
 							"CONTACTS_PAGE.CONTACT_NAME_EMPTY",
 						);
@@ -169,11 +169,11 @@ describe("Contacts service", () => {
 			});
 		});
 
-		it("should throw empty contact address error", done => {
+		it("should throw empty contact address error", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
 				contactsService.editContact(null, "Lilo").subscribe(
 					() => {},
-					error => {
+					(error) => {
 						expect(error.key).toEqual(
 							"CONTACTS_PAGE.CONTACT_ADDRESS_EMPTY",
 						);
@@ -185,7 +185,7 @@ describe("Contacts service", () => {
 	});
 
 	describe("By address", () => {
-		it("should remove a contact by address", done => {
+		it("should remove a contact by address", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
 				contactsService
 					.removeContactByAddress(VALID_ADDRESS)
@@ -199,7 +199,7 @@ describe("Contacts service", () => {
 			});
 		});
 
-		it("should get a contact by address", done => {
+		it("should get a contact by address", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
 				const contact = contactsService.getContactByAddress(
 					VALID_ADDRESS,
@@ -212,7 +212,7 @@ describe("Contacts service", () => {
 			});
 		});
 
-		it("should return null if no address provided", done => {
+		it("should return null if no address provided", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
 				const contact = contactsService.getContactByAddress(null);
 				expect(contact).toEqual(null);
@@ -222,7 +222,7 @@ describe("Contacts service", () => {
 	});
 
 	describe("By name", () => {
-		it("should get a contact by name", done => {
+		it("should get a contact by name", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
 				const contact = contactsService.getContactByName("Lilo");
 				expect(contact).toEqual({
@@ -233,7 +233,7 @@ describe("Contacts service", () => {
 			});
 		});
 
-		it("should return null if no name provided", done => {
+		it("should return null if no name provided", (done) => {
 			contactsService.addContact(VALID_ADDRESS, "Lilo").subscribe(() => {
 				const contact = contactsService.getContactByName(null);
 				expect(contact).toEqual(null);

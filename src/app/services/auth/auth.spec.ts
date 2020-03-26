@@ -24,11 +24,11 @@ describe("Auth Service", () => {
 		storageService = TestBed.inject(StorageProvider);
 	});
 
-	beforeEach(function() {
+	beforeEach(function () {
 		storageService.clear();
 	});
 
-	it("should login an user", done => {
+	it("should login an user", (done) => {
 		const USER_ID = "12341231212312312312312";
 		authService
 			.login(USER_ID)
@@ -37,7 +37,7 @@ describe("Auth Service", () => {
 					storageService.get(constants.STORAGE_ACTIVE_PROFILE),
 				),
 			)
-			.subscribe(id => {
+			.subscribe((id) => {
 				expect(id).toBe(USER_ID);
 				done();
 			});
@@ -53,14 +53,14 @@ describe("Auth Service", () => {
 		expect(authService.loggedProfileId).toEqual(undefined);
 	});
 
-	it("should verify if user has seen intro", done => {
-		authService.hasSeenIntro().subscribe(data => {
+	it("should verify if user has seen intro", (done) => {
+		authService.hasSeenIntro().subscribe((data) => {
 			expect(data).toBe(false);
 			done();
 		});
 	});
 
-	it("should set intro as seen", done => {
+	it("should set intro as seen", (done) => {
 		authService
 			.saveIntro()
 			.pipe(
@@ -68,22 +68,22 @@ describe("Auth Service", () => {
 					storageService.get(constants.STORAGE_INTROSEEN),
 				),
 			)
-			.subscribe(introSeen => {
+			.subscribe((introSeen) => {
 				expect(introSeen).toEqual("true");
 				done();
 			});
 	});
 
-	it("should save and get the stored master password", done => {
+	it("should save and get the stored master password", (done) => {
 		authService.saveMasterPassword(MASTER_PASSWORD).subscribe(() => {
-			authService.getMasterPassword().subscribe(masterPassword => {
+			authService.getMasterPassword().subscribe((masterPassword) => {
 				expect(masterPassword).not.toEqual(null);
 				done();
 			});
 		});
 	});
 
-	it("should get an error on master password validation", done => {
+	it("should get an error on master password validation", (done) => {
 		// @ts-ignore
 		spyOn(bcrypt, "compare").and.callFake((_, __, callback) => {
 			callback(new Error("Failed"));
@@ -99,22 +99,22 @@ describe("Auth Service", () => {
 		});
 	});
 
-	it("should validate the master password", done => {
+	it("should validate the master password", (done) => {
 		authService.saveMasterPassword(MASTER_PASSWORD).subscribe(() => {
 			authService
 				.validateMasterPassword(MASTER_PASSWORD)
-				.subscribe(result => {
+				.subscribe((result) => {
 					expect(result).toEqual(true);
 					done();
 				});
 		});
 	});
 
-	it("should validate the master password with a wrong one", done => {
+	it("should validate the master password with a wrong one", (done) => {
 		authService.saveMasterPassword(MASTER_PASSWORD).subscribe(() => {
 			authService
 				.validateMasterPassword("asjdaidsa")
-				.subscribe(result => {
+				.subscribe((result) => {
 					expect(result).toEqual(false);
 					done();
 				});
@@ -131,21 +131,21 @@ describe("Auth Service", () => {
 		expect(authService.isWeakPassword(WEAK_PASSWORD)).toEqual(false);
 	});
 
-	it("should rerturn the unlock timestamp", done => {
-		authService.getUnlockTimestamp().subscribe(unlockTime => {
+	it("should rerturn the unlock timestamp", (done) => {
+		authService.getUnlockTimestamp().subscribe((unlockTime) => {
 			expect(unlockTime).toEqual({});
 			done();
 		});
 	});
 
-	it("should rerturn the attempts", done => {
-		authService.getAttempts().subscribe(attempts => {
+	it("should rerturn the attempts", (done) => {
+		authService.getAttempts().subscribe((attempts) => {
 			expect(attempts).toEqual(null);
 			done();
 		});
 	});
 
-	it("should increase attemps", done => {
+	it("should increase attemps", (done) => {
 		authService
 			.increaseAttempts()
 			.pipe(
@@ -153,22 +153,22 @@ describe("Auth Service", () => {
 					storageService.get(constants.STORAGE_AUTH_ATTEMPTS),
 				),
 			)
-			.subscribe(attempts => {
+			.subscribe((attempts) => {
 				expect(attempts).toBe("1");
 				done();
 			});
 	});
 
-	it("should increase unlock timestamp", done => {
-		authService.increaseUnlockTimestamp().then(newTimestamp => {
+	it("should increase unlock timestamp", (done) => {
+		authService.increaseUnlockTimestamp().then((newTimestamp) => {
 			expect(newTimestamp).not.toBe(null);
 			done();
 		});
 	});
 
-	it("should clear attempts", done => {
+	it("should clear attempts", (done) => {
 		authService.clearAttempts().subscribe(() => {
-			authService.getAttempts().subscribe(attempts => {
+			authService.getAttempts().subscribe((attempts) => {
 				expect(attempts).toEqual(0);
 				done();
 			});

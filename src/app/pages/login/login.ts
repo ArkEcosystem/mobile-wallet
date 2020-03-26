@@ -23,7 +23,7 @@ export class LoginPage implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.authProvider.getMasterPassword().subscribe(master => {
+		this.authProvider.getMasterPassword().subscribe((master) => {
 			this.hasProfiles = master && !isNil(this.userDataService.profiles);
 			this.isReady = true;
 		});

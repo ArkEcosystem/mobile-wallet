@@ -47,10 +47,10 @@ export class AuthProvider {
 	}
 
 	hasSeenIntro(): Observable<boolean> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.storage
 				.get(constants.STORAGE_INTROSEEN)
-				.subscribe(introSeen => {
+				.subscribe((introSeen) => {
 					observer.next(introSeen === "true");
 					observer.complete();
 				});
@@ -72,10 +72,10 @@ export class AuthProvider {
 	}
 
 	validateMasterPassword(password: string): Observable<any> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.storage
 				.get(constants.STORAGE_MASTERPASSWORD)
-				.subscribe(master => {
+				.subscribe((master) => {
 					bcrypt.compare(password, master, (err, res) => {
 						if (err) {
 							observer.error(err);
@@ -126,7 +126,7 @@ export class AuthProvider {
 
 	increaseAttempts() {
 		return this.getAttempts().pipe(
-			mergeMap(attempts => {
+			mergeMap((attempts) => {
 				const increasedAttempts = Number(attempts) + 1;
 				return this.storage
 					.set(constants.STORAGE_AUTH_ATTEMPTS, increasedAttempts)
@@ -136,8 +136,8 @@ export class AuthProvider {
 	}
 
 	increaseUnlockTimestamp(): Promise<Date> {
-		return new Promise(resolve => {
-			this.getAttempts().subscribe(attempts => {
+		return new Promise((resolve) => {
+			this.getAttempts().subscribe((attempts) => {
 				const currentAttempt =
 					Number(attempts) - constants.PIN_ATTEMPTS_LIMIT + 1;
 				const lastTimestamp = moment(moment.now());

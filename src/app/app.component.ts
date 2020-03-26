@@ -99,7 +99,7 @@ export class AppComponent implements OnDestroy, OnInit {
 			this.initBackButton();
 			this.splashScreen.hide();
 
-			this.authProvider.hasSeenIntro().subscribe(hasSeenIntro => {
+			this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
 				if (!hasSeenIntro) {
 					this.openPage("/intro", true);
 					return;
@@ -112,7 +112,7 @@ export class AppComponent implements OnDestroy, OnInit {
 
 	initTranslation() {
 		this.translateService.setDefaultLang("en");
-		this.settingsDataProvider.settings.subscribe(settings => {
+		this.settingsDataProvider.settings.subscribe((settings) => {
 			this.translateService.use(settings.language);
 
 			this.translateService
@@ -121,7 +121,7 @@ export class AppComponent implements OnDestroy, OnInit {
 					"EXIT_APP_TEXT",
 					"SIGN_OUT_PROFILE_TEXT",
 				])
-				.subscribe(translations => {
+				.subscribe((translations) => {
 					// this.config.set('backButtonText', translations['BACK_BUTTON_TEXT']);
 					this.exitText = translations.EXIT_APP_TEXT;
 					this.signOutText = translations.SIGN_OUT_PROFILE_TEXT;
@@ -198,7 +198,7 @@ export class AppComponent implements OnDestroy, OnInit {
 	}
 
 	initTheme() {
-		this.settingsDataProvider.settings.subscribe(settings => {
+		this.settingsDataProvider.settings.subscribe((settings) => {
 			if (settings.darkMode) {
 				this.renderer.addClass(
 					this.element.nativeElement.parentNode,
@@ -260,7 +260,7 @@ export class AppComponent implements OnDestroy, OnInit {
 
 		this.menuCtrl.enable(false, this.menuId);
 
-		this.eventBus.$subject.subscribe(event => {
+		this.eventBus.$subject.subscribe((event) => {
 			switch (event.key) {
 				case "qrScanner:show":
 					this.hideRouter = true;
@@ -305,10 +305,10 @@ export class AppComponent implements OnDestroy, OnInit {
 	}
 
 	private showConfirmation(title: string): Promise<void> {
-		return new Promise(resolve => {
+		return new Promise((resolve) => {
 			this.translateService
 				.get(["NO", "YES"])
-				.subscribe(async translation => {
+				.subscribe(async (translation) => {
 					const alert = await this.alertCtrl.create({
 						subHeader: title,
 						buttons: [
@@ -336,7 +336,7 @@ export class AppComponent implements OnDestroy, OnInit {
 				this.arkApiProvider
 					.getDelegateByPublicKey(wallet.publicKey)
 					.pipe(
-						switchMap(delegate =>
+						switchMap((delegate) =>
 							this.userDataService.ensureWalletDelegateProperties(
 								wallet,
 								delegate,
