@@ -3,35 +3,33 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { AlertController, NavController } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
-import { PublicKey } from "ark-ts/core";
 import lodash from "lodash";
 
+import { AddressValidator } from "@/app/validators/address/address";
 import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
 import { QRCodeScheme } from "@/models/model";
 import { TranslatableObject } from "@/models/translate";
 import { ContactsProvider } from "@/services/contacts/contacts";
 import { ToastProvider } from "@/services/toast/toast";
-import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-contact-create",
 	templateUrl: "contact-create.html",
 	styleUrls: ["contact-create.scss"],
+	providers: [AddressValidator],
 })
 export class ContactCreatePage implements OnInit, AfterViewInit {
-	@ViewChild("qrScanner", { read: QRScannerComponent, static: true })
+	@ViewChild(QRScannerComponent)
 	qrScanner: QRScannerComponent;
 
 	public isNew: boolean;
 
 	public formGroup: FormGroup;
 
-	private currentNetwork;
-
 	constructor(
 		private navCtrl: NavController,
 		private route: ActivatedRoute,
-		private userDataService: UserDataService,
+		private addressValidator: AddressValidator,
 		private contactsProvider: ContactsProvider,
 		private translateService: TranslateService,
 		private alertCtrl: AlertController,
@@ -41,16 +39,17 @@ export class ContactCreatePage implements OnInit, AfterViewInit {
 	ngOnInit() {
 		this.formGroup = new FormGroup({
 			name: new FormControl("", [Validators.required]),
-			address: new FormControl("", [Validators.required]),
+			address: new FormControl("", [
+				Validators.required,
+				this.addressValidator.isValid.bind(this.addressValidator),
+			]),
 		});
 	}
 
 	ngAfterViewInit() {
-		this.currentNetwork = this.userDataService.currentNetwork;
-
 		const contactRaw = this.route.snapshot.queryParamMap.get("contact");
 		let address = this.route.snapshot.queryParamMap.get("address");
-		let name;
+		let name: string;
 
 		this.isNew = lodash.isEmpty(contactRaw);
 
@@ -60,35 +59,13 @@ export class ContactCreatePage implements OnInit, AfterViewInit {
 			address = contactMap.address;
 		}
 
-		this.currentNetwork = this.userDataService.currentNetwork;
 		this.formGroup.patchValue({
 			name: name || "",
 			address: address || "",
 		});
-		this.formGroup.valueChanges.subscribe(x =>
-			console.log(1, x, this.formGroup),
-		);
-	}
-
-	validateAddress() {
-		const validate = PublicKey.validateAddress(
-			this.formGroup.get("address").value,
-			this.currentNetwork,
-		);
-		this.formGroup.controls.address.setErrors({
-			incorrect: !validate,
-		});
-		if (validate) {
-			this.formGroup.controls.address.setErrors(null);
-		}
-
-		return validate;
 	}
 
 	submitForm() {
-		if (!this.validateAddress()) {
-			return;
-		}
 		const address = this.formGroup.get("address").value;
 		const name = this.formGroup.get("name").value;
 
@@ -130,7 +107,6 @@ export class ContactCreatePage implements OnInit, AfterViewInit {
 	onScanQRCode(qrCode: QRCodeScheme) {
 		if (qrCode.address) {
 			this.formGroup.get("address").setValue(qrCode.address);
-			this.validateAddress();
 			if (qrCode.label) {
 				this.formGroup.get("name").setValue(qrCode.label);
 			}

@@ -57,9 +57,13 @@ export class InputAddressComponent
 	}
 
 	async ngAfterViewInit() {
-		const ionInput = await this.ionInput.getInputElement();
-		ionInput.focus();
-		ionInput.blur();
+		try {
+			const ionInput = await this.ionInput.getInputElement();
+			ionInput.focus();
+			ionInput.blur();
+		} catch (e) {
+			console.warn(e);
+		}
 	}
 
 	registerOnChange(fn: (value: string) => void): void {

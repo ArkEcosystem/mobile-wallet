@@ -1,5 +1,9 @@
-<ion-item>
-	<div slot="end" class="ml-3 self-end flex items-center">
+<ion-item data-testid="c-input-address">
+	<div
+		data-testid="c-input-address__buttons"
+		slot="end"
+		class="ml-3 self-end flex items-center"
+	>
 		<ion-button
 			*ngIf="showQRButton"
 			fill="clear"
@@ -23,6 +27,7 @@
 	</ion-label>
 
 	<ion-input
+		data-testid="c-input-address__input"
 		type="text"
 		[formControl]="ngControl.control"
 		[name]="name"

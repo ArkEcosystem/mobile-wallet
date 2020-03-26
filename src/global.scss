@@ -64,7 +64,7 @@ ion-input {
 	border: 1px solid var(--ion-color-light-shade);
 	border-radius: 0.4rem;
 
-	&.ion-invalid {
+	&.ion-invalid.ion-dirty {
 		border-color: var(--ion-color-danger);
 	}
 

@@ -30,23 +30,21 @@ storiesOf("input-address", module)
 	)
 	.add("Default", () => ({
 		props: {
-			name: "abcdasddasdasdasdasdasdasdasdas",
+			address: "",
 			form: new FormGroup({
-				address: new FormControl("abcdasddasdasdasdasdasdasdasdas", [
+				address: new FormControl("AHJJ29sCdR5UNZjdz3BYeDpvvkZCGBjde9", [
 					Validators.required,
 				]),
 			}),
 		},
 		component: InputAddressComponent,
 		template: `
-			<div class="p-5" >
-				<div class="mt-5" [formGroup]="form">
+			<div class="p-5">
+				<div class="mb-5" [formGroup]="form">
 					<input-address formControlName="address"></input-address>
-					{{ form.get("address").value }}
 				</div>
 				<div>
-					<input-address [(ngModel)]="name"></input-address>
-					{{ name }}
+					<input-address [(ngModel)]="address"></input-address>
 				</div>
 			</div>
 		`,
