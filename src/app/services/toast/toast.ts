@@ -60,14 +60,6 @@ export class ToastProvider {
 		this.show(message, this.typeEnum.LOG, hideDelay, position);
 	}
 
-	debug(
-		message: string | TranslatableObject,
-		hideDelay?: number,
-		position?: string,
-	): void {
-		this.show(message, this.typeEnum.DEBUG, hideDelay, position);
-	}
-
 	show(
 		messageOrObj: string | TranslatableObject,
 		type?: number,

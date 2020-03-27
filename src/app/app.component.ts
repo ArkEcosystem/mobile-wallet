@@ -40,6 +40,7 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { ArkApiProvider } from "./services/ark-api/ark-api";
 import { EventBusProvider } from "./services/event-bus/event-bus";
+import { LoggerService } from "./services/logger/logger.service";
 import { SettingsDataProvider } from "./services/settings-data/settings-data";
 
 @Component({
@@ -86,12 +87,14 @@ export class AppComponent implements OnDestroy, OnInit {
 		private alertCtrl: AlertController,
 		private config: Config,
 		private keyboard: Keyboard,
+		private loggerService: LoggerService,
 	) {
 		this.initializeApp();
 	}
 
 	initializeApp() {
 		this.platform.ready().then(() => {
+			this.loggerService.info("App is ready");
 			this.initTranslation();
 			this.initConfig();
 			this.initTheme();

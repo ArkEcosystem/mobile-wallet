@@ -29,6 +29,7 @@ import { TruncateMiddlePipe } from "@/pipes/truncate-middle/truncate-middle";
 import { AddressCheckResult } from "@/services/address-checker/address-check-result";
 import { AddressCheckerProvider } from "@/services/address-checker/address-checker";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
+import { LoggerService } from "@/services/logger/logger.service";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 import { ArkUtility } from "@/utils/ark-utility";
@@ -86,6 +87,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		private ngZone: NgZone,
 		private route: ActivatedRoute,
 		private routerOutlet: IonRouterOutlet,
+		private loggerService: LoggerService,
 	) {
 		this.currentWallet = this.userDataService.currentWallet;
 		this.currentNetwork = this.userDataService.currentNetwork;
@@ -315,16 +317,24 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 
 		result.loader.dismiss();
 		const amount = this.sendForm.get("amount").value;
-		const data: TransactionSend = {
+
+		const prepareData = {
 			amount: new SafeBigNumber(amount)
 				.times(constants.WALLET_UNIT_TO_SATOSHI)
 				.toNumber(),
 			vendorField: this.sendForm.get("vendorField").value,
-			passphrase: result.keys.key,
-			secondPassphrase: result.keys.secondKey,
 			recipientId: this.sendForm.get("recipientId").value,
 			fee: this.fee,
 		};
+
+		const data: TransactionSend = {
+			...prepareData,
+			passphrase: result.keys.key,
+			secondPassphrase: result.keys.secondKey,
+		};
+
+		this.loggerService.info(prepareData);
+
 		this.arkApiProvider.transactionBuilder
 			.createTransaction(data)
 			.subscribe(
