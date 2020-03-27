@@ -6,18 +6,18 @@ import {
 	NavController,
 	Platform,
 } from "@ionic/angular";
-
-import { Subject } from "rxjs";
-
 import { TranslateService } from "@ngx-translate/core";
-
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
-import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { Subject } from "rxjs";
+import { takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
-import { UserDataProvider } from "@/services/user-data/user-data";
-import { takeUntil, tap } from "rxjs/operators";
+import { PinCodeComponent } from "@/components/pin-code/pin-code";
+import { ViewerLogModal } from "@/components/viewer-log/viewer-log.modal";
+import { UserSettings } from "@/models/model";
+import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 const packageJson = require("@@/package.json");
 
@@ -34,9 +34,10 @@ export class SettingsPage implements OnInit, OnDestroy {
 	public objectKeys = Object.keys;
 
 	public availableOptions;
-	public currentSettings;
+	public currentSettings: UserSettings;
 	public onEnterPinCode: () => void;
 	public appVersion: number = packageJson.version;
+	public versionClicksCount = 0;
 
 	public currentWallet;
 
@@ -50,10 +51,11 @@ export class SettingsPage implements OnInit, OnDestroy {
 		private translateService: TranslateService,
 		private modalCtrl: ModalController,
 		private inAppBrowser: InAppBrowser,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
+		private toastProvider: ToastProvider,
 	) {
 		this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
-		this.currentWallet = this.userDataProvider.currentWallet;
+		this.currentWallet = this.userDataService.currentWallet;
 	}
 
 	async openChangePinPage() {
@@ -93,7 +95,7 @@ export class SettingsPage implements OnInit, OnDestroy {
 				"ARE_YOU_SURE",
 				"SETTINGS_PAGE.CLEAR_DATA_TEXT",
 			])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const confirm = await this.alertCtrl.create({
 					header: translation.ARE_YOU_SURE,
 					message: translation["SETTINGS_PAGE.CLEAR_DATA_TEXT"],
@@ -118,9 +120,30 @@ export class SettingsPage implements OnInit, OnDestroy {
 			});
 	}
 
-	private clearData() {
-		this.settingsDataProvider.clearData();
-		this.navCtrl.navigateRoot("/intro");
+	async presentLogReport() {
+		const viewerLogModal = await this.modalCtrl.create({
+			component: ViewerLogModal,
+		});
+
+		await viewerLogModal.present();
+	}
+
+	handleVersionClicks() {
+		if (this.currentSettings.devMode) {
+			return;
+		}
+
+		this.versionClicksCount += 1;
+		if (this.versionClicksCount === 5) {
+			this.enableDevMode();
+		}
+	}
+
+	enableDevMode() {
+		this.versionClicksCount = 0;
+		this.currentSettings.devMode = true;
+		this.onUpdate();
+		this.toastProvider.show("SETTINGS_PAGE.YOU_ARE_DEVELOPER");
 	}
 
 	onUpdate() {
@@ -131,14 +154,14 @@ export class SettingsPage implements OnInit, OnDestroy {
 		this.settingsDataProvider.settings
 			.pipe(
 				takeUntil(this.unsubscriber$),
-				tap(settings => (this.currentSettings = settings)),
+				tap((settings) => (this.currentSettings = settings)),
 			)
 			.subscribe();
 
 		this.settingsDataProvider.onUpdate$
 			.pipe(
 				takeUntil(this.unsubscriber$),
-				tap(settings => (this.currentSettings = settings)),
+				tap((settings) => (this.currentSettings = settings)),
 			)
 			.subscribe();
 	}
@@ -146,5 +169,11 @@ export class SettingsPage implements OnInit, OnDestroy {
 	ngOnDestroy() {
 		this.unsubscriber$.next();
 		this.unsubscriber$.complete();
+	}
+
+	private clearData() {
+		this.settingsDataProvider.clearData().subscribe(() => {
+			this.navCtrl.navigateRoot("/intro");
+		});
 	}
 }

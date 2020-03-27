@@ -1,4 +1,4 @@
-﻿{
+{
 	"API": {
 		"BALANCE_TOO_LOW": "余额不足无法交易",
 		"BALANCE_TOO_LOW_DETAIL": "您钱包的余额不足! 所需交易费用为: {{ totalAmount }} ({{ amount }} + {{ fee }} 费用). 你的余额只有 {{ balance }}!",

@@ -1,16 +1,14 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-
 import { Observable, of, Subject } from "rxjs";
-
-import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { StorageProvider } from "@/services/storage/storage";
+import { flatMap, map } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import * as model from "@/models/market";
 import { UserSettings } from "@/models/settings";
-import { UserDataProvider } from "@/services/user-data/user-data";
-import { flatMap, map } from "rxjs/operators";
+import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { StorageProvider } from "@/services/storage/storage";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Injectable({ providedIn: "root" })
 export class MarketDataProvider {
@@ -26,19 +24,19 @@ export class MarketDataProvider {
 	private marketHistory: model.MarketHistory;
 
 	private get marketTickerName(): string {
-		return this.userDataProvider.currentNetwork.marketTickerName || "ARK";
+		return this.userDataService.currentNetwork.marketTickerName || "ARK";
 	}
 
 	constructor(
 		private http: HttpClient,
 		private storageProvider: StorageProvider,
 		private settingsDataProvider: SettingsDataProvider,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 	) {
 		this.loadData();
 		this.fetchTicker();
 
-		settingsDataProvider.settings.subscribe(settings => {
+		settingsDataProvider.settings.subscribe((settings) => {
 			this.settings = settings;
 			this.fetchHistory();
 		});
@@ -71,15 +69,48 @@ export class MarketDataProvider {
 	}
 
 	refreshTicker(): void {
-		this.fetchTicker().subscribe(ticker => {
+		this.fetchTicker().subscribe((ticker) => {
 			this.onUpdateTicker$.next(ticker);
 		});
+	}
+
+	fetchHistory(): Observable<model.MarketHistory> {
+		const url = `${constants.API_MARKET_URL}/data/histoday?fsym=${this.marketTickerName}&allData=true&tsym=`;
+		const myCurrencyCode = (!this.settings || !this.settings.currency
+			? this.settingsDataProvider.getDefaults().currency
+			: this.settings.currency
+		).toUpperCase();
+		return this.http.get(url + "BTC").pipe(
+			map((btcResponse) => btcResponse),
+			flatMap((btcResponse: any) =>
+				this.http.get(url + myCurrencyCode).pipe(
+					map((currencyResponse: any) => {
+						const historyData = {
+							BTC: btcResponse.Data,
+						};
+						historyData[myCurrencyCode] = currencyResponse.Data;
+						const history = new model.MarketHistory().deserialize(
+							historyData,
+						);
+
+						this.marketHistory = history;
+						this.storageProvider.set(
+							this.getKey(constants.STORAGE_MARKET_HISTORY),
+							historyData,
+						);
+						this.onUpdateHistory$.next(history);
+
+						return history;
+					}),
+				),
+			),
+		);
 	}
 
 	private fetchTicker(): Observable<model.MarketTicker> {
 		const url = `${constants.API_MARKET_URL}/data/pricemultifull?fsyms=${this.marketTickerName}&tsyms=`;
 
-		const currenciesList = model.CURRENCIES_LIST.map(currency => {
+		const currenciesList = model.CURRENCIES_LIST.map((currency) => {
 			return currency.code.toUpperCase();
 		}).join(",");
 
@@ -106,41 +137,8 @@ export class MarketDataProvider {
 		);
 	}
 
-	fetchHistory(): Observable<model.MarketHistory> {
-		const url = `${constants.API_MARKET_URL}/data/histoday?fsym=${this.marketTickerName}&allData=true&tsym=`;
-		const myCurrencyCode = (!this.settings || !this.settings.currency
-			? this.settingsDataProvider.getDefaults().currency
-			: this.settings.currency
-		).toUpperCase();
-		return this.http.get(url + "BTC").pipe(
-			map(btcResponse => btcResponse),
-			flatMap((btcResponse: any) =>
-				this.http.get(url + myCurrencyCode).pipe(
-					map((currencyResponse: any) => {
-						const historyData = {
-							BTC: btcResponse.Data,
-						};
-						historyData[myCurrencyCode] = currencyResponse.Data;
-						const history = new model.MarketHistory().deserialize(
-							historyData,
-						);
-
-						this.marketHistory = history;
-						this.storageProvider.set(
-							this.getKey(constants.STORAGE_MARKET_HISTORY),
-							historyData,
-						);
-						this.onUpdateHistory$.next(history);
-
-						return history;
-					}),
-				),
-			),
-		);
-	}
-
 	private onUpdateSettings() {
-		this.settingsDataProvider.onUpdate$.subscribe(settings => {
+		this.settingsDataProvider.onUpdate$.subscribe((settings) => {
 			this.settings = settings;
 			this.marketHistory = null;
 		});
@@ -149,7 +147,7 @@ export class MarketDataProvider {
 	private loadData() {
 		this.storageProvider
 			.getObject(this.getKey(constants.STORAGE_MARKET_HISTORY))
-			.subscribe(history => {
+			.subscribe((history) => {
 				if (history) {
 					this.marketHistory = new model.MarketHistory().deserialize(
 						history,
@@ -158,7 +156,7 @@ export class MarketDataProvider {
 			});
 		this.storageProvider
 			.getObject(this.getKey(constants.STORAGE_MARKET_TICKER))
-			.subscribe(ticker => {
+			.subscribe((ticker) => {
 				if (ticker) {
 					this.marketTicker = new model.MarketTicker().deserialize(
 						ticker,

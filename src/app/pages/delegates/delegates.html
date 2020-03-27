@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-toolbar>
 		<ion-buttons slot="start">
 			<ion-back-button></ion-back-button>
@@ -12,9 +12,10 @@
 			#searchbar
 			*ngIf="isSearch"
 			[(ngModel)]="searchQuery"
-			spellcheck="false"
-			animated="true"
-			showCancelButton="false"
+			[spellcheck]="false"
+			[animated]="true"
+			showCancelButton="never"
+			clearIcon="none"
 			placeholder="{{ 'SEARCH' | translate }}"
 		></ion-searchbar>
 
@@ -29,12 +30,7 @@
 	</ion-toolbar>
 
 	<ion-toolbar>
-		<ion-segment
-			class="py-2"
-			[(ngModel)]="rankStatus"
-			(ionChange)="onSegmentChange()"
-			[color]="platform.is('ios') ? 'primary' : 'danger'"
-		>
+		<ion-segment [(ngModel)]="rankStatus" (ionChange)="onSegmentChange()">
 			<ion-segment-button value="active">
 				{{ 'DELEGATES_PAGE.ACTIVE' | translate }}
 			</ion-segment-button>

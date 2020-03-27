@@ -1,15 +1,16 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
-import { WalletManualImportPage } from "./wallet-import-manual";
+import { TranslateModule } from "@ngx-translate/core";
 
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
 import { PinCodeModalModule } from "@/app/modals/pin-code/pin-code.module";
 import { DirectivesModule } from "@/directives/directives.module";
 import { PipesModule } from "@/pipes/pipes.module";
-import { CommonModule } from "@angular/common";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
-import { TranslateModule } from "@ngx-translate/core";
+
+import { WalletManualImportPage } from "./wallet-import-manual";
 
 @NgModule({
 	declarations: [WalletManualImportPage],

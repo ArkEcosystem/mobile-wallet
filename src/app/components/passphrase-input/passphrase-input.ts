@@ -1,10 +1,12 @@
-import { ToastProvider } from "@/services/toast/toast";
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import * as bip39 from "bip39";
+
+import { ToastProvider } from "@/services/toast/toast";
 
 @Component({
 	selector: "passphrase-input",
 	templateUrl: "passphrase-input.html",
+	styleUrls: ["passphrase-input.pcss"],
 	providers: [ToastProvider],
 })
 export class PassphraseInputComponent implements OnInit {
@@ -27,7 +29,7 @@ export class PassphraseInputComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.passphraseInit) {
-			this.passphrase = this.passphraseInit;
+			this.passphraseChange(this.passphraseInit);
 		}
 	}
 
@@ -42,9 +44,9 @@ export class PassphraseInputComponent implements OnInit {
 	passphraseChange(value) {
 		const lastpassphrase = this.passphrase || "";
 		this.passphrase = value;
-		this.updatePassphraseHidden();
 
 		this.suggestWord(lastpassphrase, this.passphrase);
+		this.updatePassphraseHidden();
 	}
 
 	passphraseHiddenChange(value) {
@@ -81,18 +83,22 @@ export class PassphraseInputComponent implements OnInit {
 			}
 		}
 
-		this.updatePassphraseHidden();
 		this.suggestWord(lastPassphrase, this.passphrase);
+		this.updatePassphraseHidden();
 	}
 
 	updatePassphraseHidden() {
 		const wordsPassphrase = (this.passphrase || "").split(" ");
 		const tmpPassphraseHidden = [];
-		wordsPassphrase.forEach((elem, index, arr) =>
-			tmpPassphraseHidden.push(
-				index === arr.length - 1 ? elem : "*".repeat(elem.length),
-			),
-		);
+		wordsPassphrase.forEach((elem, index, arr) => {
+			let value: string;
+			if (index === arr.length - 1 && this.wordSuggestions.length) {
+				value = elem;
+			} else {
+				value = "*".repeat(elem.length);
+			}
+			tmpPassphraseHidden.push(value);
+		});
 		this.passphraseHidden = tmpPassphraseHidden.join(" ");
 	}
 
@@ -131,7 +137,9 @@ export class PassphraseInputComponent implements OnInit {
 			// we just want one letter to be different - only "manual" typing, don't suggest on copy/paste stuff
 			const wordlist = bip39.wordlists[this.wordlistLanguage];
 			this.wordSuggestions = wordlist.filter(
-				word => word.indexOf(lastWordPassphrase) === 0,
+				(word) =>
+					word.startsWith(lastWordPassphrase) &&
+					word !== lastWordPassphrase,
 			);
 		}
 	}

@@ -1,11 +1,12 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
-import { SetLabelPage } from "./set-label";
+import { TranslateModule } from "@ngx-translate/core";
 
 import { DirectivesModule } from "@/directives/directives.module";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { TranslateModule } from "@ngx-translate/core";
+
+import { SetLabelPage } from "./set-label";
 
 @NgModule({
 	declarations: [SetLabelPage],

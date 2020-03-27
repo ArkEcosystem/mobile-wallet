@@ -1,19 +1,21 @@
+import { Injectable } from "@angular/core";
+import { Observable, Subscriber } from "rxjs";
+import { map } from "rxjs/operators";
+
 import { AddressCheckResult } from "@/services/address-checker/address-check-result";
 import { AddressCheckResultType } from "@/services/address-checker/address-check-result-type";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { NeoApiProvider } from "@/services/neo-api/neo-api";
 import { NetworkProvider } from "@/services/network/network";
-import { UserDataProvider } from "@/services/user-data/user-data";
-import { Injectable } from "@angular/core";
-import { Observable, Subscriber } from "rxjs";
-import { map } from "rxjs/operators";
+import { UserDataService } from "@/services/user-data/user-data.interface";
+
 import { CompleteHandler } from "../../utils/complete-handler";
 
 @Injectable({ providedIn: "root" })
 export class AddressCheckerProvider {
 	public constructor(
 		private networkProvider: NetworkProvider,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private arkApiProvider: ArkApiProvider,
 		private neoApiProvider: NeoApiProvider,
 	) {}
@@ -74,7 +76,7 @@ export class AddressCheckerProvider {
 			}
 
 			this.hasTransactions(address).subscribe(
-				hasTxs => {
+				(hasTxs) => {
 					if (hasTxs) {
 						handler.complete();
 					} else {
@@ -89,7 +91,7 @@ export class AddressCheckerProvider {
 			);
 
 			this.neoApiProvider.doesAddressExist(address).subscribe(
-				exists => {
+				(exists) => {
 					if (exists) {
 						handler.complete(
 							AddressCheckerProvider.createWarning(
@@ -110,17 +112,12 @@ export class AddressCheckerProvider {
 	}
 
 	public isOwnAddress(address: string): boolean {
-		return this.userDataProvider.currentWallet.address === address;
+		return this.userDataService.currentWallet.address === address;
 	}
 
 	public hasTransactions(address: string): Observable<boolean> {
-		return this.arkApiProvider.client.getTransactionList(address).pipe(
-			map(txs => {
-				if (!txs.success) {
-					throw Error();
-				}
-				return txs.transactions && txs.transactions.length > 0;
-			}),
-		);
+		return this.arkApiProvider.client
+			.getTransactionList(address)
+			.pipe(map((txs) => txs?.transactions?.length > 0));
 	}
 }

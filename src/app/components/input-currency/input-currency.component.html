@@ -1,9 +1,12 @@
 <ion-input
+	data-testid="c-input-currency"
 	[formControl]="formControl"
 	[name]="name"
 	[placeholder]="placeholder"
-	[disabled]="isDisabled"
 	(ionBlur)="onTouched()"
 	inputmode="decimal"
+	appPasteClipboardValue
+	class="w-full"
+	[ngClass]="{ 'c-input-currency--relaxed': isRelaxed }"
 >
 </ion-input>

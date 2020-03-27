@@ -1,165 +1,114 @@
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {
-	Component,
-	EventEmitter,
-	Input,
-	OnDestroy,
-	OnInit,
-	Output,
-} from "@angular/core";
-import { TransactionType } from "ark-ts";
+	ControlContainer,
+	FormControl,
+	FormGroup,
+	FormGroupDirective,
+} from "@angular/forms";
 
-import { FeeStatistic } from "@/models/stored-network";
-import { ArkApiProvider } from "@/services/ark-api/ark-api";
-import { ArkUtility } from "../../utils/ark-utility";
+import { WALLET_UNIT_TO_SATOSHI } from "@/app/app.constants";
+import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
 
-import { TranslateService } from "@ngx-translate/core";
-import { Subscription } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { InputCurrencyOutput } from "../input-currency/input-currency.component";
 
 @Component({
 	selector: "input-fee",
 	templateUrl: "input-fee.component.html",
-	styleUrls: ["input-fee.component.scss"],
+	styleUrls: ["input-fee.component.pcss"],
+	viewProviders: [
+		{
+			provide: ControlContainer,
+			useExisting: FormGroupDirective,
+		},
+	],
 })
-export class InputFeeComponent implements OnInit, OnDestroy {
+export class InputFeeComponent implements OnInit {
+	@Output()
+	public inputFeeUpdate = new EventEmitter<InputCurrencyOutput>();
+
 	@Input()
-	public transactionType: number;
+	public parent = new FormGroup({});
 
-	@Output()
-	public change: EventEmitter<number> = new EventEmitter();
+	// Arktoshi
+	@Input()
+	public min = 1;
 
-	@Output()
-	public error: EventEmitter<boolean> = new EventEmitter();
-
-	public step: number;
-	public v1Fee: number;
-	public v2Fee: FeeStatistic;
-	public rangeFee: number;
-	public inputFee: string;
-	public min: number;
-	public max: number;
+	// Arktoshi
+	@Input()
 	public avg: number;
-	public symbol: string;
-	public isStaticFee = false;
-	public warningMessage: string;
-	public errorMessage: string;
-	public limitFee: number;
-	public subscription: Subscription;
 
-	constructor(
-		private arkApiProvider: ArkApiProvider,
-		private translateService: TranslateService,
-	) {
-		this.step = 1;
-		this.min = this.step;
-		this.symbol = this.arkApiProvider.network.symbol;
-	}
+	// Arktoshi
+	@Input()
+	public max = 1;
+
+	// Arktoshi
+	@Input()
+	public last: number;
+
+	@Input()
+	public isStatic = true;
+
+	public hasRange = false;
+	public rangeControl = new FormControl(0);
+	public inputControl = new FormControl(0);
+	public limitMin = 1;
+
+	// Arktoshi
+	public currentFee: number;
+
+	constructor() {}
 
 	ngOnInit() {
-		this.prepareFeeStatistics();
-	}
-
-	public get maxArktoshi() {
-		return ArkUtility.subToUnit(this.max);
-	}
-
-	public prepareFeeStatistics() {
-		this.subscription = this.arkApiProvider.fees
-			.pipe(
-				switchMap(fees => {
-					switch (Number(this.transactionType)) {
-						case TransactionType.SendArk:
-							this.v1Fee = fees.send;
-							break;
-						case TransactionType.Vote:
-							this.v1Fee = fees.vote;
-							break;
-						case TransactionType.CreateDelegate:
-							this.v1Fee = fees.delegate;
-							break;
-					}
-
-					this.max = this.v1Fee;
-					this.avg = this.v1Fee;
-					this.limitFee = this.max * 10;
-					this.setRangeFee(this.avg);
-
-					return this.arkApiProvider.feeStatistics;
-				}),
-			)
-			.subscribe(fees => {
-				this.v2Fee = fees.find(
-					fee => fee.type === Number(this.transactionType),
-				);
-				if (!this.v2Fee || this.v2Fee.fees.avgFee > this.max) {
-					this.isStaticFee = true;
-					return;
-				}
-				if (this.v2Fee.fees.maxFee > this.max) {
-					this.max = this.v2Fee.fees.maxFee;
-				}
-				this.avg = this.v2Fee.fees.avgFee;
-				this.setRangeFee(this.avg);
+		this.parent.addControl("fee", this.inputControl);
+		this.inputControl.valueChanges.subscribe((value: BigNumber) => {
+			// The range value should be in arktoshi
+			this.currentFee = value
+				.multipliedBy(WALLET_UNIT_TO_SATOSHI)
+				.toNumber();
+			this.rangeControl.setValue(this.currentFee, {
+				emitEvent: false,
 			});
+		});
+
+		this.rangeControl.valueChanges.subscribe((value: number) => {
+			this.inputControl.markAsDirty();
+			this.currentFee = value;
+			this.setInputValue(value, false);
+		});
+
+		// Initial value
+		this.setInputValue(this.last || this.avg || this.max);
+		this.checkRange();
 	}
 
-	public setRangeFee(value: number) {
-		this.rangeFee = value;
-		this.onInputRange();
-		this.emitChange();
+	public handleClickButton(value: number) {
+		this.setInputValue(value);
+		this.inputControl.markAsDirty();
 	}
 
-	public onInputRange() {
-		const fee = ArkUtility.subToUnit(this.rangeFee);
-		this.inputFee = fee;
-
-		const translateParams = {
-			symbol: this.symbol,
-			fee: ArkUtility.subToUnit(this.limitFee),
-		};
-
-		this.translateService
-			.get(
-				[
-					"INPUT_FEE.ERROR.MORE_THAN_MAXIMUM",
-					"INPUT_FEE.LOW_FEE_NOTICE",
-					"INPUT_FEE.ADVANCED_NOTICE",
-				],
-				translateParams,
-			)
-			.subscribe(translation => {
-				this.errorMessage = null;
-				this.warningMessage = null;
-
-				if (this.avg > this.rangeFee) {
-					this.warningMessage =
-						translation["INPUT_FEE.LOW_FEE_NOTICE"];
-				} else if (this.rangeFee > this.limitFee) {
-					this.errorMessage =
-						translation["INPUT_FEE.ERROR.MORE_THAN_MAXIMUM"];
-				} else if (this.rangeFee > this.max) {
-					this.warningMessage =
-						translation["INPUT_FEE.ADVANCED_NOTICE"];
-				}
-				this.error.next(!!this.errorMessage || !fee.length);
-			});
+	public emitUpdate(output: InputCurrencyOutput) {
+		this.inputFeeUpdate.emit(output);
 	}
 
-	public onInputText() {
-		const arktoshi = parseInt(ArkUtility.unitToSub(this.inputFee));
-
-		if (arktoshi !== this.rangeFee) {
-			this.rangeFee = arktoshi;
+	private checkRange() {
+		// If the minimum input value is equal to the maximum or average
+		// Set the minimum to 1 arktoshi
+		if (this.min === this.max || this.min === this.avg) {
+			this.limitMin = 1;
+		} else {
+			this.limitMin = this.min;
 		}
-
-		this.emitChange();
+		// Hide range if the minimum is equal to maximum
+		this.hasRange = this.max > this.limitMin;
 	}
 
-	public emitChange() {
-		this.change.next(this.rangeFee);
-	}
-
-	ngOnDestroy() {
-		this.subscription.unsubscribe();
+	private setInputValue(value: number, emitEvent = true) {
+		// The input value should be in human
+		const satoshi = new SafeBigNumber(value).dividedBy(
+			WALLET_UNIT_TO_SATOSHI,
+		);
+		this.inputControl.setValue(satoshi, {
+			emitEvent,
+		});
 	}
 }

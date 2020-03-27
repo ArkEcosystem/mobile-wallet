@@ -1,5 +1,7 @@
-import { MarketDataProvider } from "@/services/market-data/market-data";
 import { NgModule } from "@angular/core";
+
+import { MarketDataProvider } from "@/services/market-data/market-data";
+
 import { AccountLabelPipe } from "./../pipes/account-label/account-label";
 import { EscapeHTMLPipe } from "./../pipes/escape-html/escape-html";
 import { HasAccountLabelPipe } from "./../pipes/has-account-label/has-account-label";

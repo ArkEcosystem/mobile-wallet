@@ -1,13 +1,13 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
-import { ConfirmTransactionModal } from "./confirm-transaction";
-
-import { ClosePopupComponentModule } from "@/components/close-popup/close-popup.module";
-import { PipesModule } from "@/pipes/pipes.module";
 import { TranslateModule } from "@ngx-translate/core";
 
+import { ClosePopupComponentModule } from "@/components/close-popup/close-popup.module";
 import { DirectivesModule } from "@/directives/directives.module";
-import { CommonModule } from "@angular/common";
+import { PipesModule } from "@/pipes/pipes.module";
+
+import { ConfirmTransactionModal } from "./confirm-transaction";
 
 @NgModule({
 	declarations: [ConfirmTransactionModal],

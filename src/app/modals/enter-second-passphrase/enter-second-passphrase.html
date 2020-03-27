@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-toolbar>
 		<ion-title
 			>{{ 'WALLETS_PAGE.SECOND_PASSPHRASE' | translate }}</ion-title
@@ -11,29 +11,31 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content padding #content>
+<ion-content class="ion-padding" #content>
 	<form #ngForm="ngForm">
 		<ion-item>
-			<ion-label position="stacked"
-				>{{ 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE' | translate
-				}}</ion-label
-			>
+			<ion-label position="floating">
+				{{ 'WALLETS_PAGE.ENTER_SECRET_PASSPHRASE' | translate }}
+			</ion-label>
 			<ion-input
 				autocapitalize="off"
 				name="secondPassphrase"
 				[type]="displayType"
 				[(ngModel)]="passphrase"
 			></ion-input>
-			<ion-icon
+			<ion-button
 				slot="end"
-				[name]="iconName"
+				fill="clear"
+				class="self-end m-0 mb-2 ml-2"
 				(click)="hideShow()"
-			></ion-icon>
+			>
+				<ion-icon slot="icon-only" [name]="iconName"></ion-icon>
+			</ion-button>
 		</ion-item>
 	</form>
 </ion-content>
 
-<ion-footer class="ion-padding text-center" no-shadow no-border>
+<ion-footer class="ion-padding text-center ion-no-border ion-no-shadow">
 	<ion-button (click)="submit()" [disabled]="!ngForm.form.valid"
 		>{{ 'CONFIRM' | translate }}</ion-button
 	>

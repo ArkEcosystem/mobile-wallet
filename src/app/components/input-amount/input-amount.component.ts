@@ -1,9 +1,3 @@
-import * as constants from "@/app/app.constants";
-import { MarketCurrency } from "@/models/model";
-import { MarketDataProvider } from "@/services/market-data/market-data";
-import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { UserDataProvider } from "@/services/user-data/user-data";
-import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
 import { Component, OnInit } from "@angular/core";
 import {
 	ControlContainer,
@@ -11,6 +5,13 @@ import {
 	FormGroupDirective,
 } from "@angular/forms";
 import { Network } from "ark-ts/model";
+
+import * as constants from "@/app/app.constants";
+import { MarketCurrency } from "@/models/model";
+import { MarketDataProvider } from "@/services/market-data/market-data";
+import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
+import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
 
 @Component({
 	selector: "input-amount",
@@ -30,12 +31,12 @@ export class InputAmountComponent implements OnInit {
 	public currentNetwork: Network;
 
 	public constructor(
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private marketDataProvider: MarketDataProvider,
 		private settingsDataProvider: SettingsDataProvider,
 		private parentForm: FormGroupDirective,
 	) {
-		this.currentNetwork = this.userDataProvider.currentNetwork;
+		this.currentNetwork = this.userDataService.currentNetwork;
 	}
 
 	public ngOnInit() {
@@ -45,15 +46,15 @@ export class InputAmountComponent implements OnInit {
 			new FormControl("amountEquivalent"),
 		);
 
-		this.parentForm.form.controls.amount.valueChanges.subscribe(value =>
+		this.parentForm.form.controls.amount.valueChanges.subscribe((value) =>
 			this.onInputToken(value),
 		);
 		this.parentForm.form.controls.amountEquivalent.valueChanges.subscribe(
-			value => this.onInputFiat(value),
+			(value) => this.onInputFiat(value),
 		);
 
-		this.marketDataProvider.ticker.subscribe(ticker => {
-			this.settingsDataProvider.settings.subscribe(settings => {
+		this.marketDataProvider.ticker.subscribe((ticker) => {
+			this.settingsDataProvider.settings.subscribe((settings) => {
 				this.marketCurrency = ticker.getCurrency({
 					code: settings.currency,
 				});

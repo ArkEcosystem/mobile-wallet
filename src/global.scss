@@ -22,7 +22,6 @@
 @import "../node_modules/tailwindcss/components.css";
 @import "../node_modules/tailwindcss/utilities.css";
 
-@import "./assets/styles/auto-complete.pcss";
 @import "./assets/styles/app.pcss";
 
 ion-grid {
@@ -31,6 +30,57 @@ ion-grid {
 
 ion-toolbar * {
 	box-sizing: border-box;
+}
+
+ion-button {
+	font-weight: 500;
+}
+
+ion-label {
+	--color: var(--ion-color-dark-tint) !important;
+}
+
+.label-floating {
+	transform: scale(0.75) !important;
+}
+
+.md ion-label {
+	&.label-stacked {
+		transform: scale(0.75) !important;
+	}
+}
+
+ion-item {
+	--highlight-height: 0;
+
+	&.item-input {
+		--padding-start: 0;
+		--padding-end: 0;
+		--inner-padding-end: 0;
+		--border-color: transparent;
+	}
+}
+
+ion-input,
+ion-textarea {
+	border: 1px solid var(--ion-color-light-shade);
+	border-radius: 0.4rem;
+
+	&.ion-invalid.ion-dirty {
+		border-color: var(--ion-color-danger);
+	}
+
+	input,
+	textarea {
+		--padding-start: 1rem;
+		--padding-end: 1rem;
+	}
+}
+
+.dark-theme {
+	ion-input {
+		border-color: var(--ion-color-light-tint);
+	}
 }
 
 .text-selectable {

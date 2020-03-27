@@ -3,6 +3,7 @@ import isUrl from "is-url";
 import orderBy from "lodash/orderBy";
 import { Observable } from "rxjs/Observable";
 import semver from "semver";
+
 import { PeerApiResponse } from "./ark-client";
 
 export class PeerDiscovery {
@@ -24,7 +25,7 @@ export class PeerDiscovery {
 		networkOrHost: string;
 		defaultPort?: number;
 	}): Observable<PeerDiscovery> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			if (!networkOrHost || typeof networkOrHost !== "string") {
 				observer.error("No network or host provided");
 			}
@@ -32,88 +33,31 @@ export class PeerDiscovery {
 			try {
 				if (isUrl(networkOrHost)) {
 					this.getSeedsFromHost(networkOrHost, defaultPort).subscribe(
-						response => {
+						(response) => {
 							observer.next(
 								new PeerDiscovery(this.httpClient, response),
 							);
 							observer.complete();
 						},
-						e => observer.error(e),
+						(e) => observer.error(e),
 					);
 				} else {
 					this.getSeedsFromRepository(
 						networkOrHost,
 						defaultPort,
 					).subscribe(
-						response => {
+						(response) => {
 							observer.next(
 								new PeerDiscovery(this.httpClient, response),
 							);
 							observer.complete();
 						},
-						e => observer.error(e),
+						(e) => observer.error(e),
 					);
 				}
 			} catch (error) {
 				observer.error("Failed to discovery any peers.");
 			}
-		});
-	}
-
-	private getSeedsFromHost(
-		host: string,
-		defaultPort: number,
-	): Observable<PeerApiResponse[]> {
-		return new Observable(observer => {
-			this.httpClient.get(host).subscribe(
-				(body: any) => {
-					const seeds: PeerApiResponse[] = [];
-
-					for (const seed of body.data) {
-						let port = defaultPort;
-						if (seed.ports) {
-							const walletApiPort =
-								seed.ports["@arkecosystem/core-wallet-api"];
-							const apiPort =
-								seed.ports["@arkecosystem/core-api"];
-							if (walletApiPort >= 1 && walletApiPort <= 65535) {
-								port = walletApiPort;
-							} else if (apiPort >= 1 && apiPort <= 65535) {
-								port = apiPort;
-							}
-						}
-
-						seeds.push({ ip: seed.ip, port });
-					}
-
-					observer.next(seeds);
-					observer.complete();
-				},
-				e => observer.error(e),
-			);
-		});
-	}
-
-	private getSeedsFromRepository(
-		network: string,
-		defaultPort: number,
-	): Observable<PeerApiResponse[]> {
-		return new Observable(observer => {
-			this.httpClient
-				.get(
-					`https://raw.githubusercontent.com/ArkEcosystem/peers/master/${network}.json`,
-				)
-				.subscribe(
-					(body: any) => {
-						const seeds: PeerApiResponse[] = [];
-						for (const seed of body) {
-							seeds.push({ ip: seed.ip, port: defaultPort });
-						}
-						observer.next(seeds);
-						observer.complete();
-					},
-					e => observer.error(e),
-				);
 		});
 	}
 
@@ -140,7 +84,7 @@ export class PeerDiscovery {
 	}
 
 	public findPeers(opts: any = {}): Observable<PeerApiResponse[]> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			if (!opts.retry) {
 				opts.retry = { retries: 0 };
 			}
@@ -193,7 +137,7 @@ export class PeerDiscovery {
 							);
 							observer.complete();
 						},
-						e => {
+						(e) => {
 							observer.error(e);
 						},
 					);
@@ -208,9 +152,9 @@ export class PeerDiscovery {
 		name: string,
 		opts: { additional?: string[] } = {},
 	): Observable<PeerApiResponse[]> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.findPeers(opts).subscribe(
-				response => {
+				(response) => {
 					const peers: PeerApiResponse[] = [];
 
 					for (const peer of response) {
@@ -251,8 +195,65 @@ export class PeerDiscovery {
 					observer.next(peers);
 					observer.complete();
 				},
-				e => observer.error(e),
+				(e) => observer.error(e),
 			);
+		});
+	}
+
+	private getSeedsFromHost(
+		host: string,
+		defaultPort: number,
+	): Observable<PeerApiResponse[]> {
+		return new Observable((observer) => {
+			this.httpClient.get(host).subscribe(
+				(body: any) => {
+					const seeds: PeerApiResponse[] = [];
+
+					for (const seed of body.data) {
+						let port = defaultPort;
+						if (seed.ports) {
+							const walletApiPort =
+								seed.ports["@arkecosystem/core-wallet-api"];
+							const apiPort =
+								seed.ports["@arkecosystem/core-api"];
+							if (walletApiPort >= 1 && walletApiPort <= 65535) {
+								port = walletApiPort;
+							} else if (apiPort >= 1 && apiPort <= 65535) {
+								port = apiPort;
+							}
+						}
+
+						seeds.push({ ip: seed.ip, port });
+					}
+
+					observer.next(seeds);
+					observer.complete();
+				},
+				(e) => observer.error(e),
+			);
+		});
+	}
+
+	private getSeedsFromRepository(
+		network: string,
+		defaultPort: number,
+	): Observable<PeerApiResponse[]> {
+		return new Observable((observer) => {
+			this.httpClient
+				.get(
+					`https://raw.githubusercontent.com/ArkEcosystem/peers/master/${network}.json`,
+				)
+				.subscribe(
+					(body: any) => {
+						const seeds: PeerApiResponse[] = [];
+						for (const seed of body) {
+							seeds.push({ ip: seed.ip, port: defaultPort });
+						}
+						observer.next(seeds);
+						observer.complete();
+					},
+					(e) => observer.error(e),
+				);
 		});
 	}
 }

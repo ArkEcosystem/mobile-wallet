@@ -1,13 +1,14 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
-import { ProfileCreatePage } from "./profile-create";
+import { TranslateModule } from "@ngx-translate/core";
 
 import { CustomNetworkComponentModule } from "@/components/custom-network/custom-network.module";
 import { DirectivesModule } from "@/directives/directives.module";
-import { CommonModule } from "@angular/common";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
-import { TranslateModule } from "@ngx-translate/core";
+
+import { ProfileCreatePage } from "./profile-create";
 
 @NgModule({
 	declarations: [ProfileCreatePage],

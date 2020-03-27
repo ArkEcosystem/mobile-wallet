@@ -1,5 +1,6 @@
-import { PeerApiResponse } from "@/utils/ark-client";
 import { Network } from "ark-ts";
+
+import { PeerApiResponse } from "@/utils/ark-client";
 
 export interface FeeStatistic {
 	type: number;

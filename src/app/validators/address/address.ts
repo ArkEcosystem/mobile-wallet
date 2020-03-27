@@ -1,6 +1,7 @@
-import { NetworkProvider } from "@/services/network/network";
 import { Injectable } from "@angular/core";
 import { FormControl } from "@angular/forms";
+
+import { NetworkProvider } from "@/services/network/network";
 
 @Injectable()
 export class AddressValidator {

@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ModalController, NavController } from "@ionic/angular";
+import { PrivateKey } from "ark-ts/core";
+import * as bip39 from "bip39";
 
 import { AccountBackup, WalletKeys } from "@/models/model";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { UserDataProvider } from "@/services/user-data/user-data";
-import { PrivateKey } from "ark-ts/core";
-import * as bip39 from "bip39";
+import { UserDataService } from "@/services/user-data/user-data.interface";
+
 import { PassphraseWordTesterModal } from "../passphrase-word-tester/passphrase-word-tester";
 
 @Component({
@@ -35,16 +36,16 @@ export class WalletBackupModal implements OnInit {
 	constructor(
 		public navCtrl: NavController,
 		private modalCtrl: ModalController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private settingsDataProvider: SettingsDataProvider,
 	) {
 		if (!this.title || (!this.entropy && !this.keys)) {
 			this.dismiss();
 		}
 
-		this.currentNetwork = this.userDataProvider.currentNetwork;
+		this.currentNetwork = this.userDataService.currentNetwork;
 		this.settingsDataProvider.settings.subscribe(
-			settings => (this.wordlistLanguage = settings.wordlistLanguage),
+			(settings) => (this.wordlistLanguage = settings.wordlistLanguage),
 		);
 	}
 
@@ -93,7 +94,7 @@ export class WalletBackupModal implements OnInit {
 		const pbKey = pvKey.getPublicKey();
 		pbKey.setNetwork(this.currentNetwork);
 
-		const wallet = this.userDataProvider.getWalletByAddress(
+		const wallet = this.userDataService.getWalletByAddress(
 			pbKey.getAddress(),
 		);
 

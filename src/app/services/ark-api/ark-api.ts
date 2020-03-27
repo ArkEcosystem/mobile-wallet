@@ -1,30 +1,33 @@
-import { HttpClient, HttpParams } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-
-import { EMPTY, Observable, of, Subject, throwError } from "rxjs";
-
-import { HttpUtils } from "@/app/utils/http-utils";
-import { StorageProvider } from "@/services/storage/storage";
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
-import {
-	INodeConfiguration,
-	Transaction,
-	TranslatableObject,
-	Wallet,
-} from "@/models/model";
-
-import * as constants from "@/app/app.constants";
-import { FeeStatistic, StoredNetwork } from "@/models/stored-network";
-import { PeerDiscovery } from "@/utils/ark-peer-discovery";
-import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
 import * as ArkCrypto from "@arkecosystem/crypto";
 import * as arkts from "ark-ts";
 import arktsConfig from "ark-ts/config";
 import lodash from "lodash";
 import moment from "moment";
-import { catchError, expand, finalize, switchMap, tap } from "rxjs/operators";
+import { EMPTY, Observable, of, Subject, throwError, zip } from "rxjs";
+import {
+	catchError,
+	expand,
+	finalize,
+	map,
+	switchMap,
+	tap,
+} from "rxjs/operators";
+
+import * as constants from "@/app/app.constants";
+import {
+	INodeConfiguration,
+	Transaction,
+	TranslatableObject,
+} from "@/models/model";
+import { FeeStatistic, StoredNetwork } from "@/models/stored-network";
+import { StorageProvider } from "@/services/storage/storage";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataService } from "@/services/user-data/user-data.interface";
+import { PeerDiscovery } from "@/utils/ark-peer-discovery";
+import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
+
 import ArkClient, { WalletResponse } from "../../utils/ark-client";
 import { ArkUtility } from "../../utils/ark-utility";
 
@@ -54,7 +57,6 @@ export class ArkApiProvider {
 	public onSendTransaction$: Subject<arkts.Transaction> = new Subject<
 		arkts.Transaction
 	>();
-	public onUpdateTopWallets$: Subject<Wallet[]> = new Subject<Wallet[]>();
 
 	private _network: StoredNetwork;
 	private _api: arkts.Client;
@@ -66,13 +68,13 @@ export class ArkApiProvider {
 
 	constructor(
 		private httpClient: HttpClient,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private storageProvider: StorageProvider,
 		private toastProvider: ToastProvider,
 	) {
 		this.loadData();
 
-		this.userDataProvider.onActivateNetwork$.subscribe(network => {
+		this.userDataService.onActivateNetwork$.subscribe((network) => {
 			if (lodash.isEmpty(network)) {
 				return;
 			}
@@ -117,10 +119,6 @@ export class ArkApiProvider {
 		return this.fetchDelegates(this._network.activeDelegates * 2);
 	}
 
-	public get topWallets(): Observable<Wallet[]> {
-		return this.fetchTopWallets(constants.TOP_WALLETS_TO_FETCH);
-	}
-
 	public setNetwork(network: StoredNetwork) {
 		// set default peer
 		if (network.type !== null) {
@@ -154,76 +152,20 @@ export class ArkApiProvider {
 
 		this.connectToRandomPeer()
 			.pipe(
-				catchError(e => {
+				catchError((e) => {
 					console.error(e);
 					return throwError(e);
 				}),
 			)
 			.subscribe();
 
-		this.userDataProvider.onUpdateNetwork$.next(this._network);
+		this.userDataService.onUpdateNetwork$.next(this._network);
 
 		this.fetchFees().subscribe();
 	}
 
-	private refreshPeers(): Observable<void> {
-		return new Observable(observer => {
-			const network = this._network;
-			const networkLookup = ["mainnet", "devnet"];
-			const isKnowNetwork = lodash.includes(networkLookup, network.name);
-			const peerUrl = network.getPeerAPIUrl();
-
-			const networkOrHost = isKnowNetwork
-				? network.name
-				: `${peerUrl}/api/peers`;
-
-			this._peerDiscovery.find({ networkOrHost }).subscribe(
-				discovery => {
-					discovery.withLatency(300).sortBy("latency", "asc");
-
-					discovery
-						.findPeersWithPlugin("core-api", {
-							additional: ["height", "latency", "version"],
-						})
-						.pipe(
-							switchMap(peers => {
-								if (!peers.length) {
-									return discovery.findPeersWithPlugin(
-										"core-wallet-api",
-										{
-											additional: [
-												"height",
-												"latency",
-												"version",
-											],
-										},
-									);
-								}
-
-								return of(peers);
-							}),
-						)
-						.subscribe(
-							peers => {
-								if (peers.length) {
-									this._network.peerList = peers;
-									observer.next();
-								} else {
-									observer.error(
-										"No good peer could be found!",
-									);
-								}
-							},
-							e => observer.error(e),
-						);
-				},
-				e => observer.error(e),
-			);
-		});
-	}
-
 	public connectToRandomPeer(): Observable<void> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.refreshPeers().subscribe(
 				() => {
 					this.updateNetwork(
@@ -234,7 +176,7 @@ export class ArkApiProvider {
 					observer.next();
 					observer.complete();
 				},
-				e => {
+				(e) => {
 					this.updateNetwork();
 					observer.error(e);
 				},
@@ -258,7 +200,7 @@ export class ArkApiProvider {
 
 		let delegates: arkts.Delegate[] = [];
 
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.client
 				.getDelegateList({ limit, page })
 				.pipe(
@@ -269,7 +211,7 @@ export class ArkApiProvider {
 						});
 						return page - 1 < totalPages ? next : EMPTY;
 					}),
-					tap(response => {
+					tap((response) => {
 						if (response.success && getAllDelegates) {
 							numberDelegatesToGet = response.totalCount;
 						}
@@ -287,39 +229,10 @@ export class ArkApiProvider {
 						observer.complete();
 					}),
 				)
-				.subscribe(data => {
+				.subscribe((data) => {
 					if (data.success) {
 						delegates = [...delegates, ...data.delegates];
 					}
-				});
-		});
-	}
-
-	fetchTopWallets(
-		numberWalletsToGet: number,
-		page?: number,
-	): Observable<Wallet[]> {
-		if (!this._network || !this._network.isV2) {
-			return EMPTY;
-		}
-
-		let topWallets: Wallet[] = [];
-
-		const queryParams: HttpParams = HttpUtils.buildQueryParams({
-			limit: numberWalletsToGet,
-			page,
-		});
-
-		return new Observable(observer => {
-			this.httpClient
-				.get<{ data: Wallet[]; meta: any }>(
-					`${this._network.getPeerAPIUrl()}/api/v2/wallets/top`,
-					{ params: queryParams },
-				)
-				.subscribe(response => {
-					topWallets = response.data;
-					this.onUpdateTopWallets$.next(topWallets);
-					observer.next(topWallets);
 				});
 		});
 	}
@@ -330,7 +243,7 @@ export class ArkApiProvider {
 		secondKey: string,
 		secondPassphrase: string,
 	): Observable<Transaction> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			if (
 				!arkts.PublicKey.validateAddress(
 					transaction.address,
@@ -344,7 +257,7 @@ export class ArkApiProvider {
 				return observer.complete();
 			}
 
-			const wallet = this.userDataProvider.getWalletByAddress(
+			const wallet = this.userDataService.getWalletByAddress(
 				transaction.address,
 			);
 
@@ -365,9 +278,7 @@ export class ArkApiProvider {
 				return observer.complete();
 			}
 
-			const epochTime = moment(this._network.epoch)
-				.utc()
-				.valueOf();
+			const epochTime = moment(this._network.epoch).utc().valueOf();
 			const now = moment().valueOf();
 
 			const keys = ArkCrypto.Identities.Keys.fromPassphrase(key);
@@ -395,7 +306,7 @@ export class ArkApiProvider {
 
 			this.getNextWalletNonce(wallet.address)
 				.pipe(
-					tap(nonce => {
+					tap((nonce) => {
 						if (this._network.aip11) {
 							transaction.nonce = nonce;
 							transaction.typeGroup = 1;
@@ -439,20 +350,6 @@ export class ArkApiProvider {
 		});
 	}
 
-	private getNextWalletNonce(address: string): Observable<string> {
-		return new Observable(observer => {
-			this._client.getWallet(address).subscribe(
-				(wallet: WalletResponse) => {
-					const nonce = wallet.nonce || 0;
-					const nextNonce = new BigNumber(nonce).plus(1).toString();
-					observer.next(nextNonce);
-				},
-				() => observer.next("1"),
-				() => observer.complete(),
-			);
-		});
-	}
-
 	public validateAddress(address: string) {
 		return ArkCrypto.Identities.Address.validate(
 			address,
@@ -465,7 +362,7 @@ export class ArkApiProvider {
 		peer: arkts.Peer = this._network.activePeer,
 		broadcast: boolean = true,
 	) {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			const compressTransaction = JSON.parse(JSON.stringify(transaction));
 			this.client.postTransaction(compressTransaction, peer).subscribe(
 				(result: arkts.TransactionPostResponse) => {
@@ -494,7 +391,7 @@ export class ArkApiProvider {
 					}
 					observer.complete();
 				},
-				error => observer.error(error),
+				(error) => observer.error(error),
 			);
 		});
 	}
@@ -509,13 +406,59 @@ export class ArkApiProvider {
 		return this.client.getDelegateByPublicKey(publicKey);
 	}
 
+	public prepareFeesByType(
+		type: number,
+	): Observable<NodeFees & { isStatic: boolean }> {
+		return zip(this.fees, this.feeStatistics).pipe(
+			map(([respStatic, respDynamic]) => {
+				const feeNameMap = {
+					0: "send",
+					1: "secondsignature",
+					2: "delegate",
+					3: "vote",
+				};
+				const feeStatic = Number(respStatic[feeNameMap[type]]);
+
+				let max = feeStatic;
+				let avg = feeStatic;
+				let min = 1;
+				let isStatic = true;
+
+				const feeDynamic = respDynamic.find(
+					(item) => item.type === type,
+				);
+
+				if (feeDynamic) {
+					isStatic = feeDynamic.fees.avgFee > max;
+
+					if (!isStatic) {
+						if (feeDynamic.fees.maxFee > max) {
+							max = feeDynamic.fees.maxFee;
+						}
+
+						avg = feeDynamic.fees.avgFee;
+						min = feeDynamic.fees.minFee;
+					}
+				}
+
+				return {
+					type,
+					isStatic,
+					min,
+					avg,
+					max,
+				};
+			}),
+		);
+	}
+
 	private isSuccessfulResponse(response) {
 		const { data, errors } = response;
 		const anyDuplicate =
 			errors &&
-			Object.keys(errors).some(transactionId => {
+			Object.keys(errors).some((transactionId) => {
 				return errors[transactionId].some(
-					item => item.type === "ERR_DUPLICATE",
+					(item) => item.type === "ERR_DUPLICATE",
 				);
 			});
 
@@ -543,9 +486,9 @@ export class ArkApiProvider {
 			this.onUpdatePeer$.next(peer);
 		}
 		// Save in localStorage
-		this.userDataProvider.addOrUpdateNetwork(
+		this.userDataService.addOrUpdateNetwork(
 			this._network,
-			this.userDataProvider.currentProfile.networkId,
+			this.userDataService.currentProfile.networkId,
 		);
 		this._api = new arkts.Client(this._network);
 		this._client = new ArkClient(
@@ -554,7 +497,7 @@ export class ArkApiProvider {
 		);
 
 		this.fetchDelegates(this._network.activeDelegates * 2).subscribe(
-			data => {
+			(data) => {
 				this._delegates = data;
 			},
 		);
@@ -594,7 +537,7 @@ export class ArkApiProvider {
 			return EMPTY;
 		}
 
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.httpClient
 				.get(`${this._network.getPeerAPIUrl()}/api/v2/node/fees?days=7`)
 				.subscribe(
@@ -603,7 +546,7 @@ export class ArkApiProvider {
 						let feeStatistics: FeeStatistic[] = [];
 
 						if (Array.isArray(data)) {
-							feeStatistics = data.map(fee => ({
+							feeStatistics = data.map((fee) => ({
 								type: Number(fee.type),
 								fees: {
 									minFee: Number(fee.min),
@@ -640,15 +583,15 @@ export class ArkApiProvider {
 						this._network.feeStatistics = feeStatistics;
 						observer.next(this._network.feeStatistics);
 					},
-					e => observer.error(e),
+					(e) => observer.error(e),
 				);
 		});
 	}
 
 	private fetchFees(): Observable<arkts.Fees> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.client.getTransactionFees().subscribe(
-				response => {
+				(response) => {
 					if (response && response.success) {
 						this._fees = response.fees;
 						this.storageProvider.set(
@@ -672,6 +615,76 @@ export class ArkApiProvider {
 	private loadData() {
 		this.storageProvider
 			.getObject(constants.STORAGE_DELEGATES)
-			.subscribe(delegates => (this._delegates = delegates));
+			.subscribe((delegates) => (this._delegates = delegates));
+	}
+
+	private getNextWalletNonce(address: string): Observable<string> {
+		return new Observable((observer) => {
+			this._client.getWallet(address).subscribe(
+				(wallet: WalletResponse) => {
+					const nonce = wallet.nonce || 0;
+					const nextNonce = new BigNumber(nonce).plus(1).toString();
+					observer.next(nextNonce);
+				},
+				() => observer.next("1"),
+				() => observer.complete(),
+			);
+		});
+	}
+
+	private refreshPeers(): Observable<void> {
+		return new Observable((observer) => {
+			const network = this._network;
+			const networkLookup = ["mainnet", "devnet"];
+			const isKnowNetwork = lodash.includes(networkLookup, network.name);
+			const peerUrl = network.getPeerAPIUrl();
+
+			const networkOrHost = isKnowNetwork
+				? network.name
+				: `${peerUrl}/api/peers`;
+
+			this._peerDiscovery.find({ networkOrHost }).subscribe(
+				(discovery) => {
+					discovery.withLatency(300).sortBy("latency", "asc");
+
+					discovery
+						.findPeersWithPlugin("core-api", {
+							additional: ["height", "latency", "version"],
+						})
+						.pipe(
+							switchMap((peers) => {
+								if (!peers.length) {
+									return discovery.findPeersWithPlugin(
+										"core-wallet-api",
+										{
+											additional: [
+												"height",
+												"latency",
+												"version",
+											],
+										},
+									);
+								}
+
+								return of(peers);
+							}),
+						)
+						.subscribe(
+							(peers) => {
+								if (peers.length) {
+									this._network.peerList = peers;
+									observer.next();
+								} else {
+									observer.error(
+										"No good peer could be found!",
+									);
+								}
+							},
+							(e) => observer.error(e),
+						);
+				},
+				(e) => observer.error(e),
+			);
+		});
 	}
 }

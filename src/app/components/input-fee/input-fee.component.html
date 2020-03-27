@@ -1,93 +1,88 @@
-<ion-grid
-	class="input-fee"
-	[ngClass]="{
-		'input-fee--warning': !!warningMessage,
-		'input-fee--danger': !!errorMessage
-	}"
->
-	<ion-row class="input-fee__wrapper flex flex-col">
-		<ion-label
-			position="stacked"
-			class="input-fee__label pb-3 pt-4"
-			color=""
-			>Fee</ion-label
-		>
-		<ion-item lines="none" class="input-fee__input pt-0">
-			<ion-label>{{ symbol }}</ion-label>
-			<input-currency
-				[(ngModel)]="inputFee"
-				(updated)="onInputText()"
-				name="fee-input"
-			></input-currency>
-		</ion-item>
-		<ion-item lines="none" class="input-fee__range">
-			<ion-range
-				[(ngModel)]="rangeFee"
-				name="fee-range"
-				[step]="step"
-				[min]="min"
-				[max]="max"
-				(ionChange)="onInputRange()"
+<ion-item [formGroup]="parent" class="overflow-visible">
+	<ion-label position="floating">
+		{{ "TRANSACTIONS_PAGE.FEE" | translate }}
+	</ion-label>
+
+	<div
+		data-testid="c-input-fee__controls"
+		*ngIf="hasRange"
+		class="mb-1 w-full"
+	>
+		<div class="flex items-center">
+			<ion-button
+				data-testid="c-input-fee__controls__min"
+				[fill]="currentFee === limitMin ? 'solid' : 'outline'"
+				[color]="
+					currentFee === limitMin ? 'success-light' : 'primary-light'
+				"
+				(click)="handleClickButton(limitMin)"
+				mode="ios"
+				class="flex-1 mr-2"
 			>
-			</ion-range>
-		</ion-item>
-	</ion-row>
+				{{ "INPUT_FEE.MIN" | translate }}
+			</ion-button>
+			<ion-button
+				data-testid="c-input-fee__controls__avg"
+				*ngIf="avg && avg !== max"
+				[fill]="currentFee === avg ? 'solid' : 'outline'"
+				[color]="currentFee === avg ? 'success-light' : 'primary-light'"
+				(click)="handleClickButton(avg)"
+				mode="ios"
+				class="flex-1 mr-2"
+			>
+				{{ "INPUT_FEE.AVG" | translate }}
+			</ion-button>
+			<ion-button
+				data-testid="c-input-fee__controls__max"
+				[fill]="currentFee === max ? 'solid' : 'outline'"
+				[color]="currentFee === max ? 'success-light' : 'primary-light'"
+				(click)="handleClickButton(max)"
+				mode="ios"
+				class="flex-1"
+			>
+				{{ "INPUT_FEE.MAX" | translate }}
+			</ion-button>
+		</div>
+	</div>
 
-	<ion-label
-		*ngIf="warningMessage"
-		class="input-fee__helper--warning no-margin"
-	>
-		{{ warningMessage }}
-	</ion-label>
+	<input-currency
+		data-testid="c-input-fee__currency"
+		[isRelaxed]="hasRange"
+		[formControl]="inputControl"
+		name="fee"
+		(inputCurrencyUpdate)="emitUpdate($event)"
+		class="w-full"
+	></input-currency>
 
-	<ion-label *ngIf="errorMessage" class="input-fee__helper--danger no-margin">
-		{{ errorMessage }}
-	</ion-label>
+	<ion-range
+		data-testid="c-input-fee__range"
+		*ngIf="hasRange"
+		step="1"
+		[min]="limitMin"
+		[max]="max"
+		pin="false"
+		class="absolute py-0 w-full"
+		[formControl]="rangeControl"
+	></ion-range>
+</ion-item>
 
-	<ion-label
-		*ngIf="isStaticFee && !warningMessage && !errorMessage"
-		class="input-fee__helper"
-		translate
-		[translateParams]="{ fee: maxArktoshi }"
-	>
-		INPUT_FEE.STATIC_FEE
-	</ion-label>
+<p
+	data-testid="c-input-fee__hint"
+	*ngIf="isStatic && !inputControl.dirty"
+	class="c-input-fee__hint c-input-fee__hint--info"
+	translate
+	[translateParams]="{ fee: max | unitsSatoshi }"
+>
+	INPUT_FEE.STATIC_FEE
+</p>
 
-	<ion-grid>
-		<ion-row nowrap class="p-0">
-			<ion-col>
-				<ion-button
-					size="small"
-					expand="block"
-					[fill]="min !== rangeFee ? 'outline' : 'solid'"
-					color="primary"
-					(click)="setRangeFee(min)"
-				>
-					{{ "INPUT_FEE.MIN" | translate }}
-				</ion-button>
-			</ion-col>
-			<ion-col *ngIf="!isStaticFee">
-				<ion-button
-					size="small"
-					expand="block"
-					[fill]="avg !== rangeFee ? 'outline' : 'solid'"
-					color="primary"
-					(click)="setRangeFee(avg)"
-				>
-					{{ "INPUT_FEE.AVERAGE" | translate }}
-				</ion-button>
-			</ion-col>
-			<ion-col>
-				<ion-button
-					size="small"
-					expand="block"
-					[fill]="max !== rangeFee ? 'outline' : 'solid'"
-					color="primary"
-					(click)="setRangeFee(max)"
-				>
-					{{ "INPUT_FEE.MAX" | translate }}
-				</ion-button>
-			</ion-col>
-		</ion-row>
-	</ion-grid>
-</ion-grid>
+<p
+	*ngIf="(avg && currentFee < avg) || currentFee < min"
+	class="c-input-fee__hint c-input-fee__hint--warn"
+>
+	{{ "INPUT_FEE.LOW_FEE_NOTICE" | translate }}
+</p>
+
+<p *ngIf="currentFee > max" class="c-input-fee__hint c-input-fee__hint--warn">
+	{{ "INPUT_FEE.ADVANCED_NOTICE" | translate }}
+</p>

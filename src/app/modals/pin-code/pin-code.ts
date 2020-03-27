@@ -1,4 +1,3 @@
-import { AuthProvider } from "@/services/auth/auth";
 import { Component, Input, NgZone, OnDestroy, OnInit } from "@angular/core";
 import { Vibration } from "@ionic-native/vibration/ngx";
 import {
@@ -8,16 +7,14 @@ import {
 	NavParams,
 	Platform,
 } from "@ionic/angular";
-
-import { Subscription, timer } from "rxjs";
-
 import { TranslateService } from "@ngx-translate/core";
-
 import lodash from "lodash";
 import moment from "moment";
+import { Subscription, timer } from "rxjs";
+import { finalize, map, takeWhile } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
-import { finalize, map, takeWhile } from "rxjs/operators";
+import { AuthProvider } from "@/services/auth/auth";
 
 @Component({
 	selector: "modal-pin-code",
@@ -87,7 +84,7 @@ export class PinCodeModal implements OnInit, OnDestroy {
 								"NO",
 								"YES",
 							])
-							.subscribe(async translation => {
+							.subscribe(async (translation) => {
 								const alert = await this.alertCtrl.create({
 									header: translation["PIN_CODE.WEAK_PIN"],
 									message:
@@ -127,7 +124,7 @@ export class PinCodeModal implements OnInit, OnDestroy {
 				if (this.validatePassword) {
 					this.authProvider
 						.validateMasterPassword(this.password)
-						.subscribe(result => {
+						.subscribe((result) => {
 							if (!result) {
 								this.setWrong();
 							} else {
@@ -150,7 +147,7 @@ export class PinCodeModal implements OnInit, OnDestroy {
 	setWrong() {
 		this.vibration.vibrate(constants.VIBRATION_TIME_LONG_MS);
 
-		this.authProvider.increaseAttempts().subscribe(newAttempts => {
+		this.authProvider.increaseAttempts().subscribe((newAttempts) => {
 			this.attempts = newAttempts;
 			this.verifyAttempts();
 
@@ -182,7 +179,7 @@ export class PinCodeModal implements OnInit, OnDestroy {
 
 		// When logged in, the attempts are restarted
 		if (status) {
-			this.authProvider.clearAttempts();
+			this.authProvider.clearAttempts().subscribe();
 		}
 
 		if (this.outputPassword) {
@@ -193,8 +190,21 @@ export class PinCodeModal implements OnInit, OnDestroy {
 		this.modalCtrl.dismiss(status);
 	}
 
+	ngOnInit() {
+		this.authProvider
+			.getAttempts()
+			.subscribe((attempts) => (this.attempts = attempts));
+		this.loadUnlockTime();
+	}
+
+	ngOnDestroy() {
+		if (this.unlockCountdown$) {
+			this.unlockCountdown$.unsubscribe();
+		}
+	}
+
 	private loadUnlockTime() {
-		this.authProvider.getUnlockTimestamp().subscribe(timestamp => {
+		this.authProvider.getUnlockTimestamp().subscribe((timestamp) => {
 			if (!timestamp || lodash.isEmpty(timestamp)) {
 				return;
 			}
@@ -205,7 +215,7 @@ export class PinCodeModal implements OnInit, OnDestroy {
 			const diff = moment(timestamp).diff(now, "seconds");
 
 			if (diff <= 0) {
-				this.authProvider.clearAttempts();
+				this.authProvider.clearAttempts().subscribe();
 				this.attempts = 0;
 				return this.loadUnlockTime();
 			}
@@ -218,7 +228,7 @@ export class PinCodeModal implements OnInit, OnDestroy {
 			// Start the countdown
 			this.unlockCountdown$ = timer(0, 1000)
 				.pipe(
-					map(x => this.zone.run(() => this.unlockDiff--)),
+					map((x) => this.zone.run(() => this.unlockDiff--)),
 					takeWhile(() => this.unlockDiff > 0),
 					finalize(() =>
 						this.zone.run(
@@ -228,18 +238,5 @@ export class PinCodeModal implements OnInit, OnDestroy {
 				)
 				.subscribe();
 		});
-	}
-
-	ngOnInit() {
-		this.authProvider
-			.getAttempts()
-			.subscribe(attempts => (this.attempts = attempts));
-		this.loadUnlockTime();
-	}
-
-	ngOnDestroy() {
-		if (this.unlockCountdown$) {
-			this.unlockCountdown$.unsubscribe();
-		}
 	}
 }

@@ -1,15 +1,15 @@
-import { PassphraseInputComponent } from "@/components/passphrase-input/passphrase-input";
-import { UserDataProvider } from "@/services/user-data/user-data";
-import { Component, Input, ViewChild } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { ModalController, NavController } from "@ionic/angular";
+
+import { PassphraseInputComponent } from "@/components/passphrase-input/passphrase-input";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "modal-passphrase-word-tester",
 	templateUrl: "passphrase-word-tester.html",
 	styleUrls: ["passphrase-word-tester.scss"],
 })
-export class PassphraseWordTesterModal {
-	@Input()
+export class PassphraseWordTesterModal implements OnInit {
 	public passphraseReference: string;
 
 	@Input()
@@ -24,13 +24,15 @@ export class PassphraseWordTesterModal {
 	public constructor(
 		public navCtrl: NavController,
 		private modalCtrl: ModalController,
-		private userDataProvider: UserDataProvider,
-	) {
+		private userDataService: UserDataService,
+	) {}
+
+	ngOnInit() {
 		if (!this.passphraseReference) {
 			this.dismiss();
 		}
 
-		this.isDevNet = this.userDataProvider.isDevNet;
+		this.isDevNet = this.userDataService.isDevNet;
 		if (this.isDevNet) {
 			this.passphraseInit = this.passphraseReference;
 		}

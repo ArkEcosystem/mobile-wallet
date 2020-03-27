@@ -1,0 +1,39 @@
+<ion-item data-testid="c-input-address">
+	<div
+		data-testid="c-input-address__buttons"
+		slot="end"
+		class="ml-3 self-end flex items-center"
+	>
+		<ion-button
+			*ngIf="showQRButton"
+			fill="clear"
+			color="medium"
+			(click)="emitQRCodeClick()"
+		>
+			<ion-icon name="qr-code"></ion-icon>
+		</ion-button>
+		<ion-button
+			*ngIf="showContactButton"
+			fill="clear"
+			color="medium"
+			(click)="emitContactClick()"
+		>
+			<ion-icon name="person"></ion-icon>
+		</ion-button>
+	</div>
+
+	<ion-label position="stacked">
+		{{ "WALLETS_PAGE.ADDRESS" | translate }}
+	</ion-label>
+
+	<ion-input
+		data-testid="c-input-address__input"
+		type="text"
+		[formControl]="ngControl.control"
+		[name]="name"
+		appPasteClipboardValue
+		(ionInput)="onInput($event)"
+		(ionBlur)="onTouched()"
+		[appValueMaskOnBlur]="displayAddress"
+	></ion-input>
+</ion-item>

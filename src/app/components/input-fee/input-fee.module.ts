@@ -1,8 +1,10 @@
-import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
-import { TranslateModule } from "@ngx-translate/core";
+
+import { SharedModule } from "@/app/shared.module";
+import { DirectivesModule } from "@/directives/directives.module";
+import { PipesModule } from "@/pipes/pipes.module";
+
 import { InputCurrencyComponentModule } from "../input-currency/input-currency.module";
 import { InputFeeComponent } from "./input-fee.component";
 
@@ -10,10 +12,10 @@ import { InputFeeComponent } from "./input-fee.component";
 	declarations: [InputFeeComponent],
 	imports: [
 		IonicModule,
-		FormsModule,
+		SharedModule,
 		InputCurrencyComponentModule,
-		TranslateModule,
-		CommonModule,
+		DirectivesModule,
+		PipesModule,
 	],
 	exports: [InputFeeComponent],
 })

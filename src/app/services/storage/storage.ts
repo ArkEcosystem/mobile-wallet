@@ -1,10 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
-
-import { from, Subject } from "rxjs";
-
 import { isObject, isString, toString } from "lodash";
-import { map } from "rxjs/operators";
+import { from, Subject } from "rxjs";
+import { map, tap } from "rxjs/operators";
 
 @Injectable({ providedIn: "root" })
 export class StorageProvider {
@@ -18,7 +16,7 @@ export class StorageProvider {
 
 	public getObject(key) {
 		return from(this._storage.get(key)).pipe(
-			map(result => JSON.parse(result || "{}")),
+			map((result) => JSON.parse(result || "{}")),
 		);
 	}
 
@@ -35,7 +33,10 @@ export class StorageProvider {
 	}
 
 	public clear() {
-		from(this._storage.clear());
-		return this.onClear$.next();
+		return from(this._storage.clear()).pipe(
+			tap(() => {
+				this.onClear$.next();
+			}),
+		);
 	}
 }

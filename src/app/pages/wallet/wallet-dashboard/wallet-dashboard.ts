@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Clipboard } from "@ionic-native/clipboard/ngx";
 import {
 	ActionSheetController,
 	AlertController,
@@ -8,16 +10,28 @@ import {
 	ModalController,
 	NavController,
 } from "@ionic/angular";
-
+import { TranslateService } from "@ngx-translate/core";
+import { Fees } from "ark-ts";
+import lodash from "lodash";
 import { Subject, throwError } from "rxjs";
+import {
+	catchError,
+	debounceTime,
+	finalize,
+	switchMap,
+	takeUntil,
+} from "rxjs/operators";
 
+import * as constants from "@/app/app.constants";
+import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
+import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
+import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import {
 	MarketCurrency,
 	MarketHistory,
 	MarketTicker,
 	Profile,
 	StoredNetwork,
-	Transaction,
 	TransactionEntity,
 	Wallet,
 	WalletKeys,
@@ -25,24 +39,9 @@ import {
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
-import lodash from "lodash";
-
-import { Fees, PrivateKey, TransactionDelegate, TransactionType } from "ark-ts";
-
-import { TranslateService } from "@ngx-translate/core";
-
-import * as constants from "@/app/app.constants";
-import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
-import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { ToastProvider } from "@/services/toast/toast";
-import { ActivatedRoute } from "@angular/router";
-import { Clipboard } from "@ionic-native/clipboard/ngx";
-import { catchError, debounceTime, finalize, takeUntil } from "rxjs/operators";
-import { RegisterDelegatePage } from "./modal/register-delegate/register-delegate";
-import { RegisterSecondPassphrasePage } from "./modal/register-second-passphrase/register-second-passphrase";
+import { UserDataService } from "@/services/user-data/user-data.interface";
+
 import { SetLabelPage } from "./modal/set-label/set-label";
 
 @Component({
@@ -79,24 +78,20 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	public marketCurrency: MarketCurrency;
 
 	public onEnterPinCode: (keys: WalletKeys) => void;
-	private newDelegateName: string;
-	private newDelegateFee: number;
-	private newSecondPassphrase: string;
 
 	public emptyTransactions = false;
 	public minConfirmations = constants.WALLET_MIN_NUMBER_CONFIRMATIONS;
+	public transactions: TransactionEntity[] = [];
 
 	private unsubscriber$: Subject<void> = new Subject<void>();
 
 	private refreshDataIntervalListener;
 	private refreshTickerIntervalListener;
 
-	public transactions: TransactionEntity[] = [];
-
 	constructor(
 		private navCtrl: NavController,
 		private route: ActivatedRoute,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private arkApiProvider: ArkApiProvider,
 		private actionSheetCtrl: ActionSheetController,
 		private translateService: TranslateService,
@@ -114,15 +109,15 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 			this.navCtrl.pop();
 		}
 
-		this.profile = this.userDataProvider.currentProfile;
-		this.network = this.userDataProvider.currentNetwork;
-		this.setWallet(this.userDataProvider.getWalletByAddress(this.address));
+		this.profile = this.userDataService.currentProfile;
+		this.network = this.userDataService.currentNetwork;
+		this.setWallet(this.userDataService.getWalletByAddress(this.address));
 	}
 
 	copyAddress() {
 		this.clipboard.copy(this.address).then(
 			() => this.toastProvider.success("COPIED_CLIPBOARD"),
-			err => this.toastProvider.error(err),
+			(err) => this.toastProvider.error(err),
 		);
 	}
 
@@ -136,23 +131,12 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 			.get([
 				"WALLETS_PAGE.LABEL",
 				"DELEGATES_PAGE.DELEGATES",
-				"DELEGATES_PAGE.REGISTER_DELEGATE",
-				"WALLETS_PAGE.SECOND_PASSPHRASE",
 				"SETTINGS_PAGE.WALLET_BACKUP",
 				"WALLETS_PAGE.REMOVE_WALLET",
 				"WALLETS_PAGE.CONVERT_TO_FULL_WALLET",
 				"WALLETS_PAGE.TOP_WALLETS",
 			])
-			.subscribe(async translation => {
-				// const delegateItem = {
-				// 	text: translation["DELEGATES_PAGE.REGISTER_DELEGATE"],
-				// 	role: "delegate",
-				// 	icon: "contact",
-				// 	handler: () => {
-				// 		this.presentRegisterDelegateModal();
-				// 	},
-				// };
-
+			.subscribe(async (translation) => {
 				const delegatesItem = {
 					text: translation["DELEGATES_PAGE.DELEGATES"],
 					role: "label",
@@ -194,25 +178,10 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 					},
 				};
 
-				// const topWalletsItem = {
-				//   text: translation['WALLETS_PAGE.TOP_WALLETS'],
-				//   role: 'label',
-				//   icon: 'filing',
-				//   handler: () => {
-				//     this.presentTopWalletsModal();
-				//   }
-				// };
-
-				// DEPRECATED:
-				// if (!this.wallet.isWatchOnly && !this.wallet.secondSignature) buttons.unshift(secondPassphraseItem);
-				// if (!this.wallet.isWatchOnly) { buttons.unshift(topWalletsItem); }
 				if (!this.wallet.isWatchOnly) {
 					buttons.unshift(delegatesItem);
 				}
-				// "Watch Only" address can't vote
-				// if (!this.wallet.isWatchOnly && !this.wallet.isDelegate) {
-				// 	buttons.unshift(delegateItem);
-				// }
+
 				if (!this.wallet.isWatchOnly) {
 					buttons.splice(buttons.length - 1, 0, backupItem);
 				}
@@ -248,31 +217,15 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 		this.pinCode.open("PIN_CODE.DEFAULT_MESSAGE", true);
 	}
 
-	private async showBackup(keys: WalletKeys) {
-		if (!keys) {
-			return;
-		}
-
-		const modal = await this.modalCtrl.create({
-			component: WalletBackupModal,
-			componentProps: {
-				title: "SETTINGS_PAGE.WALLET_BACKUP",
-				keys,
-			},
-		});
-
-		modal.present();
-	}
-
 	presentAddActionSheet() {
 		this.translateService
 			.get(["TRANSACTIONS_PAGE.SEND", "TRANSACTIONS_PAGE.RECEIVE"])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const buttons: Array<object> = [
 					{
 						text: translation["TRANSACTIONS_PAGE.RECEIVE"],
 						role: "receive",
-						icon: "arrow-round-down",
+						icon: "arrow-down",
 						handler: () => {
 							return this.openTransactionReceive();
 						},
@@ -282,7 +235,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 					buttons.push({
 						text: translation["TRANSACTIONS_PAGE.SEND"],
 						role: "send",
-						icon: "arrow-round-up",
+						icon: "arrow-up",
 						handler: () => {
 							return this.navCtrl.navigateForward(
 								"/transaction/send",
@@ -333,53 +286,16 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
 		modal.onDidDismiss().then(({ data, role }) => {
 			if (role === "submit") {
-				this.userDataProvider
+				this.userDataService
 					.setWalletLabel(this.wallet, data)
 					.pipe(
-						catchError(error => {
+						catchError((error) => {
 							this.toastProvider.error(error, 3000);
 							return throwError(error);
 						}),
 					)
 					.subscribe();
 			}
-		});
-
-		modal.present();
-	}
-
-	async presentRegisterDelegateModal() {
-		const modal = await this.modalCtrl.create({
-			component: RegisterDelegatePage,
-		});
-
-		modal.onDidDismiss().then(({ data }) => {
-			if (lodash.isEmpty(name)) {
-				return;
-			}
-
-			this.newDelegateName = data.name;
-			this.newDelegateFee = data.fee;
-			this.onEnterPinCode = this.createDelegate;
-			this.pinCode.open("PIN_CODE.TYPE_PIN_SIGN_TRANSACTION", true, true);
-		});
-
-		modal.present();
-	}
-
-	async presentRegisterSecondPassphraseModal() {
-		const modal = await this.modalCtrl.create({
-			component: RegisterSecondPassphrasePage,
-		});
-
-		modal.onDidDismiss().then(({ data }) => {
-			if (lodash.isEmpty(data)) {
-				return;
-			}
-
-			this.newSecondPassphrase = data;
-			this.onEnterPinCode = this.createSignature;
-			this.pinCode.open("PIN_CODE.TYPE_PIN_SIGN_TRANSACTION", true);
 		});
 
 		modal.present();
@@ -394,7 +310,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 				"WALLETS_PAGE.REMOVE_WALLET_TEXT",
 				"WALLETS_PAGE.REMOVE_WATCH_ONLY_WALLET_TEXT",
 			])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const confirm = await this.alertCtrl.create({
 					header: translation.ARE_YOU_SURE,
 					message: this.wallet.isWatchOnly
@@ -424,7 +340,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
 	setWallet(wallet: Wallet) {
 		this.wallet = wallet;
-		const transactions = this.wallet.transactions.map(transaction => ({
+		const transactions = this.wallet.transactions.map((transaction) => ({
 			id: transaction.id,
 			timestamp: transaction.timestamp,
 			recipientId: transaction.recipientId,
@@ -456,198 +372,10 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 		this.transactions = transactions;
 	}
 
-	// presentTopWalletsModal() {
-	//   this.navCtrl.navigateForward('/wallets/top');
-	// }
-
-	private createDelegate(keys: WalletKeys) {
-		const publicKey =
-			this.wallet.publicKey ||
-			PrivateKey.fromSeed(keys.key)
-				.getPublicKey()
-				.toHex();
-
-		const transaction = {
-			passphrase: keys.key,
-			secondPassphrase: keys.secondKey,
-			username: this.newDelegateName,
-			fee: this.newDelegateFee,
-			publicKey,
-		} as TransactionDelegate;
-
-		this.arkApiProvider.transactionBuilder
-			.createDelegate(transaction)
-			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(data => {
-				this.confirmTransaction.open(data, keys);
-			});
-	}
-
-	private onTransactionConfirm = (tx: Transaction): void => {
-		switch (tx.type) {
-			case TransactionType.CreateDelegate:
-				const userName =
-					tx.asset && tx.asset.delegate
-						? tx.asset.delegate.username
-						: null;
-				this.userDataProvider.ensureWalletDelegateProperties(
-					this.wallet,
-					userName,
-				);
-				break;
-		}
-	};
-
-	private createSignature(keys: WalletKeys) {
-		keys.secondPassphrase = this.newSecondPassphrase;
-
-		this.arkApiProvider.transactionBuilder
-			.createSignature(keys.key, keys.secondPassphrase)
-			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(data => {
-				this.confirmTransaction.open(data, keys);
-			});
-	}
-
-	private saveWallet() {
-		this.userDataProvider.updateWallet(this.wallet, this.profile.profileId);
-	}
-
-	private deleteWallet() {
-		this.userDataProvider.removeWalletByAddress(this.wallet.address);
-		this.navCtrl.navigateRoot("/wallets");
-	}
-
-	private refreshTransactions(save: boolean = true, loader?: any) {
-		this.arkApiProvider.client
-			.getTransactionList(this.address)
-			.pipe(
-				finalize(() => {
-					if (loader) {
-						if (loader.type === "ionRefresh") {
-							this.refresher.complete();
-						} else {
-							loader.dismiss();
-						}
-					}
-					this.emptyTransactions = lodash.isEmpty(
-						this.wallet.transactions,
-					);
-				}),
-				takeUntil(this.unsubscriber$),
-			)
-			.subscribe(response => {
-				if (response && response.success) {
-					this.wallet.loadTransactions(response.transactions);
-					this.setWallet(this.wallet);
-					this.wallet.lastUpdate = new Date().getTime();
-					this.wallet.isCold = lodash.isEmpty(response.transactions);
-					if (save) {
-						this.saveWallet();
-					}
-				}
-			});
-	}
-
-	private refreshPrice() {
-		this.marketDataProvider.refreshTicker();
-	}
-
-	private refreshAccount() {
-		this.arkApiProvider.client
-			.getWallet(this.address)
-			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(response => {
-				this.wallet.deserialize(response);
-				this.saveWallet();
-				if (this.wallet.isDelegate) {
-					return;
-				}
-
-				this.arkApiProvider
-					.getDelegateByPublicKey(this.wallet.publicKey)
-					.subscribe(delegate =>
-						this.userDataProvider.ensureWalletDelegateProperties(
-							this.wallet,
-							delegate,
-						),
-					);
-			});
-	}
-
-	private refreshAllData() {
-		this.refreshAccount();
-		this.refreshTransactions();
-	}
-
-	private onUpdateMarket() {
-		this.marketDataProvider.onUpdateTicker$
-			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(ticker => this.setTicker(ticker));
-	}
-
-	private setTicker(ticker) {
-		this.ticker = ticker;
-		this.settingsDataProvider.settings.subscribe(settings => {
-			this.marketCurrency = this.ticker.getCurrency({
-				code: settings.currency,
-			});
-		});
-	}
-
-	private onUpdateWallet() {
-		this.userDataProvider.onUpdateWallet$
-			.pipe(takeUntil(this.unsubscriber$), debounceTime(500))
-			.subscribe(wallet => {
-				if (
-					!lodash.isEmpty(wallet) &&
-					this.wallet.address === wallet.address
-				) {
-					this.setWallet(wallet);
-				}
-			});
-	}
-
-	private load() {
-		this.arkApiProvider.fees.subscribe(fees => (this.fees = fees));
-		if (this.marketDataProvider.cachedTicker) {
-			this.setTicker(this.marketDataProvider.cachedTicker);
-		}
-		this.marketDataProvider.history.subscribe(
-			history => (this.marketHistory = history),
-		);
-
-		if (lodash.isEmpty(this.wallet)) {
-			this.navCtrl.pop();
-			return;
-		}
-
-		this.userDataProvider.setCurrentWallet(this.wallet);
-
-		const transactions = this.wallet.transactions;
-		this.emptyTransactions = lodash.isEmpty(transactions);
-
-		// search for new transactions immediately
-		if (this.emptyTransactions && !this.wallet.isCold) {
-			this.translateService
-				.get("TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS")
-				.pipe(takeUntil(this.unsubscriber$))
-				.subscribe(async translation => {
-					const loader = await this.loadingCtrl.create({
-						message: `${translation}...`,
-					});
-
-					loader.present();
-
-					this.refreshTransactions(true, loader);
-				});
-		}
-	}
-
 	ngOnInit(): void {
 		this.confirmTransaction.confirm
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(this.onTransactionConfirm);
+			.subscribe();
 		this.load();
 		this.refreshAllData();
 		this.refreshPrice();
@@ -671,5 +399,161 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 
 		this.unsubscriber$.next();
 		this.unsubscriber$.complete();
+	}
+
+	private saveWallet() {
+		this.userDataService.updateWallet(this.wallet, this.profile.profileId);
+	}
+
+	private deleteWallet() {
+		this.userDataService
+			.removeWalletByAddress(this.wallet.address)
+			.subscribe();
+		this.navCtrl.navigateRoot("/wallets");
+	}
+
+	private refreshTransactions(save: boolean = true, loader?: any) {
+		this.arkApiProvider.client
+			.getTransactionList(this.address)
+			.pipe(
+				finalize(() => {
+					if (loader) {
+						if (loader.type === "ionRefresh") {
+							this.refresher.complete();
+						} else {
+							loader.dismiss();
+						}
+					}
+					this.emptyTransactions = lodash.isEmpty(
+						this.wallet.transactions,
+					);
+				}),
+				takeUntil(this.unsubscriber$),
+			)
+			.subscribe((response) => {
+				if (response && response.success) {
+					this.wallet.loadTransactions(response.transactions);
+					this.setWallet(this.wallet);
+					this.wallet.lastUpdate = new Date().getTime();
+					this.wallet.isCold = lodash.isEmpty(response.transactions);
+					if (save) {
+						this.saveWallet();
+					}
+				}
+			});
+	}
+
+	private refreshPrice() {
+		this.marketDataProvider.refreshTicker();
+	}
+
+	private refreshAccount() {
+		this.arkApiProvider.client
+			.getWallet(this.address)
+			.pipe(takeUntil(this.unsubscriber$))
+			.subscribe((response) => {
+				this.wallet.deserialize(response);
+				this.saveWallet();
+				if (this.wallet.isDelegate) {
+					return;
+				}
+
+				this.arkApiProvider
+					.getDelegateByPublicKey(this.wallet.publicKey)
+					.pipe(
+						switchMap((delegate) =>
+							this.userDataService.ensureWalletDelegateProperties(
+								this.wallet,
+								delegate,
+							),
+						),
+					)
+					.subscribe();
+			});
+	}
+
+	private refreshAllData() {
+		this.refreshAccount();
+		this.refreshTransactions();
+	}
+
+	private onUpdateMarket() {
+		this.marketDataProvider.onUpdateTicker$
+			.pipe(takeUntil(this.unsubscriber$))
+			.subscribe((ticker) => this.setTicker(ticker));
+	}
+
+	private setTicker(ticker) {
+		this.ticker = ticker;
+		this.settingsDataProvider.settings.subscribe((settings) => {
+			this.marketCurrency = this.ticker.getCurrency({
+				code: settings.currency,
+			});
+		});
+	}
+
+	private onUpdateWallet() {
+		this.userDataService.onUpdateWallet$
+			.pipe(takeUntil(this.unsubscriber$), debounceTime(500))
+			.subscribe((wallet) => {
+				if (
+					!lodash.isEmpty(wallet) &&
+					this.wallet.address === wallet.address
+				) {
+					this.setWallet(wallet);
+				}
+			});
+	}
+
+	private load() {
+		this.arkApiProvider.fees.subscribe((fees) => (this.fees = fees));
+		if (this.marketDataProvider.cachedTicker) {
+			this.setTicker(this.marketDataProvider.cachedTicker);
+		}
+		this.marketDataProvider.history.subscribe(
+			(history) => (this.marketHistory = history),
+		);
+
+		if (lodash.isEmpty(this.wallet)) {
+			this.navCtrl.pop();
+			return;
+		}
+
+		this.userDataService.setCurrentWallet(this.wallet);
+
+		const transactions = this.wallet.transactions;
+		this.emptyTransactions = lodash.isEmpty(transactions);
+
+		// search for new transactions immediately
+		if (this.emptyTransactions && !this.wallet.isCold) {
+			this.translateService
+				.get("TRANSACTIONS_PAGE.FETCHING_TRANSACTIONS")
+				.pipe(takeUntil(this.unsubscriber$))
+				.subscribe(async (translation) => {
+					const loader = await this.loadingCtrl.create({
+						message: `${translation}...`,
+					});
+
+					loader.present();
+
+					this.refreshTransactions(true, loader);
+				});
+		}
+	}
+
+	private async showBackup(keys: WalletKeys) {
+		if (!keys) {
+			return;
+		}
+
+		const modal = await this.modalCtrl.create({
+			component: WalletBackupModal,
+			componentProps: {
+				title: "SETTINGS_PAGE.WALLET_BACKUP",
+				keys,
+			},
+		});
+
+		modal.present();
 	}
 }

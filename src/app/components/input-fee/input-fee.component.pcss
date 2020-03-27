@@ -1,0 +1,32 @@
+:host {
+	@apply w-full;
+
+	ion-range {
+		bottom: -0.45rem;
+		padding-left: 0.45rem;
+		padding-right: 0.45rem;
+		--bar-height: 3px;
+		--height: 1rem;
+		--knob-size: 1.2rem;
+		--knob-handle-size: 1.5rem;
+		--knob-background: var(--ion-background-color);
+		--knob-box-shadow: 0 0 0 3px var(--ion-color-primary);
+		--bar-background: var(--ion-color-light-shade);
+	}
+
+	ion-item {
+		--padding-start: 0;
+	}
+
+	.c-input-fee__hint {
+		@apply py-2 text-sm italic;
+	}
+
+	.c-input-fee__hint--info {
+		color: var(--ion-color-medium-shade);
+	}
+
+	.c-input-fee__hint--warn {
+		color: var(--ion-color-danger);
+	}
+}

@@ -59,14 +59,16 @@
 			</ion-col>
 		</ion-row>
 
-		<form #voteForm="ngForm" class="p-5">
+		<form [formGroup]="voteForm" class="p-5">
 			<ion-row *ngIf="isWalletSelected()" class="vote-wrapper p-0">
 				<ion-grid>
 					<ion-row class="vote-wrapper__slider">
 						<input-fee
-							class="w-full"
-							[transactionType]="transactionType"
-							(change)="onInputFee($event)"
+							[isStatic]="nodeFees.isStatic"
+							[min]="nodeFees.min"
+							[avg]="nodeFees.avg"
+							[max]="nodeFees.max"
+							(inputFeeUpdate)="onInputFee($event)"
 						></input-fee>
 					</ion-row>
 					<ion-row>
@@ -87,7 +89,7 @@
 	</ion-grid>
 </ion-content>
 
-<ion-footer no-shadow no-border>
+<ion-footer class="ion-no-border ion-no-shadow">
 	<ion-grid>
 		<ion-row *ngIf="!isWalletSelected()" class="note-toolbar">
 			<ion-col class="text-center">

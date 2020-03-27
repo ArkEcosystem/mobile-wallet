@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ark.wallet.mobile" version="1.7.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ark.wallet.mobile" version="1.8.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Ark Mobile</name>
     <description>ARK</description>
     <author email="mobile@ark.io" href="http://ark.io/">Ark Ecosystem</author>
@@ -29,9 +29,11 @@
     <preference name="KeyboardResizeMode" value="native" />
     <preference name="Orientation" value="portrait" />
     <preference name="target-device" value="handset" />
+    <preference name="DisableDeploy" value="true" />
     <platform name="android">
-        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
+        <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:networkSecurityConfig="@xml/network_security_config" />
+            <application android:usesCleartextTraffic="true" />
         </edit-config>
         <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application/activity" xmlns:android="http://schemas.android.com/apk/res/android">
             <activity android:windowSoftInputMode="adjustPan" />
@@ -123,7 +125,6 @@
     <plugin name="cordova-plugin-qrscanner" spec="^3.0.1" />
     <plugin name="cordova-plugin-inappbrowser" spec="^3.1.0" />
     <plugin name="cordova-plugin-x-socialsharing" spec="^5.6.2" />
-    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
     <plugin name="cordova-sqlite-storage" spec="3.4.0" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.2" />
     <plugin name="cordova-plugin-screen-orientation" spec="^3.0.2" />

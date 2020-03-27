@@ -1,12 +1,18 @@
-import { StorageProvider } from "@/services/storage/storage";
 import { Injectable } from "@angular/core";
-
-import { Observable, Subject } from "rxjs";
-
-import * as constants from "@/app/app.constants";
 import * as bcrypt from "bcryptjs";
 import * as moment from "moment";
-import { map, mergeMap } from "rxjs/operators";
+import { Observable, Subject } from "rxjs";
+import {
+	map,
+	mapTo,
+	mergeMap,
+	mergeMapTo,
+	switchMapTo,
+	tap,
+} from "rxjs/operators";
+
+import * as constants from "@/app/app.constants";
+import { StorageProvider } from "@/services/storage/storage";
 
 @Injectable({ providedIn: "root" })
 export class AuthProvider {
@@ -18,15 +24,16 @@ export class AuthProvider {
 	constructor(private storage: StorageProvider) {}
 
 	login(profileId: string): Observable<boolean> {
-		return new Observable(observer => {
-			this.loggedProfileId = profileId;
-			this.storage.set(constants.STORAGE_ACTIVE_PROFILE, profileId);
-
-			this.storage.set(constants.STORAGE_LOGIN, true);
-
-			this.onLogin$.next(profileId);
-			observer.next(true);
-		});
+		return this.storage
+			.set(constants.STORAGE_ACTIVE_PROFILE, profileId)
+			.pipe(
+				mergeMapTo(this.storage.set(constants.STORAGE_LOGIN, true)),
+				tap(() => {
+					this.loggedProfileId = profileId;
+					this.onLogin$.next(profileId);
+				}),
+				mapTo(true),
+			);
 	}
 
 	logout(broadcast: boolean = true): void {
@@ -40,35 +47,35 @@ export class AuthProvider {
 	}
 
 	hasSeenIntro(): Observable<boolean> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.storage
 				.get(constants.STORAGE_INTROSEEN)
-				.subscribe(introSeen => {
+				.subscribe((introSeen) => {
 					observer.next(introSeen === "true");
 					observer.complete();
 				});
 		});
 	}
 
-	saveIntro(): void {
-		this.storage.set(constants.STORAGE_INTROSEEN, true);
+	saveIntro(): Observable<boolean> {
+		return this.storage.set(constants.STORAGE_INTROSEEN, true);
 	}
 
 	getMasterPassword(): Observable<string> {
 		return this.storage.get(constants.STORAGE_MASTERPASSWORD);
 	}
 
-	saveMasterPassword(password: string): void {
+	saveMasterPassword(password: string): Observable<any> {
 		const hash = bcrypt.hashSync(password, 8);
 
-		this.storage.set(constants.STORAGE_MASTERPASSWORD, hash);
+		return this.storage.set(constants.STORAGE_MASTERPASSWORD, hash);
 	}
 
 	validateMasterPassword(password: string): Observable<any> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this.storage
 				.get(constants.STORAGE_MASTERPASSWORD)
-				.subscribe(master => {
+				.subscribe((master) => {
 					bcrypt.compare(password, master, (err, res) => {
 						if (err) {
 							observer.error(err);
@@ -106,7 +113,7 @@ export class AuthProvider {
 			"987654",
 			"098765",
 		];
-		return weakPasswords.indexOf(password) > -1;
+		return weakPasswords.includes(password);
 	}
 
 	getUnlockTimestamp() {
@@ -119,7 +126,7 @@ export class AuthProvider {
 
 	increaseAttempts() {
 		return this.getAttempts().pipe(
-			mergeMap(attempts => {
+			mergeMap((attempts) => {
 				const increasedAttempts = Number(attempts) + 1;
 				return this.storage
 					.set(constants.STORAGE_AUTH_ATTEMPTS, increasedAttempts)
@@ -129,8 +136,8 @@ export class AuthProvider {
 	}
 
 	increaseUnlockTimestamp(): Promise<Date> {
-		return new Promise(resolve => {
-			this.getAttempts().subscribe(attempts => {
+		return new Promise((resolve) => {
+			this.getAttempts().subscribe((attempts) => {
 				const currentAttempt =
 					Number(attempts) - constants.PIN_ATTEMPTS_LIMIT + 1;
 				const lastTimestamp = moment(moment.now());
@@ -150,8 +157,13 @@ export class AuthProvider {
 		});
 	}
 
-	clearAttempts() {
-		this.storage.set(constants.STORAGE_AUTH_UNLOCK_TIMESTAMP, null);
-		this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, 0);
+	clearAttempts(): Observable<any> {
+		return this.storage
+			.set(constants.STORAGE_AUTH_UNLOCK_TIMESTAMP, null)
+			.pipe(
+				switchMapTo(
+					this.storage.set(constants.STORAGE_AUTH_ATTEMPTS, 0),
+				),
+			);
 	}
 }

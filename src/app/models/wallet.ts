@@ -1,9 +1,8 @@
 import { Account } from "ark-ts/model";
 
+import * as constants from "@/app/app.constants";
 import { MarketCurrency } from "@/models/market";
 import { Transaction } from "@/models/transaction";
-
-import * as constants from "@/app/app.constants";
 
 export interface QRCodeScheme {
 	address?: string;

@@ -1,4 +1,4 @@
-<ion-app>
+<ion-app data-testid="c-app">
 	<ion-menu type="overlay" contentId="main" [menuId]="menuId" id="sidebar">
 		<ion-content>
 			<div class="p-8 mb-4">
@@ -19,36 +19,39 @@
 
 			<ion-list inset lines="none">
 				<ion-item detail (click)="openPage('/wallets')">
-					<ion-icon name="wallet" slot="start"></ion-icon>
+					<ion-icon name="wallet-outline" slot="start"></ion-icon>
 					{{ "WALLETS_PAGE.WALLETS" | translate }}
 				</ion-item>
-				<!-- <ion-item detail (click)="openPage('/wallets/top', false)">
-<ion-icon name="filing" slot="start"></ion-icon>
-{{ 'WALLETS_PAGE.TOP_WALLETS' | translate }}
-</ion-item> -->
 				<ion-item detail (click)="openPage('/delegates', false)">
-					<ion-icon name="people" slot="start"></ion-icon>
+					<ion-icon
+						name="people-circle-outline"
+						slot="start"
+					></ion-icon>
 					{{ "DELEGATES_PAGE.DELEGATES" | translate }}
 				</ion-item>
 				<ion-item detail (click)="openPage('/network-status', false)">
-					<ion-icon name="wifi" slot="start"></ion-icon>
+					<ion-icon name="wifi-outline" slot="start"></ion-icon>
 					{{ "NETWORKS_PAGE.NETWORK_STATUS" | translate }}
 				</ion-item>
 				<ion-item detail (click)="openPage('/settings', false)">
-					<ion-icon name="settings" slot="start"></ion-icon>
+					<ion-icon
+						ios="cog-outline"
+						md="settings-outline"
+						slot="start"
+					></ion-icon>
 					{{ "SETTINGS_PAGE.SETTINGS" | translate }}
 				</ion-item>
 				<ion-item detail (click)="openPage('/contacts', false)">
-					<ion-icon name="contact" slot="start"></ion-icon>
+					<ion-icon name="people-outline" slot="start"></ion-icon>
 					{{ "CONTACTS_PAGE.CONTACTS" | translate }}
 				</ion-item>
 			</ion-list>
 		</ion-content>
 
-		<ion-footer no-border no-shadow>
+		<ion-footer class="ion-no-border ion-no-shadow">
 			<ion-list inset lines="none">
 				<ion-item detail (click)="logout()">
-					<ion-icon name="log-out" slot="start"></ion-icon>
+					<ion-icon name="log-out-outline" slot="start"></ion-icon>
 					{{ "SIGN_OUT" | translate }}
 				</ion-item>
 			</ion-list>

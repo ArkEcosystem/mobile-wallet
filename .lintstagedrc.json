@@ -1,5 +1,4 @@
 {
-	"*.ts": ["tslint -c tslint.json --fix", "prettier --write"],
-	"src/**/*.ts": ["ng-lint-staged lint --fix --"],
+	"*.ts": ["prettier --write", "eslint --fix"],
 	"*.{css,pcss,scss,html,json,md,js}": ["prettier --write"]
 }

@@ -1,13 +1,14 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
-import { TransactionReceivePage } from "./transaction-receive";
+import { TranslateModule } from "@ngx-translate/core";
 
 import { InputAmountComponentModule } from "@/components/input-amount/input-amount.module";
 import { QRCodeComponentModule } from "@/components/qr-code/qr-code.module";
-import { CommonModule } from "@angular/common";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
-import { TranslateModule } from "@ngx-translate/core";
+
+import { TransactionReceivePage } from "./transaction-receive";
 
 @NgModule({
 	declarations: [TransactionReceivePage],

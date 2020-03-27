@@ -1,17 +1,17 @@
+import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { ModalController, NavController } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
+import lodash from "lodash";
+
+import { ConfirmTransactionModal } from "@/app/modals/confirm-transaction/confirm-transaction";
 import {
 	Transaction,
 	TranslatableObject,
 	Wallet,
 	WalletKeys,
 } from "@/models/model";
-import { ArkApiProvider } from "@/services/ark-api/ark-api";
-import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { ModalController, NavController } from "@ionic/angular";
-import { TranslateService } from "@ngx-translate/core";
-
-import { ConfirmTransactionModal } from "@/app/modals/confirm-transaction/confirm-transaction";
 import { AddressCheckResult } from "@/services/address-checker/address-check-result";
-import lodash from "lodash";
+import { ArkApiProvider } from "@/services/ark-api/ark-api";
 
 @Component({
 	selector: "confirm-transaction",
@@ -55,7 +55,7 @@ export class ConfirmTransactionComponent {
 				keys.secondPassphrase,
 			)
 			.subscribe(
-				async tx => {
+				async (tx) => {
 					const modal = await this.modalCtrl.create({
 						component: ConfirmTransactionModal,
 						componentProps: {
@@ -100,7 +100,7 @@ export class ConfirmTransactionComponent {
 								(error as any),
 							error.parameters,
 						)
-						.subscribe(errorMessage => {
+						.subscribe((errorMessage) => {
 							this.error.emit(errorMessage);
 							this.presentWrongModal({
 								status: false,

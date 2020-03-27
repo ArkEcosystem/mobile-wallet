@@ -1,20 +1,18 @@
 import { Component, NgZone, OnDestroy, OnInit } from "@angular/core";
 import { ModalController, NavController } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
+import { Network } from "ark-ts/model";
+import lodash from "lodash";
+import { Subject } from "rxjs";
+import { takeUntil, tap } from "rxjs/operators";
 
 import { MarketCurrency, MarketTicker, Transaction } from "@/models/model";
+import { AddressCheckResult } from "@/services/address-checker/address-check-result";
+import { AddressCheckResultType } from "@/services/address-checker/address-check-result-type";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { Subject } from "rxjs";
-
-import { Network } from "ark-ts/model";
-
-import { AddressCheckResult } from "@/services/address-checker/address-check-result";
-import { AddressCheckResultType } from "@/services/address-checker/address-check-result-type";
 import { ArkUtility } from "@/utils/ark-utility";
-import lodash from "lodash";
-import { takeUntil, tap } from "rxjs/operators";
 
 @Component({
 	selector: "modal-confirm-transaction",
@@ -56,7 +54,7 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
 				() => {
 					this.dismiss(true);
 				},
-				error => {
+				(error) => {
 					this.translateService
 						.get(
 							[
@@ -65,15 +63,16 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
 							],
 							{ fee: ArkUtility.subToUnit(this.transaction.fee) },
 						)
-						.subscribe(translations => {
+						.subscribe((translations) => {
 							let message = error.message;
 
 							if (error.errors) {
 								const errors = error.errors || {};
 								const anyLowFee = Object.keys(errors).some(
-									transactionId => {
+									(transactionId) => {
 										return errors[transactionId].some(
-											item => item.type === "ERR_LOW_FEE",
+											(item) =>
+												item.type === "ERR_LOW_FEE",
 										);
 									},
 								);
@@ -115,26 +114,6 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
 		this.modalCtrl.dismiss(response);
 	}
 
-	private onUpdateTicker() {
-		this.marketDataProvider.onUpdateTicker$
-			.pipe(
-				takeUntil(this.unsubscriber$),
-				tap(ticker => {
-					if (!ticker) {
-						return;
-					}
-
-					this.ticker = ticker;
-					this.settingsDataProvider.settings.subscribe(settings => {
-						this.marketCurrency = this.ticker.getCurrency({
-							code: settings.currency,
-						});
-					});
-				}),
-			)
-			.subscribe();
-	}
-
 	ngOnInit() {
 		this.address = this.transaction.address;
 
@@ -151,5 +130,25 @@ export class ConfirmTransactionModal implements OnInit, OnDestroy {
 	ngOnDestroy() {
 		this.unsubscriber$.next();
 		this.unsubscriber$.complete();
+	}
+
+	private onUpdateTicker() {
+		this.marketDataProvider.onUpdateTicker$
+			.pipe(
+				takeUntil(this.unsubscriber$),
+				tap((ticker) => {
+					if (!ticker) {
+						return;
+					}
+
+					this.ticker = ticker;
+					this.settingsDataProvider.settings.subscribe((settings) => {
+						this.marketCurrency = this.ticker.getCurrency({
+							code: settings.currency,
+						});
+					});
+				}),
+			)
+			.subscribe();
 	}
 }

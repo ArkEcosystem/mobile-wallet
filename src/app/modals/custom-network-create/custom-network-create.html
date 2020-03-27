@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-toolbar>
 		<ion-title>{{ 'CUSTOM_NETWORK.CREATE_NETWORK' | translate }}</ion-title>
 		<ion-buttons slot="end">
@@ -51,7 +51,7 @@
 	</form>
 </ion-content>
 
-<ion-footer class="py-3 text-center" no-shadow no-border>
+<ion-footer class="py-3 text-center ion-no-border ion-no-shadow">
 	<ion-button
 		[disabled]="!createForm.valid || !getSeedServerUrl()"
 		(click)="configure()"

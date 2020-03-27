@@ -1,9 +1,8 @@
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-
-import { Observable, of, Subject } from "rxjs";
-
 import lodash from "lodash";
+import { Observable, of, Subject } from "rxjs";
+import { tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { UserSettings } from "@/models/settings";
@@ -12,9 +11,6 @@ import { StorageProvider } from "@/services/storage/storage";
 @Injectable({ providedIn: "root" })
 export class SettingsDataProvider {
 	public onUpdate$: Subject<UserSettings> = new Subject();
-
-	private _settings: UserSettings;
-
 	public AVALIABLE_OPTIONS = {
 		languages: {
 			en: "English",
@@ -63,12 +59,13 @@ export class SettingsDataProvider {
 			chinese_traditional: "Chinese traditional",
 		},
 	};
+	private _settings: UserSettings;
 
 	constructor(
 		private _storageProvider: StorageProvider,
 		private translateService: TranslateService,
 	) {
-		this.load().subscribe(data => {
+		this.load().subscribe((data) => {
 			this._settings = data;
 			this.save();
 		});
@@ -111,15 +108,19 @@ export class SettingsDataProvider {
 		);
 	}
 
-	public clearData(): void {
-		this._storageProvider.clear();
+	public clearData() {
+		return this._storageProvider.clear().pipe(
+			tap(() => {
+				this._settings = undefined;
+			}),
+		);
 	}
 
 	private load(): Observable<UserSettings> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			this._storageProvider
 				.getObject(constants.STORAGE_SETTINGS)
-				.subscribe(response => {
+				.subscribe((response) => {
 					let data = response;
 
 					if (lodash.isEmpty(data)) {

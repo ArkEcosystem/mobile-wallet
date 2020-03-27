@@ -3,19 +3,15 @@ import {
 	ActionSheetController,
 	AlertController,
 	NavController,
-	Platform,
 } from "@ionic/angular";
-
-import { ContactsProvider } from "@/services/contacts/contacts";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
 import { TranslateService } from "@ngx-translate/core";
-
+import lodash from "lodash";
 import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
 
 import { AddressMap } from "@/models/contact";
-import lodash from "lodash";
-import { takeUntil } from "rxjs/operators";
+import { ContactsProvider } from "@/services/contacts/contacts";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-contact-list",
@@ -30,9 +26,8 @@ export class ContactListPage {
 	private unsubscriber$: Subject<void> = new Subject<void>();
 
 	constructor(
-		private platform: Platform,
 		private navCtrl: NavController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private contactsProvider: ContactsProvider,
 		private translateService: TranslateService,
 		private alertCtrl: AlertController,
@@ -47,14 +42,12 @@ export class ContactListPage {
 		this.translateService
 			.get(["EDIT", "DELETE"])
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const buttons = [
 					{
 						text: translation.EDIT,
 						role: "label",
-						icon: this.platform.is("ios")
-							? "ios-create-outline"
-							: "md-create",
+						icon: "create",
 						handler: () => {
 							this.openEditPage(address);
 						},
@@ -62,9 +55,7 @@ export class ContactListPage {
 					{
 						text: translation.DELETE,
 						role: "label",
-						icon: this.platform.is("ios")
-							? "ios-trash-outline"
-							: "md-trash",
+						icon: "trash",
 						handler: () => {
 							this.showDeleteConfirm(address);
 						},
@@ -89,7 +80,7 @@ export class ContactListPage {
 				],
 				{ name: contactName },
 			)
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const alert = await this.alertCtrl.create({
 					header: translation.ARE_YOU_SURE,
 					message: translation["CONTACTS_PAGE.DELETE_CONTACT"],
@@ -134,8 +125,8 @@ export class ContactListPage {
 	}
 
 	private _load() {
-		this.profile = this.userDataProvider.currentProfile;
-		this.network = this.userDataProvider.currentNetwork;
+		this.profile = this.userDataService.currentProfile;
+		this.network = this.userDataService.currentNetwork;
 
 		this.addresses = lodash(this.profile.contacts)
 			.mapValues("name")

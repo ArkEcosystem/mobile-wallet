@@ -4,22 +4,19 @@ import {
 	AlertController,
 	NavController,
 } from "@ionic/angular";
-
-import { Subject } from "rxjs";
-
-import { AuthProvider } from "@/services/auth/auth";
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
-import { TranslateService } from "@ngx-translate/core";
-
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
-import { AddressMap } from "@/models/model";
 import { Platform } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
 import { PublicKey } from "ark-ts/core";
 import { NetworkType } from "ark-ts/model";
 import lodash from "lodash";
+import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
+
+import { PinCodeComponent } from "@/components/pin-code/pin-code";
+import { AddressMap } from "@/models/model";
+import { AuthProvider } from "@/services/auth/auth";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "page-profile-signin",
@@ -40,7 +37,7 @@ export class ProfileSigninPage implements OnDestroy {
 	constructor(
 		public platform: Platform,
 		public navCtrl: NavController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private translateService: TranslateService,
 		private authProvider: AuthProvider,
 		private toastProvider: ToastProvider,
@@ -51,14 +48,12 @@ export class ProfileSigninPage implements OnDestroy {
 	presentProfileActionSheet(profileId: string) {
 		this.translateService
 			.get(["EDIT", "DELETE"])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const buttons = [
 					{
 						text: translation.DELETE,
 						role: "delete",
-						icon: this.platform.is("ios")
-							? "ios-trash-outline"
-							: "md-trash",
+						icon: "trash",
 						handler: () => {
 							if (!this.profileHasWallets(profileId)) {
 								this.showDeleteConfirm(profileId);
@@ -83,7 +78,7 @@ export class ProfileSigninPage implements OnDestroy {
 	showDeleteConfirm(profileId: string) {
 		this.translateService
 			.get(["ARE_YOU_SURE", "CONFIRM", "CANCEL"])
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const confirm = await this.alertCtrl.create({
 					header: translation.ARE_YOU_SURE,
 					buttons: [
@@ -103,7 +98,7 @@ export class ProfileSigninPage implements OnDestroy {
 	}
 
 	delete(profileId: string) {
-		return this.userDataProvider
+		return this.userDataService
 			.removeProfileById(profileId)
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe(() => {
@@ -124,7 +119,7 @@ export class ProfileSigninPage implements OnDestroy {
 		this.authProvider
 			.login(this.profileIdSelected)
 			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe(status => {
+			.subscribe((status) => {
 				if (status) {
 					this.navCtrl.navigateRoot("/wallets");
 				} else {
@@ -138,11 +133,11 @@ export class ProfileSigninPage implements OnDestroy {
 	}
 
 	load() {
-		this.profiles = this.userDataProvider.profiles;
-		this.networks = this.userDataProvider.networks;
+		this.profiles = this.userDataService.profiles;
+		this.networks = this.userDataService.networks;
 
 		this.addresses = lodash(this.profiles)
-			.mapValues(o => [o.name, o.networkId])
+			.mapValues((o) => [o.name, o.networkId])
 			.transform((result, data, id) => {
 				const network = this.networks[data[1]];
 				if (!network) {

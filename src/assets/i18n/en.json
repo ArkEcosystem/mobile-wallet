@@ -1,4 +1,7 @@
 {
+	"VIEWER_LOG": {
+		"LOG_VIEWER": "Log Viewer"
+	},
 	"API": {
 		"BALANCE_TOO_LOW": "Balance too low for transaction",
 		"BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} in your wallet! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your wallet balance is only {{ balance }}!",
@@ -17,6 +20,7 @@
 		"CONTACTS": "Contacts",
 		"INVALID_ADDRESS": "The address '{{ address }}' is invalid!",
 		"CONTACT_NAME_EMPTY": "The contact name is empty!",
+		"CONTACT_ADDRESS_EMPTY": "The contact address is empty!",
 		"CONTACT_EXISTS_ADDRESS": "There is already a contact with the address '{{ address }}'!",
 		"CONTACT_NOT_EXISTS_ADDRESS": "A contact with the address '{{ address }}' doesn't exist!",
 		"CONTACT_EXISTS_NAME": "There is already a contact with the name '{{ name }}'!",
@@ -160,6 +164,7 @@
 	},
 	"INPUT_FEE": {
 		"MIN": "Min",
+		"AVG": "Avg",
 		"AVERAGE": "Average",
 		"MAX": "Max",
 		"LOW_FEE_NOTICE": "Transactions with low fees may never get confirmed",
@@ -208,7 +213,9 @@
 		"SETTINGS": "Settings",
 		"VERSION": "Version",
 		"WALLET_BACKUP": "Wallet Backup",
-		"WORDLIST_LANGUAGE": "Passphrase language"
+		"WORDLIST_LANGUAGE": "Passphrase language",
+		"VIEW_LOG_REPORT": "View log report",
+		"YOU_ARE_DEVELOPER": "You are now a developer!"
 	},
 	"SHOW_ADVANCED": "Show Advanced",
 	"SKIP": "Skip",

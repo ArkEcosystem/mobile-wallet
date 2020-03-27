@@ -1,18 +1,19 @@
-import { Wallet, WalletKeys } from "@/models/model";
-import { AuthProvider } from "@/services/auth/auth";
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import {
 	LoadingController,
 	ModalController,
 	NavController,
 } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
+import lodash from "lodash";
 
 import { EnterSecondPassphraseModal } from "@/app/modals/enter-second-passphrase/enter-second-passphrase";
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
-import { TranslateService } from "@ngx-translate/core";
-import lodash from "lodash";
+import { Wallet, WalletKeys } from "@/models/model";
+import { AuthProvider } from "@/services/auth/auth";
+import { LoggerService } from "@/services/logger/logger.service";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
 	selector: "pin-code",
@@ -32,13 +33,14 @@ export class PinCodeComponent {
 	close: EventEmitter<void> = new EventEmitter();
 
 	constructor(
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private authProvider: AuthProvider,
 		private toastProvider: ToastProvider,
 		private modalCtrl: ModalController,
 		private navCtrl: NavController,
 		private loadingCtrl: LoadingController,
 		private translateService: TranslateService,
+		private loggerService: LoggerService,
 	) {}
 
 	async open(
@@ -77,7 +79,7 @@ export class PinCodeComponent {
 				return this.executeOnSuccess(onSuccess);
 			}
 
-			const passphrases = this.userDataProvider.getKeysByWallet(
+			const passphrases = this.userDataService.getKeysByWallet(
 				this.wallet,
 				data,
 			);
@@ -94,37 +96,6 @@ export class PinCodeComponent {
 		});
 
 		modal.present();
-	}
-
-	private async requestSecondPassphrase(
-		passphrases: WalletKeys,
-		onSuccess: (keys: WalletKeys) => void,
-	) {
-		const hasSecondPublicKey = !!(
-			this.wallet.attributes?.secondPublicKey ||
-			this.wallet.secondPublicKey
-		);
-		if (hasSecondPublicKey && !this.wallet.cipherSecondKey) {
-			const modal = await this.modalCtrl.create({
-				component: EnterSecondPassphraseModal,
-			});
-
-			modal.onDidDismiss().then(({ data }) => {
-				if (!data) {
-					this.toastProvider.error(
-						"TRANSACTIONS_PAGE.SECOND_PASSPHRASE_NOT_ENTERED",
-					);
-					return this.wrong.emit();
-				}
-
-				passphrases.secondPassphrase = data;
-				return this.executeOnSuccess(onSuccess, passphrases);
-			});
-
-			modal.present();
-		} else {
-			return this.executeOnSuccess(onSuccess, passphrases);
-		}
 	}
 
 	createUpdatePinCode(nextPage?: string, oldPassword?: string) {
@@ -163,18 +134,19 @@ export class PinCodeComponent {
 								};
 
 								if (status) {
-									this.authProvider.saveMasterPassword(
-										password,
-									);
+									this.authProvider
+										.saveMasterPassword(password)
+										.subscribe();
+
 									if (oldPassword) {
 										this.translateService
 											.get("PIN_CODE.UPDATING")
-											.subscribe(async updatingText => {
+											.subscribe(async (updatingText) => {
 												const loading = await this.loadingCtrl.create(
 													{ message: updatingText },
 												);
 												loading.present().then(() => {
-													this.userDataProvider.updateWalletEncryption(
+													this.userDataService.updateWalletEncryption(
 														oldPassword,
 														password,
 													);
@@ -222,10 +194,42 @@ export class PinCodeComponent {
 		}
 	}
 
+	private async requestSecondPassphrase(
+		passphrases: WalletKeys,
+		onSuccess: (keys: WalletKeys) => void,
+	) {
+		const hasSecondPublicKey = !!(
+			this.wallet.attributes?.secondPublicKey ||
+			this.wallet.secondPublicKey
+		);
+		if (hasSecondPublicKey && !this.wallet.cipherSecondKey) {
+			const modal = await this.modalCtrl.create({
+				component: EnterSecondPassphraseModal,
+			});
+
+			modal.onDidDismiss().then(({ data }) => {
+				if (!data) {
+					this.toastProvider.error(
+						"TRANSACTIONS_PAGE.SECOND_PASSPHRASE_NOT_ENTERED",
+					);
+					return this.wrong.emit();
+				}
+
+				passphrases.secondPassphrase = data;
+				return this.executeOnSuccess(onSuccess, passphrases);
+			});
+
+			modal.present();
+		} else {
+			return this.executeOnSuccess(onSuccess, passphrases);
+		}
+	}
+
 	private executeOnSuccess(
 		onSuccess: (keys: WalletKeys) => any,
 		keys?: WalletKeys,
 	): void {
+		this.loggerService.info("PIN code authorized");
 		if (onSuccess) {
 			onSuccess(keys);
 		}

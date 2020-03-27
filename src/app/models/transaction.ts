@@ -1,11 +1,11 @@
-import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
+import { Interfaces } from "@arkecosystem/crypto";
 import { Transaction as TransactionModel, TransactionType } from "ark-ts/model";
 import moment from "moment";
 
-import { MarketCurrency, MarketHistory, MarketTicker } from "@/models/market";
-
 import { TRANSACTION_GROUPS, TRANSACTION_TYPES } from "@/app/app.constants";
-import { Interfaces } from "@arkecosystem/crypto";
+import { MarketCurrency, MarketHistory, MarketTicker } from "@/models/market";
+import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
+
 import { ArkUtility } from "../utils/ark-utility";
 
 const TX_TYPES = {
@@ -151,9 +151,7 @@ export class Transaction extends TransactionModel {
 			if (!price) {
 				price = market.getPriceByDate(
 					marketCurrency.code,
-					moment(this.date)
-						.subtract(1, "d")
-						.toDate(),
+					moment(this.date).subtract(1, "d").toDate(),
 				);
 			}
 		}
@@ -225,7 +223,7 @@ export class Transaction extends TransactionModel {
 	isUnvote(): boolean {
 		if (this.asset && this.asset.votes) {
 			const vote = this.asset.votes[0];
-			return vote.charAt(0) === "-";
+			return vote.startsWith("-");
 		}
 		return false;
 	}

@@ -1,24 +1,23 @@
-import { AuthProvider } from "@/services/auth/auth";
-import { ForgeProvider } from "@/services/forge/forge";
-import { StorageProvider } from "@/services/storage/storage";
 import { Injectable } from "@angular/core";
-
-import { EMPTY, Observable, Subject, throwError } from "rxjs";
-
-import { Contact, Profile, Wallet, WalletKeys } from "@/models/model";
-
+import { Delegate } from "ark-ts";
 import { Network, NetworkType } from "ark-ts/model";
 import * as lodash from "lodash";
+import { EMPTY, Observable, Subject, throwError } from "rxjs";
+import { debounceTime, map } from "rxjs/operators";
 import { v4 as uuid } from "uuid";
 
 import * as constants from "@/app/app.constants";
+import { Contact, Profile, Wallet, WalletKeys } from "@/models/model";
 import { StoredNetwork } from "@/models/stored-network";
 import { TranslatableObject } from "@/models/translate";
-import { Delegate } from "ark-ts";
-import { debounceTime, map } from "rxjs/operators";
+import { AuthProvider } from "@/services/auth/auth";
+import { ForgeProvider } from "@/services/forge/forge";
+import { StorageProvider } from "@/services/storage/storage";
 
-@Injectable({ providedIn: "root" })
-export class UserDataProvider {
+import { UserDataService } from "./user-data.interface";
+
+@Injectable()
+export class UserDataServiceImpl implements UserDataService {
 	public get isDevNet(): boolean {
 		return (
 			this.currentNetwork &&
@@ -40,21 +39,6 @@ export class UserDataProvider {
 		return this._defaultNetworks;
 	}
 
-	constructor(
-		private storageProvider: StorageProvider,
-		private authProvider: AuthProvider,
-		private forgeProvider: ForgeProvider,
-	) {
-		this.loadAllData();
-
-		this.onLogin();
-		this.onClearStorage();
-
-		this.onUpdateNetwork$.subscribe(
-			network => (this.currentNetwork = network),
-		);
-	}
-
 	public profiles: { [key: string]: Profile } = {};
 	public networks: Record<string, StoredNetwork> = {};
 
@@ -69,6 +53,21 @@ export class UserDataProvider {
 	public onSelectProfile$: Subject<Profile> = new Subject();
 
 	private _defaultNetworks: Network[];
+
+	constructor(
+		private storageProvider: StorageProvider,
+		private authProvider: AuthProvider,
+		private forgeProvider: ForgeProvider,
+	) {
+		this.loadAllData();
+
+		this.onLogin();
+		this.onClearStorage();
+
+		this.onUpdateNetwork$.subscribe(
+			(network) => (this.currentNetwork = network),
+		);
+	}
 
 	// this method is required to "migrate" contacts, in the first version of the app the contact's didnt't include an address property
 	private static mapContact = (
@@ -88,7 +87,9 @@ export class UserDataProvider {
 			networkId = this.generateUniqueId();
 		}
 
-		this.networks[networkId] = network;
+		const { [networkId]: _, ...networks } = this.networks;
+		networks[networkId] = network;
+		this.networks = networks;
 
 		return this.storageProvider
 			.set(constants.STORAGE_NETWORKS, this.networks)
@@ -107,7 +108,8 @@ export class UserDataProvider {
 	}
 
 	removeNetworkById(networkId: string) {
-		delete this.networks[networkId];
+		const { [networkId]: _, ...networks } = this.networks;
+		this.networks = networks;
 		return this.storageProvider.set(
 			constants.STORAGE_NETWORKS,
 			this.networks,
@@ -131,11 +133,14 @@ export class UserDataProvider {
 	}
 
 	getProfileById(profileId: string) {
-		return new Profile().deserialize(this.profiles[profileId]);
+		if (this.profiles[profileId]) {
+			return new Profile().deserialize(this.profiles[profileId]);
+		}
 	}
 
 	removeProfileById(profileId: string) {
-		delete this.profiles[profileId];
+		const { [profileId]: _, ...profiles } = this.profiles;
+		this.profiles = profiles;
 
 		return this.saveProfiles();
 	}
@@ -180,14 +185,17 @@ export class UserDataProvider {
 		profileId: string = this.authProvider.loggedProfileId,
 	) {
 		if (lodash.isUndefined(profileId)) {
-			return;
+			return throwError("EMPTY_PROFILE_ID");
 		}
 
 		const profile = this.getProfileById(profileId);
 
-		const iv = this.forgeProvider.generateIv();
+		if (!profile) {
+			return throwError("PROFILE_NOT_FOUND");
+		}
 
 		if (passphrase) {
+			const iv = this.forgeProvider.generateIv();
 			wallet.iv = iv;
 			const cipherKey = this.forgeProvider.encrypt(
 				passphrase,
@@ -262,18 +270,18 @@ export class UserDataProvider {
 	removeWalletByAddress(
 		address: string,
 		profileId: string = this.authProvider.loggedProfileId,
-	): void {
+	): Observable<boolean> {
 		delete this.profiles[profileId].wallets[address];
 
-		this.saveProfiles();
+		return this.saveProfiles();
 	}
 
 	ensureWalletDelegateProperties(
 		wallet: Wallet,
 		delegateOrUserName: string | Delegate,
-	): void {
+	): Observable<boolean> {
 		if (!wallet) {
-			return;
+			return throwError("WALLET_EMPTY");
 		}
 
 		const userName: string =
@@ -281,13 +289,17 @@ export class UserDataProvider {
 				? (delegateOrUserName as string)
 				: delegateOrUserName.username;
 
-		if (!userName || (wallet.isDelegate && wallet.username === userName)) {
-			return;
+		if (!userName) {
+			return throwError("USERNAME_EMPTY");
+		}
+
+		if (wallet.isDelegate && wallet.username === userName) {
+			return EMPTY;
 		}
 
 		wallet.isDelegate = true;
 		wallet.username = userName;
-		this.updateWallet(wallet, this.currentProfile.profileId, true);
+		return this.updateWallet(wallet, this.currentProfile.profileId, true);
 	}
 
 	getWalletByAddress(
@@ -317,7 +329,7 @@ export class UserDataProvider {
 		notificate: boolean = false,
 	): Observable<any> {
 		if (lodash.isUndefined(profileId)) {
-			return EMPTY;
+			return throwError("EMPTY_PROFILE_ID");
 		}
 
 		const profile = this.getProfileById(profileId);
@@ -334,7 +346,7 @@ export class UserDataProvider {
 		notificate: boolean = false,
 	) {
 		if (lodash.isUndefined(profileId)) {
-			return;
+			return throwError("EMPTY_PROFILE_ID");
 		}
 
 		const profile = this.getProfileById(profileId);
@@ -360,14 +372,10 @@ export class UserDataProvider {
 			} as TranslatableObject);
 		}
 
-		if (wallet.label === label) {
-			return EMPTY;
-		}
-
 		if (
 			lodash.some(
 				this.currentProfile.wallets,
-				w =>
+				(w) =>
 					label &&
 					w.label &&
 					w.label.toLowerCase() === label.toLowerCase(),
@@ -409,13 +417,9 @@ export class UserDataProvider {
 		this.currentWallet = undefined;
 	}
 
-	public getCurrentProfile(): Profile {
-		return this.profiles[this.authProvider.loggedProfileId];
-	}
-
 	loadProfiles() {
 		return this.storageProvider.getObject(constants.STORAGE_PROFILES).pipe(
-			map(profiles => {
+			map((profiles) => {
 				// we have to create "real" contacts here, because the "address" property was not on the contact object
 				// in the first versions of the app
 				return lodash.mapValues(profiles, (profile, profileId) => ({
@@ -423,7 +427,7 @@ export class UserDataProvider {
 					profileId,
 					contacts: lodash.transform(
 						profile.contacts,
-						UserDataProvider.mapContact,
+						UserDataServiceImpl.mapContact,
 						{},
 					),
 				}));
@@ -432,11 +436,11 @@ export class UserDataProvider {
 	}
 
 	loadNetworks(): Observable<Record<string, StoredNetwork>> {
-		return new Observable(observer => {
+		return new Observable((observer) => {
 			// Return defaults networks from arkts
 			this.storageProvider
 				.getObject(constants.STORAGE_NETWORKS)
-				.subscribe(networks => {
+				.subscribe((networks) => {
 					if (!networks || lodash.isEmpty(networks)) {
 						const uniqueDefaults = {};
 
@@ -516,12 +520,12 @@ export class UserDataProvider {
 	}
 
 	private loadAllData() {
-		this.loadProfiles().subscribe(profiles => (this.profiles = profiles));
-		this.loadNetworks().subscribe(networks => (this.networks = networks));
+		this.loadProfiles().subscribe((profiles) => (this.profiles = profiles));
+		this.loadNetworks().subscribe((networks) => (this.networks = networks));
 	}
 
 	private onLogin() {
-		return this.authProvider.onLogin$.subscribe(id => {
+		return this.authProvider.onLogin$.subscribe((id) => {
 			this.setCurrentProfile(id);
 			this.setCurrentNetwork();
 		});

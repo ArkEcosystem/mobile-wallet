@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { ToastController } from "@ionic/angular";
-
 import { TranslateService } from "@ngx-translate/core";
 
 import * as constants from "@/app/app.constants";
@@ -61,14 +60,6 @@ export class ToastProvider {
 		this.show(message, this.typeEnum.LOG, hideDelay, position);
 	}
 
-	debug(
-		message: string | TranslatableObject,
-		hideDelay?: number,
-		position?: string,
-	): void {
-		this.show(message, this.typeEnum.DEBUG, hideDelay, position);
-	}
-
 	show(
 		messageOrObj: string | TranslatableObject,
 		type?: number,
@@ -78,16 +69,16 @@ export class ToastProvider {
 		let message: string;
 		let parameters: any;
 		if (typeof messageOrObj === "string") {
-			message = messageOrObj as string;
+			message = messageOrObj;
 			parameters = null;
 		} else {
-			const obj = messageOrObj as TranslatableObject;
+			const obj = messageOrObj;
 			message = obj.key;
 			parameters = obj.parameters;
 		}
 		this.translateService
 			.get(message, parameters)
-			.subscribe(async translation => {
+			.subscribe(async (translation) => {
 				const toast = await this.toastCtrl.create({
 					message: translation,
 					duration: hideDelay || this.hideDelay,

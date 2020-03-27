@@ -5,7 +5,6 @@ import {
 	NavController,
 	NavParams,
 } from "@ionic/angular";
-
 import { Crypto } from "ark-ts/utils";
 
 @Component({
@@ -77,7 +76,7 @@ export class GenerateEntropyModal implements OnDestroy {
 
 		if (this.count > this.total) {
 			const hex = this.entropy
-				.map(v => this.lpad(v.toString(16), "0", 2))
+				.map((v) => this.lpad(v.toString(16), "0", 2))
 				.join("");
 			this.finished = true;
 			this.dismiss(hex);

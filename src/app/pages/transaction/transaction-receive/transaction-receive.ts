@@ -1,12 +1,12 @@
 import { Component, OnInit } from "@angular/core";
+import { FormControl, FormGroup } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 import { Clipboard } from "@ionic-native/clipboard/ngx";
+import { SocialSharing } from "@ionic-native/social-sharing/ngx";
 import { NavController } from "@ionic/angular";
 
 import { ToastProvider } from "@/services/toast/toast";
 import BigNumber from "@/utils/bignumber";
-import { FormControl, FormGroup } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
-import { SocialSharing } from "@ionic-native/social-sharing/ngx";
 
 @Component({
 	selector: "page-transaction-receive",
@@ -54,6 +54,6 @@ export class TransactionReceivePage implements OnInit {
 	share() {
 		this.socialSharing
 			.share(this.address)
-			.then(null, error => this.toastProvider.error(error));
+			.then(null, (error) => this.toastProvider.error(error));
 	}
 }

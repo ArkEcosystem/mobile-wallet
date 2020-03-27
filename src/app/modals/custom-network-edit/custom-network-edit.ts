@@ -1,10 +1,11 @@
-import { StoredNetwork } from "@/models/stored-network";
-import { ToastProvider } from "@/services/toast/toast";
-import { UserDataProvider } from "@/services/user-data/user-data";
 import { Component } from "@angular/core";
 import { AlertController, ModalController, NavParams } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
 import lodash from "lodash";
+
+import { StoredNetwork } from "@/models/stored-network";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 export enum EditNetworkAction {
 	Update,
@@ -20,7 +21,7 @@ export interface EditNetworkResult {
 	templateUrl: "custom-network-edit.html",
 })
 export class CustomNetworkEditModal {
-	public network: StoredNetwork = new StoredNetwork();
+	public network: StoredNetwork;
 	public apiPort: number;
 	public p2pPort: number;
 	public networkId: string;
@@ -30,14 +31,14 @@ export class CustomNetworkEditModal {
 		public navParams: NavParams,
 		private modalCtrl: ModalController,
 		private alertCtrl: AlertController,
-		private userDataProvider: UserDataProvider,
+		private userDataService: UserDataService,
 		private translateService: TranslateService,
 		private toastProvider: ToastProvider,
 	) {
-		const defaultNetworksNames = this.userDataProvider.defaultNetworks.map(
-			item => item.name,
+		const defaultNetworksNames = this.userDataService.defaultNetworks.map(
+			(item) => item.name,
 		);
-		this.network = this.navParams.get("network");
+		this.network = this.navParams.get("network") || new StoredNetwork();
 		this.networkId = this.navParams.get("id");
 
 		this.isDefault = defaultNetworksNames.includes(this.network.name);
@@ -65,9 +66,9 @@ export class CustomNetworkEditModal {
 	}
 
 	public save(): void {
-		this.userDataProvider
+		this.userDataService
 			.addOrUpdateNetwork(this.network, this.networkId)
-			.subscribe(network =>
+			.subscribe((network) =>
 				this.dismiss({
 					action: EditNetworkAction.Update,
 					networkId: network.id,
@@ -78,7 +79,7 @@ export class CustomNetworkEditModal {
 	public prepareDelete(): void {
 		if (
 			lodash.some(
-				this.userDataProvider.profiles,
+				this.userDataService.profiles,
 				(p: any) => p.networkId === this.networkId,
 			)
 		) {
@@ -88,7 +89,7 @@ export class CustomNetworkEditModal {
 
 		this.translateService
 			.get(["CUSTOM_NETWORK.CONFIRM_DELETE", "NO", "YES"])
-			.subscribe(async translations => {
+			.subscribe(async (translations) => {
 				const alert = await this.alertCtrl.create({
 					header: translations["CUSTOM_NETWORK.CONFIRM_DELETE"],
 					buttons: [
@@ -109,7 +110,7 @@ export class CustomNetworkEditModal {
 	}
 
 	private delete(): void {
-		this.userDataProvider.removeNetworkById(this.networkId).subscribe(() =>
+		this.userDataService.removeNetworkById(this.networkId).subscribe(() =>
 			this.dismiss({
 				action: EditNetworkAction.Delete,
 				networkId: this.networkId,
