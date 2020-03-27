@@ -1,6 +1,12 @@
-<ion-virtual-scroll [items]="logs" class="select-text">
-	<div *virtualItem="let log">
-		<ion-text class="text-xs font-mono"
+<ion-virtual-scroll
+	data-testid="c-viewer-log"
+	[items]="logs"
+	class="select-text"
+>
+	<div data-testid="c-viewer-log__item" *virtualItem="let log">
+		<ion-text
+			data-testid="c-viewer-log__item__text"
+			class="text-xs font-mono"
 			>[{{ log.time }}] ({{ log.level }}) - {{ log.msg }}</ion-text
 		>
 	</div>

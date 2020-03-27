@@ -318,7 +318,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		result.loader.dismiss();
 		const amount = this.sendForm.get("amount").value;
 
-		const prepareData: Partial<TransactionSend> = {
+		const prepareData = {
 			amount: new SafeBigNumber(amount)
 				.times(constants.WALLET_UNIT_TO_SATOSHI)
 				.toNumber(),
@@ -328,14 +328,9 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		};
 
 		const data: TransactionSend = {
-			amount: new SafeBigNumber(amount)
-				.times(constants.WALLET_UNIT_TO_SATOSHI)
-				.toNumber(),
-			vendorField: this.sendForm.get("vendorField").value,
+			...prepareData,
 			passphrase: result.keys.key,
 			secondPassphrase: result.keys.secondKey,
-			recipientId: this.sendForm.get("recipientId").value,
-			fee: this.fee,
 		};
 
 		this.loggerService.info(prepareData);
