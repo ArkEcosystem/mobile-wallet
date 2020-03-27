@@ -6,6 +6,12 @@
 		margin: 3em auto;
 		content: url("/assets/img/light/wallet/import-wallet.png");
 	}
+
+	.c-bip39-switch {
+		--padding-start: 0;
+		--padding-end: 0;
+		--inner-padding-end: 0;
+	}
 }
 
 :host-context(.dark-theme) {

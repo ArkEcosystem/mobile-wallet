@@ -53,6 +53,7 @@
 				slot="end"
 				(click)="showHidePassphrase()"
 				style="height: 100%;"
+				class="ml-2"
 			>
 				<ion-icon
 					*ngIf="!hidePassphrase"
@@ -95,55 +96,56 @@
 		>
 		<p
 			*ngIf="manualImportFormGroup.valid && !nonBIP39Passphrase"
-			class="text-right mt-2 font-semibold text-sm"
+			class="py-2 text-sm italic"
 		>
-			<ion-label color="success"
+			<ion-text color="success"
 				>{{ (useAddress ? 'WALLETS_PAGE.VALID_ADDRESS' :
-				'WALLETS_PAGE.VALID_PASSPHRASE') | translate }}</ion-label
-			>
+				'WALLETS_PAGE.VALID_PASSPHRASE') | translate }}
+			</ion-text>
 		</p>
 		<p
 			*ngIf="!manualImportFormGroup.valid && manualImportFormGroup.errors"
-			class="text-right mt-2 font-semibold text-sm"
+			class="py-2 text-sm italic"
 		>
-			<ion-label
+			<ion-text
 				*ngIf="manualImportFormGroup.errors.invalidWordNumber"
 				color="danger"
-				>{{ 'WALLETS_PAGE.INVALID_WORD_NUMBER' | translate }}</ion-label
 			>
-			<ion-label
+				{{ 'WALLETS_PAGE.INVALID_WORD_NUMBER' | translate }}
+			</ion-text>
+			<ion-text
 				*ngIf="manualImportFormGroup.errors.invalidMnemonic"
 				color="danger"
-				>{{ 'WALLETS_PAGE.INVALID_MNEMONIC' | translate }}</ion-label
 			>
+				{{ 'WALLETS_PAGE.INVALID_MNEMONIC' | translate }}
+			</ion-text>
 		</p>
 		<p
 			*ngIf="!manualImportFormGroup.controls.controlAddressOrPassphrase.valid"
-			class="text-right mt-2 font-semibold text-sm"
+			class="py-2 text-sm italic"
 		>
-			<ion-label
+			<ion-text
 				*ngIf="manualImportFormGroup.controls.controlAddressOrPassphrase.errors.invalidAddress"
 				color="danger"
 			>
 				{{ 'WALLETS_PAGE.INVALID_ADDRESS' | translate }}
-			</ion-label>
+			</ion-text>
 		</p>
 		<ion-item
 			*ngIf="!useAddress"
-			no-padding
 			lines="none"
-			class="bg-transparent"
+			class="c-bip39-switch bg-transparent mt-1"
 		>
-			<ion-label
-				>{{ 'WALLETS_PAGE.CUSTOM_PASSPHRASE' | translate |
-				translateCut:0 }}
+			<ion-label>
+				{{ 'WALLETS_PAGE.CUSTOM_PASSPHRASE' | translate | translateCut:0
+				}}
 				<a (click)="openBIP39DocURL()"
 					>{{ 'WALLETS_PAGE.CUSTOM_PASSPHRASE' | translate |
-					translateCut:1 }}</a
-				>
+					translateCut:1 }}
+				</a>
 				{{ 'WALLETS_PAGE.CUSTOM_PASSPHRASE' | translate | translateCut:2
-				}}</ion-label
-			>
+				}}
+			</ion-label>
 			<ion-toggle
 				name="nonBIP39Passphrase"
 				[(ngModel)]="nonBIP39Passphrase"
