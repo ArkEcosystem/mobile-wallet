@@ -1,5 +1,5 @@
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import { ErrorHandler, NgModule } from "@angular/core";
 import { BrowserModule, HammerModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouteReuseStrategy } from "@angular/router";
@@ -18,6 +18,7 @@ import { ChartsModule } from "ng2-charts";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
+import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
 import { UserDataService } from "./services/user-data/user-data.interface";
 
@@ -52,8 +53,10 @@ export function createTranslateLoader(http: HttpClient) {
 		SocialSharing,
 		Network,
 		ScreenOrientation,
+		GlobalErrorHandlerService,
 		{ provide: UserDataService, useClass: UserDataServiceImpl },
 		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+		{ provide: ErrorHandler, useClass: GlobalErrorHandlerService },
 	],
 	bootstrap: [AppComponent],
 })

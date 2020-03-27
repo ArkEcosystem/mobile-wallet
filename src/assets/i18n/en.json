@@ -1,4 +1,7 @@
 {
+	"VIEWER_LOG": {
+		"LOG_VIEWER": "Log Viewer"
+	},
 	"API": {
 		"BALANCE_TOO_LOW": "Balance too low for transaction",
 		"BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} in your wallet! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your wallet balance is only {{ balance }}!",
@@ -210,7 +213,9 @@
 		"SETTINGS": "Settings",
 		"VERSION": "Version",
 		"WALLET_BACKUP": "Wallet Backup",
-		"WORDLIST_LANGUAGE": "Passphrase language"
+		"WORDLIST_LANGUAGE": "Passphrase language",
+		"VIEW_LOG_REPORT": "View log report",
+		"YOU_ARE_DEVELOPER": "You are now a developer!"
 	},
 	"SHOW_ADVANCED": "Show Advanced",
 	"SKIP": "Skip",

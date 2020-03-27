@@ -11,6 +11,7 @@ import { EnterSecondPassphraseModal } from "@/app/modals/enter-second-passphrase
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
 import { Wallet, WalletKeys } from "@/models/model";
 import { AuthProvider } from "@/services/auth/auth";
+import { LoggerService } from "@/services/logger/logger.service";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
@@ -39,6 +40,7 @@ export class PinCodeComponent {
 		private navCtrl: NavController,
 		private loadingCtrl: LoadingController,
 		private translateService: TranslateService,
+		private loggerService: LoggerService,
 	) {}
 
 	async open(
@@ -227,6 +229,7 @@ export class PinCodeComponent {
 		onSuccess: (keys: WalletKeys) => any,
 		keys?: WalletKeys,
 	): void {
+		this.loggerService.info("PIN code authorized");
 		if (onSuccess) {
 			onSuccess(keys);
 		}

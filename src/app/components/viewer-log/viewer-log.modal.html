@@ -1,0 +1,23 @@
+<ion-header class="ion-no-border ion-no-shadow">
+	<ion-toolbar>
+		<ion-title>{{ 'VIEWER_LOG.LOG_VIEWER' | translate }}</ion-title>
+		<ion-buttons slot="end">
+			<ion-button
+				data-testid="m-viewer-log__buttons__export"
+				(click)="handleExport()"
+			>
+				<ion-icon slot="icon-only" name="share"></ion-icon>
+			</ion-button>
+			<ion-button
+				data-testid="m-viewer-log__buttons__close"
+				(click)="dismiss()"
+			>
+				<ion-icon slot="icon-only" name="close"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding">
+	<viewer-log [logs]="logs"></viewer-log>
+</ion-content>

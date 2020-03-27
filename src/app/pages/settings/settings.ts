@@ -13,7 +13,10 @@ import { takeUntil, tap } from "rxjs/operators";
 import * as constants from "@/app/app.constants";
 import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
 import { PinCodeComponent } from "@/components/pin-code/pin-code";
+import { ViewerLogModal } from "@/components/viewer-log/viewer-log.modal";
+import { UserSettings } from "@/models/model";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
 const packageJson = require("@@/package.json");
@@ -31,9 +34,10 @@ export class SettingsPage implements OnInit, OnDestroy {
 	public objectKeys = Object.keys;
 
 	public availableOptions;
-	public currentSettings;
+	public currentSettings: UserSettings;
 	public onEnterPinCode: () => void;
 	public appVersion: number = packageJson.version;
+	public versionClicksCount = 0;
 
 	public currentWallet;
 
@@ -48,6 +52,7 @@ export class SettingsPage implements OnInit, OnDestroy {
 		private modalCtrl: ModalController,
 		private inAppBrowser: InAppBrowser,
 		private userDataService: UserDataService,
+		private toastProvider: ToastProvider,
 	) {
 		this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
 		this.currentWallet = this.userDataService.currentWallet;
@@ -113,6 +118,32 @@ export class SettingsPage implements OnInit, OnDestroy {
 
 				confirm.present();
 			});
+	}
+
+	async presentLogReport() {
+		const viewerLogModal = await this.modalCtrl.create({
+			component: ViewerLogModal,
+		});
+
+		await viewerLogModal.present();
+	}
+
+	handleVersionClicks() {
+		if (this.currentSettings.devMode) {
+			return;
+		}
+
+		this.versionClicksCount += 1;
+		if (this.versionClicksCount === 5) {
+			this.enableDevMode();
+		}
+	}
+
+	enableDevMode() {
+		this.versionClicksCount = 0;
+		this.currentSettings.devMode = true;
+		this.onUpdate();
+		this.toastProvider.show("SETTINGS_PAGE.YOU_ARE_DEVELOPER");
 	}
 
 	onUpdate() {

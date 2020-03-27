@@ -4,6 +4,7 @@ export class UserSettings {
 	public wordlistLanguage: string;
 	public darkMode: boolean;
 	public notification: boolean;
+	public devMode: boolean;
 
 	constructor() {}
 
@@ -14,6 +15,7 @@ export class UserSettings {
 		settings.wordlistLanguage = "english";
 		settings.darkMode = false;
 		settings.notification = false;
+		settings.devMode = false;
 
 		return settings;
 	}
