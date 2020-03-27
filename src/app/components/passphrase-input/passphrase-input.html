@@ -34,18 +34,18 @@
 		<ion-button
 			fill="clear"
 			slot="end"
+			class="self-end m-0 mb-4 ml-2"
 			(click)="showHidePassphrase()"
-			style="height: 100%;"
 		>
 			<ion-icon
+				slot="icon-only"
 				*ngIf="!hidePassphrase"
 				name="eye"
-				style="font-size: 200%;"
 			></ion-icon>
 			<ion-icon
+				slot="icon-only"
 				*ngIf="hidePassphrase"
 				name="eye-off"
-				style="font-size: 200%;"
 			></ion-icon>
 		</ion-button>
 	</ion-item>
