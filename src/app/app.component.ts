@@ -193,6 +193,8 @@ export class AppComponent implements OnDestroy, OnInit {
 							this.showConfirmation(this.signOutText).then(() => {
 								this.logout();
 							});
+						} else if (path.startsWith("/wallets/dashboard")) {
+							this.navController.navigateRoot("/wallets");
 						}
 					}
 				});
