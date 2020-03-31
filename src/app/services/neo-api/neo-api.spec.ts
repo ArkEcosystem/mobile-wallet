@@ -1,10 +1,8 @@
 import {
 	createHttpFactory,
-	createServiceFactory,
 	HttpMethod,
 	mockProvider,
 	SpectatorHttp,
-	SpectatorService,
 } from "@ngneat/spectator";
 
 // Fixtures
@@ -20,22 +18,18 @@ const REQUEST_URL =
 	"https://neoscan.io/api/main_net/v1/get_last_transactions_by_address/ALyvfuUN5yqbNaJ3f3Z6uX1Tkehg7AJ4FM";
 
 describe("Neo API Service", () => {
-	let neoApiSpectator: SpectatorService<NeoApiProvider>;
+	let neoApiSpectator: SpectatorHttp<NeoApiProvider>;
 	let neoApiService: NeoApiProvider;
-	let httpSpectator: SpectatorHttp<NeoApiProvider>;
 
-	const createNeoApiMock = createServiceFactory({
+	const createNeoApiMock = createHttpFactory({
 		service: NeoApiProvider,
 		mocks: [NetworkProvider],
 		providers: [mockProvider(UserDataService, {})],
 	});
 
-	const createHttp = createHttpFactory(NeoApiProvider);
-
 	beforeEach(() => {
 		neoApiSpectator = createNeoApiMock();
 		neoApiService = neoApiSpectator.service;
-		httpSpectator = createHttp();
 	});
 
 	it("should test if the address doesn't exists", (done) => {
@@ -56,7 +50,7 @@ describe("Neo API Service", () => {
 			expect(result).toBeTrue();
 			done();
 		});
-		const req = httpSpectator.expectOne(REQUEST_URL, HttpMethod.GET);
+		const req = neoApiSpectator.expectOne(REQUEST_URL, HttpMethod.GET);
 		req.flush(transactions);
 	});
 });
