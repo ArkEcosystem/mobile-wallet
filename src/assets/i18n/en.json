@@ -213,8 +213,8 @@
 		"SETTINGS": "Settings",
 		"VERSION": "Version",
 		"WALLET_BACKUP": "Wallet Backup",
-		"WORDLIST_LANGUAGE": "Passphrase language",
-		"VIEW_LOG_REPORT": "View log report",
+		"WORDLIST_LANGUAGE": "Passphrase Language",
+		"VIEW_LOG_REPORT": "View Log Report",
 		"YOU_ARE_DEVELOPER": "You are now a developer!"
 	},
 	"SHOW_ADVANCED": "Show Advanced",
