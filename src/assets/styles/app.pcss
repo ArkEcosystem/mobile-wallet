@@ -38,6 +38,20 @@ ion-app {
 	}
 }
 
+.dark-theme .pane {
+	background: var(--ion-background-color) !important;
+	color: var(--ion-text-color) !important;
+	box-shadow: none !important;
+
+	.close-button {
+		background: var(--ion-color-light-tint);
+	}
+}
+
+.o-overlay--open ion-app {
+	filter: blur(3px);
+}
+
 html.qr-scanner-open {
 	ion-app,
 	ion-content {

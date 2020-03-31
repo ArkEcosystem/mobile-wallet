@@ -5,11 +5,10 @@ import {
 	OnChanges,
 	OnDestroy,
 	Output,
+	Renderer2,
 	SimpleChanges,
 } from "@angular/core";
 import { CupertinoPane } from "cupertino-pane";
-
-import { BottomDrawerBreak } from "./bottom-drawer.type";
 
 @Component({
 	selector: "bottom-drawer",
@@ -17,10 +16,13 @@ import { BottomDrawerBreak } from "./bottom-drawer.type";
 })
 export class BottomDrawerComponent implements OnChanges, OnDestroy {
 	@Input()
-	public initialBreak: BottomDrawerBreak = "middle";
+	public initialBreak: "top" | "middle" | "bottom" = "middle";
 
 	@Input()
-	public bottomClose = false;
+	public parentElement = "body";
+
+	@Input()
+	public bottomClose = true;
 
 	@Input()
 	public buttonClose = true;
@@ -37,24 +39,36 @@ export class BottomDrawerComponent implements OnChanges, OnDestroy {
 	@Input()
 	public topOffset = 0;
 
+	@Input()
+	public backdrop = true;
+
 	@Output()
 	public buttonDrawerOnClose = new EventEmitter();
 
-	public pane: CupertinoPane | undefined;
+	@Output()
+	public buttonDrawerOnBackdropTap = new EventEmitter();
 
-	constructor() {}
+	public pane: CupertinoPane | undefined;
+	public isPresent = false;
+
+	constructor(private renderer: Renderer2) {}
 
 	ngOnChanges(changes: SimpleChanges) {
 		this.render();
 		if (!changes.isOpen.currentValue) {
-			this.pane?.hide();
+			if (this.isPresent) {
+				this.pane?.destroy({ animate: true });
+			}
 		} else {
-			this.pane?.moveToBreak(this.initialBreak);
+			this.pane?.present({ animate: true });
 		}
 	}
 
 	ngOnDestroy() {
-		this.pane?.destroy();
+		try {
+			this.pane?.destroy();
+			this.hide();
+		} catch {}
 	}
 
 	private render() {
@@ -77,15 +91,41 @@ export class BottomDrawerComponent implements OnChanges, OnDestroy {
 		}
 		if (!this.pane) {
 			this.pane = new CupertinoPane(".c-bottom-drawer", {
-				parentElement: "body",
+				parentElement: this.parentElement,
 				initialBreak: this.initialBreak,
 				breaks,
+				backdrop: this.backdrop,
+				bottomClose: this.bottomClose,
+				buttonClose: this.buttonClose,
+				onWillDismiss: () => this.hide(),
 				onDidDismiss: () => {
-					this.pane = undefined;
+					this.hide();
 					this.buttonDrawerOnClose.emit();
 				},
+				onWillPresent: () => this.show(),
+				onBackdropTap: () => this.buttonDrawerOnBackdropTap.emit(),
 			});
-			this.pane.present();
+		}
+	}
+
+	private hide() {
+		this.pane = undefined;
+		this.isPresent = false;
+		if (this.backdrop) {
+			this.renderer.removeClass(
+				document.querySelector("body"),
+				"o-overlay--open",
+			);
+		}
+	}
+
+	private show() {
+		this.isPresent = true;
+		if (this.backdrop) {
+			this.renderer.addClass(
+				document.querySelector("body"),
+				"o-overlay--open",
+			);
 		}
 	}
 }

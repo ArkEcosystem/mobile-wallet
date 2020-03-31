@@ -23,6 +23,7 @@ storiesOf("bottom-drawer", module)
 				<ion-button (click)="isOpen = !isOpen">{{ isOpen ? "Hide" : "Show" }}</ion-button>
 				<bottom-drawer
 					[isOpen]="isOpen"
+					[middleOffset]="500"
 					(buttonDrawerOnClose)="isOpen = false"
 				>
 					<h1>Test</h1>

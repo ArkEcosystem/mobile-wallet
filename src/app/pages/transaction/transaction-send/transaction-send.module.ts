@@ -5,6 +5,7 @@ import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 
+import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-drawer.module";
 import { ConfirmTransactionComponentModule } from "@/components/confirm-transaction/confirm-transaction.module";
 import { InputAddressComponentModule } from "@/components/input-address/input-address.module";
 import { InputAmountComponentModule } from "@/components/input-amount/input-amount.module";
@@ -35,6 +36,7 @@ import { TransactionSendPage } from "./transaction-send";
 		InputFeeComponentModule,
 		WalletPickerModalModule,
 		InputAddressComponentModule,
+		BottomDrawerComponentModule,
 	],
 })
 export class TransactionSendPageModule {}
