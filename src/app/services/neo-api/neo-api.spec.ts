@@ -7,6 +7,8 @@ import {
 	SpectatorService,
 } from "@ngneat/spectator";
 
+// Fixtures
+import transactions from "@@/test/fixture/transactions.fixture";
 import { NetworkProvider } from "@/services/network/network";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
@@ -46,11 +48,15 @@ fdescribe("Neo API Service", () => {
 		});
 	});
 
-	it("should test if the address does exists", () => {
+	it("should test if the address does exists", (done) => {
 		const networkProvider = neoApiSpectator.get(NetworkProvider);
 		networkProvider.isValidAddress.and.returnValue(true);
 
-		neoApiService.doesAddressExist(VALID_ADDRESS).subscribe();
-		httpSpectator.expectOne(REQUEST_URL, HttpMethod.GET);
+		neoApiService.doesAddressExist(VALID_ADDRESS).subscribe((result) => {
+			expect(result).toBeTrue();
+			done();
+		});
+		const req = httpSpectator.expectOne(REQUEST_URL, HttpMethod.GET);
+		req.flush(transactions);
 	});
 });
