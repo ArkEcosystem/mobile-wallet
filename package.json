@@ -90,7 +90,7 @@
 		"ngx-filter-pipe": "^2.1.2",
 		"node-forge": "^0.9.1",
 		"pino": "^6.0.0",
-		"pino-pretty": "^3.6.1",
+		"pino-pretty": "^4.0.0",
 		"rxjs": "^6.5.4",
 		"rxjs-compat": "^6.5.4",
 		"semver": "^7.1.3",
