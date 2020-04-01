@@ -1,10 +1,11 @@
 import {
 	createHttpFactory,
+	HttpMethod,
 	mockProvider,
-	SpectatorService,
+	SpectatorHttp,
 } from "@ngneat/spectator";
 import { TranslateService } from "@ngx-translate/core";
-import { of } from "rxjs";
+import { of, Subject } from "rxjs";
 
 import delegatesFixture from "@@/test/fixture/delegates.fixture";
 import { STORAGE_DELEGATES } from "@/app/app.constants";
@@ -17,21 +18,27 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 import { ArkApiProvider } from "./ark-api";
 
 fdescribe("ARK API", () => {
-	let arkApiSpectator: SpectatorService<ArkApiProvider>;
+	let arkApiSpectator: SpectatorHttp<ArkApiProvider>;
 	let arkApiService: ArkApiProvider;
 
 	const currentNetwork = new StoredNetwork();
-
+	currentNetwork.type = null;
+	currentNetwork.activePeer = {
+		ip: "127.0.0.1",
+		port: 4003,
+	};
 	currentNetwork.version = 30;
-	currentNetwork.name = "devnet";
+	currentNetwork.name = "custom";
 
 	const createArkApiMock = createHttpFactory({
 		service: ArkApiProvider,
-		mocks: [NetworkProvider, ToastProvider, TranslateService],
+		mocks: [ToastProvider, TranslateService],
 		providers: [
+			mockProvider(NetworkProvider),
 			mockProvider(UserDataService, {
 				currentNetwork,
-				onActivateNetwork$: of({ currentNetwork }),
+				onUpdateNetwork$: new Subject(),
+				onActivateNetwork$: new Subject(),
 			}),
 			mockProvider(StorageProvider, {
 				getObject: (prop: string) => {
@@ -49,8 +56,18 @@ fdescribe("ARK API", () => {
 		arkApiService = arkApiSpectator.service;
 	});
 
-	it("should get the current network", (done) => {
-		console.log({ network: arkApiService.network });
-		done();
+	it("should get the current network", () => {
+		const userDataService = arkApiSpectator.get(UserDataService);
+		userDataService.onActivateNetwork$.next(currentNetwork);
+		arkApiSpectator.expectConcurrent([
+			{
+				url: "http://127.0.0.1:4003/api/peers",
+				method: HttpMethod.GET,
+			},
+			{
+				url: "http://127.0.0.1:4003/api/transactions/fees",
+				method: HttpMethod.GET,
+			},
+		]);
 	});
 });
