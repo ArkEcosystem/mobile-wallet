@@ -13,6 +13,13 @@ import { CupertinoPane } from "cupertino-pane";
 @Component({
 	selector: "bottom-drawer",
 	template: `<div class="c-bottom-drawer"><ng-content></ng-content></div>`,
+	styles: [
+		`
+			:host {
+				display: none;
+			}
+		`,
+	],
 })
 export class BottomDrawerComponent implements OnChanges, OnDestroy {
 	@Input()
@@ -98,10 +105,7 @@ export class BottomDrawerComponent implements OnChanges, OnDestroy {
 				bottomClose: this.bottomClose,
 				buttonClose: this.buttonClose,
 				onWillDismiss: () => this.hide(),
-				onDidDismiss: () => {
-					this.hide();
-					this.buttonDrawerOnClose.emit();
-				},
+				onDidDismiss: () => this.buttonDrawerOnClose.emit(),
 				onWillPresent: () => this.show(),
 				onBackdropTap: () => this.buttonDrawerOnBackdropTap.emit(),
 			});

@@ -24,6 +24,7 @@ storiesOf("bottom-drawer", module)
 				<bottom-drawer
 					[isOpen]="isOpen"
 					[middleOffset]="500"
+					[backdrop]="false"
 					(buttonDrawerOnClose)="isOpen = false"
 				>
 					<h1>Test</h1>
