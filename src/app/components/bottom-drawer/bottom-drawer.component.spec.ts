@@ -4,7 +4,7 @@ import { sleep } from "@@/test/helpers";
 
 import { BottomDrawerComponent } from "./bottom-drawer.component";
 
-fdescribe("Bottom Drawer Component", () => {
+describe("Bottom Drawer Component", () => {
 	let spectator: SpectatorHost<BottomDrawerComponent>;
 	const createHost = createHostComponentFactory({
 		component: BottomDrawerComponent,
