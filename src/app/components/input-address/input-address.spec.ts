@@ -34,7 +34,7 @@ describe("Input Address", () => {
 				},
 			},
 		);
-		await sleep(100);
+		await sleep(200);
 		const root = spectator.query(byTestId("c-input-address__input"));
 		const input = root.querySelector("input");
 		spectator.typeInElement("A01238Ts3dQ2bvBR1tPE7GUee9iSEJb8HX", input);
