@@ -21,7 +21,7 @@
 				<ion-col>
 					<input-address
 						formControlName="recipientId"
-						(inputAddressContactClick)="presetWalletPickerModal()"
+						(inputAddressContactClick)="toggleWalletPickerModal()"
 						(inputAddressQRCodeClick)="scanQRCode()"
 					></input-address>
 				</ion-col>
@@ -68,6 +68,18 @@
 		</ion-grid>
 	</form>
 </ion-content>
+
+<bottom-drawer
+	[bottomOffset]="0"
+	[isOpen]="isWalletPickerModalOpen"
+	[buttonClose]="false"
+	(buttonDrawerOnClose)="closeWalletPickerModal()"
+	(buttonDrawerOnBackdropTap)="closeWalletPickerModal()"
+>
+	<wallet-picker-modal
+		(walletPickerModalOnPick)="onPickWallet($event)"
+	></wallet-picker-modal>
+</bottom-drawer>
 
 <pin-code [wallet]="currentWallet" #pinCode></pin-code>
 <confirm-transaction

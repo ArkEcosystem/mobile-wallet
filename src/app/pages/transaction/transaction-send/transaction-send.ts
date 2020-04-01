@@ -17,8 +17,8 @@ import { ConfirmTransactionComponent } from "@/components/confirm-transaction/co
 import { InputCurrencyOutput } from "@/components/input-currency/input-currency.component";
 import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
-import { WalletPickerModal } from "@/components/wallet-picker/wallet-picker.modal";
 import {
+	Contact,
 	QRCodeScheme,
 	StoredNetwork,
 	Wallet,
@@ -74,6 +74,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 	sendAllEnabled = false;
 	transactionType = TransactionType.SendArk;
 
+	public isWalletPickerModalOpen = false;
 	private unsubscriber$: Subject<void> = new Subject<void>();
 
 	constructor(
@@ -189,24 +190,19 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		this.qrScanner.open(true);
 	}
 
-	async presetWalletPickerModal() {
-		const modal = await this.modalCtrl.create({
-			component: WalletPickerModal,
-			swipeToClose: true,
-			presentingElement: this.routerOutlet.nativeEl,
-			mode: "ios",
-			cssClass: "c-wallet-picker-modal",
+	onPickWallet(wallet: Contact) {
+		this.sendForm.patchValue({
+			recipientId: wallet.address,
 		});
+		this.closeWalletPickerModal();
+	}
 
-		modal.present();
+	toggleWalletPickerModal() {
+		this.isWalletPickerModalOpen = !this.isWalletPickerModalOpen;
+	}
 
-		modal.onDidDismiss().then(({ data }) => {
-			if (data) {
-				this.sendForm.patchValue({
-					recipientId: data.address,
-				});
-			}
-		});
+	closeWalletPickerModal() {
+		this.isWalletPickerModalOpen = false;
 	}
 
 	onScanQRCode(qrCode: QRCodeScheme) {

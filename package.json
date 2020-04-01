@@ -78,6 +78,7 @@
 		"cordova-plugin-x-socialsharing": "^5.6.4",
 		"cordova-sqlite-storage": "^5.0.0",
 		"core-js": "^3.6.4",
+		"cupertino-pane": "^1.1.21",
 		"dequal": "^1.0.0",
 		"es6-promise-plugin": "^4.2.2",
 		"hammerjs": "^2.0.8",

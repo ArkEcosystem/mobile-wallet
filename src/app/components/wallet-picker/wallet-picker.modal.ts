@@ -1,20 +1,27 @@
-import { Component, OnInit } from "@angular/core";
-import { ModalController } from "@ionic/angular";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
 import { Contact, Wallet } from "@/models/model";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
+	selector: "wallet-picker-modal",
 	templateUrl: "wallet-picker.modal.html",
 })
 export class WalletPickerModal implements OnInit {
+	@Input()
 	public contacts = [];
+
+	@Input()
 	public wallets = [];
+
+	@Input()
 	public symbol: string;
 
+	@Output()
+	public walletPickerModalOnPick = new EventEmitter<Contact>();
+
 	constructor(
-		private modalCtrl: ModalController,
 		private userDataService: UserDataService,
 		private arkApiProvider: ArkApiProvider,
 	) {}
@@ -36,6 +43,6 @@ export class WalletPickerModal implements OnInit {
 	}
 
 	onPick(wallet: Contact) {
-		this.modalCtrl.dismiss(wallet);
+		this.walletPickerModalOnPick.emit(wallet);
 	}
 }
