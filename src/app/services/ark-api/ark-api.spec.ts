@@ -15,6 +15,7 @@ import { StorageProvider } from "@/services/storage/storage";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
+import ArkClient from "../../utils/ark-client";
 import { ArkApiProvider } from "./ark-api";
 
 fdescribe("ARK API", () => {
@@ -32,7 +33,7 @@ fdescribe("ARK API", () => {
 
 	const createArkApiMock = createHttpFactory({
 		service: ArkApiProvider,
-		mocks: [ToastProvider, TranslateService],
+		mocks: [ToastProvider, TranslateService, ArkClient],
 		providers: [
 			mockProvider(NetworkProvider),
 			mockProvider(UserDataService, {
@@ -69,5 +70,46 @@ fdescribe("ARK API", () => {
 				method: HttpMethod.GET,
 			},
 		]);
+		expect(arkApiService.network.name).toEqual("custom");
+	});
+
+	it("should get the current client before the intialization", () => {
+		expect(arkApiService.client).toBeUndefined();
+	});
+
+	it("should return the transaction builder", () => {
+		const userDataService = arkApiSpectator.get(UserDataService);
+		userDataService.onActivateNetwork$.next(currentNetwork);
+		arkApiSpectator.expectConcurrent([
+			{
+				url: "http://127.0.0.1:4003/api/peers",
+				method: HttpMethod.GET,
+			},
+			{
+				url: "http://127.0.0.1:4003/api/transactions/fees",
+				method: HttpMethod.GET,
+			},
+		]);
+		expect(arkApiService.transactionBuilder).not.toEqual(null);
+	});
+
+	it("should return empty if no network to the fee statistics", (done) => {
+		const userDataService = arkApiSpectator.get(UserDataService);
+		userDataService.onActivateNetwork$.next(currentNetwork);
+		arkApiSpectator.expectConcurrent([
+			{
+				url: "http://127.0.0.1:4003/api/peers",
+				method: HttpMethod.GET,
+			},
+			{
+				url: "http://127.0.0.1:4003/api/transactions/fees",
+				method: HttpMethod.GET,
+			},
+		]);
+		// TODO: Mock fetchFeeStatistics return
+		arkApiService.feeStatistics.subscribe((data) => {
+			console.log({ data });
+			done();
+		});
 	});
 });
