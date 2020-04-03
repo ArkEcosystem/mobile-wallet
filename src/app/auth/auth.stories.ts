@@ -39,6 +39,6 @@ storiesOf("auth", module)
 	.add("Pin", () => ({
 		template: `<div>
 			<test-auth></test-auth>
-			<auth></auth>
+			<auth-pin></auth-pin>
 		</div>`,
 	}));

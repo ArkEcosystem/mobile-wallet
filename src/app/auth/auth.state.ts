@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext, StateToken } from "@ngxs/store";
-import { throwError } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
+import { of, throwError } from "rxjs";
+import { catchError, switchMap } from "rxjs/operators";
 
 import { AuthActions } from "./auth.actions";
 import { AuthConfig } from "./auth.config";
@@ -45,6 +45,13 @@ export class AuthState {
 		});
 	}
 
+	@Action(AuthActions.Cancel)
+	public cancel(ctx: StateContext<AuthStateModel>) {
+		return ctx.patchState({
+			isOpen: false,
+		});
+	}
+
 	@Action(AuthActions.Validate)
 	public validate(
 		ctx: StateContext<AuthStateModel>,
@@ -52,22 +59,21 @@ export class AuthState {
 	) {
 		const state = ctx.getState();
 		return this.authService.validateMasterPassword(action.password).pipe(
-			tap((result) => {
+			switchMap((result) => {
 				if (result) {
 					ctx.patchState({
 						attempts: 0,
 						isOpen: false,
 					});
-					ctx.dispatch(new AuthActions.Validated());
-				} else {
-					throwError("FAILED");
+					return of();
 				}
+				return throwError(new Error("PIN_VALIDATION_FAILED"));
 			}),
 			catchError((e) => {
 				ctx.patchState({
 					attempts: state.attempts + 1,
 				});
-				return e;
+				return throwError(e.message);
 			}),
 		);
 	}

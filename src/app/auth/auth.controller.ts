@@ -1,5 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Actions, ofActionDispatched, Store } from "@ngxs/store";
+import {
+	Actions,
+	ofActionCompleted,
+	ofActionSuccessful,
+	Store,
+} from "@ngxs/store";
+import { takeUntil } from "rxjs/operators";
 
 import { AuthActions } from "./auth.actions";
 
@@ -10,6 +16,15 @@ export class AuthController {
 	public request() {
 		this.store.dispatch(new AuthActions.Open());
 
-		return this.actions$.pipe(ofActionDispatched(AuthActions.Validated));
+		const canceled$ = this.actions$.pipe(
+			ofActionCompleted(AuthActions.Cancel),
+		);
+
+		const validated$ = this.actions$.pipe(
+			ofActionSuccessful(AuthActions.Validate),
+			takeUntil(canceled$),
+		);
+
+		return validated$;
 	}
 }

@@ -1,4 +1,11 @@
-<bottom-drawer [isOpen]="isOpen$ | async" [buttonClose]="false">
+<bottom-drawer
+	[isOpen]="true"
+	[buttonClose]="false"
+	[bottomOffset]="0"
+	[middleOffset]="0"
+	initialBreak="top"
+	(buttonDrawerOnClose)="onClose()"
+>
 	<div class="p-5">
 		<auth-pin></auth-pin>
 	</div>

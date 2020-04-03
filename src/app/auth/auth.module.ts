@@ -19,6 +19,6 @@ import { AuthState } from "./auth.state";
 		NgxsModule.forFeature([AuthState]),
 	],
 	providers: [AuthService],
-	exports: [AuthComponent],
+	exports: [AuthComponent, AuthPinComponent],
 })
 export class AuthComponentModule {}

@@ -4,13 +4,13 @@ export namespace AuthActions {
 		constructor() {}
 	}
 
+	export class Cancel {
+		static readonly type = "[Auth] Cancel";
+		constructor() {}
+	}
+
 	export class Validate {
 		static readonly type = "[Auth] Validate";
 		constructor(public password: string) {}
-	}
-
-	export class Validated {
-		static readonly type = "[Auth] Validated";
-		constructor() {}
 	}
 }

@@ -1,0 +1,40 @@
+:host {
+	.c-auth-pin__password {
+		place-items: center;
+	}
+
+	.c-auth-pin__keyboard {
+		place-items: center;
+		grid-template-columns: repeat(3, minmax(5rem, 8rem));
+		grid-template-rows: repeat(4, minmax(3rem, 5rem));
+		--border: 1px solid var(--ion-color-light);
+	}
+
+	.c-auth-pin__keyboard__char {
+		place-items: center;
+	}
+
+	.c-auth-pin__keyboard__char:nth-child(-n + 3) {
+		border-bottom: var(--border);
+	}
+
+	.c-auth-pin__keyboard__char:nth-child(3n + 1) {
+		border-right: var(--border);
+	}
+
+	.c-auth-pin__keyboard__char:nth-child(3n) {
+		border-left: var(--border);
+	}
+
+	.c-auth-pin__keyboard__char:nth-child(n + 7) {
+		border-top: var(--border);
+	}
+
+	.c-auth-pin__password__char__border {
+		background-color: rgba(var(--ion-color-primary-rgb), 0.2);
+		height: 2px;
+	}
+	.c-auth-pin__password__char__dot {
+		background-color: rgba(var(--ion-color-primary-rgb), 0.6);
+	}
+}
