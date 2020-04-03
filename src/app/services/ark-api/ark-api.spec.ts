@@ -110,4 +110,32 @@ fdescribe("ARK API", () => {
 			complete: () => done(),
 		});
 	});
+
+	it("should return network fee statistics", (done) => {
+		const userDataService = arkApiSpectator.get(UserDataService);
+		userDataService.onActivateNetwork$.next(currentNetwork);
+		currentNetwork.isV2 = true;
+
+		arkApiService.feeStatistics.subscribe({
+			complete: () => done(),
+		});
+
+		arkApiSpectator.expectConcurrent([
+			{
+				url: "http://127.0.0.1:4003/api/peers",
+				method: HttpMethod.GET,
+			},
+			{
+				url: "http://127.0.0.1:4003/api/transactions/fees",
+				method: HttpMethod.GET,
+			},
+		]);
+
+		const req = arkApiSpectator.expectOne(
+			"http://127.0.0.1:4003/api/v2/node/fees?days=7",
+			HttpMethod.GET,
+		);
+
+		req.flush([]);
+	});
 });
