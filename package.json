@@ -50,6 +50,7 @@
 		"@ionic/storage": "^2.2.0",
 		"@ngx-translate/core": "^12.1.2",
 		"@ngx-translate/http-loader": "^4.0.0",
+		"@ngxs/store": "^3.6.2",
 		"angular-html-parser": "^1.4.0",
 		"angular2-qrcode": "^2.0.3",
 		"ark-ts": "^0.4.1",

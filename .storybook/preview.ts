@@ -3,6 +3,7 @@ import { IonicModule } from "@ionic/angular";
 import { moduleMetadata } from "@storybook/angular";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { of } from "rxjs";
+import { NgxsModule } from "@ngxs/store";
 // @ts-ignore
 import enLocale from "../src/assets/i18n/en.json";
 
@@ -16,6 +17,7 @@ addDecorator(
 	moduleMetadata({
 		imports: [
 			IonicModule.forRoot(),
+			NgxsModule.forRoot([]),
 			TranslateModule.forRoot({
 				loader: { provide: TranslateLoader, useClass: CustomLoader },
 				defaultLanguage: "en",
