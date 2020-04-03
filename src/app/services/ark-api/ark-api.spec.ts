@@ -73,6 +73,12 @@ fdescribe("ARK API", () => {
 		expect(arkApiService.network.name).toEqual("custom");
 	});
 
+	it("should return if no network specified", () => {
+		const userDataService = arkApiSpectator.get(UserDataService);
+		userDataService.onActivateNetwork$.next();
+		expect(arkApiService.network).toEqual(undefined);
+	});
+
 	it("should get the current client before the intialization", () => {
 		expect(arkApiService.client).toBeUndefined();
 	});
@@ -111,7 +117,7 @@ fdescribe("ARK API", () => {
 		});
 	});
 
-	it("should return network fee statistics", (done) => {
+	it("should fetch network fee statistics", (done) => {
 		const userDataService = arkApiSpectator.get(UserDataService);
 		userDataService.onActivateNetwork$.next(currentNetwork);
 		currentNetwork.isV2 = true;
@@ -137,5 +143,26 @@ fdescribe("ARK API", () => {
 		);
 
 		req.flush([]);
+	});
+
+	it("should return network fee statistics", (done) => {
+		const userDataService = arkApiSpectator.get(UserDataService);
+		userDataService.onActivateNetwork$.next(currentNetwork);
+		currentNetwork.feeStatistics = [];
+
+		arkApiService.feeStatistics.subscribe({
+			complete: () => done(),
+		});
+
+		arkApiSpectator.expectConcurrent([
+			{
+				url: "http://127.0.0.1:4003/api/peers",
+				method: HttpMethod.GET,
+			},
+			{
+				url: "http://127.0.0.1:4003/api/transactions/fees",
+				method: HttpMethod.GET,
+			},
+		]);
 	});
 });
