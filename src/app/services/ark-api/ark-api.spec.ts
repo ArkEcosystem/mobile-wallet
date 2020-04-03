@@ -106,10 +106,8 @@ fdescribe("ARK API", () => {
 				method: HttpMethod.GET,
 			},
 		]);
-		// TODO: Mock fetchFeeStatistics return
-		arkApiService.feeStatistics.subscribe((data) => {
-			console.log({ data });
-			done();
+		arkApiService.feeStatistics.subscribe({
+			complete: () => done(),
 		});
 	});
 });
