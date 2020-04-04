@@ -37,4 +37,41 @@
 	.c-auth-pin__password__char__dot {
 		background-color: rgba(var(--ion-color-primary-rgb), 0.6);
 	}
+
+	.c-auth-pin--fail {
+		animation: shake-horizontal 0.8s ease-out 1;
+	}
+
+	@keyframes shake-horizontal {
+		0% {
+			transform: translate(0, 0);
+		}
+		10% {
+			transform: translate(-25px, 0);
+		}
+		20% {
+			transform: translate(25px, 0);
+		}
+		30% {
+			transform: translate(-20px, 0);
+		}
+		40% {
+			transform: translate(20px, 0);
+		}
+		50% {
+			transform: translate(-10px, 0);
+		}
+		60% {
+			transform: translate(10px, 0);
+		}
+		70% {
+			transform: translate(-5px, 0);
+		}
+		80% {
+			transform: translate(5px, 0);
+		}
+		100% {
+			transform: translate(0, 0);
+		}
+	}
 }

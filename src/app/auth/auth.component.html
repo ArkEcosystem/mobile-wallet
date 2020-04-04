@@ -1,12 +1,12 @@
-<bottom-drawer
-	[isOpen]="true"
-	[buttonClose]="false"
-	[bottomOffset]="0"
-	[middleOffset]="0"
-	initialBreak="top"
-	(buttonDrawerOnClose)="onClose()"
->
-	<div class="p-5">
-		<auth-pin></auth-pin>
+<div class="h-full flex flex-col">
+	<div class="w-10 h-1 rounded-md mx-auto bg-gray-400 mt-2 mb-4"></div>
+	<div *ngIf="unlockTimestamp$ | async as remainingSeconds; else locked">
+		<auth-locked
+			class="flex-1"
+			[remainingSeconds]="remainingSeconds"
+		></auth-locked>
 	</div>
-</bottom-drawer>
+	<ng-template #locked>
+		<auth-pin class="flex-1"></auth-pin>
+	</ng-template>
+</div>

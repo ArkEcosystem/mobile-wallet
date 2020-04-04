@@ -1,10 +1,9 @@
 import { Component } from "@angular/core";
-import { Select, Store } from "@ngxs/store";
-import { Observable, of } from "rxjs";
+import { Store } from "@ngxs/store";
+import { of } from "rxjs";
 import { catchError } from "rxjs/operators";
 
 import { AuthActions } from "../auth.actions";
-import { AuthState } from "../auth.state";
 
 @Component({
 	selector: "auth-pin",
@@ -12,11 +11,9 @@ import { AuthState } from "../auth.state";
 	styleUrls: ["auth-pin.component.pcss"],
 })
 export class AuthPinComponent {
-	@Select(AuthState.hasReachedAttemptsLimit)
-	public hasReachedAttemptsLimit$: Observable<boolean>;
-
 	public passwordRange = Array(6).fill(undefined);
 	public password: number[] = [];
+	public hasWrong = false;
 
 	constructor(private store: Store) {}
 
@@ -32,7 +29,7 @@ export class AuthPinComponent {
 		}
 
 		if (this.password.length === 6) {
-			setTimeout(() => this.verify(), 50);
+			setTimeout(() => this.verify(), 20);
 		}
 	}
 
@@ -42,10 +39,18 @@ export class AuthPinComponent {
 			.dispatch(new AuthActions.Validate(password))
 			.pipe(
 				catchError((x) => {
-					this.password = [];
+					this.handleWrong();
 					return of();
 				}),
 			)
 			.subscribe();
+	}
+
+	private handleWrong() {
+		this.hasWrong = true;
+		this.password = [];
+		setTimeout(() => {
+			this.hasWrong = false;
+		}, 500);
 	}
 }

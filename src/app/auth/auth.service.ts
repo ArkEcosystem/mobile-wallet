@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import bcrypt from "bcryptjs";
-import { from, Observable } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import dayjs from "dayjs";
+import { from, Observable, timer } from "rxjs";
+import { map, switchMap, takeWhile } from "rxjs/operators";
 
 import { StorageProvider } from "@/services/storage/storage";
 
@@ -28,5 +29,42 @@ export class AuthService {
 					from(bcrypt.compare(password, master)),
 				),
 			);
+	}
+
+	public getNextUnlockDate(attempts: number): undefined | Date {
+		const currentAttempt = attempts - 3;
+		if (currentAttempt <= 0) {
+			return undefined;
+		}
+		const remainingSeconds = currentAttempt * 30;
+		const now = dayjs();
+		const next = now.add(remainingSeconds, "second");
+
+		return next.toDate();
+	}
+
+	public getUnlockRemainingSeconds(
+		unlockDate: Date | undefined,
+	): undefined | number {
+		if (!unlockDate) {
+			return;
+		}
+
+		return dayjs(unlockDate).diff(dayjs(), "second");
+	}
+
+	public getUnlockCountdown(remainingSeconds: number): Observable<number> {
+		return timer(0, 1000).pipe(
+			map((seconds) => remainingSeconds - seconds),
+			takeWhile((diffTime) => diffTime >= 0),
+		);
+	}
+
+	public hasUnlockDateExpired(unlockDate: Date | undefined): boolean {
+		if (!unlockDate) {
+			return true;
+		}
+
+		return dayjs().isAfter(unlockDate);
 	}
 }

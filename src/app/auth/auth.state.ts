@@ -1,5 +1,11 @@
 import { Injectable } from "@angular/core";
-import { Action, Selector, State, StateContext, StateToken } from "@ngxs/store";
+import {
+	Action,
+	NgxsOnInit,
+	State,
+	StateContext,
+	StateToken,
+} from "@ngxs/store";
 import { of, throwError } from "rxjs";
 import { catchError, switchMap } from "rxjs/operators";
 
@@ -8,9 +14,8 @@ import { AuthConfig } from "./auth.config";
 import { AuthService } from "./auth.service";
 
 export interface AuthStateModel {
-	isOpen: boolean;
 	attempts: number;
-	unlockTimestamp?: number;
+	unlockDate?: Date;
 }
 
 export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>(
@@ -20,36 +25,20 @@ export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>(
 @State<AuthStateModel>({
 	name: AuthConfig.STORAGE_KEY,
 	defaults: {
-		isOpen: false,
 		attempts: 0,
 	},
 })
 @Injectable()
-export class AuthState {
+export class AuthState implements NgxsOnInit {
 	constructor(private authService: AuthService) {}
 
-	@Selector()
-	public static isOpen(state: AuthStateModel) {
-		return state.isOpen;
-	}
-
-	@Selector()
-	public static hasReachedAttemptsLimit(state: AuthStateModel) {
-		return state.attempts === 3;
-	}
-
-	@Action(AuthActions.Open)
-	public open(ctx: StateContext<AuthStateModel>) {
-		return ctx.patchState({
-			isOpen: true,
-		});
-	}
-
-	@Action(AuthActions.Cancel)
-	public cancel(ctx: StateContext<AuthStateModel>) {
-		return ctx.patchState({
-			isOpen: false,
-		});
+	ngxsOnInit(ctx: StateContext<AuthStateModel>) {
+		const state = ctx.getState();
+		if (this.authService.hasUnlockDateExpired(state.unlockDate)) {
+			return ctx.patchState({
+				unlockDate: undefined,
+			});
+		}
 	}
 
 	@Action(AuthActions.Validate)
@@ -63,15 +52,18 @@ export class AuthState {
 				if (result) {
 					ctx.patchState({
 						attempts: 0,
-						isOpen: false,
+						unlockDate: undefined,
 					});
 					return of();
 				}
 				return throwError(new Error("PIN_VALIDATION_FAILED"));
 			}),
 			catchError((e) => {
+				const attempts = state.attempts + 1;
+				const unlockDate = this.authService.getNextUnlockDate(attempts);
 				ctx.patchState({
-					attempts: state.attempts + 1,
+					attempts,
+					unlockDate,
 				});
 				return throwError(e.message);
 			}),

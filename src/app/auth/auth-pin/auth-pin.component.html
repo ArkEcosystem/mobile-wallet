@@ -1,11 +1,14 @@
-<div class="c-auth-pin flex flex-col">
-	<div class="w-3/4 mx-auto flex flex-col items-center">
+<div class="c-auth-pin flex flex-col justify-center h-full">
+	<div
+		class="w-3/4 mx-auto flex flex-col items-center c-auth-pin--fail"
+		[class.c-auth-pin--fail]="hasWrong"
+	>
 		<h1 class="text-xl font-bold">Enter Pin Code</h1>
 		<ion-text color="medium" class="mt-1 text-sm">
 			To access enter your wallet password.
 		</ion-text>
 		<div class="grid grid-cols-6 gap-2 mt-6 c-auth-pin__password">
-			<span
+			<div
 				*ngFor="let _ of passwordRange; let i = index"
 				class="c-auth-pin__password__char w-4 flex flex-col items-center"
 			>
@@ -16,7 +19,7 @@
 				<div
 					class="c-auth-pin__password__char__border w-4 rounded-sm"
 				></div>
-			</span>
+			</div>
 		</div>
 	</div>
 	<div class="c-auth-pin__keyboard grid gap-0 mt-6 mx-auto">

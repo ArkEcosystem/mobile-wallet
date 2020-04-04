@@ -7,6 +7,7 @@ import { moduleMetadata, storiesOf } from "@storybook/angular";
 import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-drawer.module";
 import { StorageProvider } from "@/services/storage/storage";
 
+import { AuthComponent } from "./auth.component";
 import { AuthController } from "./auth.controller";
 import { AuthComponentModule } from "./auth.module";
 
@@ -18,7 +19,11 @@ export class TestAuthComponent {
 	constructor(private authController: AuthController) {}
 
 	open() {
-		this.authController.request().subscribe();
+		this.authController.request().subscribe({
+			next: () => console.log(1),
+			error: () => console.log(2),
+			complete: () => console.log(3),
+		});
 	}
 }
 
@@ -33,12 +38,17 @@ storiesOf("auth", module)
 				BottomDrawerComponentModule,
 				AuthComponentModule,
 			],
+			entryComponents: [AuthComponent],
 			providers: [StorageProvider, AuthController],
 		}),
 	)
 	.add("Pin", () => ({
 		template: `<div>
-			<test-auth></test-auth>
 			<auth-pin></auth-pin>
+		</div>`,
+	}))
+	.add("Modal", () => ({
+		template: `<div>
+			<test-auth></test-auth>
 		</div>`,
 	}));
