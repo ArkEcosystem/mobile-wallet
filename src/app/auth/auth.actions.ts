@@ -20,4 +20,14 @@ export namespace AuthActions {
 		static readonly type = "[Auth] Success";
 		constructor(public password: string) {}
 	}
+
+	export class ValidatePassword {
+		static readonly type = "[Auth] Validate Password";
+		constructor(public password: string) {}
+	}
+
+	export class SetPassword {
+		static readonly type = "[Auth] Set Password";
+		constructor(public password?: string) {}
+	}
 }

@@ -1,10 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { AlertController } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
 import { Store } from "@ngxs/store";
-import { switchMap, tap } from "rxjs/operators";
+import { Observable, Subject } from "rxjs";
+import { catchError, takeUntil, tap } from "rxjs/operators";
 
 import { AuthActions } from "../auth.actions";
-import { AuthConfig, AuthMode } from "../auth.config";
+import { AuthMode } from "../auth.config";
 import { AuthService } from "../auth.service";
 import { AuthState } from "../auth.state";
 
@@ -13,28 +15,40 @@ import { AuthState } from "../auth.state";
 	templateUrl: "auth-pin.component.html",
 	styleUrls: ["auth-pin.component.pcss"],
 })
-export class AuthPinComponent implements OnInit {
+export class AuthPinComponent implements OnInit, OnDestroy {
 	public mode: AuthMode;
 
-	public passwordRange = Array(6).fill(undefined);
+	public passwordLength = 6;
+	public passwordRange = Array(this.passwordLength).fill(undefined);
 	public password: number[] = [];
 	public hasWrong = false;
+
+	private unsubscriber$ = new Subject();
 
 	constructor(
 		private store: Store,
 		private alertCtrl: AlertController,
+		private translateService: TranslateService,
 		private authService: AuthService,
 	) {}
+
+	ngOnDestroy() {
+		this.unsubscriber$.next();
+		this.unsubscriber$.complete();
+	}
 
 	ngOnInit() {
 		this.store
 			.select(AuthState.mode)
-			.pipe(tap((mode) => (this.mode = mode)))
+			.pipe(
+				tap((mode) => (this.mode = mode)),
+				takeUntil(this.unsubscriber$),
+			)
 			.subscribe();
 	}
 
-	public handleInput(value: number) {
-		if (this.password.length > 6) {
+	public handleInput(value: number): void {
+		if (this.password.length > this.passwordLength) {
 			return;
 		}
 
@@ -44,67 +58,69 @@ export class AuthPinComponent implements OnInit {
 			this.password.push(value);
 		}
 
-		if (this.password.length === 6) {
+		if (this.password.length === this.passwordLength) {
 			setTimeout(() => this.validate(), 20);
 		}
 	}
 
-	private validate() {
-		switch (this.mode) {
-			case AuthMode.Authorization:
-				this.validateAuthorization();
-				break;
-			case AuthMode.Registration:
-				this.validateRegistration();
-				break;
-			case AuthMode.Confirmation:
-				this.validateConfirmation();
-				break;
-		}
+	private validate(): void {
+		const passwordRaw = this.password.join("");
+		const isRegistration = this.mode === AuthMode.Registration;
+		const validation = isRegistration
+			? this.validateRegistration(passwordRaw)
+			: this.validatePassword(passwordRaw);
+
+		validation.pipe(takeUntil(this.unsubscriber$)).subscribe();
 	}
 
-	private async validateRegistration() {
-		const passwordRaw = this.password.join("");
-		if (AuthConfig.WEAK_PASSWORDS.includes(passwordRaw)) {
-			const weakConfirmation = await this.alertCtrl.create({
-				header: "WEAK",
-				message: "WEAKER",
-				backdropDismiss: false,
-				buttons: [
-					{
-						text: "NO",
-						handler: () => {
-							this.password = [];
-						},
-					},
-					{
-						text: "YES",
-						handler: () => {
-							return this.store.dispatch(
-								new AuthActions.Success(passwordRaw),
-							);
-						},
-					},
-				],
-			});
-			weakConfirmation.present();
+	private validateRegistration(password: string): Observable<any> {
+		if (this.authService.isWeakPassword(password)) {
+			return this.translateService
+				.get([
+					"NO",
+					"YES",
+					"PIN_CODE.WEAK_PIN",
+					"PIN_CODE.WEAK_PIN_DETAIL",
+				])
+				.pipe(
+					tap(async (translation) => {
+						const weakConfirmation = await this.alertCtrl.create({
+							header: translation["PIN_CODE.WEAK_PIN"],
+							message: translation["PIN_CODE.WEAK_PIN_DETAIL"],
+							backdropDismiss: false,
+							buttons: [
+								{
+									text: translation["NO"],
+									handler: () => {
+										this.password = [];
+									},
+								},
+								{
+									text: translation["YES"],
+									handler: () => {
+										return this.store.dispatch([
+											new AuthActions.Success(password),
+										]);
+									},
+								},
+							],
+						});
+						weakConfirmation.present();
+					}),
+				);
 		}
+		return this.store.dispatch([new AuthActions.Success(password)]);
 	}
 
-	private validateConfirmation() {}
-
-	private validateAuthorization() {
-		const passwordRaw = this.password.join("");
-		this.authService
-			.validateMasterPassword(passwordRaw)
+	private validatePassword(password: string): Observable<any> {
+		return this.store
+			.dispatch(new AuthActions.ValidatePassword(password))
 			.pipe(
-				switchMap(() =>
-					this.store.dispatch(new AuthActions.Success(passwordRaw)),
-				),
-			)
-			.subscribe({
-				error: () => this.handleWrong(),
-			});
+				catchError((e) => {
+					this.handleWrong();
+					return e;
+				}),
+			);
 	}
 
 	private handleWrong() {

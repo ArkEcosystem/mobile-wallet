@@ -6,8 +6,8 @@ import {
 	ofActionSuccessful,
 	Store,
 } from "@ngxs/store";
-import { from } from "rxjs";
-import { switchMap, takeUntil, tap } from "rxjs/operators";
+import { from, Observable } from "rxjs";
+import { switchMap, take, takeUntil, tap } from "rxjs/operators";
 
 import { AuthActions } from "./auth.actions";
 import { AuthComponent } from "./auth.component";
@@ -22,12 +22,27 @@ export class AuthController {
 	) {}
 
 	public register() {
-		const modal = this.createModal({ mode: AuthMode.Registration });
-		return from(modal).pipe(
-			switchMap((element) => {
+		const registrationModal$ = from(
+			this.createModal({ mode: AuthMode.Registration }),
+		);
+
+		const confirmModal = () =>
+			from(
+				this.createModal({
+					mode: AuthMode.Confirmation,
+				}),
+			).pipe(
+				switchMap((confirmModal) =>
+					this.success$.pipe(tap(() => confirmModal.dismiss())),
+				),
+			);
+
+		return registrationModal$.pipe(
+			switchMap((registrationModal) => {
 				return this.success$.pipe(
-					tap(() => element.dismiss()),
 					takeUntil(this.canceled$),
+					tap(() => registrationModal.dismiss(null, "self")),
+					switchMap(confirmModal),
 				);
 			}),
 		);
@@ -49,8 +64,11 @@ export class AuthController {
 		return this.actions$.pipe(ofActionCompleted(AuthActions.Cancel));
 	}
 
-	private get success$() {
-		return this.actions$.pipe(ofActionSuccessful(AuthActions.Success));
+	private get success$(): Observable<AuthActions.Success> {
+		return this.actions$.pipe(
+			ofActionSuccessful(AuthActions.Success),
+			take(1),
+		);
 	}
 
 	private async createModal({ mode }: { mode: AuthMode }) {
@@ -66,7 +84,11 @@ export class AuthController {
 			mode,
 		});
 
-		modal.onDidDismiss().then(() => this.store.dispatch(cancelAction));
+		modal.onDidDismiss().then(({ role }) => {
+			if (role !== "self") {
+				this.store.dispatch(cancelAction);
+			}
+		});
 		modal.present().then(() => this.store.dispatch(openAction));
 
 		return modal;

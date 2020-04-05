@@ -110,6 +110,7 @@
 		"@ionic/angular-toolkit": "^2.2.0",
 		"@ionic/lab": "^3.1.2",
 		"@ngneat/spectator": "^5.3.1",
+		"@ngxs/devtools-plugin": "^3.6.2",
 		"@storybook/angular": "^5.3.17",
 		"@types/bcryptjs": "^2.4.2",
 		"@types/bip39": "^3.0.0",

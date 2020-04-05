@@ -4,6 +4,7 @@ import { moduleMetadata } from "@storybook/angular";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { of } from "rxjs";
 import { NgxsModule } from "@ngxs/store";
+import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 // @ts-ignore
 import enLocale from "../src/assets/i18n/en.json";
 
@@ -18,6 +19,7 @@ addDecorator(
 		imports: [
 			IonicModule.forRoot(),
 			NgxsModule.forRoot([]),
+			NgxsReduxDevtoolsPluginModule.forRoot(),
 			TranslateModule.forRoot({
 				loader: { provide: TranslateLoader, useClass: CustomLoader },
 				defaultLanguage: "en",

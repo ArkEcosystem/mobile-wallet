@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import bcrypt from "bcryptjs";
 import dayjs from "dayjs";
 import { from, Observable, timer } from "rxjs";
-import { map, switchMap, takeWhile } from "rxjs/operators";
+import { map, takeWhile } from "rxjs/operators";
 
 import { StorageProvider } from "@/services/storage/storage";
 
@@ -12,31 +12,32 @@ import { AuthConfig } from "./auth.config";
 export class AuthService {
 	constructor(private storageProvider: StorageProvider) {}
 
-	public saveMasterPassword(password: string): Observable<any> {
-		const hash = bcrypt.hashSync(password, 8);
-
-		return this.storageProvider.set(
-			AuthConfig.STORAGE_MASTERPASSWORD,
-			hash,
-		);
+	public isWeakPassword(password: string): boolean {
+		return AuthConfig.WEAK_PASSWORDS.includes(password);
 	}
 
-	public validateMasterPassword(password: string): Observable<boolean> {
-		return this.storageProvider
-			.get(AuthConfig.STORAGE_MASTERPASSWORD)
-			.pipe(
-				switchMap((master: string) =>
-					from(bcrypt.compare(password, master)),
-				),
-			);
+	public getPasswordHash(): Observable<string | undefined> {
+		return this.storageProvider.get(AuthConfig.STORAGE_MASTERPASSWORD);
+	}
+
+	public hashPassword(password: string): string {
+		return bcrypt.hashSync(password, 8);
+	}
+
+	public validatePassword(
+		password: string,
+		hash: string,
+	): Observable<boolean> {
+		return from(bcrypt.compare(password, hash));
 	}
 
 	public getNextUnlockDate(attempts: number): undefined | Date {
-		const currentAttempt = attempts - 3;
+		const currentAttempt = attempts + 1 - AuthConfig.ATTEMPTS_LIMIT;
 		if (currentAttempt <= 0) {
 			return undefined;
 		}
-		const remainingSeconds = currentAttempt * 30;
+		const remainingSeconds =
+			currentAttempt * AuthConfig.ATTEMPTS_TIMEOUT_SECONDS;
 		const now = dayjs();
 		const next = now.add(remainingSeconds, "second");
 

@@ -7,6 +7,8 @@ import {
 	StateContext,
 	StateToken,
 } from "@ngxs/store";
+import { throwError } from "rxjs";
+import { catchError, first, map, switchMap, tap } from "rxjs/operators";
 
 import { AuthActions } from "./auth.actions";
 import { AuthConfig, AuthMethod, AuthMode } from "./auth.config";
@@ -14,6 +16,8 @@ import { AuthService } from "./auth.service";
 
 export interface AuthStateModel {
 	attempts: number;
+	registerPasswordHash?: string;
+	passwordHash?: string;
 	unlockDate?: Date;
 	mode?: AuthMode;
 	method?: AuthMethod;
@@ -40,8 +44,23 @@ export class AuthState implements NgxsOnInit {
 
 	ngxsOnInit(ctx: StateContext<AuthStateModel>) {
 		const state = ctx.getState();
+
+		this.authService
+			.getPasswordHash()
+			.pipe(
+				first(),
+				map((hash) => {
+					if (hash) {
+						ctx.patchState({
+							passwordHash: hash,
+						});
+					}
+				}),
+			)
+			.subscribe();
+
 		if (this.authService.hasUnlockDateExpired(state.unlockDate)) {
-			return ctx.patchState({
+			ctx.patchState({
 				unlockDate: undefined,
 			});
 		}
@@ -52,6 +71,44 @@ export class AuthState implements NgxsOnInit {
 		return ctx.patchState({
 			mode: action.payload.mode,
 		});
+	}
+
+	@Action(AuthActions.Cancel)
+	public cancel(ctx: StateContext<AuthStateModel>) {
+		return ctx.patchState({
+			mode: undefined,
+			registerPasswordHash: undefined,
+		});
+	}
+
+	@Action(AuthActions.ValidatePassword)
+	public validatePassword(
+		ctx: StateContext<AuthStateModel>,
+		action: AuthActions.ValidatePassword,
+	) {
+		const state = ctx.getState();
+		let hash: string;
+
+		if (state.mode === AuthMode.Confirmation) {
+			hash = state.registerPasswordHash;
+		} else {
+			hash = state.passwordHash;
+		}
+
+		return this.authService.validatePassword(action.password, hash).pipe(
+			switchMap((result) => {
+				if (result) {
+					return ctx.dispatch(
+						new AuthActions.Success(action.password),
+					);
+				}
+				return throwError(new Error("PIN_VALIDATION_FAILED"));
+			}),
+			catchError((e) => {
+				ctx.dispatch(new AuthActions.Fail());
+				return throwError(e.message);
+			}),
+		);
 	}
 
 	@Action(AuthActions.Fail)
@@ -66,10 +123,39 @@ export class AuthState implements NgxsOnInit {
 	}
 
 	@Action(AuthActions.Success)
-	public success(ctx: StateContext<AuthStateModel>) {
+	public success(
+		ctx: StateContext<AuthStateModel>,
+		action: AuthActions.Success,
+	) {
+		return ctx.dispatch(new AuthActions.SetPassword(action.password)).pipe(
+			tap(() =>
+				ctx.patchState({
+					attempts: 0,
+					unlockDate: undefined,
+					mode: undefined,
+				}),
+			),
+		);
+	}
+
+	@Action(AuthActions.SetPassword)
+	public setPassword(
+		ctx: StateContext<AuthStateModel>,
+		action: AuthActions.SetPassword,
+	) {
+		const state = ctx.getState();
+		const isAuthorization = state.mode === AuthMode.Authorization;
+
+		if (isAuthorization) {
+			return;
+		}
+
+		const isConfirmation = state.mode === AuthMode.Confirmation;
+		const hashedPassword = this.authService.hashPassword(action.password);
+		const key = isConfirmation ? "passwordHash" : "registerPasswordHash";
+
 		return ctx.patchState({
-			attempts: 0,
-			unlockDate: undefined,
+			[key]: hashedPassword,
 		});
 	}
 }
