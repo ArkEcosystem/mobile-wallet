@@ -1,6 +1,9 @@
 <div class="h-full flex flex-col">
 	<div class="w-10 h-1 rounded-md mx-auto bg-gray-400 mt-2 mb-4"></div>
-	<div *ngIf="unlockTimestamp$ | async as remainingSeconds; else locked">
+	<div
+		class="h-full"
+		*ngIf="unlockTimestamp$ | async as remainingSeconds; else locked"
+	>
 		<auth-locked
 			class="flex-1"
 			[remainingSeconds]="remainingSeconds"

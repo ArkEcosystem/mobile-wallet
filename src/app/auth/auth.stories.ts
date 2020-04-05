@@ -19,7 +19,7 @@ export class TestAuthComponent {
 	constructor(private authController: AuthController) {}
 
 	open() {
-		this.authController.request().subscribe({
+		this.authController.register().subscribe({
 			next: () => console.log(1),
 			error: () => console.log(2),
 			complete: () => console.log(3),
@@ -51,4 +51,7 @@ storiesOf("auth", module)
 		template: `<div>
 			<test-auth></test-auth>
 		</div>`,
+	}))
+	.add("Locked", () => ({
+		template: `<auth-locked [remainingSeconds]="100"></auth-locked>`,
 	}));

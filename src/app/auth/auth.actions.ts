@@ -1,7 +1,9 @@
+import { AuthMode } from "./auth.config";
+
 export namespace AuthActions {
 	export class Open {
 		static readonly type = "[Auth] Open";
-		constructor() {}
+		constructor(public payload: { mode: AuthMode }) {}
 	}
 
 	export class Cancel {
@@ -9,8 +11,13 @@ export namespace AuthActions {
 		constructor() {}
 	}
 
-	export class Validate {
-		static readonly type = "[Auth] Validate";
+	export class Fail {
+		static readonly type = "[Auth] Fail";
+		constructor() {}
+	}
+
+	export class Success {
+		static readonly type = "[Auth] Success";
 		constructor(public password: string) {}
 	}
 }

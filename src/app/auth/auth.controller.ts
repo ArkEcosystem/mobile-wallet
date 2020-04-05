@@ -6,10 +6,12 @@ import {
 	ofActionSuccessful,
 	Store,
 } from "@ngxs/store";
-import { takeUntil } from "rxjs/operators";
+import { from } from "rxjs";
+import { switchMap, takeUntil, tap } from "rxjs/operators";
 
 import { AuthActions } from "./auth.actions";
 import { AuthComponent } from "./auth.component";
+import { AuthMode } from "./auth.config";
 
 @Injectable()
 export class AuthController {
@@ -19,32 +21,54 @@ export class AuthController {
 		private modalCtrl: ModalController,
 	) {}
 
+	public register() {
+		const modal = this.createModal({ mode: AuthMode.Registration });
+		return from(modal).pipe(
+			switchMap((element) => {
+				return this.success$.pipe(
+					tap(() => element.dismiss()),
+					takeUntil(this.canceled$),
+				);
+			}),
+		);
+	}
+
 	public request() {
-		this.modalCtrl
-			.create({
-				component: AuthComponent,
-				mode: "ios",
-				swipeToClose: true,
-				cssClass: "modal-card c-auth-modal",
-			})
-			.then((x) => {
-				x.onDidDismiss().then(() =>
-					this.store.dispatch(new AuthActions.Cancel()),
+		const modal = this.createModal({ mode: AuthMode.Authorization });
+		return from(modal).pipe(
+			switchMap((element) => {
+				return this.success$.pipe(
+					tap(() => element.dismiss()),
+					takeUntil(this.canceled$),
 				);
-				x.present().then(() =>
-					this.store.dispatch(new AuthActions.Open()),
-				);
-			});
-
-		const canceled$ = this.actions$.pipe(
-			ofActionCompleted(AuthActions.Cancel),
+			}),
 		);
+	}
 
-		const validated$ = this.actions$.pipe(
-			ofActionSuccessful(AuthActions.Validate),
-			takeUntil(canceled$),
-		);
+	private get canceled$() {
+		return this.actions$.pipe(ofActionCompleted(AuthActions.Cancel));
+	}
 
-		return validated$;
+	private get success$() {
+		return this.actions$.pipe(ofActionSuccessful(AuthActions.Success));
+	}
+
+	private async createModal({ mode }: { mode: AuthMode }) {
+		const modal = await this.modalCtrl.create({
+			component: AuthComponent,
+			mode: "ios",
+			swipeToClose: true,
+			cssClass: "modal-card c-auth-modal",
+		});
+
+		const cancelAction = new AuthActions.Cancel();
+		const openAction = new AuthActions.Open({
+			mode,
+		});
+
+		modal.onDidDismiss().then(() => this.store.dispatch(cancelAction));
+		modal.present().then(() => this.store.dispatch(openAction));
+
+		return modal;
 	}
 }

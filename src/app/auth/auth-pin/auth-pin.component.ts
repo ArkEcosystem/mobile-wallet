@@ -1,21 +1,37 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { AlertController } from "@ionic/angular";
 import { Store } from "@ngxs/store";
-import { of } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { switchMap, tap } from "rxjs/operators";
 
 import { AuthActions } from "../auth.actions";
+import { AuthConfig, AuthMode } from "../auth.config";
+import { AuthService } from "../auth.service";
+import { AuthState } from "../auth.state";
 
 @Component({
 	selector: "auth-pin",
 	templateUrl: "auth-pin.component.html",
 	styleUrls: ["auth-pin.component.pcss"],
 })
-export class AuthPinComponent {
+export class AuthPinComponent implements OnInit {
+	public mode: AuthMode;
+
 	public passwordRange = Array(6).fill(undefined);
 	public password: number[] = [];
 	public hasWrong = false;
 
-	constructor(private store: Store) {}
+	constructor(
+		private store: Store,
+		private alertCtrl: AlertController,
+		private authService: AuthService,
+	) {}
+
+	ngOnInit() {
+		this.store
+			.select(AuthState.mode)
+			.pipe(tap((mode) => (this.mode = mode)))
+			.subscribe();
+	}
 
 	public handleInput(value: number) {
 		if (this.password.length > 6) {
@@ -29,21 +45,66 @@ export class AuthPinComponent {
 		}
 
 		if (this.password.length === 6) {
-			setTimeout(() => this.verify(), 20);
+			setTimeout(() => this.validate(), 20);
 		}
 	}
 
-	private verify() {
-		const password = this.password.join("");
-		this.store
-			.dispatch(new AuthActions.Validate(password))
+	private validate() {
+		switch (this.mode) {
+			case AuthMode.Authorization:
+				this.validateAuthorization();
+				break;
+			case AuthMode.Registration:
+				this.validateRegistration();
+				break;
+			case AuthMode.Confirmation:
+				this.validateConfirmation();
+				break;
+		}
+	}
+
+	private async validateRegistration() {
+		const passwordRaw = this.password.join("");
+		if (AuthConfig.WEAK_PASSWORDS.includes(passwordRaw)) {
+			const weakConfirmation = await this.alertCtrl.create({
+				header: "WEAK",
+				message: "WEAKER",
+				backdropDismiss: false,
+				buttons: [
+					{
+						text: "NO",
+						handler: () => {
+							this.password = [];
+						},
+					},
+					{
+						text: "YES",
+						handler: () => {
+							return this.store.dispatch(
+								new AuthActions.Success(passwordRaw),
+							);
+						},
+					},
+				],
+			});
+			weakConfirmation.present();
+		}
+	}
+
+	private validateConfirmation() {}
+
+	private validateAuthorization() {
+		const passwordRaw = this.password.join("");
+		this.authService
+			.validateMasterPassword(passwordRaw)
 			.pipe(
-				catchError((x) => {
-					this.handleWrong();
-					return of();
-				}),
+				switchMap(() =>
+					this.store.dispatch(new AuthActions.Success(passwordRaw)),
+				),
 			)
-			.subscribe();
+			.subscribe({
+				error: () => this.handleWrong(),
+			});
 	}
 
 	private handleWrong() {

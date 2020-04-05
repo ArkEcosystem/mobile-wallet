@@ -2,20 +2,21 @@ import { Injectable } from "@angular/core";
 import {
 	Action,
 	NgxsOnInit,
+	Selector,
 	State,
 	StateContext,
 	StateToken,
 } from "@ngxs/store";
-import { of, throwError } from "rxjs";
-import { catchError, switchMap } from "rxjs/operators";
 
 import { AuthActions } from "./auth.actions";
-import { AuthConfig } from "./auth.config";
+import { AuthConfig, AuthMethod, AuthMode } from "./auth.config";
 import { AuthService } from "./auth.service";
 
 export interface AuthStateModel {
 	attempts: number;
 	unlockDate?: Date;
+	mode?: AuthMode;
+	method?: AuthMethod;
 }
 
 export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>(
@@ -32,6 +33,11 @@ export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>(
 export class AuthState implements NgxsOnInit {
 	constructor(private authService: AuthService) {}
 
+	@Selector()
+	public static mode(state: AuthStateModel) {
+		return state.mode;
+	}
+
 	ngxsOnInit(ctx: StateContext<AuthStateModel>) {
 		const state = ctx.getState();
 		if (this.authService.hasUnlockDateExpired(state.unlockDate)) {
@@ -41,32 +47,29 @@ export class AuthState implements NgxsOnInit {
 		}
 	}
 
-	@Action(AuthActions.Validate)
-	public validate(
-		ctx: StateContext<AuthStateModel>,
-		action: AuthActions.Validate,
-	) {
+	@Action(AuthActions.Open)
+	public open(ctx: StateContext<AuthStateModel>, action: AuthActions.Open) {
+		return ctx.patchState({
+			mode: action.payload.mode,
+		});
+	}
+
+	@Action(AuthActions.Fail)
+	public fail(ctx: StateContext<AuthStateModel>) {
 		const state = ctx.getState();
-		return this.authService.validateMasterPassword(action.password).pipe(
-			switchMap((result) => {
-				if (result) {
-					ctx.patchState({
-						attempts: 0,
-						unlockDate: undefined,
-					});
-					return of();
-				}
-				return throwError(new Error("PIN_VALIDATION_FAILED"));
-			}),
-			catchError((e) => {
-				const attempts = state.attempts + 1;
-				const unlockDate = this.authService.getNextUnlockDate(attempts);
-				ctx.patchState({
-					attempts,
-					unlockDate,
-				});
-				return throwError(e.message);
-			}),
-		);
+		const attempts = state.attempts + 1;
+		const unlockDate = this.authService.getNextUnlockDate(attempts);
+		return ctx.patchState({
+			attempts,
+			unlockDate,
+		});
+	}
+
+	@Action(AuthActions.Success)
+	public success(ctx: StateContext<AuthStateModel>) {
+		return ctx.patchState({
+			attempts: 0,
+			unlockDate: undefined,
+		});
 	}
 }

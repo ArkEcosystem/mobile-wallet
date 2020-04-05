@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngxs/store";
-import { iif, NEVER, Observable, Subject } from "rxjs";
-import { map, switchMap, takeUntil, tap } from "rxjs/operators";
+import { iif, NEVER, Observable } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
 
 import { AuthService } from "./auth.service";
 import { AUTH_STATE_TOKEN } from "./auth.state";
@@ -10,37 +10,23 @@ import { AUTH_STATE_TOKEN } from "./auth.state";
 	selector: "auth",
 	templateUrl: "auth.component.html",
 })
-export class AuthComponent implements OnInit, OnDestroy {
+export class AuthComponent implements OnInit {
 	public unlockTimestamp$: Observable<any>;
-	public destroy$ = new Subject();
 
-	constructor(private store: Store, private authService: AuthService) {
+	constructor(private store: Store, private authService: AuthService) {}
+
+	ngOnInit() {
 		this.unlockTimestamp$ = this.store.select(AUTH_STATE_TOKEN).pipe(
-			takeUntil(this.destroy$),
-			tap((x) => console.log(x)),
 			map((state) =>
 				this.authService.getUnlockRemainingSeconds(state.unlockDate),
 			),
 			switchMap((remainingSeconds) => {
-				console.log(1, remainingSeconds);
 				return iif(
 					() => !!remainingSeconds,
-					this.authService
-						.getUnlockCountdown(remainingSeconds)
-						.pipe(tap((x) => console.log(2))),
+					this.authService.getUnlockCountdown(remainingSeconds),
 					NEVER,
 				);
 			}),
 		);
-	}
-
-	ngOnDestroy() {
-		console.log("destroy");
-		this.destroy$.next();
-		this.destroy$.complete();
-	}
-
-	ngOnInit() {
-		console.log("init");
 	}
 }
