@@ -14,11 +14,15 @@ import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
 import { IonicStorageModule } from "@ionic/storage";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { NgxsAsyncStoragePluginModule } from "@ngxs-labs/async-storage-plugin";
+import { NgxsModule } from "@ngxs/store";
 import { ChartsModule } from "ng2-charts";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
+import { AuthState } from "./auth/auth.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
+import { NgxsStorageService } from "./services/storage/ngxs-storage";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
 import { UserDataService } from "./services/user-data/user-data.interface";
 
@@ -42,6 +46,10 @@ export function createTranslateLoader(http: HttpClient) {
 			},
 		}),
 		AppRoutingModule,
+		NgxsModule.forRoot([]),
+		NgxsAsyncStoragePluginModule.forRoot(NgxsStorageService, {
+			key: [AuthState],
+		}),
 		ChartsModule,
 		HammerModule,
 	],

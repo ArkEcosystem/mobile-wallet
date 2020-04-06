@@ -20,7 +20,7 @@
 			>
 				<div
 					class="c-auth-pin__password__char__dot mb-1 w-3 h-0 rounded-full transition-all duration-100"
-					[ngClass]="{ 'h-3': password[i] }"
+					[ngClass]="{ 'h-3': password[i] !== undefined }"
 				></div>
 				<div
 					class="c-auth-pin__password__char__border w-4 rounded-sm"
