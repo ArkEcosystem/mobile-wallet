@@ -9,7 +9,7 @@ import { of, Subject } from "rxjs";
 
 import delegatesFixture from "@@/test/fixture/delegates.fixture";
 import { STORAGE_DELEGATES } from "@/app/app.constants";
-import { StoredNetwork } from "@/models/model";
+import { FeeStatistic, StoredNetwork } from "@/models/model";
 import { NetworkProvider } from "@/services/network/network";
 import { StorageProvider } from "@/services/storage/storage";
 import { ToastProvider } from "@/services/toast/toast";
@@ -23,6 +23,7 @@ fdescribe("ARK API", () => {
 	let arkApiService: ArkApiProvider;
 
 	const currentNetwork = new StoredNetwork();
+	//Mock Current Network
 	currentNetwork.type = null;
 	currentNetwork.activePeer = {
 		ip: "127.0.0.1",
@@ -119,8 +120,8 @@ fdescribe("ARK API", () => {
 
 	it("should fetch network fee statistics", (done) => {
 		const userDataService = arkApiSpectator.get(UserDataService);
-		userDataService.onActivateNetwork$.next(currentNetwork);
 		currentNetwork.isV2 = true;
+		userDataService.onActivateNetwork$.next(currentNetwork);
 
 		arkApiService.feeStatistics.subscribe({
 			complete: () => done(),
@@ -147,11 +148,23 @@ fdescribe("ARK API", () => {
 
 	it("should return network fee statistics", (done) => {
 		const userDataService = arkApiSpectator.get(UserDataService);
+		// Mock FeeStatistic
+		const networkFeeStatistic: FeeStatistic = {
+			type: 0,
+			fees: {
+				minFee: 0,
+				maxFee: 1,
+				avgFee: 0.5,
+			},
+		};
+		currentNetwork.feeStatistics = [networkFeeStatistic];
 		userDataService.onActivateNetwork$.next(currentNetwork);
-		currentNetwork.feeStatistics = [];
 
 		arkApiService.feeStatistics.subscribe({
-			complete: () => done(),
+			next: (data) => {
+				expect(data).toEqual([networkFeeStatistic]);
+				done();
+			},
 		});
 
 		arkApiSpectator.expectConcurrent([
