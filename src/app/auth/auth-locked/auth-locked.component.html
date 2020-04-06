@@ -6,9 +6,20 @@
 			color="danger"
 			class="mt-2 mb-4"
 		></ion-icon>
-		<h1 class="text-xl font-bold">You tried to many times!</h1>
+		<h1 class="text-xl font-bold text-center">
+			{{ "PIN_CODE.WRONG_PIN_MANY_TIMES" | translate }}
+		</h1>
 		<ion-text color="medium" class="mt-1 text-sm">
-			Please wait {{ remainingSeconds }} and try again.
+			{{
+				"PIN_CODE.WAIT_TO_TRY"
+					| translate
+						: {
+								time:
+									remainingSeconds
+									| secondsToTime
+									| date: "mm:ss"
+						  }
+			}}
 		</ion-text>
 	</div>
 </div>

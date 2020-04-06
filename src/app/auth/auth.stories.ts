@@ -59,7 +59,7 @@ storiesOf("auth", module)
 		template: `<auth-touch-id></auth-touch-id>`,
 	}))
 	.add("Locked", () => ({
-		template: `<auth-locked [remainingSeconds]="100"></auth-locked>`,
+		template: `<auth-locked [remainingSeconds]="30"></auth-locked>`,
 	}))
 	.add("Auth", () => ({
 		template: `<ion-app><auth></auth></ion-app>`,

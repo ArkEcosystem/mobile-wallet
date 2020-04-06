@@ -4,6 +4,7 @@ import { IonicModule } from "@ionic/angular";
 import { NgxsModule } from "@ngxs/store";
 
 import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-drawer.module";
+import { PipesModule } from "@/pipes/pipes.module";
 
 import { SharedModule } from "../shared.module";
 import { AuthLockedComponent } from "./auth-locked/auth-locked.component";
@@ -27,6 +28,7 @@ import { AuthState } from "./auth.state";
 		BottomDrawerComponentModule,
 		NgxsModule.forFeature([AuthState]),
 		AuthRoutingModule,
+		PipesModule,
 	],
 	providers: [AuthService, FingerprintAIO],
 	exports: [
