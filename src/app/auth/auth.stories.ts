@@ -43,15 +43,16 @@ storiesOf("auth", module)
 		}),
 	)
 	.add("Pin", () => ({
-		template: `<div>
-			<auth-pin></auth-pin>
-		</div>`,
+		template: `<auth-pin></auth-pin>`,
+	}))
+	.add("Touch Id", () => ({
+		template: `<auth-touch-id></auth-touch-id>`,
+	}))
+	.add("Locked", () => ({
+		template: `<auth-locked [remainingSeconds]="100"></auth-locked>`,
 	}))
 	.add("Modal", () => ({
 		template: `<div>
 			<test-auth></test-auth>
 		</div>`,
-	}))
-	.add("Locked", () => ({
-		template: `<auth-locked [remainingSeconds]="100"></auth-locked>`,
 	}));

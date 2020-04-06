@@ -18,7 +18,7 @@ addDecorator(
 	moduleMetadata({
 		imports: [
 			IonicModule.forRoot(),
-			NgxsModule.forRoot([]),
+			NgxsModule.forRoot([], { developmentMode: true }),
 			NgxsReduxDevtoolsPluginModule.forRoot(),
 			TranslateModule.forRoot({
 				loader: { provide: TranslateLoader, useClass: CustomLoader },

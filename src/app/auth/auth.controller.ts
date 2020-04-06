@@ -22,29 +22,26 @@ export class AuthController {
 	) {}
 
 	public register() {
-		const registrationModal$ = from(
-			this.createModal({ mode: AuthMode.Registration }),
+		const registrationModal$ = this.createModal({
+			mode: AuthMode.Registration,
+		});
+
+		const confirmModal$ = this.createModal({
+			mode: AuthMode.Confirmation,
+		}).pipe(
+			switchMap((confirmModal) =>
+				this.success$.pipe(tap(() => confirmModal.dismiss())),
+			),
 		);
 
-		const confirmModal = () =>
-			from(
-				this.createModal({
-					mode: AuthMode.Confirmation,
-				}),
-			).pipe(
-				switchMap((confirmModal) =>
-					this.success$.pipe(tap(() => confirmModal.dismiss())),
-				),
-			);
-
 		return registrationModal$.pipe(
-			switchMap((registrationModal) => {
-				return this.success$.pipe(
+			switchMap((registrationModal) =>
+				this.success$.pipe(
 					takeUntil(this.canceled$),
 					tap(() => registrationModal.dismiss(null, "self")),
-					switchMap(confirmModal),
-				);
-			}),
+					switchMap(() => confirmModal$),
+				),
+			),
 		);
 	}
 
@@ -71,8 +68,8 @@ export class AuthController {
 		);
 	}
 
-	private async createModal({ mode }: { mode: AuthMode }) {
-		const modal = await this.modalCtrl.create({
+	private createModal({ mode }: { mode: AuthMode }) {
+		const modal = this.modalCtrl.create({
 			component: AuthComponent,
 			mode: "ios",
 			swipeToClose: true,
@@ -84,13 +81,17 @@ export class AuthController {
 			mode,
 		});
 
-		modal.onDidDismiss().then(({ role }) => {
-			if (role !== "self") {
-				this.store.dispatch(cancelAction);
-			}
-		});
-		modal.present().then(() => this.store.dispatch(openAction));
-
-		return modal;
+		return from(modal).pipe(
+			tap((component) => {
+				component.onDidDismiss().then(({ role }) => {
+					if (role !== "self") {
+						this.store.dispatch(cancelAction);
+					}
+				});
+			}),
+			tap((component) => {
+				component.present().then(() => this.store.dispatch(openAction));
+			}),
+		);
 	}
 }
