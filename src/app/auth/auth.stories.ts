@@ -1,4 +1,6 @@
+import { APP_BASE_HREF } from "@angular/common";
 import { Component } from "@angular/core";
+import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
 import { IonicStorageModule } from "@ionic/storage";
 import { TranslateModule } from "@ngx-translate/core";
@@ -33,13 +35,21 @@ storiesOf("auth", module)
 			declarations: [TestAuthComponent],
 			imports: [
 				IonicModule,
+				RouterModule.forRoot([], { useHash: true }),
 				IonicStorageModule.forRoot(),
 				TranslateModule,
 				BottomDrawerComponentModule,
 				AuthComponentModule,
 			],
 			entryComponents: [AuthComponent],
-			providers: [StorageProvider, AuthController],
+			providers: [
+				StorageProvider,
+				AuthController,
+				{
+					provide: APP_BASE_HREF,
+					useValue: "/",
+				},
+			],
 		}),
 	)
 	.add("Pin", () => ({
@@ -50,6 +60,9 @@ storiesOf("auth", module)
 	}))
 	.add("Locked", () => ({
 		template: `<auth-locked [remainingSeconds]="100"></auth-locked>`,
+	}))
+	.add("Auth", () => ({
+		template: `<ion-app><auth></auth></ion-app>`,
 	}))
 	.add("Modal", () => ({
 		template: `<div>

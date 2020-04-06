@@ -1,15 +1,23 @@
-<div class="h-full flex flex-col">
-	<div class="w-10 h-1 rounded-md mx-auto bg-gray-400 mt-2 mb-4"></div>
-	<div
-		class="h-full"
-		*ngIf="unlockTimestamp$ | async as remainingSeconds; else locked"
-	>
-		<auth-locked
-			class="flex-1"
-			[remainingSeconds]="remainingSeconds"
-		></auth-locked>
-	</div>
-	<ng-template #locked>
-		<auth-pin class="flex-1"></auth-pin>
+<div class="h-full">
+	<div class="w-8 h-1 rounded-md mx-auto bg-gray-400 mt-2 mb-4"></div>
+	<auth-locked
+		*ngIf="unlockTimestamp$ | async as remainingSeconds; else unlocked"
+		[remainingSeconds]="remainingSeconds"
+	></auth-locked>
+
+	<ng-template #unlocked>
+		<ion-tabs>
+			<ion-tab-bar slot="bottom" *ngIf="isTouchAvailable$ | async">
+				<ion-tab-button tab="pin">
+					<ion-icon name="apps"></ion-icon>
+					<ion-label>Numeric</ion-label>
+				</ion-tab-button>
+
+				<ion-tab-button tab="touch-id">
+					<ion-icon name="finger-print"></ion-icon>
+					<ion-label>Digital</ion-label>
+				</ion-tab-button>
+			</ion-tab-bar>
+		</ion-tabs>
 	</ng-template>
 </div>

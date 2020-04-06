@@ -36,6 +36,7 @@
 		"@ionic-native/background-mode": "^5.23.0",
 		"@ionic-native/clipboard": "^5.23.0",
 		"@ionic-native/core": "^5.23.0",
+		"@ionic-native/fingerprint-aio": "^5.23.0",
 		"@ionic-native/in-app-browser": "^5.23.0",
 		"@ionic-native/keyboard": "^5.23.0",
 		"@ionic-native/local-notifications": "^5.23.0",
@@ -65,6 +66,7 @@
 		"cordova-ios": "5.1.1",
 		"cordova-plugin-add-swift-support": "^2.0.2",
 		"cordova-plugin-device": "^2.0.3",
+		"cordova-plugin-fingerprint-aio": "^3.0.1",
 		"cordova-plugin-inappbrowser": "^3.2.0",
 		"cordova-plugin-ionic": "^5.4.6",
 		"cordova-plugin-ionic-keyboard": "^2.2.0",
@@ -181,6 +183,9 @@
 				"MAX_STORE": "2",
 				"MIN_BACKGROUND_DURATION": "30",
 				"UPDATE_API": "https://api.ionicjs.com"
+			},
+			"cordova-plugin-fingerprint-aio": {
+				"FACEID_USAGE_DESCRIPTION": " "
 			}
 		},
 		"platforms": [
