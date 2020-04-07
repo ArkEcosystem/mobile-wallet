@@ -128,7 +128,7 @@ fdescribe("ARK API", () => {
 			complete: () => done(),
 		});
 
-		arkApiSpectator.expectConcurrent([
+		const reqs = arkApiSpectator.expectConcurrent([
 			{
 				url: "http://127.0.0.1:4003/api/peers",
 				method: HttpMethod.GET,
@@ -137,14 +137,15 @@ fdescribe("ARK API", () => {
 				url: "http://127.0.0.1:4003/api/transactions/fees",
 				method: HttpMethod.GET,
 			},
+			{
+				url: "http://127.0.0.1:4003/api/v2/node/fees?days=7",
+				method: HttpMethod.GET,
+			},
 		]);
 
-		const req = arkApiSpectator.expectOne(
-			"http://127.0.0.1:4003/api/v2/node/fees?days=7",
-			HttpMethod.GET,
-		);
+		reqs[2].flush({ data: [] });
 
-		req.flush([]);
+		done();
 	});
 
 	it("should return network fee statistics", (done) => {
