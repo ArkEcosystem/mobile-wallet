@@ -8,6 +8,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { of, Subject } from "rxjs";
 
 import delegatesFixture from "@@/test/fixture/delegates.fixture";
+import feesFixture from "@@/test/fixture/transactions-fees.fixture";
 import { STORAGE_DELEGATES } from "@/app/app.constants";
 import { FeeStatistic, StoredNetwork } from "@/models/model";
 import { NetworkProvider } from "@/services/network/network";
@@ -177,5 +178,35 @@ fdescribe("ARK API", () => {
 				method: HttpMethod.GET,
 			},
 		]);
+	});
+
+	it("should fetch and return fees", (done) => {
+		const userDataService = arkApiSpectator.get(UserDataService);
+		userDataService.onActivateNetwork$.next(currentNetwork);
+
+		arkApiSpectator.expectConcurrent([
+			{
+				url: "http://127.0.0.1:4003/api/peers",
+				method: HttpMethod.GET,
+			},
+			{
+				url: "http://127.0.0.1:4003/api/transactions/fees",
+				method: HttpMethod.GET,
+			},
+		]);
+
+		arkApiService.fees.subscribe({
+			next: (data) => {
+				expect(data).not.toEqual(null);
+				done();
+			},
+		});
+
+		const req = arkApiSpectator.expectOne(
+			"http://127.0.0.1:4003/api/transactions/fees",
+			HttpMethod.GET,
+		);
+
+		req.flush(feesFixture);
 	});
 });
