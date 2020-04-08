@@ -1,4 +1,4 @@
-import { AuthMode } from "./auth.config";
+import { AuthMethod, AuthMode } from "./auth.config";
 
 export namespace AuthActions {
 	export class Open {
@@ -29,5 +29,10 @@ export namespace AuthActions {
 	export class SetPassword {
 		static readonly type = "[Auth] Set Password";
 		constructor(public password?: string) {}
+	}
+
+	export class SetMethod {
+		static readonly type = "[Auth] Set Method";
+		constructor(public method: AuthMethod) {}
 	}
 }

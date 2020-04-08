@@ -1,12 +1,12 @@
 export enum AuthMode {
-	Authorization,
-	Confirmation,
-	Registration,
+	Authorization = "authorization",
+	Confirmation = "confirmation",
+	Registration = "registration",
 }
 
 export enum AuthMethod {
-	Pin,
-	TouchID,
+	Pin = "pin",
+	TouchID = "touchid",
 }
 
 export namespace AuthConfig {

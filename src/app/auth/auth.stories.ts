@@ -11,7 +11,7 @@ import { StorageProvider } from "@/services/storage/storage";
 
 import { AuthComponent } from "./auth.component";
 import { AuthController } from "./auth.controller";
-import { AuthComponentModule } from "./auth.module";
+import { AuthModule } from "./auth.module";
 
 @Component({
 	selector: "test-auth",
@@ -39,7 +39,7 @@ storiesOf("auth", module)
 				IonicStorageModule.forRoot(),
 				TranslateModule,
 				BottomDrawerComponentModule,
-				AuthComponentModule,
+				AuthModule,
 			],
 			entryComponents: [AuthComponent],
 			providers: [
@@ -62,7 +62,7 @@ storiesOf("auth", module)
 		template: `<auth-locked [remainingSeconds]="30"></auth-locked>`,
 	}))
 	.add("Auth", () => ({
-		template: `<ion-app><auth></auth></ion-app>`,
+		template: `<ion-app><auth class="ion-page"></auth></ion-app>`,
 	}))
 	.add("Modal", () => ({
 		template: `<div>

@@ -1,4 +1,4 @@
-<div class="h-full">
+<div class="h-full" *ngIf="activeMethod$ | async as activeMethod">
 	<div class="w-8 h-1 rounded-md mx-auto bg-gray-400 mt-2 mb-4"></div>
 	<auth-locked
 		*ngIf="unlockTimestamp$ | async as remainingSeconds; else unlocked"
@@ -6,18 +6,26 @@
 	></auth-locked>
 
 	<ng-template #unlocked>
-		<ion-tabs>
-			<ion-tab-bar slot="bottom" *ngIf="isTouchAvailable$ | async">
-				<ion-tab-button tab="pin">
-					<ion-icon name="apps"></ion-icon>
-					<ion-label>Numeric</ion-label>
-				</ion-tab-button>
-
-				<ion-tab-button tab="touch-id">
-					<ion-icon name="finger-print"></ion-icon>
-					<ion-label>Digital</ion-label>
-				</ion-tab-button>
-			</ion-tab-bar>
-		</ion-tabs>
+		<auth-pin *ngIf="activeMethod === methods[0]"></auth-pin>
+		<auth-touch-id *ngIf="activeMethod === methods[1]"></auth-touch-id>
 	</ng-template>
 </div>
+
+<ion-footer mode="ios">
+	<ion-segment
+		[scrollable]="true"
+		[value]="activeMethod$ | async"
+		mode="md"
+		class="bg-transparent w-full"
+		(ionChange)="onSegmentChanged($event)"
+	>
+		<ion-segment-button [value]="methods[0]" class="capitalize max-w-none">
+			<ion-icon name="apps"></ion-icon>
+			<ion-label>Numeric</ion-label>
+		</ion-segment-button>
+		<ion-segment-button [value]="methods[1]" class="capitalize max-w-none">
+			<ion-icon name="finger-print"></ion-icon>
+			<ion-label>Digital</ion-label>
+		</ion-segment-button>
+	</ion-segment>
+</ion-footer>

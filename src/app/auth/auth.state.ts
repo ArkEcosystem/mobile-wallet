@@ -16,11 +16,11 @@ import { AuthService } from "./auth.service";
 
 export interface AuthStateModel {
 	attempts: number;
+	method: AuthMethod;
 	registerPasswordHash?: string;
 	passwordHash?: string;
 	unlockDate?: Date;
 	mode?: AuthMode;
-	method?: AuthMethod;
 }
 
 export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>(
@@ -31,6 +31,7 @@ export const AUTH_STATE_TOKEN = new StateToken<AuthStateModel>(
 	name: AuthConfig.STORAGE_KEY,
 	defaults: {
 		attempts: 0,
+		method: AuthMethod.Pin,
 	},
 })
 @Injectable()
@@ -156,6 +157,16 @@ export class AuthState implements NgxsOnInit {
 
 		return ctx.patchState({
 			[key]: hashedPassword,
+		});
+	}
+
+	@Action(AuthActions.SetMethod)
+	public setMethod(
+		ctx: StateContext<AuthStateModel>,
+		action: AuthActions.SetMethod,
+	) {
+		ctx.patchState({
+			method: action.method,
 		});
 	}
 }

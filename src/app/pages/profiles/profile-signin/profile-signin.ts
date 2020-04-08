@@ -12,6 +12,7 @@ import lodash from "lodash";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
+import { AuthController } from "@/app/auth/auth.controller";
 import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { AddressMap } from "@/models/model";
 import { AuthProvider } from "@/services/auth/auth";
@@ -43,6 +44,7 @@ export class ProfileSigninPage implements OnDestroy {
 		private toastProvider: ToastProvider,
 		private alertCtrl: AlertController,
 		private actionSheetCtrl: ActionSheetController,
+		private authController: AuthController,
 	) {}
 
 	presentProfileActionSheet(profileId: string) {
@@ -108,7 +110,13 @@ export class ProfileSigninPage implements OnDestroy {
 
 	verify(profileId: string) {
 		this.profileIdSelected = profileId;
-		this.pinCode.open("PIN_CODE.DEFAULT_MESSAGE", false);
+		this.authController
+			.request()
+			.pipe(takeUntil(this.unsubscriber$))
+			.subscribe({
+				next: () => this.signin(),
+				error: () => this.error(),
+			});
 	}
 
 	signin() {

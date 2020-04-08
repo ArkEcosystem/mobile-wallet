@@ -13,7 +13,9 @@ import { AuthActions } from "./auth.actions";
 import { AuthComponent } from "./auth.component";
 import { AuthMode } from "./auth.config";
 
-@Injectable()
+@Injectable({
+	providedIn: "root",
+})
 export class AuthController {
 	constructor(
 		private actions$: Actions,

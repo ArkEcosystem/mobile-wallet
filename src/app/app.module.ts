@@ -20,6 +20,7 @@ import { ChartsModule } from "ng2-charts";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
+import { AuthModule } from "./auth/auth.module";
 import { AuthState } from "./auth/auth.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
 import { NgxsStorageService } from "./services/storage/ngxs-storage";
@@ -45,6 +46,7 @@ export function createTranslateLoader(http: HttpClient) {
 				deps: [HttpClient],
 			},
 		}),
+		AuthModule,
 		AppRoutingModule,
 		NgxsModule.forRoot([]),
 		NgxsAsyncStoragePluginModule.forRoot(NgxsStorageService, {
