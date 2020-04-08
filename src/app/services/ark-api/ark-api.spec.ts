@@ -9,7 +9,7 @@ import { of, Subject } from "rxjs";
 
 import delegatesFixture from "@@/test/fixture/delegates.fixture";
 import feesFixture from "@@/test/fixture/transactions-fees.fixture";
-import { STORAGE_DELEGATES } from "@/app/app.constants";
+import { STORAGE_DELEGATES, STORAGE_FEES } from "@/app/app.constants";
 import { FeeStatistic, StoredNetwork } from "@/models/model";
 import { NetworkProvider } from "@/services/network/network";
 import { StorageProvider } from "@/services/storage/storage";
@@ -48,6 +48,8 @@ fdescribe("ARK API", () => {
 					switch (prop) {
 						case STORAGE_DELEGATES:
 							return of(delegatesFixture);
+						case STORAGE_FEES:
+							return of(feesFixture);
 					}
 				},
 			}),
@@ -182,6 +184,36 @@ fdescribe("ARK API", () => {
 	});
 
 	it("should fetch and return fees", (done) => {
+		const userDataService = arkApiSpectator.get(UserDataService);
+		userDataService.onActivateNetwork$.next(currentNetwork);
+
+		arkApiSpectator.expectConcurrent([
+			{
+				url: "http://127.0.0.1:4003/api/peers",
+				method: HttpMethod.GET,
+			},
+			{
+				url: "http://127.0.0.1:4003/api/transactions/fees",
+				method: HttpMethod.GET,
+			},
+		]);
+
+		arkApiService.fees.subscribe({
+			next: (data) => {
+				expect(data).not.toEqual(null);
+				done();
+			},
+		});
+
+		const req = arkApiSpectator.expectOne(
+			"http://127.0.0.1:4003/api/transactions/fees",
+			HttpMethod.GET,
+		);
+
+		req.flush(feesFixture);
+	});
+
+	it("should return cached fees at error", (done) => {
 		const userDataService = arkApiSpectator.get(UserDataService);
 		userDataService.onActivateNetwork$.next(currentNetwork);
 
