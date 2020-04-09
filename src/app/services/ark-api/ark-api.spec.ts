@@ -19,6 +19,10 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 import ArkClient from "../../utils/ark-client";
 import { ArkApiProvider } from "./ark-api";
 
+const VALID_ADDRESS = "AHJJ29sCdR5UNZjdz3BYeDpvvkZCGBjde9";
+const PUBLIC_KEY =
+	"02d29ba7ebe8823137f31ed8e71288274a1cefa23a98a94fa62d4124817d58b777";
+
 describe("ARK API", () => {
 	let arkApiSpectator: SpectatorHttp<ArkApiProvider>;
 	let arkApiService: ArkApiProvider;
@@ -216,7 +220,7 @@ describe("ARK API", () => {
 
 	it("should return cached fees", (done) => {
 		const userDataService = arkApiSpectator.get(UserDataService);
-		// First call to trigger fetchFess
+		// First call to trigger fetchFees
 		userDataService.onActivateNetwork$.next(currentNetwork);
 
 		const reqs = arkApiSpectator.expectConcurrent([
@@ -269,5 +273,56 @@ describe("ARK API", () => {
 			HttpMethod.GET,
 		);
 		req.flush(delegatesFixture);
+	});
+
+	xit("should validate an address", () => {
+		// Set version and activate network
+		const userDataService = arkApiSpectator.get(UserDataService);
+		currentNetwork.version = 30;
+		userDataService.onActivateNetwork$.next(currentNetwork);
+
+		arkApiSpectator.expectConcurrent([
+			{
+				url: "http://127.0.0.1:4003/api/peers",
+				method: HttpMethod.GET,
+			},
+			{
+				url: "http://127.0.0.1:4003/api/transactions/fees",
+				method: HttpMethod.GET,
+			},
+		]);
+
+		expect(arkApiService.validateAddress(VALID_ADDRESS)).toEqual(true);
+	});
+
+	it("should get a delegate by public key", (done) => {
+		// Activate network to have a client
+		const userDataService = arkApiSpectator.get(UserDataService);
+		userDataService.onActivateNetwork$.next(currentNetwork);
+
+		arkApiSpectator.expectConcurrent([
+			{
+				url: "http://127.0.0.1:4003/api/peers",
+				method: HttpMethod.GET,
+			},
+			{
+				url: "http://127.0.0.1:4003/api/transactions/fees",
+				method: HttpMethod.GET,
+			},
+		]);
+
+		arkApiService.getDelegateByPublicKey(PUBLIC_KEY).subscribe({
+			next: (data) => {
+				expect(data.username).toEqual(delegatesFixture[0].username);
+				done();
+			},
+		});
+
+		const req = arkApiSpectator.expectOne(
+			"http://127.0.0.1:4003/api/delegates/02d29ba7ebe8823137f31ed8e71288274a1cefa23a98a94fa62d4124817d58b777",
+			HttpMethod.GET,
+		);
+
+		req.flush({ data: delegatesFixture[0] });
 	});
 });
