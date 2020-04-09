@@ -8,6 +8,8 @@ import { moduleMetadata, storiesOf } from "@storybook/angular";
 
 import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-drawer.module";
 import { StorageProvider } from "@/services/storage/storage";
+import { UserDataServiceImpl } from "@/services/user-data/user-data";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { AuthComponent } from "./auth.component";
 import { AuthController } from "./auth.controller";
@@ -15,13 +17,24 @@ import { AuthModule } from "./auth.module";
 
 @Component({
 	selector: "test-auth",
-	template: `<ion-button (click)="register()">Register</ion-button>`,
+	template: `<div>
+		<ion-button (click)="register()">Register</ion-button>
+		<ion-button (click)="update()">Update</ion-button>
+	</div>`,
 })
 export class TestAuthComponent {
 	constructor(private authController: AuthController) {}
 
 	register() {
 		this.authController.register().subscribe({
+			next: () => console.log(1),
+			error: () => console.log(2),
+			complete: () => console.log(3),
+		});
+	}
+
+	update() {
+		this.authController.update().subscribe({
 			next: () => console.log(1),
 			error: () => console.log(2),
 			complete: () => console.log(3),
@@ -49,6 +62,7 @@ storiesOf("auth", module)
 					provide: APP_BASE_HREF,
 					useValue: "/",
 				},
+				{ provide: UserDataService, useClass: UserDataServiceImpl },
 			],
 		}),
 	)

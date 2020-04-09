@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { ModalController } from "@ionic/angular";
+import { LoadingController, ModalController } from "@ionic/angular";
+import { TranslateService } from "@ngx-translate/core";
 import {
 	Actions,
 	ofActionCompleted,
@@ -7,12 +8,13 @@ import {
 	Store,
 } from "@ngxs/store";
 import { from, Observable } from "rxjs";
-import { switchMap, take, takeUntil, tap } from "rxjs/operators";
+import { delay, switchMap, take, takeUntil, tap } from "rxjs/operators";
+
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { AuthActions } from "./auth.actions";
 import { AuthComponent } from "./auth.component";
 import { AuthMode } from "./auth.config";
-import { AuthState } from "./auth.state";
 
 @Injectable({
 	providedIn: "root",
@@ -22,10 +24,43 @@ export class AuthController {
 		private actions$: Actions,
 		private store: Store,
 		private modalCtrl: ModalController,
+		private translateService: TranslateService,
+		private loadingCtrl: LoadingController,
+		private userDateService: UserDataService,
 	) {}
 
-	public hasMasterPassword(): Observable<boolean> {
-		return this.store.select(AuthState.hasMasterPassword);
+	public update() {
+		const updateEncryption = (oldPassword: string, newPassword: string) =>
+			this.translateService.get("PIN_CODE.UPDATING").pipe(
+				switchMap((message) =>
+					from(
+						this.loadingCtrl.create({
+							message,
+						}),
+					).pipe(
+						tap((loading) => loading.present()),
+						delay(1000),
+						switchMap((loading) =>
+							this.userDateService
+								.updateWalletEncryption(
+									oldPassword,
+									newPassword,
+								)
+								.pipe(tap(() => loading.dismiss())),
+						),
+					),
+				),
+			);
+
+		return this.request("self").pipe(
+			switchMap(({ password: oldPassword }) =>
+				this.register().pipe(
+					switchMap(({ password: newPassword }) =>
+						updateEncryption(oldPassword, newPassword),
+					),
+				),
+			),
+		);
 	}
 
 	public register() {
@@ -55,12 +90,12 @@ export class AuthController {
 		);
 	}
 
-	public request() {
+	public request(dismissRole?: string) {
 		const modal = this.createModal({ mode: AuthMode.Authorization });
 		return from(modal).pipe(
 			switchMap((element) => {
 				return this.success$.pipe(
-					tap(() => element.dismiss()),
+					tap(() => element.dismiss(null, dismissRole)),
 					takeUntil(this.canceled$),
 				);
 			}),
@@ -68,7 +103,10 @@ export class AuthController {
 	}
 
 	private get canceled$() {
-		return this.actions$.pipe(ofActionCompleted(AuthActions.Cancel));
+		return this.actions$.pipe(
+			ofActionCompleted(AuthActions.Cancel),
+			take(1),
+		);
 	}
 
 	private get success$(): Observable<AuthActions.Success> {

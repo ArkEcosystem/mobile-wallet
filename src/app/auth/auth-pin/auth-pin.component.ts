@@ -18,6 +18,7 @@ import { AuthState } from "../auth.state";
 export class AuthPinComponent implements OnInit, OnDestroy {
 	public mode: AuthMode;
 
+	public title = "PIN_CODE.DEFAULT_MESSAGE";
 	public passwordLength = 6;
 	public passwordRange = Array(this.passwordLength).fill(undefined);
 	public password: number[] = [];
@@ -42,6 +43,18 @@ export class AuthPinComponent implements OnInit, OnDestroy {
 			.select(AuthState.mode)
 			.pipe(
 				tap((mode) => (this.mode = mode)),
+				tap((mode) => {
+					switch (mode) {
+						case AuthMode.Confirmation:
+							this.title = "PIN_CODE.CONFIRM";
+							break;
+						case AuthMode.Registration:
+							this.title = "PIN_CODE.CREATE";
+							break;
+						default:
+							this.title = "PIN_CODE.DEFAULT_MESSAGE";
+					}
+				}),
 				takeUntil(this.unsubscriber$),
 			)
 			.subscribe();
