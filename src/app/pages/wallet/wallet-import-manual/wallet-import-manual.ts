@@ -7,6 +7,7 @@ import * as bip39 from "bip39";
 import { finalize } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
+import { AuthController } from "@/app/auth/auth.controller";
 import { BaseWalletImport } from "@/app/pages/wallet/wallet-import/wallet-import.base";
 import { AddressValidator } from "@/app/validators/address/address";
 import { PassphraseValidator } from "@/app/validators/passphrase/passphrase";
@@ -56,6 +57,7 @@ export class WalletManualImportPage extends BaseWalletImport {
 		private formBuilder: FormBuilder,
 		private addressValidator: AddressValidator,
 		settingsDataProvider: SettingsDataProvider,
+		authCtrl: AuthController,
 	) {
 		super(
 			route,
@@ -66,6 +68,7 @@ export class WalletManualImportPage extends BaseWalletImport {
 			modalCtrl,
 			networkProvider,
 			settingsDataProvider,
+			authCtrl,
 		);
 		this.useAddress =
 			route.snapshot.queryParamMap.get("type") === "address";
