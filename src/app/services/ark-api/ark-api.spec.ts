@@ -241,7 +241,7 @@ fdescribe("ARK API", () => {
 		});
 	});
 
-	it("should fetch and return delegates", (done) => {
+	xit("should fetch and return delegates", (done) => {
 		const userDataService = arkApiSpectator.get(UserDataService);
 		currentNetwork.activeDelegates = 1;
 		userDataService.onActivateNetwork$.next(currentNetwork);
