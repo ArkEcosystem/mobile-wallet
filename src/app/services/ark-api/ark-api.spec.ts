@@ -275,10 +275,10 @@ describe("ARK API", () => {
 		req.flush(delegatesFixture);
 	});
 
-	xit("should validate an address", () => {
+	it("should validate an address", () => {
 		// Set version and activate network
 		const userDataService = arkApiSpectator.get(UserDataService);
-		currentNetwork.version = 30;
+		currentNetwork.version = 23;
 		userDataService.onActivateNetwork$.next(currentNetwork);
 
 		arkApiSpectator.expectConcurrent([
