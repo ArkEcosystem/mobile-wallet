@@ -12,6 +12,7 @@ import { switchMap, take, takeUntil, tap } from "rxjs/operators";
 import { AuthActions } from "./auth.actions";
 import { AuthComponent } from "./auth.component";
 import { AuthMode } from "./auth.config";
+import { AuthState } from "./auth.state";
 
 @Injectable({
 	providedIn: "root",
@@ -22,6 +23,10 @@ export class AuthController {
 		private store: Store,
 		private modalCtrl: ModalController,
 	) {}
+
+	public hasMasterPassword(): Observable<boolean> {
+		return this.store.select(AuthState.hasMasterPassword);
+	}
 
 	public register() {
 		const registrationModal$ = this.createModal({

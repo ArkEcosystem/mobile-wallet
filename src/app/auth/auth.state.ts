@@ -39,6 +39,11 @@ export class AuthState implements NgxsOnInit {
 	constructor(private authService: AuthService) {}
 
 	@Selector()
+	public static hasMasterPassword(state: AuthStateModel) {
+		return !!state.passwordHash;
+	}
+
+	@Selector()
 	public static mode(state: AuthStateModel) {
 		return state.mode;
 	}

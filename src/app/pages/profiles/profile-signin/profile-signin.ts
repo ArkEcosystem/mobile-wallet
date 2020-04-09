@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import {
 	ActionSheetController,
 	AlertController,
@@ -13,7 +13,6 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
 import { AuthController } from "@/app/auth/auth.controller";
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { AddressMap } from "@/models/model";
 import { AuthProvider } from "@/services/auth/auth";
 import { ToastProvider } from "@/services/toast/toast";
@@ -25,9 +24,6 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 	styleUrls: ["profile-signin.scss"],
 })
 export class ProfileSigninPage implements OnDestroy {
-	@ViewChild("pinCode", { read: PinCodeComponent, static: true })
-	pinCode: PinCodeComponent;
-
 	public profiles;
 	public addresses: AddressMap[];
 	public networks;
@@ -44,7 +40,7 @@ export class ProfileSigninPage implements OnDestroy {
 		private toastProvider: ToastProvider,
 		private alertCtrl: AlertController,
 		private actionSheetCtrl: ActionSheetController,
-		private authController: AuthController,
+		private authCtrl: AuthController,
 	) {}
 
 	presentProfileActionSheet(profileId: string) {
@@ -110,7 +106,7 @@ export class ProfileSigninPage implements OnDestroy {
 
 	verify(profileId: string) {
 		this.profileIdSelected = profileId;
-		this.authController
+		this.authCtrl
 			.request()
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe({
