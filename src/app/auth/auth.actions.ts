@@ -3,7 +3,7 @@ import { AuthMethod, AuthMode } from "./auth.config";
 export namespace AuthActions {
 	export class Open {
 		static readonly type = "[Auth] Open";
-		constructor(public payload: { mode: AuthMode }) {}
+		constructor(public payload: { mode: AuthMode; method?: AuthMethod }) {}
 	}
 
 	export class Cancel {

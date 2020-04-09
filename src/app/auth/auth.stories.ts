@@ -15,12 +15,12 @@ import { AuthModule } from "./auth.module";
 
 @Component({
 	selector: "test-auth",
-	template: `<ion-button (click)="open()">Test</ion-button>`,
+	template: `<ion-button (click)="register()">Register</ion-button>`,
 })
 export class TestAuthComponent {
 	constructor(private authController: AuthController) {}
 
-	open() {
+	register() {
 		this.authController.register().subscribe({
 			next: () => console.log(1),
 			error: () => console.log(2),
@@ -53,19 +53,17 @@ storiesOf("auth", module)
 		}),
 	)
 	.add("Pin", () => ({
-		template: `<auth-pin></auth-pin>`,
+		template: `<ion-app><auth-pin class="ion-page"></auth-pin></ion-app>`,
 	}))
 	.add("Touch Id", () => ({
-		template: `<auth-touch-id></auth-touch-id>`,
+		template: `<ion-app><auth-touch-id class="ion-page"></auth-touch-id></ion-app>`,
 	}))
 	.add("Locked", () => ({
-		template: `<auth-locked [remainingSeconds]="30"></auth-locked>`,
+		template: `<ion-app><auth-locked class="ion-page" [remainingSeconds]="30"></auth-locked></ion-app>`,
 	}))
 	.add("Auth", () => ({
 		template: `<ion-app><auth class="ion-page"></auth></ion-app>`,
 	}))
 	.add("Modal", () => ({
-		template: `<div>
-			<test-auth></test-auth>
-		</div>`,
+		template: `<test-auth></test-auth>`,
 	}));

@@ -1,10 +1,7 @@
 import { NgModule } from "@angular/core";
-import { FingerprintAIO } from "@ionic-native/fingerprint-aio/ngx";
 import { IonicModule } from "@ionic/angular";
-import { TranslateModule } from "@ngx-translate/core";
 import { NgxsModule } from "@ngxs/store";
 
-import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-drawer.module";
 import { PipesModule } from "@/pipes/pipes.module";
 
 import { SharedModule } from "../shared.module";
@@ -25,12 +22,10 @@ import { AuthState } from "./auth.state";
 	imports: [
 		IonicModule,
 		SharedModule,
-		TranslateModule,
-		BottomDrawerComponentModule,
 		NgxsModule.forFeature([AuthState]),
 		PipesModule,
 	],
-	providers: [AuthService, FingerprintAIO],
+	providers: [AuthService],
 	exports: [
 		AuthComponent,
 		AuthPinComponent,

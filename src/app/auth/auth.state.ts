@@ -68,9 +68,13 @@ export class AuthState implements NgxsOnInit {
 	}
 
 	@Action(AuthActions.Open)
-	public open(ctx: StateContext<AuthStateModel>, action: AuthActions.Open) {
+	public open(
+		ctx: StateContext<AuthStateModel>,
+		{ payload }: AuthActions.Open,
+	) {
 		return ctx.patchState({
-			mode: action.payload.mode,
+			mode: payload.mode,
+			...(payload.method && { method: payload.method }),
 		});
 	}
 

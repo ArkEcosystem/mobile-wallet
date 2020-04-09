@@ -11,19 +11,12 @@ import { AUTH_STATE_TOKEN, AuthStateModel } from "./auth.state";
 @Component({
 	selector: "auth",
 	templateUrl: "auth.component.html",
-	styles: [
-		`
-			:host {
-				height: 100%;
-			}
-		`,
-	],
 })
 export class AuthComponent implements OnInit {
 	public isTouchAvailable$: Observable<boolean>;
-	public unlockTimestamp$: Observable<number>;
 	public activeMethod$: Observable<string>;
 
+	public remainingSeconds = 0;
 	public methods = [AuthMethod.Pin, AuthMethod.TouchID];
 
 	@Select(AUTH_STATE_TOKEN)
@@ -32,22 +25,28 @@ export class AuthComponent implements OnInit {
 	constructor(private store: Store, private authService: AuthService) {}
 
 	ngOnInit() {
-		this.isTouchAvailable$ = of(true);
+		// TODO: Implement a fingerprint plugin
+		this.isTouchAvailable$ = of(false);
 		this.activeMethod$ = this.state.pipe(
 			map((state) => state.method || AuthMethod.Pin),
 		);
-		this.unlockTimestamp$ = this.state.pipe(
-			map((state) =>
-				this.authService.getUnlockRemainingSeconds(state.unlockDate),
-			),
-			switchMap((remainingSeconds) => {
-				return iif(
-					() => !!remainingSeconds,
-					this.authService.getUnlockCountdown(remainingSeconds),
-					NEVER,
-				);
-			}),
-		);
+
+		this.state
+			.pipe(
+				map((state) =>
+					this.authService.getUnlockRemainingSeconds(
+						state.unlockDate,
+					),
+				),
+				switchMap((remainingSeconds) => {
+					return iif(
+						() => !!remainingSeconds,
+						this.authService.getUnlockCountdown(remainingSeconds),
+						NEVER,
+					);
+				}),
+			)
+			.subscribe((result) => (this.remainingSeconds = result));
 	}
 
 	public onSegmentChanged(event: CustomEvent) {

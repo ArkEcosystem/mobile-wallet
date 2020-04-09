@@ -32,7 +32,10 @@ export class AuthController {
 			mode: AuthMode.Confirmation,
 		}).pipe(
 			switchMap((confirmModal) =>
-				this.success$.pipe(tap(() => confirmModal.dismiss())),
+				this.success$.pipe(
+					takeUntil(this.canceled$),
+					tap(() => confirmModal.dismiss()),
+				),
 			),
 		);
 
