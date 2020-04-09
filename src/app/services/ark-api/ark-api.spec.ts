@@ -52,6 +52,7 @@ fdescribe("ARK API", () => {
 							return of(feesFixture);
 					}
 				},
+				set: () => of(true),
 			}),
 		],
 	});
@@ -215,9 +216,10 @@ fdescribe("ARK API", () => {
 
 	it("should return cached fees", (done) => {
 		const userDataService = arkApiSpectator.get(UserDataService);
+		// First call to trigger fetchFess
 		userDataService.onActivateNetwork$.next(currentNetwork);
 
-		arkApiSpectator.expectConcurrent([
+		const reqs = arkApiSpectator.expectConcurrent([
 			{
 				url: "http://127.0.0.1:4003/api/peers",
 				method: HttpMethod.GET,
@@ -227,8 +229,9 @@ fdescribe("ARK API", () => {
 				method: HttpMethod.GET,
 			},
 		]);
-		// First call to trigger fetchFess
-		arkApiService.fees.subscribe();
+
+		reqs[1].flush(feesFixture);
+
 		// Should be using existent value instead of fetch again
 		arkApiService.fees.subscribe({
 			next: (data) => {
