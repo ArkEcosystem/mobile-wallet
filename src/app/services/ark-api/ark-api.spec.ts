@@ -19,7 +19,7 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 import ArkClient from "../../utils/ark-client";
 import { ArkApiProvider } from "./ark-api";
 
-fdescribe("ARK API", () => {
+describe("ARK API", () => {
 	let arkApiSpectator: SpectatorHttp<ArkApiProvider>;
 	let arkApiService: ArkApiProvider;
 
