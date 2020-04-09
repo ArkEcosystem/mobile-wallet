@@ -237,4 +237,34 @@ fdescribe("ARK API", () => {
 			},
 		});
 	});
+
+	it("should fetch and return delegates", (done) => {
+		const userDataService = arkApiSpectator.get(UserDataService);
+		currentNetwork.activeDelegates = 1;
+		userDataService.onActivateNetwork$.next(currentNetwork);
+
+		arkApiSpectator.expectConcurrent([
+			{
+				url: "http://127.0.0.1:4003/api/peers",
+				method: HttpMethod.GET,
+			},
+			{
+				url: "http://127.0.0.1:4003/api/transactions/fees",
+				method: HttpMethod.GET,
+			},
+		]);
+
+		arkApiService.delegates.subscribe({
+			next: (data) => {
+				expect(data).not.toEqual(null);
+				done();
+			},
+		});
+
+		const req = arkApiSpectator.expectOne(
+			"http://127.0.0.1:4003/api/delegates?limit=51&page=1",
+			HttpMethod.GET,
+		);
+		req.flush(delegatesFixture);
+	});
 });
