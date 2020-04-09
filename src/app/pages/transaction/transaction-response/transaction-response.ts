@@ -69,40 +69,6 @@ export class TransactionResponsePage {
 		);
 	}
 
-	// async saveSecondPassphrase() {
-	//   const modal = await this.modalCtrl.create({
-	//     component: PinCodeModal,
-	//     componentProps: {
-	//       message: 'PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE',
-	//       outputPassword: true,
-	//       validatePassword: true,
-	//     }
-	//   });
-
-	//   modal.onDidDismiss().then((({ data }) => {
-	//     if (!data.password) { return; }
-
-	//     this.userDataService.encryptSecondPassphrase(this.wallet, data.password, this.keys.secondPassphrase).subscribe(() => {
-	//       this.wallet = this.userDataService.getWalletByAddress(this.wallet.address);
-
-	//       this.showKeepSecondPassphrase = false;
-	//       this.presentEncryptedAlert();
-	//     });
-	//   }));
-
-	//   modal.present();
-	// }
-
-	// verifySecondPassphrasHasEncrypted() {
-	//   if (!this.transaction) { return; }
-
-	//   if (this.transaction.type === TransactionType.SecondSignature || (this.wallet.secondPublicKey && !this.wallet.cipherSecondKey)) {
-	//     if (this.response.status) { return this.showKeepSecondPassphrase = true; }
-	//   }
-
-	//   this.showKeepSecondPassphrase = false;
-	// }
-
 	dismiss() {
 		if (this.response && this.response.status) {
 			this.navCtrl.navigateRoot("/wallets/dashboard");

@@ -31,7 +31,6 @@ export class SettingsPage implements OnInit, OnDestroy {
 
 	public availableOptions;
 	public currentSettings: UserSettings;
-	public onEnterPinCode: () => void;
 	public appVersion: number = packageJson.version;
 	public versionClicksCount = 0;
 

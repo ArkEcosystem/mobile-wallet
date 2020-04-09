@@ -76,8 +76,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	public marketHistory: MarketHistory;
 	public marketCurrency: MarketCurrency;
 
-	public onEnterPinCode: (keys: WalletKeys) => void;
-
 	public emptyTransactions = false;
 	public minConfirmations = constants.WALLET_MIN_NUMBER_CONFIRMATIONS;
 	public transactions: TransactionEntity[] = [];

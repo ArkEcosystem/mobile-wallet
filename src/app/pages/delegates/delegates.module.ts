@@ -7,7 +7,6 @@ import { TranslateModule } from "@ngx-translate/core";
 import { FilterPipeModule } from "ngx-filter-pipe";
 
 import { ConfirmTransactionComponentModule } from "@/components/confirm-transaction/confirm-transaction.module";
-import { PinCodeComponentModule } from "@/components/pin-code/pin-code.module";
 import { PipesModule } from "@/pipes/pipes.module";
 
 import { DelegateDetailPage } from "./delegate-detail/delegate-detail";
@@ -24,7 +23,6 @@ import { DelegatesPage } from "./delegates";
 		TranslateModule,
 		PipesModule,
 		FilterPipeModule,
-		PinCodeComponentModule,
 		ConfirmTransactionComponentModule,
 		DelegateDetailPageModule,
 	],
