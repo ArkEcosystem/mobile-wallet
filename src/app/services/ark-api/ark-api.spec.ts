@@ -213,7 +213,7 @@ fdescribe("ARK API", () => {
 		req.flush(feesFixture);
 	});
 
-	it("should return cached fees at error", (done) => {
+	it("should return cached fees", (done) => {
 		const userDataService = arkApiSpectator.get(UserDataService);
 		userDataService.onActivateNetwork$.next(currentNetwork);
 
@@ -227,19 +227,14 @@ fdescribe("ARK API", () => {
 				method: HttpMethod.GET,
 			},
 		]);
-
+		// First call to trigger fetchFess
+		arkApiService.fees.subscribe();
+		// Should be using existent value instead of fetch again
 		arkApiService.fees.subscribe({
 			next: (data) => {
 				expect(data).not.toEqual(null);
 				done();
 			},
 		});
-
-		const req = arkApiSpectator.expectOne(
-			"http://127.0.0.1:4003/api/transactions/fees",
-			HttpMethod.GET,
-		);
-
-		req.flush(feesFixture);
 	});
 });
