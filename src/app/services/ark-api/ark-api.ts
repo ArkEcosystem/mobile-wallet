@@ -589,27 +589,16 @@ export class ArkApiProvider {
 	}
 
 	private fetchFees(): Observable<arkts.Fees> {
-		return new Observable((observer) => {
-			this.client.getTransactionFees().subscribe(
-				(response) => {
-					if (response && response.success) {
-						this._fees = response.fees;
-						this.storageProvider.set(
-							constants.STORAGE_FEES,
-							this._fees,
-						);
-
-						observer.next(this._fees);
-					}
-				},
-				() => {
-					observer.next(
-						// @ts-ignore
-						this.storageProvider.getObject(constants.STORAGE_FEES),
-					);
-				},
-			);
-		});
+		return this.client.getTransactionFees().pipe(
+			tap((response) => (this._fees = response.fees)),
+			switchMap(() =>
+				this.storageProvider.set(constants.STORAGE_FEES, this._fees),
+			),
+			map(() => this._fees),
+			catchError(() =>
+				this.storageProvider.getObject(constants.STORAGE_FEES),
+			),
+		);
 	}
 
 	private loadData() {
