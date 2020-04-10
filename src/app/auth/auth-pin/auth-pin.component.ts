@@ -98,17 +98,20 @@ export class AuthPinComponent implements OnInit, OnDestroy {
 				.pipe(
 					tap(async (translation) => {
 						const weakConfirmation = await this.alertCtrl.create({
+							cssClass: "c-auth-pin__weak-modal",
 							header: translation["PIN_CODE.WEAK_PIN"],
 							message: translation["PIN_CODE.WEAK_PIN_DETAIL"],
 							backdropDismiss: false,
 							buttons: [
 								{
+									cssClass: "c-auth-pin__weak-modal__no",
 									text: translation["NO"],
 									handler: () => {
 										this.password = [];
 									},
 								},
 								{
+									cssClass: "c-auth-pin__weak-modal__yes",
 									text: translation["YES"],
 									handler: () => {
 										return this.store.dispatch([
