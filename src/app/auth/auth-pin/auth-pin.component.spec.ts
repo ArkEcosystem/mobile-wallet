@@ -61,7 +61,7 @@ describe("Auth Pin Component", () => {
 		expect(component).toBeTruthy();
 	});
 
-	it("should change title according to the mode", fakeAsync(() => {
+	it("should change the title according to the mode", fakeAsync(() => {
 		const title = spectator.query(byTestId("c-auth-pin__title"));
 
 		store.dispatch(new AuthActions.Open({ mode: AuthMode.Confirmation }));
@@ -103,7 +103,7 @@ describe("Auth Pin Component", () => {
 			authService = spectator.get(AuthService);
 		});
 
-		it("should clear password if press no", async () => {
+		it("should clear the password if press 'no'", async () => {
 			authService.isWeakPassword.and.returnValue(true);
 			pressKeyboard([1, 1, 1, 1, 1, 1]);
 			await sleep(100);
@@ -115,7 +115,7 @@ describe("Auth Pin Component", () => {
 			expect(component.password).toHaveLength(0);
 		});
 
-		it("should dispatch success if press yes", async (done) => {
+		it("should dispatch success if press 'yes'", async (done) => {
 			authService.isWeakPassword.and.returnValue(true);
 			pressKeyboard([1, 1, 1, 1, 1, 1]);
 			await sleep(300);
@@ -140,5 +140,14 @@ describe("Auth Pin Component", () => {
 				.pipe(ofActionDispatched(AuthActions.Success))
 				.subscribe(() => done());
 		});
+	});
+
+	it("should clear password when wrong in authorization mode", async () => {
+		const authService = spectator.get(AuthService);
+		authService.validatePassword.and.returnValue(of(false));
+		store.dispatch(new AuthActions.Open({ mode: AuthMode.Authorization }));
+		pressKeyboard([1, 1, 1, 1, 1, 1]);
+		await sleep(50);
+		expect(component.password).toHaveLength(0);
 	});
 });
