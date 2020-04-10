@@ -8,7 +8,11 @@
 		<ion-text color="dark" class="text-xl font-bold text-center">
 			{{ "PIN_CODE.WRONG_PIN_MANY_TIMES" | translate }}
 		</ion-text>
-		<ion-text color="medium" class="mt-1">
+		<ion-text
+			data-testid="c-auth-locked__message"
+			color="medium"
+			class="mt-1"
+		>
 			{{
 				"PIN_CODE.WAIT_TO_TRY"
 					| translate

@@ -11,8 +11,9 @@ import { throwError } from "rxjs";
 import { catchError, first, map, switchMap, tap } from "rxjs/operators";
 
 import { AuthActions } from "./auth.actions";
-import { AuthConfig, AuthMethod, AuthMode } from "./auth.config";
+import { AuthConfig } from "./auth.config";
 import { AuthService } from "./auth.service";
+import { AuthMethod, AuthMode } from "./auth.types";
 
 export interface AuthStateModel {
 	attempts: number;

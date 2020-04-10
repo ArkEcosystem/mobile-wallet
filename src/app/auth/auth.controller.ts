@@ -14,7 +14,7 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { AuthActions } from "./auth.actions";
 import { AuthComponent } from "./auth.component";
-import { AuthMode } from "./auth.config";
+import { AuthMode } from "./auth.types";
 
 @Injectable({
 	providedIn: "root",

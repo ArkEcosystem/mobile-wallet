@@ -1,4 +1,4 @@
-import { AuthMethod, AuthMode } from "./auth.config";
+import { AuthMethod, AuthMode } from "./auth.types";
 
 export namespace AuthActions {
 	export class Open {

@@ -4,9 +4,9 @@ import { iif, NEVER, Observable, of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 
 import { AuthActions } from "./auth.actions";
-import { AuthMethod } from "./auth.config";
 import { AuthService } from "./auth.service";
 import { AUTH_STATE_TOKEN, AuthStateModel } from "./auth.state";
+import { AuthMethod } from "./auth.types";
 
 @Component({
 	selector: "auth",

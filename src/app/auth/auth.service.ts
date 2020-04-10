@@ -44,11 +44,12 @@ export class AuthService {
 		return next.toDate();
 	}
 
+	// TODO: Move these date-related methods to a specific service
 	public getUnlockRemainingSeconds(
 		unlockDate: Date | undefined,
 	): undefined | number {
 		if (!unlockDate) {
-			return;
+			return undefined;
 		}
 
 		return dayjs(unlockDate).diff(dayjs(), "second");

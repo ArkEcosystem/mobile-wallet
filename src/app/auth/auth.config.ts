@@ -1,14 +1,3 @@
-export enum AuthMode {
-	Authorization = "authorization",
-	Confirmation = "confirmation",
-	Registration = "registration",
-}
-
-export enum AuthMethod {
-	Pin = "pin",
-	TouchID = "touchid",
-}
-
 export namespace AuthConfig {
 	export const STORAGE_MASTERPASSWORD = "masterpassword";
 	export const STORAGE_KEY = "auth";
