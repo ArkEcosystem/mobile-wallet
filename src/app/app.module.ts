@@ -26,6 +26,7 @@ import { GlobalErrorHandlerService } from "./services/error-handler/error-handle
 import { NgxsStorageService } from "./services/storage/ngxs-storage";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
 import { UserDataService } from "./services/user-data/user-data.interface";
+import { WalletModule } from "./wallet/wallet.module";
 
 export function createTranslateLoader(http: HttpClient) {
 	return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -47,6 +48,7 @@ export function createTranslateLoader(http: HttpClient) {
 			},
 		}),
 		AuthModule,
+		WalletModule,
 		AppRoutingModule,
 		NgxsModule.forRoot([]),
 		NgxsAsyncStoragePluginModule.forRoot(NgxsStorageService, {
