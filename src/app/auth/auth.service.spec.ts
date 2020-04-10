@@ -8,7 +8,7 @@ import { StorageProvider } from "@/services/storage/storage";
 import { AuthConfig } from "./auth.config";
 import { AuthService } from "./auth.service";
 
-fdescribe("Auth Service", () => {
+describe("Auth Service", () => {
 	let spectator: SpectatorService<AuthService>;
 	let service: AuthService;
 	const createService = createServiceFactory({
