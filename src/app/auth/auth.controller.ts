@@ -130,15 +130,16 @@ export class AuthController {
 		});
 
 		return from(modal).pipe(
+			tap(() => this.store.dispatch(openAction)),
 			tap((component) => {
-				component.onDidDismiss().then(({ role }) => {
+				component.onWillDismiss().then(({ role }) => {
 					if (role !== "self") {
 						this.store.dispatch(cancelAction);
 					}
 				});
 			}),
 			tap((component) => {
-				component.present().then(() => this.store.dispatch(openAction));
+				component.present();
 			}),
 		);
 	}
