@@ -39,7 +39,9 @@ import { AuthMode } from "./auth.types";
 export class TestAuthControllerComponent {
 	public requestCompleted = undefined;
 	public requestResult = undefined;
-	public updateResult = undefined;
+
+	public registerCompleted = undefined;
+	public registerResult = undefined;
 
 	constructor(private authController: AuthController) {}
 
@@ -53,10 +55,11 @@ export class TestAuthControllerComponent {
 	}
 
 	register() {
+		this.registerCompleted = undefined;
+		this.registerResult = undefined;
 		this.authController.register().subscribe({
-			next: () => console.log(1),
-			error: () => console.log(2),
-			complete: () => console.log(3),
+			next: (r) => (this.registerResult = r),
+			complete: () => (this.registerCompleted = true),
 		});
 	}
 
@@ -69,7 +72,7 @@ export class TestAuthControllerComponent {
 	}
 }
 
-describe("Auth Controller", () => {
+fdescribe("Auth Controller", () => {
 	let spectator: SpectatorHost<TestAuthControllerComponent>;
 	let component: TestAuthControllerComponent;
 	let store: Store;
@@ -134,6 +137,51 @@ describe("Auth Controller", () => {
 			expect(component.requestResult).toEqual(
 				jasmine.objectContaining({ password: "123" }),
 			);
+		});
+	});
+
+	describe("Register", () => {
+		beforeEach(() => {
+			const registerBtn = spectator.query(
+				byTestId("c-test-auth__register"),
+			);
+			spectator.click(registerBtn);
+		});
+
+		it("should open the confirmation modal and cancel", async () => {
+			await sleep(200);
+			store.dispatch(new AuthActions.Success("123"));
+			await sleep(700);
+
+			const mode = store.selectSnapshot(AuthState.mode);
+			expect(mode).toEqual(AuthMode.Confirmation);
+
+			const modalEle = spectator.query(".c-auth-modal", {
+				root: true,
+			});
+			// @ts-ignore
+			modalEle.dismiss();
+			await sleep(50);
+			expect(component.registerResult).toBeUndefined();
+			expect(component.registerCompleted).toEqual(true);
+		});
+
+		it("should open the confirmation modal and complete", async () => {
+			await sleep(200);
+			store.dispatch(new AuthActions.Success("123"));
+			await sleep(700);
+
+			const mode = store.selectSnapshot(AuthState.mode);
+			expect(mode).toEqual(AuthMode.Confirmation);
+
+			store.dispatch(new AuthActions.Success("123"));
+			await sleep(50);
+			expect(component.registerResult).toEqual(
+				jasmine.objectContaining({
+					password: "123",
+				}),
+			);
+			expect(component.registerCompleted).toEqual(true);
 		});
 	});
 });
