@@ -72,7 +72,7 @@ export class TestAuthControllerComponent {
 	}
 }
 
-fdescribe("Auth Controller", () => {
+describe("Auth Controller", () => {
 	let spectator: SpectatorHost<TestAuthControllerComponent>;
 	let component: TestAuthControllerComponent;
 	let store: Store;
