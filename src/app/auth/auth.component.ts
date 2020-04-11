@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Select, Store } from "@ngxs/store";
 import { iif, NEVER, Observable, of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { map, switchMap, tap } from "rxjs/operators";
 
 import { AuthActions } from "./auth.actions";
 import { AuthService } from "./auth.service";
@@ -27,9 +27,7 @@ export class AuthComponent implements OnInit {
 	ngOnInit() {
 		// TODO: Implement a fingerprint plugin
 		this.isTouchAvailable$ = of(false);
-		this.activeMethod$ = this.state.pipe(
-			map((state) => state.method || AuthMethod.Pin),
-		);
+		this.activeMethod$ = this.state.pipe(map((state) => state.method));
 
 		this.state
 			.pipe(
@@ -45,8 +43,9 @@ export class AuthComponent implements OnInit {
 						NEVER,
 					);
 				}),
+				tap((result) => (this.remainingSeconds = result)),
 			)
-			.subscribe((result) => (this.remainingSeconds = result));
+			.subscribe();
 	}
 
 	public onSegmentChanged(event: CustomEvent) {

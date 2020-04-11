@@ -1,20 +1,31 @@
 <div
+	data-testid="c-auth"
 	class="flex-1 flex flex-col h-full w-full"
 	*ngIf="activeMethod$ | async as activeMethod"
 >
 	<div class="w-8 h-1 rounded-md mx-auto bg-gray-400 mt-2 mb-4"></div>
 	<div class="flex-1">
 		<ng-template [ngIf]="remainingSeconds" [ngIfElse]="unlocked">
-			<auth-locked [remainingSeconds]="remainingSeconds"></auth-locked>
+			<auth-locked
+				data-testid="c-auth__locked"
+				[remainingSeconds]="remainingSeconds"
+			></auth-locked>
 		</ng-template>
 
 		<ng-template #unlocked>
-			<auth-pin *ngIf="activeMethod === methods[0]"></auth-pin>
-			<auth-touch-id *ngIf="activeMethod === methods[1]"></auth-touch-id>
+			<auth-pin
+				data-testid="c-auth__pin"
+				*ngIf="activeMethod === methods[0]"
+			></auth-pin>
+			<auth-touch-id
+				data-testid="c-auth__touch-id"
+				*ngIf="activeMethod === methods[1]"
+			></auth-touch-id>
 		</ng-template>
 	</div>
 
 	<ion-footer
+		data-testid="c-auth__footer"
 		mode="ios"
 		*ngIf="!remainingSeconds && (isTouchAvailable$ | async)"
 	>
@@ -26,6 +37,7 @@
 			(ionChange)="onSegmentChanged($event)"
 		>
 			<ion-segment-button
+				data-testid="c-auth__segment__button"
 				[value]="methods[0]"
 				class="capitalize max-w-none"
 			>
@@ -33,6 +45,7 @@
 				<ion-label>Numeric</ion-label>
 			</ion-segment-button>
 			<ion-segment-button
+				data-testid="c-auth__segment__button"
 				[value]="methods[1]"
 				class="capitalize max-w-none"
 			>
