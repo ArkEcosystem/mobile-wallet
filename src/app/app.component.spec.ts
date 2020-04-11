@@ -12,8 +12,9 @@ import {
 	Spectator,
 } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
-import { PipesModule } from "@/pipes/pipes.module";
 import { of, Subject } from "rxjs";
+
+import { PipesModule } from "@/pipes/pipes.module";
 
 import { AppComponent } from "./app.component";
 import { ArkApiProvider } from "./services/ark-api/ark-api";
