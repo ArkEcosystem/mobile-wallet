@@ -12,6 +12,7 @@ import {
 	Spectator,
 } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
+import { PipesModule } from "@/pipes/pipes.module";
 import { of, Subject } from "rxjs";
 
 import { AppComponent } from "./app.component";
@@ -29,6 +30,7 @@ describe("App Component", () => {
 			IonicModule.forRoot(),
 			TranslateModule.forRoot(),
 			RouterModule.forRoot([]),
+			PipesModule,
 		],
 		mocks: [
 			SplashScreen,
