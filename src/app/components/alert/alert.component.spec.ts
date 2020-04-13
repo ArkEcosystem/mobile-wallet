@@ -5,7 +5,7 @@ import { sleep } from "@@/test/helpers";
 
 import { Alert } from "./alert.component";
 
-fdescribe("Alert component", () => {
+describe("Alert component", () => {
 	let spectator: SpectatorHost<Alert>;
 	const createHost = createHostFactory({
 		component: Alert,
