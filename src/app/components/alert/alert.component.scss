@@ -1,0 +1,31 @@
+:host {
+	.alert-container {
+		.row {
+			flex: 1 auto;
+		}
+	}
+
+	img {
+		display: block;
+		margin: 1em auto;
+		max-width: 20%;
+		height: auto;
+
+		&.status-success {
+			content: url("/assets/img/light/alert/alert-success.png");
+		}
+
+		&.status-error {
+			content: url("/assets/img/light/alert/alert-error.png");
+		}
+	}
+
+	.flex-container {
+		display: flex;
+		flex-direction: column;
+		&.align-center {
+			justify-content: center;
+			align-items: center;
+		}
+	}
+}

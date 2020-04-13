@@ -1,0 +1,15 @@
+<ion-grid class="status-container">
+	<div class="flex-container align-center" data-testid="alert-box">
+		<ion-row class="text-center">
+			<div class="flex-container align-center">
+				<img [ngClass]="status ? 'status-success' : 'status-error'" />
+				<ion-text color="dark" class="text-xl font-bold">
+					{{ title }}
+				</ion-text>
+			</div>
+		</ion-row>
+		<ion-row class="text-center">
+			<span>{{ message }}</span>
+		</ion-row>
+	</div>
+</ion-grid>
