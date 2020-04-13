@@ -1,31 +1,14 @@
 :host {
-	.alert-container {
+	.alert__container {
 		.row {
 			flex: 1 auto;
 		}
-	}
 
-	img {
-		display: block;
-		margin: 1em auto;
-		max-width: 20%;
-		height: auto;
-
-		&.status-success {
-			content: url("/assets/img/light/alert/alert-success.png");
-		}
-
-		&.status-error {
-			content: url("/assets/img/light/alert/alert-error.png");
-		}
-	}
-
-	.flex-container {
-		display: flex;
-		flex-direction: column;
-		&.align-center {
-			justify-content: center;
-			align-items: center;
+		.alert__container__img {
+			@apply w-20 h-20 mr-2 rounded-full flex justify-center items-center font-bold text-base;
+			background-color: var(--ion-color-light-shade);
+			color: var(--ion-color-light-contrast);
+			margin: 1em auto;
 		}
 	}
 }

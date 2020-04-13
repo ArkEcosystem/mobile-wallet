@@ -15,16 +15,25 @@ storiesOf("alert", module)
 		component: alert,
 		template: `<alert-component [status]="status" [title]="title" [message]="message"></alert-component>`,
 		props: {
-			status: true,
+			status: "success",
 			title: "This is an success alert",
 			message: "You can render positive messages here",
 		},
 	}))
-	.add("Fail", () => ({
+	.add("Warning", () => ({
 		component: alert,
 		template: `<alert-component [status]="status" [title]="title" [message]="message"></alert-component>`,
 		props: {
-			status: false,
+			status: "warning",
+			title: "This is an warning alert",
+			message: "You can render the warning description here",
+		},
+	}))
+	.add("Error", () => ({
+		component: alert,
+		template: `<alert-component [status]="status" [title]="title" [message]="message"></alert-component>`,
+		props: {
+			status: "error",
 			title: "This is an error alert",
 			message: "You can render the error description here",
 		},
