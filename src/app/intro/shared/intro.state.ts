@@ -25,7 +25,7 @@ const defaultState: IntroStateModel = {
 };
 
 @State<IntroStateModel>({
-	name: INTRO_STATE_TOKEN,
+	name: "intro",
 	defaults: defaultState,
 })
 @Injectable()
