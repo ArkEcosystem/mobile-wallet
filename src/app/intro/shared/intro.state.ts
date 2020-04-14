@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 import {
 	Action,
 	NgxsOnInit,
@@ -15,7 +16,7 @@ import { IntroService } from "./intro.service";
 import { IntroStateModel } from "./intro.type";
 
 export const INTRO_STATE_TOKEN = new StateToken<IntroStateModel>(
-	IntroConfig.TOKEN,
+	IntroConfig.STORAGE_KEY,
 );
 
 const defaultState: IntroStateModel = {
@@ -27,6 +28,7 @@ const defaultState: IntroStateModel = {
 	name: INTRO_STATE_TOKEN,
 	defaults: defaultState,
 })
+@Injectable()
 export class IntroState implements NgxsOnInit {
 	constructor(private introService: IntroService) {}
 
@@ -47,10 +49,8 @@ export class IntroState implements NgxsOnInit {
 	public update(
 		ctx: StateContext<IntroStateModel>,
 		action: IntroActions.Update,
-	): Observable<void> {
+	): void {
 		ctx.patchState(action.payload);
-		const state = ctx.getState();
-		return this.introService.save(state);
 	}
 
 	@Action(IntroActions.Load)
@@ -65,10 +65,8 @@ export class IntroState implements NgxsOnInit {
 	}
 
 	@Action(IntroActions.Done)
-	public done(ctx: StateContext<IntroStateModel>): Observable<void> {
-		const newState = ctx.patchState({ isFinished: true });
-
-		return this.introService.save(newState);
+	public done(ctx: StateContext<IntroStateModel>): void {
+		ctx.patchState({ isFinished: true });
 	}
 
 	private get defaults(): IntroStateModel {

@@ -1,20 +1,16 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { StorageService } from "@/app/core/storage.service";
+import { StorageProvider } from "@/services/storage/storage";
 
 import { IntroConfig } from "../intro.config";
 import { IntroStateModel } from "./intro.type";
 
 @Injectable()
 export class IntroService {
-	constructor(private storageService: StorageService) {}
-
-	public save(payload: IntroStateModel): Observable<void> {
-		return this.storageService.set(IntroConfig.TOKEN, payload);
-	}
+	constructor(private storageProvider: StorageProvider) {}
 
 	public load(): Observable<Partial<IntroStateModel>> {
-		return this.storageService.getObject(IntroConfig.TOKEN);
+		return this.storageProvider.get(IntroConfig.STORAGE_KEY);
 	}
 }

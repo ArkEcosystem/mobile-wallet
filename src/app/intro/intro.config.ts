@@ -1,3 +1,3 @@
 export namespace IntroConfig {
-	export const TOKEN = "intro";
+	export const STORAGE_KEY = "intro";
 }
