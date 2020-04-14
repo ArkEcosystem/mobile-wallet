@@ -1,8 +1,12 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { NavController } from "@ionic/angular";
+import { Store } from "@ngxs/store";
 import { isNil } from "lodash";
+import { Subject } from "rxjs";
+import { switchMap, take, takeUntil, tap } from "rxjs/operators";
 
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
-import { AuthProvider } from "@/services/auth/auth";
+import { AuthController } from "@/app/auth/auth.controller";
+import { AuthState } from "@/app/auth/auth.state";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({
@@ -10,30 +14,57 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 	templateUrl: "login.html",
 	styleUrls: ["login.scss"],
 })
-export class LoginPage implements OnInit {
-	@ViewChild("pinCode", { read: PinCodeComponent, static: true })
-	pinCode: PinCodeComponent;
-
+export class LoginPage implements OnInit, OnDestroy {
 	public hasProfiles = false;
 	public isReady = false;
 
+	public unsubscriber = new Subject();
+
 	constructor(
-		private authProvider: AuthProvider,
 		private userDataService: UserDataService,
+		private authCtlr: AuthController,
+		private navCtrl: NavController,
+		private store: Store,
 	) {}
 
 	ngOnInit() {
-		this.authProvider.getMasterPassword().subscribe((master) => {
-			this.hasProfiles = master && !isNil(this.userDataService.profiles);
-			this.isReady = true;
-		});
+		this.store
+			.select(AuthState.hasMasterPassword)
+			.pipe(
+				tap((result) => {
+					this.hasProfiles =
+						result && !isNil(this.userDataService.profiles);
+					this.isReady = true;
+				}),
+				takeUntil(this.unsubscriber),
+			)
+			.subscribe();
 	}
 
-	openProfileSignin() {
-		this.pinCode.createUpdatePinCode("/profile/signin");
+	ngOnDestroy() {
+		this.unsubscriber.next();
+		this.unsubscriber.complete();
 	}
 
-	openProfileCreate() {
-		this.pinCode.createUpdatePinCode("/profile/create");
+	openProfileSignin(): void {
+		if (this.hasProfiles) {
+			this.navCtrl.navigateForward("/profile/signin");
+		}
+	}
+
+	openProfileCreate(): void {
+		if (this.hasProfiles) {
+			return void this.navCtrl.navigateForward("/profile/create");
+		}
+
+		this.authCtlr
+			.register()
+			.pipe(
+				take(1),
+				switchMap(() =>
+					this.navCtrl.navigateForward("/profile/create"),
+				),
+			)
+			.subscribe();
 	}
 }

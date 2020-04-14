@@ -6,7 +6,6 @@ import { TranslateModule } from "@ngx-translate/core";
 
 import { AddressListComponentModule } from "@/components/address-list/address-list.module";
 import { EmptyListComponentModule } from "@/components/empty-list/empty-list.module";
-import { PinCodeComponentModule } from "@/components/pin-code/pin-code.module";
 
 import { ProfileSigninPage } from "./profile-signin";
 
@@ -19,7 +18,6 @@ import { ProfileSigninPage } from "./profile-signin";
 		IonicModule,
 		RouterModule.forChild([{ path: "", component: ProfileSigninPage }]),
 		AddressListComponentModule,
-		PinCodeComponentModule,
 	],
 })
 export class ProfileSigninPageModule {}

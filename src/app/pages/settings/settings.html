@@ -78,12 +78,6 @@
 				></ion-icon>
 				{{ 'SETTINGS_PAGE.CHANGE_PIN' | translate }}
 			</ion-item>
-			<!-- NOTE: Deprecate notifications -->
-			<!-- <ion-item ion-item>
-        <ion-icon color="primary" [name]="platform.is('ios') ? 'ios-notifications-outline' : 'md-notifications-outline'" slot="start"></ion-icon>
-        <ion-label>{{ 'SETTINGS_PAGE.NOTIFICATIONS' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="currentSettings.notification" (ngModelChange)="onUpdate()"></ion-toggle>
-      </ion-item> -->
 			<ion-item
 				detail
 				(click)="openManageNetworksPage()"
@@ -149,9 +143,3 @@
 		</ion-item-group>
 	</ion-list>
 </ion-content>
-
-<pin-code
-	[wallet]="currentWallet"
-	(success)="onEnterPinCode()"
-	#pinCode
-></pin-code>

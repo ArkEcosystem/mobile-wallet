@@ -8,11 +8,12 @@ import {
 } from "@ionic/angular";
 import { Delegate, TransactionVote, VoteType } from "ark-ts";
 import { Subject } from "rxjs";
-import { takeUntil, tap } from "rxjs/operators";
+import { switchMap, takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
+import { AuthController } from "@/app/auth/auth.controller";
+import { WalletController } from "@/app/wallet/wallet.controller";
 import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { Wallet, WalletKeys } from "@/models/model";
 import { StoredNetwork } from "@/models/stored-network";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
@@ -29,9 +30,6 @@ import { DelegateDetailPage } from "./delegate-detail/delegate-detail";
 export class DelegatesPage implements OnDestroy {
 	@ViewChild("delegateSlider", { read: IonSlides })
 	slider: IonSlides;
-
-	@ViewChild("pinCode", { read: PinCodeComponent, static: true })
-	pinCode: PinCodeComponent;
 
 	@ViewChild("confirmTransaction", {
 		read: ConfirmTransactionComponent,
@@ -74,6 +72,8 @@ export class DelegatesPage implements OnDestroy {
 		private modalCtrl: ModalController,
 		private userDataService: UserDataService,
 		private toastProvider: ToastProvider,
+		private authCtrl: AuthController,
+		private walletCtrl: WalletController,
 	) {}
 
 	async openDetailModal(delegate: Delegate) {
@@ -94,7 +94,20 @@ export class DelegatesPage implements OnDestroy {
 
 			this.selectedFee = data.fee;
 			this.selectedDelegate = data.delegateVote; // Save the delegate that we want to vote for
-			this.pinCode.open("PIN_CODE.TYPE_PIN_SIGN_TRANSACTION", true, true);
+			this.authCtrl.request().pipe(
+				switchMap(({ password }) => {
+					const keys = this.userDataService.getKeysByWallet(
+						this.currentWallet,
+						password,
+					);
+					return this.walletCtrl.requestSecondPassphrase(
+						this.currentWallet,
+						keys,
+					);
+				}),
+				tap((keys) => this.generateTransaction(keys)),
+				takeUntil(this.unsubscriber$),
+			);
 		});
 
 		await modal.present();

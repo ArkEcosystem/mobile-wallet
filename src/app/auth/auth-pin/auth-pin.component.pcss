@@ -1,0 +1,83 @@
+:host {
+	.c-auth-pin__password {
+		place-items: center;
+	}
+
+	.c-auth-pin__keyboard {
+		place-items: center;
+		grid-template-columns: repeat(3, minmax(4rem, 7rem));
+		grid-template-rows: repeat(4, minmax(2rem, 4rem));
+		--border: 1px solid var(--ion-color-light);
+	}
+
+	.c-auth-pin__keyboard__char {
+		place-items: center;
+	}
+
+	.c-auth-pin__keyboard__char:nth-child(-n + 3) {
+		border-bottom: var(--border);
+	}
+
+	.c-auth-pin__keyboard__char:nth-child(3n + 1) {
+		border-right: var(--border);
+	}
+
+	.c-auth-pin__keyboard__char:nth-child(3n) {
+		border-left: var(--border);
+	}
+
+	.c-auth-pin__keyboard__char:nth-child(n + 7) {
+		border-top: var(--border);
+	}
+
+	.c-auth-pin__password__char--active {
+		.c-auth-pin__password__char__dot {
+			@apply h-3;
+		}
+	}
+
+	.c-auth-pin__password__char__border {
+		background-color: rgba(var(--ion-color-primary-rgb), 0.2);
+		height: 2px;
+	}
+	.c-auth-pin__password__char__dot {
+		background-color: rgba(var(--ion-color-primary-rgb), 0.6);
+	}
+
+	.c-auth-pin--fail {
+		animation: shake-horizontal 0.8s ease-out 1;
+	}
+
+	@keyframes shake-horizontal {
+		0% {
+			transform: translate(0, 0);
+		}
+		10% {
+			transform: translate(-25px, 0);
+		}
+		20% {
+			transform: translate(25px, 0);
+		}
+		30% {
+			transform: translate(-20px, 0);
+		}
+		40% {
+			transform: translate(20px, 0);
+		}
+		50% {
+			transform: translate(-10px, 0);
+		}
+		60% {
+			transform: translate(10px, 0);
+		}
+		70% {
+			transform: translate(-5px, 0);
+		}
+		80% {
+			transform: translate(5px, 0);
+		}
+		100% {
+			transform: translate(0, 0);
+		}
+	}
+}
