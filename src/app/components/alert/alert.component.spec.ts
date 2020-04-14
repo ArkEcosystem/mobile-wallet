@@ -14,7 +14,7 @@ describe("Alert component", () => {
 
 	it("should render a success alert", async () => {
 		spectator = createHost(
-			`<alert-component status="success" title="success" message="message"></alert-component>`,
+			`<alert-component type="success" title="success" message="message"></alert-component>`,
 		);
 		await sleep(100);
 		const root = spectator.query(byTestId("alert-box"));
@@ -29,7 +29,7 @@ describe("Alert component", () => {
 
 	it("should render a warning alert", async () => {
 		spectator = createHost(
-			`<alert-component statuts="warning" title="warning" message="message"></alert-component>`,
+			`<alert-component type="warning" title="warning" message="message"></alert-component>`,
 		);
 		await sleep(100);
 		const root = spectator.query(byTestId("alert-box"));
@@ -44,7 +44,7 @@ describe("Alert component", () => {
 
 	it("should render a error alert", async () => {
 		spectator = createHost(
-			`<alert-component statuts="error" title="error" message="message"></alert-component>`,
+			`<alert-component type="error" title="error" message="message"></alert-component>`,
 		);
 		await sleep(100);
 		const root = spectator.query(byTestId("alert-box"));

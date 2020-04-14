@@ -4,36 +4,36 @@ import { moduleMetadata, storiesOf } from "@storybook/angular";
 
 import { Alert } from "./alert.component";
 
-storiesOf("alert", module)
+storiesOf("alert-types", module)
 	.addDecorator(
 		moduleMetadata({
 			declarations: [Alert],
 			imports: [IonicModule, CommonModule],
 		}),
 	)
-	.add("Success", () => ({
+	.add("success", () => ({
 		component: alert,
-		template: `<alert-component [status]="status" [title]="title" [message]="message"></alert-component>`,
+		template: `<alert-component [type]="type" [title]="title" [message]="message"></alert-component>`,
 		props: {
-			status: "success",
+			type: "success",
 			title: "This is an success alert",
 			message: "You can render positive messages here",
 		},
 	}))
-	.add("Warning", () => ({
+	.add("warning", () => ({
 		component: alert,
-		template: `<alert-component [status]="status" [title]="title" [message]="message"></alert-component>`,
+		template: `<alert-component [type]="type" [title]="title" [message]="message"></alert-component>`,
 		props: {
-			status: "warning",
+			type: "warning",
 			title: "This is an warning alert",
 			message: "You can render the warning description here",
 		},
 	}))
-	.add("Error", () => ({
+	.add("error", () => ({
 		component: alert,
-		template: `<alert-component [status]="status" [title]="title" [message]="message"></alert-component>`,
+		template: `<alert-component [type]="type" [title]="title" [message]="message"></alert-component>`,
 		props: {
-			status: "error",
+			type: "error",
 			title: "This is an error alert",
 			message: "You can render the error description here",
 		},

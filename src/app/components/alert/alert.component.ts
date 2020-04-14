@@ -7,7 +7,7 @@ import { Component, Input } from "@angular/core";
 })
 export class Alert {
 	@Input()
-	public status: string;
+	public type: string;
 
 	@Input()
 	public title: string;
