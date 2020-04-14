@@ -1,0 +1,15 @@
+:host {
+	.alert__container {
+		.alert__container--success {
+			@apply w-20 h-20 mx-auto mt-4 rounded-full flex justify-center items-center font-bold text-base;
+			background-color: rgba(var(--ion-color-success-rgb), 0.2);
+			color: var(--ion-color-success-shade);
+		}
+
+		.alert__container--error {
+			@apply w-20 h-20 mx-auto mt-4 rounded-full flex justify-center items-center font-bold text-base;
+			background-color: rgba(var(--ion-color-danger-rgb), 0.2);
+			color: var(--ion-color-danger-shade);
+		}
+	}
+}
