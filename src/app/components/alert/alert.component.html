@@ -1,0 +1,29 @@
+<ion-grid class="alert__container">
+	<div
+		class="flex flex-col items-center justify-center"
+		data-testid="alert-box"
+	>
+		<ion-row class="text-center flex-1">
+			<div class="flex flex-col items-center justify-center">
+				<div
+					[ngClass]="
+						type === 'success'
+							? 'alert__container--success'
+							: 'alert__container--error'
+					"
+				>
+					<ion-icon
+						class="text-2xl"
+						[src]="'assets/svg/' + icons[type] + '.svg'"
+					></ion-icon>
+				</div>
+				<ion-text color="dark" class="text-xl font-bold">
+					{{ title }}
+				</ion-text>
+			</div>
+		</ion-row>
+		<ion-row class="text-center flex-1">
+			<ion-text color="medium">{{ message }}</ion-text>
+		</ion-row>
+	</div>
+</ion-grid>
