@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, Renderer2 } from "@angular/core";
+import { Component, Input, OnChanges } from "@angular/core";
 import crypto from "crypto";
 import MersenneTwister from "mersenne-twister";
 
@@ -6,31 +6,19 @@ import { IdenticonConfig } from "./identicon.config";
 
 @Component({
 	selector: "identicon",
-	template: `<div data-testid="c-identicon"></div>`,
-	styles: [
-		`
-			:host {
-				display: block;
-				border-radius: 100%;
-				mix-blend-mode: color-burn;
-				background-color: #c1272a;
-			}
-		`,
-	],
+	templateUrl: "identicon.component.html",
+	styleUrls: ["identicon.component.pcss"],
 })
-export class IdenticonComponent implements OnInit {
+export class IdenticonComponent implements OnChanges {
 	@Input()
 	public value = "";
 
-	constructor(private el: ElementRef, private renderer: Renderer2) {}
+	public gradients = "";
 
-	ngOnInit() {
-		const gradients = this.generateGradients();
-		this.renderer.setStyle(
-			this.el.nativeElement,
-			"background-image",
-			gradients,
-		);
+	constructor() {}
+
+	ngOnChanges() {
+		this.gradients = this.generateGradients();
 	}
 
 	private generateGradients(): string {
@@ -59,7 +47,7 @@ export class IdenticonComponent implements OnInit {
 	private getRandomColor(generator: any): string {
 		const colors = IdenticonConfig.COLORS;
 		const idx = Math.floor(colors.length * generator.random());
-		const color = colors.splice(idx, 1)[0];
+		const color = colors[idx];
 		return color;
 	}
 
