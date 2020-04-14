@@ -3,9 +3,9 @@ import { ModalController, NavController } from "@ionic/angular";
 import { PrivateKey, PublicKey } from "ark-ts";
 import * as bip39 from "bip39";
 import { EMPTY, Observable } from "rxjs";
-import { finalize } from "rxjs/operators";
+import { finalize, tap, throwIfEmpty } from "rxjs/operators";
 
-import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
+import { AuthController } from "@/app/auth/auth.controller";
 import { Wallet } from "@/models/model";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { NetworkProvider } from "@/services/network/network";
@@ -26,6 +26,7 @@ export abstract class BaseWalletImport {
 		private modalCtrl: ModalController,
 		private networkProvider: NetworkProvider,
 		private settingsDataProvider: SettingsDataProvider,
+		private authCtrl: AuthController,
 	) {
 		this.existingAddress = route.snapshot.queryParamMap.get("address");
 		this.settingsDataProvider.settings.subscribe(
@@ -120,28 +121,19 @@ export abstract class BaseWalletImport {
 		});
 	}
 
-	private async verifyWithPinCode(
-		newWallet: Wallet,
-		passphrase: string,
-	): Promise<void> {
-		const modal = await this.modalCtrl.create({
-			component: PinCodeModal,
-			componentProps: {
-				message: "PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE",
-				outputPassword: true,
-				validatePassword: true,
-			},
-		});
-
-		modal.onDidDismiss().then(({ data }) => {
-			if (data) {
-				this.addWallet(newWallet, passphrase, data);
-			} else {
-				this.toastProvider.error("WALLETS_PAGE.ADD_WALLET_ERROR");
-			}
-		});
-
-		modal.present();
+	private verifyWithPinCode(newWallet: Wallet, passphrase: string): void {
+		this.authCtrl
+			.request()
+			.pipe(
+				tap(({ password }) =>
+					this.addWallet(newWallet, passphrase, password),
+				),
+				throwIfEmpty(),
+			)
+			.subscribe({
+				error: () =>
+					this.toastProvider.error("WALLETS_PAGE.ADD_WALLET_ERROR"),
+			});
 	}
 
 	private addWallet(

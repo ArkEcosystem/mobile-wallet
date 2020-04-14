@@ -18,14 +18,16 @@ import {
 	catchError,
 	debounceTime,
 	finalize,
+	map,
 	switchMap,
 	takeUntil,
+	tap,
 } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
+import { AuthController } from "@/app/auth/auth.controller";
 import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
 import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import {
 	MarketCurrency,
 	MarketHistory,
@@ -57,9 +59,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	@ViewChild("refresher", { read: IonRefresher, static: true })
 	refresher: IonRefresher;
 
-	@ViewChild("pinCode", { read: PinCodeComponent, static: true })
-	pinCode: PinCodeComponent;
-
 	@ViewChild("confirmTransaction", {
 		read: ConfirmTransactionComponent,
 		static: true,
@@ -76,8 +75,6 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	public ticker: MarketTicker;
 	public marketHistory: MarketHistory;
 	public marketCurrency: MarketCurrency;
-
-	public onEnterPinCode: (keys: WalletKeys) => void;
 
 	public emptyTransactions = false;
 	public minConfirmations = constants.WALLET_MIN_NUMBER_CONFIRMATIONS;
@@ -102,6 +99,7 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 		private settingsDataProvider: SettingsDataProvider,
 		private clipboard: Clipboard,
 		private toastProvider: ToastProvider,
+		private authCtrl: AuthController,
 	) {
 		this.address = this.route.snapshot.queryParamMap.get("address");
 
@@ -213,8 +211,15 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 	}
 
 	presentWalletBackupPage() {
-		this.onEnterPinCode = this.showBackup;
-		this.pinCode.open("PIN_CODE.DEFAULT_MESSAGE", true);
+		this.authCtrl
+			.request()
+			.pipe(
+				map(({ password }) =>
+					this.userDataService.getKeysByWallet(this.wallet, password),
+				),
+				tap((keys) => this.showBackup(keys)),
+			)
+			.subscribe();
 	}
 
 	presentAddActionSheet() {
@@ -325,11 +330,10 @@ export class WalletDashboardPage implements OnInit, OnDestroy {
 						{
 							text: translation.CONFIRM,
 							handler: () => {
-								this.onEnterPinCode = this.deleteWallet;
-								this.pinCode.open(
-									"PIN_CODE.TYPE_PIN_REMOVE_WALLET",
-									false,
-								);
+								this.authCtrl
+									.request()
+									.pipe(tap(() => this.deleteWallet()))
+									.subscribe();
 							},
 						},
 					],

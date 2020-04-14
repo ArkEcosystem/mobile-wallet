@@ -5,8 +5,6 @@ import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 
-import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
-import { PinCodeModalModule } from "@/app/modals/pin-code/pin-code.module";
 import { DirectivesModule } from "@/directives/directives.module";
 import { PipesModule } from "@/pipes/pipes.module";
 
@@ -25,8 +23,6 @@ import { WalletManualImportPage } from "./wallet-import-manual";
 		TranslateModule,
 		DirectivesModule,
 		PipesModule,
-		PinCodeModalModule,
 	],
-	entryComponents: [PinCodeModal],
 })
 export class WalletManualImportPageModule {}

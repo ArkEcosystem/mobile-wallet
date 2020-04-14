@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import {
 	AlertController,
@@ -11,8 +11,7 @@ import { Subject } from "rxjs";
 import { takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
-import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
+import { AuthController } from "@/app/auth/auth.controller";
 import { ViewerLogModal } from "@/components/viewer-log/viewer-log.modal";
 import { UserSettings } from "@/models/model";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
@@ -28,14 +27,10 @@ const packageJson = require("@@/package.json");
 	providers: [InAppBrowser],
 })
 export class SettingsPage implements OnInit, OnDestroy {
-	@ViewChild("pinCode", { read: PinCodeComponent, static: true })
-	pinCode: PinCodeComponent;
-
 	public objectKeys = Object.keys;
 
 	public availableOptions;
 	public currentSettings: UserSettings;
-	public onEnterPinCode: () => void;
 	public appVersion: number = packageJson.version;
 	public versionClicksCount = 0;
 
@@ -53,27 +48,14 @@ export class SettingsPage implements OnInit, OnDestroy {
 		private inAppBrowser: InAppBrowser,
 		private userDataService: UserDataService,
 		private toastProvider: ToastProvider,
+		private authCtrl: AuthController,
 	) {
 		this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
 		this.currentWallet = this.userDataService.currentWallet;
 	}
 
-	async openChangePinPage() {
-		const modal = await this.modalCtrl.create({
-			component: PinCodeModal,
-			componentProps: {
-				message: "PIN_CODE.DEFAULT_MESSAGE",
-				outputPassword: true,
-				validatePassword: true,
-			},
-		});
-
-		await modal.present();
-		modal.onDidDismiss().then(({ data: password }) => {
-			if (password) {
-				this.pinCode.createUpdatePinCode(null, password);
-			}
-		});
+	openChangePinPage() {
+		this.authCtrl.update();
 	}
 
 	openManageNetworksPage() {
@@ -106,11 +88,10 @@ export class SettingsPage implements OnInit, OnDestroy {
 						{
 							text: translation.CONFIRM,
 							handler: () => {
-								this.onEnterPinCode = this.clearData;
-								this.pinCode.open(
-									"PIN_CODE.DEFAULT_MESSAGE",
-									false,
-								);
+								this.authCtrl
+									.request()
+									.pipe(tap(() => this.clearData()))
+									.subscribe();
 							},
 						},
 					],

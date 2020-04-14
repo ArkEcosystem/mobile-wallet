@@ -10,12 +10,13 @@ import { TranslateService } from "@ngx-translate/core";
 import { TransactionSend, TransactionType } from "ark-ts";
 import { PublicKey } from "ark-ts/core";
 import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { switchMap, takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
+import { AuthController } from "@/app/auth/auth.controller";
+import { WalletController } from "@/app/wallet/wallet.controller";
 import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
 import { InputCurrencyOutput } from "@/components/input-currency/input-currency.component";
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
 import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
 import {
 	Contact,
@@ -51,9 +52,6 @@ class CombinedResult {
 	providers: [TruncateMiddlePipe],
 })
 export class TransactionSendPage implements OnInit, OnDestroy {
-	@ViewChild("pinCode", { read: PinCodeComponent, static: true })
-	pinCode: PinCodeComponent;
-
 	@ViewChild("confirmTransaction", {
 		read: ConfirmTransactionComponent,
 		static: true,
@@ -89,6 +87,8 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		private route: ActivatedRoute,
 		private routerOutlet: IonRouterOutlet,
 		private loggerService: LoggerService,
+		private authCtrl: AuthController,
+		private walletCtrl: WalletController,
 	) {
 		this.currentWallet = this.userDataService.currentWallet;
 		this.currentNetwork = this.userDataService.currentNetwork;
@@ -165,18 +165,17 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 									combinedResult,
 								);
 							});
-						this.pinCode.open(
-							"PIN_CODE.TYPE_PIN_SIGN_TRANSACTION",
-							true,
-							true,
-							(keys: WalletKeys) => {
-								combinedResult.pinCodeDone = true;
-								combinedResult.keys = keys;
-								this.createTransactionAndShowConfirm(
-									combinedResult,
-								);
-							},
-						);
+						this.requestKeys()
+							.pipe(
+								tap((keys: WalletKeys) => {
+									combinedResult.pinCodeDone = true;
+									combinedResult.keys = keys;
+									this.createTransactionAndShowConfirm(
+										combinedResult,
+									);
+								}),
+							)
+							.subscribe();
 					});
 			});
 		}
@@ -230,9 +229,6 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 
 		this.hasNotSent();
 
-		this.pinCode.close.pipe(takeUntil(this.unsubscriber$)).subscribe(() => {
-			this.hasNotSent();
-		});
 		this.confirmTransaction.error
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe(() => {
@@ -299,6 +295,22 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		}
 
 		return isValid;
+	}
+
+	// TODO: Move this to a controller
+	private requestKeys() {
+		return this.authCtrl.request().pipe(
+			switchMap(({ password }) => {
+				const keys = this.userDataService.getKeysByWallet(
+					this.currentWallet,
+					password,
+				);
+				return this.walletCtrl.requestSecondPassphrase(
+					this.currentWallet,
+					keys,
+				);
+			}),
+		);
 	}
 
 	private createTransactionAndShowConfirm(result: CombinedResult) {

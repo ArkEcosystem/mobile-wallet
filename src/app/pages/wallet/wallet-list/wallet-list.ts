@@ -11,11 +11,11 @@ import { Network } from "ark-ts/model";
 import lodash from "lodash";
 import { BaseChartDirective } from "ng2-charts";
 import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
+import { switchMap, takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
+import { AuthController } from "@/app/auth/auth.controller";
 import { GenerateEntropyModal } from "@/app/modals/generate-entropy/generate-entropy";
-import { PinCodeModal } from "@/app/modals/pin-code/pin-code";
 import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
 import {
 	MarketCurrency,
@@ -83,6 +83,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 		private settingsDataProvider: SettingsDataProvider,
 		private ngZone: NgZone,
 		private arkApiProvider: ArkApiProvider,
+		private authCtrl: AuthController,
 	) {}
 
 	ngOnInit() {
@@ -223,34 +224,22 @@ export class WalletListPage implements OnInit, OnDestroy {
 		}
 	}
 
-	private async storeWallet(account) {
+	private storeWallet(account) {
 		const wallet = new Wallet();
 		wallet.address = account.address;
 		wallet.publicKey = account.publicKey;
 
-		const modal = await this.modalCtrl.create({
-			component: PinCodeModal,
-			componentProps: {
-				message: "PIN_CODE.TYPE_PIN_ENCRYPT_PASSPHRASE",
-				outputPassword: true,
-				validatePassword: true,
-			},
-		});
-
-		modal.onDidDismiss().then(({ data: password }) => {
-			if (!password) {
-				return;
-			}
-
-			this.userDataService
-				.addWallet(wallet, account.mnemonic, password)
-				.pipe(takeUntil(this.unsubscriber$))
-				.subscribe(() => {
-					this.loadWallets();
-				});
-		});
-
-		modal.present();
+		this.authCtrl.request().pipe(
+			switchMap(({ password }) =>
+				this.userDataService.addWallet(
+					wallet,
+					account.mnemonic,
+					password,
+				),
+			),
+			tap(() => this.loadWallets()),
+			takeUntil(this.unsubscriber$),
+		);
 	}
 
 	private loadWallets() {

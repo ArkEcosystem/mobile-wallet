@@ -5,7 +5,6 @@ import { ConfirmTransactionComponentModule } from "@/components/confirm-transact
 import { AddressListComponentModule } from "./address-list/address-list.module";
 import { ClosePopupComponentModule } from "./close-popup/close-popup.module";
 import { EmptyListComponentModule } from "./empty-list/empty-list.module";
-import { PinCodeComponentModule } from "./pin-code/pin-code.module";
 import { ProgressBarComponent } from "./progress-bar/progress-bar";
 
 @NgModule({
@@ -14,7 +13,6 @@ import { ProgressBarComponent } from "./progress-bar/progress-bar";
 	exports: [
 		ProgressBarComponent,
 		EmptyListComponentModule,
-		PinCodeComponentModule,
 		ConfirmTransactionComponentModule,
 		ClosePopupComponentModule,
 		AddressListComponentModule,

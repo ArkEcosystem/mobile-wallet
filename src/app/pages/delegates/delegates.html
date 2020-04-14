@@ -93,11 +93,6 @@
 	</ion-slides>
 </ion-content>
 
-<pin-code
-	[wallet]="currentWallet"
-	(success)="generateTransaction($event)"
-	#pinCode
-></pin-code>
 <confirm-transaction
 	[wallet]="currentWallet"
 	#confirmTransaction
