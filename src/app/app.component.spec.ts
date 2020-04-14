@@ -14,6 +14,8 @@ import {
 import { TranslateModule } from "@ngx-translate/core";
 import { of, Subject } from "rxjs";
 
+import { PipesModule } from "@/pipes/pipes.module";
+
 import { AppComponent } from "./app.component";
 import { ArkApiProvider } from "./services/ark-api/ark-api";
 import { AuthProvider } from "./services/auth/auth";
@@ -29,6 +31,7 @@ describe("App Component", () => {
 			IonicModule.forRoot(),
 			TranslateModule.forRoot(),
 			RouterModule.forRoot([]),
+			PipesModule,
 		],
 		mocks: [
 			SplashScreen,

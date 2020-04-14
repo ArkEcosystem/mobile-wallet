@@ -16,6 +16,8 @@ import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { ChartsModule } from "ng2-charts";
 
+import { PipesModule } from "@/pipes/pipes.module";
+
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
@@ -44,6 +46,7 @@ export function createTranslateLoader(http: HttpClient) {
 		AppRoutingModule,
 		ChartsModule,
 		HammerModule,
+		PipesModule,
 	],
 	providers: [
 		StatusBar,
