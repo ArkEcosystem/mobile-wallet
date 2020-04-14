@@ -18,6 +18,8 @@ import { NgxsAsyncStoragePluginModule } from "@ngxs-labs/async-storage-plugin";
 import { NgxsModule } from "@ngxs/store";
 import { ChartsModule } from "ng2-charts";
 
+import { PipesModule } from "@/pipes/pipes.module";
+
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
@@ -56,6 +58,7 @@ export function createTranslateLoader(http: HttpClient) {
 		}),
 		ChartsModule,
 		HammerModule,
+		PipesModule,
 	],
 	providers: [
 		StatusBar,
