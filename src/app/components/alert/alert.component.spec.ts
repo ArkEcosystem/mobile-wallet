@@ -14,28 +14,43 @@ describe("Alert component", () => {
 
 	it("should render a success alert", async () => {
 		spectator = createHost(
-			`<alert-component status=true title="success" message="message"></alert-component>`,
+			`<alert-component status="success" title="success" message="message"></alert-component>`,
 		);
 		await sleep(100);
 		const root = spectator.query(byTestId("alert-box"));
 		const title = root.querySelector(".text-xl");
 		const message = root.querySelector("span");
-		const img = root.querySelector("img.status-success");
+		const img = root.querySelector(".text-2xl");
 
 		expect(title.innerHTML.trim()).toEqual("success");
 		expect(message.innerHTML).toEqual("message");
 		expect(img).not.toEqual(null);
 	});
 
-	it("should render a error alert", async () => {
+	it("should render a warning alert", async () => {
 		spectator = createHost(
-			`<alert-component title="error" message="message"></alert-component>`,
+			`<alert-component statuts="warning" title="warning" message="message"></alert-component>`,
 		);
 		await sleep(100);
 		const root = spectator.query(byTestId("alert-box"));
 		const title = root.querySelector(".text-xl");
 		const message = root.querySelector("span");
-		const img = root.querySelector("img.status-error");
+		const img = root.querySelector(".text-2xl");
+
+		expect(title.innerHTML.trim()).toEqual("warning");
+		expect(message.innerHTML).toEqual("message");
+		expect(img).not.toEqual(null);
+	});
+
+	it("should render a error alert", async () => {
+		spectator = createHost(
+			`<alert-component statuts="error" title="error" message="message"></alert-component>`,
+		);
+		await sleep(100);
+		const root = spectator.query(byTestId("alert-box"));
+		const title = root.querySelector(".text-xl");
+		const message = root.querySelector("span");
+		const img = root.querySelector(".text-2xl");
 
 		expect(title.innerHTML.trim()).toEqual("error");
 		expect(message.innerHTML).toEqual("message");
