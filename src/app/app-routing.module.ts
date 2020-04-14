@@ -5,11 +5,6 @@ const routes: Routes = [
 	{ path: "", redirectTo: "login", pathMatch: "full" },
 
 	{
-		path: "intro",
-		loadChildren: () =>
-			import("./pages/intro/intro.module").then((m) => m.IntroPageModule),
-	},
-	{
 		path: "network-status",
 		loadChildren: () =>
 			import("./pages/network/network-status/network-status.module").then(
