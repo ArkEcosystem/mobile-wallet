@@ -19,7 +19,7 @@ describe("Alert component", () => {
 		await sleep(100);
 		const root = spectator.query(byTestId("alert-box"));
 		const title = root.querySelector(".text-xl");
-		const message = root.querySelector("span");
+		const message = root.querySelector(".ion-color-medium");
 		const img = root.querySelector(".text-2xl");
 
 		expect(title.innerHTML.trim()).toEqual("success");
@@ -34,7 +34,7 @@ describe("Alert component", () => {
 		await sleep(100);
 		const root = spectator.query(byTestId("alert-box"));
 		const title = root.querySelector(".text-xl");
-		const message = root.querySelector("span");
+		const message = root.querySelector(".ion-color-medium");
 		const img = root.querySelector(".text-2xl");
 
 		expect(title.innerHTML.trim()).toEqual("warning");
@@ -49,7 +49,7 @@ describe("Alert component", () => {
 		await sleep(100);
 		const root = spectator.query(byTestId("alert-box"));
 		const title = root.querySelector(".text-xl");
-		const message = root.querySelector("span");
+		const message = root.querySelector(".ion-color-medium");
 		const img = root.querySelector(".text-2xl");
 
 		expect(title.innerHTML.trim()).toEqual("error");

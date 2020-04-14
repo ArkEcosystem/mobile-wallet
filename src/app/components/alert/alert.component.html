@@ -3,12 +3,18 @@
 		class="flex flex-col items-center justify-center"
 		data-testid="alert-box"
 	>
-		<ion-row class="text-center">
+		<ion-row class="text-center flex-1">
 			<div class="flex flex-col items-center justify-center">
-				<div class="alert__container__img">
+				<div
+					[ngClass]="
+						type === 'success'
+							? 'alert__container--success'
+							: 'alert__container--error'
+					"
+				>
 					<ion-icon
 						class="text-2xl"
-						[src]="'assets/svg/' + type + '.svg'"
+						[src]="'assets/svg/' + icons[type] + '.svg'"
 					></ion-icon>
 				</div>
 				<ion-text color="dark" class="text-xl font-bold">
@@ -16,8 +22,8 @@
 				</ion-text>
 			</div>
 		</ion-row>
-		<ion-row class="text-center">
-			<span>{{ message }}</span>
+		<ion-row class="text-center flex-1">
+			<ion-text color="medium">{{ message }}</ion-text>
 		</ion-row>
 	</div>
 </ion-grid>
