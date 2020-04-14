@@ -6,7 +6,7 @@ import {
 
 import { IdenticonComponent } from "./identicon.component";
 
-fdescribe("Identicon", () => {
+describe("Identicon", () => {
 	let spectator: SpectatorHost<IdenticonComponent>;
 	const createHost = createHostComponentFactory({
 		component: IdenticonComponent,
