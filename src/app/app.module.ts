@@ -25,6 +25,7 @@ import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
 import { AuthState } from "./auth/auth.state";
 import { IntroModule } from "./intro/intro.module";
+import { IntroState } from "./intro/shared/intro.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
 import { NgxsStorageService } from "./services/storage/ngxs-storage";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
@@ -52,13 +53,13 @@ export function createTranslateLoader(http: HttpClient) {
 		}),
 		AuthModule,
 		WalletModule,
+		IntroModule,
 		AppRoutingModule,
 		NgxsModule.forRoot([]),
 		NgxsAsyncStoragePluginModule.forRoot(NgxsStorageService, {
-			key: [AuthState],
+			key: [AuthState, IntroState],
 		}),
 		ChartsModule,
-		IntroModule,
 		HammerModule,
 		PipesModule,
 	],
