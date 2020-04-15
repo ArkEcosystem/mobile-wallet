@@ -56,12 +56,12 @@ export class IntroPage {
 					this.slides = [
 						{
 							title: translation["INTRO_PAGE.WELCOME"],
-							image: "anytime",
+							image: "welcome-aboard",
 							description: translation["INTRO_PAGE.TEXT_1"],
 						},
 						{
 							title: translation["INTRO_PAGE.SECURITY"],
-							image: "pincode",
+							image: "security",
 							description: translation["INTRO_PAGE.TEXT_2"],
 						},
 						{

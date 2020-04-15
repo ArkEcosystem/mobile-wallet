@@ -1,14 +1,22 @@
 <ion-content forceOverscroll="false" class="ion-padding">
-	<ion-slides class="h-full" #slider (ionSlideDidChange)="onSlideChanged()">
+	<ion-row class="flex items-center justify-between">
+		<img class="ark-logo" />
+		<ion-button id="skip" fill="clear" (click)="startApp()">
+			{{ "SKIP" | translate }}</ion-button
+		>
+	</ion-row>
+	<ion-slides #slider (ionSlideDidChange)="onSlideChanged()">
 		<ion-slide *ngFor="let slide of slides">
 			<ion-grid class="h-full flex flex-col justify-center items-center">
 				<div class="flex flex-col justify-center items-center">
 					<img [class]="'slide-image ' + slide.image" />
 					<ion-text color="dark">
-						<h3 class="text-xl font-semibold">{{ slide.title }}</h3>
+						<h3 class="text-3xl font-bold">
+							{{ slide.title }}
+						</h3>
 					</ion-text>
 					<ion-text color="medium">
-						<p class="leading-normal mt-2 px-6">
+						<p class="text-sm mt-2 px-6">
 							{{ slide.description }}
 						</p>
 					</ion-text>
@@ -18,51 +26,45 @@
 	</ion-slides>
 </ion-content>
 
-<ion-footer no-shadow no-border>
-	<ion-grid>
-		<div class="flex items-center">
-			<ion-col class="flex-1">
-				<ion-button
-					id="skip"
-					fill="clear"
-					(click)="startApp()"
-					[disabled]="!showSkip"
+<ion-footer
+	no-shadow
+	no-border
+	class="flex flex-col align-center justify-between w-full"
+>
+	<ion-row>
+		<ion-grid fixed class="slide-pagination h-full text-center">
+			<ion-row class="flex items-center justify-center flex-shrink-0">
+				<ion-col
+					*ngFor="let page of slides; let i = index"
+					[class.active]="(intro$ | async).activeIndex == i"
 				>
-					{{ "SKIP" | translate | uppercase }}</ion-button
-				>
-			</ion-col>
-			<ion-col class="w-32">
-				<ion-grid fixed class="slide-pagination h-full text-center">
-					<ion-row
-						class="flex items-center justify-center flex-shrink-0"
-					>
-						<ion-col
-							*ngFor="let page of slides; let i = index"
-							[class.active]="(intro$ | async).activeIndex == i"
-						>
-							<span></span>
-						</ion-col>
-					</ion-row>
-				</ion-grid>
-			</ion-col>
-			<ion-col class="flex-1 text-right">
-				<ion-button
-					id="next"
-					fill="clear"
-					(click)="goNext()"
-					*ngIf="showSkip"
-				>
-					{{ "NEXT" | translate | uppercase }}</ion-button
-				>
-				<ion-button
-					id="done"
-					fill="clear"
-					(click)="startApp()"
-					*ngIf="!showSkip"
-				>
-					{{ "DONE" | translate | uppercase }}</ion-button
-				>
-			</ion-col>
-		</div>
-	</ion-grid>
+					<span></span>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</ion-row>
+	<ion-row class="w-full ion-padding">
+		<ion-button
+			id="next"
+			class="flex-1"
+			color="primary-light"
+			expand="block"
+			mode="ios"
+			(click)="goNext()"
+			*ngIf="showSkip"
+		>
+			{{ "NEXT" | translate }}</ion-button
+		>
+		<ion-button
+			id="done"
+			class="flex-1"
+			color="primary-light"
+			expand="block"
+			mode="ios"
+			(click)="startApp()"
+			*ngIf="!showSkip"
+		>
+			{{ "NEXT" | translate }}</ion-button
+		>
+	</ion-row>
 </ion-footer>
