@@ -9,6 +9,7 @@ import { NgxsAsyncStoragePluginModule } from "@ngxs-labs/async-storage-plugin";
 import { NgxsStorageService } from "../src/app/services/storage/ngxs-storage";
 // @ts-ignore
 import enLocale from "../src/assets/i18n/en.json";
+import { IonicStorageModule } from "@ionic/storage";
 
 class CustomLoader implements TranslateLoader {
 	getTranslation(lang: string) {
@@ -20,6 +21,7 @@ addDecorator(
 	moduleMetadata({
 		imports: [
 			IonicModule.forRoot(),
+			IonicStorageModule.forRoot(),
 			NgxsModule.forRoot([], { developmentMode: true }),
 			NgxsAsyncStoragePluginModule.forRoot(NgxsStorageService),
 			NgxsReduxDevtoolsPluginModule.forRoot(),

@@ -1,0 +1,11 @@
+<div
+	class="c-delegate-unvote-banner w-full rounded-lg border p-2 flex items-center justify-between"
+>
+	<div class="flex flex-col pl-2">
+		<ion-text class="text-sm" color="medium">You voted for:</ion-text>
+		<ion-text class="text-lg font-semibold">{{ username }}</ion-text>
+	</div>
+	<ion-button mode="ios" color="primary-light" (click)="handleClick()">
+		{{ "DELEGATES_PAGE.UNVOTE" | translate }}
+	</ion-button>
+</div>
