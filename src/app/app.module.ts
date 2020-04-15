@@ -24,6 +24,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
 import { AuthState } from "./auth/auth.state";
+import { DelegateRoutingModule } from "./delegate/delegate-routing.module";
 import { IntroModule } from "./intro/intro.module";
 import { IntroState } from "./intro/shared/intro.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
@@ -54,6 +55,7 @@ export function createTranslateLoader(http: HttpClient) {
 		AuthModule,
 		WalletModule,
 		IntroModule,
+		DelegateRoutingModule,
 		AppRoutingModule,
 		NgxsModule.forRoot([]),
 		NgxsAsyncStoragePluginModule.forRoot(NgxsStorageService, {

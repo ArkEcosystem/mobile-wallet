@@ -1,0 +1,32 @@
+:host {
+	.c-delegates-list {
+		@apply grid relative;
+		grid-template-rows: auto;
+		grid-auto-flow: row;
+
+		.c-delegates-list__item {
+			@apply grid items-center;
+			grid-template-columns: 2rem 4rem 1fr;
+
+			&:not(.c-delegates-list__item--header) {
+				@apply py-5 relative;
+			}
+
+			.c-delegates-list__item__identicon {
+				justify-self: center;
+			}
+
+			.c-delegates-list__item__username {
+			}
+		}
+
+		.c-delegates-list__item + .c-delegates-list__item {
+			&:after {
+				@apply absolute top-0 right-0 border-t;
+				border-color: var(--ion-color-light);
+				width: calc(100% - 2rem);
+				content: "";
+			}
+		}
+	}
+}

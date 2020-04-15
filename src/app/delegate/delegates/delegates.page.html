@@ -1,0 +1,47 @@
+<ion-header [translucent]="true" mode="ios">
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button
+				text=""
+				color="dark"
+				defaultHref="/"
+			></ion-back-button>
+		</ion-buttons>
+		<ion-buttons slot="end">
+			<ion-button>
+				<ion-icon
+					class="text-base"
+					color="dark"
+					src="/assets/svg/search.svg"
+				></ion-icon>
+			</ion-button>
+			<ion-button>
+				<ion-icon
+					class="text-base"
+					color="dark"
+					src="/assets/svg/menu.svg"
+				></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>Delegates</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" mode="ios">
+	<ion-header collapse="condense">
+		<ion-toolbar>
+			<ion-title size="large">Delegates</ion-title>
+		</ion-toolbar>
+		<ion-toolbar class="px-3">
+			<ion-text color="medium"
+				>Lorem ipsum dolor sit amet consectetur adipisicing
+				elit.</ion-text
+			>
+		</ion-toolbar>
+		<ion-toolbar>
+			<ion-searchbar></ion-searchbar>
+		</ion-toolbar>
+	</ion-header>
+
+	<delegates-list [delegates]="delegates"></delegates-list>
+</ion-content>

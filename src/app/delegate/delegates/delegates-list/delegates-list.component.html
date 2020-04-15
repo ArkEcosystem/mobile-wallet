@@ -1,0 +1,25 @@
+<div class="c-delegates-list p-4">
+	<div class="c-delegates-list__item c-delegates-list__item--header">
+		<ion-text color="medium" class="font-semibold text-sm">#</ion-text>
+		<ion-text color="medium" class="font-semibold text-sm col-start-3">
+			Name
+		</ion-text>
+	</div>
+	<ion-virtual-scroll [items]="delegates">
+		<div class="c-delegates-list__item" *virtualItem="let delegate">
+			<ion-text color="dark" class="c-delegates-list__item__rank">
+				{{ delegate.rank }}
+			</ion-text>
+			<identicon
+				[value]="delegate.username"
+				class="c-delegates-list__item__identicon w-10 h-10"
+			></identicon>
+			<ion-text
+				color="dark"
+				class="c-delegates-list__item__username font-semibold"
+			>
+				{{ delegate.username }}
+			</ion-text>
+		</div>
+	</ion-virtual-scroll>
+</div>

@@ -102,14 +102,14 @@ export class AppComponent implements OnDestroy, OnInit {
 			this.initBackButton();
 			this.splashScreen.hide();
 
-			this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
-				if (!hasSeenIntro) {
-					this.openPage("/intro", true);
-					return;
-				}
+			// this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
+			// 	if (!hasSeenIntro) {
+			// 		this.openPage("/intro", true);
+			// 		return;
+			// 	}
 
-				this.openPage("/login", true);
-			});
+			// 	this.openPage("/login", true);
+			// });
 		});
 	}
 
