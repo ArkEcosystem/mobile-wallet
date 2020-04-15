@@ -1,4 +1,8 @@
-import { createServiceFactory, SpectatorService } from "@ngneat/spectator";
+import {
+	createServiceFactory,
+	mockProvider,
+	SpectatorService,
+} from "@ngneat/spectator";
 import { of } from "rxjs";
 
 import { StorageProvider } from "@/services/storage/storage";
@@ -15,7 +19,11 @@ describe("Intro Service", () => {
 	};
 	const createService = createServiceFactory({
 		service: IntroService,
-		mocks: [StorageProvider],
+		providers: [
+			mockProvider(StorageProvider, {
+				get: () => of(defaultState),
+			}),
+		],
 	});
 
 	beforeEach(() => {
@@ -24,8 +32,6 @@ describe("Intro Service", () => {
 	});
 
 	it("should load intro", (done) => {
-		const storage = spectator.get(StorageProvider);
-		storage.get.and.returnValue(of(defaultState));
 		service.load().subscribe((data) => {
 			expect(data).toEqual(defaultState);
 			done();
