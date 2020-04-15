@@ -1,37 +1,47 @@
-import { ComponentFixture } from "@angular/core/testing";
-
-import { TestHelpers } from "@@/test/helpers";
+import { IonicModule } from "@ionic/angular";
+import {
+	createComponentFactory,
+	mockProvider,
+	Spectator,
+} from "@ngneat/spectator";
+import { TranslateModule } from "@ngx-translate/core";
+import { NgxsModule, Store } from "@ngxs/store";
+import { of } from "rxjs";
 
 import { IntroPage } from "./intro.component";
+import { IntroService } from "./shared/intro.service";
+import { IntroState } from "./shared/intro.state";
+import { IntroStateModel } from "./shared/intro.type";
 
 describe("IntroPage", () => {
-	let pageComponent: IntroPage;
-	let pageFixture: ComponentFixture<IntroPage>;
+	let spectator: Spectator<IntroPage>;
+	let store: Store;
 
-	beforeEach(async () => {
-		const { fixture, component } = await TestHelpers.beforeEachCompiler([
-			IntroPage,
-		]);
-		pageFixture = fixture;
-		pageComponent = component;
-		fixture.detectChanges();
+	const defaultState: IntroStateModel = {
+		activeIndex: 0,
+		isFinished: false,
+	};
+
+	const createComponent = createComponentFactory({
+		component: IntroPage,
+		imports: [
+			IonicModule.forRoot(),
+			TranslateModule.forRoot(),
+			NgxsModule.forRoot([IntroState]),
+		],
+		providers: [
+			mockProvider(IntroService, {
+				load: () => of(defaultState),
+			}),
+		],
+	});
+
+	beforeEach(() => {
+		spectator = createComponent();
+		store = spectator.get(Store);
 	});
 
 	it("should create", () => {
-		expect(pageComponent).toBeTruthy();
-	});
-
-	it("should contain next button", () => {
-		const element: HTMLElement = pageFixture.debugElement.nativeElement;
-		const nextBtn = element.querySelector("#next");
-
-		expect(nextBtn).toBeTruthy();
-	});
-
-	it("should contain skip button", () => {
-		const element: HTMLElement = pageFixture.debugElement.nativeElement;
-		const skipBtn = element.querySelector("#skip");
-
-		expect(skipBtn).toBeTruthy();
+		expect(spectator.component).toBeTruthy();
 	});
 });
