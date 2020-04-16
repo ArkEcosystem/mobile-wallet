@@ -18,8 +18,9 @@
 		}
 
 		.c-delegates-list__item {
-			@apply grid items-center;
+			@apply grid items-center w-full;
 			grid-template-columns: 2rem 1fr;
+			justify-items: start;
 
 			&:not(.c-delegates-list__item--header) {
 				@apply py-4 relative;

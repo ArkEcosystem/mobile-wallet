@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Action, State, StateContext, StateToken } from "@ngxs/store";
-import { produce } from "immer";
+import { Action, Selector, State, StateContext, StateToken } from "@ngxs/store";
 import { tap } from "rxjs/operators";
 
 import { DelegateActions } from "./delegate.actions";
@@ -17,18 +16,21 @@ export const DELEGATE_STATE_TOKEN = new StateToken<DelegateStateModel>(
 	DelegateConfig.KEY,
 );
 
-const defaults = {
-	delegates: [],
-	totalCount: 0,
-};
-
 @State<DelegateStateModel>({
 	name: DelegateConfig.KEY,
-	defaults,
+	defaults: {
+		delegates: [],
+		totalCount: 5,
+	},
 })
 @Injectable()
 export class DelegateState {
 	constructor(private delegateService: DelegateService) {}
+
+	@Selector()
+	public static delegates(state: DelegateStateModel) {
+		return state.delegates;
+	}
 
 	@Action(DelegateActions.Refresh)
 	public refresh(
@@ -37,17 +39,16 @@ export class DelegateState {
 	) {
 		return this.delegateService.getDelegates(action.payload).pipe(
 			tap((delegates) => {
-				ctx.setState(
-					produce((draft) => {
-						draft.delegates.concat(delegates);
-					}),
-				);
+				const state = ctx.getState();
+				ctx.patchState({
+					delegates: [...state.delegates, ...delegates],
+				});
 			}),
 		);
 	}
 
 	@Action(DelegateActions.Clear)
 	public clear(ctx: StateContext<DelegateStateModel>) {
-		return ctx.setState(defaults);
+		// return ctx.setState(defaults);
 	}
 }

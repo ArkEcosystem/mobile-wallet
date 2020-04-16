@@ -60,6 +60,18 @@ ion-app {
 	filter: blur(3px);
 }
 
+.u-modal-dragger {
+	@apply w-8 h-1 rounded-md mx-auto bg-gray-400 mt-2 mb-4;
+}
+
+.c-delegate-search-modal {
+	--backdrop-opacity: 0.3 !important;
+
+	.modal-wrapper {
+		height: calc(100% - 15rem) !important;
+	}
+}
+
 html.qr-scanner-open {
 	ion-app,
 	ion-content {

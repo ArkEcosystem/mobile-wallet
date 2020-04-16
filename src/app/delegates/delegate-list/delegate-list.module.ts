@@ -4,11 +4,11 @@ import { TranslateModule } from "@ngx-translate/core";
 
 import { IdenticonComponentModule } from "@/components/identicon/identicon.module";
 
-import { DelegatesListComponent } from "./delegates-list.component";
+import { DelegateListComponent } from "./delegate-list.component";
 
 @NgModule({
-	declarations: [DelegatesListComponent],
+	declarations: [DelegateListComponent],
 	imports: [IonicModule, TranslateModule, IdenticonComponentModule],
-	exports: [DelegatesListComponent],
+	exports: [DelegateListComponent],
 })
-export class DelegatesListComponentModule {}
+export class DelegateListComponentModule {}

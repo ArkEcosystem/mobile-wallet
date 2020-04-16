@@ -28,6 +28,7 @@ export class LoginPage implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit() {
+		this.store.select((state) => state).subscribe(console.log);
 		this.store
 			.select(AuthState.hasMasterPassword)
 			.pipe(

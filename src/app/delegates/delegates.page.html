@@ -8,14 +8,14 @@
 			></ion-back-button>
 		</ion-buttons>
 		<ion-buttons slot="end">
-			<ion-button>
+			<ion-button (click)="handleSearch()">
 				<ion-icon
 					class="text-base"
 					color="dark"
 					src="/assets/svg/search.svg"
 				></ion-icon>
 			</ion-button>
-			<ion-button>
+			<ion-button (click)="refresh()">
 				<ion-icon
 					class="text-base"
 					color="dark"
@@ -46,5 +46,5 @@
 		</ion-toolbar>
 	</ion-header>
 
-	<delegates-list [delegates]="delegates"></delegates-list>
+	<delegate-list [delegates]="delegates$ | async"></delegate-list>
 </ion-content>

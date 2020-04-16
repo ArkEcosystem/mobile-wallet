@@ -58,13 +58,20 @@ export function createTranslateLoader(http: HttpClient) {
 		DelegatesRoutingModule,
 		AppRoutingModule,
 		NgxsModule.forRoot([]),
+		NgxsModule.forRoot([], {
+			developmentMode: true,
+		}),
 		NgxsAsyncStoragePluginModule.forRoot(NgxsStorageService, {
 			key: [AuthState, IntroState],
 		}),
+		AuthModule,
+		WalletModule,
 		ChartsModule,
 		HammerModule,
 		PipesModule,
+		AppRoutingModule,
 	],
+	exports: [TranslateModule],
 	providers: [
 		StatusBar,
 		SplashScreen,

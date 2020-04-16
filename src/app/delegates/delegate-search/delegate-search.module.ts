@@ -3,12 +3,12 @@ import { IonicModule } from "@ionic/angular";
 
 import { SharedModule } from "@/app/shared.module";
 
-import { DelegatesListComponentModule } from "../delegate-list/delegates-list.module";
+import { DelegateListComponentModule } from "../delegate-list/delegate-list.module";
 import { DelegateSearchComponent } from "./delegate-search.component";
 
 @NgModule({
 	declarations: [DelegateSearchComponent],
-	imports: [IonicModule, SharedModule, DelegatesListComponentModule],
+	imports: [IonicModule, SharedModule, DelegateListComponentModule],
 	exports: [DelegateSearchComponent],
 })
 export class DelegateSearchModule {}
