@@ -10,8 +10,8 @@ import {
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
-import { IntroConfig } from "../intro.config";
 import { IntroActions } from "./intro.actions";
+import { IntroConfig } from "./intro.config";
 import { IntroService } from "./intro.service";
 import { IntroStateModel } from "./intro.type";
 
@@ -25,7 +25,7 @@ const defaultState: IntroStateModel = {
 };
 
 @State<IntroStateModel>({
-	name: "intro",
+	name: IntroConfig.STORAGE_KEY,
 	defaults: defaultState,
 })
 @Injectable()

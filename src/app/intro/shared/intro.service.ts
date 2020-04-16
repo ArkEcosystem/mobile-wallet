@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 
 import { StorageProvider } from "@/services/storage/storage";
 
-import { IntroConfig } from "../intro.config";
+import { IntroConfig } from "./intro.config";
 import { IntroStateModel } from "./intro.type";
 
 @Injectable()
