@@ -15,6 +15,7 @@ describe("Intro Service", () => {
 	let service: IntroService;
 	const defaultState: IntroStateModel = {
 		activeIndex: 0,
+		paginationSize: 3,
 		isFinished: false,
 	};
 	const createService = createServiceFactory({

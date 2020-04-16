@@ -10,6 +10,7 @@ import { IntroStateModel } from "./intro.type";
 describe("Intro State", () => {
 	const defaultState: IntroStateModel = {
 		activeIndex: 0,
+		paginationSize: 3,
 		isFinished: false,
 	};
 	const introServiceSpy = {

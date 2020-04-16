@@ -23,6 +23,7 @@ describe("IntroPage", () => {
 
 	const defaultState: IntroStateModel = {
 		activeIndex: 0,
+		paginationSize: 3,
 		isFinished: false,
 	};
 

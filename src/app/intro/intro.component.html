@@ -1,6 +1,6 @@
 <ion-content forceOverscroll="false" class="ion-padding">
 	<ion-row class="flex items-center justify-between">
-		<img class="ark-logo" />
+		<img class="intro__ark__logo" />
 		<ion-button id="skip" size="small" fill="clear" (click)="startApp()">
 			{{ "SKIP" | translate }}</ion-button
 		>
@@ -9,7 +9,7 @@
 		<ion-slide *ngFor="let slide of slides">
 			<ion-grid class="h-full flex flex-col justify-center items-center">
 				<div class="flex flex-col justify-center items-center">
-					<img [class]="'slide-image ' + slide.image" />
+					<img [class]="'intro__slide--image ' + slide.image" />
 					<ion-text color="dark">
 						<h3 class="text-3xl font-bold">
 							{{ slide.title }}
@@ -31,18 +31,7 @@
 	no-border
 	class="flex flex-col align-center justify-between w-full"
 >
-	<ion-row>
-		<ion-grid fixed class="slide-pagination h-full text-center">
-			<ion-row class="flex items-center justify-center flex-shrink-0">
-				<ion-col
-					*ngFor="let page of slides; let i = index"
-					[class.active]="(intro$ | async).activeIndex == i"
-				>
-					<span></span>
-				</ion-col>
-			</ion-row>
-		</ion-grid>
-	</ion-row>
+	<intro-pagination></intro-pagination>
 	<ion-row class="w-full ion-padding">
 		<ion-button
 			id="next"
