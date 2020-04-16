@@ -23,23 +23,26 @@
 				></ion-icon>
 			</ion-button>
 		</ion-buttons>
-		<ion-title>Delegates</ion-title>
+		<ion-title>{{ "DELEGATES_PAGE.DELEGATES" | translate }}</ion-title>
 	</ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen="true" mode="ios">
-	<ion-header collapse="condense">
+	<ion-header collapse="condense" class="ion-no-border">
 		<ion-toolbar>
-			<ion-title size="large">Delegates</ion-title>
-		</ion-toolbar>
-		<ion-toolbar class="px-3">
-			<ion-text color="medium"
-				>Lorem ipsum dolor sit amet consectetur adipisicing
-				elit.</ion-text
+			<ion-title size="large"
+				>{{ "DELEGATES_PAGE.DELEGATES" | translate }}</ion-title
 			>
 		</ion-toolbar>
-		<ion-toolbar>
-			<ion-searchbar></ion-searchbar>
+		<ion-toolbar class="px-3 mb-3">
+			<ion-text color="medium">
+				Lorem ipsum dolor sit amet consectetur adipisicing elit.
+			</ion-text>
+		</ion-toolbar>
+		<ion-toolbar class="px-3">
+			<delegate-unvote-banner
+				username="genesis_1"
+			></delegate-unvote-banner>
 		</ion-toolbar>
 	</ion-header>
 

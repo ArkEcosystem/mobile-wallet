@@ -1,7 +1,13 @@
-<div class="c-delegates-list p-4">
+<div
+	class="c-delegates-list p-4"
+	[class.c-delegates-list--expanded]="showIdenticon"
+>
 	<div class="c-delegates-list__item c-delegates-list__item--header">
 		<ion-text color="medium" class="font-semibold text-sm">#</ion-text>
-		<ion-text color="medium" class="font-semibold text-sm col-start-3">
+		<ion-text
+			color="medium"
+			class="font-semibold text-sm c-delegates-list__item--header__name"
+		>
 			Name
 		</ion-text>
 	</div>

@@ -1,6 +1,6 @@
 import { Component, Input } from "@angular/core";
 
-import { Delegate } from "../../delegate.types";
+import { Delegate } from "../shared/delegate.types";
 
 @Component({
 	selector: "delegates-list",
@@ -10,6 +10,9 @@ import { Delegate } from "../../delegate.types";
 export class DelegatesListComponent {
 	@Input()
 	public delegates: Delegate[];
+
+	@Input()
+	public showIdenticon = true;
 
 	constructor() {}
 }

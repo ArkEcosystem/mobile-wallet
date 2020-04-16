@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
-import { DelegatesPageModule } from "../pages/delegates/delegates.module";
+import { DelegatesPageModule } from "./delegates.module";
 
 @NgModule({
 	imports: [
@@ -10,11 +10,11 @@ import { DelegatesPageModule } from "../pages/delegates/delegates.module";
 			{
 				path: "delegatesx",
 				loadChildren: () =>
-					import("./delegates/delegates.page.module").then(
+					import("./delegates.module").then(
 						(m) => m.DelegatesPageModule,
 					),
 			},
 		]),
 	],
 })
-export class DelegateRoutingModule {}
+export class DelegatesRoutingModule {}

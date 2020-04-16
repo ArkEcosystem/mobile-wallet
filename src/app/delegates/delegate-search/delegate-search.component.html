@@ -1,0 +1,12 @@
+<div class="c-delegate-search w-full p-4">
+	<ion-searchbar
+		mode="md"
+		clearIcon="close"
+		(ionChange)="search($event)"
+	></ion-searchbar>
+
+	<delegates-list
+		[delegates]="results$ | async"
+		[showIdenticon]="false"
+	></delegates-list>
+</div>

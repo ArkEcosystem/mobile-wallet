@@ -83,6 +83,16 @@ ion-textarea {
 	}
 }
 
+ion-searchbar {
+	--background: var(--ion-background-color) !important;
+	--box-shadow: 0 0 0 1px rgba(var(--ion-color-medium-rgb), 0.5) !important;
+	--clear-button-color: var(--ion-color-medium) !important;
+
+	.searchbar-input {
+		border-radius: 0.3rem !important;
+	}
+}
+
 .text-selectable {
 	user-select: auto !important;
 }

@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { EMPTY, Observable } from "rxjs";
 
-import { Delegate } from "./delegate.types";
+import { Delegate, IDelegateService } from "./delegate.types";
 
 @Injectable()
-export class DelegateService {
+export class DelegateService implements IDelegateService {
 	constructor() {}
 
 	getDelegate(id: string): Observable<Delegate> {
