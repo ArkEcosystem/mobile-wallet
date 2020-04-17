@@ -16,12 +16,14 @@ export const DELEGATE_STATE_TOKEN = new StateToken<DelegateStateModel>(
 	DelegateConfig.KEY,
 );
 
+const defaults = {
+	delegates: [],
+	totalCount: 0,
+};
+
 @State<DelegateStateModel>({
 	name: DelegateConfig.KEY,
-	defaults: {
-		delegates: [],
-		totalCount: 5,
-	},
+	defaults,
 })
 @Injectable()
 export class DelegateState {
@@ -32,15 +34,16 @@ export class DelegateState {
 		return state.delegates;
 	}
 
-	@Action(DelegateActions.Refresh)
-	public refresh(
+	@Action(DelegateActions.Fetch)
+	public fetch(
 		ctx: StateContext<DelegateStateModel>,
-		action: DelegateActions.Refresh,
+		action: DelegateActions.Fetch,
 	) {
 		return this.delegateService.getDelegates(action.payload).pipe(
 			tap((delegates) => {
 				const state = ctx.getState();
 				ctx.patchState({
+					// TODO: Total count
 					delegates: [...state.delegates, ...delegates],
 				});
 			}),
@@ -49,6 +52,6 @@ export class DelegateState {
 
 	@Action(DelegateActions.Clear)
 	public clear(ctx: StateContext<DelegateStateModel>) {
-		// return ctx.setState(defaults);
+		return ctx.setState(defaults);
 	}
 }

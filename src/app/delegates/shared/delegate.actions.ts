@@ -1,12 +1,12 @@
 export namespace DelegateActions {
-	export interface RefreshPayload {
+	export interface FetchPayload {
 		page: number;
 		limit: number;
 	}
 
-	export class Refresh {
-		static readonly type = "[Delegate] Refresh";
-		constructor(public payload: RefreshPayload) {}
+	export class Fetch {
+		static readonly type = "[Delegate] Fetch";
+		constructor(public payload: FetchPayload) {}
 	}
 
 	export class Clear {

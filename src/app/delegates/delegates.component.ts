@@ -32,7 +32,7 @@ export class DelegatesComponent implements OnInit {
 		const page = this.page + 1;
 		const limit = this.limit;
 
-		this.store.dispatch(new DelegateActions.Refresh({ page, limit }));
+		this.store.dispatch(new DelegateActions.Fetch({ page, limit }));
 	}
 
 	public loadData(evt: CustomEvent) {

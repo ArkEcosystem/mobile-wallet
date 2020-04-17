@@ -53,7 +53,6 @@ export function createTranslateLoader(http: HttpClient) {
 				deps: [HttpClient],
 			},
 		}),
-		NgxsModule.forRoot([]),
 		NgxsModule.forRoot([], {
 			developmentMode: !environment.production,
 		}),
