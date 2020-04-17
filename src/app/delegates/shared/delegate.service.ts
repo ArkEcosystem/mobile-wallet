@@ -3,7 +3,7 @@ import { EMPTY, Observable } from "rxjs";
 
 import { Delegate, IDelegateService } from "./delegate.types";
 
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class DelegateService implements IDelegateService {
 	constructor() {}
 

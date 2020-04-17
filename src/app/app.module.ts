@@ -25,7 +25,8 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
 import { AuthState } from "./auth/auth.state";
-import { DelegatesModule } from "./delegates/delegates.module";
+import { DelegateService } from "./delegates/shared/delegate.service";
+import { DelegateServiceMock } from "./delegates/shared/delegate.service.mock";
 import { IntroModule } from "./intro/intro.module";
 import { IntroState } from "./intro/shared/intro.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
@@ -62,7 +63,6 @@ export function createTranslateLoader(http: HttpClient) {
 		AuthModule,
 		WalletModule,
 		IntroModule,
-		DelegatesModule.forRoot(),
 		ChartsModule,
 		HammerModule,
 		PipesModule,
@@ -81,6 +81,8 @@ export function createTranslateLoader(http: HttpClient) {
 		{ provide: UserDataService, useClass: UserDataServiceImpl },
 		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
 		{ provide: ErrorHandler, useClass: GlobalErrorHandlerService },
+		// TODO: Remove mock
+		{ provide: DelegateService, useClass: DelegateServiceMock },
 	],
 	bootstrap: [AppComponent],
 })
