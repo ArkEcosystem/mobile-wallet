@@ -1,0 +1,58 @@
+<ion-header [translucent]="true" mode="ios">
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button
+				text=""
+				color="dark"
+				defaultHref="/"
+			></ion-back-button>
+		</ion-buttons>
+		<ion-buttons slot="end">
+			<ion-button (click)="handleSearch()">
+				<ion-icon
+					class="text-base"
+					color="dark"
+					src="/assets/svg/search.svg"
+				></ion-icon>
+			</ion-button>
+			<ion-button disabled>
+				<ion-icon
+					class="text-base"
+					color="dark"
+					src="/assets/svg/menu.svg"
+				></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>{{ "DELEGATES_PAGE.DELEGATES" | translate }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" mode="ios">
+	<ion-header collapse="condense" class="ion-no-border">
+		<ion-toolbar>
+			<ion-title size="large">{{
+				"DELEGATES_PAGE.DELEGATES" | translate
+			}}</ion-title>
+		</ion-toolbar>
+		<ion-toolbar class="px-3 mb-3">
+			<ion-text color="medium">
+				Lorem ipsum dolor sit amet consectetur adipisicing elit.
+			</ion-text>
+		</ion-toolbar>
+		<ion-toolbar class="px-3">
+			<delegate-unvote-banner
+				username="genesis_1"
+			></delegate-unvote-banner>
+		</ion-toolbar>
+	</ion-header>
+
+	<delegate-list [delegates]="delegates$ | async"></delegate-list>
+
+	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content
+			loadingSpinner="circles"
+			loadingText="Loading more data..."
+		>
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>

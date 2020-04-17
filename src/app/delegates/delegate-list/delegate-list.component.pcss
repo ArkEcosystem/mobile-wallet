@@ -1,0 +1,45 @@
+:host {
+	.delegate-list {
+		@apply grid relative py-4;
+		grid-template-rows: auto;
+		grid-auto-flow: row;
+
+		&.delegate-list--expanded {
+			.delegate-list__item--header__name {
+				@apply col-start-3;
+			}
+			.delegate-list__item {
+				grid-template-columns: 2rem 4rem 1fr;
+
+				.delegate-list__item__identicon {
+					@apply block;
+				}
+			}
+		}
+
+		.delegate-list__item {
+			@apply grid items-center w-full relative px-4;
+			grid-template-columns: 2rem 1fr;
+			justify-items: start;
+
+			&:not(.delegate-list__item--header) {
+				@apply py-4;
+			}
+
+			.delegate-list__item__identicon {
+				@apply hidden;
+				justify-self: center;
+			}
+
+			.delegate-list__item__username {
+				&:after {
+					@apply absolute bottom-0 border-b;
+					border-color: var(--ion-color-light);
+					width: calc(100% - 2rem);
+					right: 1rem;
+					content: "";
+				}
+			}
+		}
+	}
+}

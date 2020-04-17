@@ -11,5 +11,13 @@ export namespace IdenticonConfig {
 		"#ED8936",
 		"#F6AD55",
 		"#FBD38D",
+		"#2C7A7B",
+		"#319795",
+		"#38B2AC",
+		"#4FD1C5",
+		"#4C51BF",
+		"#5A67D8",
+		"#667EEA",
+		"#7F9CF5",
 	];
 }

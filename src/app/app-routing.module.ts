@@ -37,7 +37,13 @@ const routes: Routes = [
 				(m) => m.DelegatesPageModule,
 			),
 	},
-
+	{
+		path: "delegates-new",
+		loadChildren: () =>
+			import("./delegates/delegates.module").then(
+				(m) => m.DelegatesModule,
+			),
+	},
 	{
 		path: "profile/signin",
 		loadChildren: () =>

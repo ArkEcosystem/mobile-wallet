@@ -1,7 +1,7 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-module.exports = function(config) {
+module.exports = function (config) {
 	const isCoverageEnabled = config.buildWebpack.options.codeCoverage;
 
 	config.set({
@@ -39,6 +39,7 @@ module.exports = function(config) {
 				"!src/**/*.stories.ts",
 				"!src/**/*.spec.ts",
 				"!src/**/*.module.ts",
+				"!src/**/*.mock.ts",
 				"!src/**/environment*.ts",
 			],
 		},

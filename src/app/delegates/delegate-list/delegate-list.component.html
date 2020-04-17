@@ -1,0 +1,53 @@
+<div
+	data-testid="delegate-list"
+	class="delegate-list"
+	[class.delegate-list--expanded]="showIdenticon"
+>
+	<div
+		data-testid="delegate-list__item--header"
+		class="delegate-list__item delegate-list__item--header py-1"
+	>
+		<ion-text color="medium" class="font-semibold text-sm">#</ion-text>
+		<ion-text
+			color="medium"
+			class="font-semibold text-sm delegate-list__item--header__name"
+		>
+			Name
+		</ion-text>
+	</div>
+	<ion-virtual-scroll [items]="delegates">
+		<div
+			data-testid="delegate-list__virtual-item"
+			*virtualItem="let delegate"
+			class="delegate-list__wrapper"
+		>
+			<button
+				data-testid="delegate-list__virtual-item__button"
+				class="w-full focus:outline-none hover:bg-gray-100"
+				(click)="handleClick(delegate)"
+			>
+				<div class="delegate-list__item">
+					<ion-text
+						data-testid="delegate-list__item__rank"
+						color="dark"
+						class="delegate-list__item__rank"
+					>
+						{{ delegate.rank }}
+					</ion-text>
+					<identicon
+						data-testid="delegate-list__item__identicon"
+						[value]="delegate.username"
+						class="delegate-list__item__identicon w-10 h-10"
+					></identicon>
+					<ion-text
+						data-testid="delegate-list__item__username"
+						color="dark"
+						class="delegate-list__item__username font-semibold"
+					>
+						{{ delegate.username }}
+					</ion-text>
+				</div>
+			</button>
+		</div>
+	</ion-virtual-scroll>
+</div>

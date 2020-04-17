@@ -1,0 +1,19 @@
+<ion-header class="ion-no-shadow ion-no-border">
+	<div class="c-modal-dragger"></div>
+	<ion-toolbar class="px-3 mb-3">
+		<ion-searchbar
+			mode="md"
+			clearIcon="close"
+			(ionChange)="search($event)"
+			class="p-0"
+		></ion-searchbar>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="p-4">
+	<delegate-list
+		[delegates]="results$ | async"
+		[showIdenticon]="false"
+		(delegateListClick)="handleClick($event)"
+	></delegate-list>
+</ion-content>
