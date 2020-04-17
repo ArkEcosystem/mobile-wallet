@@ -6,7 +6,6 @@ import {
 	NavController,
 	Platform,
 } from "@ionic/angular";
-import { Store } from "@ngxs/store";
 import { Delegate, TransactionVote, VoteType } from "ark-ts";
 import { Subject } from "rxjs";
 import { switchMap, takeUntil, tap } from "rxjs/operators";
@@ -75,10 +74,7 @@ export class DelegatesPage implements OnDestroy {
 		private toastProvider: ToastProvider,
 		private authCtrl: AuthController,
 		private walletCtrl: WalletController,
-		private store: Store,
-	) {
-		this.store.select((state) => state).subscribe(console.log);
-	}
+	) {}
 
 	async openDetailModal(delegate: Delegate) {
 		const modal = await this.modalCtrl.create({

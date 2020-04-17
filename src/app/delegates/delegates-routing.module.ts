@@ -7,7 +7,7 @@ import { DelegatesPage } from "./delegates.page";
 	imports: [
 		RouterModule.forChild([
 			{
-				path: "delegatesx",
+				path: "",
 				component: DelegatesPage,
 			},
 		]),
