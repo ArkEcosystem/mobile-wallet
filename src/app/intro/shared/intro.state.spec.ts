@@ -46,12 +46,6 @@ describe("Intro State", () => {
 		expect(activeIndex).toEqual(0);
 	});
 
-	it("should load", () => {
-		store.dispatch(new IntroActions.Load());
-		const state = store.selectSnapshot(INTRO_STATE_TOKEN);
-		expect(state).toEqual(defaultState);
-	});
-
 	it("should update the value", () => {
 		store.dispatch(new IntroActions.Update({ activeIndex: 1 }));
 		const activeIndex = store.selectSnapshot(IntroState.activeIndex);

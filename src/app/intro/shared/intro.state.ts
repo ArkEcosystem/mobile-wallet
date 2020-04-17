@@ -7,7 +7,6 @@ import {
 	StateContext,
 	StateToken,
 } from "@ngxs/store";
-import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
 import { IntroActions } from "./intro.actions";
@@ -42,11 +41,14 @@ export class IntroState implements NgxsOnInit {
 	}
 
 	public ngxsOnInit(ctx: StateContext<IntroStateModel>): void {
-		this.introService.load().pipe(
-			tap((localSettings) => {
-				ctx.patchState({ isFinished: localSettings === "true" });
-			}),
-		);
+		this.introService
+			.load()
+			.pipe(
+				tap((localSettings) => {
+					ctx.patchState({ isFinished: localSettings === "true" });
+				}),
+			)
+			.subscribe();
 	}
 
 	@Action(IntroActions.Update)
@@ -55,17 +57,6 @@ export class IntroState implements NgxsOnInit {
 		action: IntroActions.Update,
 	): void {
 		ctx.patchState(action.payload);
-	}
-
-	@Action(IntroActions.Load)
-	public load(
-		ctx: StateContext<IntroStateModel>,
-	): Observable<Partial<IntroStateModel>> {
-		return this.introService.load().pipe(
-			tap((localSettings) => {
-				ctx.setState({ ...this.defaults, ...localSettings });
-			}),
-		);
 	}
 
 	@Action(IntroActions.Done)
