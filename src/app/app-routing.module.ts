@@ -38,7 +38,7 @@ const routes: Routes = [
 			),
 	},
 	{
-		path: "delegatesx",
+		path: "delegates-new",
 		loadChildren: () =>
 			import("./delegates/delegates.module").then(
 				(m) => m.DelegatesModule,

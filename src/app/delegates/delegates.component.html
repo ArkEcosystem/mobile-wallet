@@ -15,7 +15,7 @@
 					src="/assets/svg/search.svg"
 				></ion-icon>
 			</ion-button>
-			<ion-button (click)="refresh()">
+			<ion-button disabled>
 				<ion-icon
 					class="text-base"
 					color="dark"
@@ -50,7 +50,7 @@
 
 	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
 		<ion-infinite-scroll-content
-			loadingSpinner="bubbles"
+			loadingSpinner="circles"
 			loadingText="Loading more data..."
 		>
 		</ion-infinite-scroll-content>

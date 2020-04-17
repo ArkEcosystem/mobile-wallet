@@ -8,8 +8,8 @@ import { DelegateState } from "./shared/delegate.state";
 import { Delegate } from "./shared/delegate.types";
 
 @Component({
+	selector: "delegates",
 	templateUrl: "delegates.component.html",
-	styleUrls: ["delegates.component.pcss"],
 })
 export class DelegatesComponent implements OnInit {
 	@Select(DelegateState.delegates)
@@ -24,8 +24,8 @@ export class DelegatesComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
-		this.store.select((state) => state).subscribe(console.log);
-		// this.delegates$.pipe(tap((x) => console.log(1, x))).subscribe();
+		// TODO: Workaround to wait for the state to initialize
+		setTimeout(() => this.refresh(), 500);
 	}
 
 	public refresh() {

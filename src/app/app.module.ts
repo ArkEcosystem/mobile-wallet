@@ -20,6 +20,7 @@ import { ChartsModule } from "ng2-charts";
 
 import { PipesModule } from "@/pipes/pipes.module";
 
+import { environment } from "../environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
@@ -59,7 +60,7 @@ export function createTranslateLoader(http: HttpClient) {
 		AppRoutingModule,
 		NgxsModule.forRoot([]),
 		NgxsModule.forRoot([], {
-			developmentMode: true,
+			developmentMode: !environment.production,
 		}),
 		NgxsAsyncStoragePluginModule.forRoot(NgxsStorageService, {
 			key: [AuthState, IntroState],

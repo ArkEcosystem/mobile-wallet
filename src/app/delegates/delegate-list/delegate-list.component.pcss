@@ -1,37 +1,37 @@
 :host {
-	.c-delegates-list {
+	.delegate-list {
 		@apply grid relative py-4;
 		grid-template-rows: auto;
 		grid-auto-flow: row;
 
-		&.c-delegates-list--expanded {
-			.c-delegates-list__item--header__name {
+		&.delegate-list--expanded {
+			.delegate-list__item--header__name {
 				@apply col-start-3;
 			}
-			.c-delegates-list__item {
+			.delegate-list__item {
 				grid-template-columns: 2rem 4rem 1fr;
 
-				.c-delegates-list__item__identicon {
+				.delegate-list__item__identicon {
 					@apply block;
 				}
 			}
 		}
 
-		.c-delegates-list__item {
+		.delegate-list__item {
 			@apply grid items-center w-full relative px-4;
 			grid-template-columns: 2rem 1fr;
 			justify-items: start;
 
-			&:not(.c-delegates-list__item--header) {
+			&:not(.delegate-list__item--header) {
 				@apply py-4;
 			}
 
-			.c-delegates-list__item__identicon {
+			.delegate-list__item__identicon {
 				@apply hidden;
 				justify-self: center;
 			}
 
-			.c-delegates-list__item__username {
+			.delegate-list__item__username {
 				&:after {
 					@apply absolute bottom-0 border-b;
 					border-color: var(--ion-color-light);

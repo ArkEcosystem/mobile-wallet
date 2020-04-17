@@ -1,33 +1,48 @@
 <div
-	class="c-delegates-list"
-	[class.c-delegates-list--expanded]="showIdenticon"
+	data-testid="delegate-list"
+	class="delegate-list"
+	[class.delegate-list--expanded]="showIdenticon"
 >
-	<div class="c-delegates-list__item c-delegates-list__item--header py-1">
+	<div
+		data-testid="delegate-list__item--header"
+		class="delegate-list__item delegate-list__item--header py-1"
+	>
 		<ion-text color="medium" class="font-semibold text-sm">#</ion-text>
 		<ion-text
 			color="medium"
-			class="font-semibold text-sm c-delegates-list__item--header__name"
+			class="font-semibold text-sm delegate-list__item--header__name"
 		>
 			Name
 		</ion-text>
 	</div>
 	<ion-virtual-scroll [items]="delegates">
-		<div *virtualItem="let delegate" class="c-delegates-list__wrapper">
+		<div
+			data-testid="delegate-list__virtual-item"
+			*virtualItem="let delegate"
+			class="delegate-list__wrapper"
+		>
 			<button
+				data-testid="delegate-list__virtual-item__button"
 				class="w-full focus:outline-none hover:bg-gray-100"
 				(click)="handleClick(delegate)"
 			>
-				<div class="c-delegates-list__item">
-					<ion-text color="dark" class="c-delegates-list__item__rank">
+				<div class="delegate-list__item">
+					<ion-text
+						data-testid="delegate-list__item__rank"
+						color="dark"
+						class="delegate-list__item__rank"
+					>
 						{{ delegate.rank }}
 					</ion-text>
 					<identicon
+						data-testid="delegate-list__item__identicon"
 						[value]="delegate.username"
-						class="c-delegates-list__item__identicon w-10 h-10"
+						class="delegate-list__item__identicon w-10 h-10"
 					></identicon>
 					<ion-text
+						data-testid="delegate-list__item__username"
 						color="dark"
-						class="c-delegates-list__item__username font-semibold"
+						class="delegate-list__item__username font-semibold"
 					>
 						{{ delegate.username }}
 					</ion-text>
