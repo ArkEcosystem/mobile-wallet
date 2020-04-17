@@ -84,16 +84,15 @@ describe("IntroPage", () => {
 
 	it("should go to the end and update state", async () => {
 		const slider = spectator.component.slider;
-		slider.length = async () => 3;
+		slider.length = async () => 2;
 
-		spectator.component.goNext();
 		spectator.component.goNext();
 		spectator.component.goNext();
 
 		const activeIndex = await spectator.component.slider.getActiveIndex();
 		const isEnd = await spectator.component.slider.isEnd();
 
-		expect(activeIndex).toEqual(3);
+		expect(activeIndex).toEqual(2);
 		expect(isEnd).toEqual(true);
 	});
 });

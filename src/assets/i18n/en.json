@@ -101,7 +101,7 @@
 		"GET_STARTED": "Get Started",
 		"SECURITY": "Security",
 		"TEXT_1": "We provide all the tools you need to manage your ARK tokens, anytime, anywhere, worldwide!",
-		"TEXT_2": "Master Password is a that makes you forget all your worries about passwords",
+		"TEXT_2": "All your sensitive data is securely stored using PBKDF2 algorithm and AES-256 encryption protected by your PIN Code",
 		"TEXT_3": "Swipe between profiles and wallets, check your balances, send and receive funds and much more",
 		"WELCOME": "Welcome Aboard"
 	},
