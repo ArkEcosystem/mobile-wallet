@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input } from "@angular/core";
 import { Select, Store } from "@ngxs/store";
 import { Observable } from "rxjs";
 
@@ -10,18 +10,12 @@ import { IntroStateModel } from "../shared/intro.type";
 	templateUrl: "intro-pagination.component.html",
 	styleUrls: ["intro-pagination.component.pcss"],
 })
-export class IntroPagination implements OnInit {
+export class IntroPagination {
 	@Select(INTRO_STATE_TOKEN)
 	public intro$: Observable<IntroStateModel>;
-	public pagination: Array<number>;
+
+	@Input()
+	public paginationSize: Array<number>;
 
 	constructor(private store: Store) {}
-
-	ngOnInit() {
-		this.intro$.subscribe((state) => {
-			if (state.paginationSize) {
-				this.pagination = new Array(state.paginationSize);
-			}
-		});
-	}
 }

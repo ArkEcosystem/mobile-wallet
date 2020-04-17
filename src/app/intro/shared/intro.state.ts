@@ -21,7 +21,6 @@ export const INTRO_STATE_TOKEN = new StateToken<IntroStateModel>(
 
 const defaultState: IntroStateModel = {
 	activeIndex: 0,
-	paginationSize: 0,
 	isFinished: false,
 };
 
@@ -40,10 +39,6 @@ export class IntroState implements NgxsOnInit {
 	@Selector()
 	static isFinished(state: IntroStateModel): boolean {
 		return state.isFinished;
-	}
-	@Selector()
-	static paginationSize(state: IntroStateModel): number {
-		return state.paginationSize;
 	}
 
 	public ngxsOnInit(ctx: StateContext<IntroStateModel>): void {

@@ -25,7 +25,7 @@ export class IntroPage implements OnInit {
 
 	public showSkip = true;
 	public slides: any;
-	public pagination: Array<number>;
+	public paginationSize: Array<number>;
 
 	constructor(
 		platform: Platform,
@@ -70,12 +70,7 @@ export class IntroPage implements OnInit {
 					},
 				];
 
-				this.pagination = new Array(this.slides.length);
-				this.store.dispatch(
-					new IntroActions.Update({
-						paginationSize: this.slides.length,
-					}),
-				);
+				this.paginationSize = new Array(this.slides.length);
 			});
 	}
 

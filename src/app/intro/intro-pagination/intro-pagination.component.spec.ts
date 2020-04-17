@@ -1,9 +1,5 @@
 import { IonicModule } from "@ionic/angular";
-import {
-	createComponentFactory,
-	mockProvider,
-	Spectator,
-} from "@ngneat/spectator";
+import { createHostFactory, mockProvider, Spectator } from "@ngneat/spectator";
 import { NgxsModule, Store } from "@ngxs/store";
 import { of } from "rxjs";
 
@@ -20,11 +16,10 @@ describe("Intro Pagination", () => {
 
 	const defaultState: IntroStateModel = {
 		activeIndex: 0,
-		paginationSize: 3,
 		isFinished: false,
 	};
 
-	const createComponent = createComponentFactory({
+	const createComponent = createHostFactory({
 		component: IntroPagination,
 		imports: [IonicModule.forRoot(), NgxsModule.forRoot([IntroState])],
 		providers: [
@@ -38,7 +33,9 @@ describe("Intro Pagination", () => {
 	});
 
 	beforeEach(() => {
-		spectator = createComponent();
+		spectator = createComponent(
+			`<intro-pagination [paginationSize]="[0,1,2]"></intro-pagination>`,
+		);
 		store = spectator.get(Store);
 	});
 
@@ -48,8 +45,9 @@ describe("Intro Pagination", () => {
 
 	it("should render pagination items based on the pagination size", () => {
 		const paginationElement = spectator.element;
+		const component = spectator.component;
 		const paginationItems = paginationElement.querySelectorAll("span");
 
-		expect(paginationItems.length).toEqual(defaultState.paginationSize);
+		expect(paginationItems.length).toEqual(component.paginationSize.length);
 	});
 });
