@@ -1,14 +1,14 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
-import { DelegatesPage } from "./delegates.page";
+import { DelegatesComponent } from "./delegates.component";
 
 @NgModule({
 	imports: [
 		RouterModule.forChild([
 			{
 				path: "",
-				component: DelegatesPage,
+				component: DelegatesComponent,
 			},
 		]),
 	],

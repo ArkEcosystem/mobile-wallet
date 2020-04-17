@@ -30,9 +30,9 @@
 <ion-content fullscreen="true" mode="ios">
 	<ion-header collapse="condense" class="ion-no-border">
 		<ion-toolbar>
-			<ion-title size="large"
-				>{{ "DELEGATES_PAGE.DELEGATES" | translate }}</ion-title
-			>
+			<ion-title size="large">{{
+				"DELEGATES_PAGE.DELEGATES" | translate
+			}}</ion-title>
 		</ion-toolbar>
 		<ion-toolbar class="px-3 mb-3">
 			<ion-text color="medium">
@@ -47,4 +47,12 @@
 	</ion-header>
 
 	<delegate-list [delegates]="delegates$ | async"></delegate-list>
+
+	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content
+			loadingSpinner="bubbles"
+			loadingText="Loading more data..."
+		>
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
 </ion-content>

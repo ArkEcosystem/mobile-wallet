@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Select, Store } from "@ngxs/store";
 import { Observable } from "rxjs";
 
@@ -8,10 +8,10 @@ import { DelegateState } from "./shared/delegate.state";
 import { Delegate } from "./shared/delegate.types";
 
 @Component({
-	templateUrl: "delegates.page.html",
-	styleUrls: ["delegates.page.pcss"],
+	templateUrl: "delegates.component.html",
+	styleUrls: ["delegates.component.pcss"],
 })
-export class DelegatesPage implements AfterViewInit, OnInit {
+export class DelegatesComponent implements OnInit {
 	@Select(DelegateState.delegates)
 	public delegates$: Observable<Delegate[]>;
 
@@ -28,16 +28,19 @@ export class DelegatesPage implements AfterViewInit, OnInit {
 		// this.delegates$.pipe(tap((x) => console.log(1, x))).subscribe();
 	}
 
-	ngAfterViewInit() {
-		// this.refresh();
-		// setTimeout(() => this.refresh(), 2000);
-	}
-
 	public refresh() {
 		const page = this.page + 1;
 		const limit = this.limit;
 
 		this.store.dispatch(new DelegateActions.Refresh({ page, limit }));
+	}
+
+	public loadData(evt: CustomEvent) {
+		const target = evt.target as HTMLIonInfiniteScrollElement;
+		setTimeout(() => {
+			this.refresh();
+			target.complete();
+		}, 500);
 	}
 
 	public handleSearch() {

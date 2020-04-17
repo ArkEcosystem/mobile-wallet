@@ -1,6 +1,6 @@
 :host {
 	.c-delegates-list {
-		@apply grid relative;
+		@apply grid relative py-4;
 		grid-template-rows: auto;
 		grid-auto-flow: row;
 
@@ -18,26 +18,27 @@
 		}
 
 		.c-delegates-list__item {
-			@apply grid items-center w-full;
+			@apply grid items-center w-full relative px-4;
 			grid-template-columns: 2rem 1fr;
 			justify-items: start;
 
 			&:not(.c-delegates-list__item--header) {
-				@apply py-4 relative;
+				@apply py-4;
 			}
 
 			.c-delegates-list__item__identicon {
 				@apply hidden;
 				justify-self: center;
 			}
-		}
 
-		.c-delegates-list__item + .c-delegates-list__item {
-			&:after {
-				@apply absolute top-0 right-0 border-t;
-				border-color: var(--ion-color-light);
-				width: calc(100% - 2rem);
-				content: "";
+			.c-delegates-list__item__username {
+				&:after {
+					@apply absolute bottom-0 border-b;
+					border-color: var(--ion-color-light);
+					width: calc(100% - 2rem);
+					right: 1rem;
+					content: "";
+				}
 			}
 		}
 	}

@@ -1,8 +1,8 @@
 <div
-	class="c-delegates-list p-4"
+	class="c-delegates-list"
 	[class.c-delegates-list--expanded]="showIdenticon"
 >
-	<div class="c-delegates-list__item c-delegates-list__item--header">
+	<div class="c-delegates-list__item c-delegates-list__item--header py-1">
 		<ion-text color="medium" class="font-semibold text-sm">#</ion-text>
 		<ion-text
 			color="medium"
@@ -12,9 +12,9 @@
 		</ion-text>
 	</div>
 	<ion-virtual-scroll [items]="delegates">
-		<div *virtualItem="let delegate">
+		<div *virtualItem="let delegate" class="c-delegates-list__wrapper">
 			<button
-				class="w-full focus:outline-none hover:bg-gray-100 focus:bg-gray-100"
+				class="w-full focus:outline-none hover:bg-gray-100"
 				(click)="handleClick(delegate)"
 			>
 				<div class="c-delegates-list__item">

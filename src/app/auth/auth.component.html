@@ -3,7 +3,7 @@
 	class="flex-1 flex flex-col h-full w-full"
 	*ngIf="activeMethod$ | async as activeMethod"
 >
-	<div class="u-modal-dragger"></div>
+	<div class="c-modal-dragger"></div>
 	<div class="flex-1">
 		<ng-template [ngIf]="remainingSeconds" [ngIfElse]="unlocked">
 			<auth-locked
