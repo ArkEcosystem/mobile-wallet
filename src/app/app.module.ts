@@ -25,7 +25,7 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
 import { AuthState } from "./auth/auth.state";
-import { DelegatesRoutingModule } from "./delegates/delegates-routing.module";
+import { DelegatesModule } from "./delegates/delegates.module";
 import { IntroModule } from "./intro/intro.module";
 import { IntroState } from "./intro/shared/intro.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
@@ -53,11 +53,6 @@ export function createTranslateLoader(http: HttpClient) {
 				deps: [HttpClient],
 			},
 		}),
-		AuthModule,
-		WalletModule,
-		IntroModule,
-		DelegatesRoutingModule,
-		AppRoutingModule,
 		NgxsModule.forRoot([]),
 		NgxsModule.forRoot([], {
 			developmentMode: !environment.production,
@@ -67,6 +62,8 @@ export function createTranslateLoader(http: HttpClient) {
 		}),
 		AuthModule,
 		WalletModule,
+		IntroModule,
+		DelegatesModule.forRoot(),
 		ChartsModule,
 		HammerModule,
 		PipesModule,

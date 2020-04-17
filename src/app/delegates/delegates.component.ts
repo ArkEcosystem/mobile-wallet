@@ -25,7 +25,7 @@ export class DelegatesComponent implements OnInit {
 
 	ngOnInit() {
 		// TODO: Workaround to wait for the state to initialize
-		setTimeout(() => this.refresh(), 500);
+		setTimeout(() => this.refresh(), 1500);
 	}
 
 	public refresh() {

@@ -6,7 +6,7 @@ import { map, switchMap, takeUntil, tap, withLatestFrom } from "rxjs/operators";
 
 import { DelegateSearchComponent } from "./delegate-search.component";
 
-@Injectable({ providedIn: "root" })
+@Injectable()
 export class DelegateSearchController {
 	constructor(private modalCtrl: ModalController) {}
 
