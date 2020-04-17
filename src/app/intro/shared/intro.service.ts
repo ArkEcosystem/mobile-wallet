@@ -11,6 +11,6 @@ export class IntroService {
 	constructor(private storageProvider: StorageProvider) {}
 
 	public load(): Observable<Partial<IntroStateModel>> {
-		return this.storageProvider.get(IntroConfig.STORAGE_KEY);
+		return this.storageProvider.get(IntroConfig.LEGACY_STORAGE_KEY);
 	}
 }

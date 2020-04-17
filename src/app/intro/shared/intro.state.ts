@@ -42,7 +42,11 @@ export class IntroState implements NgxsOnInit {
 	}
 
 	public ngxsOnInit(ctx: StateContext<IntroStateModel>): void {
-		ctx.dispatch(new IntroActions.Load());
+		this.introService.load().pipe(
+			tap((localSettings) => {
+				ctx.patchState({ isFinished: localSettings === "true" });
+			}),
+		);
 	}
 
 	@Action(IntroActions.Update)
