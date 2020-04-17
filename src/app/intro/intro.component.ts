@@ -1,29 +1,47 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { IonSlides, NavController } from "@ionic/angular";
+import { IonSlides, NavController, Platform } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
+import { Navigate } from "@ngxs/router-plugin";
+import { Select, Store } from "@ngxs/store";
+import { Observable } from "rxjs";
 
 import { AuthProvider } from "@/services/auth/auth";
 
+import { IntroActions } from "./shared/intro.actions";
+import { INTRO_STATE_TOKEN } from "./shared/intro.state";
+import { IntroStateModel } from "./shared/intro.type";
+
 @Component({
 	selector: "page-intro",
-	templateUrl: "intro.html",
-	styleUrls: ["intro.pcss"],
+	templateUrl: "intro.component.html",
+	styleUrls: ["intro.component.pcss"],
 })
 export class IntroPage implements OnInit {
-	public showSkip = true;
-	public slides: any[];
-	public activeIndex = 0;
+	@Select(INTRO_STATE_TOKEN)
+	public intro$: Observable<IntroStateModel>;
 
-	@ViewChild(IonSlides)
-	public slider: IonSlides;
+	@ViewChild("slider", { read: IonSlides, static: true })
+	slider: IonSlides;
+
+	public showSkip = true;
+	public slides: any;
+	public paginationSize: Array<number>;
 
 	constructor(
+		platform: Platform,
 		private navCtrl: NavController,
 		private authProvider: AuthProvider,
 		private translateService: TranslateService,
+		private store: Store,
 	) {}
 
 	ngOnInit() {
+		this.intro$.subscribe((state) => {
+			if (state.isFinished) {
+				this.store.dispatch(new Navigate(["/login"]));
+			}
+		});
+
 		this.translateService
 			.get([
 				"INTRO_PAGE.WELCOME",
@@ -37,12 +55,12 @@ export class IntroPage implements OnInit {
 				this.slides = [
 					{
 						title: translation["INTRO_PAGE.WELCOME"],
-						image: "anytime",
+						image: "welcome-aboard",
 						description: translation["INTRO_PAGE.TEXT_1"],
 					},
 					{
 						title: translation["INTRO_PAGE.SECURITY"],
-						image: "pincode",
+						image: "security",
 						description: translation["INTRO_PAGE.TEXT_2"],
 					},
 					{
@@ -51,20 +69,24 @@ export class IntroPage implements OnInit {
 						description: translation["INTRO_PAGE.TEXT_3"],
 					},
 				];
+
+				this.paginationSize = new Array(this.slides.length);
 			});
 	}
 
 	startApp() {
-		this.authProvider.saveIntro().subscribe();
+		this.authProvider.saveIntro();
 
 		this.navCtrl.navigateForward("/login", {
 			animated: true,
 			replaceUrl: true,
 		});
+
+		return this.store.dispatch(new IntroActions.Done());
 	}
 
 	goNext() {
-		return this.slider.slideNext();
+		this.slider.slideNext();
 	}
 
 	async onSlideChanged() {
@@ -74,7 +96,12 @@ export class IntroPage implements OnInit {
 		if (activeIndex >= slideLength) {
 			return;
 		}
-		this.activeIndex = activeIndex;
-		this.showSkip = !(await this.slider.isEnd());
+
+		const isFinished = await this.slider.isEnd();
+		this.showSkip = !isFinished;
+
+		return this.store.dispatch(
+			new IntroActions.Update({ activeIndex, isFinished }),
+		);
 	}
 }

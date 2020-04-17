@@ -1,0 +1,10 @@
+<ion-grid fixed class="intro__pagination h-full text-center">
+	<ion-row class="flex items-center justify-center flex-shrink-0">
+		<ion-col
+			*ngFor="let page of paginationSize; let i = index"
+			[class.active]="(intro$ | async).activeIndex == i"
+		>
+			<span></span>
+		</ion-col>
+	</ion-row>
+</ion-grid>
