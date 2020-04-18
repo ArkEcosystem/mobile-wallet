@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 
-import { SharedModule } from "@/app/shared.module";
+import { SharedModule } from "@/app/shared/shared.module";
 
 import { DelegateListComponentModule } from "../delegate-list/delegate-list.module";
 import { DelegateSearchComponent } from "./delegate-search.component";

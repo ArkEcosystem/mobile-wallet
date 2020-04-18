@@ -6,7 +6,7 @@ import { CustomNetworkCreateModal } from "@/app/modals/custom-network-create/cus
 import { CustomNetworkCreateModalModule } from "@/app/modals/custom-network-create/custom-network-create.module";
 import { CustomNetworkEditModal } from "@/app/modals/custom-network-edit/custom-network-edit";
 import { CustomNetworkEditModalModule } from "@/app/modals/custom-network-edit/custom-network-edit.module";
-import { SharedModule } from "@/app/shared.module";
+import { SharedModule } from "@/app/shared/shared.module";
 import { AddressListComponentModule } from "@/components/address-list/address-list.module";
 import { EmptyListComponentModule } from "@/components/empty-list/empty-list.module";
 

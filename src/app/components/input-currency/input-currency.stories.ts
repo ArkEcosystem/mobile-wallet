@@ -1,7 +1,7 @@
 import { IonicModule } from "@ionic/angular";
 import { moduleMetadata, storiesOf } from "@storybook/angular";
 
-import { SharedModule } from "@/app/shared.module";
+import { SharedModule } from "@/app/shared/shared.module";
 import { DirectivesModule } from "@/directives/directives.module";
 
 import { InputCurrencyComponent } from "./input-currency.component";

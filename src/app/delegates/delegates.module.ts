@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 import { NgxsModule } from "@ngxs/store";
 
-import { SharedModule } from "@/app/shared.module";
+import { SharedModule } from "@/app/shared/shared.module";
 
 import { DelegateListComponentModule } from "./delegate-list/delegate-list.module";
 import { DelegateSearchModule } from "./delegate-search/delegate-search.module";
