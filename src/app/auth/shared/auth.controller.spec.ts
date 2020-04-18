@@ -125,8 +125,7 @@ describe("Auth Controller", () => {
 			expect(mode).toEqual(AuthMode.Authorization);
 			expect(modalEle).toBeVisible();
 			// @ts-ignore
-			modalEle.dismiss();
-			await sleep(50);
+			await modalEle.dismiss();
 			expect(component.requestCompleted).toEqual(true);
 		});
 
@@ -160,8 +159,7 @@ describe("Auth Controller", () => {
 				root: true,
 			});
 			// @ts-ignore
-			modalEle.dismiss();
-			await sleep(50);
+			await modalEle.dismiss();
 			expect(component.registerResult).toBeUndefined();
 			expect(component.registerCompleted).toEqual(true);
 		});
