@@ -11,7 +11,7 @@ import { Subject } from "rxjs";
 import { takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
-import { AuthController } from "@/app/auth/auth.controller";
+import { AuthController } from "@/app/auth/shared/auth.controller";
 import { ViewerLogModal } from "@/components/viewer-log/viewer-log.modal";
 import { UserSettings } from "@/models/model";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";

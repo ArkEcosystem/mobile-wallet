@@ -12,7 +12,7 @@ import lodash from "lodash";
 import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
-import { AuthController } from "@/app/auth/auth.controller";
+import { AuthController } from "@/app/auth/shared/auth.controller";
 import { AddressMap } from "@/models/model";
 import { AuthProvider } from "@/services/auth/auth";
 import { ToastProvider } from "@/services/toast/toast";

@@ -7,7 +7,7 @@ import * as bip39 from "bip39";
 import { finalize } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
-import { AuthController } from "@/app/auth/auth.controller";
+import { AuthController } from "@/app/auth/shared/auth.controller";
 import { BaseWalletImport } from "@/app/pages/wallet/wallet-import/wallet-import.base";
 import { AddressValidator } from "@/app/validators/address/address";
 import { PassphraseValidator } from "@/app/validators/passphrase/passphrase";

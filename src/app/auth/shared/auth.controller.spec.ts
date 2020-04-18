@@ -14,9 +14,9 @@ import { of } from "rxjs";
 import { removeLogs, sleep } from "@@/test/helpers";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
-import { AuthPinComponent } from "./auth-pin/auth-pin.component";
+import { AuthPinComponent } from "../auth-pin/auth-pin.component";
+import { AuthComponent } from "../auth.component";
 import { AuthActions } from "./auth.actions";
-import { AuthComponent } from "./auth.component";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { AuthState } from "./auth.state";

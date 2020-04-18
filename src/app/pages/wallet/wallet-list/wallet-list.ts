@@ -14,7 +14,7 @@ import { Subject } from "rxjs";
 import { switchMap, takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
-import { AuthController } from "@/app/auth/auth.controller";
+import { AuthController } from "@/app/auth/shared/auth.controller";
 import { GenerateEntropyModal } from "@/app/modals/generate-entropy/generate-entropy";
 import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
 import {

@@ -13,7 +13,7 @@ import { Subject } from "rxjs";
 import { switchMap, takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
-import { AuthController } from "@/app/auth/auth.controller";
+import { AuthController } from "@/app/auth/shared/auth.controller";
 import { WalletController } from "@/app/wallet/wallet.controller";
 import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
 import { InputCurrencyOutput } from "@/components/input-currency/input-currency.component";

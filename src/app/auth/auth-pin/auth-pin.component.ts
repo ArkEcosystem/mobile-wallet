@@ -5,10 +5,10 @@ import { Store } from "@ngxs/store";
 import { Observable, Subject } from "rxjs";
 import { catchError, takeUntil, tap } from "rxjs/operators";
 
-import { AuthActions } from "../auth.actions";
-import { AuthService } from "../auth.service";
-import { AuthState } from "../auth.state";
-import { AuthMode } from "../auth.types";
+import { AuthActions } from "../shared/auth.actions";
+import { AuthService } from "../shared/auth.service";
+import { AuthState } from "../shared/auth.state";
+import { AuthMode } from "../shared/auth.types";
 
 @Component({
 	selector: "auth-pin",

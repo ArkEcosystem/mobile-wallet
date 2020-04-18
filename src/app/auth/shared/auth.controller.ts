@@ -12,8 +12,8 @@ import { delay, switchMap, take, takeUntil, tap } from "rxjs/operators";
 
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
+import { AuthComponent } from "../auth.component";
 import { AuthActions } from "./auth.actions";
-import { AuthComponent } from "./auth.component";
 import { AuthMode } from "./auth.types";
 
 @Injectable({

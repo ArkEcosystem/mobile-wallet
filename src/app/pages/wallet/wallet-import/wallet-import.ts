@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { ModalController, NavController } from "@ionic/angular";
 
-import { AuthController } from "@/app/auth/auth.controller";
+import { AuthController } from "@/app/auth/shared/auth.controller";
 import { BaseWalletImport } from "@/app/pages/wallet/wallet-import/wallet-import.base";
 import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
 import { QRCodeScheme } from "@/models/model";

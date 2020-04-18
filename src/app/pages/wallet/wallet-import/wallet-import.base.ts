@@ -5,7 +5,7 @@ import * as bip39 from "bip39";
 import { EMPTY, Observable } from "rxjs";
 import { finalize, tap, throwIfEmpty } from "rxjs/operators";
 
-import { AuthController } from "@/app/auth/auth.controller";
+import { AuthController } from "@/app/auth/shared/auth.controller";
 import { Wallet } from "@/models/model";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { NetworkProvider } from "@/services/network/network";
