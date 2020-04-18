@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 
-import { SharedModule } from "@/app/shared.module";
+import { SharedModule } from "@/app/shared/shared.module";
 import { PipesModule } from "@/pipes/pipes.module";
 
 import { WalletPickerComponent } from "./wallet-picker.component";

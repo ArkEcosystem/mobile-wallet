@@ -3,10 +3,10 @@ import { Select, Store } from "@ngxs/store";
 import { iif, NEVER, Observable, of } from "rxjs";
 import { map, switchMap, tap } from "rxjs/operators";
 
-import { AuthActions } from "./auth.actions";
-import { AuthService } from "./auth.service";
-import { AUTH_STATE_TOKEN, AuthStateModel } from "./auth.state";
-import { AuthMethod } from "./auth.types";
+import { AuthActions } from "./shared/auth.actions";
+import { AuthService } from "./shared/auth.service";
+import { AUTH_STATE_TOKEN, AuthStateModel } from "./shared/auth.state";
+import { AuthMethod } from "./shared/auth.types";
 
 @Component({
 	selector: "auth",

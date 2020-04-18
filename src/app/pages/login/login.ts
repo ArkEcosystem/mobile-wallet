@@ -5,8 +5,8 @@ import { isNil } from "lodash";
 import { Subject } from "rxjs";
 import { switchMap, take, takeUntil, tap } from "rxjs/operators";
 
-import { AuthController } from "@/app/auth/auth.controller";
-import { AuthState } from "@/app/auth/auth.state";
+import { AuthController } from "@/app/auth/shared/auth.controller";
+import { AuthState } from "@/app/auth/shared/auth.state";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
 @Component({

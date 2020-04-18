@@ -14,10 +14,10 @@ import { of } from "rxjs";
 import { removeLogs, sleep } from "@@/test/helpers";
 import { PipesModule } from "@/pipes/pipes.module";
 
-import { AuthActions } from "../auth.actions";
-import { AuthService } from "../auth.service";
-import { AuthState } from "../auth.state";
-import { AuthMode } from "../auth.types";
+import { AuthActions } from "../shared/auth.actions";
+import { AuthService } from "../shared/auth.service";
+import { AuthState } from "../shared/auth.state";
+import { AuthMode } from "../shared/auth.types";
 import { AuthPinComponent } from "./auth-pin.component";
 
 describe("Auth Pin Component", () => {

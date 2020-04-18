@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 
-import { SharedModule } from "@/app/shared.module";
+import { SharedModule } from "@/app/shared/shared.module";
 import { ClosePopupComponentModule } from "@/components/close-popup/close-popup.module";
 import { InputFeeComponentModule } from "@/components/input-fee/input-fee.module";
 import { QRCodeComponentModule } from "@/components/qr-code/qr-code.module";

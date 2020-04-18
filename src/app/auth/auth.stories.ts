@@ -11,8 +11,8 @@ import { UserDataServiceImpl } from "@/services/user-data/user-data";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { AuthComponent } from "./auth.component";
-import { AuthController } from "./auth.controller";
 import { AuthModule } from "./auth.module";
+import { AuthController } from "./shared/auth.controller";
 
 @Component({
 	selector: "test-auth",

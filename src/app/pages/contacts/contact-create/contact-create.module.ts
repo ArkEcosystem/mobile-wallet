@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
 
-import { SharedModule } from "@/app/shared.module";
+import { SharedModule } from "@/app/shared/shared.module";
 import { InputAddressComponentModule } from "@/components/input-address/input-address.module";
 import { QRScannerComponentModule } from "@/components/qr-scanner/qr-scanner.module";
 import { DirectivesModule } from "@/directives/directives.module";

@@ -12,8 +12,8 @@ import { delay, switchMap, take, takeUntil, tap } from "rxjs/operators";
 
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
+import { AuthComponent } from "../auth.component";
 import { AuthActions } from "./auth.actions";
-import { AuthComponent } from "./auth.component";
 import { AuthMode } from "./auth.types";
 
 @Injectable({
@@ -83,7 +83,7 @@ export class AuthController {
 			switchMap((registrationModal) =>
 				this.success$.pipe(
 					takeUntil(this.canceled$),
-					tap(() => registrationModal.dismiss(null, "self")),
+					switchMap(() => registrationModal.dismiss(null, "self")),
 					switchMap(() => confirmModal$),
 				),
 			),
@@ -132,7 +132,7 @@ export class AuthController {
 		return from(modal).pipe(
 			tap(() => this.store.dispatch(openAction)),
 			tap((component) => {
-				component.onWillDismiss().then(({ role }) => {
+				component.onDidDismiss().then(({ role }) => {
 					if (role !== "self") {
 						this.store.dispatch(cancelAction);
 					}

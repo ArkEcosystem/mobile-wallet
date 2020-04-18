@@ -14,10 +14,10 @@ import { PipesModule } from "@/pipes/pipes.module";
 
 import { AuthLockedComponent } from "./auth-locked/auth-locked.component";
 import { AuthPinComponent } from "./auth-pin/auth-pin.component";
-import { AuthActions } from "./auth.actions";
 import { AuthComponent } from "./auth.component";
-import { AuthService } from "./auth.service";
-import { AuthState } from "./auth.state";
+import { AuthActions } from "./shared/auth.actions";
+import { AuthService } from "./shared/auth.service";
+import { AuthState } from "./shared/auth.state";
 
 describe("Auth Component", () => {
 	let spectator: Spectator<AuthComponent>;

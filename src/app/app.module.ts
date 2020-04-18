@@ -24,7 +24,7 @@ import { environment } from "../environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
-import { AuthState } from "./auth/auth.state";
+import { AuthState } from "./auth/shared/auth.state";
 import { DelegateService } from "./delegates/shared/delegate.service";
 import { DelegateServiceMock } from "./delegates/shared/delegate.service.mock";
 import { IntroModule } from "./intro/intro.module";
