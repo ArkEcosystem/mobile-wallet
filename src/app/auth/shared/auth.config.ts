@@ -5,6 +5,8 @@ export namespace AuthConfig {
 	export const ATTEMPTS_LIMIT = 3;
 	export const ATTEMPTS_TIMEOUT_SECONDS = 30;
 
+	export const VIBRATION_TIME_MS = 30;
+
 	export const WEAK_PASSWORDS = [
 		"000000",
 		"111111",

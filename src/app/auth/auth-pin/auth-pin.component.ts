@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Vibration } from "@ionic-native/vibration/ngx";
 import { AlertController } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
 import { Store } from "@ngxs/store";
@@ -6,6 +7,7 @@ import { Observable, Subject } from "rxjs";
 import { catchError, takeUntil, tap } from "rxjs/operators";
 
 import { AuthActions } from "../shared/auth.actions";
+import { AuthConfig } from "../shared/auth.config";
 import { AuthService } from "../shared/auth.service";
 import { AuthState } from "../shared/auth.state";
 import { AuthMode } from "../shared/auth.types";
@@ -14,6 +16,7 @@ import { AuthMode } from "../shared/auth.types";
 	selector: "auth-pin",
 	templateUrl: "auth-pin.component.html",
 	styleUrls: ["auth-pin.component.pcss"],
+	providers: [Vibration],
 })
 export class AuthPinComponent implements OnInit, OnDestroy {
 	public mode: AuthMode;
@@ -31,6 +34,7 @@ export class AuthPinComponent implements OnInit, OnDestroy {
 		private alertCtrl: AlertController,
 		private translateService: TranslateService,
 		private authService: AuthService,
+		private vibration: Vibration,
 	) {}
 
 	ngOnDestroy() {
@@ -140,6 +144,7 @@ export class AuthPinComponent implements OnInit, OnDestroy {
 	}
 
 	private handleWrong() {
+		this.vibration.vibrate(AuthConfig.VIBRATION_TIME_MS);
 		this.hasWrong = true;
 		this.password = [];
 		setTimeout(() => {
