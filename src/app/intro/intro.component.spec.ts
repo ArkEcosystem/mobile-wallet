@@ -1,30 +1,23 @@
 import { RouterModule } from "@angular/router";
-import { IonicModule } from "@ionic/angular";
+import { IonicModule, NavController } from "@ionic/angular";
 import {
+	byTestId,
 	createRoutingFactory,
 	mockProvider,
 	Spectator,
 } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
-import { NgxsModule, Store } from "@ngxs/store";
-import { of, Subject } from "rxjs";
+import { NgxsModule } from "@ngxs/store";
+import { of } from "rxjs";
 
-import { AuthProvider } from "@/services/auth/auth";
-import { StorageProvider } from "@/services/storage/storage";
+import { removeLogs, sleep } from "@@/test/helpers";
 
 import { IntroPage } from "./intro.component";
 import { IntroService } from "./shared/intro.service";
 import { IntroState } from "./shared/intro.state";
-import { IntroStateModel } from "./shared/intro.type";
 
 describe("IntroPage", () => {
 	let spectator: Spectator<IntroPage>;
-	let store: Store;
-
-	const defaultState: IntroStateModel = {
-		activeIndex: 0,
-		isFinished: false,
-	};
 
 	const createComponent = createRoutingFactory({
 		component: IntroPage,
@@ -34,65 +27,70 @@ describe("IntroPage", () => {
 			NgxsModule.forRoot([IntroState]),
 			RouterModule.forRoot([]),
 		],
+		mocks: [NavController],
 		providers: [
 			mockProvider(IntroService, {
-				load: () => of(defaultState),
+				load: () => of(undefined),
 			}),
-			mockProvider(StorageProvider, {
-				get: () => of(defaultState),
-			}),
-			mockProvider(AuthProvider, {
-				onLogin$: new Subject(),
-				onLogout$: new Subject(),
-			}),
-		],
-		routes: [
-			{
-				path: "",
-				component: IntroPage,
-			},
-			{
-				path: "/intro",
-				component: IntroPage,
-			},
 		],
 	});
 
+	beforeAll(() => removeLogs());
+
 	beforeEach(() => {
 		spectator = createComponent();
-		store = spectator.get(Store);
 	});
 
 	it("should create", () => {
 		expect(spectator.component).toBeTruthy();
 	});
 
-	it("should update intro on startApp", () => {
-		spectator.component.startApp();
-		const authProvider = spectator.get(AuthProvider);
-		authProvider.saveIntro.and.returnValue(of(true));
+	it("should render slides", async () => {
+		await sleep(100);
+		const slides = spectator.queryAll(byTestId("intro__slide"));
+		const image = spectator.query(byTestId("intro__slide__image"));
+		const title = spectator.query(byTestId("intro__slide__title"));
+		const description = spectator.query(
+			byTestId("intro__slide__description"),
+		);
+		expect(slides.length).toBeGreaterThan(1);
+		expect(image).toBeVisible();
+		expect(title).toBeVisible();
+		expect(description).toBeVisible();
+	});
 
-		const isFinished = store.selectSnapshot(IntroState.isFinished);
-		expect(isFinished).toEqual(true);
+	it("should show buttons", async () => {
+		await sleep(100);
+		const skip = spectator.queryAll(byTestId("intro__skip"));
+		const next = spectator.queryAll(byTestId("intro__next"));
+		expect(skip).toBeVisible();
+		expect(next).toBeVisible();
 	});
 
 	it("should go to the next slide", async () => {
-		spectator.component.goNext();
-		const activeIndex = await spectator.component.slider.getActiveIndex();
-		expect(activeIndex).toEqual(1);
+		await sleep(100);
+		const next = spectator.query(byTestId("intro__next"));
+		spectator.click(next);
+		await sleep(100);
+		const slides = spectator.queryAll(byTestId("intro__slide"));
+		expect(slides[1]).toHaveClass("swiper-slide-active");
 	});
 
-	it("should go to the end and update state", async () => {
-		const slider = spectator.component.slider;
-		slider.length = async () => 2;
+	it("should show the done button and end", async () => {
+		await sleep(100);
+		const next = spectator.query(byTestId("intro__next"));
+		spectator.click(next);
+		spectator.detectChanges();
+		spectator.click(next);
+		await sleep(500);
+		spectator.detectChanges();
 
-		spectator.component.goNext();
-		spectator.component.goNext();
+		const done = spectator.query(byTestId("intro__done"));
+		expect(done).toBeVisible();
 
-		const activeIndex = await spectator.component.slider.getActiveIndex();
-		const isEnd = await spectator.component.slider.isEnd();
-
-		expect(activeIndex).toEqual(2);
-		expect(isEnd).toEqual(true);
+		const navCtrl = spectator.get(NavController);
+		navCtrl.navigateRoot.and.callFake(() => {});
+		spectator.click(done);
+		expect(navCtrl.navigateRoot).toHaveBeenCalled();
 	});
 });

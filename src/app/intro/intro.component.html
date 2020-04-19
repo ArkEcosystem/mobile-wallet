@@ -1,59 +1,74 @@
-<ion-content forceOverscroll="false" class="ion-padding">
-	<ion-row class="flex items-center justify-between">
-		<img class="intro__ark__logo" />
-		<ion-button id="skip" size="small" fill="clear" (click)="startApp()">
-			{{ "SKIP" | translate }}</ion-button
+<ion-header mode="ios" class="ion-no-border ion-padding">
+	<ion-toolbar class="p-0">
+		<div class="flex items-center justify-between">
+			<img src="/assets/img/logo.png" class="h-6 sm:h-8" />
+			<ion-button
+				data-testid="intro__skip"
+				size="small"
+				fill="clear"
+				(click)="handleDone()"
+				class="text-sm sm:text-base"
+			>
+				{{ "SKIP" | translate }}
+			</ion-button>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding" mode="ios">
+	<ion-slides
+		[pager]="true"
+		class="h-full"
+		(ionSlideDidChange)="onSlideChanged()"
+	>
+		<ion-slide
+			data-testid="intro__slide"
+			class="flex flex-col justify-between"
+			*ngFor="let slide of slides"
 		>
-	</ion-row>
-	<ion-slides #slider (ionSlideDidChange)="onSlideChanged()">
-		<ion-slide *ngFor="let slide of slides">
-			<ion-grid class="h-full flex flex-col justify-center items-center">
-				<div class="flex flex-col justify-center items-center">
-					<img [class]="'intro__slide--image ' + slide.image" />
-					<ion-text color="dark">
-						<h3 class="text-3xl font-bold">
-							{{ slide.title }}
-						</h3>
-					</ion-text>
-					<ion-text color="medium">
-						<p class="text-sm mt-2 px-6">
-							{{ slide.description }}
-						</p>
-					</ion-text>
-				</div>
-			</ion-grid>
+			<img
+				data-testid="intro__slide__image"
+				class="intro__slide__image pointer-events-none flex-1 self-center p-3"
+				[src]="'/assets/svg/' + slide.image + '.svg'"
+			/>
+			<div class="mb-10 mt-3">
+				<h2
+					data-testid="intro__slide__title"
+					class="text-3xl xs:text-4xl md:text-5xl font-bold"
+				>
+					{{ slide.title | translate }}
+				</h2>
+				<p
+					data-testid="intro__slide__description"
+					class="leading-normal text-sm xs:text-base md:text-lg text-medium mt-2 px-4"
+				>
+					{{ slide.description | translate }}
+				</p>
+			</div>
 		</ion-slide>
 	</ion-slides>
 </ion-content>
 
-<ion-footer
-	no-shadow
-	no-border
-	class="flex flex-col align-center justify-between w-full"
->
-	<intro-pagination [paginationSize]="paginationSize"></intro-pagination>
-	<ion-row class="w-full ion-padding">
+<ion-footer mode="ios" class="ion-no-border pb-4 px-4">
+	<ion-toolbar class="p-0">
 		<ion-button
-			id="next"
-			class="flex-1"
-			color="primary-light"
-			expand="block"
-			mode="ios"
-			(click)="goNext()"
+			data-testid="intro__next"
 			*ngIf="showSkip"
-		>
-			{{ "NEXT" | translate }}</ion-button
-		>
-		<ion-button
-			id="done"
-			class="flex-1"
-			color="primary-light"
 			expand="block"
-			mode="ios"
-			(click)="startApp()"
+			color="primary-light"
+			(click)="handleNext()"
+		>
+			{{ "NEXT" | translate }}
+		</ion-button>
+
+		<ion-button
+			data-testid="intro__done"
 			*ngIf="!showSkip"
+			expand="block"
+			color="primary-light"
+			(click)="handleDone()"
 		>
-			{{ "NEXT" | translate }}</ion-button
-		>
-	</ion-row>
+			{{ "DONE" | translate }}
+		</ion-button>
+	</ion-toolbar>
 </ion-footer>

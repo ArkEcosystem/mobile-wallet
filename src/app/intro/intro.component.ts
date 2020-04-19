@@ -1,15 +1,11 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { IonSlides, NavController, Platform } from "@ionic/angular";
+import { IonSlides, NavController } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
-import { Navigate } from "@ngxs/router-plugin";
 import { Select, Store } from "@ngxs/store";
 import { Observable } from "rxjs";
 
-import { AuthProvider } from "@/services/auth/auth";
-
 import { IntroActions } from "./shared/intro.actions";
-import { INTRO_STATE_TOKEN } from "./shared/intro.state";
-import { IntroStateModel } from "./shared/intro.type";
+import { IntroState } from "./shared/intro.state";
 
 @Component({
 	selector: "page-intro",
@@ -17,28 +13,27 @@ import { IntroStateModel } from "./shared/intro.type";
 	styleUrls: ["intro.component.pcss"],
 })
 export class IntroPage implements OnInit {
-	@Select(INTRO_STATE_TOKEN)
-	public intro$: Observable<IntroStateModel>;
+	@Select(IntroState.isFinished)
+	public isFinished$: Observable<boolean>;
 
-	@ViewChild("slider", { read: IonSlides, static: true })
-	slider: IonSlides;
+	@ViewChild(IonSlides)
+	public slider: IonSlides;
 
 	public showSkip = true;
-	public slides: any;
-	public paginationSize: Array<number>;
+	public slides: any[];
 
 	constructor(
-		platform: Platform,
-		private navCtrl: NavController,
-		private authProvider: AuthProvider,
 		private translateService: TranslateService,
 		private store: Store,
+		private navCtrl: NavController,
 	) {}
 
 	ngOnInit() {
-		this.intro$.subscribe((state) => {
-			if (state.isFinished) {
-				this.store.dispatch(new Navigate(["/login"]));
+		this.isFinished$.subscribe((isFinished) => {
+			if (isFinished) {
+				this.navCtrl.navigateRoot("login", {
+					animated: false,
+				});
 			}
 		});
 
@@ -55,41 +50,32 @@ export class IntroPage implements OnInit {
 				this.slides = [
 					{
 						title: translation["INTRO_PAGE.WELCOME"],
-						image: "welcome-aboard",
+						image: "onboarding-1",
 						description: translation["INTRO_PAGE.TEXT_1"],
 					},
 					{
 						title: translation["INTRO_PAGE.SECURITY"],
-						image: "security",
+						image: "onboarding-2",
 						description: translation["INTRO_PAGE.TEXT_2"],
 					},
 					{
 						title: translation["INTRO_PAGE.FAST_EASY"],
-						image: "fast-easy",
+						image: "onboarding-3",
 						description: translation["INTRO_PAGE.TEXT_3"],
 					},
 				];
-
-				this.paginationSize = new Array(this.slides.length);
 			});
 	}
 
-	startApp() {
-		this.authProvider.saveIntro();
-
-		this.navCtrl.navigateForward("/login", {
-			animated: true,
-			replaceUrl: true,
-		});
-
-		return this.store.dispatch(new IntroActions.Done());
+	public handleDone(): void {
+		this.store.dispatch(new IntroActions.Done());
 	}
 
-	goNext() {
+	public handleNext(): void {
 		this.slider.slideNext();
 	}
 
-	async onSlideChanged() {
+	public async onSlideChanged(): Promise<void> {
 		const activeIndex = await this.slider.getActiveIndex();
 		const slideLength = await this.slider.length();
 
@@ -100,8 +86,8 @@ export class IntroPage implements OnInit {
 		const isFinished = await this.slider.isEnd();
 		this.showSkip = !isFinished;
 
-		return this.store.dispatch(
-			new IntroActions.Update({ activeIndex, isFinished }),
-		);
+		if (isFinished) {
+			this.handleDone();
+		}
 	}
 }

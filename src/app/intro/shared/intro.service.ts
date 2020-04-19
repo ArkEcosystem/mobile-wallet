@@ -4,13 +4,12 @@ import { Observable } from "rxjs";
 import { StorageProvider } from "@/services/storage/storage";
 
 import { IntroConfig } from "./intro.config";
-import { IntroStateModel } from "./intro.type";
 
 @Injectable()
 export class IntroService {
 	constructor(private storageProvider: StorageProvider) {}
 
-	public load(): Observable<Partial<IntroStateModel>> {
+	public load(): Observable<string> {
 		return this.storageProvider.get(IntroConfig.LEGACY_STORAGE_KEY);
 	}
 }

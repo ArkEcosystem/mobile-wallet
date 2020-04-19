@@ -7,19 +7,21 @@ import {
 	StateContext,
 	StateToken,
 } from "@ngxs/store";
-import { tap } from "rxjs/operators";
+import { first, tap } from "rxjs/operators";
 
 import { IntroActions } from "./intro.actions";
 import { IntroConfig } from "./intro.config";
 import { IntroService } from "./intro.service";
-import { IntroStateModel } from "./intro.type";
+
+export interface IntroStateModel {
+	isFinished: boolean;
+}
 
 export const INTRO_STATE_TOKEN = new StateToken<IntroStateModel>(
 	IntroConfig.STORAGE_KEY,
 );
 
 const defaultState: IntroStateModel = {
-	activeIndex: 0,
 	isFinished: false,
 };
 
@@ -32,10 +34,6 @@ export class IntroState implements NgxsOnInit {
 	constructor(private introService: IntroService) {}
 
 	@Selector()
-	static activeIndex(state: IntroStateModel): number {
-		return state.activeIndex;
-	}
-	@Selector()
 	static isFinished(state: IntroStateModel): boolean {
 		return state.isFinished;
 	}
@@ -44,27 +42,20 @@ export class IntroState implements NgxsOnInit {
 		this.introService
 			.load()
 			.pipe(
+				first(),
 				tap((localSettings) => {
-					ctx.patchState({ isFinished: localSettings === "true" });
+					if (localSettings) {
+						ctx.patchState({
+							isFinished: localSettings === "true",
+						});
+					}
 				}),
 			)
 			.subscribe();
 	}
 
-	@Action(IntroActions.Update)
-	public update(
-		ctx: StateContext<IntroStateModel>,
-		action: IntroActions.Update,
-	): void {
-		ctx.patchState(action.payload);
-	}
-
 	@Action(IntroActions.Done)
 	public done(ctx: StateContext<IntroStateModel>): void {
 		ctx.patchState({ isFinished: true });
-	}
-
-	private get defaults(): IntroStateModel {
-		return defaultState;
 	}
 }
