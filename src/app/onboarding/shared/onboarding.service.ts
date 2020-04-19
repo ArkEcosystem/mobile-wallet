@@ -3,13 +3,13 @@ import { Observable } from "rxjs";
 
 import { StorageProvider } from "@/services/storage/storage";
 
-import { IntroConfig } from "./intro.config";
+import { OnboardingConfig } from "./onboarding.config";
 
 @Injectable()
-export class IntroService {
+export class OnboardingService {
 	constructor(private storageProvider: StorageProvider) {}
 
 	public load(): Observable<string> {
-		return this.storageProvider.get(IntroConfig.LEGACY_STORAGE_KEY);
+		return this.storageProvider.get(OnboardingConfig.LEGACY_STORAGE_KEY);
 	}
 }

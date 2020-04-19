@@ -27,8 +27,7 @@ import { AuthModule } from "./auth/auth.module";
 import { AuthState } from "./auth/shared/auth.state";
 import { DelegateService } from "./delegates/shared/delegate.service";
 import { DelegateServiceMock } from "./delegates/shared/delegate.service.mock";
-import { IntroModule } from "./intro/intro.module";
-import { IntroState } from "./intro/shared/intro.state";
+import { OnboardingState } from "./onboarding/shared/onboarding.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
 import { NgxsStorageService } from "./services/storage/ngxs-storage";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
@@ -58,11 +57,10 @@ export function createTranslateLoader(http: HttpClient) {
 			developmentMode: !environment.production,
 		}),
 		NgxsAsyncStoragePluginModule.forRoot(NgxsStorageService, {
-			key: [AuthState, IntroState],
+			key: [AuthState, OnboardingState],
 		}),
 		AuthModule,
 		WalletModule,
-		IntroModule,
 		ChartsModule,
 		HammerModule,
 		PipesModule,

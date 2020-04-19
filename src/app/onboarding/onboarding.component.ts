@@ -4,16 +4,16 @@ import { TranslateService } from "@ngx-translate/core";
 import { Select, Store } from "@ngxs/store";
 import { Observable } from "rxjs";
 
-import { IntroActions } from "./shared/intro.actions";
-import { IntroState } from "./shared/intro.state";
+import { OnboardingActions } from "./shared/onboarding.actions";
+import { OnboardingState } from "./shared/onboarding.state";
 
 @Component({
-	selector: "page-intro",
-	templateUrl: "intro.component.html",
-	styleUrls: ["intro.component.pcss"],
+	selector: "onboarding",
+	templateUrl: "onboarding.component.html",
+	styleUrls: ["onboarding.component.pcss"],
 })
-export class IntroPage implements OnInit {
-	@Select(IntroState.isFinished)
+export class OnboardingComponent implements OnInit {
+	@Select(OnboardingState.isFinished)
 	public isFinished$: Observable<boolean>;
 
 	@ViewChild(IonSlides)
@@ -39,36 +39,36 @@ export class IntroPage implements OnInit {
 
 		this.translateService
 			.get([
-				"INTRO_PAGE.WELCOME",
-				"INTRO_PAGE.TEXT_1",
-				"INTRO_PAGE.SECURITY",
-				"INTRO_PAGE.TEXT_2",
-				"INTRO_PAGE.FAST_EASY",
-				"INTRO_PAGE.TEXT_3",
+				"ONBOARDING.WELCOME",
+				"ONBOARDING.TEXT_1",
+				"ONBOARDING.SECURITY",
+				"ONBOARDING.TEXT_2",
+				"ONBOARDING.FAST_EASY",
+				"ONBOARDING.TEXT_3",
 			])
 			.subscribe((translation) => {
 				this.slides = [
 					{
-						title: translation["INTRO_PAGE.WELCOME"],
+						title: translation["ONBOARDING.WELCOME"],
 						image: "onboarding-1",
-						description: translation["INTRO_PAGE.TEXT_1"],
+						description: translation["ONBOARDING.TEXT_1"],
 					},
 					{
-						title: translation["INTRO_PAGE.SECURITY"],
+						title: translation["ONBOARDING.SECURITY"],
 						image: "onboarding-2",
-						description: translation["INTRO_PAGE.TEXT_2"],
+						description: translation["ONBOARDING.TEXT_2"],
 					},
 					{
-						title: translation["INTRO_PAGE.FAST_EASY"],
+						title: translation["ONBOARDING.FAST_EASY"],
 						image: "onboarding-3",
-						description: translation["INTRO_PAGE.TEXT_3"],
+						description: translation["ONBOARDING.TEXT_3"],
 					},
 				];
 			});
 	}
 
 	public handleDone(): void {
-		this.store.dispatch(new IntroActions.Done());
+		this.store.dispatch(new OnboardingActions.Done());
 	}
 
 	public handleNext(): void {

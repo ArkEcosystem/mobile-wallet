@@ -2,8 +2,15 @@ import { NgModule } from "@angular/core";
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 
 const routes: Routes = [
-	{ path: "", redirectTo: "intro", pathMatch: "full" },
+	{ path: "", redirectTo: "onboarding", pathMatch: "full" },
 
+	{
+		path: "onboarding",
+		loadChildren: () =>
+			import("./onboarding/onboarding.module").then(
+				(m) => m.OnboardingModule,
+			),
+	},
 	{
 		path: "network-status",
 		loadChildren: () =>

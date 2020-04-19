@@ -3,14 +3,14 @@ import { of } from "rxjs";
 
 import { StorageProvider } from "@/services/storage/storage";
 
-import { IntroService } from "./intro.service";
+import { OnboardingService } from "./onboarding.service";
 
-describe("Intro Service", () => {
-	let spectator: SpectatorService<IntroService>;
-	let service: IntroService;
+describe("Onboarding Service", () => {
+	let spectator: SpectatorService<OnboardingService>;
+	let service: OnboardingService;
 
 	const createService = createServiceFactory({
-		service: IntroService,
+		service: OnboardingService,
 		mocks: [StorageProvider],
 	});
 
@@ -19,7 +19,7 @@ describe("Intro Service", () => {
 		service = spectator.service;
 	});
 
-	it("should load intro", (done) => {
+	it("should load data", (done) => {
 		const storageProvider = spectator.get(StorageProvider);
 		storageProvider.get.and.returnValue(of("true"));
 		service.load().subscribe((data) => {

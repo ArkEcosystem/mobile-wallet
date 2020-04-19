@@ -3,7 +3,7 @@
 		<div class="flex items-center justify-between">
 			<img src="/assets/img/logo.png" class="h-6 sm:h-8" />
 			<ion-button
-				data-testid="intro__skip"
+				data-testid="onboarding__skip"
 				size="small"
 				fill="clear"
 				(click)="handleDone()"
@@ -22,24 +22,24 @@
 		(ionSlideDidChange)="onSlideChanged()"
 	>
 		<ion-slide
-			data-testid="intro__slide"
+			data-testid="onboarding__slide"
 			class="flex flex-col justify-between"
 			*ngFor="let slide of slides"
 		>
 			<img
-				data-testid="intro__slide__image"
-				class="intro__slide__image pointer-events-none flex-1 self-center p-3"
+				data-testid="onboarding__slide__image"
+				class="onboarding__slide__image pointer-events-none flex-1 self-center p-3"
 				[src]="'/assets/svg/' + slide.image + '.svg'"
 			/>
 			<div class="mb-10 mt-3">
 				<h2
-					data-testid="intro__slide__title"
+					data-testid="onboarding__slide__title"
 					class="text-3xl xs:text-4xl md:text-5xl font-bold"
 				>
 					{{ slide.title | translate }}
 				</h2>
 				<p
-					data-testid="intro__slide__description"
+					data-testid="onboarding__slide__description"
 					class="leading-normal text-sm xs:text-base md:text-lg text-medium mt-2 px-4"
 				>
 					{{ slide.description | translate }}
@@ -52,7 +52,7 @@
 <ion-footer mode="ios" class="ion-no-border pb-4 px-4">
 	<ion-toolbar class="p-0">
 		<ion-button
-			data-testid="intro__next"
+			data-testid="onboarding__next"
 			*ngIf="showSkip"
 			expand="block"
 			color="primary-light"
@@ -62,7 +62,7 @@
 		</ion-button>
 
 		<ion-button
-			data-testid="intro__done"
+			data-testid="onboarding__done"
 			*ngIf="!showSkip"
 			expand="block"
 			color="primary-light"

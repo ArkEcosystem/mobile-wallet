@@ -175,7 +175,7 @@ export class AppComponent implements OnDestroy, OnInit {
 					if (outlet && outlet.canGoBack()) {
 						outlet.pop();
 					} else {
-						if (path === "/login" || path === "/intro") {
+						if (path === "/login" || path === "/onboarding") {
 							this.showConfirmation(this.exitText).then(() => {
 								// tslint:disable-next-line: no-string-literal
 								navigator["app"].exitApp();
