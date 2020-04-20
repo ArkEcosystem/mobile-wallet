@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Navigate } from "@ngxs/router-plugin";
 import {
 	Action,
 	NgxsOnInit,
@@ -55,7 +56,8 @@ export class OnboardingState implements NgxsOnInit {
 	}
 
 	@Action(OnboardingActions.Done)
-	public done(ctx: StateContext<OnboardingStateModel>): void {
+	public done(ctx: StateContext<OnboardingStateModel>) {
 		ctx.patchState({ isFinished: true });
+		return ctx.dispatch(new Navigate(["/login"]));
 	}
 }

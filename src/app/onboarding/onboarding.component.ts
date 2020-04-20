@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { IonSlides, NavController } from "@ionic/angular";
+import { IonSlides } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
 import { Select, Store } from "@ngxs/store";
 import { Observable } from "rxjs";
@@ -25,18 +25,9 @@ export class OnboardingComponent implements OnInit {
 	constructor(
 		private translateService: TranslateService,
 		private store: Store,
-		private navCtrl: NavController,
 	) {}
 
 	ngOnInit() {
-		this.isFinished$.subscribe((isFinished) => {
-			if (isFinished) {
-				this.navCtrl.navigateRoot("login", {
-					animated: false,
-				});
-			}
-		});
-
 		this.translateService
 			.get([
 				"ONBOARDING.WELCOME",
@@ -85,9 +76,5 @@ export class OnboardingComponent implements OnInit {
 
 		const isFinished = await this.slider.isEnd();
 		this.showSkip = !isFinished;
-
-		if (isFinished) {
-			this.handleDone();
-		}
 	}
 }

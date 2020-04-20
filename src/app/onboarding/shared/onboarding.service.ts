@@ -5,7 +5,7 @@ import { StorageProvider } from "@/services/storage/storage";
 
 import { OnboardingConfig } from "./onboarding.config";
 
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class OnboardingService {
 	constructor(private storageProvider: StorageProvider) {}
 

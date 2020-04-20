@@ -14,7 +14,8 @@ import { IonicModule, IonicRouteStrategy } from "@ionic/angular";
 import { IonicStorageModule } from "@ionic/storage";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { NgxsAsyncStoragePluginModule } from "@ngxs-labs/async-storage-plugin";
+import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
+import { NgxsRouterPluginModule } from "@ngxs/router-plugin";
 import { NgxsModule } from "@ngxs/store";
 import { ChartsModule } from "ng2-charts";
 
@@ -24,14 +25,14 @@ import { environment } from "../environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
-import { AuthState } from "./auth/shared/auth.state";
 import { DelegateService } from "./delegates/shared/delegate.service";
 import { DelegateServiceMock } from "./delegates/shared/delegate.service.mock";
 import { OnboardingState } from "./onboarding/shared/onboarding.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
-import { NgxsStorageService } from "./services/storage/ngxs-storage";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
 import { UserDataService } from "./services/user-data/user-data.interface";
+import { AppState } from "./shared/state/app.state";
+import { NgxsAsyncStoragePluginModule } from "./shared/state/async-storage/async-storage.module";
 import { WalletModule } from "./wallet/wallet.module";
 
 export function createTranslateLoader(http: HttpClient) {
@@ -41,6 +42,12 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
 	declarations: [AppComponent],
 	imports: [
+		NgxsModule.forRoot([AppState, OnboardingState], {
+			developmentMode: !environment.production,
+		}),
+		NgxsAsyncStoragePluginModule.forRoot(),
+		NgxsRouterPluginModule.forRoot(),
+		NgxsReduxDevtoolsPluginModule.forRoot(),
 		IonicModule.forRoot(),
 		IonicStorageModule.forRoot(),
 		BrowserModule,
@@ -52,12 +59,6 @@ export function createTranslateLoader(http: HttpClient) {
 				useFactory: createTranslateLoader,
 				deps: [HttpClient],
 			},
-		}),
-		NgxsModule.forRoot([], {
-			developmentMode: !environment.production,
-		}),
-		NgxsAsyncStoragePluginModule.forRoot(NgxsStorageService, {
-			key: [AuthState, OnboardingState],
 		}),
 		AuthModule,
 		WalletModule,
