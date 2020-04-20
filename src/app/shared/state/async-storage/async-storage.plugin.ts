@@ -12,7 +12,7 @@ import {
 import { from, iif, of } from "rxjs";
 import { concatMap, map, reduce, shareReplay, tap } from "rxjs/operators";
 
-import { AuthConfig } from "@/app/auth/auth.config";
+import { AuthConfig } from "@/app/auth/shared/auth.config";
 import { OnboardingConfig } from "@/app/onboarding/shared/onboarding.config";
 import { NgxsAsyncStorageService } from "@/app/shared/state/async-storage/async-storage.service";
 
