@@ -1,10 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Storage } from "@ionic/storage";
 import { from, Observable } from "rxjs";
-import { map } from "rxjs/operators";
 
-@Injectable()
-export class NgxsAsyncStorageService {
+@Injectable({ providedIn: "root" })
+export class AsyncStorageService {
 	constructor(private storage: Storage) {}
 
 	length(): Observable<number> {
@@ -27,7 +26,7 @@ export class NgxsAsyncStorageService {
 		this.storage.clear();
 	}
 
-	key(val: number): Observable<string> {
-		return from(this.storage.keys()).pipe(map((keys) => keys[val]));
+	keys(): Observable<string[]> {
+		return from(this.storage.keys());
 	}
 }

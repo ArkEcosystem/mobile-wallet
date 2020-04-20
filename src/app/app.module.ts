@@ -25,8 +25,10 @@ import { environment } from "../environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
+import { AuthConfig } from "./auth/shared/auth.config";
 import { DelegateService } from "./delegates/shared/delegate.service";
 import { DelegateServiceMock } from "./delegates/shared/delegate.service.mock";
+import { OnboardingConfig } from "./onboarding/shared/onboarding.config";
 import { OnboardingState } from "./onboarding/shared/onboarding.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
@@ -45,7 +47,9 @@ export function createTranslateLoader(http: HttpClient) {
 		NgxsModule.forRoot([AppState, OnboardingState], {
 			developmentMode: !environment.production,
 		}),
-		NgxsAsyncStoragePluginModule.forRoot(),
+		NgxsAsyncStoragePluginModule.forRoot({
+			keys: [AuthConfig.STORAGE_KEY, OnboardingConfig.STORAGE_KEY],
+		}),
 		NgxsRouterPluginModule.forRoot(),
 		NgxsReduxDevtoolsPluginModule.forRoot(),
 		IonicModule.forRoot(),

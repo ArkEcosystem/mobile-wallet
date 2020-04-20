@@ -1,4 +1,4 @@
-import { Injectable, Injector } from "@angular/core";
+import { Inject, Injectable, InjectionToken, Injector } from "@angular/core";
 import {
 	actionMatcher,
 	getValue,
@@ -12,16 +12,18 @@ import {
 import { from, iif, of } from "rxjs";
 import { concatMap, map, reduce, shareReplay, tap } from "rxjs/operators";
 
-import { AuthConfig } from "@/app/auth/shared/auth.config";
-import { OnboardingConfig } from "@/app/onboarding/shared/onboarding.config";
-import { NgxsAsyncStorageService } from "@/app/shared/state/async-storage/async-storage.service";
+import { AsyncStorageService } from "@/services/storage/async-storage.service";
+
+export const NGXS_ASYNC_STORAGE_PLUGIN_OPTIONS = new InjectionToken(
+	"NGXS_ASYNC_STORAGE_PLUGIN_OPTIONS",
+);
 
 @Injectable()
 export class NgxsAsyncStoragePlugin implements NgxsPlugin {
-	private KEYS = [AuthConfig.STORAGE_KEY, OnboardingConfig.STORAGE_KEY];
-
 	constructor(
-		private storageService: NgxsAsyncStorageService,
+		@Inject(NGXS_ASYNC_STORAGE_PLUGIN_OPTIONS)
+		private options: any,
+		private storageService: AsyncStorageService,
 		private _injector: Injector,
 	) {}
 
@@ -33,10 +35,11 @@ export class NgxsAsyncStoragePlugin implements NgxsPlugin {
 	}
 
 	handle(state: any, event: any, next: NgxsNextPluginFn) {
+		const keys: string[] = this.options?.keys || [];
 		const matches = actionMatcher(event);
 		const isInitAction = matches(InitState) || matches(UpdateState);
 
-		const deserializer$ = from(this.KEYS).pipe(
+		const deserializer$ = from(keys).pipe(
 			concatMap((key) =>
 				this.storageService
 					.getItem(key)
@@ -52,7 +55,9 @@ export class NgxsAsyncStoragePlugin implements NgxsPlugin {
 						})),
 					),
 			),
-			reduce((_, { key, val, lastState }) => {
+			reduce((previousState, { key, val, lastState }) => {
+				let nextState = previousState;
+
 				if (
 					val !== "undefined" &&
 					typeof val !== "undefined" &&
@@ -66,11 +71,11 @@ export class NgxsAsyncStoragePlugin implements NgxsPlugin {
 						);
 						val = {};
 					}
+					nextState = setValue(lastState, key, val);
 				}
 
-				const nextState = setValue(lastState, key, val);
 				return nextState;
-			}),
+			}, state),
 		);
 
 		const action$ = iif(
@@ -83,7 +88,7 @@ export class NgxsAsyncStoragePlugin implements NgxsPlugin {
 			concatMap((stateAfterInit) => next(stateAfterInit, event)),
 			tap((nextState) => {
 				if (!isInitAction) {
-					for (const key of this.KEYS) {
+					for (const key of keys) {
 						let val = nextState;
 
 						val = getValue(nextState, key);

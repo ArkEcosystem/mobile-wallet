@@ -1,12 +1,14 @@
 import { ModuleWithProviders, NgModule } from "@angular/core";
 import { NGXS_PLUGINS } from "@ngxs/store";
 
-import { NgxsAsyncStoragePlugin } from "./async-storage.plugin";
-import { NgxsAsyncStorageService } from "./async-storage.service";
+import {
+	NGXS_ASYNC_STORAGE_PLUGIN_OPTIONS,
+	NgxsAsyncStoragePlugin,
+} from "./async-storage.plugin";
 
 @NgModule()
 export class NgxsAsyncStoragePluginModule {
-	static forRoot(): ModuleWithProviders {
+	static forRoot(config: any): ModuleWithProviders {
 		return {
 			ngModule: NgxsAsyncStoragePluginModule,
 			providers: [
@@ -15,7 +17,10 @@ export class NgxsAsyncStoragePluginModule {
 					useClass: NgxsAsyncStoragePlugin,
 					multi: true,
 				},
-				NgxsAsyncStorageService,
+				{
+					provide: NGXS_ASYNC_STORAGE_PLUGIN_OPTIONS,
+					useValue: config,
+				},
 			],
 		};
 	}
