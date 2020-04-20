@@ -28,7 +28,7 @@ import {
 	Platform,
 } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
-import { Actions, Store } from "@ngxs/store";
+import { Store } from "@ngxs/store";
 import moment from "moment";
 import { Subject } from "rxjs";
 import { debounceTime, switchMap, takeUntil } from "rxjs/operators";
@@ -90,7 +90,6 @@ export class AppComponent implements OnDestroy, OnInit {
 		private config: Config,
 		private keyboard: Keyboard,
 		private loggerService: LoggerService,
-		private actions$: Actions,
 		private store: Store,
 	) {}
 

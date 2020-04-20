@@ -1,5 +1,5 @@
 import { RouterModule } from "@angular/router";
-import { IonicModule, NavController } from "@ionic/angular";
+import { IonicModule } from "@ionic/angular";
 import {
 	byTestId,
 	createRoutingFactory,
@@ -7,12 +7,13 @@ import {
 	Spectator,
 } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
-import { NgxsModule } from "@ngxs/store";
+import { Actions, NgxsModule, ofActionDispatched } from "@ngxs/store";
 import { of } from "rxjs";
 
 import { removeLogs, sleep } from "@@/test/helpers";
 
 import { OnboardingComponent } from "./onboarding.component";
+import { OnboardingActions } from "./shared/onboarding.actions";
 import { OnboardingService } from "./shared/onboarding.service";
 import { OnboardingState } from "./shared/onboarding.state";
 
@@ -27,7 +28,6 @@ describe("Onboarding Component", () => {
 			NgxsModule.forRoot([OnboardingState]),
 			RouterModule.forRoot([]),
 		],
-		mocks: [NavController],
 		providers: [
 			mockProvider(OnboardingService, {
 				load: () => of(undefined),
@@ -76,7 +76,7 @@ describe("Onboarding Component", () => {
 		expect(slides[1]).toHaveClass("swiper-slide-active");
 	});
 
-	it("should show the done button and end", async () => {
+	it("should show the done button and end", async (done) => {
 		await sleep(100);
 		const next = spectator.query(byTestId("onboarding__next"));
 		spectator.click(next);
@@ -85,12 +85,14 @@ describe("Onboarding Component", () => {
 		await sleep(500);
 		spectator.detectChanges();
 
-		const done = spectator.query(byTestId("onboarding__done"));
-		expect(done).toBeVisible();
+		const doneBtn = spectator.query(byTestId("onboarding__done"));
+		expect(doneBtn).toBeVisible();
 
-		const navCtrl = spectator.get(NavController);
-		navCtrl.navigateRoot.and.callFake(() => {});
-		spectator.click(done);
-		expect(navCtrl.navigateRoot).toHaveBeenCalled();
+		const actions$ = spectator.inject(Actions);
+		actions$
+			.pipe(ofActionDispatched(OnboardingActions.Done))
+			.subscribe(() => done());
+
+		spectator.click(doneBtn);
 	});
 });
