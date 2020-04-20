@@ -41,17 +41,17 @@ export class OnboardingComponent implements OnInit {
 				this.slides = [
 					{
 						title: translation["ONBOARDING.WELCOME"],
-						image: "onboarding-1",
+						image: "onboarding-welcome",
 						description: translation["ONBOARDING.TEXT_1"],
 					},
 					{
 						title: translation["ONBOARDING.SECURITY"],
-						image: "onboarding-2",
+						image: "onboarding-security",
 						description: translation["ONBOARDING.TEXT_2"],
 					},
 					{
 						title: translation["ONBOARDING.FAST_EASY"],
-						image: "onboarding-3",
+						image: "onboarding-easy",
 						description: translation["ONBOARDING.TEXT_3"],
 					},
 				];
