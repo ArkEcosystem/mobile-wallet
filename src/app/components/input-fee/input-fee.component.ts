@@ -50,7 +50,7 @@ export class InputFeeComponent implements OnInit {
 
 	public hasRange = false;
 	public rangeControl = new FormControl(0);
-	public inputControl = new FormControl(0);
+	public inputControl = new FormControl(new SafeBigNumber(0));
 	public limitMin = 1;
 
 	// Arktoshi

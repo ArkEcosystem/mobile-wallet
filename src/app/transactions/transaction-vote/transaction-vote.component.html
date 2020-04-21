@@ -1,0 +1,22 @@
+<ion-header mode="ios" class="ion-no-shadow ion-no-border">
+	<div class="c-modal-dragger"></div>
+</ion-header>
+
+<ion-content mode="ios" class="ion-padding">
+	<p class="text-medium text-sm">Delegate:</p>
+	<p class="text-dark text-xl font-bold">{{ delegate?.username }}</p>
+	<input-fee (inputFeeUpdate)="handleFeeUpdate($event)"></input-fee>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-no-shadow">
+	<ion-toolbar>
+		<ion-button
+			color="primary-light"
+			expand="block"
+			(click)="handleVote()"
+			[disabled]="!formGroup.valid"
+		>
+			Vote
+		</ion-button>
+	</ion-toolbar>
+</ion-footer>
