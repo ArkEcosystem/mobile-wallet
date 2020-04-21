@@ -20,7 +20,11 @@ export class SetLabelPage {
 		this.modalCtrl.dismiss();
 	}
 
-	submitForm() {
+	saveLabel() {
 		this.modalCtrl.dismiss(this.label, "submit");
+	}
+
+	removeLabel() {
+		this.modalCtrl.dismiss(null, "submit");
 	}
 }
