@@ -12,6 +12,7 @@ import {
 	Spectator,
 } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
+import { NgxsModule } from "@ngxs/store";
 import { of, Subject } from "rxjs";
 
 import { PipesModule } from "@/pipes/pipes.module";
@@ -29,6 +30,7 @@ describe("App Component", () => {
 		component: AppComponent,
 		imports: [
 			IonicModule.forRoot(),
+			NgxsModule.forRoot([]),
 			TranslateModule.forRoot(),
 			RouterModule.forRoot([]),
 			PipesModule,

@@ -1,0 +1,74 @@
+<ion-header mode="ios" class="ion-no-border ion-padding">
+	<ion-toolbar class="p-0">
+		<div class="flex items-center justify-between">
+			<img src="/assets/img/logo.png" class="h-6 sm:h-8" />
+			<ion-button
+				data-testid="onboarding__skip"
+				size="small"
+				fill="clear"
+				(click)="handleDone()"
+				class="text-sm sm:text-base"
+			>
+				{{ "SKIP" | translate }}
+			</ion-button>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding" mode="ios">
+	<ion-slides
+		[pager]="true"
+		class="h-full"
+		(ionSlideDidChange)="onSlideChanged()"
+	>
+		<ion-slide
+			data-testid="onboarding__slide"
+			class="flex flex-col justify-between"
+			*ngFor="let slide of slides"
+		>
+			<img
+				data-testid="onboarding__slide__image"
+				class="onboarding__slide__image pointer-events-none flex-1 self-center p-3"
+				[src]="'/assets/svg/' + slide.image + '.svg'"
+			/>
+			<div class="mb-10 mt-3">
+				<h2
+					data-testid="onboarding__slide__title"
+					class="text-3xl xs:text-4xl md:text-5xl font-bold"
+				>
+					{{ slide.title | translate }}
+				</h2>
+				<p
+					data-testid="onboarding__slide__description"
+					class="leading-normal text-sm xs:text-base md:text-lg text-medium mt-2 px-4"
+				>
+					{{ slide.description | translate }}
+				</p>
+			</div>
+		</ion-slide>
+	</ion-slides>
+</ion-content>
+
+<ion-footer mode="ios" class="ion-no-border pb-4 px-4">
+	<ion-toolbar class="p-0">
+		<ion-button
+			data-testid="onboarding__next"
+			*ngIf="showSkip"
+			expand="block"
+			color="primary-light"
+			(click)="handleNext()"
+		>
+			{{ "NEXT" | translate }}
+		</ion-button>
+
+		<ion-button
+			data-testid="onboarding__done"
+			*ngIf="!showSkip"
+			expand="block"
+			color="primary-light"
+			(click)="handleDone()"
+		>
+			{{ "DONE" | translate }}
+		</ion-button>
+	</ion-toolbar>
+</ion-footer>

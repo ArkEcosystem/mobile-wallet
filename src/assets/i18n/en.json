@@ -96,7 +96,7 @@
 	"IMPORT": "Import",
 	"IMPORT_ADDRESS": "Import Address",
 	"IMPORT_PASSPHRASE": "Import Passphrase",
-	"INTRO_PAGE": {
+	"ONBOARDING": {
 		"FAST_EASY": "Fast and Easy",
 		"GET_STARTED": "Get Started",
 		"SECURITY": "Security",

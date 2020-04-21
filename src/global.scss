@@ -93,6 +93,25 @@ ion-searchbar {
 	}
 }
 
+ion-slides {
+	.swiper-pagination {
+		bottom: 0;
+	}
+
+	.swiper-pagination-bullet {
+		will-change: width;
+		transition: width 0.25s ease;
+		height: 0.25rem;
+		width: 0.25rem;
+		border-radius: 9999px;
+	}
+
+	.swiper-pagination-bullet-active {
+		width: 2rem;
+		height: 0.25rem;
+	}
+}
+
 .text-selectable {
 	user-select: auto !important;
 }

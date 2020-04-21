@@ -51,7 +51,6 @@
 		"@ionic/storage": "^2.2.0",
 		"@ngx-translate/core": "^12.1.2",
 		"@ngx-translate/http-loader": "^4.0.0",
-		"@ngxs-labs/async-storage-plugin": "^0.1.1",
 		"@ngxs/router-plugin": "^3.6.2",
 		"@ngxs/store": "^3.6.2",
 		"angular-html-parser": "^1.4.0",

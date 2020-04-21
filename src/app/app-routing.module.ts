@@ -1,9 +1,19 @@
 import { NgModule } from "@angular/core";
-import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
+import { NoPreloading, RouterModule, Routes } from "@angular/router";
+
+import { OnboardingGuard } from "./onboarding/shared/onboarding.guard";
 
 const routes: Routes = [
-	{ path: "", redirectTo: "login", pathMatch: "full" },
+	{ path: "", redirectTo: "onboarding", pathMatch: "full" },
 
+	{
+		path: "onboarding",
+		canActivate: [OnboardingGuard],
+		loadChildren: () =>
+			import("./onboarding/onboarding.module").then(
+				(m) => m.OnboardingModule,
+			),
+	},
 	{
 		path: "network-status",
 		loadChildren: () =>
@@ -135,7 +145,10 @@ const routes: Routes = [
 
 @NgModule({
 	imports: [
-		RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
+		RouterModule.forRoot(routes, {
+			preloadingStrategy: NoPreloading,
+			initialNavigation: true,
+		}),
 	],
 	exports: [RouterModule],
 })

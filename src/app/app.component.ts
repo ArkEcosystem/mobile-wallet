@@ -101,15 +101,6 @@ export class AppComponent implements OnDestroy, OnInit {
 			this.initSessionCheck();
 			this.initBackButton();
 			this.splashScreen.hide();
-
-			this.authProvider.hasSeenIntro().subscribe((hasSeenIntro) => {
-				if (!hasSeenIntro) {
-					this.openPage("/intro", true);
-					return;
-				}
-
-				this.openPage("/login", true);
-			});
 		});
 	}
 
@@ -184,7 +175,7 @@ export class AppComponent implements OnDestroy, OnInit {
 					if (outlet && outlet.canGoBack()) {
 						outlet.pop();
 					} else {
-						if (path === "/login" || path === "/intro") {
+						if (path === "/login" || path === "/onboarding") {
 							this.showConfirmation(this.exitText).then(() => {
 								// tslint:disable-next-line: no-string-literal
 								navigator["app"].exitApp();
