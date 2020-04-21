@@ -92,7 +92,7 @@
 	"IMPORT": "Importar",
 	"IMPORT_ADDRESS": "Importar Endereço",
 	"IMPORT_PASSPHRASE": "Importar frase secreta",
-	"INTRO_PAGE": {
+	"ONBOARDING": {
 		"FAST_EASY": "Rápido e Fácil",
 		"GET_STARTED": "Iniciar",
 		"SECURITY": "Segurança",
