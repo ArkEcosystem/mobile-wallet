@@ -54,17 +54,23 @@ export class DelegatesComponent implements OnInit, OnDestroy {
 		}, 500);
 	}
 
+	public handleDelegateUnvoteBannerClick() {}
+
+	public handleDelegateListClick(delegate: Delegate) {
+		this.openTransactionVote(delegate).subscribe(console.log);
+	}
+
 	public handleSearch() {
 		this.delegateSearchCtrl
 			.open()
-			.pipe(
-				exhaustMap((delegate) =>
-					this.transactionVoteCtrl.open({
-						delegate,
-						type: TransactionVoteType.Vote,
-					}),
-				),
-			)
+			.pipe(exhaustMap((delegate) => this.openTransactionVote(delegate)))
 			.subscribe(console.log);
+	}
+
+	private openTransactionVote(delegate: Delegate) {
+		return this.transactionVoteCtrl.open({
+			delegate,
+			type: TransactionVoteType.Vote,
+		});
 	}
 }

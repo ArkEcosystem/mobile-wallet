@@ -24,7 +24,6 @@ export class TransactionVoteComponent implements OnInit {
 	}>();
 
 	public formGroup: FormGroup;
-	public fee: SatoshiAmount;
 
 	constructor() {}
 
@@ -41,7 +40,7 @@ export class TransactionVoteComponent implements OnInit {
 	public handleVote() {
 		this.transactionVoteClick.emit({
 			delegate: this.delegate,
-			fee: this.fee,
+			fee: this.formGroup.get("fee").value,
 		});
 	}
 
