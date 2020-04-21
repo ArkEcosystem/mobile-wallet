@@ -25,14 +25,23 @@
 					required
 				></ion-input>
 			</ion-item>
-			<ion-button
-				class="mt-8"
-				color="primary"
-				[disabled]="!labelForm.form.valid"
-				(click)="submitForm()"
-			>
-				{{ 'RENAME' | translate }}
-			</ion-button>
+			<div class="flex items-center">
+				<ion-button
+					class="flex-1 mt-8"
+					color="primary"
+					[disabled]="!labelForm.form.valid"
+					(click)="saveLabel()"
+				>
+					{{ 'RENAME' | translate }}
+				</ion-button>
+				<ion-button
+					class="flex-1 mt-8"
+					color="primary"
+					(click)="removeLabel()"
+				>
+					{{ 'REMOVE' | translate }}
+				</ion-button>
+			</div>
 		</form>
 	</ion-grid>
 </ion-content>
