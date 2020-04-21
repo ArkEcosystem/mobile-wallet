@@ -8,7 +8,7 @@ import {
 	StateContext,
 	StateToken,
 } from "@ngxs/store";
-import { first, tap } from "rxjs/operators";
+import { tap } from "rxjs/operators";
 
 import { OnboardingActions } from "./onboarding.actions";
 import { OnboardingConfig } from "./onboarding.config";
@@ -41,13 +41,12 @@ export class OnboardingState implements NgxsOnInit {
 
 	public ngxsOnInit(ctx: StateContext<OnboardingStateModel>): void {
 		this.onboardingService
-			.load()
+			.hasFinishedLegacy()
 			.pipe(
-				first(),
-				tap((localSettings) => {
-					if (localSettings) {
+				tap((isFinished) => {
+					if (isFinished) {
 						ctx.patchState({
-							isFinished: localSettings === "true",
+							isFinished,
 						});
 					}
 				}),

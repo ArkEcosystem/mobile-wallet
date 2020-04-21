@@ -1,17 +1,19 @@
 import { Injectable } from "@angular/core";
 import { CanActivate, Router, UrlTree } from "@angular/router";
-import { Store } from "@ngxs/store";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { OnboardingState } from "./onboarding.state";
+import { OnboardingService } from "./onboarding.service";
 
 @Injectable({ providedIn: "root" })
 export class OnboardingGuard implements CanActivate {
-	constructor(private router: Router, private store: Store) {}
+	constructor(
+		private router: Router,
+		private onboardingService: OnboardingService,
+	) {}
 
 	canActivate(): Observable<boolean | UrlTree> {
-		return this.store.select(OnboardingState.isFinished).pipe(
+		return this.onboardingService.hasFinished().pipe(
 			map((result) => {
 				if (result) {
 					return this.router.parseUrl("/login");

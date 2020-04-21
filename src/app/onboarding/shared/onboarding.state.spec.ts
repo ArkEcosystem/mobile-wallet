@@ -12,7 +12,7 @@ describe("Onboarding State", () => {
 		isFinished: false,
 	};
 	const onboardingServiceSpy = {
-		load: () => of(undefined),
+		hasFinishedLegacy: () => of(false),
 	};
 	let store: Store;
 

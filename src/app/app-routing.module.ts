@@ -147,7 +147,7 @@ const routes: Routes = [
 	imports: [
 		RouterModule.forRoot(routes, {
 			preloadingStrategy: NoPreloading,
-			initialNavigation: false,
+			initialNavigation: true,
 		}),
 	],
 	exports: [RouterModule],

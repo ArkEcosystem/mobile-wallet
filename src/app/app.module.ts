@@ -29,11 +29,9 @@ import { AuthConfig } from "./auth/shared/auth.config";
 import { DelegateService } from "./delegates/shared/delegate.service";
 import { DelegateServiceMock } from "./delegates/shared/delegate.service.mock";
 import { OnboardingConfig } from "./onboarding/shared/onboarding.config";
-import { OnboardingState } from "./onboarding/shared/onboarding.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
 import { UserDataService } from "./services/user-data/user-data.interface";
-import { AppState } from "./shared/state/app.state";
 import { NgxsAsyncStoragePluginModule } from "./shared/state/async-storage/async-storage.module";
 import { WalletModule } from "./wallet/wallet.module";
 
@@ -44,7 +42,7 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
 	declarations: [AppComponent],
 	imports: [
-		NgxsModule.forRoot([AppState, OnboardingState], {
+		NgxsModule.forRoot([], {
 			developmentMode: !environment.production,
 		}),
 		NgxsAsyncStoragePluginModule.forRoot({

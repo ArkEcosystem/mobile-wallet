@@ -30,7 +30,7 @@ describe("Onboarding Component", () => {
 		],
 		providers: [
 			mockProvider(OnboardingService, {
-				load: () => of(undefined),
+				hasFinishedLegacy: () => of(false),
 			}),
 		],
 	});

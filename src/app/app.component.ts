@@ -28,7 +28,6 @@ import {
 	Platform,
 } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
-import { Store } from "@ngxs/store";
 import moment from "moment";
 import { Subject } from "rxjs";
 import { debounceTime, switchMap, takeUntil } from "rxjs/operators";
@@ -43,7 +42,6 @@ import { ArkApiProvider } from "./services/ark-api/ark-api";
 import { EventBusProvider } from "./services/event-bus/event-bus";
 import { LoggerService } from "./services/logger/logger.service";
 import { SettingsDataProvider } from "./services/settings-data/settings-data";
-import { AppState } from "./shared/state/app.state";
 
 @Component({
 	selector: "app-root",
@@ -90,8 +88,9 @@ export class AppComponent implements OnDestroy, OnInit {
 		private config: Config,
 		private keyboard: Keyboard,
 		private loggerService: LoggerService,
-		private store: Store,
-	) {}
+	) {
+		this.initializeApp();
+	}
 
 	initializeApp() {
 		this.platform.ready().then(() => {
@@ -101,6 +100,7 @@ export class AppComponent implements OnDestroy, OnInit {
 			this.initTheme();
 			this.initSessionCheck();
 			this.initBackButton();
+			this.splashScreen.hide();
 		});
 	}
 
@@ -282,14 +282,6 @@ export class AppComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnInit() {
-		this.store.select(AppState.isReady).subscribe((isReady) => {
-			if (isReady) {
-				this.router.initialNavigation();
-				this.splashScreen.hide();
-			}
-		});
-
-		this.initializeApp();
 		this.onUserLogin();
 		this.onUserLogout();
 		this.verifyNetwork();
