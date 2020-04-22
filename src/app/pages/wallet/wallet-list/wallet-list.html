@@ -1,9 +1,9 @@
-<ion-header class="ion-no-border ion-no-shadow">
-	<ion-toolbar>
-		<ion-buttons slot="start">
+<ion-header mode="ios" class="ion-no-border ion-padding">
+	<ion-toolbar class="p-0">
+		<div class="flex items-center justify-between">
+			<img src="/assets/img/logo.png" class="h-6 sm:h-8" />
 			<ion-menu-button></ion-menu-button>
-		</ion-buttons>
-		<ion-title>{{ currentProfile?.name }}</ion-title>
+		</div>
 	</ion-toolbar>
 </ion-header>
 
@@ -27,7 +27,7 @@
 	<empty-list
 		*ngIf="wallets?.length === 0"
 		message="WALLETS_PAGE.ADD_WALLET_TEXT"
-		(clickButton)="presentActionSheet()"
+		[name]="currentProfile?.name"
 	></empty-list>
 
 	<ion-grid

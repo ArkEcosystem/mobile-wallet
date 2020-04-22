@@ -180,7 +180,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 		this.unsubscriber$.complete();
 	}
 
-	private async presentWalletGenerate() {
+	async presentWalletGenerate() {
 		const modal = await this.modalCtrl.create({
 			component: GenerateEntropyModal,
 		});
@@ -212,7 +212,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 		modal.present();
 	}
 
-	private presentWalletImport(role: string) {
+	presentWalletImport(role: string) {
 		if (role === "qrcode") {
 			this.navCtrl.navigateForward("/wallets/import");
 		} else {
