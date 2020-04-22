@@ -2,8 +2,7 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
 	selector: "empty-list",
-	templateUrl: "empty-list.html",
-	styleUrls: ["empty-list.scss"],
+	templateUrl: "wallet-empty-list.component.html",
 })
 export class WalletEmptyListComponent {
 	@Input()
