@@ -3,8 +3,8 @@ import { Select, Store } from "@ngxs/store";
 import { Observable, Subject } from "rxjs";
 import { exhaustMap } from "rxjs/operators";
 
+import { TransactionVoteController } from "../transactions/transaction-vote/shared/transaction-vote.controller";
 import { TransactionVoteType } from "../transactions/transaction-vote/shared/transaction-vote.types";
-import { TransactionVoteController } from "../transactions/transaction-vote/transaction-vote.controller";
 import { DelegateSearchController } from "./delegate-search/delegate-search.controller";
 import { DelegateActions } from "./shared/delegate.actions";
 import { DelegateState } from "./shared/delegate.state";
@@ -57,20 +57,32 @@ export class DelegatesComponent implements OnInit, OnDestroy {
 	public handleDelegateUnvoteBannerClick() {}
 
 	public handleDelegateListClick(delegate: Delegate) {
-		this.openTransactionVote(delegate).subscribe(console.log);
+		this.openTransactionVote(delegate, TransactionVoteType.Vote).subscribe(
+			console.log,
+		);
 	}
 
 	public handleSearch() {
 		this.delegateSearchCtrl
 			.open()
-			.pipe(exhaustMap((delegate) => this.openTransactionVote(delegate)))
+			.pipe(
+				exhaustMap((delegate) =>
+					this.openTransactionVote(
+						delegate,
+						TransactionVoteType.Vote,
+					),
+				),
+			)
 			.subscribe(console.log);
 	}
 
-	private openTransactionVote(delegate: Delegate) {
+	private openTransactionVote(
+		delegate: Delegate,
+		voteType: TransactionVoteType,
+	) {
 		return this.transactionVoteCtrl.open({
 			delegate,
-			voteType: TransactionVoteType.Vote,
+			voteType,
 		});
 	}
 }

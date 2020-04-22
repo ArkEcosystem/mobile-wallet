@@ -13,7 +13,7 @@ import {
 } from "@angular/forms";
 
 import { ARKTOSHI_DP } from "@/app/app.constants";
-import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
+import { BigNumber } from "@/utils/bignumber";
 
 export interface InputCurrencyOutput {
 	display: string;
@@ -61,7 +61,7 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 	public onTouched = () => {};
 
 	writeValue(value: string | number | BigNumber): void {
-		if (SafeBigNumber.isBigNumber(value)) {
+		if (BigNumber.isBigNumber(value)) {
 			this.format(value.toString());
 		} else {
 			this.format(String(value));
@@ -131,8 +131,8 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 			}
 		}
 
-		const zero = new SafeBigNumber(0);
-		const value = display ? new SafeBigNumber(display) : zero;
+		const zero = BigNumber.ZERO;
+		const value = display ? BigNumber.make(display) : zero;
 
 		const satoshi = display
 			? value.multipliedBy(Math.pow(10, this.fractionDigits))

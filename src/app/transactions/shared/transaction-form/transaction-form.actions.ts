@@ -1,12 +1,12 @@
-import { TransactionGroup, TransactionType } from "../transaction.types";
-import { TransactionFormStateModel } from "./transaction-form.state";
+import { TransactionGroup } from "../transaction.types";
+import { TransactionFormModel } from "../transaction.types";
 
 export namespace TransactionFormActions {
 	export class Start {
 		static readonly type = "[TransactionForm] Start";
 		constructor(
 			public payload: {
-				type: TransactionType;
+				type: number;
 				typeGroup: TransactionGroup;
 			},
 		) {}
@@ -14,7 +14,7 @@ export namespace TransactionFormActions {
 
 	export class Update {
 		static readonly type = "[TransactionForm] Update";
-		constructor(public payload: Partial<TransactionFormStateModel>) {}
+		constructor(public payload: Partial<TransactionFormModel>) {}
 	}
 
 	export class GetNonce {

@@ -10,6 +10,10 @@ ion-app {
 	background-color: black !important;
 }
 
+.u-backdrop-blur {
+	backdrop-filter: blur(3px);
+}
+
 .c-avatar {
 	@apply w-10 h-10 mr-2 rounded-full flex justify-center items-center font-bold text-base;
 	background-color: var(--ion-color-light-shade);
@@ -26,6 +30,7 @@ ion-app {
 }
 
 .c-auth-modal {
+	@apply u-backdrop-blur;
 	--backdrop-opacity: 0.3 !important;
 
 	.modal-wrapper {
@@ -47,6 +52,7 @@ ion-app {
 }
 
 .transaction-vote-modal {
+	@apply u-backdrop-blur;
 	--backdrop-opacity: 0.3 !important;
 
 	.modal-wrapper {

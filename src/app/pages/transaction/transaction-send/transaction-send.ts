@@ -34,7 +34,7 @@ import { LoggerService } from "@/services/logger/logger.service";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 import { ArkUtility } from "@/utils/ark-utility";
-import { SafeBigNumber } from "@/utils/bignumber";
+import { BigNumber } from "@/utils/bignumber";
 
 class CombinedResult {
 	public checkerDone: boolean;
@@ -327,7 +327,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		const amount = this.sendForm.get("amount").value;
 
 		const prepareData = {
-			amount: new SafeBigNumber(amount)
+			amount: new BigNumber(amount)
 				.times(constants.WALLET_UNIT_TO_SATOSHI)
 				.toNumber(),
 			vendorField: this.sendForm.get("vendorField").value,

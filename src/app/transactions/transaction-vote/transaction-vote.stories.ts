@@ -5,9 +5,9 @@ import { moduleMetadata, storiesOf } from "@storybook/angular";
 
 import { InputFeeComponentModule } from "@/components/input-fee/input-fee.module";
 
-import { TransactionVoteType } from "../shared/transaction.types";
+import { TransactionVoteController } from "./shared/transaction-vote.controller";
+import { TransactionVoteType } from "./shared/transaction-vote.types";
 import { TransactionVoteComponent } from "./transaction-vote.component";
-import { TransactionVoteController } from "./transaction-vote.controller";
 
 @Component({
 	selector: "test-transaction-vote",
@@ -23,7 +23,7 @@ export class TestTransactionVoteController {
 					username: "test",
 					rank: 1,
 				},
-				type: TransactionVoteType.Vote,
+				voteType: TransactionVoteType.Vote,
 			})
 			.subscribe();
 	}
