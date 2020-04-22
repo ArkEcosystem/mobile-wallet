@@ -13,7 +13,7 @@
 			</ion-text>
 		</div>
 		<div class="ion-padding justify-center items-center">
-			<ion-button>
+			<ion-button (click)="generateWalletHandler()">
 				<ion-icon
 					color="primary-light"
 					size="small"
@@ -21,7 +21,7 @@
 					name="add-outline"
 				></ion-icon>
 			</ion-button>
-			<ion-button (click)="presentActionSheet()">
+			<ion-button (click)="importWalletHandler()">
 				<ion-icon
 					color="primary-light"
 					size="small"
