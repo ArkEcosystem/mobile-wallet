@@ -9,7 +9,7 @@ import { GenerateEntropyModal } from "@/app/modals/generate-entropy/generate-ent
 import { GenerateEntropyModalModule } from "@/app/modals/generate-entropy/generate-entropy.module";
 import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
 import { WalletBackupModalModule } from "@/app/modals/wallet-backup/wallet-backup.module";
-import { WalletEmptyListComponentModule } from "@/app/wallets/empty-list/empty-list.module";
+import { WalletEmptyListComponentModule } from "@/app/wallets/wallets-empty-list/wallets-empty-list.module";
 import { DirectivesModule } from "@/directives/directives.module";
 import { PipesModule } from "@/pipes/pipes.module";
 
