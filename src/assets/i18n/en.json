@@ -293,7 +293,7 @@
 	},
 	"WALLETS_PAGE": {
 		"ADD_WALLET_ERROR": "Could not add wallet",
-		"ADD_WALLET_TEXT": "To import or create wallet click on the button below",
+		"ADD_WALLET_TEXT": "You can create a new or import an existing wallet",
 		"ADDRESS": "Address",
 		"ALERT_SUCCESSFULLY_ENCRYPTED_SECOND_PASSPHRASE": "The second passphrase was successfully encrypted",
 		"BACKUP_ACCOUNT": "IMPORTANT! Backup this 'secret passphrase' securely, without these words you can not restore your wallet or send transactions and ALL ARK TOKENS WILL BE LOST.",
