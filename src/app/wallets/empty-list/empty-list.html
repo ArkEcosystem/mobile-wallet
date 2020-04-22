@@ -1,0 +1,34 @@
+<ion-content class="h-full ion-padding">
+	<ion-grid class="h-full flex flex-col justify-center items-center">
+		<div>
+			<ion-text color="dark" class="text-center">
+				<p class="text-3xl xs:text-4xl md:text-5xl font-bold">
+					Hi, {{ name }}!
+				</p>
+				<p
+					class="leading-normal text-sm xs:text-base md:text-lg text-medium mt-2 px-4"
+				>
+					{{ message | translate }}
+				</p>
+			</ion-text>
+		</div>
+		<div class="ion-padding justify-center items-center">
+			<ion-button>
+				<ion-icon
+					color="primary-light"
+					size="small"
+					slot="icon-only"
+					name="add-outline"
+				></ion-icon>
+			</ion-button>
+			<ion-button (click)="presentActionSheet()">
+				<ion-icon
+					color="primary-light"
+					size="small"
+					slot="icon-only"
+					name="download-outline"
+				></ion-icon>
+			</ion-button>
+		</div>
+	</ion-grid>
+</ion-content>
