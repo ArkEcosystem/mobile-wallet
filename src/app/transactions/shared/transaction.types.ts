@@ -1,14 +1,17 @@
 import { SatoshiAmount } from "@/app/shared/shared.types";
 
-export enum TransactionType {
-	Transfer = "transfer",
-	Vote = "vote",
+export enum TransactionGroup {
+	Standard = 1,
+	Magistration = 2,
 }
 
-export enum TransactionVoteType {
-	Vote = "vote",
-	Unvote = "unvote",
+/** camelCase required for this enum */
+export enum TransactionStandardType {
+	transfer = 0,
+	vote = 3,
 }
+
+export type TransactionType = TransactionStandardType;
 
 export type TransactionFeeDynamic = {
 	avg: SatoshiAmount;

@@ -1,10 +1,17 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { VoteType } from "ark-ts";
 
 import { Delegate } from "@/app/delegates/shared/delegate.types";
 import { SatoshiAmount } from "@/app/shared/shared.types";
 import { InputCurrencyOutput } from "@/components/input-currency/input-currency.component";
+
+import { TransactionVoteType } from "./shared/transaction-vote.types";
+
+export interface TransactionVoteOutput {
+	delegate: Delegate;
+	fee: SatoshiAmount;
+	voteType: TransactionVoteType;
+}
 
 @Component({
 	selector: "transaction-vote",
@@ -15,13 +22,10 @@ export class TransactionVoteComponent implements OnInit {
 	public delegate: Delegate;
 
 	@Input()
-	public type: VoteType;
+	public voteType: TransactionVoteType;
 
 	@Output()
-	public transactionVoteClick = new EventEmitter<{
-		delegate: Delegate;
-		fee: SatoshiAmount;
-	}>();
+	public transactionVoteClick = new EventEmitter<TransactionVoteOutput>();
 
 	public formGroup: FormGroup;
 
@@ -41,6 +45,7 @@ export class TransactionVoteComponent implements OnInit {
 		this.transactionVoteClick.emit({
 			delegate: this.delegate,
 			fee: this.formGroup.get("fee").value,
+			voteType: this.voteType,
 		});
 	}
 

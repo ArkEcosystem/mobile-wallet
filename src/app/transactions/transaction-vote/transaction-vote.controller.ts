@@ -1,27 +1,38 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { ModalController } from "@ionic/angular";
+import { Store } from "@ngxs/store";
 import { from, Observable } from "rxjs";
 import { map, switchMap, takeUntil, tap, withLatestFrom } from "rxjs/operators";
 
 import { Delegate } from "@/app/delegates/shared/delegate.types";
 
-import { TransactionVoteType } from "../shared/transaction.types";
-import { TransactionVoteComponent } from "./transaction-vote.component";
+import { TransactionFormActions } from "../shared/transaction-form/transaction-form.actions";
+import {
+	TransactionGroup,
+	TransactionStandardType,
+} from "../shared/transaction.types";
+import { TransactionVoteType } from "./shared/transaction-vote.types";
+import {
+	TransactionVoteComponent,
+	TransactionVoteOutput,
+} from "./transaction-vote.component";
 
 @Injectable({ providedIn: "root" })
 export class TransactionVoteController {
-	constructor(private modalCtrl: ModalController) {}
+	constructor(private modalCtrl: ModalController, private store: Store) {}
 
 	public open(payload: {
 		delegate: Delegate;
-		type: TransactionVoteType;
-	}): Observable<any> {
-		const voteClick$ = new EventEmitter();
+		voteType: TransactionVoteType;
+	}): Observable<TransactionVoteOutput> {
+		this.startState();
+
+		const voteClick$ = new EventEmitter<TransactionVoteOutput>();
 		const modalElement = this.modalCtrl.create({
 			component: TransactionVoteComponent,
 			componentProps: {
 				delegate: payload.delegate,
-				type: payload.type,
+				voteType: payload.voteType,
 				transactionVoteClick: voteClick$,
 			},
 			mode: "ios",
@@ -37,12 +48,33 @@ export class TransactionVoteController {
 		);
 
 		const byClick$ = voteClick$.pipe(
+			tap((output) => this.assignVotes(output)),
 			withLatestFrom(modal$),
-			tap(([result, modal]) => modal.dismiss(result)),
-			map(([result]) => result),
+			tap(([output, modal]) => modal.dismiss(output)),
+			map(([output]) => output),
 			takeUntil(dismissed$),
 		);
 
 		return byClick$;
+	}
+
+	private startState() {
+		this.store.dispatch(
+			new TransactionFormActions.Start({
+				type: TransactionStandardType.vote,
+				typeGroup: TransactionGroup.Standard,
+			}),
+		);
+	}
+
+	private assignVotes(payload: TransactionVoteOutput) {
+		this.store.dispatch(
+			new TransactionFormActions.Update({
+				fee: payload.fee,
+				asset: {
+					votes: [`${payload.voteType}${payload.delegate.username}`],
+				},
+			}),
+		);
 	}
 }

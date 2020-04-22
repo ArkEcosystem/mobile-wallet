@@ -3,7 +3,7 @@ import { Select, Store } from "@ngxs/store";
 import { Observable, Subject } from "rxjs";
 import { exhaustMap } from "rxjs/operators";
 
-import { TransactionVoteType } from "../transactions/shared/transaction.types";
+import { TransactionVoteType } from "../transactions/transaction-vote/shared/transaction-vote.types";
 import { TransactionVoteController } from "../transactions/transaction-vote/transaction-vote.controller";
 import { DelegateSearchController } from "./delegate-search/delegate-search.controller";
 import { DelegateActions } from "./shared/delegate.actions";
@@ -70,7 +70,7 @@ export class DelegatesComponent implements OnInit, OnDestroy {
 	private openTransactionVote(delegate: Delegate) {
 		return this.transactionVoteCtrl.open({
 			delegate,
-			type: TransactionVoteType.Vote,
+			voteType: TransactionVoteType.Vote,
 		});
 	}
 }

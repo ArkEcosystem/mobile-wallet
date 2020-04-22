@@ -5,6 +5,7 @@ export interface Delegate {
 	rank: number;
 	username: string;
 	votes?: string;
+	publicKey?: string;
 }
 
 export interface IDelegateService {
