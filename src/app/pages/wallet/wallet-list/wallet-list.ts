@@ -128,14 +128,6 @@ export class WalletListPage implements OnInit, OnDestroy {
 				const actionSheet = await this.actionSheetCtrl.create({
 					buttons: [
 						{
-							text: translation.GENERATE,
-							role: "generate",
-							icon: "card",
-							handler: () => {
-								this.presentWalletGenerate();
-							},
-						},
-						{
 							text: translation["WALLETS_PAGE.SCAN_QRCODE"],
 							role: "qrcode",
 							icon: "qr-code",
