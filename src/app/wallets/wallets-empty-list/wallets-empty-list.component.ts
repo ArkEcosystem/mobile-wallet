@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
-	selector: "empty-list",
+	selector: "wallets-empty-list",
 	templateUrl: "wallets-empty-list.component.html",
 })
-export class WalletEmptyListComponent {
+export class WalletsEmptyListComponent {
 	@Input()
 	message: string;
 

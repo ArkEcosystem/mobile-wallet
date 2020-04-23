@@ -3,11 +3,11 @@ import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 
-import { WalletEmptyListComponent } from "./wallets-empty-list.component";
+import { WalletsEmptyListComponent } from "./wallets-empty-list.component";
 
 @NgModule({
-	declarations: [WalletEmptyListComponent],
+	declarations: [WalletsEmptyListComponent],
 	imports: [IonicModule, TranslateModule, CommonModule],
-	exports: [WalletEmptyListComponent],
+	exports: [WalletsEmptyListComponent],
 })
-export class WalletEmptyListComponentModule {}
+export class WalletsEmptyListComponentModule {}
