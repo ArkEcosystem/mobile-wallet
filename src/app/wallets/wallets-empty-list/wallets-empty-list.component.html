@@ -2,7 +2,10 @@
 	<ion-grid class="h-full flex flex-col justify-center items-center">
 		<div>
 			<ion-text color="dark" class="text-center">
-				<p class="text-3xl xs:text-4xl md:text-5xl font-bold">
+				<p
+					class="text-3xl xs:text-4xl md:text-5xl font-bold"
+					data-testid="wallets-empty-list--username"
+				>
 					Hi, {{ name }}!
 				</p>
 				<p
@@ -13,14 +16,22 @@
 			</ion-text>
 		</div>
 		<div class="ion-padding justify-center items-center">
-			<ion-button color="primary-light" (click)="generateWalletHandler()">
+			<ion-button
+				color="primary-light"
+				(click)="generateWalletHandler()"
+				data-testid="wallets-empty-list__button--generate"
+			>
 				<ion-icon
 					size="small"
 					slot="icon-only"
 					name="add-sharp"
 				></ion-icon>
 			</ion-button>
-			<ion-button color="primary-light" (click)="importWalletHandler()">
+			<ion-button
+				color="primary-light"
+				(click)="importWalletHandler()"
+				data-testid="wallets-empty-list__button--import"
+			>
 				<ion-icon
 					size="small"
 					slot="icon-only"
