@@ -1,29 +1,22 @@
-import {
-	AfterViewInit,
-	Component,
-	EventEmitter,
-	Input,
-	OnInit,
-	Output,
-} from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { Store } from "@ngxs/store";
 
 import { Delegate } from "@/app/delegates/shared/delegate.types";
+import { SatoshiAmount } from "@/app/shared/shared.types";
 import { InputCurrencyOutput } from "@/components/input-currency/input-currency.component";
 
-import { TransactionFormActions } from "../shared/transaction-form/transaction-form.actions";
-import {
-	TransactionGroup,
-	TransactionTypeCore,
-} from "../shared/transaction.types";
 import { TransactionVoteType } from "./shared/transaction-vote.types";
 
+export interface TransactionVoteOutput {
+	delegate: Delegate;
+	fee: SatoshiAmount;
+	voteType: TransactionVoteType;
+}
 @Component({
 	selector: "transaction-vote",
 	templateUrl: "transaction-vote.component.html",
 })
-export class TransactionVoteComponent implements OnInit, AfterViewInit {
+export class TransactionVoteComponent implements OnInit {
 	@Input()
 	public delegate: Delegate;
 
@@ -31,11 +24,11 @@ export class TransactionVoteComponent implements OnInit, AfterViewInit {
 	public voteType: TransactionVoteType;
 
 	@Output()
-	public transactionVoteClick = new EventEmitter();
+	public transactionVoteClick = new EventEmitter<TransactionVoteOutput>();
 
 	public formGroup: FormGroup;
 
-	constructor(private store: Store) {}
+	constructor() {}
 
 	ngOnInit() {
 		this.formGroup = new FormGroup({
@@ -47,33 +40,15 @@ export class TransactionVoteComponent implements OnInit, AfterViewInit {
 		});
 	}
 
-	ngAfterViewInit() {
-		this.startState();
+	public handleVote() {
+		this.transactionVoteClick.emit({
+			delegate: this.delegate,
+			fee: this.formGroup.get("fee").value,
+			voteType: this.voteType,
+		});
 	}
 
-	public handleVote(): void {
-		const fee = this.formGroup.get("fee").value;
-		this.store.dispatch(
-			new TransactionFormActions.Update({
-				fee,
-				asset: {
-					votes: [`${this.voteType}${this.delegate.username}`],
-				},
-			}),
-		);
-		this.transactionVoteClick.emit();
-	}
-
-	public handleFeeUpdate(output: InputCurrencyOutput): void {
+	public handleFeeUpdate(output: InputCurrencyOutput) {
 		this.formGroup.patchValue({ fee: output.satoshi.toString() });
-	}
-
-	private startState(): void {
-		this.store.dispatch(
-			new TransactionFormActions.Start({
-				type: TransactionTypeCore.VOTE,
-				typeGroup: TransactionGroup.CORE,
-			}),
-		);
 	}
 }

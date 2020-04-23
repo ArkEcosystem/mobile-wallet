@@ -1,39 +1,33 @@
 import { SatoshiAmount } from "@/app/shared/shared.types";
 
-export enum TransactionGroup {
-	CORE = 1,
-	MAGISTRATE = 2,
+export enum TransactionMode {
+	IN = "in",
+	OUT = "out",
 }
 
-export enum TransactionTypeCore {
-	TRANSFER = 0,
-	VOTE = 3,
-}
-
-export type TransactionFeeDynamic = {
-	avg: SatoshiAmount;
-	max: SatoshiAmount;
-	min: SatoshiAmount;
-};
-
-export type TransactionFeeStatic = SatoshiAmount;
-
-export type TransactionFee = Partial<
-	TransactionFeeDynamic & { static: TransactionFeeStatic }
->;
-
-export interface TransactionFormModel {
-	type: number;
-	typeGroup: number;
+export interface Transaction {
 	amount: SatoshiAmount;
+	asset?: {
+		votes?: string[];
+		payments?: {
+			amount: string;
+			recipient: string;
+		}[];
+		vendorField?: string;
+	};
 	fee: SatoshiAmount;
+	id: string;
 	nonce: string;
 	recipient: string;
 	sender: string;
-	asset?: {
-		votes?: string[];
-	};
-	meta?: {
-		username?: string;
-	};
+	signature: string;
 }
+
+export type TransactionOperation = Transaction & {
+	address: string;
+	blockHeight: string;
+	blockId: string;
+	confirmations: string;
+	date: string;
+	mode: TransactionMode;
+};
