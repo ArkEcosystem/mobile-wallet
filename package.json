@@ -53,6 +53,7 @@
 		"@ngx-translate/http-loader": "^4.0.0",
 		"@ngxs/router-plugin": "^3.6.2",
 		"@ngxs/store": "^3.6.2",
+		"@storybook/addon-actions": "^5.3.18",
 		"angular-html-parser": "^1.4.0",
 		"angular2-qrcode": "^2.0.3",
 		"ark-ts": "^0.4.1",
