@@ -49,6 +49,9 @@ export class TransactionVoteComponent implements OnInit {
 	}
 
 	public handleFeeUpdate(output: InputCurrencyOutput) {
-		this.formGroup.patchValue({ fee: output.satoshi.toString() });
+		// Workaround to avoid ExpressionChangedAfterItHasBeenCheckedError
+		setTimeout(() => {
+			this.formGroup.patchValue({ fee: output.satoshi.toString() });
+		}, 0);
 	}
 }

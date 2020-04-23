@@ -14,7 +14,7 @@ export class TransactionFormState {
 	@Action(TransactionFormActions.Start)
 	public start(
 		ctx: StateContext<Transaction>,
-		action: TransactionFormActions.Start,
+		{ payload }: TransactionFormActions.Start,
 	) {
 		ctx.setState({
 			amount: "0",
@@ -25,21 +25,21 @@ export class TransactionFormState {
 			recipient: undefined,
 			sender: undefined,
 			signature: undefined,
-			...action.payload,
+			...payload,
 		});
 	}
 
 	@Action(TransactionFormActions.Update)
 	public update(
 		ctx: StateContext<Transaction>,
-		action: TransactionFormActions.Update,
+		{ payload }: TransactionFormActions.Update,
 	) {
 		const state = ctx.getState();
 		ctx.patchState({
-			...action.payload,
+			...payload,
 			asset: {
 				...state.asset,
-				...action.payload.asset,
+				...payload.asset,
 			},
 		});
 	}

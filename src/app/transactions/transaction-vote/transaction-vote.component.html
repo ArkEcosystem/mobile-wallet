@@ -6,13 +6,22 @@
 	<p class="text-medium text-base">
 		{{ "DELEGATES_PAGE.DELEGATE" | translate }}
 	</p>
-	<p class="text-dark text-xl font-bold mb-3">{{ delegate?.username }}</p>
-	<input-fee (inputFeeUpdate)="handleFeeUpdate($event)"></input-fee>
+	<p
+		data-testid="transaction-vote__delegate"
+		class="text-dark text-xl font-bold mb-3"
+	>
+		{{ delegate?.username }}
+	</p>
+	<input-fee
+		data-testid="transaction-vote__input"
+		(inputFeeUpdate)="handleFeeUpdate($event)"
+	></input-fee>
 </ion-content>
 
 <ion-footer class="ion-no-border ion-no-shadow p-3">
 	<ion-toolbar>
 		<ion-button
+			data-testid="transaction-vote__button"
 			color="primary-light"
 			expand="block"
 			(click)="handleVote()"
