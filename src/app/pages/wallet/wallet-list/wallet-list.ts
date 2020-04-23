@@ -128,6 +128,14 @@ export class WalletListPage implements OnInit, OnDestroy {
 				const actionSheet = await this.actionSheetCtrl.create({
 					buttons: [
 						{
+							text: translation.GENERATE,
+							role: "generate",
+							icon: "card",
+							handler: () => {
+								this.presentWalletGenerate();
+							},
+						},
+						{
 							text: translation["WALLETS_PAGE.SCAN_QRCODE"],
 							role: "qrcode",
 							icon: "qr-code",
@@ -172,7 +180,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 		this.unsubscriber$.complete();
 	}
 
-	async presentWalletGenerate() {
+	private async presentWalletGenerate() {
 		const modal = await this.modalCtrl.create({
 			component: GenerateEntropyModal,
 		});
@@ -204,7 +212,7 @@ export class WalletListPage implements OnInit, OnDestroy {
 		modal.present();
 	}
 
-	presentWalletImport(role: string) {
+	private presentWalletImport(role: string) {
 		if (role === "qrcode") {
 			this.navCtrl.navigateForward("/wallets/import");
 		} else {

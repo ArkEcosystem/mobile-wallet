@@ -27,9 +27,7 @@
 	<empty-list
 		*ngIf="wallets?.length === 0"
 		message="WALLETS_PAGE.ADD_WALLET_TEXT"
-		[name]="currentProfile?.name"
-		(importWalletClick)="presentActionSheet()"
-		(generateWalletClick)="presentWalletGenerate()"
+		(clickButton)="presentActionSheet()"
 	></empty-list>
 
 	<ion-grid
