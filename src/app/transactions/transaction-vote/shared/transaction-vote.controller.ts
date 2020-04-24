@@ -6,7 +6,7 @@ import { map, switchMap, takeUntil, tap, withLatestFrom } from "rxjs/operators";
 
 import { Delegate } from "@/app/delegates/shared/delegate.types";
 
-import { TransactionFormActions } from "../../shared/transaction-form/transaction-form.actions";
+import { TransactionFormActions } from "../../shared/transaction-form-state/transaction-form.actions";
 import {
 	TransactionVoteComponent,
 	TransactionVoteOutput,

@@ -21,7 +21,7 @@ export class TransactionFormState {
 			asset: undefined,
 			fee: "0",
 			id: undefined,
-			nonce: undefined,
+			nonce: "1",
 			recipient: undefined,
 			sender: undefined,
 			signature: undefined,
