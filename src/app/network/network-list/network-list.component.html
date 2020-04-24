@@ -1,36 +1,42 @@
 <ion-content class="h-full ion-padding">
-	<ion-grid class="h-full flex flex-col justify-center items-center">
-		<div>
+	<ion-grid
+		class="h-full flex flex-col justify-between"
+		data-testid="c-network-list"
+	>
+		<div class="flex flex-col justify-center items-center">
 			<ion-text color="dark" class="text-center">
 				<p
 					class="text-3xl xs:text-4xl md:text-5xl font-bold"
-					data-testid="network-list--title"
+					data-testid="c-network-list--title"
 				>
 					{{ "NETWORKS_PAGE.TITLE" | translate }}
 				</p>
 				<p
 					class="leading-normal text-sm xs:text-base md:text-lg text-medium mt-2 px-4"
-					data-testid="network-list--subtitle"
+					data-testid="c-network-list--subtitle"
 				>
 					{{ "NETWORKS_PAGE.SUBTITLE" | translate }}
 				</p>
 			</ion-text>
-		</div>
-		<div class="ion-padding justify-center items-center">
-			<ion-button
-				color="primary-light"
-				(click)="addNetworkHandler()"
-				data-testid="network-list__button--add"
-			>
-				<ion-icon
-					size="small"
-					slot="icon-only"
-					name="add-sharp"
-				></ion-icon>
-			</ion-button>
+			<div class="ion-padding justify-center items-center">
+				<ion-button
+					color="primary-light"
+					(click)="addNetworkHandler()"
+					data-testid="c-network-list__button--add"
+				>
+					<ion-icon
+						size="small"
+						slot="icon-only"
+						name="add-sharp"
+					></ion-icon>
+				</ion-button>
+			</div>
 		</div>
 		<form *ngIf="networks?.length > 0" class="w-full">
-			<div *ngFor="let network of networks">
+			<div
+				*ngFor="let network of networks"
+				data-testid="c-network-list__items"
+			>
 				<network-card
 					[name]="network.name"
 					[type]="network.type"
