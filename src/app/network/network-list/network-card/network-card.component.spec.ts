@@ -6,7 +6,7 @@ import {
 
 import { NetworkCardComponent } from "./network-card.component";
 
-fdescribe("Network Card", () => {
+describe("Network Card", () => {
 	let spectator: SpectatorHost<NetworkCardComponent>;
 	const createHost = createHostComponentFactory({
 		component: NetworkCardComponent,
