@@ -22,9 +22,9 @@ describe("Network Card", () => {
 		spectator = createHost(`
 			<network-card type="mainnet" name="Bitcoin"></network-card>
 		`);
-		const networkType = spectator.query(byTestId("network-card--type"))
+		const networkType = spectator.query(byTestId("c-network-card--type"))
 			.innerHTML;
-		const networkName = spectator.query(byTestId("network-card--name"))
+		const networkName = spectator.query(byTestId("c-network-card--name"))
 			.innerHTML;
 
 		expect(networkType).toEqual(" mainnet ");
