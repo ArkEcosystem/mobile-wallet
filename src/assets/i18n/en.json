@@ -134,7 +134,9 @@
 		"INTERNET_DESCONNECTED": "Unable to connect to the Internet!",
 		"PEER": "Peer",
 		"RESET_TO_SEED": "Reset to Seed Peer",
-		"VERSION": "Version"
+		"VERSION": "Version",
+		"TITLE": "Network",
+		"SUBTITLE": "Seleft one of the networks or add your"
 	},
 	"NEXT": "Next",
 	"NO": "No",
