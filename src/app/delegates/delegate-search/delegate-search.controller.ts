@@ -1,16 +1,16 @@
 import { EventEmitter, Injectable } from "@angular/core";
 import { ModalController } from "@ionic/angular";
-import { Delegate } from "ark-ts";
 import { from, Observable } from "rxjs";
 import { map, switchMap, takeUntil, tap, withLatestFrom } from "rxjs/operators";
 
+import { Delegate } from "../shared/delegate.types";
 import { DelegateSearchComponent } from "./delegate-search.component";
 
 @Injectable({ providedIn: "root" })
 export class DelegateSearchController {
 	constructor(private modalCtrl: ModalController) {}
 
-	public open(): Observable<unknown> {
+	public open(): Observable<Delegate> {
 		const delegateSearchClick$ = new EventEmitter<Delegate>();
 
 		const modalElement = this.modalCtrl.create({

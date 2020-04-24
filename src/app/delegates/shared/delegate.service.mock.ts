@@ -1,4 +1,5 @@
 import { Observable, of } from "rxjs";
+import { delay } from "rxjs/operators";
 
 import { Delegate, IDelegateService } from "./delegate.types";
 
@@ -58,6 +59,6 @@ export class DelegateServiceMock implements IDelegateService {
 				username: "genesis_11",
 				rank: 11,
 			},
-		]);
+		]).pipe(delay(1200));
 	}
 }

@@ -1,0 +1,99 @@
+<section
+	*ngIf="transaction | transaction as tx"
+	[ngClass]="{
+		'transaction-detail--out': tx.mode === 'out',
+		'transaction-detail--in': tx.mode === 'in'
+	}"
+>
+	<div class="mb-4 relative">
+		<identicon
+			class="block w-16 h-16"
+			[value]="transaction.recipient"
+		></identicon>
+	</div>
+	<div
+		class="transaction-detail__total rounded-r-md p-2 mb-4 px-4 -ml-4 bg-light w-auto inline-block"
+	>
+		<span class="text-medium-shade text-xs font-medium">
+			{{ "TRANSACTIONS_PAGE.TOTAL_AMOUNT" | translate }}
+		</span>
+		<h2
+			data-testid="transaction__total-amount"
+			class="transaction-detail__total__amount text-xl font-semibold text-dark"
+		>
+			{{ tx.totalSpent | unitsSatoshi }} {{ token }}
+		</h2>
+	</div>
+
+	<ul class="transaction-detail__list space-y-5">
+		<li class="transaction-detail__list__item" *ngIf="transaction.id">
+			<p class="transaction-detail__list__item__title">
+				{{ "TRANSACTIONS_PAGE.FROM" | translate }}
+			</p>
+			<p
+				data-testid="transaction__id"
+				class="transaction-detail__list__item__desc"
+			>
+				{{ transaction.id }}
+			</p>
+		</li>
+		<li class="transaction-detail__list__item">
+			<p class="transaction-detail__list__item__title">
+				{{ "TRANSACTIONS_PAGE.FROM" | translate }}
+			</p>
+			<p
+				data-testid="transaction__sender"
+				class="transaction-detail__list__item__desc"
+			>
+				{{ transaction.sender }}
+			</p>
+		</li>
+		<li class="transaction-detail__list__item">
+			<p class="transaction-detail__list__item__title">
+				{{ "TRANSACTIONS_PAGE.TO" | translate }}
+			</p>
+			<p
+				data-testid="transaction__recipient"
+				class="transaction-detail__list__item__desc"
+			>
+				{{ transaction.recipient }}
+			</p>
+		</li>
+		<li class="transaction-detail__list__item">
+			<p class="transaction-detail__list__item__title">
+				{{ "TRANSACTIONS_PAGE.FEE" | translate }}
+			</p>
+			<p
+				data-testid="transaction__fee"
+				class="transaction-detail__list__item__desc"
+			>
+				{{ transaction.fee | unitsSatoshi }}
+			</p>
+		</li>
+		<li class="transaction-detail__list__item">
+			<p class="transaction-detail__list__item__title">
+				{{ "TRANSACTIONS_PAGE.AMOUNT" | translate }}
+			</p>
+			<p
+				data-testid="transaction__amount"
+				class="transaction-detail__list__item__desc"
+			>
+				{{ transaction.amount | unitsSatoshi }}
+			</p>
+		</li>
+		<li
+			class="transaction-detail__list__item"
+			*ngIf="transaction.asset?.vendorField"
+		>
+			<p class="transaction-detail__list__item__title">
+				{{ "TRANSACTIONS_PAGE.VENDOR_FIELD" | translate }}
+			</p>
+			<p
+				data-testid="transaction__vendor-field"
+				class="transaction-detail__list__item__desc"
+			>
+				{{ transaction.asset?.vendorField | unitsSatoshi }}
+			</p>
+		</li>
+	</ul>
+</section>

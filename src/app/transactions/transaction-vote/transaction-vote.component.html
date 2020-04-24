@@ -1,0 +1,38 @@
+<ion-header mode="ios" class="ion-no-shadow ion-no-border">
+	<div class="c-modal-dragger"></div>
+</ion-header>
+
+<ion-content mode="ios" class="ion-padding">
+	<p class="text-medium text-base">
+		{{ "DELEGATES_PAGE.DELEGATE" | translate }}
+	</p>
+	<p
+		data-testid="transaction-vote__delegate"
+		class="text-dark text-xl font-bold mb-3"
+	>
+		{{ delegate?.username }}
+	</p>
+	<input-fee
+		data-testid="transaction-vote__input"
+		(inputFeeUpdate)="handleFeeUpdate($event)"
+	></input-fee>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-no-shadow p-3">
+	<ion-toolbar>
+		<ion-button
+			data-testid="transaction-vote__button"
+			color="primary-light"
+			expand="block"
+			(click)="handleVote()"
+			[disabled]="!formGroup.valid"
+		>
+			{{
+				(voteType === "+"
+					? "DELEGATES_PAGE.VOTE"
+					: "DELEGATES_PAGE.UNVOTE"
+				) | translate
+			}}
+		</ion-button>
+	</ion-toolbar>
+</ion-footer>

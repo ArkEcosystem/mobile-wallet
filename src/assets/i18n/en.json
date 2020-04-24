@@ -280,7 +280,9 @@
 		"BUSINESS_UPDATE": "Business Update",
 		"BRIDGECHAIN_REGISTRATION": "Bridgechain Registration",
 		"BRIDGECHAIN_RESIGNATION": "Bridgechain Resignation",
-		"BRIDGECHAIN_UPDATE": "Bridgechain Update"
+		"BRIDGECHAIN_UPDATE": "Bridgechain Update",
+		"VENDOR_FIELD": "Vendor Field",
+		"TOTAL_AMOUNT": "Total Amount"
 	},
 	"TYPE": "Type",
 	"VALIDATION": {

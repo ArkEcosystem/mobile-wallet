@@ -7,7 +7,7 @@ import {
 } from "@angular/forms";
 
 import { WALLET_UNIT_TO_SATOSHI } from "@/app/app.constants";
-import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
+import { BigNumber } from "@/utils/bignumber";
 
 import { InputCurrencyOutput } from "../input-currency/input-currency.component";
 
@@ -50,7 +50,7 @@ export class InputFeeComponent implements OnInit {
 
 	public hasRange = false;
 	public rangeControl = new FormControl(0);
-	public inputControl = new FormControl(0);
+	public inputControl = new FormControl(BigNumber.ZERO);
 	public limitMin = 1;
 
 	// Arktoshi
@@ -104,9 +104,7 @@ export class InputFeeComponent implements OnInit {
 
 	private setInputValue(value: number, emitEvent = true) {
 		// The input value should be in human
-		const satoshi = new SafeBigNumber(value).dividedBy(
-			WALLET_UNIT_TO_SATOSHI,
-		);
+		const satoshi = BigNumber.make(value).dividedBy(WALLET_UNIT_TO_SATOSHI);
 		this.inputControl.setValue(satoshi, {
 			emitEvent,
 		});

@@ -1,6 +1,6 @@
 import * as constants from "@/app/app.constants";
 
-import { SafeBigNumber as BigNumber } from "./bignumber";
+import { BigNumber } from "./bignumber";
 
 export class ArkUtility {
 	public static getRandomInt(min: number, max: number): number {

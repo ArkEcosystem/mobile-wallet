@@ -1,7 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Select, Store } from "@ngxs/store";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
+import { exhaustMap } from "rxjs/operators";
 
+import { TransactionVoteController } from "../transactions/transaction-vote/shared/transaction-vote.controller";
+import { TransactionVoteType } from "../transactions/transaction-vote/shared/transaction-vote.types";
 import { DelegateSearchController } from "./delegate-search/delegate-search.controller";
 import { DelegateActions } from "./shared/delegate.actions";
 import { DelegateState } from "./shared/delegate.state";
@@ -11,21 +14,29 @@ import { Delegate } from "./shared/delegate.types";
 	selector: "delegates",
 	templateUrl: "delegates.component.html",
 })
-export class DelegatesComponent implements OnInit {
+export class DelegatesComponent implements OnInit, OnDestroy {
 	@Select(DelegateState.delegates)
 	public delegates$: Observable<Delegate[]>;
 
 	private page = 0;
 	private limit = 10;
 
+	private unsubscriber$ = new Subject();
+
 	constructor(
 		private store: Store,
-		private delegateSearchController: DelegateSearchController,
+		private delegateSearchCtrl: DelegateSearchController,
+		private transactionVoteCtrl: TransactionVoteController,
 	) {}
 
 	ngOnInit() {
 		// TODO: Workaround to wait for the state to initialize
 		setTimeout(() => this.refresh(), 1500);
+	}
+
+	ngOnDestroy() {
+		this.unsubscriber$.next();
+		this.unsubscriber$.complete();
 	}
 
 	public refresh() {
@@ -43,11 +54,35 @@ export class DelegatesComponent implements OnInit {
 		}, 500);
 	}
 
+	public handleDelegateUnvoteBannerClick() {}
+
+	public handleDelegateListClick(delegate: Delegate) {
+		this.openTransactionVote(delegate, TransactionVoteType.Vote).subscribe(
+			console.log,
+		);
+	}
+
 	public handleSearch() {
-		this.delegateSearchController.open().subscribe({
-			next: (x) => console.log(1, x),
-			error: (x) => console.log(2, x),
-			complete: () => console.log(3),
+		this.delegateSearchCtrl
+			.open()
+			.pipe(
+				exhaustMap((delegate) =>
+					this.openTransactionVote(
+						delegate,
+						TransactionVoteType.Vote,
+					),
+				),
+			)
+			.subscribe(console.log);
+	}
+
+	private openTransactionVote(
+		delegate: Delegate,
+		voteType: TransactionVoteType,
+	) {
+		return this.transactionVoteCtrl.open({
+			delegate,
+			voteType,
 		});
 	}
 }

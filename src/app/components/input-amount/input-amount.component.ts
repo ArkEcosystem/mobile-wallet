@@ -11,7 +11,7 @@ import { MarketCurrency } from "@/models/model";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { UserDataService } from "@/services/user-data/user-data.interface";
-import BigNumber, { SafeBigNumber } from "@/utils/bignumber";
+import { BigNumber } from "@/utils/bignumber";
 
 @Component({
 	selector: "input-amount",
@@ -65,7 +65,7 @@ export class InputAmountComponent implements OnInit {
 	}
 
 	public onInputToken(currency: string | BigNumber) {
-		const fiatAmount = new SafeBigNumber(currency).multipliedBy(
+		const fiatAmount = BigNumber.make(currency).multipliedBy(
 			this.marketCurrency.price,
 		);
 		this.parentForm.form.controls.amountEquivalent.setValue(fiatAmount, {
@@ -74,7 +74,7 @@ export class InputAmountComponent implements OnInit {
 	}
 
 	public onInputFiat(currency: string | BigNumber) {
-		const tokenAmount = new SafeBigNumber(currency).dividedBy(
+		const tokenAmount = BigNumber.make(currency).dividedBy(
 			this.marketCurrency.price,
 		);
 		this.parentForm.form.controls.amount.setValue(tokenAmount, {

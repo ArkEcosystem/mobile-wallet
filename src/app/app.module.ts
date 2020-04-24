@@ -33,6 +33,7 @@ import { GlobalErrorHandlerService } from "./services/error-handler/error-handle
 import { UserDataServiceImpl } from "./services/user-data/user-data";
 import { UserDataService } from "./services/user-data/user-data.interface";
 import { NgxsAsyncStoragePluginModule } from "./shared/state/async-storage/async-storage.module";
+import { TransactionsModule } from "./transactions/transactions.module";
 import { WalletModule } from "./wallet/wallet.module";
 
 export function createTranslateLoader(http: HttpClient) {
@@ -64,6 +65,7 @@ export function createTranslateLoader(http: HttpClient) {
 		}),
 		AuthModule,
 		WalletModule,
+		TransactionsModule,
 		ChartsModule,
 		HammerModule,
 		PipesModule,

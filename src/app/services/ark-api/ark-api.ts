@@ -26,7 +26,7 @@ import { StorageProvider } from "@/services/storage/storage";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 import { PeerDiscovery } from "@/utils/ark-peer-discovery";
-import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
+import { BigNumber } from "@/utils/bignumber";
 
 import ArkClient, { WalletResponse } from "../../utils/ark-client";
 import { ArkUtility } from "../../utils/ark-utility";

@@ -2,8 +2,6 @@ import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 import { moduleMetadata, storiesOf } from "@storybook/angular";
 
-import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-drawer.module";
-
 import { DelegateListComponentModule } from "../delegate-list/delegate-list.module";
 import { DelegateService } from "../shared/delegate.service";
 import { DelegateServiceMock } from "../shared/delegate.service.mock";
@@ -16,7 +14,6 @@ storiesOf("delegate-search", module)
 			imports: [
 				TranslateModule,
 				IonicModule,
-				BottomDrawerComponentModule,
 				DelegateListComponentModule,
 			],
 			providers: [

@@ -42,13 +42,17 @@
 		<ion-toolbar class="px-3">
 			<delegate-unvote-banner
 				username="genesis_1"
+				(delegateUnvoteBannerClick)="handleDelegateUnvoteBannerClick()"
 			></delegate-unvote-banner>
 		</ion-toolbar>
 	</ion-header>
 
-	<delegate-list [delegates]="delegates$ | async"></delegate-list>
+	<delegate-list
+		[delegates]="delegates$ | async"
+		(delegateListClick)="handleDelegateListClick($event)"
+	></delegate-list>
 
-	<ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+	<ion-infinite-scroll threshold="50px" (ionInfinite)="loadData($event)">
 		<ion-infinite-scroll-content
 			loadingSpinner="circles"
 			loadingText="Loading more data..."

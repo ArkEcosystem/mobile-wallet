@@ -1,0 +1,33 @@
+:host {
+	.transaction-detail--out {
+		.transaction-detail__total {
+			background: rgba(var(--ion-color-danger-rgb), 0.1);
+		}
+		.transaction-detail__total__amount {
+			@apply text-danger-shade;
+		}
+		.transaction-detail__total__amount::before {
+			content: "-";
+		}
+	}
+
+	.transaction-detail--in {
+		.transaction-detail__total {
+			background: rgba(var(--ion-color-success-rgb), 0.1);
+		}
+		.transaction-detail__total__amount {
+			@apply text-success-shade;
+		}
+		.transaction-detail__total__amount::before {
+			content: "+";
+		}
+	}
+
+	.transaction-detail__list__item__title {
+		@apply text-sm font-medium text-medium;
+	}
+
+	.transaction-detail__list__item__desc {
+		@apply text-base text-dark-tint font-semibold;
+	}
+}

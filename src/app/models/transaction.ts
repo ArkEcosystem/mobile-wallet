@@ -4,7 +4,7 @@ import moment from "moment";
 
 import { TRANSACTION_GROUPS, TRANSACTION_TYPES } from "@/app/app.constants";
 import { MarketCurrency, MarketHistory, MarketTicker } from "@/models/market";
-import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
+import { BigNumber } from "@/utils/bignumber";
 
 import { ArkUtility } from "../utils/ark-utility";
 

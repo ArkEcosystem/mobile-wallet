@@ -6,7 +6,7 @@ import { MarketCurrency, MarketTicker } from "@/models/model";
 import { UserSettings } from "@/models/settings";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
-import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
+import { BigNumber } from "@/utils/bignumber";
 
 @Pipe({
 	name: "marketNumber",
