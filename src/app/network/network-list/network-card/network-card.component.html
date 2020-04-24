@@ -1,0 +1,39 @@
+<div class="w-full lg:flex" data-testid="c-network-card">
+	<div
+		class="w-full border border-gray-400 bg-white rounded-lg leading-normal"
+	>
+		<div class="flex items-center justify-between">
+			<div class="ion-padding flex">
+				<div
+					class="rounder-full network-card--img"
+					data-testid="network-card--img"
+				></div>
+				<div class="flex-col">
+					<p
+						class="text-sm text-gray-600"
+						data-testid="network-card--type"
+					>
+						{{ type }}
+					</p>
+					<p
+						class="text-gray-900 font-bold text-xl mb-2"
+						data-testid="network-card--name"
+					>
+						{{ name }}
+					</p>
+				</div>
+			</div>
+			<div class="flex justify-center items-center">
+				<div class="round self-center">
+					<input
+						type="checkbox"
+						id="checkbox"
+						data-testid="network-card--is-selected"
+					/>
+					<label for="checkbox"></label>
+				</div>
+			</div>
+		</div>
+		<div class="flex items-center"></div>
+	</div>
+</div>
