@@ -33,6 +33,7 @@
 		"@angular/platform-browser-dynamic": "~9.1.0",
 		"@angular/router": "~9.1.0",
 		"@arkecosystem/crypto": "^2.6.31",
+		"@arkecosystem/platform-sdk": "^0.2.0",
 		"@ionic-native/background-mode": "^5.23.0",
 		"@ionic-native/clipboard": "^5.23.0",
 		"@ionic-native/core": "^5.23.0",
