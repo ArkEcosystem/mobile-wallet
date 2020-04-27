@@ -13,21 +13,7 @@ storiesOf("network-list", module)
 			imports: [TranslateModule, IonicModule, NetworkCardComponentModule],
 		}),
 	)
-	.add("Empty network list", () => ({
-		component: NetworkListComponent,
-		props: {
-			handleAddNetwork: action("Add network"),
-			networks: [],
-		},
-		template: `
-			<ion-app>
-				<ion-content>
-					<network-list [networks]="networks" (addNetworkHandler)="handleAddNetwork()"></network-list>
-				</ion-content>
-			</ion-app>
-		`,
-	}))
-	.add("Network list", () => ({
+	.add("Default", () => ({
 		component: NetworkListComponent,
 		props: {
 			handleAddNetwork: action("Add network"),

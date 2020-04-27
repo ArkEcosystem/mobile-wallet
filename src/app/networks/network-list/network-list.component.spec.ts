@@ -15,43 +15,6 @@ describe("Network List", () => {
 		imports: [IonicModule.forRoot(), TranslateModule.forRoot()],
 	});
 
-	it("should create", () => {
-		spectator = createHost(`<network-list></network-list>`);
-		const component = spectator.query(byTestId("c-network-list"));
-		expect(component).toBeTruthy();
-	});
-
-	it("should render the title properly", () => {
-		spectator = createHost(`<network-list></network-list>`);
-		const title = spectator.query(byTestId("c-network-list--title"));
-
-		expect(title).toHaveText("NETWORKS_PAGE.OVERVIEW");
-	});
-
-	it("should render the subtitle properly", () => {
-		spectator = createHost(`<network-list></network-list>`);
-		const subtitle = spectator.query(byTestId("c-network-list--subtitle"));
-
-		expect(subtitle).toHaveText("NETWORKS_PAGE.SUBTITLE");
-	});
-
-	it("should render the add network button", () => {
-		spectator = createHost(`<network-list></network-list>`);
-		let output: any;
-		spectator
-			.output("addNetworkHandler")
-			.subscribe(() => (output = "add network"));
-
-		const addButton = spectator.query(
-			byTestId("c-network-list__button--add"),
-		);
-
-		spectator.click(addButton);
-
-		expect(addButton).toBeTruthy();
-		expect(output).toEqual("add network");
-	});
-
 	it("should render with an empty network list", () => {
 		spectator = createHost(`<network-list></network-list>`);
 		const itemsList = spectator.query(byTestId("c-network-list__items"));
