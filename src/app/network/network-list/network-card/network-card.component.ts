@@ -7,8 +7,8 @@ import { Component, Input } from "@angular/core";
 })
 export class NetworkCardComponent {
 	public networkImages = {
-		mainet: "logo-no-shadow",
-		devnet: "logo-no-shadow-gray",
+		mainet: "ark-mainet",
+		devnet: "ark-devnet",
 	};
 
 	@Input()
