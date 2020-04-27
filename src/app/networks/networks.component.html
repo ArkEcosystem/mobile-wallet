@@ -1,7 +1,10 @@
 <ion-header [translucent]="true" mode="ios">
 	<ion-toolbar>
 		<ion-buttons slot="start">
-			<ion-button (click)="handleSearch()">
+			<ion-button
+				(click)="handleSearch()"
+				data-testid="c-networks__button--search"
+			>
 				<ion-icon
 					class="text-base"
 					color="dark"
@@ -10,7 +13,7 @@
 			</ion-button>
 		</ion-buttons>
 		<ion-buttons slot="end">
-			<ion-button disabled>
+			<ion-button data-testid="c-networks__button--menu">
 				<ion-icon
 					class="text-base"
 					color="dark"
@@ -18,11 +21,46 @@
 				></ion-icon>
 			</ion-button>
 		</ion-buttons>
-		<ion-title>{{ "DELEGATES_PAGE.DELEGATES" | translate }}</ion-title>
 	</ion-toolbar>
 </ion-header>
-<networks-list
-	*ngIf="networks?.length > 0"
-	[networks]="networks"
-	(addNetworkHandler)="handleNetworkAdd()"
-></networks-list>
+<ion-content class="h-full ion-padding">
+	<ion-grid
+		class="h-full flex flex-col justify-between"
+		data-testid="c-networks"
+	>
+		<div class="flex flex-col justify-center items-center">
+			<ion-text color="dark" class="text-center">
+				<p
+					class="text-3xl xs:text-4xl md:text-5xl font-bold"
+					data-testid="c-networks--title"
+				>
+					{{ "NETWORKS_PAGE.NETWORK_OVERVIEW" | translate }}
+				</p>
+				<p
+					class="leading-normal text-sm xs:text-base md:text-lg text-medium mt-2 px-4"
+					data-testid="c-networks--subtitle"
+				>
+					{{ "NETWORKS_PAGE.SUBTITLE" | translate }}
+				</p>
+			</ion-text>
+			<div class="ion-padding justify-center items-center">
+				<ion-button
+					color="primary-light"
+					(click)="handleNetworkAdd()"
+					data-testid="c-networks__button--add"
+				>
+					<ion-icon
+						size="small"
+						slot="icon-only"
+						name="add-sharp"
+					></ion-icon>
+				</ion-button>
+			</div>
+		</div>
+		<network-list
+			*ngIf="networks?.length > 0"
+			[networks]="networks"
+			(addNetworkHandler)="handleNetworkAdd()"
+		></network-list>
+	</ion-grid>
+</ion-content>

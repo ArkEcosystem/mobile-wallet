@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 
-import { NetworksListComponentModule } from "./networks-list/networks-list.component.module";
+import { NetworkListComponentModule } from "./network-list/network-list.component.module";
 import { NetworksComponent } from "./networks.component";
 
 @NgModule({
@@ -12,8 +12,8 @@ import { NetworksComponent } from "./networks.component";
 		IonicModule,
 		TranslateModule,
 		CommonModule,
-		NetworksListComponentModule,
+		NetworkListComponentModule,
 	],
 	exports: [NetworksComponent],
 })
-export class NetworkListComponentModule {}
+export class NetworkComponentModule {}
