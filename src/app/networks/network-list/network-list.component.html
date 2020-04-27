@@ -1,0 +1,8 @@
+<form class="w-full" data-testid="c-network-list">
+	<div *ngFor="let network of networks" data-testid="c-network-list__items">
+		<network-card
+			[name]="network.name"
+			[type]="network.type"
+		></network-card>
+	</div>
+</form>

@@ -1,0 +1,39 @@
+<div
+	class="mb-4 w-full lg:flex c-network-card rounded-lg"
+	data-testid="c-network-card"
+>
+	<div class="w-full leading-normal">
+		<div class="flex items-center justify-between">
+			<div class="ion-padding flex">
+				<img
+					class="c-network-card--img mr-5"
+					data-testid="c-network-card--img"
+					[src]="'assets/img/network/' + networkImages[type] + '.png'"
+				/>
+				<div class="flex-col">
+					<p
+						class="text-sm c-network-card--type"
+						data-testid="c-network-card--type"
+					>
+						{{ type }}
+					</p>
+					<p
+						class="font-bold text-xl mb-2"
+						data-testid="c-network-card--name"
+					>
+						{{ name }}
+					</p>
+				</div>
+			</div>
+			<div class="flex justify-center items-center mr-5">
+				<div class="self-center">
+					<ion-checkbox
+						mode="ios"
+						data-testid="c-network-card--is-selected"
+					></ion-checkbox>
+				</div>
+			</div>
+		</div>
+		<div class="flex items-center"></div>
+	</div>
+</div>
