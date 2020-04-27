@@ -1,53 +1,23 @@
-.round {
-	width: 3rem;
-	position: relative;
+.c-network-card {
+	border: 1px solid var(--ion-color-medium-tint);
 }
 
-.round label {
-	background-color: #fff;
-	border: 1px solid #ccc;
-	border-radius: 50%;
-	cursor: pointer;
-	height: 28px;
-	left: 0;
-	position: absolute;
-	top: 0;
-	width: 28px;
+.c-network-card--type {
+	color: var(--ion-color-medium-tint);
+	text-transform: capitalize;
 }
 
-.round label:after {
-	border: 2px solid var(--ion-color-success-shade);
-	border-top: none;
-	border-right: none;
-	content: "";
-	height: 8px;
-	left: 8px;
-	opacity: 0;
-	position: absolute;
-	top: 8px;
-	transform: rotate(-45deg);
-	width: 12px;
-}
-
-.round input[type="checkbox"] {
-	visibility: hidden;
-}
-
-.round input[type="checkbox"]:checked + label {
-	background-color: rgba(var(--ion-color-success-rgb), 0.2);
-	border: 0 none;
-}
-
-.round input[type="checkbox"]:checked + label:after {
-	opacity: 1;
-}
-
-.network-card--img {
+.c-network-card--img {
 	width: 50px;
 	height: 50px;
 	border-radius: 25px;
-	background: url("https://i0.pngocean.com/files/698/439/786/bitcoin-cryptocurrency-logo-bitcoin.jpg");
-	background-size: cover;
-	background-position: center center;
-	margin-right: 1.5rem;
+}
+
+ion-checkbox {
+	--border-color-checked: transparent;
+	--height: 25px;
+	--width: 25px;
+	--checkmark-width: 3px;
+	--checkmark-color: var(--ion-color-success-shade);
+	--background-checked: rgba(var(--ion-color-success-rgb), 0.2);
 }

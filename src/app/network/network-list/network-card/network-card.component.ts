@@ -6,14 +6,19 @@ import { Component, Input } from "@angular/core";
 	styleUrls: ["network-card.pcss"],
 })
 export class NetworkCardComponent {
-	@Input()
-	name: string;
+	public networkImages = {
+		mainet: "logo-no-shadow",
+		devnet: "logo-no-shadow-gray",
+	};
 
 	@Input()
-	type: string;
+	public name: string;
 
 	@Input()
-	isSelected: boolean;
+	public type: string;
+
+	@Input()
+	public isSelected: boolean;
 
 	constructor() {}
 }

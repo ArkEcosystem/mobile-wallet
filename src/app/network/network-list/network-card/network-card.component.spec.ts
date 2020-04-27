@@ -20,14 +20,12 @@ describe("Network Card", () => {
 
 	it("should have a network name and type rendered", () => {
 		spectator = createHost(`
-			<network-card type="mainnet" name="Bitcoin"></network-card>
+			<network-card type="mainet" name="ARK Ecosystem"></network-card>
 		`);
-		const networkType = spectator.query(byTestId("c-network-card--type"))
-			.innerHTML;
-		const networkName = spectator.query(byTestId("c-network-card--name"))
-			.innerHTML;
+		const networkType = spectator.query(byTestId("c-network-card--type"));
+		const networkName = spectator.query(byTestId("c-network-card--name"));
 
-		expect(networkType).toEqual(" mainnet ");
-		expect(networkName).toEqual(" Bitcoin ");
+		expect(networkType).toHaveText("mainet");
+		expect(networkName).toHaveText("ARK Ecosystem");
 	});
 });

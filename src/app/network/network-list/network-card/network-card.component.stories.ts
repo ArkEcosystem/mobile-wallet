@@ -15,7 +15,7 @@ storiesOf("network-card", module)
 		component: NetworkCardComponent,
 		props: {
 			name: "ARK Ecosystem",
-			type: "Mainet",
+			type: "devnet",
 		},
 		template: `
 			<ion-app>

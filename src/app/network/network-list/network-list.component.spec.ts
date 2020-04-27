@@ -23,18 +23,16 @@ describe("Network List", () => {
 
 	it("should render the title properly", () => {
 		spectator = createHost(`<network-list></network-list>`);
-		const title = spectator.query(byTestId("c-network-list--title"))
-			.innerHTML;
+		const title = spectator.query(byTestId("c-network-list--title"));
 
-		expect(title).toEqual(" NETWORKS_PAGE.TITLE ");
+		expect(title).toHaveText("NETWORKS_PAGE.TITLE");
 	});
 
 	it("should render the subtitle properly", () => {
 		spectator = createHost(`<network-list></network-list>`);
-		const subtitle = spectator.query(byTestId("c-network-list--subtitle"))
-			.innerHTML;
+		const subtitle = spectator.query(byTestId("c-network-list--subtitle"));
 
-		expect(subtitle).toEqual(" NETWORKS_PAGE.SUBTITLE ");
+		expect(subtitle).toHaveText("NETWORKS_PAGE.SUBTITLE");
 	});
 
 	it("should render the add network button", () => {
