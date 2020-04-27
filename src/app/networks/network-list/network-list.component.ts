@@ -6,14 +6,14 @@ import { Component, EventEmitter, Input, Output } from "@angular/core";
 })
 export class NetworkListComponent {
 	@Output()
-	public addNetworkClick = new EventEmitter();
+	public addNetworkHandler = new EventEmitter();
 
 	@Input()
 	public networks = [];
 
 	constructor() {}
 
-	public addNetworkHandler() {
-		this.addNetworkClick.emit();
+	public handleAddNetwork() {
+		this.addNetworkHandler.emit();
 	}
 }

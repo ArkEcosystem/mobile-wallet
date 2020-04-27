@@ -1,0 +1,28 @@
+<ion-header [translucent]="true" mode="ios">
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-button (click)="handleSearch()">
+				<ion-icon
+					class="text-base"
+					color="dark"
+					src="/assets/svg/search.svg"
+				></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-buttons slot="end">
+			<ion-button disabled>
+				<ion-icon
+					class="text-base"
+					color="dark"
+					src="/assets/svg/menu.svg"
+				></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>{{ "DELEGATES_PAGE.DELEGATES" | translate }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+<networks-list
+	*ngIf="networks?.length > 0"
+	[networks]="networks"
+	(addNetworkHandler)="handleNetworkAdd()"
+></networks-list>

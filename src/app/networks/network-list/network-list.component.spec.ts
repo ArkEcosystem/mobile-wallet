@@ -25,7 +25,7 @@ describe("Network List", () => {
 		spectator = createHost(`<network-list></network-list>`);
 		const title = spectator.query(byTestId("c-network-list--title"));
 
-		expect(title).toHaveText("NETWORKS_PAGE.TITLE");
+		expect(title).toHaveText("NETWORKS_PAGE.OVERVIEW");
 	});
 
 	it("should render the subtitle properly", () => {
@@ -39,7 +39,7 @@ describe("Network List", () => {
 		spectator = createHost(`<network-list></network-list>`);
 		let output: any;
 		spectator
-			.output("addNetworkClick")
+			.output("addNetworkHandler")
 			.subscribe(() => (output = "add network"));
 
 		const addButton = spectator.query(
