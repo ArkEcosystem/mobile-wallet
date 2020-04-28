@@ -56,8 +56,6 @@ export class SettingsState implements NgxsOnInit {
 		action: SettingsActions.Update,
 	): Observable<void> {
 		ctx.patchState(action.payload);
-		const state = ctx.getState();
-		return this.settingsService.save(state);
 	}
 
 	@Action(SettingsActions.Load)
