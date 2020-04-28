@@ -23,6 +23,7 @@ const defaultState: SettingsStateModel = {
 	language: "en",
 	currency: "usd",
 	darkMode: false,
+	devMode: false,
 	wordlistLanguage: "english",
 };
 
@@ -54,7 +55,7 @@ export class SettingsState implements NgxsOnInit {
 	public update(
 		ctx: StateContext<SettingsStateModel>,
 		action: SettingsActions.Update,
-	): Observable<void> {
+	): void {
 		ctx.patchState(action.payload);
 	}
 
@@ -70,10 +71,10 @@ export class SettingsState implements NgxsOnInit {
 	}
 
 	@Action(SettingsActions.Clear)
-	public clear(ctx: StateContext<SettingsStateModel>): Observable<void> {
-		return this.settingsService
-			.clear()
-			.pipe(tap(() => ctx.setState(this.defaults)));
+	public clear(ctx: StateContext<SettingsStateModel>): void {
+		this.settingsService.clear();
+
+		ctx.setState(this.defaults);
 	}
 
 	private get defaults(): SettingsStateModel {

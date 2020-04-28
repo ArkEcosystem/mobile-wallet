@@ -1,12 +1,15 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
-import { SettingsComponent } from "./settings.component";
+import { SettingsPage } from "./settings.component";
 
 @NgModule({
 	imports: [
 		RouterModule.forChild([
-			{ path: "settings", component: SettingsComponent },
+			{
+				path: "",
+				component: SettingsPage,
+			},
 		]),
 	],
 	exports: [RouterModule],

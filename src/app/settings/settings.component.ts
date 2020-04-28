@@ -1,110 +1,75 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import {
 	AlertController,
 	ModalController,
 	NavController,
+	Platform,
 } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
-import { Select, Store } from "@ngxs/store";
-import { Observable } from "rxjs";
+import { Subject } from "rxjs";
+import { takeUntil, tap } from "rxjs/operators";
 
-import { PinCodeComponent } from "@/components/pin-code/pin-code";
-import { Wallet } from "@/models/model";
-import { UserDataProvider } from "@/services/user-data/user-data";
-
-import { CustomNetworkCreateModal } from "../modals/custom-network-create/custom-network-create";
-import { PinCodeModal } from "../modals/pin-code/pin-code";
-import { SettingsConfig } from "./settings.config";
-import { SettingsActions } from "./shared/settings.actions";
-import { SETTINGS_STATE_TOKEN } from "./shared/settings.state";
-import { SettingsStateModel } from "./shared/settings.type";
+import * as constants from "@/app/app.constants";
+import { AuthController } from "@/app/auth/shared/auth.controller";
+import { ViewerLogModal } from "@/components/viewer-log/viewer-log.modal";
+import { UserSettings } from "@/models/model";
+import { SettingsDataProvider } from "@/services/settings-data/settings-data";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 const packageJson = require("@@/package.json");
 
 @Component({
+	selector: "settings-page",
 	templateUrl: "settings.component.html",
+	styleUrls: ["settings.scss"],
 	providers: [InAppBrowser],
 })
-export class SettingsComponent {
-	@Select(SETTINGS_STATE_TOKEN)
-	public settings$: Observable<SettingsStateModel>;
+export class SettingsPage implements OnInit, OnDestroy {
+	public objectKeys = Object.keys;
 
-	@ViewChild(PinCodeComponent, { static: true })
-	pinCode: PinCodeComponent;
+	public availableOptions;
+	public currentSettings: UserSettings;
+	public appVersion: number = packageJson.version;
+	public versionClicksCount = 0;
 
-	public languages = SettingsConfig.LANGUAGES;
-	public currencies = SettingsConfig.CURRENCIES;
-	public wordlistLanguages = SettingsConfig.WORDLIST_LANGUAGES;
+	public currentWallet;
 
-	public appVersion = packageJson.version;
-
-	public wallet: Wallet;
+	private unsubscriber$: Subject<void> = new Subject<void>();
 
 	constructor(
-		private translateService: TranslateService,
-		private alertCtrl: AlertController,
-		private modalCtrl: ModalController,
+		public platform: Platform,
 		private navCtrl: NavController,
+		private settingsDataProvider: SettingsDataProvider,
+		private alertCtrl: AlertController,
+		private translateService: TranslateService,
+		private modalCtrl: ModalController,
 		private inAppBrowser: InAppBrowser,
-		// TODO: Use the store instead of the provider
-		private userDataProvider: UserDataProvider,
-		private store: Store,
+		private userDataService: UserDataService,
+		private toastProvider: ToastProvider,
+		private authCtrl: AuthController,
 	) {
-		this.wallet = this.userDataProvider.currentWallet;
+		this.availableOptions = this.settingsDataProvider.AVALIABLE_OPTIONS;
+		this.currentWallet = this.userDataService.currentWallet;
 	}
 
-	public async openChangePinPage(): Promise<void> {
-		const modal = await this.modalCtrl.create({
-			component: PinCodeModal,
-			componentProps: {
-				message: "PIN_CODE.DEFAULT_MESSAGE",
-				outputPassword: true,
-				validatePassword: true,
-			},
-		});
-
-		await modal.present();
-		modal.onDidDismiss().then(({ data }) => {
-			if (data.password) {
-				this.pinCode.createUpdatePinCode(null, data.password);
-			}
-		});
+	openChangePinPage() {
+		this.authCtrl.update();
 	}
 
-	public async openManageNetworksPage(): Promise<void> {
-		const modal = await this.modalCtrl.create({
-			component: CustomNetworkCreateModal,
-		});
-
-		modal.present();
+	openManageNetworksPage() {
+		this.navCtrl.navigateForward("/network-overview");
 	}
 
-	public openPrivacyPolicy(): void {
-		this.inAppBrowser.create(SettingsConfig.PRIVACY_POLICY_URL, "_system");
+	openPrivacyPolicy() {
+		return this.inAppBrowser.create(
+			constants.PRIVACY_POLICY_URL,
+			"_system",
+		);
 	}
 
-	public onEnterPinCode() {
-		return this.clear();
-	}
-
-	public updateLanguage(event: CustomEvent): void {
-		this.update({ language: event.detail.value });
-	}
-
-	public updateCurrency(event: CustomEvent): void {
-		this.update({ currency: event.detail.value });
-	}
-
-	public updateWordlistLanguage(event: CustomEvent): void {
-		this.update({ wordlistLanguage: event.detail.value });
-	}
-
-	public updateDarkMode(value: boolean): void {
-		this.update({ darkMode: value });
-	}
-
-	public confirmClear() {
+	confirmClearData() {
 		this.translateService
 			.get([
 				"CANCEL",
@@ -123,10 +88,10 @@ export class SettingsComponent {
 						{
 							text: translation.CONFIRM,
 							handler: () => {
-								this.pinCode.open(
-									"PIN_CODE.DEFAULT_MESSAGE",
-									false,
-								);
+								this.authCtrl
+									.request()
+									.pipe(tap(() => this.clearData()))
+									.subscribe();
 							},
 						},
 					],
@@ -136,12 +101,60 @@ export class SettingsComponent {
 			});
 	}
 
-	private clear() {
-		this.store.dispatch(new SettingsActions.Clear());
-		this.navCtrl.navigateRoot("/intro");
+	async presentLogReport() {
+		const viewerLogModal = await this.modalCtrl.create({
+			component: ViewerLogModal,
+		});
+
+		await viewerLogModal.present();
 	}
 
-	private update(payload: Partial<SettingsStateModel>): Observable<any> {
-		return this.store.dispatch(new SettingsActions.Update(payload));
+	handleVersionClicks() {
+		if (this.currentSettings.devMode) {
+			return;
+		}
+
+		this.versionClicksCount += 1;
+		if (this.versionClicksCount === 5) {
+			this.enableDevMode();
+		}
+	}
+
+	enableDevMode() {
+		this.versionClicksCount = 0;
+		this.currentSettings.devMode = true;
+		this.onUpdate();
+		this.toastProvider.show("SETTINGS_PAGE.YOU_ARE_DEVELOPER");
+	}
+
+	onUpdate() {
+		this.settingsDataProvider.save(this.currentSettings);
+	}
+
+	ngOnInit() {
+		this.settingsDataProvider.settings
+			.pipe(
+				takeUntil(this.unsubscriber$),
+				tap((settings) => (this.currentSettings = settings)),
+			)
+			.subscribe();
+
+		this.settingsDataProvider.onUpdate$
+			.pipe(
+				takeUntil(this.unsubscriber$),
+				tap((settings) => (this.currentSettings = settings)),
+			)
+			.subscribe();
+	}
+
+	ngOnDestroy() {
+		this.unsubscriber$.next();
+		this.unsubscriber$.complete();
+	}
+
+	private clearData() {
+		this.settingsDataProvider.clearData().subscribe(() => {
+			this.navCtrl.navigateRoot("/intro");
+		});
 	}
 }

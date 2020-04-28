@@ -1,4 +1,4 @@
-<ion-header no-shadow no-border>
+<ion-header class="ion-no-border ion-no-shadow">
 	<ion-toolbar>
 		<ion-buttons slot="start">
 			<ion-back-button></ion-back-button>
@@ -7,62 +7,69 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="settings$ | async as settings">
+<ion-content *ngIf="availableOptions && currentSettings">
 	<ion-list>
 		<ion-item-group>
 			<ion-item>
 				<ion-icon color="primary" name="globe" slot="start"></ion-icon>
-				<ion-label>
-					{{ "SETTINGS_PAGE.LANGUAGE" | translate }}
-				</ion-label>
+				<ion-label>{{
+					"SETTINGS_PAGE.LANGUAGE" | translate
+				}}</ion-label>
 				<ion-select
+					[(ngModel)]="currentSettings.language"
+					(ngModelChange)="onUpdate()"
 					cancelText="{{ 'CANCEL' | translate }}"
-					[value]="settings.language"
-					(ionChange)="updateLanguage($event)"
 				>
 					<ion-select-option
-						*ngFor="let item of languages | keyvalue"
-						[value]="item.key"
+						*ngFor="
+							let item of objectKeys(availableOptions?.languages)
+						"
+						[value]="item"
 					>
-						{{ item.value }}
+						{{ (availableOptions?.languages)[item] }}
 					</ion-select-option>
 				</ion-select>
 			</ion-item>
 
 			<ion-item>
 				<ion-icon color="primary" name="cash" slot="start"></ion-icon>
-				<ion-label>
-					{{ "SETTINGS_PAGE.CURRENCY" | translate }}
-				</ion-label>
+				<ion-label>{{
+					"SETTINGS_PAGE.CURRENCY" | translate
+				}}</ion-label>
 				<ion-select
+					[(ngModel)]="currentSettings.currency"
+					(ngModelChange)="onUpdate()"
 					cancelText="{{ 'CANCEL' | translate }}"
-					[value]="settings.currency"
-					(ionChange)="updateCurrency($event)"
 				>
 					<ion-select-option
-						*ngFor="let item of currencies | keyvalue"
-						[value]="item.key"
+						*ngFor="
+							let item of objectKeys(availableOptions?.currencies)
+						"
+						[value]="item"
 					>
-						{{ item.key | uppercase }}
+						{{ item | uppercase }}
 					</ion-select-option>
 				</ion-select>
 			</ion-item>
-
 			<ion-item>
 				<ion-icon color="primary" name="book" slot="start"></ion-icon>
-				<ion-label>
-					{{ "SETTINGS_PAGE.WORDLIST_LANGUAGE" | translate }}
-				</ion-label>
+				<ion-label>{{
+					"SETTINGS_PAGE.WORDLIST_LANGUAGE" | translate
+				}}</ion-label>
 				<ion-select
+					[(ngModel)]="currentSettings.wordlistLanguage"
+					(ngModelChange)="onUpdate()"
 					cancelText="{{ 'CANCEL' | translate }}"
-					[value]="settings.wordlistLanguage"
-					(ionChange)="updateWordlistLanguage($event)"
 				>
 					<ion-select-option
-						*ngFor="let item of wordlistLanguages | keyvalue"
-						[value]="item.key"
+						*ngFor="
+							let item of objectKeys(
+								availableOptions?.wordlistLanguages
+							)
+						"
+						[value]="item"
 					>
-						{{ item.value }}
+						{{ (availableOptions?.wordlistLanguages)[item] }}
 					</ion-select-option>
 				</ion-select>
 			</ion-item>
@@ -70,12 +77,19 @@
 
 		<ion-item-group>
 			<ion-item-divider color="primary-background"></ion-item-divider>
-			<ion-item detail (click)="openChangePinPage()">
-				<ion-icon color="primary" name="lock" slot="start"></ion-icon>
+			<ion-item detail (click)="openChangePinPage()" class="custom-arrow">
+				<ion-icon
+					color="primary"
+					name="lock-closed"
+					slot="start"
+				></ion-icon>
 				{{ "SETTINGS_PAGE.CHANGE_PIN" | translate }}
 			</ion-item>
-
-			<ion-item detail (click)="openManageNetworksPage()">
+			<ion-item
+				detail
+				(click)="openManageNetworksPage()"
+				class="custom-arrow"
+			>
 				<ion-icon color="primary" name="wifi" slot="start"></ion-icon>
 				{{ "CUSTOM_NETWORK.MANAGE_NETWORKS" | translate }}
 			</ion-item>
@@ -85,24 +99,33 @@
 			<ion-item-divider color="primary-background"></ion-item-divider>
 			<ion-item>
 				<ion-icon color="primary" name="moon" slot="start"></ion-icon>
-				<ion-label>
-					{{ "SETTINGS_PAGE.DARK_MODE" | translate }}
-				</ion-label>
+				<ion-label>{{
+					"SETTINGS_PAGE.DARK_MODE" | translate
+				}}</ion-label>
 				<ion-toggle
-					[value]="settings.darkMode"
-					(ionChange)="updateDarkMode(!settings.darkMode)"
+					[(ngModel)]="currentSettings.darkMode"
+					(ngModelChange)="onUpdate()"
 				></ion-toggle>
+			</ion-item>
+		</ion-item-group>
+
+		<ion-item-group *ngIf="currentSettings.devMode">
+			<ion-item-divider color="primary-background"></ion-item-divider>
+			<ion-item detail (click)="presentLogReport()">
+				<ion-icon color="primary" name="bug" slot="start"></ion-icon>
+				<ion-label>{{
+					"SETTINGS_PAGE.VIEW_LOG_REPORT" | translate
+				}}</ion-label>
 			</ion-item>
 		</ion-item-group>
 
 		<ion-item-group>
 			<ion-item-divider color="primary-background"></ion-item-divider>
-			<ion-item detail (click)="confirmClear()">
+			<ion-item detail (click)="confirmClearData()" class="custom-arrow">
 				<ion-icon color="primary" name="trash" slot="start"></ion-icon>
 				{{ "SETTINGS_PAGE.CLEAR_DATA" | translate }}
 			</ion-item>
-
-			<ion-item detail (click)="openPrivacyPolicy()">
+			<ion-item detail (click)="openPrivacyPolicy()" class="custom-arrow">
 				<ion-icon
 					color="primary"
 					name="document"
@@ -110,8 +133,11 @@
 				></ion-icon>
 				{{ "SETTINGS_PAGE.PRIVACY_POLICY" | translate }}
 			</ion-item>
-
-			<ion-item detail="false">
+			<ion-item
+				detail="false"
+				(click)="handleVersionClicks()"
+				[button]="!currentSettings.devMode"
+			>
 				<ion-icon
 					color="primary"
 					name="information-circle-outline"
@@ -125,5 +151,3 @@
 		</ion-item-group>
 	</ion-list>
 </ion-content>
-
-<pin-code [wallet]="wallet" (success)="onEnterPinCode()"></pin-code>

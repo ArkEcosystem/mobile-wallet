@@ -5,4 +5,5 @@ export interface SettingsStateModel {
 	currency: keyof typeof SettingsConfig.CURRENCIES;
 	wordlistLanguage: keyof typeof SettingsConfig.WORDLIST_LANGUAGES;
 	darkMode: boolean;
+	devMode: boolean;
 }

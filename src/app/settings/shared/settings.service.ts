@@ -14,7 +14,7 @@ export class SettingsService {
 		return this.asyncStorage.getItem(SettingsConfig.TOKEN);
 	}
 
-	public clear(): Observable<void> {
-		return this.asyncStorage.removeItem(SettingsConfig.TOKEN);
+	public clear(): void {
+		this.asyncStorage.clear();
 	}
 }

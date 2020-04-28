@@ -1,26 +1,28 @@
+import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { NgxsModule } from "@ngxs/store";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { IonicModule } from "@ionic/angular";
+import { TranslateModule } from "@ngx-translate/core";
 
 import { CustomNetworkCreateModal } from "@/app/modals/custom-network-create/custom-network-create";
 import { CustomNetworkCreateModalModule } from "@/app/modals/custom-network-create/custom-network-create.module";
-import { PinCodeComponentModule } from "@/components/pin-code/pin-code.module";
+import { ViewerLogModalModule } from "@/components/viewer-log/viewer-log.modal.module";
 
-import { SharedModule } from "../shared/shared.module";
 import { SettingsRoutingModule } from "./settings-routing.module";
-import { SettingsComponent } from "./settings.component";
-import { SettingsService } from "./shared/settings.service";
-import { SettingsState } from "./shared/settings.state";
+import { SettingsPage } from "./settings.component";
 
 @NgModule({
-	declarations: [SettingsComponent],
-	providers: [SettingsService],
+	declarations: [SettingsPage],
 	imports: [
-		SharedModule,
-		SettingsRoutingModule,
-		NgxsModule.forFeature([SettingsState]),
-		PinCodeComponentModule,
+		IonicModule,
+		CommonModule,
+		FormsModule,
+		ReactiveFormsModule,
+		TranslateModule,
 		CustomNetworkCreateModalModule,
+		ViewerLogModalModule,
+		SettingsRoutingModule,
 	],
 	entryComponents: [CustomNetworkCreateModal],
 })
-export class SettingsModule {}
+export class SettingsPageModule {}
