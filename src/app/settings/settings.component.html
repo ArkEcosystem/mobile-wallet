@@ -1,0 +1,129 @@
+<ion-header no-shadow no-border>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-title>{{ "SETTINGS_PAGE.SETTINGS" | translate }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="settings$ | async as settings">
+	<ion-list>
+		<ion-item-group>
+			<ion-item>
+				<ion-icon color="primary" name="globe" slot="start"></ion-icon>
+				<ion-label>
+					{{ "SETTINGS_PAGE.LANGUAGE" | translate }}
+				</ion-label>
+				<ion-select
+					cancelText="{{ 'CANCEL' | translate }}"
+					[value]="settings.language"
+					(ionChange)="updateLanguage($event)"
+				>
+					<ion-select-option
+						*ngFor="let item of languages | keyvalue"
+						[value]="item.key"
+					>
+						{{ item.value }}
+					</ion-select-option>
+				</ion-select>
+			</ion-item>
+
+			<ion-item>
+				<ion-icon color="primary" name="cash" slot="start"></ion-icon>
+				<ion-label>
+					{{ "SETTINGS_PAGE.CURRENCY" | translate }}
+				</ion-label>
+				<ion-select
+					cancelText="{{ 'CANCEL' | translate }}"
+					[value]="settings.currency"
+					(ionChange)="updateCurrency($event)"
+				>
+					<ion-select-option
+						*ngFor="let item of currencies | keyvalue"
+						[value]="item.key"
+					>
+						{{ item.key | uppercase }}
+					</ion-select-option>
+				</ion-select>
+			</ion-item>
+
+			<ion-item>
+				<ion-icon color="primary" name="book" slot="start"></ion-icon>
+				<ion-label>
+					{{ "SETTINGS_PAGE.WORDLIST_LANGUAGE" | translate }}
+				</ion-label>
+				<ion-select
+					cancelText="{{ 'CANCEL' | translate }}"
+					[value]="settings.wordlistLanguage"
+					(ionChange)="updateWordlistLanguage($event)"
+				>
+					<ion-select-option
+						*ngFor="let item of wordlistLanguages | keyvalue"
+						[value]="item.key"
+					>
+						{{ item.value }}
+					</ion-select-option>
+				</ion-select>
+			</ion-item>
+		</ion-item-group>
+
+		<ion-item-group>
+			<ion-item-divider color="primary-background"></ion-item-divider>
+			<ion-item detail (click)="openChangePinPage()">
+				<ion-icon color="primary" name="lock" slot="start"></ion-icon>
+				{{ "SETTINGS_PAGE.CHANGE_PIN" | translate }}
+			</ion-item>
+
+			<ion-item detail (click)="openManageNetworksPage()">
+				<ion-icon color="primary" name="wifi" slot="start"></ion-icon>
+				{{ "CUSTOM_NETWORK.MANAGE_NETWORKS" | translate }}
+			</ion-item>
+		</ion-item-group>
+
+		<ion-item-group>
+			<ion-item-divider color="primary-background"></ion-item-divider>
+			<ion-item>
+				<ion-icon color="primary" name="moon" slot="start"></ion-icon>
+				<ion-label>
+					{{ "SETTINGS_PAGE.DARK_MODE" | translate }}
+				</ion-label>
+				<ion-toggle
+					[value]="settings.darkMode"
+					(ionChange)="updateDarkMode(!settings.darkMode)"
+				></ion-toggle>
+			</ion-item>
+		</ion-item-group>
+
+		<ion-item-group>
+			<ion-item-divider color="primary-background"></ion-item-divider>
+			<ion-item detail (click)="confirmClear()">
+				<ion-icon color="primary" name="trash" slot="start"></ion-icon>
+				{{ "SETTINGS_PAGE.CLEAR_DATA" | translate }}
+			</ion-item>
+
+			<ion-item detail (click)="openPrivacyPolicy()">
+				<ion-icon
+					color="primary"
+					name="document"
+					slot="start"
+				></ion-icon>
+				{{ "SETTINGS_PAGE.PRIVACY_POLICY" | translate }}
+			</ion-item>
+
+			<ion-item detail="false">
+				<ion-icon
+					color="primary"
+					name="information-circle-outline"
+					slot="start"
+				></ion-icon>
+				{{ "SETTINGS_PAGE.VERSION" | translate }}
+				<div slot="end">
+					<p>{{ appVersion }}</p>
+				</div>
+			</ion-item>
+		</ion-item-group>
+	</ion-list>
+</ion-content>
+
+<pin-code [wallet]="wallet" (success)="onEnterPinCode()"></pin-code>
