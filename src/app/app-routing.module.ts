@@ -34,10 +34,24 @@ const routes: Routes = [
 			import("./pages/login/login.module").then((m) => m.LoginPageModule),
 	},
 	{
+		path: "settings",
+		loadChildren: () =>
+			import("./pages/settings/settings.module").then(
+				(m) => m.SettingsPageModule,
+			),
+	},
+	{
 		path: "delegates",
 		loadChildren: () =>
 			import("./pages/delegates/delegates.module").then(
 				(m) => m.DelegatesPageModule,
+			),
+	},
+	{
+		path: "settings-new",
+		loadChildren: () =>
+			import("./settings/settings.module").then(
+				(m) => m.SettingsPageModule,
 			),
 	},
 	{
