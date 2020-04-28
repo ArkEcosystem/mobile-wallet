@@ -28,6 +28,8 @@ import { AuthModule } from "./auth/auth.module";
 import { AuthConfig } from "./auth/shared/auth.config";
 import { DelegateService } from "./delegates/shared/delegate.service";
 import { DelegateServiceMock } from "./delegates/shared/delegate.service.mock";
+import { MarketModule } from "./market/market.module";
+import { MarketConfig } from "./market/shared/market.config";
 import { OnboardingConfig } from "./onboarding/shared/onboarding.config";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
@@ -47,7 +49,11 @@ export function createTranslateLoader(http: HttpClient) {
 			developmentMode: !environment.production,
 		}),
 		NgxsAsyncStoragePluginModule.forRoot({
-			keys: [AuthConfig.STORAGE_KEY, OnboardingConfig.STORAGE_KEY],
+			keys: [
+				AuthConfig.STORAGE_KEY,
+				OnboardingConfig.STORAGE_KEY,
+				MarketConfig.STORAGE_KEY,
+			],
 		}),
 		NgxsRouterPluginModule.forRoot(),
 		NgxsReduxDevtoolsPluginModule.forRoot(),
@@ -66,6 +72,7 @@ export function createTranslateLoader(http: HttpClient) {
 		AuthModule,
 		WalletModule,
 		TransactionsModule,
+		MarketModule,
 		ChartsModule,
 		HammerModule,
 		PipesModule,

@@ -1,39 +1,12 @@
-export interface MarketData {
-	currency: string;
-	price: number;
-	marketCap: number;
-	volume: number;
-	date: Date;
+import { CURRENCIES } from "@arkecosystem/platform-sdk/dist/price-trackers/config";
+import { HistoricalData as SdkHistoricalData } from "@arkecosystem/platform-sdk/dist/price-trackers/contracts/historical";
+import { MarketData as SdkMarketData } from "@arkecosystem/platform-sdk/dist/price-trackers/contracts/market";
+
+export type MarketProvider = "coincap" | "coingecko" | "cryptocompare";
+export type MarketData = SdkMarketData & {
+	currency: number | string;
 	change24h: number | null;
-}
+};
+export type MarketHistoricalData = SdkHistoricalData;
 
-export type Currency =
-	| "BTC"
-	| "ETH"
-	| "LTC"
-	| "AUD"
-	| "BRL"
-	| "CAD"
-	| "CHF"
-	| "CNY"
-	| "EUR"
-	| "GBP"
-	| "HKD"
-	| "IDR"
-	| "INR"
-	| "JPY"
-	| "KRW"
-	| "MXN"
-	| "RUB"
-	| "USD";
-
-export interface CurrencyFormat {
-	code: string;
-	crypto: boolean;
-	symbol: string;
-	groupSeparator: string;
-	decimalSeparator: string;
-	symbolOnLeft: boolean;
-	spaceBetweenAmountAndSymbol: boolean;
-	decimalDigits: number;
-}
+export type MarketCurrency = keyof typeof CURRENCIES;
