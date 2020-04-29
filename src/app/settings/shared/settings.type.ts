@@ -1,4 +1,4 @@
-import { SettingsConfig } from "../settings.config";
+import { SettingsConfig } from "./settings.config";
 
 export interface SettingsStateModel {
 	language: keyof typeof SettingsConfig.LANGUAGES;

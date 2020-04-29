@@ -1,3 +1,4 @@
+import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
 import {
 	Action,
@@ -10,27 +11,28 @@ import {
 import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 
-import { SettingsConfig } from "../settings.config";
 import { SettingsActions } from "./settings.actions";
+import { SettingsConfig } from "./settings.config";
 import { SettingsService } from "./settings.service";
 import { SettingsStateModel } from "./settings.type";
 
 export const SETTINGS_STATE_TOKEN = new StateToken<SettingsStateModel>(
-	SettingsConfig.TOKEN,
+	SettingsConfig.STORAGE_KEY,
 );
 
 const defaultState: SettingsStateModel = {
 	language: "en",
 	currency: "usd",
+	wordlistLanguage: "english",
 	darkMode: false,
 	devMode: false,
-	wordlistLanguage: "english",
 };
 
 @State<SettingsStateModel>({
-	name: SETTINGS_STATE_TOKEN,
+	name: SettingsConfig.STORAGE_KEY,
 	defaults: defaultState,
 })
+@Injectable()
 export class SettingsState implements NgxsOnInit {
 	constructor(
 		private settingsService: SettingsService,
@@ -43,8 +45,23 @@ export class SettingsState implements NgxsOnInit {
 	}
 
 	@Selector()
+	static currency(state: SettingsStateModel): string {
+		return state.currency;
+	}
+
+	@Selector()
+	static wordlistLanguage(state: SettingsStateModel): string {
+		return state.wordlistLanguage;
+	}
+
+	@Selector()
 	static darkMode(state: SettingsStateModel): boolean {
 		return state.darkMode;
+	}
+
+	@Selector()
+	static devMode(state: SettingsStateModel): boolean {
+		return state.devMode;
 	}
 
 	public ngxsOnInit(ctx: StateContext<SettingsStateModel>): void {

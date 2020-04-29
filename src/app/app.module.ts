@@ -34,6 +34,7 @@ import { OnboardingConfig } from "./onboarding/shared/onboarding.config";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
 import { UserDataService } from "./services/user-data/user-data.interface";
+import { SettingsConfig } from "./settings/shared/settings.config";
 import { NgxsAsyncStoragePluginModule } from "./shared/state/async-storage/async-storage.module";
 import { TransactionsModule } from "./transactions/transactions.module";
 import { WalletModule } from "./wallet/wallet.module";
@@ -53,6 +54,7 @@ export function createTranslateLoader(http: HttpClient) {
 				AuthConfig.STORAGE_KEY,
 				OnboardingConfig.STORAGE_KEY,
 				MarketConfig.STORAGE_KEY,
+				SettingsConfig.STORAGE_KEY,
 			],
 		}),
 		NgxsRouterPluginModule.forRoot(),

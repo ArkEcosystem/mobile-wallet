@@ -7,7 +7,7 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="availableOptions && currentSettings">
+<ion-content *ngIf="settings$ | async as currentSettings">
 	<ion-list>
 		<ion-item-group>
 			<ion-item>
@@ -16,17 +16,15 @@
 					"SETTINGS_PAGE.LANGUAGE" | translate
 				}}</ion-label>
 				<ion-select
-					[(ngModel)]="currentSettings.language"
-					(ngModelChange)="onUpdate()"
+					[value]="currentSettings.language"
+					(ionChange)="updateLanguage($event)"
 					cancelText="{{ 'CANCEL' | translate }}"
 				>
 					<ion-select-option
-						*ngFor="
-							let item of objectKeys(availableOptions?.languages)
-						"
+						*ngFor="let item of objectKeys(languages)"
 						[value]="item"
 					>
-						{{ (availableOptions?.languages)[item] }}
+						{{ languages[item] }}
 					</ion-select-option>
 				</ion-select>
 			</ion-item>
@@ -37,14 +35,12 @@
 					"SETTINGS_PAGE.CURRENCY" | translate
 				}}</ion-label>
 				<ion-select
-					[(ngModel)]="currentSettings.currency"
-					(ngModelChange)="onUpdate()"
+					[value]="currentSettings.currency"
+					(ionChange)="updateCurrency($event)"
 					cancelText="{{ 'CANCEL' | translate }}"
 				>
 					<ion-select-option
-						*ngFor="
-							let item of objectKeys(availableOptions?.currencies)
-						"
+						*ngFor="let item of objectKeys(currencies)"
 						[value]="item"
 					>
 						{{ item | uppercase }}
@@ -57,19 +53,15 @@
 					"SETTINGS_PAGE.WORDLIST_LANGUAGE" | translate
 				}}</ion-label>
 				<ion-select
-					[(ngModel)]="currentSettings.wordlistLanguage"
-					(ngModelChange)="onUpdate()"
+					[value]="currentSettings.wordlistLanguage"
+					(ionChange)="updateWordlistLanguage($event)"
 					cancelText="{{ 'CANCEL' | translate }}"
 				>
 					<ion-select-option
-						*ngFor="
-							let item of objectKeys(
-								availableOptions?.wordlistLanguages
-							)
-						"
+						*ngFor="let item of objectKeys(wordlistLanguages)"
 						[value]="item"
 					>
-						{{ (availableOptions?.wordlistLanguages)[item] }}
+						{{ wordlistLanguages[item] }}
 					</ion-select-option>
 				</ion-select>
 			</ion-item>
@@ -103,8 +95,8 @@
 					"SETTINGS_PAGE.DARK_MODE" | translate
 				}}</ion-label>
 				<ion-toggle
-					[(ngModel)]="currentSettings.darkMode"
-					(ngModelChange)="onUpdate()"
+					[value]="currentSettings.darkMode"
+					(ionChange)="updateDarkMode($event)"
 				></ion-toggle>
 			</ion-item>
 		</ion-item-group>

@@ -1,5 +1,5 @@
 export namespace SettingsConfig {
-	export const TOKEN = "settings";
+	export const STORAGE_KEY = "settings";
 	export const PRIVACY_POLICY_URL = "https://ark.io/PrivacyPolicy.txt";
 
 	export const WORDLIST_LANGUAGES = {
