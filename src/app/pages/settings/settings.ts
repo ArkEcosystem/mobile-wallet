@@ -154,7 +154,7 @@ export class SettingsPage implements OnInit, OnDestroy {
 
 	private clearData() {
 		this.settingsDataProvider.clearData().subscribe(() => {
-			this.navCtrl.navigateRoot("/intro");
+			this.navCtrl.navigateRoot("/onboarding");
 		});
 	}
 }

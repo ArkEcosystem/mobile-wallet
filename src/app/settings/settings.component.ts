@@ -9,7 +9,6 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { Select, Store } from "@ngxs/store";
 import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
 
 import { AuthController } from "@/app/auth/shared/auth.controller";
 import { ViewerLogModal } from "@/components/viewer-log/viewer-log.modal";
@@ -20,6 +19,7 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 import { SettingsActions } from "./shared/settings.actions";
 import { SettingsConfig } from "./shared/settings.config";
 import { SETTINGS_STATE_TOKEN } from "./shared/settings.state";
+import { SettingsState } from "./shared/settings.state";
 import { SettingsStateModel } from "./shared/settings.type";
 
 const packageJson = require("@@/package.json");
@@ -34,7 +34,9 @@ export class SettingsPage {
 	@Select(SETTINGS_STATE_TOKEN)
 	public settings$: Observable<SettingsStateModel>;
 
-	public objectKeys = Object.keys;
+	@Select(SettingsState.devMode)
+	public devMode$: Observable<boolean>;
+
 	public appVersion: number = packageJson.version;
 	public versionClicksCount = 0;
 	public languages = SettingsConfig.LANGUAGES;
@@ -89,9 +91,8 @@ export class SettingsPage {
 						{
 							text: translation.CONFIRM,
 							handler: () => {
-								this.authCtrl
-									.request()
-									.pipe(tap(() => this.clearData()));
+								this.authCtrl.request();
+								this.clearData();
 							},
 						},
 					],
@@ -110,7 +111,7 @@ export class SettingsPage {
 	}
 
 	handleVersionClicks() {
-		this.settings$.subscribe(({ devMode }) => {
+		this.devMode$.subscribe((devMode) => {
 			if (devMode) {
 				return;
 			}
@@ -140,8 +141,8 @@ export class SettingsPage {
 		this.update({ wordlistLanguage: event.detail.value });
 	}
 
-	public updateDarkMode(value: boolean): void {
-		this.update({ darkMode: value });
+	public updateDarkMode(event: CustomEvent): void {
+		this.update({ darkMode: event.detail.checked });
 	}
 
 	public updateDevMode(value: boolean): void {
@@ -154,6 +155,6 @@ export class SettingsPage {
 
 	private clearData() {
 		this.store.dispatch(new SettingsActions.Clear());
-		this.navCtrl.navigateRoot("/intro");
+		this.navCtrl.navigateRoot("/onboarding");
 	}
 }

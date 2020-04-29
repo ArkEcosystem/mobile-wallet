@@ -21,10 +21,10 @@
 					cancelText="{{ 'CANCEL' | translate }}"
 				>
 					<ion-select-option
-						*ngFor="let item of objectKeys(languages)"
-						[value]="item"
+						*ngFor="let item of languages | keyvalue"
+						[value]="item.key"
 					>
-						{{ languages[item] }}
+						{{ languages[item.key] }}
 					</ion-select-option>
 				</ion-select>
 			</ion-item>
@@ -40,10 +40,10 @@
 					cancelText="{{ 'CANCEL' | translate }}"
 				>
 					<ion-select-option
-						*ngFor="let item of objectKeys(currencies)"
-						[value]="item"
+						*ngFor="let item of currencies | keyvalue"
+						[value]="item.key"
 					>
-						{{ item | uppercase }}
+						{{ item.value | uppercase }}
 					</ion-select-option>
 				</ion-select>
 			</ion-item>
@@ -58,10 +58,10 @@
 					cancelText="{{ 'CANCEL' | translate }}"
 				>
 					<ion-select-option
-						*ngFor="let item of objectKeys(wordlistLanguages)"
-						[value]="item"
+						*ngFor="let item of wordlistLanguages | keyvalue"
+						[value]="item.key"
 					>
-						{{ wordlistLanguages[item] }}
+						{{ wordlistLanguages[item.key] }}
 					</ion-select-option>
 				</ion-select>
 			</ion-item>
@@ -95,7 +95,7 @@
 					"SETTINGS_PAGE.DARK_MODE" | translate
 				}}</ion-label>
 				<ion-toggle
-					[value]="currentSettings.darkMode"
+					[checked]="currentSettings.darkMode"
 					(ionChange)="updateDarkMode($event)"
 				></ion-toggle>
 			</ion-item>
@@ -128,7 +128,7 @@
 			<ion-item
 				detail="false"
 				(click)="handleVersionClicks()"
-				[button]="!currentSettings.devMode"
+				[button]="!(devMode$ | async)"
 			>
 				<ion-icon
 					color="primary"

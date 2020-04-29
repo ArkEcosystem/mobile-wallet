@@ -8,8 +8,6 @@ import {
 	StateContext,
 	StateToken,
 } from "@ngxs/store";
-import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
 
 import { SettingsActions } from "./settings.actions";
 import { SettingsConfig } from "./settings.config";
@@ -72,23 +70,12 @@ export class SettingsState implements NgxsOnInit {
 	public update(
 		ctx: StateContext<SettingsStateModel>,
 		action: SettingsActions.Update,
-	): void {
+	): any {
 		ctx.patchState(action.payload);
 	}
 
-	@Action(SettingsActions.Load)
-	public load(
-		ctx: StateContext<SettingsStateModel>,
-	): Observable<Partial<SettingsStateModel>> {
-		return this.settingsService.load().pipe(
-			tap((localSettings) => {
-				ctx.setState({ ...this.defaults, ...localSettings });
-			}),
-		);
-	}
-
 	@Action(SettingsActions.Clear)
-	public clear(ctx: StateContext<SettingsStateModel>): void {
+	public clear(ctx: StateContext<SettingsStateModel>): any {
 		this.settingsService.clear();
 
 		ctx.setState(this.defaults);
