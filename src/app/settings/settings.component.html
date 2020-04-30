@@ -15,7 +15,10 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="settings$ | async as currentSettings">
+<ion-content
+	*ngIf="settings$ | async as currentSettings"
+	data-testid="c-settings-page"
+>
 	<ion-header collapse="condense" class="ion-no-border">
 		<ion-toolbar>
 			<ion-title size="large" class="font-black">
