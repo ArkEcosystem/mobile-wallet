@@ -127,19 +127,19 @@ export class SettingsPage {
 		this.toastProvider.show("SETTINGS_PAGE.YOU_ARE_DEVELOPER");
 	}
 
-	public updateLanguage(event: CustomEvent): void {
+	public updateLanguage(event: any): void {
 		this.update({ language: event.detail.value });
 	}
 
-	public updateCurrency(event: CustomEvent): void {
+	public updateCurrency(event: any): void {
 		this.update({ currency: event.detail.value });
 	}
 
-	public updateWordlistLanguage(event: CustomEvent): void {
+	public updateWordlistLanguage(event: any): void {
 		this.update({ wordlistLanguage: event.detail.value });
 	}
 
-	public updateDarkMode(event: CustomEvent): void {
+	public updateDarkMode(event: any): void {
 		this.update({ darkMode: event.detail.checked });
 	}
 
