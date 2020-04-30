@@ -3,16 +3,30 @@
 		<ion-buttons slot="start">
 			<ion-back-button></ion-back-button>
 		</ion-buttons>
-		<ion-title>{{ "SETTINGS_PAGE.SETTINGS" | translate }}</ion-title>
+		<ion-buttons slot="end">
+			<ion-button data-testid="c-networks__button--menu">
+				<ion-icon
+					class="text-base"
+					color="dark"
+					src="/assets/svg/menu.svg"
+				></ion-icon>
+			</ion-button>
+		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="settings$ | async as currentSettings">
+	<ion-header collapse="condense" class="ion-no-border">
+		<ion-toolbar>
+			<ion-title size="large" class="font-black">
+				{{ "SETTINGS_PAGE.SETTINGS" | translate }}
+			</ion-title>
+		</ion-toolbar>
+	</ion-header>
 	<ion-list>
 		<ion-item-group>
 			<ion-item>
-				<ion-icon color="primary" name="globe" slot="start"></ion-icon>
-				<ion-label>{{
+				<ion-label class="font-bold">{{
 					"SETTINGS_PAGE.LANGUAGE" | translate
 				}}</ion-label>
 				<ion-select
@@ -30,8 +44,7 @@
 			</ion-item>
 
 			<ion-item>
-				<ion-icon color="primary" name="cash" slot="start"></ion-icon>
-				<ion-label>{{
+				<ion-label class="font-bold">{{
 					"SETTINGS_PAGE.CURRENCY" | translate
 				}}</ion-label>
 				<ion-select
@@ -48,8 +61,7 @@
 				</ion-select>
 			</ion-item>
 			<ion-item>
-				<ion-icon color="primary" name="book" slot="start"></ion-icon>
-				<ion-label>{{
+				<ion-label class="font-bold">{{
 					"SETTINGS_PAGE.WORDLIST_LANGUAGE" | translate
 				}}</ion-label>
 				<ion-select
@@ -69,20 +81,18 @@
 
 		<ion-item-group>
 			<ion-item-divider color="primary-background"></ion-item-divider>
-			<ion-item detail (click)="openChangePinPage()" class="custom-arrow">
-				<ion-icon
-					color="primary"
-					name="lock-closed"
-					slot="start"
-				></ion-icon>
+			<ion-item
+				detail
+				(click)="openChangePinPage()"
+				class="custom-arrow font-bold"
+			>
 				{{ "SETTINGS_PAGE.CHANGE_PIN" | translate }}
 			</ion-item>
 			<ion-item
 				detail
 				(click)="openManageNetworksPage()"
-				class="custom-arrow"
+				class="custom-arrow font-bold"
 			>
-				<ion-icon color="primary" name="wifi" slot="start"></ion-icon>
 				{{ "CUSTOM_NETWORK.MANAGE_NETWORKS" | translate }}
 			</ion-item>
 		</ion-item-group>
@@ -90,11 +100,12 @@
 		<ion-item-group>
 			<ion-item-divider color="primary-background"></ion-item-divider>
 			<ion-item>
-				<ion-icon color="primary" name="moon" slot="start"></ion-icon>
-				<ion-label>{{
+				<ion-label class="font-bold">{{
 					"SETTINGS_PAGE.DARK_MODE" | translate
 				}}</ion-label>
 				<ion-toggle
+					class="settings--toggle"
+					mode="md"
 					[checked]="currentSettings.darkMode"
 					(ionChange)="updateDarkMode($event)"
 				></ion-toggle>
@@ -104,7 +115,6 @@
 		<ion-item-group *ngIf="currentSettings.devMode">
 			<ion-item-divider color="primary-background"></ion-item-divider>
 			<ion-item detail (click)="presentLogReport()">
-				<ion-icon color="primary" name="bug" slot="start"></ion-icon>
 				<ion-label>{{
 					"SETTINGS_PAGE.VIEW_LOG_REPORT" | translate
 				}}</ion-label>
@@ -113,28 +123,26 @@
 
 		<ion-item-group>
 			<ion-item-divider color="primary-background"></ion-item-divider>
-			<ion-item detail (click)="confirmClearData()" class="custom-arrow">
-				<ion-icon color="primary" name="trash" slot="start"></ion-icon>
+			<ion-item
+				detail
+				(click)="confirmClearData()"
+				class="custom-arrow font-bold"
+			>
 				{{ "SETTINGS_PAGE.CLEAR_DATA" | translate }}
 			</ion-item>
-			<ion-item detail (click)="openPrivacyPolicy()" class="custom-arrow">
-				<ion-icon
-					color="primary"
-					name="document"
-					slot="start"
-				></ion-icon>
+			<ion-item
+				detail
+				(click)="openPrivacyPolicy()"
+				class="custom-arrow font-bold"
+			>
 				{{ "SETTINGS_PAGE.PRIVACY_POLICY" | translate }}
 			</ion-item>
 			<ion-item
 				detail="false"
 				(click)="handleVersionClicks()"
 				[button]="!(devMode$ | async)"
+				class="font-bold"
 			>
-				<ion-icon
-					color="primary"
-					name="information-circle-outline"
-					slot="start"
-				></ion-icon>
 				{{ "SETTINGS_PAGE.VERSION" | translate }}
 				<div slot="end">
 					<p>{{ appVersion }}</p>

@@ -15,7 +15,7 @@ export namespace SettingsConfig {
 
 	export const CURRENCIES = {
 		btc: "Bitcoin",
-		usd: "Dollar",
+		usd: "USD",
 		eur: "Euro",
 		gbp: "British Pound",
 		krw: "South Korean Won",
