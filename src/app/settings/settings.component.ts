@@ -12,7 +12,6 @@ import { Observable } from "rxjs";
 
 import { AuthController } from "@/app/auth/shared/auth.controller";
 import { ViewerLogModal } from "@/components/viewer-log/viewer-log.modal";
-import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
@@ -47,7 +46,6 @@ export class SettingsPage {
 	constructor(
 		public platform: Platform,
 		private navCtrl: NavController,
-		private settingsDataProvider: SettingsDataProvider,
 		private alertCtrl: AlertController,
 		private translateService: TranslateService,
 		private modalCtrl: ModalController,
