@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { PriceTrackerService } from "@arkecosystem/platform-sdk";
+import { PriceTrackerService } from "@arkecosystem/platform-sdk-markets";
 import { from, Observable } from "rxjs";
 
 import { MarketData } from "./market.types";
