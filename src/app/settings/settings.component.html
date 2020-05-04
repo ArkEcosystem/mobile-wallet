@@ -33,6 +33,7 @@
 					"SETTINGS_PAGE.LANGUAGE" | translate
 				}}</ion-label>
 				<ion-select
+					data-testid="settings__select-language"
 					[value]="currentSettings.language"
 					(ionChange)="updateLanguage($event)"
 					cancelText="{{ 'CANCEL' | translate }}"
@@ -51,6 +52,7 @@
 					"SETTINGS_PAGE.CURRENCY" | translate
 				}}</ion-label>
 				<ion-select
+					data-testid="settings__select-currency"
 					[value]="currentSettings.currency"
 					(ionChange)="updateCurrency($event)"
 					cancelText="{{ 'CANCEL' | translate }}"
@@ -68,6 +70,7 @@
 					"SETTINGS_PAGE.WORDLIST_LANGUAGE" | translate
 				}}</ion-label>
 				<ion-select
+					data-testid="settings__select-wordlistLanguage"
 					[value]="currentSettings.wordlistLanguage"
 					(ionChange)="updateWordlistLanguage($event)"
 					cancelText="{{ 'CANCEL' | translate }}"
@@ -85,6 +88,7 @@
 		<ion-item-group>
 			<ion-item-divider color="primary-background"></ion-item-divider>
 			<ion-item
+				data-testid="settings__item-changePin"
 				detail
 				(click)="openChangePinPage()"
 				class="custom-arrow font-bold"
@@ -92,6 +96,7 @@
 				{{ "SETTINGS_PAGE.CHANGE_PIN" | translate }}
 			</ion-item>
 			<ion-item
+				data-testid="settings__item-manageNetworks"
 				detail
 				(click)="openManageNetworksPage()"
 				class="custom-arrow font-bold"
@@ -107,6 +112,7 @@
 					"SETTINGS_PAGE.DARK_MODE" | translate
 				}}</ion-label>
 				<ion-toggle
+					data-testid="settings__item-darkMode"
 					class="settings--toggle"
 					mode="md"
 					[checked]="currentSettings.darkMode"
@@ -127,6 +133,7 @@
 		<ion-item-group>
 			<ion-item-divider color="primary-background"></ion-item-divider>
 			<ion-item
+				data-testid="settings__item-clearData"
 				detail
 				(click)="confirmClearData()"
 				class="custom-arrow font-bold"
@@ -134,6 +141,7 @@
 				{{ "SETTINGS_PAGE.CLEAR_DATA" | translate }}
 			</ion-item>
 			<ion-item
+				data-testid="settings__item-privacyPolicy"
 				detail
 				(click)="openPrivacyPolicy()"
 				class="custom-arrow font-bold"
@@ -141,6 +149,7 @@
 				{{ "SETTINGS_PAGE.PRIVACY_POLICY" | translate }}
 			</ion-item>
 			<ion-item
+				data-testid="settings__item-version"
 				detail="false"
 				(click)="handleVersionClicks()"
 				[button]="!(devMode$ | async)"

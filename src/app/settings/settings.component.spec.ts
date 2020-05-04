@@ -2,14 +2,17 @@ import { RouterModule } from "@angular/router";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
 import { IonicModule } from "@ionic/angular";
 import {
-	createServiceFactory,
+	byTestId,
+	byText,
+	createTestComponentFactory,
 	mockProvider,
-	SpectatorService,
+	Spectator,
 } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
 import { Actions, NgxsModule, ofActionDispatched } from "@ngxs/store";
 import { of } from "rxjs";
 
+import { sleep } from "@@/test/helpers";
 import { AuthController } from "@/app/auth/shared/auth.controller";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
@@ -19,11 +22,11 @@ import { SettingsConfig } from "./shared/settings.config";
 import { SettingsService } from "./shared/settings.service";
 import { SettingsState } from "./shared/settings.state";
 
-describe("Settings Component", () => {
-	let spectator: SpectatorService<SettingsPage>;
-	let settingsPage: SettingsPage;
-	const createSettingsPage = createServiceFactory({
-		service: SettingsPage,
+fdescribe("Settings Component", () => {
+	let spectator: Spectator<SettingsPage>;
+	let settingsPageComponent: SettingsPage;
+	const createSettingsPage = createTestComponentFactory({
+		component: SettingsPage,
 		imports: [
 			IonicModule.forRoot(),
 			TranslateModule.forRoot(),
@@ -42,11 +45,11 @@ describe("Settings Component", () => {
 
 	beforeEach(() => {
 		spectator = createSettingsPage();
-		settingsPage = spectator.service;
+		settingsPageComponent = spectator.component;
 		spyOn(window, "open").and.stub();
 	});
 
-	it("should dispatch update language", (done) => {
+	it("should dispatch update language", async (done) => {
 		const actions$ = spectator.inject(Actions);
 		actions$
 			.pipe(ofActionDispatched(SettingsActions.Update))
@@ -55,52 +58,91 @@ describe("Settings Component", () => {
 				done();
 			});
 
-		const event = {
-			detail: {
-				value: "pt-br",
-			},
-		};
+		// Wait ionic rendering
+		await sleep(500);
+		const languageSelector = spectator.query(
+			byTestId("settings__select-language"),
+		);
 
-		settingsPage.updateLanguage(event);
+		spectator.click(languageSelector);
+		// Wait overlay animation and rendering
+		await sleep(500);
+		// Find and select the option
+		const portugueseOption = spectator.queryLast(byText("Português"), {
+			root: true,
+		});
+
+		spectator.click(portugueseOption);
+		await sleep(500);
+		const okButton = spectator.queryLast(byText("OK"), {
+			root: true,
+		});
+		spectator.click(okButton);
 	});
 
-	it("should dispatch update currency", (done) => {
+	it("should dispatch update currency", async (done) => {
 		const actions$ = spectator.inject(Actions);
 		actions$
 			.pipe(ofActionDispatched(SettingsActions.Update))
 			.subscribe(({ payload }) => {
-				expect(payload).toEqual({ currency: "euro" });
+				expect(payload).toEqual({ currency: "eur" });
 				done();
 			});
 
-		const event = {
-			detail: {
-				value: "euro",
-			},
-		};
+		// Wait ionic rendering
+		await sleep(500);
+		const currencySelector = spectator.query(
+			byTestId("settings__select-currency"),
+		);
 
-		settingsPage.updateCurrency(event);
+		spectator.click(currencySelector);
+		// Wait overlay animation and rendering
+		await sleep(500);
+		// Find and select the option
+		const euroOption = spectator.queryLast(byText("EURO"), {
+			root: true,
+		});
+
+		spectator.click(euroOption);
+		await sleep(500);
+		const okButton = spectator.queryLast(byText("OK"), {
+			root: true,
+		});
+		spectator.click(okButton);
 	});
 
-	it("should dispatch update word list language", (done) => {
+	it("should dispatch update word list language", async (done) => {
 		const actions$ = spectator.inject(Actions);
 		actions$
 			.pipe(ofActionDispatched(SettingsActions.Update))
 			.subscribe(({ payload }) => {
-				expect(payload).toEqual({ wordlistLanguage: "portuguese" });
+				expect(payload).toEqual({ wordlistLanguage: "italian" });
 				done();
 			});
 
-		const event = {
-			detail: {
-				value: "portuguese",
-			},
-		};
+		// Wait ionic rendering
+		await sleep(500);
+		const wordlistLanguageSelector = spectator.query(
+			byTestId("settings__select-wordlistLanguage"),
+		);
 
-		settingsPage.updateWordlistLanguage(event);
+		spectator.click(wordlistLanguageSelector);
+		// Wait overlay animation and rendering
+		await sleep(500);
+		// Find and select the option
+		const italianOption = spectator.queryLast(byText("Italian"), {
+			root: true,
+		});
+
+		spectator.click(italianOption);
+		await sleep(500);
+		const okButton = spectator.queryLast(byText("OK"), {
+			root: true,
+		});
+		spectator.click(okButton);
 	});
 
-	it("should dispatch update dark mode", (done) => {
+	it("should dispatch update dark mode", async (done) => {
 		const actions$ = spectator.inject(Actions);
 		actions$
 			.pipe(ofActionDispatched(SettingsActions.Update))
@@ -108,17 +150,16 @@ describe("Settings Component", () => {
 				expect(payload).toEqual({ darkMode: true });
 				done();
 			});
+		// Wait ionic rendering
+		await sleep(500);
+		const darkModeToggle = spectator.query(
+			byTestId("settings__item-darkMode"),
+		);
 
-		const event = {
-			detail: {
-				checked: true,
-			},
-		};
-
-		settingsPage.updateDarkMode(event);
+		spectator.click(darkModeToggle);
 	});
 
-	it("should dispatch update dev mode", (done) => {
+	it("should dispatch update dev mode", async (done) => {
 		const actions$ = spectator.inject(Actions);
 		actions$
 			.pipe(ofActionDispatched(SettingsActions.Update))
@@ -126,44 +167,44 @@ describe("Settings Component", () => {
 				expect(payload).toEqual({ devMode: true });
 				done();
 			});
+		// Wait ionic rendering
+		await sleep(500);
+		const version = spectator.query(byTestId("settings__item-version"));
 
-		settingsPage.updateDevMode(true);
+		for (let i = 0; i <= 4; i++) {
+			spectator.click(version);
+		}
 	});
 
-	xit("should dispatch update clear action", (done) => {
+	it("should dispatch clear action", async (done) => {
 		const actions$ = spectator.inject(Actions);
 		actions$
 			.pipe(ofActionDispatched(SettingsActions.Clear))
 			.subscribe(() => done());
 
-		settingsPage.confirmClearData();
+		// Wait ionic rendering
+		await sleep(500);
+		const clearData = spectator.query(byTestId("settings__item-clearData"));
+		spectator.click(clearData);
+
+		await sleep(500);
+		const confirmButton = spectator.queryLast(byText("CONFIRM"), {
+			root: true,
+		});
+
+		spectator.click(confirmButton);
 	});
 
-	it("should trigger update dev mode", (done) => {
-		settingsPage.versionClicksCount = 4;
-		const actions$ = spectator.inject(Actions);
-		actions$
-			.pipe(ofActionDispatched(SettingsActions.Update))
-			.subscribe(({ payload }) => {
-				expect(payload).toEqual({ devMode: true });
-				done();
-			});
-
-		settingsPage.handleVersionClicks();
-	});
-
-	it("should return if dev mode is already enabled", () => {
-		settingsPage.updateDevMode(true);
-
-		settingsPage.handleVersionClicks();
-		expect(settingsPage.versionClicksCount).toEqual(0);
-	});
-
-	it("should open privacy policy", () => {
-		settingsPage.openPrivacyPolicy();
+	it("should open privacy policy", async () => {
+		// Wait ionic rendering
+		await sleep(500);
+		const privacyPolicy = spectator.query(
+			byTestId("settings__item-privacyPolicy"),
+		);
+		spectator.click(privacyPolicy);
 
 		expect(window.open).toHaveBeenCalledWith(
-			SettingsConfig.cPRIVACY_POLICY_URL,
+			SettingsConfig.PRIVACY_POLICY_URL,
 			"_system",
 		);
 	});
