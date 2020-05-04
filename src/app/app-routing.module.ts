@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { NoPreloading, RouterModule, Routes } from "@angular/router";
+import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
 
 import { OnboardingGuard } from "./onboarding/shared/onboarding.guard";
 
@@ -60,6 +60,30 @@ const routes: Routes = [
 			import("./delegates/delegates.module").then(
 				(m) => m.DelegatesModule,
 			),
+	},
+	{
+		path: "profiles",
+		loadChildren: () =>
+			import("./profiles/profiles.module").then((m) => m.ProfilesModule),
+	},
+	{
+		path: "profile/:id",
+		children: [
+			{
+				path: "",
+				loadChildren: () =>
+					import("./profiles/profile/profile.module").then(
+						(m) => m.ProfileModule,
+					),
+			},
+			{
+				path: "wallets",
+				loadChildren: () =>
+					import("./wallets/wallets.module").then(
+						(m) => m.WalletsModule,
+					),
+			},
+		],
 	},
 	{
 		path: "profile/signin",
@@ -153,8 +177,7 @@ const routes: Routes = [
 @NgModule({
 	imports: [
 		RouterModule.forRoot(routes, {
-			preloadingStrategy: NoPreloading,
-			initialNavigation: true,
+			preloadingStrategy: PreloadAllModules,
 		}),
 	],
 	exports: [RouterModule],

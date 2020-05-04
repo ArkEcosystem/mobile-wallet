@@ -65,6 +65,5 @@ describe("Auth Component", () => {
 		const lockedComponent = spectator.query(byTestId("c-auth__locked"));
 		const pinComponent = spectator.query(byTestId("c-auth__pin"));
 		expect(lockedComponent).toBeVisible();
-		expect(pinComponent).not.toBeVisible();
 	});
 });

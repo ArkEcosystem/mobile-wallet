@@ -6,7 +6,7 @@ import { catchError, mapTo, switchMap, tap } from "rxjs/operators";
 import { Wallet, WalletKeys } from "@/models/model";
 import { ToastProvider } from "@/services/toast/toast";
 
-import { EnterSecondPassphraseModal } from "../modals/enter-second-passphrase/enter-second-passphrase";
+import { EnterSecondPassphraseModal } from "../../modals/enter-second-passphrase/enter-second-passphrase";
 
 @Injectable({ providedIn: "root" })
 export class WalletController {

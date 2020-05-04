@@ -12,7 +12,7 @@ import { switchMap, takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { AuthController } from "@/app/auth/shared/auth.controller";
-import { WalletController } from "@/app/wallet/wallet.controller";
+import { WalletController } from "@/app/wallets/wallet/wallet.controller";
 import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
 import { Wallet, WalletKeys } from "@/models/model";
 import { StoredNetwork } from "@/models/stored-network";

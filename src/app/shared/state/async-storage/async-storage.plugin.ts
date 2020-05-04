@@ -71,7 +71,11 @@ export class NgxsAsyncStoragePlugin implements NgxsPlugin {
 						);
 						val = {};
 					}
-					nextState = setValue(lastState, key, val);
+					nextState = setValue(
+						{ ...previousState, ...lastState },
+						key,
+						val,
+					);
 				}
 
 				return nextState;
