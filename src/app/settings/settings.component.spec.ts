@@ -1,6 +1,6 @@
 import { RouterModule } from "@angular/router";
 import { InAppBrowser } from "@ionic-native/in-app-browser/ngx";
-import { IonicModule } from "@ionic/angular";
+import { IonicModule, NavController } from "@ionic/angular";
 import {
 	byTestId,
 	byText,
@@ -22,11 +22,12 @@ import { SettingsConfig } from "./shared/settings.config";
 import { SettingsService } from "./shared/settings.service";
 import { SettingsState } from "./shared/settings.state";
 
-fdescribe("Settings Component", () => {
+describe("Settings Component", () => {
 	let spectator: Spectator<SettingsPage>;
 	let settingsPageComponent: SettingsPage;
 	const createSettingsPage = createTestComponentFactory({
 		component: SettingsPage,
+		mocks: [AuthController, NavController],
 		imports: [
 			IonicModule.forRoot(),
 			TranslateModule.forRoot(),
@@ -34,7 +35,6 @@ fdescribe("Settings Component", () => {
 			RouterModule.forRoot([]),
 		],
 		providers: [
-			AuthController,
 			InAppBrowser,
 			mockProvider(UserDataService),
 			mockProvider(SettingsService, {
@@ -207,5 +207,29 @@ fdescribe("Settings Component", () => {
 			SettingsConfig.PRIVACY_POLICY_URL,
 			"_system",
 		);
+	});
+
+	it("should open the pin handler", async () => {
+		// Wait ionic rendering
+		await sleep(500);
+		const pinChanger = spectator.query(
+			byTestId("settings__item-changePin"),
+		);
+		spectator.click(pinChanger);
+		await sleep(500);
+		const authCtrl = spectator.get(AuthController);
+		expect(authCtrl.update).toHaveBeenCalled();
+	});
+
+	it("should open the manage networks page", async () => {
+		// Wait ionic rendering
+		await sleep(500);
+		const pinChanger = spectator.query(
+			byTestId("settings__item-manageNetworks"),
+		);
+		spectator.click(pinChanger);
+		await sleep(500);
+		const navCtrl = spectator.get(NavController);
+		expect(navCtrl.navigateForward).toHaveBeenCalled();
 	});
 });

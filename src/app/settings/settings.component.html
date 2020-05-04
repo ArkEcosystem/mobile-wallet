@@ -123,7 +123,11 @@
 
 		<ion-item-group *ngIf="currentSettings.devMode">
 			<ion-item-divider color="primary-background"></ion-item-divider>
-			<ion-item detail (click)="presentLogReport()">
+			<ion-item
+				detail
+				(click)="presentLogReport()"
+				data-testid="settings__item-logReport"
+			>
 				<ion-label>{{
 					"SETTINGS_PAGE.VIEW_LOG_REPORT" | translate
 				}}</ion-label>
