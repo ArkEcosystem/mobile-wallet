@@ -16,7 +16,7 @@ import { SettingsState } from "./shared/settings.state";
 
 @NgModule({
 	declarations: [SettingsPage],
-	providers: [SettingsService],
+	providers: [],
 	imports: [
 		IonicModule,
 		CommonModule,
