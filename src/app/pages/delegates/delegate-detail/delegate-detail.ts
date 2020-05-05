@@ -18,6 +18,8 @@ import { Wallet } from "@/models/wallet";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
+import { TranslatableObject } from '@/models/translate';
+import { ArkUtility } from '@/utils/ark-utility';
 
 @Component({
 	selector: "page-delegate-detail",
@@ -103,6 +105,23 @@ export class DelegateDetailPage implements OnInit, OnDestroy {
 	submit() {
 		if (!this.currentWallet) {
 			return false;
+		}
+
+		const balance = Number(this.currentWallet.balance);
+
+		if (this.fee > balance) {
+			this.toastProvider.error(
+				{
+					key: "API.BALANCE_TOO_LOW_TOTAL_ONLY_DETAIL",
+					parameters: {
+						token: this.currentNetwork.token,
+						totalAmount: ArkUtility.arktoshiToArk(this.fee),
+						balance: ArkUtility.arktoshiToArk(balance),
+					},
+				} as TranslatableObject,
+				10000,
+			);
+			return;
 		}
 
 		if (
