@@ -1,0 +1,22 @@
+ion-label,
+ion-select,
+ion-item {
+	@apply text-sm !important;
+}
+
+ion-item {
+	--padding-end: 1rem;
+	--border-color: var(--ion-color-light);
+}
+
+ion-toggle {
+	position: absolute;
+	right: 0;
+	height: 4px;
+	width: 30px;
+	--handle-width: 14px;
+	--handle-height: 14px;
+	--handle-max-height: 20px;
+	--background: var(--ion-color-light-shade);
+	--handle-background: var(--ion-color-medium-tint);
+}

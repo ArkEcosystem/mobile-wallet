@@ -48,6 +48,13 @@ const routes: Routes = [
 			),
 	},
 	{
+		path: "settings-new",
+		loadChildren: () =>
+			import("./settings/settings.module").then(
+				(m) => m.SettingsComponentModule,
+			),
+	},
+	{
 		path: "delegates-new",
 		loadChildren: () =>
 			import("./delegates/delegates.module").then(
