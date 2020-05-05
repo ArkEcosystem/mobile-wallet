@@ -14,12 +14,12 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
 import { InputCurrencyOutput } from "@/components/input-currency/input-currency.component";
+import { TranslatableObject } from "@/models/translate";
 import { Wallet } from "@/models/wallet";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
-import { TranslatableObject } from '@/models/translate';
-import { ArkUtility } from '@/utils/ark-utility';
+import { ArkUtility } from "@/utils/ark-utility";
 
 @Component({
 	selector: "page-delegate-detail",
