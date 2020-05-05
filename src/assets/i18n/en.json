@@ -5,6 +5,7 @@
 	"API": {
 		"BALANCE_TOO_LOW": "Balance too low for transaction",
 		"BALANCE_TOO_LOW_DETAIL": "Not enough {{ token }} in your wallet! The transaction costs are: {{ totalAmount }} ({{ amount }} + {{ fee }} fee). However your wallet balance is only {{ balance }}!",
+		"BALANCE_TOO_LOW_TOTAL_ONLY_DETAIL": "Not enough {{ token }} in your wallet! The transaction costs are: {{ totalAmount }}. However your wallet balance is only {{ balance }}!",
 		"DESTINATION_ADDRESS_ERROR": "The destination address '{{ address }}' is incorrect",
 		"PEER_LIST_ERROR": "Could not get list of peers",
 		"TRANSACTION_FAILED": "Transaction failed",
