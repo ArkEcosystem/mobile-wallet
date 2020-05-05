@@ -62,7 +62,7 @@
 						*ngFor="let item of currencies | keyvalue"
 						[value]="item.key"
 					>
-						{{ item.value | uppercase }}
+						{{ item.key | uppercase }}
 					</ion-select-option>
 				</ion-select>
 			</ion-item>
