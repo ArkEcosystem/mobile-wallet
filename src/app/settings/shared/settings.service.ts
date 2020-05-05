@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import { AsyncStorageService } from "@/services/storage/async-storage.service";
 
-@Injectable()
+@Injectable({ providedIn: "root" })
 export class SettingsService {
 	constructor(private asyncStorage: AsyncStorageService) {}
 
