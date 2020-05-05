@@ -7,7 +7,7 @@ import { SettingsPage } from "./settings.component";
 	imports: [
 		RouterModule.forChild([
 			{
-				path: "settings-new",
+				path: "",
 				component: SettingsPage,
 			},
 		]),
