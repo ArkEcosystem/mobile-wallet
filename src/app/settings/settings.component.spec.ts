@@ -16,17 +16,17 @@ import { sleep } from "@@/test/helpers";
 import { AuthController } from "@/app/auth/shared/auth.controller";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
-import { SettingsPage } from "./settings.component";
+import { SettingsComponent } from "./settings.component";
 import { SettingsActions } from "./shared/settings.actions";
 import { SettingsConfig } from "./shared/settings.config";
 import { SettingsService } from "./shared/settings.service";
 import { SettingsState } from "./shared/settings.state";
 
 describe("Settings Component", () => {
-	let spectator: Spectator<SettingsPage>;
-	let settingsPageComponent: SettingsPage;
+	let spectator: Spectator<SettingsComponent>;
+	let settingsPageComponent: SettingsComponent;
 	const createSettingsPage = createTestComponentFactory({
-		component: SettingsPage,
+		component: SettingsComponent,
 		mocks: [AuthController, NavController],
 		imports: [
 			IonicModule.forRoot(),
@@ -99,7 +99,7 @@ describe("Settings Component", () => {
 		// Wait overlay animation and rendering
 		await sleep(500);
 		// Find and select the option
-		const euroOption = spectator.queryLast(byText("EURO"), {
+		const euroOption = spectator.queryLast(byText("EUR"), {
 			root: true,
 		});
 

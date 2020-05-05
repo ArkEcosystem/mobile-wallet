@@ -10,12 +10,11 @@ import { CustomNetworkCreateModalModule } from "@/app/modals/custom-network-crea
 import { ViewerLogModalModule } from "@/components/viewer-log/viewer-log.modal.module";
 
 import { SettingsRoutingModule } from "./settings-routing.module";
-import { SettingsPage } from "./settings.component";
-import { SettingsService } from "./shared/settings.service";
+import { SettingsComponent } from "./settings.component";
 import { SettingsState } from "./shared/settings.state";
 
 @NgModule({
-	declarations: [SettingsPage],
+	declarations: [SettingsComponent],
 	providers: [],
 	imports: [
 		IonicModule,
@@ -30,4 +29,4 @@ import { SettingsState } from "./shared/settings.state";
 	],
 	entryComponents: [CustomNetworkCreateModal],
 })
-export class SettingsPageModule {}
+export class SettingsComponentModule {}

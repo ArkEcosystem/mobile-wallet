@@ -4,7 +4,6 @@ ion-item {
 	@apply text-sm !important;
 }
 
-.toggle-icon {
-	height: 13px !important;
-	width: 13px !important;
+ion-item {
+	--padding-end: 1rem;
 }

@@ -1,13 +1,6 @@
 import { Injectable } from "@angular/core";
 import { TranslateService } from "@ngx-translate/core";
-import {
-	Action,
-	NgxsOnInit,
-	Selector,
-	State,
-	StateContext,
-	StateToken,
-} from "@ngxs/store";
+import { Action, Selector, State, StateContext, StateToken } from "@ngxs/store";
 
 import { SettingsActions } from "./settings.actions";
 import { SettingsConfig } from "./settings.config";
@@ -31,7 +24,7 @@ const defaultState: SettingsStateModel = {
 	defaults: defaultState,
 })
 @Injectable()
-export class SettingsState implements NgxsOnInit {
+export class SettingsState {
 	constructor(
 		private settingsService: SettingsService,
 		private translateService: TranslateService,
@@ -60,10 +53,6 @@ export class SettingsState implements NgxsOnInit {
 	@Selector()
 	static devMode(state: SettingsStateModel): boolean {
 		return state.devMode;
-	}
-
-	public ngxsOnInit(ctx: StateContext<SettingsStateModel>): void {
-		ctx.dispatch(new SettingsActions.Load());
 	}
 
 	@Action(SettingsActions.Update)

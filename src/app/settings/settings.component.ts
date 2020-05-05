@@ -24,12 +24,12 @@ import { SettingsStateModel } from "./shared/settings.type";
 const packageJson = require("@@/package.json");
 
 @Component({
-	selector: "settings-page",
+	selector: "settings",
 	templateUrl: "settings.component.html",
-	styleUrls: ["settings.scss"],
+	styleUrls: ["settings.component.scss"],
 	providers: [InAppBrowser],
 })
-export class SettingsPage {
+export class SettingsComponent {
 	@Select(SETTINGS_STATE_TOKEN)
 	public settings$: Observable<SettingsStateModel>;
 

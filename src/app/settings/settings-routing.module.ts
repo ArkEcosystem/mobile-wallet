@@ -1,14 +1,14 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
-import { SettingsPage } from "./settings.component";
+import { SettingsComponent } from "./settings.component";
 
 @NgModule({
 	imports: [
 		RouterModule.forChild([
 			{
 				path: "",
-				component: SettingsPage,
+				component: SettingsComponent,
 			},
 		]),
 	],
