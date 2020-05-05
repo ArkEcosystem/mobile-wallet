@@ -2,6 +2,12 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+:root,
+:root[mode="ios"],
+:root[mode="md"] {
+	--ion-font-family: "Inter";
+}
+
 :root {
 	--ion-padding: 1rem;
 
