@@ -1,0 +1,171 @@
+<ion-header class="ion-no-border ion-no-shadow" mode="ios" translucent="true">
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+		<ion-buttons slot="end">
+			<ion-button>
+				<ion-icon
+					class="text-base"
+					color="dark"
+					src="/assets/svg/menu.svg"
+				></ion-icon>
+			</ion-button>
+		</ion-buttons>
+		<ion-title>{{ "SETTINGS_PAGE.SETTINGS" | translate }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content
+	*ngIf="settings$ | async as currentSettings"
+	data-testid="c-settings-page"
+	mode="ios"
+	fullscreen="true"
+>
+	<ion-header collapse="condense" class="ion-no-border" mode="ios">
+		<ion-toolbar>
+			<ion-title size="large" class="font-black">
+				{{ "SETTINGS_PAGE.SETTINGS" | translate }}
+			</ion-title>
+		</ion-toolbar>
+	</ion-header>
+	<ion-list mode="ios">
+		<ion-item-group>
+			<ion-item>
+				<ion-label class="font-bold">{{
+					"SETTINGS_PAGE.LANGUAGE" | translate
+				}}</ion-label>
+				<ion-select
+					data-testid="settings__select-language"
+					[value]="currentSettings.language"
+					(ionChange)="updateLanguage($event)"
+					cancelText="{{ 'CANCEL' | translate }}"
+				>
+					<ion-select-option
+						*ngFor="let item of languages | keyvalue"
+						[value]="item.key"
+					>
+						{{ languages[item.key] }}
+					</ion-select-option>
+				</ion-select>
+			</ion-item>
+
+			<ion-item>
+				<ion-label class="font-bold">{{
+					"SETTINGS_PAGE.CURRENCY" | translate
+				}}</ion-label>
+				<ion-select
+					data-testid="settings__select-currency"
+					[value]="currentSettings.currency"
+					(ionChange)="updateCurrency($event)"
+					cancelText="{{ 'CANCEL' | translate }}"
+				>
+					<ion-select-option
+						*ngFor="let item of currencies | keyvalue"
+						[value]="item.key"
+					>
+						{{ item.key | uppercase }}
+					</ion-select-option>
+				</ion-select>
+			</ion-item>
+			<ion-item>
+				<ion-label class="font-bold">{{
+					"SETTINGS_PAGE.WORDLIST_LANGUAGE" | translate
+				}}</ion-label>
+				<ion-select
+					data-testid="settings__select-wordlistLanguage"
+					[value]="currentSettings.wordlistLanguage"
+					(ionChange)="updateWordlistLanguage($event)"
+					cancelText="{{ 'CANCEL' | translate }}"
+				>
+					<ion-select-option
+						*ngFor="let item of wordlistLanguages | keyvalue"
+						[value]="item.key"
+					>
+						{{ wordlistLanguages[item.key] }}
+					</ion-select-option>
+				</ion-select>
+			</ion-item>
+		</ion-item-group>
+
+		<ion-item-group>
+			<ion-item-divider color="primary-background"></ion-item-divider>
+			<ion-item
+				data-testid="settings__item-changePin"
+				detail
+				(click)="openChangePinPage()"
+				class="custom-arrow font-bold"
+			>
+				{{ "SETTINGS_PAGE.CHANGE_PIN" | translate }}
+			</ion-item>
+			<ion-item
+				data-testid="settings__item-manageNetworks"
+				detail
+				(click)="openManageNetworksPage()"
+				class="custom-arrow font-bold"
+			>
+				{{ "CUSTOM_NETWORK.MANAGE_NETWORKS" | translate }}
+			</ion-item>
+		</ion-item-group>
+
+		<ion-item-group>
+			<ion-item-divider color="primary-background"></ion-item-divider>
+			<ion-item>
+				<ion-label class="font-bold">{{
+					"SETTINGS_PAGE.DARK_MODE" | translate
+				}}</ion-label>
+				<ion-toggle
+					data-testid="settings__item-darkMode"
+					mode="md"
+					[checked]="currentSettings.darkMode"
+					(ionChange)="updateDarkMode($event)"
+				></ion-toggle>
+			</ion-item>
+		</ion-item-group>
+
+		<ion-item-group *ngIf="currentSettings.devMode">
+			<ion-item-divider color="primary-background"></ion-item-divider>
+			<ion-item
+				detail
+				(click)="presentLogReport()"
+				data-testid="settings__item-logReport"
+			>
+				<ion-label>{{
+					"SETTINGS_PAGE.VIEW_LOG_REPORT" | translate
+				}}</ion-label>
+			</ion-item>
+		</ion-item-group>
+
+		<ion-item-group>
+			<ion-item-divider color="primary-background"></ion-item-divider>
+			<ion-item
+				data-testid="settings__item-clearData"
+				detail
+				(click)="confirmClearData()"
+				class="custom-arrow font-bold"
+			>
+				{{ "SETTINGS_PAGE.CLEAR_DATA" | translate }}
+			</ion-item>
+			<ion-item
+				data-testid="settings__item-privacyPolicy"
+				detail
+				(click)="openPrivacyPolicy()"
+				class="custom-arrow font-bold"
+			>
+				{{ "SETTINGS_PAGE.PRIVACY_POLICY" | translate }}
+			</ion-item>
+			<ion-item
+				data-testid="settings__item-version"
+				detail="false"
+				(click)="handleVersionClicks()"
+				[button]="!(devMode$ | async)"
+				class="font-bold"
+			>
+				{{ "SETTINGS_PAGE.VERSION" | translate }}
+				<div slot="end">
+					<p>{{ appVersion }}</p>
+				</div>
+			</ion-item>
+		</ion-item-group>
+	</ion-list>
+</ion-content>
