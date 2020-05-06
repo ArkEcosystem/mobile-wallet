@@ -123,3 +123,8 @@ ion-slides {
 	padding: 1em;
 	background-color: rgba(var(--ion-color-warning-rgb), 0.5);
 }
+
+.card {
+	@apply rounded-lg p-5;
+	border: 1px solid var(--ion-color-medium-tint);
+}
