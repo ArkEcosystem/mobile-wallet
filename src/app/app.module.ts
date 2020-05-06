@@ -38,7 +38,6 @@ import { SettingsConfig } from "./settings/shared/settings.config";
 import { SettingsState } from "./settings/shared/settings.state";
 import { NgxsAsyncStoragePluginModule } from "./shared/state/async-storage/async-storage.module";
 import { TransactionsModule } from "./transactions/transactions.module";
-import { WalletModule } from "./wallet/wallet.module";
 import { WalletsComponentModule } from "./wallets/wallets.module";
 
 export function createTranslateLoader(http: HttpClient) {
@@ -74,7 +73,6 @@ export function createTranslateLoader(http: HttpClient) {
 			},
 		}),
 		AuthModule,
-		WalletModule,
 		WalletsComponentModule,
 		TransactionsModule,
 		MarketModule,
