@@ -34,7 +34,7 @@
 		"@angular/router": "~9.1.4",
 		"@arkecosystem/crypto": "^2.6.36",
 		"@arkecosystem/platform-sdk": "^0.4.1",
-		"@arkecosystem/platform-sdk-markets": "^0.4.1",
+		"@arkecosystem/platform-sdk-markets": "^0.5.0",
 		"@ionic-native/background-mode": "^5.24.0",
 		"@ionic-native/clipboard": "^5.24.0",
 		"@ionic-native/core": "^5.24.0",
