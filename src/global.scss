@@ -125,6 +125,7 @@ ion-slides {
 }
 
 .card {
-	@apply rounded-lg p-5;
-	border: 1px solid var(--ion-color-medium-tint);
+	@apply p-5;
+	border: 1px solid var(--ion-color-light);
+	border-radius: 20px;
 }

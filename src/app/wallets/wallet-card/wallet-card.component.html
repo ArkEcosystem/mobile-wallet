@@ -1,0 +1,41 @@
+<div
+	class="mb-4 w-full lg:flex card c-wallet-card"
+	data-testid="c-wallet-card"
+	(click)="openWalletDetailsHandler(address)"
+>
+	<div class="w-full leading-normal">
+		<div class="flex items-center justify-between">
+			<div class="ion-padding flex items-center">
+				<div
+					[class]="
+						'c-wallet-card--img ' +
+						symbol +
+						' flex justify-center items-center mr-5'
+					"
+					data-testid="c-wallet-card--img"
+				>
+					<img
+						class="c-wallet-coin--img"
+						data-testid="c-wallet-coin--img"
+						[src]="'assets/img/coins/' + coins[symbol] + '.png'"
+					/>
+				</div>
+				<div>
+					<p
+						class="text-sm c-wallet-card--name"
+						data-testid="c-wallet-card--name"
+					>
+						{{ name }}
+					</p>
+					<p
+						class="font-bold text-xl"
+						data-testid="c-wallet-card--balance"
+					>
+						{{ balance | unitsSatoshi }} {{ symbol | uppercase }}
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="flex items-center"></div>
+	</div>
+</div>
