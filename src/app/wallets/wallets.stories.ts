@@ -3,16 +3,16 @@ import { TranslateModule } from "@ngx-translate/core";
 import { action } from "@storybook/addon-actions";
 import { moduleMetadata, storiesOf } from "@storybook/angular";
 
-import { WalletsEmptyListComponent } from "./wallets-empty-list.component";
+import { WalletsEmptyListComponent } from "./wallets-empty-list/wallets-empty-list.component";
 
-storiesOf("wallets-empty-list", module)
+storiesOf("Wallets", module)
 	.addDecorator(
 		moduleMetadata({
 			declarations: [WalletsEmptyListComponent],
 			imports: [TranslateModule, IonicModule],
 		}),
 	)
-	.add("Default", () => ({
+	.add("Empty", () => ({
 		component: WalletsEmptyListComponent,
 		props: {
 			importWalletClick: action("Import Button!"),

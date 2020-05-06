@@ -1,0 +1,220 @@
+<ion-header class="ion-no-border ion-no-shadow">
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
+		<ion-title>{{ currentProfile?.name }}</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content
+	forceOverscroll="false"
+	[fullscreen]="wallets?.length > 0"
+	#content
+	[ngClass]="{
+		delegate: selectedWallet?.isDelegate,
+		normal: selectedWallet?.isDelegate == false
+	}"
+>
+	<ion-fab
+		slot="fixed"
+		vertical="bottom"
+		horizontal="end"
+		*ngIf="wallets?.length > 0"
+	>
+		<ion-fab-button (click)="presentActionSheet()">
+			<ion-icon name="add"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+
+	<wallets-empty-list
+		*ngIf="wallets?.length === 0"
+		[name]="currentProfile?.name"
+		(importWalletClick)="presentActionSheet()"
+		(generateWalletClick)="presentWalletGenerate()"
+	></wallets-empty-list>
+
+	<ion-grid
+		class="h-full flex flex-col justify-between"
+		*ngIf="wallets?.length > 0"
+	>
+		<div class="flex-1 flex flex-col py-5">
+			<div class="flex flex-col px-5">
+				<ion-text color="medium">
+					<p class="mb-1 text-xs uppercase font-semibold">
+						{{ "WALLETS_PAGE.TOTAL_BALANCE" | translate }}
+					</p>
+				</ion-text>
+				<div class="flex items-baseline">
+					<ion-text color="dark">
+						<h2 class="text-2xl font-bold">
+							{{ currentNetwork?.symbol }}
+							{{ (totalBalance | unitsSatoshi) || 0 }}
+						</h2>
+					</ion-text>
+					<div appMarketNetOnly>
+						<ion-text
+							color="dark"
+							class="opacity-75"
+							*ngIf="fiatCurrency?.price"
+						>
+							<span class="text-lg ml-2 font-semibold"
+								>{{ fiatCurrency?.symbol
+								}}{{ (fiatBalance | marketNumber) || 0 }}</span
+							>
+						</ion-text>
+						<ion-skeleton-text
+							*ngIf="!fiatCurrency?.price"
+							animated
+							class="w-10 ml-2"
+						></ion-skeleton-text>
+					</div>
+				</div>
+			</div>
+
+			<div class="block p-0 mt-4">
+				<ion-slides
+					class="w-full ml-5"
+					[options]="slideOptions"
+					#walletSlider
+					(ionSlideDidChange)="onSlideChanged()"
+				>
+					<ion-slide
+						class="flex justify-start"
+						*ngFor="let wallet of wallets"
+						(click)="openWalletDashboard(wallet)"
+					>
+						<ion-item
+							lines="none"
+							[ngClass]="{
+								delegate: wallet?.isDelegate,
+								normal: !wallet?.isDelegate
+							}"
+						>
+							<div class="flex flex-col text-white w-full">
+								<h2 class="font-semibold">
+									{{ currentNetwork?.symbol }}
+									{{ (wallet?.balance | unitsSatoshi) || 0 }}
+								</h2>
+								<div class="flex mt-2">
+									<span class="text-sm flex-grow truncate">
+										{{
+											wallet?.username ||
+												wallet?.label ||
+												wallet?.address
+												| truncateMiddle: 15
+										}}
+									</span>
+									<ion-badge
+										[color]="
+											wallet?.isDelegate
+												? 'primary'
+												: 'danger-alternative'
+										"
+										*ngIf="wallet.isWatchOnly"
+									>
+										{{ "WATCH_ONLY" | translate }}
+									</ion-badge>
+								</div>
+							</div>
+						</ion-item>
+					</ion-slide>
+				</ion-slides>
+			</div>
+		</div>
+
+		<ion-row class="flex-1 flex items-end p-5">
+			<ion-col appMarketNetOnly>
+				<ion-grid>
+					<ion-row class="flex-no-wrap">
+						<ion-col
+							size="auto"
+							*ngIf="fiatCurrency?.code !== 'btc'"
+							class="pl-0 mr-3"
+						>
+							<div *ngIf="fiatCurrency?.price">
+								<ion-text color="dark">
+									<p
+										class="text-sm font-semibold flex items-center"
+									>
+										{{ fiatCurrency?.code | uppercase }}
+										<span class="bullet fiat"></span>
+									</p>
+								</ion-text>
+								<p class="font-bold mt-2">
+									{{ fiatCurrency?.symbol
+									}}{{ fiatCurrency?.price | marketNumber }}
+								</p>
+							</div>
+							<ion-skeleton-text
+								*ngIf="!fiatCurrency?.price"
+								animated
+								class="w-10"
+							></ion-skeleton-text>
+						</ion-col>
+						<ion-col
+							size="auto"
+							*ngIf="fiatCurrency?.code !== 'btc'"
+						>
+							<div *ngIf="btcCurrency?.price">
+								<ion-text color="dark">
+									<p
+										class="text-sm font-semibold flex items-center"
+									>
+										{{ btcCurrency?.code | uppercase }}
+										<span class="bullet btc"></span>
+									</p>
+								</ion-text>
+								<p class="font-bold mt-2 whitespace-no-wrap">
+									{{
+										btcCurrency?.price
+											| marketNumber: btcCurrency
+									}}
+									<span class="text-xs">
+										(<ion-text
+											[color]="
+												btcCurrency?.change24h < 0
+													? 'danger'
+													: 'success'
+											"
+										>
+											{{
+												btcCurrency?.change24h
+													| number: "1.2-2"
+											}}% </ion-text
+										>)
+									</span>
+								</p>
+							</div>
+							<ion-skeleton-text
+								*ngIf="!btcCurrency?.price"
+								animated
+								class="w-10"
+							></ion-skeleton-text>
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</ion-col>
+		</ion-row>
+
+		<ion-row class="flex-1">
+			<ion-col
+				*ngIf="chartLabels && wallets?.length > 0"
+				class="flex flex-col justify-end p-2"
+				appMarketNetOnly
+			>
+				<canvas
+					baseChart
+					[datasets]="chartData"
+					[labels]="chartLabels"
+					[options]="chartOptions"
+					[colors]="chartColors"
+					[legend]="false"
+					chartType="line"
+					#chart
+				>
+				</canvas>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
