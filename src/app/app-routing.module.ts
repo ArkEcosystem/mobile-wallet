@@ -15,18 +15,9 @@ const routes: Routes = [
 			),
 	},
 	{
-		path: "network-status",
+		path: "signup",
 		loadChildren: () =>
-			import("./pages/network/network-status/network-status.module").then(
-				(m) => m.NetworkStatusPageModule,
-			),
-	},
-	{
-		path: "network-overview",
-		loadChildren: () =>
-			import(
-				"./pages/network/network-overview/network-overview.module"
-			).then((m) => m.NetworkOverviewPageModule),
+			import("./signup/signup.module").then((m) => m.SignupModule),
 	},
 	{
 		path: "login",
@@ -39,6 +30,20 @@ const routes: Routes = [
 			import("./pages/settings/settings.module").then(
 				(m) => m.SettingsPageModule,
 			),
+	},
+	{
+		path: "network-status",
+		loadChildren: () =>
+			import("./pages/network/network-status/network-status.module").then(
+				(m) => m.NetworkStatusPageModule,
+			),
+	},
+	{
+		path: "network-overview",
+		loadChildren: () =>
+			import(
+				"./pages/network/network-overview/network-overview.module"
+			).then((m) => m.NetworkOverviewPageModule),
 	},
 	{
 		path: "delegates",

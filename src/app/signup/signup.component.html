@@ -1,0 +1,54 @@
+<ion-header mode="ios" class="ion-no-border ion-padding">
+	<ion-toolbar class="p-0">
+		<div class="flex items-center justify-between">
+			<img src="/assets/img/logo.png" class="h-6 sm:h-8" />
+			<ion-button
+				data-testid="signup__skip"
+				size="small"
+				fill="clear"
+				(click)="handleSignin()"
+				class="text-sm sm:text-base"
+			>
+				{{ "SKIP" | translate }}
+			</ion-button>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding" mode="ios">
+	<div class="h-full flex flex-col justify-between">
+		<img
+			data-testid="signup__slide__image"
+			class="signup__slide__image pointer-events-none flex-1 self-center p-3"
+			[src]="'/assets/svg/signup-signup.svg'"
+		/>
+		<div class="mt-3">
+			<h2
+				data-testid="signup__slide__title"
+				class="text-3xl xs:text-4xl md:text-5xl font-black text-center"
+			>
+				Hi!<br />
+				Let's begin.
+			</h2>
+			<form class="mt-4 text-center">
+				<label class="text-sm font-semibold text-medium block mb-1"
+					>Create a name for you user</label
+				>
+				<ion-input></ion-input>
+			</form>
+		</div>
+	</div>
+</ion-content>
+
+<ion-footer mode="ios" class="ion-no-border pb-4 px-4">
+	<ion-toolbar class="p-0">
+		<ion-button
+			data-testid="signup__next"
+			expand="block"
+			color="primary-light"
+			(click)="handleNext()"
+		>
+			{{ "NEXT" | translate }}
+		</ion-button>
+	</ion-toolbar>
+</ion-footer>
