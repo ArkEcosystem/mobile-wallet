@@ -15,29 +15,9 @@
 				</p>
 			</ion-text>
 		</div>
-		<div class="ion-padding justify-center items-center">
-			<ion-button
-				color="primary-light"
-				(click)="generateWalletHandler()"
-				data-testid="wallets-empty-list__button--generate"
-			>
-				<ion-icon
-					size="small"
-					slot="icon-only"
-					name="add-sharp"
-				></ion-icon>
-			</ion-button>
-			<ion-button
-				color="primary-light"
-				(click)="importWalletHandler()"
-				data-testid="wallets-empty-list__button--import"
-			>
-				<ion-icon
-					size="small"
-					slot="icon-only"
-					name="download-sharp"
-				></ion-icon>
-			</ion-button>
-		</div>
+		<wallets-actions
+			(generateWalletClick)="generateWalletHandler()"
+			(importWalletClick)="importWalletHandler()"
+		></wallets-actions>
 	</ion-grid>
 </ion-content>
