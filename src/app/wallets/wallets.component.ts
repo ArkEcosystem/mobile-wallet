@@ -220,17 +220,20 @@ export class WalletsComponent implements OnInit, OnDestroy {
 		wallet.address = account.address;
 		wallet.publicKey = account.publicKey;
 
-		this.authCtrl.request().pipe(
-			switchMap(({ password }) =>
-				this.userDataService.addWallet(
-					wallet,
-					account.mnemonic,
-					password,
+		this.authCtrl
+			.request()
+			.pipe(
+				switchMap(({ password }) =>
+					this.userDataService.addWallet(
+						wallet,
+						account.mnemonic,
+						password,
+					),
 				),
-			),
-			tap(() => this.loadWallets()),
-			takeUntil(this.unsubscriber$),
-		);
+				tap(() => this.loadWallets()),
+				takeUntil(this.unsubscriber$),
+			)
+			.subscribe();
 	}
 
 	private loadWallets() {
