@@ -1,1 +1,3 @@
-<h1>Profile 1</h1>
+<div *ngIf="profile$ | async as profile">
+	<h1>{{ profile.name }}</h1>
+</div>

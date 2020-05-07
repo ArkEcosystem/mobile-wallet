@@ -57,6 +57,6 @@ export class OnboardingState implements NgxsOnInit {
 	@Action(OnboardingActions.Done)
 	public done(ctx: StateContext<OnboardingStateModel>) {
 		ctx.patchState({ isFinished: true });
-		return ctx.dispatch(new Navigate(["/login"]));
+		return ctx.dispatch(new Navigate(["/signup"]));
 	}
 }

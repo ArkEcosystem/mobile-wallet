@@ -1,4 +1,4 @@
-import { Inject, Injectable, InjectionToken, Injector } from "@angular/core";
+import { Inject, Injectable, InjectionToken } from "@angular/core";
 import {
 	actionMatcher,
 	getValue,
@@ -6,11 +6,10 @@ import {
 	NgxsNextPluginFn,
 	NgxsPlugin,
 	setValue,
-	Store,
 	UpdateState,
 } from "@ngxs/store";
 import { from, iif, of } from "rxjs";
-import { concatMap, map, reduce, shareReplay, tap } from "rxjs/operators";
+import { concatMap, map, reduce, tap } from "rxjs/operators";
 
 import { AsyncStorageService } from "@/services/storage/async-storage.service";
 
@@ -20,24 +19,24 @@ export const NGXS_ASYNC_STORAGE_PLUGIN_OPTIONS = new InjectionToken(
 
 @Injectable()
 export class NgxsAsyncStoragePlugin implements NgxsPlugin {
+	private hasRehydrated = false;
+	private initialState: any = undefined;
+
 	constructor(
 		@Inject(NGXS_ASYNC_STORAGE_PLUGIN_OPTIONS)
 		private options: any,
 		private storageService: AsyncStorageService,
-		private _injector: Injector,
 	) {}
-
-	/**
-	 * Lazy get the store for circular dependency issues
-	 */
-	private get store(): Store {
-		return this._injector.get<Store>(Store);
-	}
 
 	handle(state: any, event: any, next: NgxsNextPluginFn) {
 		const keys: string[] = this.options?.keys || [];
 		const matches = actionMatcher(event);
-		const isInitAction = matches(InitState) || matches(UpdateState);
+		const isInitAction = matches(InitState);
+
+		// Ignore [Router] patches
+		if (matches(UpdateState) && !this.hasRehydrated) {
+			this.initialState = state;
+		}
 
 		const deserializer$ = from(keys).pipe(
 			concatMap((key) =>
@@ -45,17 +44,7 @@ export class NgxsAsyncStoragePlugin implements NgxsPlugin {
 					.getItem(key)
 					.pipe(map((val) => ({ key, val }))),
 			),
-			concatMap((payload) =>
-				this.store
-					.selectOnce((lastState) => lastState)
-					.pipe(
-						map((lastState) => ({
-							lastState,
-							...payload,
-						})),
-					),
-			),
-			reduce((previousState, { key, val, lastState }) => {
+			reduce((previousState, { key, val }) => {
 				let nextState = previousState;
 
 				if (
@@ -71,27 +60,20 @@ export class NgxsAsyncStoragePlugin implements NgxsPlugin {
 						);
 						val = {};
 					}
-					nextState = setValue(
-						{ ...previousState, ...lastState },
-						key,
-						val,
-					);
+					nextState = setValue({ ...previousState }, key, val);
 				}
 
 				return nextState;
-			}, state),
+			}, this.initialState),
+			tap(() => (this.hasRehydrated = true)),
 		);
 
-		const action$ = iif(
-			() => isInitAction,
-			deserializer$.pipe(shareReplay(1)),
-			of(state),
-		);
+		const action$ = iif(() => isInitAction, deserializer$, of(state));
 
 		return action$.pipe(
 			concatMap((stateAfterInit) => next(stateAfterInit, event)),
 			tap((nextState) => {
-				if (!isInitAction) {
+				if (!isInitAction && this.hasRehydrated) {
 					for (const key of keys) {
 						let val = nextState;
 

@@ -72,7 +72,21 @@ const routes: Routes = [
 			import("./profiles/profiles.module").then((m) => m.ProfilesModule),
 	},
 	{
-		path: "profile/:id",
+		path: "profile/signin",
+		loadChildren: () =>
+			import(
+				"./pages/profiles/profile-signin/profile-signin.module"
+			).then((m) => m.ProfileSigninPageModule),
+	},
+	{
+		path: "profile/create",
+		loadChildren: () =>
+			import(
+				"./pages/profiles/profile-create/profile-create.module"
+			).then((m) => m.ProfileCreatePageModule),
+	},
+	{
+		path: "profile/:profileId",
 		children: [
 			{
 				path: "",
@@ -90,21 +104,6 @@ const routes: Routes = [
 			},
 		],
 	},
-	{
-		path: "profile/signin",
-		loadChildren: () =>
-			import(
-				"./pages/profiles/profile-signin/profile-signin.module"
-			).then((m) => m.ProfileSigninPageModule),
-	},
-	{
-		path: "profile/create",
-		loadChildren: () =>
-			import(
-				"./pages/profiles/profile-create/profile-create.module"
-			).then((m) => m.ProfileCreatePageModule),
-	},
-
 	{
 		path: "contacts/create",
 		loadChildren: () =>

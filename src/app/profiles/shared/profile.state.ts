@@ -1,18 +1,28 @@
 import { Injectable } from "@angular/core";
-import { Action, State, StateContext, StateToken } from "@ngxs/store";
+import {
+	Action,
+	createSelector,
+	Selector,
+	State,
+	StateContext,
+	StateToken,
+} from "@ngxs/store";
 import produce from "immer";
 
 import { ProfileActions } from "./profile.actions";
+import { ProfileConfig } from "./profile.config";
 import { Profile } from "./profile.types";
 
 export interface ProfileStateModel {
 	profiles: Profile[];
 }
 
-export const PROFILE_STATE_TOKEN = new StateToken<ProfileStateModel>("profile");
+export const PROFILE_STATE_TOKEN = new StateToken<ProfileStateModel>(
+	ProfileConfig.STORAGE_KEY,
+);
 
 @State({
-	name: "profile",
+	name: ProfileConfig.STORAGE_KEY,
 	defaults: {
 		profiles: [],
 	},
@@ -20,6 +30,17 @@ export const PROFILE_STATE_TOKEN = new StateToken<ProfileStateModel>("profile");
 @Injectable()
 export class ProfileState {
 	constructor() {}
+
+	@Selector()
+	public static profiles(state: ProfileStateModel) {
+		return state.profiles;
+	}
+
+	public static profileById(id: string) {
+		return createSelector([ProfileState], (state: ProfileStateModel) => {
+			return state.profiles.find((profile) => profile.profileId === id);
+		});
+	}
 
 	@Action(ProfileActions.Add)
 	public add(

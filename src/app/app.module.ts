@@ -26,16 +26,19 @@ import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { AuthModule } from "./auth/auth.module";
 import { AuthConfig } from "./auth/shared/auth.config";
+import { AuthState } from "./auth/shared/auth.state";
 import { DelegateService } from "./delegates/shared/delegate.service";
 import { DelegateServiceMock } from "./delegates/shared/delegate.service.mock";
 import { MarketModule } from "./market/market.module";
 import { MarketConfig } from "./market/shared/market.config";
 import { OnboardingConfig } from "./onboarding/shared/onboarding.config";
+import { OnboardingState } from "./onboarding/shared/onboarding.state";
+import { ProfileConfig } from "./profiles/shared/profile.config";
+import { ProfileState } from "./profiles/shared/profile.state";
 import { GlobalErrorHandlerService } from "./services/error-handler/error-handler.service";
 import { UserDataServiceImpl } from "./services/user-data/user-data";
 import { UserDataService } from "./services/user-data/user-data.interface";
 import { SettingsConfig } from "./settings/shared/settings.config";
-import { SettingsState } from "./settings/shared/settings.state";
 import { NgxsAsyncStoragePluginModule } from "./shared/state/async-storage/async-storage.module";
 import { TransactionsModule } from "./transactions/transactions.module";
 import { WalletModule } from "./wallets/wallet/wallet.module";
@@ -47,7 +50,7 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
 	declarations: [AppComponent],
 	imports: [
-		NgxsModule.forRoot([SettingsState], {
+		NgxsModule.forRoot([AuthState, OnboardingState, ProfileState], {
 			developmentMode: !environment.production,
 		}),
 		NgxsAsyncStoragePluginModule.forRoot({
@@ -56,6 +59,7 @@ export function createTranslateLoader(http: HttpClient) {
 				OnboardingConfig.STORAGE_KEY,
 				MarketConfig.STORAGE_KEY,
 				SettingsConfig.STORAGE_KEY,
+				ProfileConfig.STORAGE_KEY,
 			],
 		}),
 		NgxsRouterPluginModule.forRoot(),
