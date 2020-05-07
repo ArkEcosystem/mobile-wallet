@@ -1,5 +1,8 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 
+// Coin Config
+import coinConfig from "@@/src/coins/shared/coin.config";
+
 @Component({
 	selector: "wallet-card",
 	templateUrl: "wallet-card.component.html",
@@ -21,7 +24,7 @@ export class WalletCardComponent {
 	public balance: string;
 
 	@Input()
-	public symbol: string;
+	public currency: string;
 
 	@Input()
 	public isSelected: boolean;
@@ -34,5 +37,9 @@ export class WalletCardComponent {
 	public openWalletDetailsHandler(address: string) {
 		console.log({ address });
 		this.openWalletClick.emit();
+	}
+
+	public getBackgroundColor(currency: string) {
+		return coinConfig[currency].color;
 	}
 }

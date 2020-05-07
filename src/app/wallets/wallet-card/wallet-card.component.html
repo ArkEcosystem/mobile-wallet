@@ -7,22 +7,19 @@
 		<div class="flex items-center justify-between">
 			<div class="ion-padding flex items-center">
 				<div
-					[class]="
-						'c-wallet-card--img ' +
-						symbol +
-						' flex justify-center items-center mr-5'
-					"
+					class="c-wallet-card--img flex justify-center items-center mr-5"
+					[style.background-color]="getBackgroundColor(currency)"
 					data-testid="c-wallet-card--img"
 				>
 					<img
 						class="c-wallet-coin--img"
 						data-testid="c-wallet-coin--img"
-						[src]="'assets/img/coins/' + coins[symbol] + '.png'"
+						[src]="'assets/img/coins/' + currency + '.png'"
 					/>
 				</div>
 				<div>
 					<p
-						class="text-sm c-wallet-card--name"
+						class="text-sm c-wallet-card--name font-semibold"
 						data-testid="c-wallet-card--name"
 					>
 						{{ name }}

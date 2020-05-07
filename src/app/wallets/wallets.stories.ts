@@ -6,12 +6,17 @@ import { moduleMetadata, storiesOf } from "@storybook/angular";
 import { PipesModule } from "@/pipes/pipes.module";
 
 import { WalletCardComponent } from "./wallet-card/wallet-card.component";
+import { WalletsActionsComponent } from "./wallets-actions/wallets-actions.component";
 import { WalletsEmptyListComponent } from "./wallets-empty-list/wallets-empty-list.component";
 
 storiesOf("Wallets", module)
 	.addDecorator(
 		moduleMetadata({
-			declarations: [WalletsEmptyListComponent, WalletCardComponent],
+			declarations: [
+				WalletsEmptyListComponent,
+				WalletCardComponent,
+				WalletsActionsComponent,
+			],
 			imports: [TranslateModule, IonicModule, PipesModule],
 		}),
 	)
@@ -39,12 +44,12 @@ storiesOf("Wallets", module)
 			address: "AHJJ29sCdR5UNZjdz3BYeDpvvkZCGBjde9",
 			name: "ARK Ecosystem",
 			balance: "20000",
-			symbol: "ark",
+			currency: "ARK",
 		},
 		template: `
 			<ion-app>
 				<ion-content class="ion-padding w-full flex justify-center items-center">
-					<wallet-card [name]="name" [balance]="balance" [symbol]="symbol" [address]="address"></wallet-card>
+					<wallet-card [name]="name" [balance]="balance" [currency]="currency" [address]="address"></wallet-card>
 				</ion-content>
 			</ion-app>
 		`,
@@ -55,12 +60,12 @@ storiesOf("Wallets", module)
 			address: "AdS7WvzqusoP759qRo6HDmUz2L34u4fMHz",
 			name: "Bitcoin",
 			balance: "20000",
-			symbol: "btc",
+			currency: "BTC",
 		},
 		template: `
 			<ion-app>
 				<ion-content class="ion-padding w-full flex justify-center items-center">
-					<wallet-card [name]="name" [balance]="balance" [symbol]="symbol" [address]="address"></wallet-card>
+					<wallet-card [name]="name" [balance]="balance" [currency]="currency" [address]="address"></wallet-card>
 				</ion-content>
 			</ion-app>
 		`,
