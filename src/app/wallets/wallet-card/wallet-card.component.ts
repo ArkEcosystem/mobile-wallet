@@ -9,11 +9,6 @@ import coinConfig from "@@/src/coins/shared/coin.config";
 	styleUrls: ["wallet-card.pcss"],
 })
 export class WalletCardComponent {
-	public coins = {
-		ark: "ark",
-		btc: "btc",
-	};
-
 	@Input()
 	public name: string;
 

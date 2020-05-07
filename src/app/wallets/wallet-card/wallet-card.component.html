@@ -5,7 +5,7 @@
 >
 	<div class="w-full leading-normal">
 		<div class="flex items-center justify-between">
-			<div class="ion-padding flex items-center">
+			<div class="flex flex-1 items-center">
 				<div
 					class="c-wallet-card--img flex justify-center items-center mr-5"
 					[style.background-color]="getBackgroundColor(currency)"
@@ -19,16 +19,16 @@
 				</div>
 				<div>
 					<p
-						class="text-sm c-wallet-card--name font-semibold"
+						class="c-wallet-card--name text-xs font-semibold"
 						data-testid="c-wallet-card--name"
 					>
 						{{ name }}
 					</p>
 					<p
-						class="font-bold text-xl"
+						class="font-bold text-base"
 						data-testid="c-wallet-card--balance"
 					>
-						{{ balance | unitsSatoshi }} {{ symbol | uppercase }}
+						{{ balance | unitsSatoshi }} {{ currency | uppercase }}
 					</p>
 				</div>
 			</div>
