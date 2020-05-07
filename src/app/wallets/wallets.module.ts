@@ -13,6 +13,8 @@ import { PipesModule } from "@/pipes/pipes.module";
 
 import { EnterSecondPassphraseModal } from "../modals/enter-second-passphrase/enter-second-passphrase";
 import { EnterSecondPassphraseModalModule } from "../modals/enter-second-passphrase/enter-second-passphrase.module";
+import { WalletCardComponentModule } from "./wallet-card/wallet-card.component.module";
+import { WalletsActionsComponentModule } from "./wallets-actions/wallets-actions.component.module";
 import { WalletsEmptyListComponentModule } from "./wallets-empty-list/wallets-empty-list.module";
 import { WalletsRoutingModule } from "./wallets-routing.module";
 import { WalletsComponent } from "./wallets.component";
@@ -25,6 +27,8 @@ import { WalletsComponent } from "./wallets.component";
 		TranslateModule,
 		PipesModule,
 		WalletsEmptyListComponentModule,
+		WalletsActionsComponentModule,
+		WalletCardComponentModule,
 		ChartsModule,
 		DirectivesModule,
 		WalletsRoutingModule,

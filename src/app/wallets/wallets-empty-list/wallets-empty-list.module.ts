@@ -3,7 +3,7 @@ import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 
-import { WalletsActionsComponentModule } from "../wallets-actions/wallets-actions.module";
+import { WalletsActionsComponentModule } from "../wallets-actions/wallets-actions.component.module";
 import { WalletsEmptyListComponent } from "./wallets-empty-list.component";
 
 @NgModule({
