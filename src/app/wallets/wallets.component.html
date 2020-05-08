@@ -9,27 +9,19 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content
-	forceOverscroll="false"
-	[fullscreen]="wallets?.length > 0"
-	#content
-	[ngClass]="{
-		delegate: selectedWallet?.isDelegate,
-		normal: selectedWallet?.isDelegate == false
-	}"
->
+<ion-footer transparent no-border>
+	<div class="c-wallets__list--bottom-gradient"></div>
+</ion-footer>
+
+<ion-content forceOverscroll="false" [fullscreen]="wallets?.length > 0">
 	<wallets-empty-list
 		*ngIf="wallets?.length === 0"
 		[name]="currentProfile?.name"
 		(importWalletClick)="presentActionSheet()"
 		(generateWalletClick)="presentWalletGenerate()"
 	></wallets-empty-list>
-
-	<ion-grid
-		class="h-full flex flex-col justify-center items-center"
-		*ngIf="wallets?.length > 0"
-	>
-		<div class="flex flex-col items-center">
+	<div class="flex flex-col items-center mt-20 c-wallets__list">
+		<div class="flex flex-col items-center c-wallets__header--balance">
 			<p class="text-base font-bold">
 				{{ currentProfile?.name }}, this is your balance
 			</p>
@@ -41,13 +33,48 @@
 				(generateWalletClick)="presentWalletGenerate()"
 			></wallets-actions>
 		</div>
-		<div class="w-full ion-padding" *ngFor="let wallet of wallets">
-			<wallet-card
-				name="name"
-				balance="2000452000000"
-				currency="ARK"
-				address="address"
-			></wallet-card>
-		</div>
-	</ion-grid>
+		<ion-grid
+			class="h-full w-full flex flex-col justify-center items-center"
+			*ngIf="wallets?.length > 0"
+		>
+			<div class="w-full ion-padding" *ngFor="let wallet of wallets">
+				<wallet-card
+					name="name"
+					balance="2000452000000"
+					currency="ARK"
+					address="address"
+				></wallet-card>
+				<wallet-card
+					name="name"
+					balance="2000452000000"
+					currency="ARK"
+					address="address"
+				></wallet-card>
+				<wallet-card
+					name="name"
+					balance="2000452000000"
+					currency="ARK"
+					address="address"
+				></wallet-card>
+				<wallet-card
+					name="name"
+					balance="2000452000000"
+					currency="ARK"
+					address="address"
+				></wallet-card>
+				<wallet-card
+					name="name"
+					balance="2000452000000"
+					currency="ARK"
+					address="address"
+				></wallet-card>
+				<wallet-card
+					name="name"
+					balance="2000452000000"
+					currency="ARK"
+					address="address"
+				></wallet-card>
+			</div>
+		</ion-grid>
+	</div>
 </ion-content>

@@ -32,7 +32,7 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 @Component({
 	selector: "wallets-component",
 	templateUrl: "wallets.component.html",
-	// styleUrls: ["wallets.component.pcss"],
+	styleUrls: ["wallets.component.scss"],
 })
 export class WalletsComponent implements OnInit, OnDestroy {
 	@ViewChild("walletSlider", { read: IonSlides })
@@ -163,7 +163,7 @@ export class WalletsComponent implements OnInit, OnDestroy {
 		this.initMarketHistory();
 		this.initTicker();
 
-		// this.content.resize();
+		console.log({ wallets: this.wallets });
 	}
 
 	ngOnDestroy() {
