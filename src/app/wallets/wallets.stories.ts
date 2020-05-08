@@ -6,6 +6,7 @@ import { moduleMetadata, storiesOf } from "@storybook/angular";
 import { PipesModule } from "@/pipes/pipes.module";
 
 import { WalletCardComponent } from "./wallet-card/wallet-card.component";
+import { WalletListHeaderComponent } from "./wallet-list-header/wallet-list-header.component";
 import { WalletsActionsComponent } from "./wallets-actions/wallets-actions.component";
 import { WalletsEmptyListComponent } from "./wallets-empty-list/wallets-empty-list.component";
 
@@ -14,6 +15,7 @@ storiesOf("Wallets", module)
 		moduleMetadata({
 			declarations: [
 				WalletsEmptyListComponent,
+				WalletListHeaderComponent,
 				WalletCardComponent,
 				WalletsActionsComponent,
 			],
@@ -34,6 +36,48 @@ storiesOf("Wallets", module)
 						(importWalletClick)="importWalletClick()"
 						(generateWalletClick)="generateWalletClick()">
 					</wallets-empty-list>
+				</ion-content>
+			</ion-app>
+		`,
+	}))
+	.add("Wallet list header - vertical", () => ({
+		component: WalletListHeaderComponent,
+		props: {
+			importWalletClick: action("Import Button!"),
+			generateWalletClick: action("Generate Button!"),
+		},
+		template: `
+			<ion-app>
+				<ion-content>
+					<wallet-list-header
+						name="Caio"
+						direction="vertical"
+						currencySymbol="$"
+						totalBalance="200000000"
+						(importWalletClick)="importWalletClick()"
+						(generateWalletClick)="generateWalletClick()">
+					</wallet-list-header>
+				</ion-content>
+			</ion-app>
+		`,
+	}))
+	.add("Wallet list header - horizontal", () => ({
+		component: WalletListHeaderComponent,
+		props: {
+			importWalletClick: action("Import Button!"),
+			generateWalletClick: action("Generate Button!"),
+		},
+		template: `
+			<ion-app>
+				<ion-content>
+					<wallet-list-header
+						name="Caio"
+						direction="horizontal"
+						currencySymbol="BRL"
+						totalBalance="200000000"
+						(importWalletClick)="importWalletClick()"
+						(generateWalletClick)="generateWalletClick()">
+					</wallet-list-header>
 				</ion-content>
 			</ion-app>
 		`,

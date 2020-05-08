@@ -6,7 +6,7 @@ import {
 
 import { WalletCardComponent } from "./wallet-card.component";
 
-describe("Network Card", () => {
+describe("Wallet Card", () => {
 	let spectator: SpectatorHost<WalletCardComponent>;
 	const createHost = createHostComponentFactory({
 		component: WalletCardComponent,

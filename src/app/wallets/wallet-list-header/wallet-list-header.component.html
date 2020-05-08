@@ -1,0 +1,28 @@
+<div
+	class="c-wallet__list--header w-full flex"
+	data-testid="c-wallet__list--header"
+>
+	<div
+		[class]="'flex flex-1 items-center ' + direction"
+		[ngClass]="{ 'justify-between': direction === 'horizontal' }"
+	>
+		<div>
+			<p
+				class="text-base font-bold"
+				data-testid="c-wallet__list--username"
+			>
+				{{ name }}, this is your balance
+			</p>
+			<p
+				class="text-3xl xs:text-3xl md:text-3xl font-bold"
+				data-testid="c-wallet__list--balance"
+			>
+				{{ totalBalance }} {{ currencySymbol }}
+			</p>
+		</div>
+		<wallets-actions
+			(importWalletClick)="importWalletHandler()"
+			(generateWalletClick)="generateWalletHandler()"
+		></wallets-actions>
+	</div>
+</div>
