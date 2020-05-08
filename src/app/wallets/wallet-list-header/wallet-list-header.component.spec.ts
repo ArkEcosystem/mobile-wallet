@@ -4,12 +4,14 @@ import {
 	SpectatorHost,
 } from "@ngneat/spectator";
 
+import { WalletsActionsComponentModule } from "../wallets-actions/wallets-actions.component.module";
 import { WalletListHeaderComponent } from "./wallet-list-header.component";
 
 describe("Wallet list header", () => {
 	let spectator: SpectatorHost<WalletListHeaderComponent>;
 	const createHost = createHostComponentFactory({
 		component: WalletListHeaderComponent,
+		imports: [WalletsActionsComponentModule],
 	});
 
 	it("should create", () => {

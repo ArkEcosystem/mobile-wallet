@@ -28,41 +28,4 @@ describe("Wallets empty List", () => {
 
 		expect(greeting).toEqual(" Hi, Caio! ");
 	});
-
-	it("should have a functional import button", () => {
-		spectator = createHost(
-			`<ion-content><wallets-empty-list name="Caio"></wallets-empty-list></ion-content>`,
-		);
-
-		let output: any;
-		spectator
-			.output("importWalletClick")
-			.subscribe(() => (output = "import"));
-
-		const importButton = spectator.query(
-			byTestId("wallets-empty-list__button--import"),
-		);
-		spectator.click(importButton);
-
-		expect(output).toEqual("import");
-	});
-
-	it("should have a functional generate button", () => {
-		spectator = createHost(
-			`<ion-content><wallets-empty-list name="Caio"></wallets-empty-list></ion-content>`,
-		);
-
-		let output: any;
-		spectator
-			.output("generateWalletClick")
-			.subscribe(() => (output = "generate"));
-
-		const generateButton = spectator.query(
-			byTestId("wallets-empty-list__button--generate"),
-		);
-
-		spectator.click(generateButton);
-
-		expect(output).toBe("generate");
-	});
 });
