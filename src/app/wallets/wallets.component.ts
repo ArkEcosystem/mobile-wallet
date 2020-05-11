@@ -1,15 +1,13 @@
-import { Component, NgZone, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import {
 	ActionSheetController,
 	IonContent,
-	IonSlides,
 	ModalController,
 	NavController,
 } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
 import { Network } from "ark-ts/model";
 import lodash from "lodash";
-import { BaseChartDirective } from "ng2-charts";
 import { Subject } from "rxjs";
 import { switchMap, takeUntil, tap } from "rxjs/operators";
 
@@ -17,15 +15,8 @@ import * as constants from "@/app/app.constants";
 import { AuthController } from "@/app/auth/shared/auth.controller";
 import { GenerateEntropyModal } from "@/app/modals/generate-entropy/generate-entropy";
 import { WalletBackupModal } from "@/app/modals/wallet-backup/wallet-backup";
-import {
-	MarketCurrency,
-	MarketHistory,
-	MarketTicker,
-	Profile,
-	Wallet,
-} from "@/models/model";
+import { MarketCurrency, Profile, Wallet } from "@/models/model";
 import { ArkApiProvider } from "@/services/ark-api/ark-api";
-import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
@@ -35,53 +26,27 @@ import { UserDataService } from "@/services/user-data/user-data.interface";
 	styleUrls: ["wallets.component.scss"],
 })
 export class WalletsComponent implements OnInit, OnDestroy {
-	@ViewChild("walletSlider", { read: IonSlides })
-	slider: IonSlides;
-
 	@ViewChild("content", { read: IonContent, static: true })
 	content: IonContent;
-
-	@ViewChild(BaseChartDirective)
-	chart: BaseChartDirective;
 
 	public currentProfile: Profile;
 	public currentNetwork: Network;
 	public wallets: Wallet[] = [];
 	public totalBalance: number;
-	public fiatBalance: number;
 	public selectedWallet: Wallet;
 
-	public btcCurrency: MarketCurrency;
 	public fiatCurrency: MarketCurrency;
-	public marketTicker: MarketTicker;
-
-	public slideOptions = {
-		speed: 100,
-		spaceBetween: -75,
-	};
-	public chartOptions: any;
-	public chartLabels: any;
-	public chartData: any;
-	public chartColors: any = [
-		{
-			borderColor: "#394cf8",
-		},
-		{
-			borderColor: "#f3a447",
-		},
-	];
+	public fiatBalance: number;
 
 	private unsubscriber$: Subject<void> = new Subject<void>();
 
 	constructor(
 		public navCtrl: NavController,
 		private userDataService: UserDataService,
-		private marketDataProvider: MarketDataProvider,
 		private modalCtrl: ModalController,
 		private actionSheetCtrl: ActionSheetController,
 		private translateService: TranslateService,
 		private settingsDataProvider: SettingsDataProvider,
-		private ngZone: NgZone,
 		private arkApiProvider: ArkApiProvider,
 		private authCtrl: AuthController,
 	) {}
@@ -90,13 +55,6 @@ export class WalletsComponent implements OnInit, OnDestroy {
 		this.loadUserData();
 
 		this.userDataService.clearCurrentWallet();
-	}
-
-	async onSlideChanged() {
-		const realIndex = await this.slider.getActiveIndex();
-		this.selectedWallet = this.userDataService.getWalletByAddress(
-			this.wallets[realIndex].address,
-		);
 	}
 
 	openWalletDashboard(wallet: Wallet) {
@@ -111,9 +69,12 @@ export class WalletsComponent implements OnInit, OnDestroy {
 					.updateWallet(wallet, this.currentProfile.profileId)
 					.subscribe(() => {
 						this.loadWallets();
-						this.slider.slideTo(0);
 					});
 			});
+	}
+
+	openImportPage() {
+		this.navCtrl.navigateForward("wallets/import-new");
 	}
 
 	presentActionSheet() {
@@ -160,10 +121,6 @@ export class WalletsComponent implements OnInit, OnDestroy {
 	ionViewDidEnter() {
 		this.loadWallets();
 		this.onCreateUpdateWallet();
-		this.initMarketHistory();
-		this.initTicker();
-
-		console.log({ wallets: this.wallets });
 	}
 
 	ngOnDestroy() {
@@ -285,176 +242,5 @@ export class WalletsComponent implements OnInit, OnDestroy {
 		this.userDataService.onUpdateWallet$
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe(() => this.loadWallets());
-	}
-
-	private initMarketHistory() {
-		this.translateService
-			.get([
-				"WEEK_DAY.SUNDAY",
-				"WEEK_DAY.MONDAY",
-				"WEEK_DAY.TUESDAY",
-				"WEEK_DAY.WEDNESDAY",
-				"WEEK_DAY.THURSDAY",
-				"WEEK_DAY.FRIDAY",
-				"WEEK_DAY.SATURDAY",
-			])
-			.subscribe((translation) => {
-				if (lodash.isEmpty(this.wallets)) {
-					return;
-				}
-
-				const days = lodash.values(translation);
-
-				this.settingsDataProvider.settings.subscribe((settings) => {
-					if (this.marketDataProvider.cachedHistory) {
-						this.setChartData(
-							settings,
-							days,
-							this.marketDataProvider.cachedHistory,
-						);
-					}
-
-					this.marketDataProvider.onUpdateHistory$
-						.pipe(takeUntil(this.unsubscriber$))
-						.subscribe((updatedHistory) =>
-							this.setChartData(settings, days, updatedHistory),
-						);
-					this.marketDataProvider.fetchHistory().subscribe();
-				});
-			});
-	}
-
-	private setChartData = (
-		settings: any,
-		days: string[],
-		history: MarketHistory,
-	): void => {
-		if (!history) {
-			return;
-		}
-
-		const currency =
-			!settings || !settings.currency
-				? this.settingsDataProvider.getDefaults().currency
-				: settings.currency;
-
-		const fiatHistory = history.getLastWeekPrice(currency.toUpperCase());
-		const btcHistory = history.getLastWeekPrice("BTC");
-
-		this.chartLabels = null;
-
-		this.chartData = [
-			{
-				yAxisID: "A",
-				fill: false,
-				data: fiatHistory.prices,
-			},
-			{
-				yAxisID: "B",
-				fill: false,
-				data: btcHistory.prices,
-			},
-		];
-
-		this.chartOptions = {
-			legend: {
-				display: false,
-			},
-			tooltips: {
-				enabled: false,
-			},
-			scales: {
-				xAxes: [
-					{
-						gridLines: {
-							drawBorder: false,
-							display: true,
-							color: settings.darkMode ? "#12182d" : "#e1e4ea",
-						},
-						ticks: {
-							fontColor: settings.darkMode
-								? "#3a4566"
-								: "#555459",
-						},
-					},
-				],
-				yAxes: [
-					{
-						gridLines: {
-							drawBorder: false,
-							display: true,
-						},
-						display: false,
-						id: "A",
-						type: "linear",
-						position: "left",
-						ticks: {
-							max: Number(lodash.max(fiatHistory.prices)) * 1.1,
-							min: Number(lodash.min(fiatHistory.prices)),
-						},
-					},
-					{
-						display: false,
-						id: "B",
-						type: "linear",
-						position: "right",
-						ticks: {
-							max: Number(lodash.max(btcHistory.prices)) * 1.1,
-							min: Number(lodash.min(btcHistory.prices)),
-						},
-					},
-				],
-			},
-		};
-
-		if (currency === "btc") {
-			this.chartData[0].data = [];
-		}
-
-		this.ngZone.run(() => {
-			this.chartLabels = lodash.map(
-				fiatHistory.dates,
-				(d: Date) => days[d.getDay()],
-			);
-			setTimeout(() => {
-				if (this.chart) {
-					this.chart.update();
-				}
-			}, 0);
-		});
-	};
-
-	private setTicker(ticker) {
-		this.marketTicker = ticker;
-		this.btcCurrency = ticker.getCurrency({ code: "btc" });
-
-		this.settingsDataProvider.settings.subscribe((settings) => {
-			const currency =
-				!settings || !settings.currency
-					? this.settingsDataProvider.getDefaults().currency
-					: settings.currency;
-
-			this.fiatCurrency = ticker.getCurrency({ code: currency });
-			this.loadWallets();
-		});
-	}
-
-	private initTicker() {
-		// just set the data from cache first
-		if (this.marketDataProvider.cachedTicker) {
-			this.setTicker(this.marketDataProvider.cachedTicker);
-		}
-
-		// now let's subscribe for any future changes
-		this.marketDataProvider.onUpdateTicker$
-			.pipe(takeUntil(this.unsubscriber$))
-			.subscribe((updatedTicker) => this.setTicker(updatedTicker));
-		// let's get the up-to-date data from the internet now
-		this.marketDataProvider.refreshTicker();
-		// finally update the data in a regular interval
-		setInterval(
-			() => this.marketDataProvider.refreshTicker(),
-			constants.WALLET_REFRESH_PRICE_MILLISECONDS,
-		);
 	}
 }
