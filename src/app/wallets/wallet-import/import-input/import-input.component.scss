@@ -1,0 +1,9 @@
+:host {
+	ion-item {
+		--padding-start: 0;
+	}
+
+	ion-label {
+		@apply text-base font-semibold;
+	}
+}

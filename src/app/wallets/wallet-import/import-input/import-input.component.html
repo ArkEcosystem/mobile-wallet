@@ -1,0 +1,25 @@
+<ion-item data-testid="c-input-address">
+	<ion-label position="floating" class="text-medium">
+		{{ "IMPORT_WALLET_LABEL" | translate }}
+	</ion-label>
+	<div class="w-full flex items-center">
+		<ion-input
+			data-testid="c-import-wallet__input"
+			type="text"
+			[formControl]="ngControl.control"
+			name="name"
+			appPasteClipboardValue
+			(ionInput)="onInput($event)"
+			(ionBlur)="onTouched()"
+			[appValueMaskOnBlur]="displayAddress"
+		></ion-input>
+		<div
+			class="absolute right-0 flex items-center"
+			(click)="emitQRCodeClick()"
+		>
+			<ion-button *ngIf="showQRButton" fill="clear" color="primary">
+				<ion-icon name="qr-code"></ion-icon>
+			</ion-button>
+		</div>
+	</div>
+</ion-item>
