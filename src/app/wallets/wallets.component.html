@@ -15,6 +15,7 @@
 
 <ion-content forceOverscroll="false" [fullscreen]="wallets?.length > 0">
 	<wallets-empty-list
+		data-testid="c-wallets__empty-list"
 		*ngIf="wallets?.length === 0"
 		[name]="currentProfile?.name"
 		(importWalletClick)="presentActionSheet()"
