@@ -1,0 +1,31 @@
+<ion-content fullscreen="true" mode="ios" class="ion-padding">
+	<ion-header collapse="condense" class="ion-no-border" mode="ios">
+		<ion-toolbar>
+			<div class="flex flex-col justify-between">
+				<p
+					class="text-2xl xs:text-3xl md:text-4xl font-black"
+					data-testid="wallets-empty-list--username"
+				>
+					{{ "WALLETS_PAGE.IMPORT_WALLET" | translate }}
+				</p>
+				<p class="leading-normal text-medium">
+					{{ "WALLETS_PAGE.IMPORT_WALLET_DETAILS" | translate }}
+				</p>
+			</div>
+		</ion-toolbar>
+	</ion-header>
+	<div>
+		<import-input formControlName="address"></import-input>
+		<div class="w-full absolute bottom-0 left-0 h-30 ion-padding">
+			<ion-button
+				data-testid="onboarding__next"
+				disabled
+				expand="block"
+				color="primary-light"
+				(click)="handleNext()"
+			>
+				{{ "NEXT_STEP" | translate }}
+			</ion-button>
+		</div>
+	</div>
+</ion-content>
