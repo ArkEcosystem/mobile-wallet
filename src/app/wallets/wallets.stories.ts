@@ -10,7 +10,7 @@ import { WalletListHeaderComponent } from "./wallet-list-header/wallet-list-head
 import { WalletsActionsComponent } from "./wallets-actions/wallets-actions.component";
 import { WalletsEmptyListComponent } from "./wallets-empty-list/wallets-empty-list.component";
 
-storiesOf("Wallets", module)
+storiesOf("wallets", module)
 	.addDecorator(
 		moduleMetadata({
 			declarations: [
@@ -22,7 +22,7 @@ storiesOf("Wallets", module)
 			imports: [TranslateModule, IonicModule, PipesModule],
 		}),
 	)
-	.add("Empty List", () => ({
+	.add("empty-list", () => ({
 		component: WalletsEmptyListComponent,
 		props: {
 			importWalletClick: action("Import Button!"),
@@ -40,7 +40,7 @@ storiesOf("Wallets", module)
 			</ion-app>
 		`,
 	}))
-	.add("Wallet list header - vertical", () => ({
+	.add("list-header-vertical", () => ({
 		component: WalletListHeaderComponent,
 		props: {
 			importWalletClick: action("Import Button!"),
@@ -61,7 +61,7 @@ storiesOf("Wallets", module)
 			</ion-app>
 		`,
 	}))
-	.add("Wallet list header - horizontal", () => ({
+	.add("list-header-horizontal", () => ({
 		component: WalletListHeaderComponent,
 		props: {
 			importWalletClick: action("Import Button!"),
@@ -82,7 +82,7 @@ storiesOf("Wallets", module)
 			</ion-app>
 		`,
 	}))
-	.add("Wallet Card", () => ({
+	.add("wallet-card-ark", () => ({
 		component: WalletCardComponent,
 		props: {
 			address: "AHJJ29sCdR5UNZjdz3BYeDpvvkZCGBjde9",
@@ -98,7 +98,7 @@ storiesOf("Wallets", module)
 			</ion-app>
 		`,
 	}))
-	.add("Wallet Card Alt Coin", () => ({
+	.add("wallet-card-alt-coin", () => ({
 		component: WalletCardComponent,
 		props: {
 			address: "AdS7WvzqusoP759qRo6HDmUz2L34u4fMHz",
