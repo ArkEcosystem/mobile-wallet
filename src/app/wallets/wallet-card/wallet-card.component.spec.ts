@@ -30,4 +30,29 @@ describe("Wallet Card", () => {
 		const component = spectator.query(byTestId("c-wallet-card"));
 		expect(component).toBeTruthy();
 	});
+
+	it("should have a functional generate button", () => {
+		spectator = createHost(
+			`<wallet-card [name]="name" [balance]="balance" [currency]="currency" [address]="address"></wallet-card>`,
+			{
+				hostProps: {
+					address: "AHJJ29sCdR5UNZjdz3BYeDpvvkZCGBjde9",
+					name: "ARK Ecosystem",
+					balance: "20000",
+					currency: "ARK",
+				},
+			},
+		);
+
+		let output: any;
+		spectator
+			.output("openWalletClick")
+			.subscribe(() => (output = "redirect to wallet details"));
+
+		const detailsActions = spectator.query(byTestId("c-wallet-card"));
+
+		spectator.click(detailsActions);
+
+		expect(output).toBe("redirect to wallet details");
+	});
 });
