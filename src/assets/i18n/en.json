@@ -96,6 +96,7 @@
 	"IMPORT": "Import",
 	"IMPORT_ADDRESS": "Import Address",
 	"IMPORT_PASSPHRASE": "Import Passphrase",
+	"IMPORT_WALLET_LABEL": "Enter passphrase or address",
 	"ONBOARDING": {
 		"FAST_EASY": "Fast and Easy",
 		"GET_STARTED": "Get Started",
@@ -138,6 +139,7 @@
 		"SUBTITLE": "Select one of the networks or add your"
 	},
 	"NEXT": "Next",
+	"NEXT_STEP": "Next step",
 	"NO": "No",
 	"PASSPHRASE_TEST": {
 		"INFO": "Please type the required words from your passphrase to validate the wallet creation.",
@@ -315,6 +317,7 @@
 		"GENERATE_ENTROPY": "Generate Entropy",
 		"IMPORT_INVALID_ADDRESS": "This address can not be imported into this profile",
 		"IMPORT_WALLET": "Import Wallet",
+		"IMPORT_WALLET_DETAILS": "A simple and convenient way to import your wallet to your phone or a view-only address",
 		"INVALID_ADDRESS": "Invalid address",
 		"INVALID_MNEMONIC": "Invalid mnemonic",
 		"INVALID_WORD_NUMBER": "Invalid number of words",
