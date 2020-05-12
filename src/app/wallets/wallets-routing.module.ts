@@ -14,4 +14,4 @@ import { WalletsComponent } from "./wallets.component";
 	],
 	exports: [RouterModule],
 })
-export class WalletsComponentRoutingModule {}
+export class WalletsRoutingModule {}

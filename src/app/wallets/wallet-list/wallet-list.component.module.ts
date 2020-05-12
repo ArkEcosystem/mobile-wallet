@@ -17,7 +17,6 @@ import { WalletCardComponentModule } from "../wallet-card/wallet-card.component.
 import { WalletListActionsComponentModule } from "../wallet-list-actions/wallet-list-actions.component.module";
 import { WalletListEmptyComponentModule } from "../wallet-list-empty/wallet-list-empty.component.module";
 import { WalletListHeaderComponentModule } from "../wallet-list-header/wallet-list-header.component.module";
-import { WalletListComponentRoutingModule } from "./wallet-list-routing.module";
 import { WalletListComponent } from "./wallet-list.component";
 
 @NgModule({
@@ -34,7 +33,6 @@ import { WalletListComponent } from "./wallet-list.component";
 		WalletBackupModalModule,
 		WalletListEmptyComponentModule,
 		WalletListActionsComponentModule,
-		WalletListComponentRoutingModule,
 		WalletListHeaderComponentModule,
 		WalletCardComponentModule,
 	],

@@ -8,7 +8,7 @@ import { PipesModule } from "@/pipes/pipes.module";
 
 import { WalletListEmptyComponentModule } from "./wallet-list-empty/wallet-list-empty.component.module";
 import { WalletListComponentModule } from "./wallet-list/wallet-list.component.module";
-import { WalletsComponentRoutingModule } from "./wallets-routing.module";
+import { WalletsRoutingModule } from "./wallets-routing.module";
 import { WalletsComponent } from "./wallets.component";
 
 @NgModule({
@@ -21,7 +21,7 @@ import { WalletsComponent } from "./wallets.component";
 		DirectivesModule,
 		WalletListEmptyComponentModule,
 		WalletListComponentModule,
-		WalletsComponentRoutingModule,
+		WalletsRoutingModule,
 	],
 })
 export class WalletsComponentModule {}
