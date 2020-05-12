@@ -7,7 +7,6 @@
 	},
 	"files": ["src/main.ts", "src/polyfills.ts", "src/zone-flags.ts"],
 	"include": [
-		"node_modules/ark-ts/node_modules/json-typescript-mapper/libs/utils.ts",
-		"node_modules/dayjs/plugin/utc.d.ts"
+		"node_modules/ark-ts/node_modules/json-typescript-mapper/libs/utils.ts"
 	]
 }

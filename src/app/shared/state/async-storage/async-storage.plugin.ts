@@ -31,10 +31,10 @@ export class NgxsAsyncStoragePlugin implements NgxsPlugin {
 	handle(state: any, event: any, next: NgxsNextPluginFn) {
 		const keys: string[] = this.options?.keys || [];
 		const matches = actionMatcher(event);
-		const isInitAction = matches(InitState);
+		const isInitAction = matches(InitState) || matches(UpdateState);
 
 		// Ignore [Router] patches
-		if (matches(UpdateState) && !this.hasRehydrated) {
+		if (isInitAction && !this.hasRehydrated) {
 			this.initialState = state;
 		}
 
