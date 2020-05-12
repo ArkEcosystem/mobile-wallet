@@ -1,4 +1,9 @@
 import { Component, OnInit } from "@angular/core";
+import { Select } from "@ngxs/store";
+import { Observable } from "rxjs";
+
+import { ProfileState } from "./shared/profile.state";
+import { Profile } from "./shared/profile.types";
 
 @Component({
 	selector: "profiles",
@@ -6,7 +11,12 @@ import { Component, OnInit } from "@angular/core";
 	styleUrls: ["profiles.component.pcss"],
 })
 export class ProfilesComponent implements OnInit {
+	@Select(ProfileState.profiles)
+	public profiles$: Observable<Profile[]>;
+
 	constructor() {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.profiles$.subscribe(console.log);
+	}
 }
