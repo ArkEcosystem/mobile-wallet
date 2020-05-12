@@ -22,6 +22,7 @@
 		(generateWalletClick)="presentWalletGenerate()"
 	></wallet-list-empty>
 	<wallet-list
+		data-testid="wallet-list"
 		*ngIf="wallets?.length > 0"
 		[name]="currentProfile?.name"
 		[totalBalance]="totalBalance"

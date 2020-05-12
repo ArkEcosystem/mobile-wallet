@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { NavController } from "@ionic/angular";
 
 import { Wallet } from "@/models/model";
 
@@ -29,7 +28,7 @@ export class WalletListComponent {
 	@Output()
 	generateWalletClick = new EventEmitter();
 
-	constructor(public navCtrl: NavController) {}
+	constructor() {}
 
 	public importWalletHandler() {
 		this.importWalletClick.emit();

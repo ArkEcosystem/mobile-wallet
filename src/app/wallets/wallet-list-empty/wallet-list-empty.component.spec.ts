@@ -3,12 +3,12 @@ import { byTestId, createHostFactory, SpectatorHost } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
 
 import { WalletListActionsComponentModule } from "../wallet-list-actions/wallet-list-actions.component.module";
-import { WalletsEmptyListComponent } from "./wallet-list-empty.component";
+import { WalletListEmptyComponent } from "./wallet-list-empty.component";
 
 describe("Wallets empty List", () => {
-	let spectator: SpectatorHost<WalletsEmptyListComponent>;
+	let spectator: SpectatorHost<WalletListEmptyComponent>;
 	const createHost = createHostFactory({
-		component: WalletsEmptyListComponent,
+		component: WalletListEmptyComponent,
 		imports: [
 			IonicModule.forRoot(),
 			TranslateModule.forRoot(),
