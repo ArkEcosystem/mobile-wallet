@@ -20,7 +20,7 @@ import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 import ApiClient from "@/utils/ark-client";
 
-import { WalletsEmptyListComponentModule } from "./wallets-empty-list/wallets-empty-list.module";
+import { WalletsEmptyListComponentModule } from "./wallet-list-empty/wallet-list-empty.module";
 import { WalletsComponent } from "./wallets.component";
 
 describe("Wallets Component", () => {

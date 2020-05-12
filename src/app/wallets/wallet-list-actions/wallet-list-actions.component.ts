@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Output } from "@angular/core";
 
 @Component({
-	selector: "wallets-actions",
-	templateUrl: "wallets-actions.component.html",
+	selector: "wallet-list-actions",
+	templateUrl: "wallet-list-actions.component.html",
 })
-export class WalletsActionsComponent {
+export class WalletListActionsComponent {
 	@Output()
-	importWalletClick = new EventEmitter();
+	public importWalletClick = new EventEmitter();
 
 	@Output()
-	generateWalletClick = new EventEmitter();
+	public generateWalletClick = new EventEmitter();
 
 	constructor() {}
 

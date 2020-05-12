@@ -14,7 +14,7 @@ import { switchMap, takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { AuthController } from "@/app/auth/shared/auth.controller";
-import { WalletController } from "@/app/wallets/wallets.controller";
+import { WalletsController } from "@/app/wallets/wallets.controller";
 import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
 import { InputCurrencyOutput } from "@/components/input-currency/input-currency.component";
 import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
@@ -88,7 +88,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 		private routerOutlet: IonRouterOutlet,
 		private loggerService: LoggerService,
 		private authCtrl: AuthController,
-		private walletCtrl: WalletController,
+		private walletsCtrl: WalletsController,
 	) {
 		this.currentWallet = this.userDataService.currentWallet;
 		this.currentNetwork = this.userDataService.currentNetwork;
@@ -305,7 +305,7 @@ export class TransactionSendPage implements OnInit, OnDestroy {
 					this.currentWallet,
 					password,
 				);
-				return this.walletCtrl.requestSecondPassphrase(
+				return this.walletsCtrl.requestSecondPassphrase(
 					this.currentWallet,
 					keys,
 				);

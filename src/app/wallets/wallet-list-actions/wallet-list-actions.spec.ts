@@ -1,23 +1,23 @@
 import { byTestId, createHostFactory, SpectatorHost } from "@ngneat/spectator";
 
-import { WalletsActionsComponent } from "./wallets-actions.component";
+import { WalletListActionsComponent } from "./wallet-list-actions.component";
 
-describe("Wallets Actions", () => {
-	let spectator: SpectatorHost<WalletsActionsComponent>;
+describe("Wallet List Actions", () => {
+	let spectator: SpectatorHost<WalletListActionsComponent>;
 	const createHost = createHostFactory({
-		component: WalletsActionsComponent,
+		component: WalletListActionsComponent,
 	});
 
 	it("should create", () => {
 		spectator = createHost(
-			`<ion-content><wallets-actions></wallets-actions></ion-content>`,
+			`<ion-content><wallet-list-actions></wallet-list-actions></ion-content>`,
 		);
 		expect(spectator.component).toBeTruthy();
 	});
 
 	it("should have a functional import button", () => {
 		spectator = createHost(
-			`<ion-content><wallets-actions></wallets-actions></ion-content>`,
+			`<ion-content><wallet-list-actions></wallet-list-actions></ion-content>`,
 		);
 
 		let output: any;
@@ -26,7 +26,7 @@ describe("Wallets Actions", () => {
 			.subscribe(() => (output = "import"));
 
 		const importButton = spectator.query(
-			byTestId("wallets-actions__button--import"),
+			byTestId("wallet-list-actions-button__import"),
 		);
 		spectator.click(importButton);
 
@@ -35,7 +35,7 @@ describe("Wallets Actions", () => {
 
 	it("should have a functional generate button", () => {
 		spectator = createHost(
-			`<ion-content><wallets-actions></wallets-actions></ion-content>`,
+			`<ion-content><wallet-list-actions></wallet-list-actions></ion-content>`,
 		);
 
 		let output: any;
@@ -44,7 +44,7 @@ describe("Wallets Actions", () => {
 			.subscribe(() => (output = "generate"));
 
 		const generateButton = spectator.query(
-			byTestId("wallets-actions__button--generate"),
+			byTestId("wallet-list-actions-button__generate"),
 		);
 
 		spectator.click(generateButton);

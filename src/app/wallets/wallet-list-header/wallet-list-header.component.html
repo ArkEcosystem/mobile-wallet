@@ -1,28 +1,25 @@
-<div
-	class="c-wallet__list--header w-full flex"
-	data-testid="c-wallet__list--header"
->
+<div class="wallet-list-header w-full flex" data-testid="wallet-list-header">
 	<div
-		[class]="'flex flex-1 items-center ' + direction"
-		[ngClass]="{ 'justify-between': direction === 'horizontal' }"
+		[class]="'flex flex-1 items-center ' + orientation"
+		[ngClass]="{ 'justify-between': orientation === 'horizontal' }"
 	>
 		<div>
 			<p
 				class="text-base font-bold"
-				data-testid="c-wallet__list--username"
+				data-testid="wallet-list-header__username"
 			>
 				{{ name }}, this is your balance
 			</p>
 			<p
 				class="text-3xl xs:text-3xl md:text-3xl font-bold"
-				data-testid="c-wallet__list--balance"
+				data-testid="wallet-list-header__balance"
 			>
 				{{ totalBalance }} {{ currencySymbol }}
 			</p>
 		</div>
-		<wallets-actions
+		<wallet-list-actions
 			(importWalletClick)="importWalletHandler()"
 			(generateWalletClick)="generateWalletHandler()"
-		></wallets-actions>
+		></wallet-list-actions>
 	</div>
 </div>

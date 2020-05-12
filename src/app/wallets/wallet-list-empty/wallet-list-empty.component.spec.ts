@@ -2,8 +2,8 @@ import { IonicModule } from "@ionic/angular";
 import { byTestId, createHostFactory, SpectatorHost } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
 
-import { WalletsActionsComponentModule } from "../wallets-actions/wallets-actions.component.module";
-import { WalletsEmptyListComponent } from "./wallets-empty-list.component";
+import { WalletListActionsComponentModule } from "../wallet-list-actions/wallet-list-actions.component.module";
+import { WalletsEmptyListComponent } from "./wallet-list-empty.component";
 
 describe("Wallets empty List", () => {
 	let spectator: SpectatorHost<WalletsEmptyListComponent>;
@@ -12,23 +12,23 @@ describe("Wallets empty List", () => {
 		imports: [
 			IonicModule.forRoot(),
 			TranslateModule.forRoot(),
-			WalletsActionsComponentModule,
+			WalletListActionsComponentModule,
 		],
 	});
 
 	it("should create", () => {
 		spectator = createHost(
-			`<ion-content><wallets-empty-list ></wallets-empty-list></ion-content>`,
+			`<ion-content><wallet-list-empty ></wallet-list-empty></ion-content>`,
 		);
 		expect(spectator.component).toBeTruthy();
 	});
 
 	it("should set greeting properly", () => {
 		spectator = createHost(
-			`<ion-content><wallets-empty-list name="Caio"></wallets-empty-list></ion-content>`,
+			`<ion-content><wallet-list-empty name="Caio"></wallet-list-empty></ion-content>`,
 		);
 		const greeting = spectator.query(
-			byTestId("wallets-empty-list--username"),
+			byTestId("wallet-list-empty__username"),
 		).innerHTML;
 
 		expect(greeting).toEqual(" Hi, Caio! ");
@@ -36,7 +36,7 @@ describe("Wallets empty List", () => {
 
 	it("should have a functional import button", () => {
 		spectator = createHost(
-			`<ion-content><wallets-empty-list name="Caio"></wallets-empty-list></ion-content>`,
+			`<ion-content><wallet-list-empty name="Caio"></wallet-list-empty></ion-content>`,
 		);
 
 		let output: any;
@@ -45,7 +45,7 @@ describe("Wallets empty List", () => {
 			.subscribe(() => (output = "import"));
 
 		const importButton = spectator.query(
-			byTestId("wallets-actions__button--import"),
+			byTestId("wallet-list-actions-button__import"),
 		);
 		spectator.click(importButton);
 
@@ -54,7 +54,7 @@ describe("Wallets empty List", () => {
 
 	it("should have a functional generate button", () => {
 		spectator = createHost(
-			`<ion-content><wallets-empty-list name="Caio"></wallets-empty-list></ion-content>`,
+			`<ion-content><wallet-list-empty name="Caio"></wallet-list-empty></ion-content>`,
 		);
 
 		let output: any;
@@ -63,7 +63,7 @@ describe("Wallets empty List", () => {
 			.subscribe(() => (output = "generate"));
 
 		const generateButton = spectator.query(
-			byTestId("wallets-actions__button--generate"),
+			byTestId("wallet-list-actions-button__generate"),
 		);
 
 		spectator.click(generateButton);

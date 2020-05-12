@@ -27,7 +27,7 @@ describe("Wallet Card", () => {
 				},
 			},
 		);
-		const component = spectator.query(byTestId("c-wallet-card"));
+		const component = spectator.query(byTestId("wallet-card"));
 		expect(component).toBeTruthy();
 	});
 
@@ -49,7 +49,7 @@ describe("Wallet Card", () => {
 			.output("openWalletClick")
 			.subscribe(() => (output = "redirect to wallet details"));
 
-		const detailsActions = spectator.query(byTestId("c-wallet-card"));
+		const detailsActions = spectator.query(byTestId("wallet-card"));
 
 		spectator.click(detailsActions);
 

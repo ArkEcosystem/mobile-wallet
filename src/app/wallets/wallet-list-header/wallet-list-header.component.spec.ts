@@ -1,13 +1,17 @@
 import { byTestId, createHostFactory, SpectatorHost } from "@ngneat/spectator";
 
-import { WalletsActionsComponentModule } from "../wallets-actions/wallets-actions.component.module";
+import { WalletListActionsComponentModule } from "../wallet-list-actions/wallet-list-actions.component.module";
+import { WalletListHeaderComponentModule } from "../wallet-list-actions/wallet-list-header.component.module";
 import { WalletListHeaderComponent } from "./wallet-list-header.component";
 
 describe("Wallet list header", () => {
 	let spectator: SpectatorHost<WalletListHeaderComponent>;
 	const createHost = createHostFactory({
 		component: WalletListHeaderComponent,
-		imports: [WalletsActionsComponentModule],
+		imports: [
+			WalletListActionsComponentModule,
+			WalletListHeaderComponentModule,
+		],
 	});
 
 	it("should create", () => {
@@ -20,7 +24,7 @@ describe("Wallet list header", () => {
             ></wallet-list-header>`,
 		);
 
-		const component = spectator.query(byTestId("c-wallet__list--header"));
+		const component = spectator.query(byTestId("wallet-list-header"));
 		expect(component).toBeTruthy();
 	});
 
@@ -36,7 +40,9 @@ describe("Wallet list header", () => {
 			},
 		);
 
-		const username = spectator.query(byTestId("c-wallet__list--username"));
+		const username = spectator.query(
+			byTestId("wallet-list-header__username"),
+		);
 		expect(username).toHaveText("Caio, this is your balance");
 	});
 
@@ -54,7 +60,9 @@ describe("Wallet list header", () => {
 			},
 		);
 
-		const balance = spectator.query(byTestId("c-wallet__list--balance"));
+		const balance = spectator.query(
+			byTestId("wallet-list-header__balance"),
+		);
 		expect(balance).toHaveText("200000 $");
 	});
 
@@ -74,7 +82,7 @@ describe("Wallet list header", () => {
 			.subscribe(() => (output = "import"));
 
 		const importButton = spectator.query(
-			byTestId("wallets-actions__button--import"),
+			byTestId("wallet-list-actions-button__import"),
 		);
 		spectator.click(importButton);
 
@@ -97,7 +105,7 @@ describe("Wallet list header", () => {
 			.subscribe(() => (output = "generate"));
 
 		const generateButton = spectator.query(
-			byTestId("wallets-actions__button--generate"),
+			byTestId("wallet-list-actions-button__generate"),
 		);
 
 		spectator.click(generateButton);

@@ -10,72 +10,24 @@
 </ion-header>
 
 <ion-footer transparent no-border>
-	<div class="c-wallets__list--bottom-gradient"></div>
+	<div class="wallet-list__bottom-gradient"></div>
 </ion-footer>
 
 <ion-content forceOverscroll="false" [fullscreen]="wallets?.length > 0">
-	<wallets-empty-list
-		data-testid="c-wallets__empty-list"
+	<wallet-list-empty
+		data-testid="wallet-list-empty"
 		*ngIf="wallets?.length === 0"
 		[name]="currentProfile?.name"
 		(importWalletClick)="presentActionSheet()"
 		(generateWalletClick)="presentWalletGenerate()"
-	></wallets-empty-list>
-	<div class="flex flex-col items-center mt-20 c-wallets__list">
-		<div class="flex flex-col items-center c-wallets__header--balance">
-			<p class="text-base font-bold">
-				{{ currentProfile?.name }}, this is your balance
-			</p>
-			<p class="text-3xl xs:text-3xl md:text-3xl font-bold">
-				{{ totalBalance }}
-			</p>
-			<wallets-actions
-				(importWalletClick)="presentActionSheet()"
-				(generateWalletClick)="presentWalletGenerate()"
-			></wallets-actions>
-		</div>
-		<ion-grid
-			class="h-full w-full flex flex-col justify-center items-center"
-			*ngIf="wallets?.length > 0"
-		>
-			<div class="w-full ion-padding" *ngFor="let wallet of wallets">
-				<wallet-card
-					name="name"
-					balance="2000452000000"
-					currency="ARK"
-					address="address"
-				></wallet-card>
-				<wallet-card
-					name="name"
-					balance="2000452000000"
-					currency="ARK"
-					address="address"
-				></wallet-card>
-				<wallet-card
-					name="name"
-					balance="2000452000000"
-					currency="ARK"
-					address="address"
-				></wallet-card>
-				<wallet-card
-					name="name"
-					balance="2000452000000"
-					currency="ARK"
-					address="address"
-				></wallet-card>
-				<wallet-card
-					name="name"
-					balance="2000452000000"
-					currency="ARK"
-					address="address"
-				></wallet-card>
-				<wallet-card
-					name="name"
-					balance="2000452000000"
-					currency="ARK"
-					address="address"
-				></wallet-card>
-			</div>
-		</ion-grid>
-	</div>
+	></wallet-list-empty>
+	<wallet-list
+		*ngIf="wallets?.length > 0"
+		[name]="currentProfile?.name"
+		[totalBalance]="totalBalance"
+		headerOrientation="vertical"
+		(importWalletClick)="presentActionSheet()"
+		(generateWalletClick)="presentWalletGenerate()"
+		[wallets]="wallets"
+	></wallet-list>
 </ion-content>

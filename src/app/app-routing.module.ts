@@ -151,7 +151,7 @@ const routes: Routes = [
 	{
 		path: "wallets-new",
 		loadChildren: () =>
-			import("./wallets/wallets.module").then(
+			import("./wallets/wallets.component.module").then(
 				(m) => m.WalletsComponentModule,
 			),
 	},

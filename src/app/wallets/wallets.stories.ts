@@ -6,24 +6,24 @@ import { moduleMetadata, storiesOf } from "@storybook/angular";
 import { PipesModule } from "@/pipes/pipes.module";
 
 import { WalletCardComponent } from "./wallet-card/wallet-card.component";
+import { WalletListActionsComponent } from "./wallet-list-actions/wallet-list-actions.component";
+import { WalletListEmptyComponent } from "./wallet-list-empty/wallet-list-empty.component";
 import { WalletListHeaderComponent } from "./wallet-list-header/wallet-list-header.component";
-import { WalletsActionsComponent } from "./wallets-actions/wallets-actions.component";
-import { WalletsEmptyListComponent } from "./wallets-empty-list/wallets-empty-list.component";
 
 storiesOf("wallets", module)
 	.addDecorator(
 		moduleMetadata({
 			declarations: [
-				WalletsEmptyListComponent,
+				WalletListEmptyComponent,
 				WalletListHeaderComponent,
 				WalletCardComponent,
-				WalletsActionsComponent,
+				WalletListActionsComponent,
 			],
 			imports: [TranslateModule, IonicModule, PipesModule],
 		}),
 	)
-	.add("empty-list", () => ({
-		component: WalletsEmptyListComponent,
+	.add("wallet-list-empty", () => ({
+		component: WalletListEmptyComponent,
 		props: {
 			importWalletClick: action("Import Button!"),
 			generateWalletClick: action("Generate Button!"),
@@ -31,16 +31,16 @@ storiesOf("wallets", module)
 		template: `
 			<ion-app>
 				<ion-content>
-					<wallets-empty-list
+					<wallet-list-empty
 						name="Caio"
 						(importWalletClick)="importWalletClick()"
 						(generateWalletClick)="generateWalletClick()">
-					</wallets-empty-list>
+					</wallet-list-empty>
 				</ion-content>
 			</ion-app>
 		`,
 	}))
-	.add("list-header-vertical", () => ({
+	.add("wallet-list-header__vertical", () => ({
 		component: WalletListHeaderComponent,
 		props: {
 			importWalletClick: action("Import Button!"),
@@ -61,7 +61,7 @@ storiesOf("wallets", module)
 			</ion-app>
 		`,
 	}))
-	.add("list-header-horizontal", () => ({
+	.add("wallet-list-header__horizontal", () => ({
 		component: WalletListHeaderComponent,
 		props: {
 			importWalletClick: action("Import Button!"),
@@ -82,7 +82,7 @@ storiesOf("wallets", module)
 			</ion-app>
 		`,
 	}))
-	.add("wallet-card-ark", () => ({
+	.add("wallet-card__ark", () => ({
 		component: WalletCardComponent,
 		props: {
 			address: "AHJJ29sCdR5UNZjdz3BYeDpvvkZCGBjde9",
@@ -98,7 +98,7 @@ storiesOf("wallets", module)
 			</ion-app>
 		`,
 	}))
-	.add("wallet-card-alt-coin", () => ({
+	.add("wallet-card__alt-coin", () => ({
 		component: WalletCardComponent,
 		props: {
 			address: "AdS7WvzqusoP759qRo6HDmUz2L34u4fMHz",

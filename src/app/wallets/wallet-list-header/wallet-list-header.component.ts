@@ -10,7 +10,7 @@ export class WalletListHeaderComponent {
 	public name: string;
 
 	@Input()
-	public direction: string;
+	public orientation: string;
 
 	@Input()
 	public currencySymbol: string;

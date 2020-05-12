@@ -1,15 +1,15 @@
 <div
-	class="mb-4 w-full lg:flex card c-wallet-card"
-	data-testid="c-wallet-card"
+	class="mb-4 w-full lg:flex card wallet-card"
+	data-testid="wallet-card"
 	(click)="openWalletDetailsHandler(address)"
 >
 	<div class="w-full leading-normal">
 		<div class="flex items-center justify-between">
 			<div class="flex flex-1 items-center">
 				<div
-					class="c-wallet-card--img flex justify-center items-center mr-5"
+					class="wallet-card__img flex justify-center items-center mr-5"
 					[style.background-color]="getBackgroundColor(currency)"
-					data-testid="c-wallet-card--img"
+					data-testid="wallet-card__img"
 				>
 					<img
 						class="c-wallet-coin--img"
@@ -19,14 +19,14 @@
 				</div>
 				<div>
 					<p
-						class="c-wallet-card--name text-xs font-semibold"
-						data-testid="c-wallet-card--name"
+						class="wallet-card__name text-xs font-semibold"
+						data-testid="wallet-card__name"
 					>
 						{{ name }}
 					</p>
 					<p
 						class="font-bold text-base"
-						data-testid="c-wallet-card--balance"
+						data-testid="wallet-card__balance"
 					>
 						{{ balance | unitsSatoshi }} {{ currency | uppercase }}
 					</p>

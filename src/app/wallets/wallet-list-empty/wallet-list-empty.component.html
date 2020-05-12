@@ -4,7 +4,7 @@
 			<ion-text color="dark" class="text-center">
 				<p
 					class="text-3xl xs:text-4xl md:text-5xl font-bold"
-					data-testid="wallets-empty-list--username"
+					data-testid="wallet-list-empty__username"
 				>
 					Hi, {{ name }}!
 				</p>
@@ -15,9 +15,9 @@
 				</p>
 			</ion-text>
 		</div>
-		<wallets-actions
+		<wallet-list-actions
 			(generateWalletClick)="generateWalletHandler()"
 			(importWalletClick)="importWalletHandler()"
-		></wallets-actions>
+		></wallet-list-actions>
 	</ion-grid>
 </ion-content>
