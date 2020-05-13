@@ -94,20 +94,23 @@ export class DelegatesPage implements OnDestroy {
 
 			this.selectedFee = data.fee;
 			this.selectedDelegate = data.delegateVote; // Save the delegate that we want to vote for
-			this.authCtrl.request().pipe(
-				switchMap(({ password }) => {
-					const keys = this.userDataService.getKeysByWallet(
-						this.currentWallet,
-						password,
-					);
-					return this.walletCtrl.requestSecondPassphrase(
-						this.currentWallet,
-						keys,
-					);
-				}),
-				tap((keys) => this.generateTransaction(keys)),
-				takeUntil(this.unsubscriber$),
-			);
+			this.authCtrl
+				.request()
+				.pipe(
+					switchMap(({ password }) => {
+						const keys = this.userDataService.getKeysByWallet(
+							this.currentWallet,
+							password,
+						);
+						return this.walletCtrl.requestSecondPassphrase(
+							this.currentWallet,
+							keys,
+						);
+					}),
+					tap((keys) => this.generateTransaction(keys)),
+					takeUntil(this.unsubscriber$),
+				)
+				.subscribe();
 		});
 
 		await modal.present();
