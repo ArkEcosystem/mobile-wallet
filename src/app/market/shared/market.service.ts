@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { PriceTrackerService } from "@arkecosystem/platform-sdk-markets";
+import { MarketService as MarketSDK } from "@arkecosystem/platform-sdk-markets";
 import { from, Observable } from "rxjs";
 
 import { MarketData } from "./market.types";
@@ -10,12 +10,12 @@ export class MarketService {
 
 	/* istanbul ignore next */
 	public verifyToken(token: string): Observable<boolean> {
-		return from(PriceTrackerService.make("coincap").verifyToken(token));
+		return from(MarketSDK.construct("coincap").verifyToken(token));
 	}
 
 	/* istanbul ignore next */
 	public getMarket(token: string): Observable<Record<string, MarketData>> {
-		return from(PriceTrackerService.make("coincap").marketData(token));
+		return from(MarketSDK.construct("coincap").marketData(token));
 	}
 
 	/* istanbul ignore next */
@@ -25,7 +25,7 @@ export class MarketService {
 		timestamp: number,
 	): Observable<number> {
 		return from(
-			PriceTrackerService.make("coincap").dailyAverage(
+			MarketSDK.construct("coincap").dailyAverage(
 				token,
 				currency,
 				timestamp,
