@@ -16,7 +16,5 @@ export class ProfilesComponent implements OnInit {
 
 	constructor() {}
 
-	ngOnInit() {
-		this.profiles$.subscribe(console.log);
-	}
+	ngOnInit() {}
 }

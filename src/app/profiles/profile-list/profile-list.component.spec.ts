@@ -1,3 +1,4 @@
+import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
 import {
 	byTestId,
@@ -12,7 +13,11 @@ describe("Profile List", () => {
 	let spectator: SpectatorHost<ProfileListComponent>;
 	const createHost = createHostComponentFactory({
 		component: ProfileListComponent,
-		imports: [IonicModule.forRoot(), TranslateModule.forRoot()],
+		imports: [
+			IonicModule.forRoot(),
+			TranslateModule.forRoot(),
+			RouterModule.forRoot([]),
+		],
 	});
 
 	it("should display all profiles", () => {
