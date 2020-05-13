@@ -14,7 +14,11 @@
 					<img
 						class="c-wallet-coin--img"
 						data-testid="c-wallet-coin--img"
-						[src]="'assets/img/coins/' + currency + '.png'"
+						[src]="
+							'assets/img/coins/' +
+							coinConfig[currency].image +
+							'.png'
+						"
 					/>
 				</div>
 				<div>

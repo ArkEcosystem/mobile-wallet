@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 // Coin Config
-import coinConfig from "@@/src/coins/shared/coin.config";
+import CoinConfig from "@@/src/coins/shared/coin.config";
 
 @Component({
 	selector: "wallet-card",
@@ -9,6 +9,8 @@ import coinConfig from "@@/src/coins/shared/coin.config";
 	styleUrls: ["wallet-card.pcss"],
 })
 export class WalletCardComponent {
+	public coinConfig = CoinConfig;
+
 	@Input()
 	public name: string;
 
@@ -35,6 +37,6 @@ export class WalletCardComponent {
 	}
 
 	public getBackgroundColor(currency: string) {
-		return coinConfig[currency].color;
+		return this.coinConfig[currency].color;
 	}
 }
