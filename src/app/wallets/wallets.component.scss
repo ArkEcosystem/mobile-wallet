@@ -2,11 +2,11 @@
 	margin-bottom: 0 !important;
 }
 
-.c-wallets__list--bottom-gradient {
+.wallets-component__bottom-gradient {
 	min-height: 80px;
 	background: linear-gradient(
 		to top,
-		rgba(255, 255, 255, 1),
-		rgba(255, 255, 255, 0)
+		#{"rgba(var(--ion-background-color-rgb), 1)"},
+		#{"rgba(var(--ion-background-color-rgb), 0)"}
 	);
 }

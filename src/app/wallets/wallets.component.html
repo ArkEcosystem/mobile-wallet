@@ -10,10 +10,14 @@
 </ion-header>
 
 <ion-footer transparent no-border>
-	<div class="wallet-list__bottom-gradient"></div>
+	<div class="wallets-component__bottom-gradient"></div>
 </ion-footer>
 
-<ion-content forceOverscroll="false" [fullscreen]="wallets?.length > 0">
+<ion-content
+	forceOverscroll="false"
+	[fullscreen]="wallets?.length > 0"
+	data-testid="wallets-component"
+>
 	<wallet-list-empty
 		data-testid="wallet-list-empty"
 		*ngIf="wallets?.length === 0"
