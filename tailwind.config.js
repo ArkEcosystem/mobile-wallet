@@ -8,8 +8,13 @@ module.exports = {
 			xl: "1200px",
 		},
 		extend: {
+			borderRadius: {
+				xl: "0.75rem",
+				"2xl": "1rem",
+			},
 			colors: {
 				primary: "var(--ion-color-primary)",
+				"primary-light": "rgba(var(--ion-color-primary-rgb), 0.1)",
 				"primary-contrast": "var(--ion-color-primary-contrast)",
 				"primary-shade": "var(--ion-color-primary-shade)",
 				"primary-tint": "var(--ion-color-primary-tint)",

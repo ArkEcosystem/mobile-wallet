@@ -1,20 +1,21 @@
-<ul class="space-y-4">
-	<li
-		data-testid="profile-list__profile"
-		*ngFor="let profile of profiles"
-		class="rounded-lg border border-primary p-5 flex items-center space-x-4"
-	>
-		<img
-			src="/assets/svg/avatar-placeholder.svg"
-			class="rounded-full w-8"
-		/>
-		<div class="flex-1">
-			<p class="text-xs font-semibold text-medium">
-				{{ "NAME" | translate }}
-			</p>
-			<p class="font-bold" data-testid="profile-list__profile__name">
-				{{ profile.name }}
-			</p>
-		</div>
+<ul class="space-y-2">
+	<li data-testid="profile-list__profile" *ngFor="let profile of profiles">
+		<a
+			[routerLink]="['/profile', profile.profileId]"
+			class="rounded-xl border-2 border-primary-light p-5 flex items-center space-x-4"
+		>
+			<img
+				src="/assets/svg/avatar-placeholder.svg"
+				class="rounded-full w-8"
+			/>
+			<div class="flex-1">
+				<p class="text-xs font-semibold text-medium">
+					{{ "NAME" | translate }}
+				</p>
+				<p class="font-bold" data-testid="profile-list__profile__name">
+					{{ profile.name }}
+				</p>
+			</div>
+		</a>
 	</li>
 </ul>
