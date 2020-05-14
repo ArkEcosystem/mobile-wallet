@@ -3,7 +3,7 @@
 		<div class="flex items-center justify-between">
 			<img src="/assets/img/logo.png" class="h-6 sm:h-8" />
 			<ion-button
-				data-testid="signup__skip"
+				data-testid="signup__signin"
 				size="small"
 				fill="clear"
 				(click)="handleSignin()"
@@ -18,13 +18,13 @@
 <ion-content fullscreen class="ion-padding" mode="ios">
 	<div class="h-full flex flex-col justify-between">
 		<img
-			data-testid="signup__slide__image"
+			data-testid="signup__image"
 			class="signup__slide__image pointer-events-none flex-1 self-center p-3"
 			[src]="'/assets/svg/onboarding-signup.svg'"
 		/>
 		<div class="mt-3">
 			<h2
-				data-testid="signup__slide__title"
+				data-testid="signup__title"
 				class="text-3xl xs:text-4xl md:text-5xl font-bold text-center"
 			>
 				Hi!<br />
@@ -34,7 +34,10 @@
 				<label class="text-sm font-semibold text-medium block mb-1">
 					Create a name for you user
 				</label>
-				<ion-input formControlName="name"></ion-input>
+				<ion-input
+					data-testid="signup__form__name"
+					formControlName="name"
+				></ion-input>
 			</form>
 		</div>
 	</div>
