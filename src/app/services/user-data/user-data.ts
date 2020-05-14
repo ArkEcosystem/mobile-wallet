@@ -125,7 +125,8 @@ export class UserDataServiceImpl implements UserDataService {
 	getProfileByName(name: string) {
 		const profile = lodash.find(
 			this.profiles,
-			(id: any) => id.name.toLowerCase() === name.toLowerCase(),
+			(profile: any) =>
+				profile.name?.toLowerCase() === name.toLowerCase(),
 		);
 		if (profile) {
 			return new Profile().deserialize(profile);

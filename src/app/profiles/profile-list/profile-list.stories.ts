@@ -1,3 +1,5 @@
+import { APP_BASE_HREF } from "@angular/common";
+import { RouterModule } from "@angular/router";
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 import { moduleMetadata, storiesOf } from "@storybook/angular";
@@ -8,7 +10,12 @@ storiesOf("profile-list", module)
 	.addDecorator(
 		moduleMetadata({
 			declarations: [ProfileListComponent],
-			imports: [TranslateModule, IonicModule],
+			imports: [
+				TranslateModule,
+				IonicModule,
+				RouterModule.forRoot([], { useHash: true }),
+			],
+			providers: [{ provide: APP_BASE_HREF, useValue: "/" }],
 		}),
 	)
 	.add("Default", () => ({
@@ -21,9 +28,9 @@ storiesOf("profile-list", module)
 		},
 		template: `
 			<ion-app>
-				<ion-content>
+				<div class="p-4">
 					<profile-list [profiles]="profiles"></profile-list>
-				</ion-content>
+				</div>
 			</ion-app>
 		`,
 	}));
