@@ -32,8 +32,7 @@ export class WalletCardComponent {
 	constructor() {}
 
 	public openWalletDetailsHandler(address: string) {
-		console.log({ address });
-		this.openWalletClick.emit();
+		this.openWalletClick.emit(address);
 	}
 
 	public getBackgroundColor(currency: string) {

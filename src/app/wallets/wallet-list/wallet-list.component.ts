@@ -37,4 +37,9 @@ export class WalletListComponent {
 	public generateWalletHandler() {
 		this.generateWalletClick.emit();
 	}
+
+	public navigateToWalletDetails(address: string) {
+		//TODO:
+		console.log("navigating to:", { address });
+	}
 }
