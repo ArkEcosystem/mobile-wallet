@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 import { Transaction } from "@/models/model";
 
@@ -11,31 +11,27 @@ export class TransactionRowComponent {
 	@Input()
 	transaction: Transaction;
 
+	@Output()
+	openTransactionDetails = new EventEmitter();
+
 	constructor() {}
 
-	public truncate(str, max, separator) {
-		max = max || 14;
-		const length = str.length;
-		if (length > max) {
-			separator = separator || "...";
-			const separatorLengh = separator.length;
-			if (separatorLengh > max) {
-				return str.substr(length - max);
-			}
+	public truncate(str) {
+		const separator = "...";
+		const max = 14;
+		const separatorLength = separator.length;
 
-			const shift = -0.5 * (max - length - separatorLengh);
-			const center = length / 2;
-			return (
-				str.substr(0, center - shift) +
-				separator +
-				str.substr(length - center + shift)
-			);
-		}
-		return str;
+		const shift = -0.5 * (max - length - separatorLength);
+		const center = length / 2;
+
+		return (
+			str.substr(0, center - shift) +
+			separator +
+			str.substr(length - center + shift)
+		);
 	}
 
 	public getTransactionTime(timestamp: string) {
-		console.log({ timestamp });
 		const date = new Date(parseInt(timestamp) * 1000);
 		const hours = date.getHours();
 		const minutes = date.getMinutes();
@@ -46,5 +42,9 @@ export class TransactionRowComponent {
 
 	public getTransactionLabel(type: string) {
 		return type === "sent" ? "Sent to" : "From";
+	}
+
+	public openTransactionDetailsHandler(id: string) {
+		this.openTransactionDetails.emit(id);
 	}
 }

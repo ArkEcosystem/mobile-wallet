@@ -5,3 +5,16 @@
 .received {
 	border: 1px solid var(--ion-color-success);
 }
+
+.transaction-row__amount {
+	@apply font-bold text-xl;
+	&.transaction-row__amount::before {
+		content: "+";
+	}
+	&.amount-sent {
+		color: var(--ion-color-danger);
+		&.amount-sent::before {
+			content: "-";
+		}
+	}
+}

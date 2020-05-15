@@ -1,35 +1,48 @@
 <div
+	*ngIf="transaction"
 	class="transaction-row flex flex-row w-full justify-between items-center ion-padding"
+	(click)="openTransactionDetailsHandler(transaction.id)"
+	data-testid="transaction-row"
 >
 	<div class="flex flex-row">
 		<div class="transaction-row__type mr-5">
 			<div
 				class="transaction-row__type flex justify-center items-center rounded-full p-3"
-				[ngClass]="transaction?.type"
+				[ngClass]="transaction.type"
+				data-testid="transaction-row__type"
 			>
 				<img
 					class="transaction-row__type-icon w-4 h-4"
 					data-testid="transaction-row__type-icon"
 					[src]="
 						'assets/img/transactions/' +
-						transaction?.type +
+						transaction.type +
 						'-icon.png'
 					"
 				/>
 			</div>
 		</div>
 		<div class="transaction-row__details flex flex-col">
-			<div class="transaction-row__details-timestamp flex flex-row">
-				{{ getTransactionTime(transaction?.timestamp) }}
-				{{ getTransactionLabel(transaction?.type) }}
+			<div
+				class="transaction-row__details-timestamp flex flex-row text-medium text-xs font-bold"
+			>
+				{{ getTransactionTime(transaction.timestamp) }}
+				{{ getTransactionLabel(transaction.type) }}
 			</div>
-			<div class="transaction-row__details-address">
-				{{ truncate(transaction?.address) }}
+			<div class="transaction-row__details-address font-bold">
+				{{
+					transaction.method !== "multipayment"
+						? truncate(transaction.address)
+						: "Multipayment"
+				}}
 			</div>
 		</div>
 	</div>
 
-	<div class="transaction-row__amount">
-		{{ transaction?.amount | unitsSatoshi }}
+	<div
+		class="transaction-row__amount"
+		[ngClass]="'amount-' + transaction.type"
+	>
+		{{ transaction.amount | unitsSatoshi }} ARK
 	</div>
 </div>
