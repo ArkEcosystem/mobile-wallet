@@ -1,0 +1,63 @@
+<div
+	class="flex flex-col items-center mt-20 wallet-list"
+	data-testid="wallet-list"
+>
+	<wallet-list-header
+		[name]="name"
+		[orientation]="headerOrientation"
+		[currencySymbol]="currencySymbol"
+		[totalBalance]="totalBalance"
+		(importWalletClick)="importWalletHandler()"
+		(generateWalletClick)="generateWalletHandler()"
+	>
+	</wallet-list-header>
+	<ion-grid
+		class="h-full w-full flex flex-col justify-center items-center"
+		*ngIf="wallets?.length > 0"
+	>
+		<div class="w-full ion-padding" *ngFor="let wallet of wallets">
+			<wallet-card
+				name="name"
+				balance="2000452000000"
+				currency="ARK"
+				address="address"
+				(openWalletClick)="navigateToWalletDetails(wallet?.address)"
+			></wallet-card>
+			<wallet-card
+				name="name"
+				balance="2000452000000"
+				currency="ARK"
+				address="address"
+				(openWalletClick)="navigateToWalletDetails(wallet?.address)"
+			></wallet-card>
+			<wallet-card
+				name="name"
+				balance="2000452000000"
+				currency="ARK"
+				address="address"
+				(openWalletClick)="navigateToWalletDetails(wallet?.address)"
+			></wallet-card>
+			<wallet-card
+				name="name"
+				balance="2000452000000"
+				currency="ARK"
+				address="address"
+				(openWalletClick)="navigateToWalletDetails(wallet?.address)"
+			></wallet-card>
+			<wallet-card
+				name="name"
+				balance="2000452000000"
+				currency="ARK"
+				address="address"
+				(openWalletClick)="navigateToWalletDetails(wallet?.address)"
+			></wallet-card>
+			<wallet-card
+				name="name"
+				balance="2000452000000"
+				currency="ARK"
+				address="address"
+				(openWalletClick)="navigateToWalletDetails(wallet?.address)"
+			></wallet-card>
+		</div>
+	</ion-grid>
+</div>

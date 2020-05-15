@@ -9,7 +9,7 @@ import { ToastProvider } from "@/services/toast/toast";
 import { EnterSecondPassphraseModal } from "../modals/enter-second-passphrase/enter-second-passphrase";
 
 @Injectable({ providedIn: "root" })
-export class WalletController {
+export class WalletsController {
 	constructor(
 		private modalCtrl: ModalController,
 		private toastProvider: ToastProvider,

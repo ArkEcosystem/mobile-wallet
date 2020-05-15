@@ -1,6 +1,9 @@
-import { addDecorator } from "@storybook/angular";
+import {
+	addDecorator,
+	moduleMetadata,
+	addParameters,
+} from "@storybook/angular";
 import { IonicModule } from "@ionic/angular";
-import { moduleMetadata } from "@storybook/angular";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { of } from "rxjs";
 import { NgxsModule } from "@ngxs/store";
@@ -14,6 +17,12 @@ class CustomLoader implements TranslateLoader {
 		return of(enLocale);
 	}
 }
+
+addParameters({
+	options: {
+		showRoots: true,
+	},
+});
 
 addDecorator(
 	moduleMetadata({

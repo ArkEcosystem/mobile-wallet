@@ -4,5 +4,5 @@
 		"resolveJsonModule": true
 	},
 	"exclude": ["../src/test.ts", "../src/**/*.spec.ts"],
-	"include": ["../src/**/*"]
+	"include": ["../src/**/*", "../node_modules/dayjs/plugin/utc.d.ts"]
 }

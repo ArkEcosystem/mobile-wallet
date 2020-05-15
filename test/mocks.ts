@@ -274,7 +274,7 @@ export class UserDataProviderMock implements UserDataService {
 		throw new Error("Method not implemented.");
 	}
 	public clearCurrentWallet(): void {
-		throw new Error("Method not implemented.");
+		this.currentWallet = undefined;
 	}
 	public loadProfiles(): Observable<Record<string, Profile>> {
 		throw new Error("Method not implemented.");

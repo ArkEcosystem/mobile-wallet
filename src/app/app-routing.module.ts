@@ -148,6 +148,13 @@ const routes: Routes = [
 				(m) => m.WalletListPageModule,
 			),
 	},
+	{
+		path: "wallets-new",
+		loadChildren: () =>
+			import("./wallets/wallets.component.module").then(
+				(m) => m.WalletsComponentModule,
+			),
+	},
 ];
 
 @NgModule({
