@@ -1,0 +1,35 @@
+<div
+	class="transaction-row flex flex-row w-full justify-between items-center ion-padding"
+>
+	<div class="flex flex-row">
+		<div class="transaction-row__type mr-5">
+			<div
+				class="transaction-row__type flex justify-center items-center rounded-full p-3"
+				[ngClass]="transaction?.type"
+			>
+				<img
+					class="transaction-row__type-icon w-4 h-4"
+					data-testid="transaction-row__type-icon"
+					[src]="
+						'assets/img/transactions/' +
+						transaction?.type +
+						'-icon.png'
+					"
+				/>
+			</div>
+		</div>
+		<div class="transaction-row__details flex flex-col">
+			<div class="transaction-row__details-timestamp flex flex-row">
+				{{ getTransactionTime(transaction?.timestamp) }}
+				{{ getTransactionLabel(transaction?.type) }}
+			</div>
+			<div class="transaction-row__details-address">
+				{{ truncate(transaction?.address) }}
+			</div>
+		</div>
+	</div>
+
+	<div class="transaction-row__amount">
+		{{ transaction?.amount | unitsSatoshi }}
+	</div>
+</div>
