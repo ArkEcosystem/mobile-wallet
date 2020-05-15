@@ -1,0 +1,39 @@
+<ion-header mode="ios" class="ion-no-border ion-padding">
+	<ion-toolbar class="p-0">
+		<ion-buttons slot="start">
+			<!-- <ion-back-button></ion-back-button> -->
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen data-testid="wallet-details" class="ion-padding">
+	<div class="h-full wallet-details">
+		<div class="wallet-details__header">
+			<div class="flex flex-col items-center wallet-details__info">
+				<identicon value="address" class="w-16 h-16 mb-5"></identicon>
+				<span>{{ address }}</span>
+				<p
+					class="text-3xl xs:text-3xl md:text-3xl font-bold"
+					data-testid="wallet-list-header__balance"
+				>
+					{{ balance | unitsSatoshi }}
+					{{ coinConfig[currency].symbol | uppercase }}
+				</p>
+				<p
+					class="text-sm"
+					data-testid="wallet-list-header__converted-balance"
+				>
+					{{ convertWalletBalance(balance) }} {{ currencySymbol }}
+				</p>
+			</div>
+		</div>
+		<bottom-drawer
+			isOpen="transactionsOpen"
+			[middleOffset]="500"
+			[backdrop]="transactionsOpen"
+			(buttonDrawerOnClose)="isOpen = false"
+		>
+			<h1>Test</h1>
+		</bottom-drawer>
+	</div>
+</ion-content>
