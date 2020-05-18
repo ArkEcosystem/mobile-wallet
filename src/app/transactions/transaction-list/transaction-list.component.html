@@ -1,0 +1,16 @@
+<div *ngIf="dates?.length > 0" class="transaction-list">
+	<div *ngFor="let date of dates" class="transaction-list__items">
+		<div class="flex flex-row transaction_list__date">
+			<span class="font-bold">{{ getDate(date) }}</span>
+			<span class="font-bold text-medium ml-2">{{
+				getWeekDay(date)
+			}}</span>
+		</div>
+		<div
+			*ngFor="let transaction of renderTransactions(date)"
+			class="transaction-list__item"
+		>
+			<transaction-row [transaction]="transaction"></transaction-row>
+		</div>
+	</div>
+</div>
