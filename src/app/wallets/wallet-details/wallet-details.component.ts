@@ -25,9 +25,15 @@ export class WalletDetailsComponent {
 	@Input()
 	public transactions: Transaction[] = [];
 
+	public isTransactionsOpen: boolean = false;
+
 	constructor() {}
 
 	convertWalletBalance(balance: string) {
 		return "389987";
+	}
+
+	public toggleIsTransactionsOpen() {
+		this.isTransactionsOpen = !this.isTransactionsOpen;
 	}
 }

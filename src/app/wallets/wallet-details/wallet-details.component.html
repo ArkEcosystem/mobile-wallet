@@ -10,33 +10,81 @@
 	<div class="w-full h-full wallet-details">
 		<div class="wallet-details__header">
 			<div
-				class="flex flex-col ion-padding items-center wallet-details__info"
+				class="flex ion-padding wallet-details__info items-center"
+				data-testid="wallet-details__info"
+				[ngClass]="{ collapsed: isTransactionsOpen }"
 			>
-				<identicon
-					value="address"
-					class="w-16 h-16 mt-10 mb-5"
-				></identicon>
-				<span>{{ address }}</span>
-				<p
-					class="text-3xl xs:text-3xl md:text-3xl font-bold"
-					data-testid="wallet-list-header__balance"
+				<div
+					class="flex flex-col"
+					[ngClass]="{ 'items-center': !isTransactionsOpen }"
 				>
-					{{ balance | unitsSatoshi }}
-					{{ coinConfig[currency].symbol | uppercase }}
-				</p>
-				<p
-					class="text-sm"
-					data-testid="wallet-list-header__converted-balance"
-				>
-					{{ convertWalletBalance(balance) }} {{ currencySymbol }}
-				</p>
+					<identicon
+						*ngIf="!isTransactionsOpen"
+						value="address"
+						class="w-16 h-16 mt-10 mb-5"
+					></identicon>
+					<span *ngIf="!isTransactionsOpen">{{ address }}</span>
+					<p
+						class="wallet-list-header__balance font-bold"
+						data-testid="wallet-list-header__balance"
+					>
+						{{ balance | unitsSatoshi }}
+						{{ coinConfig[currency].symbol | uppercase }}
+					</p>
+					<p
+						class="wallet-list-header__converted-balance"
+						data-testid="wallet-list-header__converted-balance"
+					>
+						{{ convertWalletBalance(balance) }} {{ currencySymbol }}
+					</p>
+				</div>
+				<div class="wallet-details__actions">
+					<ion-button
+						color="light"
+						(click)="importWalletHandler()"
+						data-testid="wallet-list-actions-button__import"
+					>
+						<ion-icon
+							size="small"
+							slot="icon-only"
+							name="qr-code-outline"
+						></ion-icon>
+					</ion-button>
+					<ion-button
+						color="light"
+						(click)="importWalletHandler()"
+						data-testid="wallet-list-actions-button__import"
+					>
+						<ion-icon
+							size="small"
+							[slot]="isTransactionsOpen ? 'icon-only' : 'end'"
+							name="arrow-up-outline"
+						></ion-icon>
+						<span *ngIf="!isTransactionsOpen">Send ARK</span>
+					</ion-button>
+					<ion-button
+						color="light"
+						*ngIf="!isTransactionsOpen"
+						(click)="importWalletHandler()"
+						data-testid="wallet-list-actions-button__import"
+					>
+						<ion-icon
+							size="small"
+							slot="icon-only"
+							name="checkbox-outline"
+						></ion-icon>
+					</ion-button>
+				</div>
 			</div>
 		</div>
 		<div
-			class="absolute bottom-0 w-full ion-padding flex flex-col h-56 max-h-full overflow-hidden wallet-details__transaction-list"
+			class="absolute bottom-0 w-full ion-padding flex flex-col h-56 max-h-full wallet-details__transaction-list"
+			data-testid="wallet-details__transaction-list"
+			[ngClass]="{ 'expanded overflow-auto': isTransactionsOpen }"
 		>
 			<div
 				class="wallet-details__transaction-list--grip w-full flex justify-center"
+				(click)="toggleIsTransactionsOpen()"
 			>
 				<div></div>
 			</div>

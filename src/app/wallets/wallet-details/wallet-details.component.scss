@@ -3,15 +3,42 @@
 	color: white;
 }
 
+.wallet-details__info {
+	flex-direction: column;
+	.wallet-list-header__balance {
+		@apply text-3xl;
+	}
+	.wallet-list-header__converted-balance {
+		@apply text-base;
+	}
+	&.collapsed {
+		flex-direction: row;
+		justify-content: space-between;
+		.wallet-list-header__balance {
+			@apply text-xl;
+		}
+		.wallet-list-header__converted-balance {
+			@apply text-sm;
+		}
+	}
+}
+
 .wallet-details__transaction-list {
 	background-color: var(--ion-background-color);
 	color: var(--ion-text-color);
-	min-height: 300px;
+	min-height: 40%;
 	border-top-left-radius: 30px;
 	border-top-right-radius: 30px;
+	transition: height 0.3s ease;
+	overflow: hidden;
+	&.expanded {
+		overflow: auto;
+		height: 80%;
+	}
 }
 
 .wallet-details__transaction-list--grip {
+	height: 30px;
 	cursor: pointer;
 	div {
 		width: 40px;
