@@ -2,3 +2,20 @@
 	background-color: var(--wallet-details-background-light) !important;
 	color: white;
 }
+
+.wallet-details__transaction-list {
+	background-color: var(--ion-background-color);
+	color: var(--ion-text-color);
+	min-height: 300px;
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
+}
+
+.wallet-details__transaction-list--grip {
+	cursor: pointer;
+	div {
+		width: 40px;
+		height: 2px;
+		background-color: var(--ion-color-medium) !important;
+	}
+}

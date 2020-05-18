@@ -6,11 +6,16 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen data-testid="wallet-details" class="ion-padding">
-	<div class="h-full wallet-details">
+<ion-content fullscreen data-testid="wallet-details">
+	<div class="w-full h-full wallet-details">
 		<div class="wallet-details__header">
-			<div class="flex flex-col items-center wallet-details__info">
-				<identicon value="address" class="w-16 h-16 mb-5"></identicon>
+			<div
+				class="flex flex-col ion-padding items-center wallet-details__info"
+			>
+				<identicon
+					value="address"
+					class="w-16 h-16 mt-10 mb-5"
+				></identicon>
 				<span>{{ address }}</span>
 				<p
 					class="text-3xl xs:text-3xl md:text-3xl font-bold"
@@ -27,13 +32,15 @@
 				</p>
 			</div>
 		</div>
-		<bottom-drawer
-			isOpen="transactionsOpen"
-			[middleOffset]="500"
-			[backdrop]="transactionsOpen"
-			(buttonDrawerOnClose)="isOpen = false"
+		<div
+			class="absolute bottom-0 w-full ion-padding flex flex-col h-56 max-h-full overflow-hidden wallet-details__transaction-list"
 		>
-			<h1>Test</h1>
-		</bottom-drawer>
+			<div
+				class="wallet-details__transaction-list--grip w-full flex justify-center"
+			>
+				<div></div>
+			</div>
+			<transaction-list class="w-full"></transaction-list>
+		</div>
 	</div>
 </ion-content>
