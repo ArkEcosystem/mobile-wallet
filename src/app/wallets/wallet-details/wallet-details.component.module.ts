@@ -2,7 +2,6 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 
-import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-drawer.module";
 import { IdenticonComponentModule } from "@/components/identicon/identicon.module";
 import { PipesModule } from "@/pipes/pipes.module";
 
@@ -15,7 +14,6 @@ import { WalletDetailsComponent } from "./wallet-details.component";
 		IonicModule,
 		CommonModule,
 		PipesModule,
-		BottomDrawerComponentModule,
 		TransactionListComponentModule,
 		IdenticonComponentModule,
 	],
