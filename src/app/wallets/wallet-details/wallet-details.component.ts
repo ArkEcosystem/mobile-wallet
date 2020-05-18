@@ -20,7 +20,7 @@ export class WalletDetailsComponent {
 	public balance: string;
 
 	@Input()
-	public currency: string;
+	public currency: string = "ARK";
 
 	@Input()
 	public transactions: Transaction[] = [];
