@@ -26,7 +26,7 @@
 			<div
 				class="transaction-row__details-timestamp flex flex-row text-medium text-xs font-bold"
 			>
-				{{ getTransactionTime(transaction.timestamp) }}
+				{{ getTransactionTime(transaction.timestamp.unix) }}
 				{{ getTransactionLabel(transaction.type) }}
 			</div>
 			<div class="transaction-row__details-address font-bold">
