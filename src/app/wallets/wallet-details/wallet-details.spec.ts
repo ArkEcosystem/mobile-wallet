@@ -44,14 +44,11 @@ describe("Wallet Details", () => {
 			},
 		});
 
-		const toggleButton = spectator.query(
-			byTestId("wallet-details__transaction-list--grip"),
-		);
 		const transactionList = spectator.query(
 			byTestId("wallet-details__transaction-list"),
 		);
 
-		spectator.click(toggleButton);
+		spectator.dispatchTouchEvent(transactionList, "swipeup", 0, 100);
 		expect(transactionList).toHaveClass("expanded");
 	});
 });
