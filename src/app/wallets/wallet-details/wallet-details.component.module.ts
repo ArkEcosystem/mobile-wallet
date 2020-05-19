@@ -5,7 +5,10 @@ import { IonicModule } from "@ionic/angular";
 import { IdenticonComponentModule } from "@/components/identicon/identicon.module";
 import { PipesModule } from "@/pipes/pipes.module";
 
+import { EnterSecondPassphraseModal } from "../../modals/enter-second-passphrase/enter-second-passphrase";
+import { EnterSecondPassphraseModalModule } from "../../modals/enter-second-passphrase/enter-second-passphrase.module";
 import { TransactionListComponentModule } from "../../transactions/transaction-list/transaction-list.component.module";
+import { WalletDetailsRoutingModule } from "./wallet-details-routing.module";
 import { WalletDetailsComponent } from "./wallet-details.component";
 
 @NgModule({
@@ -16,7 +19,10 @@ import { WalletDetailsComponent } from "./wallet-details.component";
 		PipesModule,
 		TransactionListComponentModule,
 		IdenticonComponentModule,
+		EnterSecondPassphraseModalModule,
+		WalletDetailsRoutingModule,
 	],
 	exports: [WalletDetailsComponent],
+	entryComponents: [EnterSecondPassphraseModal],
 })
 export class WalletDetailsComponentModule {}
