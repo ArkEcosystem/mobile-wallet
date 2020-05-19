@@ -2,7 +2,6 @@ import { Component, Input } from "@angular/core";
 
 // Coin Config
 import CoinConfig from "@@/src/coins/shared/coin.config";
-import { Transaction } from "@/models/model";
 
 @Component({
 	selector: "wallet-details",
@@ -23,7 +22,7 @@ export class WalletDetailsComponent {
 	public currency: string = "ARK";
 
 	@Input()
-	public transactions: Transaction[] = [];
+	public transactions: any = [];
 
 	public isTransactionsOpen: boolean = false;
 
@@ -33,7 +32,7 @@ export class WalletDetailsComponent {
 		return "389987";
 	}
 
-	public toggleIsTransactionsOpen() {
-		this.isTransactionsOpen = !this.isTransactionsOpen;
+	public handleTransactionListExpansion(status: boolean) {
+		this.isTransactionsOpen = status;
 	}
 }

@@ -21,7 +21,7 @@
 					<identicon
 						*ngIf="!isTransactionsOpen"
 						value="address"
-						class="w-16 h-16 mt-10 mb-5"
+						class="w-24 h-24 mb-5"
 					></identicon>
 					<span *ngIf="!isTransactionsOpen">{{ address }}</span>
 					<p
@@ -35,13 +35,15 @@
 						class="wallet-list-header__converted-balance"
 						data-testid="wallet-list-header__converted-balance"
 					>
-						{{ convertWalletBalance(balance) }} {{ currencySymbol }}
+						{{ convertWalletBalance(balance) }} $
 					</p>
 				</div>
-				<div class="wallet-details__actions">
+				<div
+					class="wallet-details__actions"
+					[ngClass]="{ collapsed: isTransactionsOpen }"
+				>
 					<ion-button
 						color="light"
-						(click)="importWalletHandler()"
 						data-testid="wallet-list-actions-button__import"
 					>
 						<ion-icon
@@ -52,7 +54,6 @@
 					</ion-button>
 					<ion-button
 						color="light"
-						(click)="importWalletHandler()"
 						data-testid="wallet-list-actions-button__import"
 					>
 						<ion-icon
@@ -65,7 +66,6 @@
 					<ion-button
 						color="light"
 						*ngIf="!isTransactionsOpen"
-						(click)="importWalletHandler()"
 						data-testid="wallet-list-actions-button__import"
 					>
 						<ion-icon
@@ -78,14 +78,15 @@
 			</div>
 		</div>
 		<div
-			class="absolute bottom-0 w-full ion-padding flex flex-col h-56 max-h-full wallet-details__transaction-list"
+			(swipeup)="handleTransactionListExpansion(true)"
+			(swipedown)="handleTransactionListExpansion(false)"
+			class="absolute bottom-0 w-full flex flex-col h-56 max-h-full wallet-details__transaction-list"
 			data-testid="wallet-details__transaction-list"
 			[ngClass]="{ 'expanded overflow-auto': isTransactionsOpen }"
 		>
 			<div
-				class="wallet-details__transaction-list--grip w-full flex justify-center"
+				class="wallet-details__transaction-list--grip w-full flex justify-center ion-padding"
 				data-testid="wallet-details__transaction-list--grip"
-				(click)="toggleIsTransactionsOpen()"
 			>
 				<div></div>
 			</div>
