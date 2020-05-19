@@ -6,7 +6,7 @@ export default [
 		version: 2,
 		type: 0,
 		typeGroup: 1,
-		amount: "1924098349979836",
+		amount: "3143875",
 		fee: "2455570",
 		sender: "AUDud8tvyVZa67p3QY7XPRUTjRGnWQQ9Xv",
 		senderPublicKey:
@@ -150,7 +150,7 @@ export const newTransactions = [
 		version: 2,
 		type: "received",
 		method: "regular",
-		amount: "1924098349979836",
+		amount: "3143875",
 		fee: "2455570",
 		address: "AUDud8tvyVZa67p3QY7XPRUTjRGnWQQ9Xv",
 		senderPublicKey:
