@@ -1,13 +1,13 @@
 <div
 	data-testid="word-box"
-	class="word-box border rounded-md inline-block py-2 pr-10"
+	class="word-box border rounded-md relative py-3 pr-10"
 >
-	<span
+	<div
 		data-testid="word-box__order"
-		class="word-box__order absolute top-0 mt-2 ml-3 pl-1 pr-1 text-xs text-medium"
+		class="word-box__order inline absolute top-0 ml-3 pl-1 pr-1 text-xs text-medium"
 	>
 		{{ order }}
-	</span>
+	</div>
 	<span data-testid="word-box__word" class="word-box__word pl-4 font-bold">
 		{{ word }}
 	</span>
