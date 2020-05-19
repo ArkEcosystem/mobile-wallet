@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 
-import { Transaction } from "@/models/model";
-
 @Component({
 	selector: "transaction-row",
 	templateUrl: "transaction-row.component.html",
@@ -9,7 +7,7 @@ import { Transaction } from "@/models/model";
 })
 export class TransactionRowComponent {
 	@Input()
-	transaction: Transaction;
+	transaction: any;
 
 	@Output()
 	openTransactionDetails = new EventEmitter();
