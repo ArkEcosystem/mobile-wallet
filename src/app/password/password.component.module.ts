@@ -3,10 +3,10 @@ import { NgModule } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
 
-import { WordBoxComponentModule } from "@/components/word-box/word-box.component.module";
 import { PipesModule } from "@/pipes/pipes.module";
 
 import { PasswordComponent } from "./password.component";
+import { WordBoxComponentModule } from "./word-box/word-box.component.module";
 
 @NgModule({
 	declarations: [PasswordComponent],

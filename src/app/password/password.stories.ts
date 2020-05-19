@@ -2,10 +2,10 @@ import { TranslateModule } from "@ngx-translate/core";
 import { withKnobs } from "@storybook/addon-knobs";
 import { moduleMetadata } from "@storybook/angular";
 
-import { WordBoxComponentModule } from "@/components/word-box/word-box.component.module";
 import { PipesModule } from "@/pipes/pipes.module";
 
 import { PasswordComponent } from "./password.component";
+import { WordBoxComponentModule } from "./word-box/word-box.component.module";
 
 export default {
 	title: "Modules / Password",
@@ -21,7 +21,20 @@ export default {
 export const Password = () => ({
 	component: PasswordComponent,
 	props: {
-		words: ["blame", "fire", "duck"],
+		words: [
+			"blame",
+			"fire",
+			"duck",
+			"blame",
+			"fire",
+			"duck",
+			"blame",
+			"fire",
+			"duck",
+			"blame",
+			"fire",
+			"duck",
+		],
 	},
 	template: `
 			<ion-app>

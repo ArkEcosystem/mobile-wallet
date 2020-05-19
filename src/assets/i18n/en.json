@@ -28,7 +28,8 @@
 		"OVERWRITE_CONTACT": "There is already a contact named '{{ name }}' with this address. Do you want to overwrite it's name with '{{ newName }}'?"
 	},
 	"PASSWORD_PAGE": {
-		"TITLE": "Your password"
+		"TITLE": "Your password",
+		"SUBTITLE": "Save this password and don't show it to anyone. This is the only way to access your wallet."
 	},
 	"COPIED_CLIPBOARD": "Copied to clipboard",
 	"COPY": "Copy",
