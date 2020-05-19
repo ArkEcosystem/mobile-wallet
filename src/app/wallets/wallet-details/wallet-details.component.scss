@@ -1,6 +1,12 @@
-.wallet-details {
+.wallet-details,
+ion-header {
 	background-color: var(--wallet-details-background-light) !important;
 	color: white;
+}
+
+ion-toolbar {
+	--background: transparent;
+	--ion-color-base: transparent !important;
 }
 
 .wallet-details__info {
@@ -21,6 +27,12 @@
 			@apply text-sm;
 		}
 	}
+	.wallet-details__actions {
+		@apply mt-5;
+		&.collapsed {
+			margin-top: 0;
+		}
+	}
 }
 
 .wallet-details__transaction-list {
@@ -33,7 +45,7 @@
 	overflow: hidden;
 	&.expanded {
 		overflow: auto;
-		height: 80%;
+		height: 75%;
 	}
 }
 

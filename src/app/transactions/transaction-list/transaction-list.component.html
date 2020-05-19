@@ -4,7 +4,7 @@
 	data-testid="transaction-list"
 >
 	<div *ngFor="let date of dates" class="transaction-list__items">
-		<div class="flex flex-row transaction_list__date ion-padding">
+		<div class="flex flex-row transaction_list__date p-5">
 			<span class="font-bold">{{ getDate(date) }}</span>
 			<span class="font-bold text-medium ml-2">{{
 				getWeekDay(date)

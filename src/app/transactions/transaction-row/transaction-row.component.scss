@@ -7,7 +7,9 @@
 }
 
 .transaction-row__amount {
-	@apply font-bold text-xl;
+	@apply font-bold text-base;
+	margin-top: 0.4rem;
+	display: flex;
 	&.transaction-row__amount::before {
 		content: "+";
 	}
