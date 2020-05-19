@@ -20,32 +20,6 @@ export default {
 
 export const TransactionList = () => ({
 	component: TransactionListComponent,
-	props: {
-		// openTransactionDetails: action("Open transaction details"),
-		// transaction: {
-		// 	id:
-		// 		"3e0e5e79954494f02627fbfe56a90af472e67f248b25104bd9dd3fbb3db6801f",
-		// 	type: select(
-		// 		"Type",
-		// 		{
-		// 			Sent: "sent",
-		// 			Received: "received",
-		// 		},
-		// 		"sent",
-		// 	),
-		// 	method: select(
-		// 		"Method",
-		// 		{
-		// 			Multipayment: "multipayment",
-		// 			Regular: "regular",
-		// 		},
-		// 		"regular",
-		// 	),
-		// 	address: text("Address", "AHJJ29sCdR5UNZjdz3BYeDpvvkZCGBjde9"),
-		// 	timestamp: text("Transaction Timestamp", "1583335576"),
-		// 	amount: text("Amount", "2239907700"),
-		// },
-	},
 	template: `
 			<ion-app>
 				<ion-content class="ion-padding w-full flex justify-center items-center">

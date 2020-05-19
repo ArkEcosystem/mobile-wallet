@@ -22,7 +22,6 @@ export class TransactionListComponent {
 			newTransactions,
 		);
 
-		// console.log({ groupedByDateTransactions });
 		this.dates = Object.keys(groupedByDateTransactions);
 		this.transactionsList = groupedByDateTransactions;
 	}

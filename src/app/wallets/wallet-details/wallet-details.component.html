@@ -25,37 +25,31 @@
 					></identicon>
 					<span *ngIf="!isTransactionsOpen">{{ address }}</span>
 					<p
-						class="wallet-list-header__balance font-bold"
-						data-testid="wallet-list-header__balance"
+						class="wallet-details-__header--balance font-bold"
+						data-testid="wallet-details-__header--balance"
 					>
 						{{ balance | unitsSatoshi }}
 						{{ coinConfig[currency].symbol | uppercase }}
 					</p>
 					<p
-						class="wallet-list-header__converted-balance"
-						data-testid="wallet-list-header__converted-balance"
+						class="wallet-details__header--converted-balance"
+						data-testid="wallet-details__header--converted-balance"
 					>
 						{{ convertWalletBalance(balance) }} $
 					</p>
 				</div>
 				<div
-					class="wallet-details__actions"
+					class="wallet-details__header--actions"
 					[ngClass]="{ collapsed: isTransactionsOpen }"
 				>
-					<ion-button
-						color="light"
-						data-testid="wallet-list-actions-button__import"
-					>
+					<ion-button color="light">
 						<ion-icon
 							size="small"
 							slot="icon-only"
 							name="qr-code-outline"
 						></ion-icon>
 					</ion-button>
-					<ion-button
-						color="light"
-						data-testid="wallet-list-actions-button__import"
-					>
+					<ion-button color="light">
 						<ion-icon
 							size="small"
 							[slot]="isTransactionsOpen ? 'icon-only' : 'end'"
@@ -63,11 +57,7 @@
 						></ion-icon>
 						<span *ngIf="!isTransactionsOpen">Send ARK</span>
 					</ion-button>
-					<ion-button
-						color="light"
-						*ngIf="!isTransactionsOpen"
-						data-testid="wallet-list-actions-button__import"
-					>
+					<ion-button color="light" *ngIf="!isTransactionsOpen">
 						<ion-icon
 							size="small"
 							slot="icon-only"

@@ -12,7 +12,7 @@
 				data-testid="transaction-row__type"
 			>
 				<img
-					class="transaction-row__type-icon w-4 h-4"
+					class="transaction-row__type--icon w-4 h-4"
 					data-testid="transaction-row__type-icon"
 					[src]="
 						'assets/img/transactions/' +
@@ -24,12 +24,12 @@
 		</div>
 		<div class="transaction-row__details flex flex-col">
 			<div
-				class="transaction-row__details-timestamp flex flex-row text-medium text-xs font-bold"
+				class="transaction-row__details--timestamp flex flex-row text-medium text-xs font-bold"
 			>
 				{{ getTransactionTime(transaction.timestamp.unix) }}
 				{{ getTransactionLabel(transaction.type) }}
 			</div>
-			<div class="transaction-row__details-address font-bold">
+			<div class="transaction-row__details--address font-bold">
 				{{
 					transaction.method !== "multipayment"
 						? truncate(transaction.address)
