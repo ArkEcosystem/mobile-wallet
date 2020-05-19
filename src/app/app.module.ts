@@ -1,10 +1,11 @@
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { ErrorHandler, Injectable, NgModule } from "@angular/core";
 import {
+	BrowserModule,
 	HAMMER_GESTURE_CONFIG,
 	HammerGestureConfig,
+	HammerModule,
 } from "@angular/platform-browser";
-import { BrowserModule, HammerModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouteReuseStrategy } from "@angular/router";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
