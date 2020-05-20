@@ -1,5 +1,6 @@
 import { APP_BASE_HREF } from "@angular/common";
 import { RouterTestingModule } from "@angular/router/testing";
+import { Clipboard } from "@ionic-native/clipboard/ngx";
 import { TranslateModule } from "@ngx-translate/core";
 import { withKnobs } from "@storybook/addon-knobs";
 import { moduleMetadata } from "@storybook/angular";
@@ -21,7 +22,7 @@ export default {
 				WordBoxComponentModule,
 				RouterTestingModule,
 			],
-			providers: [{ provide: APP_BASE_HREF, useValue: "/" }],
+			providers: [Clipboard, { provide: APP_BASE_HREF, useValue: "/" }],
 		}),
 	],
 };
