@@ -1,30 +1,23 @@
-<div
-	class="wallet-passphrase-list ion-padding"
+<ul
 	data-testid="wallet-passphrase-list"
+	class="grid grid-cols-2 sm:grid-cols-3 gap-4"
 >
-	<div class="flex flex-wrap w-full justify-between">
+	<li
+		*ngFor="let word of words; let i = index"
+		data-testid="wallet-passphrase-list__word-box"
+		class="wallet-passphrase-list__word-box border rounded-md relative py-3 px-4"
+	>
 		<div
-			class="w-1/3 ion-padding"
-			*ngFor="let word of words; let i = index"
+			data-testid="wallet-passphrase-list__word-box--order"
+			class="bg-theme-background absolute left-0 top-0 -mt-2 ml-3 pl-1 pr-1 text-xs text-medium"
 		>
-			<div
-				data-testid="wallet-passphrase-list__word-box"
-				class="wallet-passphrase-list__word-box border rounded-md relative py-3 pr-10"
-				[ngClass]="{ selected: isSelected }"
-			>
-				<div
-					data-testid="wallet-passphrase-list__word-box--order"
-					class="wallet-passphrase-list__word-box--order inline absolute top-0 ml-3 pl-1 pr-1 text-xs text-medium"
-				>
-					{{ i + 1 }}
-				</div>
-				<span
-					data-testid="wallet-passphrase-list__word-box--word"
-					class="wallet-passphrase-list__word-box--word pl-4 font-bold"
-				>
-					{{ word }}
-				</span>
-			</div>
+			{{ i + 1 }}
 		</div>
-	</div>
-</div>
+		<span
+			data-testid="wallet-passphrase-list__word-box--word"
+			class="wallet-passphrase-list__word-box--word font-bold"
+		>
+			{{ word }}
+		</span>
+	</li>
+</ul>

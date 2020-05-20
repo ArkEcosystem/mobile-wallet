@@ -36,11 +36,9 @@ export const WalletPassphraseList = () => ({
 		],
 	},
 	template: `
-			<ion-app>
-				<ion-content>
-					<wallet-passphrase-list [words]="words"></wallet-passphrase-list>
-				</ion-content>
-			</ion-app>
+		<div class="p-4">
+			<wallet-passphrase-list [words]="words"></wallet-passphrase-list>
+		</div>
 		`,
 });
 
