@@ -88,8 +88,7 @@ export const newTransactions = [
 			"029c69f2837f47ecba9c7e351ccbc330469cff95c66425704868da4215a2a36ac2",
 		signature:
 			"27d70826543f01a5546e834f8bf52468da49a756c98dc270df7e4c0fb49e03e525feb0a5c8e2c296430fc050be0446e3357d7e3f80a93e9bc9fe2c88466411d2",
-		vendorField:
-			"Kiddie pics xxx h t t p : / / y 3 f p i e i e z y 2 s i n 4 a . o n i o n /",
+		vendorField: "",
 		confirmations: 246101,
 		timestamp: {
 			epoch: 97731640,
@@ -112,7 +111,7 @@ export const newTransactions = [
 			"029c69f2837f47ecba9c7e351ccbc330469cff95c66425704868da4215a2a36ac2",
 		signature:
 			"06c1b09848ae3e37223e84216ce220961dbcd4e0e643c5383b4bb05ac6f0584f6e9fed86d86977e1d3b9cc603e1b5d3d2f19f16b7a7f96ef9c9d5c9f075720fd",
-		vendorField: "Kiddie pics xxx http://samsaraccrn2jmin.onion/?ai=622875",
+		vendorField: "",
 		confirmations: 246210,
 		timestamp: {
 			epoch: 97730768,
