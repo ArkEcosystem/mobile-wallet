@@ -142,6 +142,7 @@
 		"SUBTITLE": "Select one of the networks or add your"
 	},
 	"NEXT": "Next",
+	"NEXT_STEP": "Next step",
 	"NO": "No",
 	"PASSPHRASE_TEST": {
 		"INFO": "Please type the required words from your passphrase to validate the wallet creation.",
