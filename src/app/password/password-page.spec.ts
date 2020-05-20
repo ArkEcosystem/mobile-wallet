@@ -101,4 +101,24 @@ describe("Password Page", () => {
 
 		expect(clipboard.copy).toHaveBeenCalledWith(words.join(" "));
 	});
+
+	it("should throw error when attempt to copy words to clipboard", () => {
+		spectator = createHost(
+			`<password-page [words]="words"></password-page>`,
+			{
+				hostProps: {
+					words,
+				},
+			},
+		);
+		const clipboard = spectator.get(Clipboard);
+		clipboard.copy.and.rejectWith("error");
+
+		const copyButton = spectator.query(
+			byTestId("password_page__actions--button-group--copy"),
+		);
+		spectator.click(copyButton);
+
+		expect(clipboard.copy).toHaveBeenCalledWith(words.join(" "));
+	});
 });
