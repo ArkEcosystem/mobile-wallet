@@ -5,11 +5,11 @@ import { TranslateModule } from "@ngx-translate/core";
 
 import { PipesModule } from "@/pipes/pipes.module";
 
-import { PasswordComponent } from "./password.component";
+import { PasswordPageComponent } from "./password-page.component";
 import { WordBoxComponentModule } from "./word-box/word-box.component.module";
 
 @NgModule({
-	declarations: [PasswordComponent],
+	declarations: [PasswordPageComponent],
 	imports: [
 		IonicModule,
 		CommonModule,
@@ -18,4 +18,4 @@ import { WordBoxComponentModule } from "./word-box/word-box.component.module";
 		PipesModule,
 	],
 })
-export class PasswordComponentModule {}
+export class PasswordPageModule {}
