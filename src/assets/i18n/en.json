@@ -29,10 +29,7 @@
 	},
 	"PASSPHRASE_LIST": {
 		"TITLE": "Your password",
-		"SUBTITLE": "Save this password and don't show it to anyone. This is the only way to access your wallet.",
-		"CHECK_PASSPHRASE_TITLE": "Check password",
-		"CHECKPASSPHRASE_SUBTITLE": "Confirm your password. Place the password under the number to confirm.",
-		"SELECT_WORD": "Select word"
+		"SUBTITLE": "Save this password and don't show it to anyone. This is the only way to access your wallet."
 	},
 	"COPIED_CLIPBOARD": "Copied to clipboard",
 	"COPY": "Copy",
