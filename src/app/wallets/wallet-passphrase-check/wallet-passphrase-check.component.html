@@ -1,0 +1,53 @@
+<div
+	class="wallet-passphrase-check ion-padding"
+	data-testid="wallet-passphrase-check"
+>
+	<div
+		class="wallet-passphrase-check__words flex flex-wrap w-full justify-between"
+	>
+		<div
+			class="wallet-passphrase-check__words--word ion-padding w-1/3"
+			*ngFor="let word of randomized; let i = index"
+		>
+			<ion-button
+				class="w-full"
+				mode="ios"
+				fill="outline"
+				[ngClass]="{ verified: isVerified(word) }"
+			>
+				<span *ngIf="!isVerified(word)">{{ word }}</span>
+				<ion-icon
+					*ngIf="isVerified(word)"
+					class="text-2xl"
+					[src]="'assets/svg/checkmark.svg'"
+				>
+				</ion-icon>
+			</ion-button>
+		</div>
+		<div class="flex flex-col w-full">
+			<span class="font-bold text-xl ion-padding">
+				{{ "PASSPHRASE_CHECK.SELECT_WORD" | translate }} #{{
+					getWordIndex(selectedWord)
+				}}
+			</span>
+			<div class="flex w-full">
+				<div
+					class="wallet-passphrase-check__words--suggestions ion-padding w-1/3"
+					*ngFor="
+						let word of getWordSuggestions(selectedWord);
+						let i = index
+					"
+				>
+					<ion-button
+						class="w-full wallet-passphrase-check__words--suggestion"
+						mode="ios"
+						fill="outline"
+						(click)="handleSelectedWord(word)"
+					>
+						{{ word }}
+					</ion-button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
