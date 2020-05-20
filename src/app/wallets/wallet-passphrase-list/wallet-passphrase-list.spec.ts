@@ -9,7 +9,7 @@ import { PipesModule } from "@/pipes/pipes.module";
 
 import { WalletPassphraseListComponent } from "./wallet-passphrase-list.component";
 
-fdescribe("Wallet Passphrase List", () => {
+describe("Wallet Passphrase List", () => {
 	let spectator: SpectatorHost<WalletPassphraseListComponent>;
 	const createHost = createHostComponentFactory({
 		component: WalletPassphraseListComponent,
