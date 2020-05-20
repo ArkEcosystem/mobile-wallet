@@ -9,6 +9,9 @@ module.exports = {
 		},
 		extend: {
 			colors: {
+				"theme-background": "var(--ion-background-color)",
+				"theme-text": "var(--ion-text-color)",
+
 				primary: "var(--ion-color-primary)",
 				"primary-contrast": "var(--ion-color-primary-contrast)",
 				"primary-shade": "var(--ion-color-primary-shade)",
