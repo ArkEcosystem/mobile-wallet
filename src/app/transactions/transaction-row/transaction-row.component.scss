@@ -1,8 +1,8 @@
-.sent {
+.transaction-row__type--sent {
 	border: 1px solid var(--ion-color-danger);
 }
 
-.received {
+.transaction-row__type--received {
 	border: 1px solid var(--ion-color-success);
 }
 
@@ -10,12 +10,15 @@
 	@apply font-bold text-base;
 	margin-top: 0.4rem;
 	display: flex;
-	&.transaction-row__amount::before {
-		content: "+";
+	&.transaction-row__amount--received {
+		&::before {
+			content: "+";
+		}
 	}
-	&.amount-sent {
+
+	&.transaction-row__amount--sent {
 		color: var(--ion-color-danger);
-		&.amount-sent::before {
+		&::before {
 			content: "-";
 		}
 	}

@@ -7,13 +7,13 @@
 	<div class="flex flex-row">
 		<div class="transaction-row__type mr-2">
 			<div
-				class="transaction-row__type flex justify-center items-center rounded-full p-3"
-				[ngClass]="transaction.type"
+				class="flex justify-center items-center rounded-full p-3"
+				[ngClass]="'transaction-row__type--' + transaction.type"
 				data-testid="transaction-row__type"
 			>
 				<img
 					class="transaction-row__type--icon w-4 h-4"
-					data-testid="transaction-row__type-icon"
+					data-testid="transaction-row__type--icon"
 					[src]="
 						'assets/img/transactions/' +
 						transaction.type +
@@ -26,22 +26,27 @@
 			<div
 				class="transaction-row__details--timestamp flex flex-row text-medium text-xs font-bold"
 			>
-				{{ getTransactionTime(transaction.timestamp.unix) }}
-				{{ getTransactionLabel(transaction.type) }}
+				{{ transaction.timestamp.unix | date: "hh:mm:ss" }}
+				{{ type === "sent" ? "Sent to" : "From" }}
 			</div>
-			<div class="transaction-row__details--address font-bold">
-				{{
-					transaction.method !== "multipayment"
-						? truncate(transaction.address)
-						: "Multipayment"
-				}}
+			<div
+				*ngIf="transaction.method !== 'multipayment'"
+				class="transaction-row__details--address font-bold"
+			>
+				{{ transaction.address | truncateMiddle: 11 }}
+			</div>
+			<div
+				*ngIf="transaction.method === 'multipayment'"
+				class="transaction-row__details--address font-bold"
+			>
+				Multipayment
 			</div>
 		</div>
 	</div>
 
 	<div
 		class="transaction-row__amount"
-		[ngClass]="'amount-' + transaction.type"
+		[ngClass]="'transaction-row__amount--' + transaction.type"
 	>
 		{{ transaction.amount | unitsSatoshi }} ARK
 	</div>
