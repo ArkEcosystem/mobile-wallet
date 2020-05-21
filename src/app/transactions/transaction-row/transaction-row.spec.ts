@@ -18,8 +18,7 @@ describe("Transaction Row", () => {
 	it("should create a sent transaction", () => {
 		spectator = createHost(
 			`<transaction-row
-                [transaction]="transaction"
-                (openTransactionDetails)="openTransactionDetails(transaction.id)">
+                [transaction]="transaction">
             </transaction-row>`,
 			{
 				hostProps: {
@@ -38,14 +37,13 @@ describe("Transaction Row", () => {
 			},
 		);
 		const component = spectator.query(byTestId("transaction-row__type"));
-		expect(component).toHaveClass("sent");
+		expect(component).toHaveClass("transaction-row__type--sent");
 	});
 
 	it("should create a received transaction", () => {
 		spectator = createHost(
 			`<transaction-row
-                [transaction]="transaction"
-                (openTransactionDetails)="openTransactionDetails(transaction.id)">
+                [transaction]="transaction">
             </transaction-row>`,
 			{
 				hostProps: {
@@ -64,14 +62,13 @@ describe("Transaction Row", () => {
 			},
 		);
 		const component = spectator.query(byTestId("transaction-row__type"));
-		expect(component).toHaveClass("received");
+		expect(component).toHaveClass("transaction-row__type--received");
 	});
 
 	it("should emit redirect to details when tapped", () => {
 		spectator = createHost(
 			`<transaction-row
-                [transaction]="transaction"
-                (openTransactionDetails)="openTransactionDetails(transaction.id)">
+                [transaction]="transaction">
             </transaction-row>`,
 			{
 				hostProps: {
