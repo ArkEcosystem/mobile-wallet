@@ -1,16 +1,7 @@
-<ion-header class="ion-no-border ion-no-shadow" mode="ios" translucent="true">
+<ion-header mode="ios" class="ion-no-border ion-no-shadow" translucent="true">
 	<ion-toolbar>
 		<ion-buttons slot="start">
-			<ion-back-button></ion-back-button>
-		</ion-buttons>
-		<ion-buttons slot="end">
-			<ion-button>
-				<ion-icon
-					class="text-base"
-					color="dark"
-					src="/assets/svg/menu.svg"
-				></ion-icon>
-			</ion-button>
+			<ion-back-button color="dark"></ion-back-button>
 		</ion-buttons>
 		<ion-title>{{ "SETTINGS_PAGE.SETTINGS" | translate }}</ion-title>
 	</ion-toolbar>
@@ -18,23 +9,23 @@
 
 <ion-content
 	*ngIf="settings$ | async as currentSettings"
-	data-testid="c-settings-page"
 	mode="ios"
+	data-testid="settings-page"
 	fullscreen="true"
 >
-	<ion-header collapse="condense" class="ion-no-border" mode="ios">
+	<ion-header collapse="condense" class="ion-no-border">
 		<ion-toolbar>
 			<ion-title size="large" class="font-black">
 				{{ "SETTINGS_PAGE.SETTINGS" | translate }}
 			</ion-title>
 		</ion-toolbar>
 	</ion-header>
-	<ion-list mode="ios">
+	<ion-list>
 		<ion-item-group>
 			<ion-item>
-				<ion-label class="font-bold">{{
-					"SETTINGS_PAGE.LANGUAGE" | translate
-				}}</ion-label>
+				<ion-label class="font-bold">
+					{{ "SETTINGS_PAGE.LANGUAGE" | translate }}
+				</ion-label>
 				<ion-select
 					data-testid="settings__select-language"
 					[value]="currentSettings.language"
@@ -130,9 +121,9 @@
 				(click)="presentLogReport()"
 				data-testid="settings__item-logReport"
 			>
-				<ion-label>{{
-					"SETTINGS_PAGE.VIEW_LOG_REPORT" | translate
-				}}</ion-label>
+				<ion-label class="font-bold">
+					{{ "SETTINGS_PAGE.VIEW_LOG_REPORT" | translate }}
+				</ion-label>
 			</ion-item>
 		</ion-item-group>
 
