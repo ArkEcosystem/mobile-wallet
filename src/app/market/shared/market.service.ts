@@ -10,12 +10,12 @@ export class MarketService {
 
 	/* istanbul ignore next */
 	public verifyToken(token: string): Observable<boolean> {
-		return from(MarketSDK.construct("coincap").verifyToken(token));
+		return from(MarketSDK.make("coincap").verifyToken(token));
 	}
 
 	/* istanbul ignore next */
 	public getMarket(token: string): Observable<Record<string, MarketData>> {
-		return from(MarketSDK.construct("coincap").marketData(token));
+		return from(MarketSDK.make("coincap").marketData(token));
 	}
 
 	/* istanbul ignore next */
@@ -25,11 +25,7 @@ export class MarketService {
 		timestamp: number,
 	): Observable<number> {
 		return from(
-			MarketSDK.construct("coincap").dailyAverage(
-				token,
-				currency,
-				timestamp,
-			),
+			MarketSDK.make("coincap").dailyAverage(token, currency, timestamp),
 		);
 	}
 }
