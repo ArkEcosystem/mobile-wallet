@@ -20,8 +20,6 @@ export class WalletPassphraseCheckComponent implements OnInit {
 
 	public verified: Array<string> = [];
 
-	public shouldShowSuggestions: boolean = true;
-
 	constructor(private toastProvider: ToastProvider) {}
 
 	ngOnInit() {
@@ -52,15 +50,6 @@ export class WalletPassphraseCheckComponent implements OnInit {
 		}
 
 		return sample;
-	}
-
-	getWordSuggestions(word) {
-		return this.suggestions.find((suggestion) => suggestion.word === word)
-			?.suggestions;
-	}
-
-	getWordIndex(word) {
-		return this.randomized.indexOf(word) + 1;
 	}
 
 	isVerified(word) {

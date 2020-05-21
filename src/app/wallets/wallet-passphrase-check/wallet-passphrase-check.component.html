@@ -5,15 +5,16 @@
 	<div
 		class="wallet-passphrase-check__words flex flex-wrap w-full justify-between"
 	>
-		<div
-			class="wallet-passphrase-check__words--word ion-padding w-1/3"
-			*ngFor="let word of randomized; let i = index"
-		>
+		<div class="ion-padding w-1/3" *ngFor="let word of randomized">
 			<ion-button
-				class="w-full"
+				class="w-full font-bold wallet-passphrase-check__words__word"
 				mode="ios"
 				fill="outline"
-				[ngClass]="{ verified: isVerified(word) }"
+				[ngClass]="{
+					'wallet-passphrase-check__words__word--verified': isVerified(
+						word
+					)
+				}"
 			>
 				<span *ngIf="!isVerified(word)">{{ word }}</span>
 				<ion-icon
@@ -24,22 +25,23 @@
 				</ion-icon>
 			</ion-button>
 		</div>
-		<div class="flex flex-col w-full">
-			<span class="font-bold text-xl ion-padding">
+		<div *ngIf="verified.length <= 2" class="flex flex-col w-full text-xl">
+			<span class="ion-padding font-bold">
 				{{ "PASSPHRASE_CHECK.SELECT_WORD" | translate }} #{{
-					getWordIndex(selectedWord)
+					this.words.indexOf(selectedWord) + 1
 				}}
 			</span>
 			<div class="flex w-full">
 				<div
 					class="wallet-passphrase-check__words--suggestions ion-padding w-1/3"
 					*ngFor="
-						let word of getWordSuggestions(selectedWord);
-						let i = index
+						let word of suggestions[
+							randomized.indexOf(selectedWord)
+						].suggestions
 					"
 				>
 					<ion-button
-						class="w-full wallet-passphrase-check__words--suggestion"
+						class="w-full wallet-passphrase-check__words--suggestion font-bold"
 						mode="ios"
 						fill="outline"
 						(click)="handleSelectedWord(word)"
