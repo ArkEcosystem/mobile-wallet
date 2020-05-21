@@ -4,7 +4,6 @@ import {
 	AlertController,
 	ModalController,
 	NavController,
-	Platform,
 } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
 import { Select, Store } from "@ngxs/store";
@@ -26,7 +25,7 @@ const packageJson = require("@@/package.json");
 @Component({
 	selector: "settings",
 	templateUrl: "settings.component.html",
-	styleUrls: ["settings.component.scss"],
+	styleUrls: ["settings.component.pcss"],
 	providers: [InAppBrowser],
 })
 export class SettingsComponent {
@@ -44,7 +43,6 @@ export class SettingsComponent {
 	public currentWallet;
 
 	constructor(
-		public platform: Platform,
 		private navCtrl: NavController,
 		private alertCtrl: AlertController,
 		private translateService: TranslateService,
@@ -59,7 +57,7 @@ export class SettingsComponent {
 	}
 
 	openChangePinPage() {
-		this.authCtrl.update();
+		this.authCtrl.update().subscribe();
 	}
 
 	openManageNetworksPage() {

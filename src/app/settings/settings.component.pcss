@@ -1,12 +1,21 @@
 ion-label,
-ion-select,
 ion-item {
-	@apply text-sm !important;
+	@apply text-base !important;
 }
 
 ion-item {
+	--inner-padding-top: 1rem;
+	--inner-padding-bottom: 1rem;
 	--padding-end: 1rem;
 	--border-color: var(--ion-color-light);
+}
+
+ion-label {
+	@apply m-0;
+}
+
+ion-select {
+	@apply px-1 py-0;
 }
 
 ion-toggle {
