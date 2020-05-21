@@ -59,7 +59,10 @@ export function createTranslateLoader(http: HttpClient) {
 		}),
 		NgxsRouterPluginModule.forRoot(),
 		NgxsReduxDevtoolsPluginModule.forRoot(),
-		IonicModule.forRoot(),
+		IonicModule.forRoot({
+			backButtonText: "",
+			backButtonIcon: "chevron-back",
+		}),
 		IonicStorageModule.forRoot(),
 		BrowserModule,
 		BrowserAnimationsModule,
