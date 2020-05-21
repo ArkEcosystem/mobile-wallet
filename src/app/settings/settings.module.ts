@@ -29,4 +29,4 @@ import { SettingsState } from "./shared/settings.state";
 	],
 	entryComponents: [CustomNetworkCreateModal],
 })
-export class SettingsComponentModule {}
+export class SettingsModule {}
