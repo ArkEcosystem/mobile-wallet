@@ -11,23 +11,23 @@ ion-toolbar {
 
 .wallet-details__info {
 	flex-direction: column;
-	.wallet-list-header__balance {
+	.wallet-details__header--balance {
 		@apply text-3xl;
 	}
-	.wallet-list-header__converted-balance {
+	.wallet-details__header--converted-balance {
 		@apply text-base;
 	}
 	&.collapsed {
 		flex-direction: row;
 		justify-content: space-between;
-		.wallet-list-header__balance {
+		.wallet-details__header--balance {
 			@apply text-xl;
 		}
-		.wallet-list-header__converted-balance {
+		.wallet-details__header--converted-balance {
 			@apply text-sm;
 		}
 	}
-	.wallet-details__actions {
+	.wallet-details__header--actions {
 		@apply mt-5;
 		&.collapsed {
 			margin-top: 0;
