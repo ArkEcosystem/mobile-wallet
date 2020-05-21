@@ -1,6 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import dayjs from "dayjs";
 import { groupBy } from "lodash";
-import moment from "moment";
 
 import { newTransactions } from "@@/test/fixture/transactions.fixture";
 // import { Transaction } from "@/models/model";
@@ -10,39 +10,26 @@ import { newTransactions } from "@@/test/fixture/transactions.fixture";
 	templateUrl: "transaction-list.component.html",
 	styleUrls: ["transaction-list.component.scss"],
 })
-export class TransactionListComponent {
+export class TransactionListComponent implements OnInit {
 	// @Input()
 	// transactions: Transaction[] = [];
 
 	public dates: string[];
 	public transactionsList;
 
-	constructor() {
-		const groupedByDateTransactions = this.groupTransactionsByDate(
+	constructor() {}
+
+	ngOnInit(): void {
+		const groupedByDateTransactions = groupBy(
 			newTransactions,
+			(transaction) =>
+				dayjs(transaction["timestamp"]["unix"] * 1000).format(
+					"MM/DD/YYYY",
+				),
 		);
+		const dateKeys = Object.keys(groupedByDateTransactions);
 
-		this.dates = Object.keys(groupedByDateTransactions);
 		this.transactionsList = groupedByDateTransactions;
-	}
-
-	public groupTransactionsByDate(transactions) {
-		return groupBy(transactions, (transaction) =>
-			moment(transaction["timestamp"]["unix"] * 1000).format(
-				"MM/DD/YYYY",
-			),
-		);
-	}
-
-	public renderTransactions(date) {
-		return this.transactionsList[date];
-	}
-
-	public getDate(date) {
-		return moment(date).format("DD MMMM");
-	}
-
-	public getWeekDay(date) {
-		return moment(date).format("dddd");
+		this.dates = Object.keys(groupedByDateTransactions);
 	}
 }

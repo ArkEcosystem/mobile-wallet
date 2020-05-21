@@ -1,4 +1,4 @@
-.transaction-list__item {
+.transaction-list__section--items {
 	&:not(:last-child) {
 		border-bottom: 1px solid var(--ion-color-light);
 	}

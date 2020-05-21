@@ -4,15 +4,15 @@
 	data-testid="transaction-list"
 >
 	<div *ngFor="let date of dates" class="transaction-list__items">
-		<div class="flex flex-row transaction_list__item--date p-5">
-			<span class="font-bold">{{ getDate(date) }}</span>
+		<div class="flex flex-row transaction_list__section--date p-5">
+			<span class="font-bold">{{ date | date: "dd MMMM" }}</span>
 			<span class="font-bold text-medium ml-2">{{
-				getWeekDay(date)
+				date | date: "EEEE"
 			}}</span>
 		</div>
 		<div
-			*ngFor="let transaction of renderTransactions(date)"
-			class="transaction-list__item"
+			*ngFor="let transaction of transactionsList[date]"
+			class="transaction-list__section--items"
 		>
 			<transaction-row [transaction]="transaction"></transaction-row>
 		</div>
