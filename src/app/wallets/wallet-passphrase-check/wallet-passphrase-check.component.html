@@ -25,7 +25,7 @@
 				</ion-icon>
 			</ion-button>
 		</div>
-		<div *ngIf="verified.length <= 2" class="flex flex-col w-full text-xl">
+		<div *ngIf="verified.length <= 2" class="flex flex-col w-full">
 			<span class="ion-padding font-bold">
 				{{ "PASSPHRASE_CHECK.SELECT_WORD" | translate }} #{{
 					this.words.indexOf(selectedWord) + 1
