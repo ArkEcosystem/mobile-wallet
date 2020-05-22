@@ -5,21 +5,42 @@
 		data-testid="recipient-list__recipient"
 	>
 		<ion-item class="rounded-lg">
-			<div class="flex ion-padding recipient-list__recipient__info">
-				<identicon
-					class="w-10 h-10 recipient-list__recipient__info--address"
-					value="recipient.address"
-				>
-				</identicon>
-				<div class="ml-5 flex flex-col">
-					<span class="text-sm">{{
-						recipient.address | truncateMiddle: 13
-					}}</span>
-					<span
-						class="font-bold recipient-list__recipient__info--amount"
-						>{{ recipient.amount | unitsSatoshi }} ARK</span
+			<div
+				class="flex justify-between items-center w-full"
+				*ngIf="!isEditing(recipient.address)"
+			>
+				<div class="flex ion-padding recipient-list__recipient__info">
+					<identicon
+						class="w-10 h-10 recipient-list__recipient__info--address"
+						value="recipient.address"
 					>
+					</identicon>
+					<div class="ml-5 flex flex-col">
+						<span class="text-sm">{{
+							recipient.address | truncateMiddle: 13
+						}}</span>
+						<span
+							class="font-bold recipient-list__recipient__info--amount"
+							>{{ recipient.amount | unitsSatoshi }} ARK</span
+						>
+					</div>
 				</div>
+				<ion-button
+					data-testid="recipient-list__action--edit"
+					color="primary-light"
+					class="w-10 h-10"
+					(click)="editRecipient(recipient.address)"
+				>
+					<ion-icon
+						class="w-4 h-4"
+						color="primary"
+						slot="icon-only"
+						src="/assets/svg/edit.svg"
+					></ion-icon>
+				</ion-button>
+			</div>
+			<div *ngIf="isEditing(recipient.address)">
+				<span>Editing</span>
 			</div>
 		</ion-item>
 
