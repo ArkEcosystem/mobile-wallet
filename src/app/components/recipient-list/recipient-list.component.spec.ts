@@ -8,7 +8,7 @@ import { PipesModule } from "@/pipes/pipes.module";
 
 import { RecipientListComponent } from "./recipient-list.component";
 
-fdescribe("Recipient List", () => {
+describe("Recipient List", () => {
 	let spectator: SpectatorHost<RecipientListComponent>;
 	const createHost = createHostFactory({
 		component: RecipientListComponent,
