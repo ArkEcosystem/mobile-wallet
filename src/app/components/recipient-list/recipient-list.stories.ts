@@ -1,6 +1,5 @@
 import { IonicModule } from "@ionic/angular";
 import { TranslateModule } from "@ngx-translate/core";
-// import { action } from "@storybook/addon-actions";
 import { moduleMetadata } from "@storybook/angular";
 
 import { IdenticonComponentModule } from "@/components/identicon/identicon.module";
