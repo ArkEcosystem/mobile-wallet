@@ -1,0 +1,26 @@
+<div class="recipient-list-resume" data-testid="recipient-list-resume">
+	<div
+		class="recipient-list-resume__identicons flex"
+		*ngIf="recipientList.length > 0"
+	>
+		<div
+			*ngFor="let recipient of recipientList"
+			class="w-16 h-16 rounded-full recipient-list-resume__identicons--item"
+		>
+			<identicon value="recipient.address"></identicon>
+		</div>
+		<div
+			class="w-16 h-16 rounded-full recipient-list-resume__identicons--item flex justify-center items-center"
+		>
+			<div
+				data-testid="recipient-list-resume__counter"
+				class="w-12 h-12 border rounded-full flex justify-center items-center recipient-list-resume__counter font-bold text-sm"
+			>
+				{{ recipientsCount }}
+			</div>
+		</div>
+	</div>
+	<div class="text-medium text-sm font-bold" *ngIf="!recipientList.length">
+		No recipients
+	</div>
+</div>

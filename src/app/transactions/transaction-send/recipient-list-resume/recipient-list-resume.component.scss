@@ -1,0 +1,12 @@
+.recipient-list-resume__identicons--item {
+	background-color: white;
+	padding: 0.5rem;
+	&:not(:first-child) {
+		margin-left: -1.25rem;
+	}
+}
+
+.recipient-list-resume__counter {
+	border-color: rgba(var(--ion-text-color-rgb), 0.1);
+	color: var(--ion-color-primary);
+}
