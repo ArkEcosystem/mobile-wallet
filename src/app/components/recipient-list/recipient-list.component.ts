@@ -11,8 +11,6 @@ export class RecipientListComponent implements OnInit {
 
 	public recipientList: Array<{ address: string; amount: string }> = [];
 
-	public editing: string[] = [];
-
 	ngOnInit(): void {
 		this.recipientList = this.recipients;
 	}
@@ -21,13 +19,5 @@ export class RecipientListComponent implements OnInit {
 		return (this.recipientList = this.recipientList.filter(
 			({ address: existentAddress }) => existentAddress !== address,
 		));
-	}
-
-	public editRecipient(address: string) {
-		return this.editing.push(address);
-	}
-
-	public isEditing(recipientAddress: string) {
-		return this.editing.find((address) => address === recipientAddress);
 	}
 }
