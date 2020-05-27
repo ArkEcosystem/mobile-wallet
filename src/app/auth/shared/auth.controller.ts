@@ -29,7 +29,7 @@ export class AuthController {
 		private userDateService: UserDataService,
 	) {}
 
-	public update() {
+	public update(): Observable<unknown> {
 		const updateEncryption = (oldPassword: string, newPassword: string) =>
 			this.translateService.get("PIN_CODE.UPDATING").pipe(
 				switchMap((message) =>
@@ -63,7 +63,7 @@ export class AuthController {
 		);
 	}
 
-	public register() {
+	public register(): Observable<AuthActions.Success> {
 		const registrationModal$ = this.createModal({
 			mode: AuthMode.Registration,
 		});
@@ -90,7 +90,7 @@ export class AuthController {
 		);
 	}
 
-	public request(dismissRole?: string) {
+	public request(dismissRole?: string): Observable<AuthActions.Success> {
 		const modal = this.createModal({ mode: AuthMode.Authorization });
 		return from(modal).pipe(
 			switchMap((element) => {
