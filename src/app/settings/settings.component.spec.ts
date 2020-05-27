@@ -12,7 +12,7 @@ import { TranslateModule } from "@ngx-translate/core";
 import { Actions, NgxsModule, ofActionDispatched } from "@ngxs/store";
 import { of } from "rxjs";
 
-import { sleep } from "@@/test/helpers";
+import { removeLogs, sleep } from "@@/test/helpers";
 import { AuthController } from "@/app/auth/shared/auth.controller";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
@@ -42,6 +42,8 @@ describe("Settings Component", () => {
 			}),
 		],
 	});
+
+	beforeAll(() => removeLogs());
 
 	beforeEach(() => {
 		spectator = createSettingsPage();
@@ -177,6 +179,9 @@ describe("Settings Component", () => {
 	});
 
 	it("should dispatch clear action", async (done) => {
+		const authCtrl = spectator.get(AuthController);
+		authCtrl.request.and.returnValue(of(true));
+
 		const actions$ = spectator.inject(Actions);
 		actions$
 			.pipe(ofActionDispatched(SettingsActions.Clear))
