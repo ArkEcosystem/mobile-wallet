@@ -12,7 +12,7 @@ import { switchMap, takeUntil, tap } from "rxjs/operators";
 
 import * as constants from "@/app/app.constants";
 import { AuthController } from "@/app/auth/shared/auth.controller";
-import { WalletController } from "@/app/wallet/wallet.controller";
+import { WalletsController } from "@/app/wallets/wallets.controller";
 import { ConfirmTransactionComponent } from "@/components/confirm-transaction/confirm-transaction";
 import { Wallet, WalletKeys } from "@/models/model";
 import { StoredNetwork } from "@/models/stored-network";
@@ -73,7 +73,7 @@ export class DelegatesPage implements OnDestroy {
 		private userDataService: UserDataService,
 		private toastProvider: ToastProvider,
 		private authCtrl: AuthController,
-		private walletCtrl: WalletController,
+		private walletsCtrl: WalletsController,
 	) {}
 
 	async openDetailModal(delegate: Delegate) {
@@ -100,7 +100,7 @@ export class DelegatesPage implements OnDestroy {
 						this.currentWallet,
 						password,
 					);
-					return this.walletCtrl.requestSecondPassphrase(
+					return this.walletsCtrl.requestSecondPassphrase(
 						this.currentWallet,
 						keys,
 					);

@@ -1,0 +1,25 @@
+<div class="wallet-list-header w-full flex" data-testid="wallet-list-header">
+	<div
+		[class]="'flex flex-1 items-center ' + orientation"
+		[ngClass]="{ 'justify-between': orientation === 'horizontal' }"
+	>
+		<div>
+			<p
+				class="text-base font-bold"
+				data-testid="wallet-list-header__username"
+			>
+				{{ name }}, this is your balance
+			</p>
+			<p
+				class="text-3xl xs:text-3xl md:text-3xl text-center font-bold"
+				data-testid="wallet-list-header__balance"
+			>
+				{{ totalBalance }} {{ currencySymbol }}
+			</p>
+		</div>
+		<wallet-list-actions
+			(importWalletClick)="importWalletHandler()"
+			(generateWalletClick)="generateWalletHandler()"
+		></wallet-list-actions>
+	</div>
+</div>

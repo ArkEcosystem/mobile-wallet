@@ -1,0 +1,23 @@
+<ion-content class="h-full ion-padding">
+	<ion-grid class="h-full flex flex-col justify-center items-center">
+		<div>
+			<ion-text color="dark" class="text-center">
+				<p
+					class="text-3xl xs:text-4xl md:text-5xl font-bold"
+					data-testid="wallet-list-empty__username"
+				>
+					Hi, {{ name }}!
+				</p>
+				<p
+					class="leading-normal text-sm xs:text-base md:text-lg text-medium mt-2 px-4"
+				>
+					{{ message | translate }}
+				</p>
+			</ion-text>
+		</div>
+		<wallet-list-actions
+			(generateWalletClick)="generateWalletHandler()"
+			(importWalletClick)="importWalletHandler()"
+		></wallet-list-actions>
+	</ion-grid>
+</ion-content>

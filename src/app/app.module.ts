@@ -38,7 +38,6 @@ import { SettingsConfig } from "./settings/shared/settings.config";
 import { SettingsState } from "./settings/shared/settings.state";
 import { NgxsAsyncStoragePluginModule } from "./shared/state/async-storage/async-storage.module";
 import { TransactionsModule } from "./transactions/transactions.module";
-import { WalletModule } from "./wallet/wallet.module";
 
 export function createTranslateLoader(http: HttpClient) {
 	return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
@@ -60,7 +59,10 @@ export function createTranslateLoader(http: HttpClient) {
 		}),
 		NgxsRouterPluginModule.forRoot(),
 		NgxsReduxDevtoolsPluginModule.forRoot(),
-		IonicModule.forRoot(),
+		IonicModule.forRoot({
+			backButtonText: "",
+			backButtonIcon: "chevron-back",
+		}),
 		IonicStorageModule.forRoot(),
 		BrowserModule,
 		BrowserAnimationsModule,
@@ -73,7 +75,6 @@ export function createTranslateLoader(http: HttpClient) {
 			},
 		}),
 		AuthModule,
-		WalletModule,
 		TransactionsModule,
 		MarketModule,
 		ChartsModule,

@@ -36,22 +36,13 @@ const routes: Routes = [
 	{
 		path: "settings",
 		loadChildren: () =>
-			import("./pages/settings/settings.module").then(
-				(m) => m.SettingsPageModule,
-			),
+			import("./settings/settings.module").then((m) => m.SettingsModule),
 	},
 	{
 		path: "delegates",
 		loadChildren: () =>
 			import("./pages/delegates/delegates.module").then(
 				(m) => m.DelegatesPageModule,
-			),
-	},
-	{
-		path: "settings-new",
-		loadChildren: () =>
-			import("./settings/settings.module").then(
-				(m) => m.SettingsComponentModule,
 			),
 	},
 	{
@@ -146,6 +137,13 @@ const routes: Routes = [
 		loadChildren: () =>
 			import("./pages/wallet/wallet-list/wallet-list.module").then(
 				(m) => m.WalletListPageModule,
+			),
+	},
+	{
+		path: "wallets-new",
+		loadChildren: () =>
+			import("./wallets/wallets.component.module").then(
+				(m) => m.WalletsComponentModule,
 			),
 	},
 ];

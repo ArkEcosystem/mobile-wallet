@@ -1,0 +1,38 @@
+<ion-header mode="ios" class="ion-no-border ion-padding">
+	<ion-toolbar class="p-0">
+		<div class="flex items-center justify-between">
+			<img src="/assets/img/logo.png" class="h-6 sm:h-8" />
+			<ion-buttons>
+				<ion-menu-button></ion-menu-button>
+			</ion-buttons>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-footer transparent no-border>
+	<div class="wallets-component__bottom-gradient"></div>
+</ion-footer>
+
+<ion-content
+	forceOverscroll="false"
+	[fullscreen]="wallets?.length > 0"
+	data-testid="wallets-component"
+>
+	<wallet-list-empty
+		data-testid="wallet-list-empty"
+		*ngIf="wallets?.length === 0"
+		[name]="currentProfile?.name"
+		(importWalletClick)="presentActionSheet()"
+		(generateWalletClick)="presentWalletGenerate()"
+	></wallet-list-empty>
+	<wallet-list
+		data-testid="wallet-list"
+		*ngIf="wallets?.length > 0"
+		[name]="currentProfile?.name"
+		[totalBalance]="totalBalance"
+		headerOrientation="vertical"
+		(importWalletClick)="presentActionSheet()"
+		(generateWalletClick)="presentWalletGenerate()"
+		[wallets]="wallets"
+	></wallet-list>
+</ion-content>

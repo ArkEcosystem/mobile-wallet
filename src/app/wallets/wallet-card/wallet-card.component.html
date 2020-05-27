@@ -1,0 +1,42 @@
+<div
+	class="mb-4 w-full lg:flex card wallet-card"
+	data-testid="wallet-card"
+	(click)="openWalletDetailsHandler(address)"
+>
+	<div class="w-full leading-normal">
+		<div class="flex items-center justify-between">
+			<div class="flex flex-1 items-center">
+				<div
+					class="wallet-card__img flex justify-center items-center mr-5"
+					[style.background-color]="getBackgroundColor(currency)"
+					data-testid="wallet-card__img"
+				>
+					<img
+						class="c-wallet-coin--img"
+						data-testid="c-wallet-coin--img"
+						[src]="
+							'assets/img/coins/' +
+							coinConfig[currency].image +
+							'.png'
+						"
+					/>
+				</div>
+				<div>
+					<p
+						class="wallet-card__name text-xs font-semibold"
+						data-testid="wallet-card__name"
+					>
+						{{ name }}
+					</p>
+					<p
+						class="font-bold text-base"
+						data-testid="wallet-card__balance"
+					>
+						{{ balance | unitsSatoshi }} {{ currency | uppercase }}
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="flex items-center"></div>
+	</div>
+</div>

@@ -106,3 +106,90 @@ html.qr-scanner-open {
 		display: block;
 	}
 }
+
+/*
+ * Workaround to fix the Ionic bug that did not process
+ * collapse headers on Android even setting mode="ios"
+ */
+.ios {
+	ion-header {
+		display: block;
+		position: relative;
+		-ms-flex-order: -1;
+		order: -1;
+		width: 100%;
+		z-index: 10;
+	}
+	ion-header ion-toolbar:first-of-type {
+		padding-top: var(--ion-safe-area-top, 0);
+	}
+	.header-ios ion-toolbar:last-of-type {
+		--border-width: 0 0 0.55px;
+	}
+	@supports (
+		(-webkit-backdrop-filter: blur(0)) or (backdrop-filter: blur(0))
+	) {
+		.header-background {
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			position: absolute;
+			-webkit-backdrop-filter: saturate(180%) blur(20px);
+			backdrop-filter: saturate(180%) blur(20px);
+		}
+		.header-translucent-ios ion-toolbar {
+			--opacity: 0.8;
+		}
+		.header-collapse-condense-inactive .header-background {
+			-webkit-backdrop-filter: blur(20px);
+			backdrop-filter: blur(20px);
+		}
+	}
+	.header-ios.ion-no-border ion-toolbar:last-of-type {
+		--border-width: 0;
+	}
+	.header-collapse-condense {
+		z-index: 9;
+	}
+	.header-collapse-condense ion-toolbar {
+		position: -webkit-sticky;
+		position: sticky;
+		top: 0;
+	}
+	.header-collapse-condense ion-toolbar:first-of-type {
+		padding-top: 7px;
+		z-index: 1;
+	}
+	.header-collapse-condense ion-toolbar {
+		--background: var(--ion-background-color, #fff);
+		z-index: 0;
+	}
+	.header-collapse-condense ion-toolbar ion-searchbar {
+		height: 48px;
+		padding-top: 0px;
+		padding-bottom: 13px;
+	}
+	.header-collapse-main ion-toolbar.in-toolbar ion-title,
+	.header-collapse-main ion-toolbar.in-toolbar ion-buttons {
+		-webkit-transition: all 0.2s ease-in-out;
+		transition: all 0.2s ease-in-out;
+	}
+	.header-collapse-condense-inactive:not(.header-collapse-condense)
+		ion-toolbar.in-toolbar
+		ion-title,
+	.header-collapse-condense-inactive:not(.header-collapse-condense)
+		ion-toolbar.in-toolbar
+		ion-buttons.buttons-collapse {
+		opacity: 0;
+		pointer-events: none;
+	}
+	.header-collapse-condense-inactive.header-collapse-condense
+		ion-toolbar.in-toolbar
+		ion-title,
+	.header-collapse-condense-inactive.header-collapse-condense
+		ion-toolbar.in-toolbar
+		ion-buttons.buttons-collapse {
+		visibility: hidden;
+	}
+}

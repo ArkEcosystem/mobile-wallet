@@ -27,6 +27,10 @@
 		"DELETE_CONTACT": "Are you sure you want to delete contact '{{ name }}'?",
 		"OVERWRITE_CONTACT": "There is already a contact named '{{ name }}' with this address. Do you want to overwrite it's name with '{{ newName }}'?"
 	},
+	"PASSPHRASE_LIST": {
+		"TITLE": "Your password",
+		"SUBTITLE": "Save this password and don't show it to anyone. This is the only way to access your wallet."
+	},
 	"COPIED_CLIPBOARD": "Copied to clipboard",
 	"COPY": "Copy",
 	"COPY_CLIPBOARD_FAILED": "Copy to clipboard failed",

@@ -1,15 +1,22 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
-	selector: "wallets-empty-list",
-	templateUrl: "wallets-empty-list.component.html",
+	selector: "wallet-list-header",
+	templateUrl: "wallet-list-header.component.html",
+	styleUrls: ["wallet-list-header.component.scss"],
 })
-export class WalletsEmptyListComponent {
+export class WalletListHeaderComponent {
 	@Input()
-	message: string;
+	public name: string;
 
 	@Input()
-	name: string;
+	public orientation: string;
+
+	@Input()
+	public currencySymbol: string;
+
+	@Input()
+	public totalBalance: string;
 
 	@Output()
 	importWalletClick = new EventEmitter();
