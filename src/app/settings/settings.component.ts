@@ -8,6 +8,7 @@ import {
 import { TranslateService } from "@ngx-translate/core";
 import { Select, Store } from "@ngxs/store";
 import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 
 import { AuthController } from "@/app/auth/shared/auth.controller";
 import { ViewerLogModal } from "@/components/viewer-log/viewer-log.modal";
@@ -87,8 +88,10 @@ export class SettingsComponent {
 						{
 							text: translation.CONFIRM,
 							handler: () => {
-								this.authCtrl.request();
-								this.clearData();
+								this.authCtrl
+									.request()
+									.pipe(tap(() => this.clearData()))
+									.subscribe();
 							},
 						},
 					],
