@@ -10,7 +10,7 @@ export class TransactionSendComponent {
 	@Input()
 	public balance: string;
 
-	public recipients: [] = [];
+	public recipients: any = [];
 
 	transactionForm: FormGroup;
 
@@ -21,7 +21,15 @@ export class TransactionSendComponent {
 		});
 	}
 
+	public addRecipient(address: string, amount: string) {
+		this.recipients.push({ address, amount });
+	}
+
 	debugForm() {
+		const { address, amount } = this.transactionForm.value;
+
+		this.addRecipient(address, amount);
+
 		console.log(this.transactionForm.value);
 	}
 }
