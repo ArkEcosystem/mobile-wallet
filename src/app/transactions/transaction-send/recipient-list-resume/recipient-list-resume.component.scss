@@ -9,4 +9,9 @@
 .recipient-list-resume__counter {
 	border-color: rgba(var(--ion-text-color-rgb), 0.1);
 	color: var(--ion-color-primary);
+	&.recipient-list-resume__counter--plus {
+		&::before {
+			content: "+";
+		}
+	}
 }

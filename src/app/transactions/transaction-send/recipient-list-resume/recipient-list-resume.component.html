@@ -4,7 +4,7 @@
 		*ngIf="recipientList.length > 0"
 	>
 		<div
-			*ngFor="let recipient of recipientList"
+			*ngFor="let recipient of recipientList.slice(0, 3)"
 			class="w-16 h-16 rounded-full recipient-list-resume__identicons--item"
 		>
 			<identicon value="recipient.address"></identicon>
@@ -15,8 +15,16 @@
 			<div
 				data-testid="recipient-list-resume__counter"
 				class="w-12 h-12 border rounded-full flex justify-center items-center recipient-list-resume__counter font-bold text-sm"
+				[ngClass]="{
+					'recipient-list-resume__counter--plus':
+						recipientList.length > 3
+				}"
 			>
-				{{ recipientsCount }}
+				{{
+					recipientList.length > 3
+						? recipientList.length - 3
+						: recipientList.length
+				}}
 			</div>
 		</div>
 	</div>

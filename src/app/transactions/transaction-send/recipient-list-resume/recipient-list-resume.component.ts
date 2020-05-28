@@ -9,6 +9,7 @@ export class RecipientListResumeComponent implements OnInit {
 	@Input()
 	public recipients: [];
 
+	@Input()
 	public recipientsCount: string;
 
 	public recipientList: any;
@@ -20,9 +21,5 @@ export class RecipientListResumeComponent implements OnInit {
 			this.recipients?.length > 3
 				? this.recipients.slice(0, 3)
 				: this.recipients;
-		this.recipientsCount =
-			this.recipients?.length > 3
-				? `+${this.recipients?.length - 3}`
-				: `${this.recipients?.length || 0}`;
 	}
 }
