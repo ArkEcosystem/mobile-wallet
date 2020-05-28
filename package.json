@@ -72,7 +72,7 @@
 		"cordova-plugin-inappbrowser": "^3.2.0",
 		"cordova-plugin-ionic": "^5.4.6",
 		"cordova-plugin-ionic-keyboard": "^2.2.0",
-		"cordova-plugin-ionic-webview": "^4.2.1",
+		"cordova-plugin-ionic-webview": "^5.0.0",
 		"cordova-plugin-network-information": "^2.0.2",
 		"cordova-plugin-qrscanner": "^3.0.1",
 		"cordova-plugin-screen-orientation": "^3.0.2",
