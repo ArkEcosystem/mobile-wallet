@@ -13,7 +13,7 @@ export class OnboardingGuard implements CanActivate {
 	) {}
 
 	canActivate(): Observable<boolean | UrlTree> {
-		return this.onboardingService.hasFinished().pipe(
+		return this.onboardingService.hasSeen().pipe(
 			map((result) => {
 				if (result) {
 					return this.router.parseUrl("/login");

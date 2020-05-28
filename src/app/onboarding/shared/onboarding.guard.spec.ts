@@ -17,14 +17,14 @@ describe("Onboarding Guard", () => {
 
 	it("should return true", async () => {
 		const onboardingService = spectator.get(OnboardingService);
-		onboardingService.hasFinished.and.returnValue(of(false));
+		onboardingService.hasSeen.and.returnValue(of(false));
 		const output = await spectator.service.canActivate().toPromise();
 		expect(output).toBeTrue();
 	});
 
 	it("should return url", async () => {
 		const onboardingService = spectator.get(OnboardingService);
-		onboardingService.hasFinished.and.returnValue(of(true));
+		onboardingService.hasSeen.and.returnValue(of(true));
 		const output = await spectator.service.canActivate().toPromise();
 		expect(output).toBeInstanceOf(UrlTree);
 	});

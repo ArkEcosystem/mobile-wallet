@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { IonSlides } from "@ionic/angular";
+import { IonSlides, NavController } from "@ionic/angular";
 import { TranslateService } from "@ngx-translate/core";
-import { Select, Store } from "@ngxs/store";
-import { Observable } from "rxjs";
+import { switchMapTo } from "rxjs/operators";
 
-import { OnboardingActions } from "./shared/onboarding.actions";
-import { OnboardingState } from "./shared/onboarding.state";
+import { OnboardingService } from "./shared/onboarding.service";
 
 @Component({
 	selector: "onboarding",
@@ -13,9 +11,6 @@ import { OnboardingState } from "./shared/onboarding.state";
 	styleUrls: ["onboarding.component.pcss"],
 })
 export class OnboardingComponent implements OnInit {
-	@Select(OnboardingState.isFinished)
-	public isFinished$: Observable<boolean>;
-
 	@ViewChild(IonSlides)
 	public slider: IonSlides;
 
@@ -24,7 +19,8 @@ export class OnboardingComponent implements OnInit {
 
 	constructor(
 		private translateService: TranslateService,
-		private store: Store,
+		private onboardingService: OnboardingService,
+		private navCtrl: NavController,
 	) {}
 
 	ngOnInit() {
@@ -59,7 +55,10 @@ export class OnboardingComponent implements OnInit {
 	}
 
 	public handleDone(): void {
-		this.store.dispatch(new OnboardingActions.Done());
+		this.onboardingService
+			.save()
+			.pipe(switchMapTo(this.navCtrl.navigateRoot("/login")))
+			.subscribe();
 	}
 
 	public handleNext(): void {

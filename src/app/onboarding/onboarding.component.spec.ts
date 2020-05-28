@@ -7,15 +7,12 @@ import {
 	Spectator,
 } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
-import { Actions, NgxsModule, ofActionDispatched } from "@ngxs/store";
 import { of } from "rxjs";
 
 import { removeLogs, sleep } from "@@/test/helpers";
 
 import { OnboardingComponent } from "./onboarding.component";
-import { OnboardingActions } from "./shared/onboarding.actions";
 import { OnboardingService } from "./shared/onboarding.service";
-import { OnboardingState } from "./shared/onboarding.state";
 
 describe("Onboarding Component", () => {
 	let spectator: Spectator<OnboardingComponent>;
@@ -25,12 +22,11 @@ describe("Onboarding Component", () => {
 		imports: [
 			IonicModule.forRoot(),
 			TranslateModule.forRoot(),
-			NgxsModule.forRoot([OnboardingState]),
 			RouterModule.forRoot([]),
 		],
 		providers: [
 			mockProvider(OnboardingService, {
-				hasFinishedLegacy: () => of(false),
+				hasSeen: () => of(false),
 			}),
 		],
 	});
@@ -76,7 +72,7 @@ describe("Onboarding Component", () => {
 		expect(slides[1]).toHaveClass("swiper-slide-active");
 	});
 
-	it("should show the done button and end", async (done) => {
+	it("should show the done button and end", async () => {
 		await sleep(100);
 		const next = spectator.query(byTestId("onboarding__next"));
 		spectator.click(next);
@@ -88,11 +84,9 @@ describe("Onboarding Component", () => {
 		const doneBtn = spectator.query(byTestId("onboarding__done"));
 		expect(doneBtn).toBeVisible();
 
-		const actions$ = spectator.inject(Actions);
-		actions$
-			.pipe(ofActionDispatched(OnboardingActions.Done))
-			.subscribe(() => done());
+		const onboardService = spectator.get(OnboardingService);
 
 		spectator.click(doneBtn);
+		expect(onboardService.save).toHaveBeenCalled();
 	});
 });
