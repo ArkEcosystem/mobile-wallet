@@ -91,7 +91,7 @@ describe("Recipient List Resume", () => {
 			byTestId("recipient-list-resume__counter"),
 		);
 
-		expect(counter).toHaveText("+4");
+		expect(counter).toHaveText("4");
 	});
 
 	it("should have 0 in counter if no recipients", () => {
