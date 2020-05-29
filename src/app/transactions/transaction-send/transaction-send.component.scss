@@ -2,3 +2,8 @@ ion-title.title-large {
 	font-size: 36px;
 	padding-left: 0;
 }
+
+.transaction-send__button--add {
+	height: 44px;
+	@apply font-semibold;
+}

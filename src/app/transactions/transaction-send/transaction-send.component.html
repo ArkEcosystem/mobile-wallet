@@ -7,20 +7,35 @@
 			>
 				<span
 					class="transaction-send__header__balance--amount text-medium text-sm font-bold"
-					>Balance: {{ 2343545783 | unitsSatoshi }}</span
 				>
-				<ion-button fill="clear" mode="ios" size="small"
-					>Send all</ion-button
-				>
+					Balance: {{ 2343545783 | unitsSatoshi }}
+				</span>
+				<ion-button fill="clear" mode="ios" size="small">
+					Send all
+				</ion-button>
 			</div>
+			<span class="border-b2 ion-padding h-1 w-full"></span>
 		</div>
 		<div [formGroup]="transactionForm">
-			<input-address formControlName="address"></input-address>
-			<div class="flex justify-between">
-				<input-currency formControlName="amount"></input-currency>
-				<ion-button mode="ios" size="small" (click)="debugForm()">
-					Add
-				</ion-button>
+			<div class="mb-5">
+				<input-address formControlName="address"></input-address>
+			</div>
+			<div class="flex flex-col">
+				<ion-label class="text-medium font-semibold text-sm pb-2"
+					>Amount ARK
+				</ion-label>
+				<div class="flex justify-between">
+					<input-currency formControlName="amount"></input-currency>
+					<ion-button
+						class="ml-2 mr-0 mt-0 transaction-send__button--add"
+						color="primary-light"
+						mode="ios"
+						size="small"
+						(click)="debugForm()"
+					>
+						Add
+					</ion-button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -37,8 +52,9 @@
 				mode="ios"
 				size="small"
 				[disabled]="!recipients.length"
-				>Continue</ion-button
 			>
+				Continue
+			</ion-button>
 		</div>
 	</ion-footer>
 </ion-content>
