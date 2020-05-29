@@ -18,11 +18,15 @@
 		</div>
 		<div [formGroup]="transactionForm">
 			<div class="mb-5">
-				<input-address formControlName="address"></input-address>
+				<input-address
+					label="TRANSACTIONS_PAGE.ADDRESS_INPUT_LABEL"
+					formControlName="address"
+				></input-address>
 			</div>
 			<div class="flex flex-col">
 				<ion-label class="text-medium font-semibold text-sm pb-2"
-					>Amount ARK
+					>{{ "TRANSACTIONS_PAGE.AMOUNT_INPUT_LABEL" | translate }}
+					ARK
 				</ion-label>
 				<div class="flex justify-between">
 					<input-currency formControlName="amount"></input-currency>
