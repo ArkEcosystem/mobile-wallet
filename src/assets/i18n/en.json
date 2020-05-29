@@ -287,7 +287,9 @@
 		"BRIDGECHAIN_RESIGNATION": "Bridgechain Resignation",
 		"BRIDGECHAIN_UPDATE": "Bridgechain Update",
 		"VENDOR_FIELD": "Vendor Field",
-		"TOTAL_AMOUNT": "Total Amount"
+		"TOTAL_AMOUNT": "Total Amount",
+		"ADDRESS_INPUT_LABEL": "Enter address:",
+		"AMOUNT_INPUT_LABEL": "Amount"
 	},
 	"TYPE": "Type",
 	"VALIDATION": {
