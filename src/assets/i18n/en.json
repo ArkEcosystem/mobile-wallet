@@ -109,6 +109,9 @@
 		"TEXT_3": "Swipe between profiles and wallets, check your balances, send and receive funds and much more",
 		"WELCOME": "Welcome Aboard"
 	},
+	"RECIPIENT_LIST": {
+		"DELETE_INSTRUCTIONS": "In order to delete the recipient, make swipe left"
+	},
 	"SIGN_IN_PAGE": {
 		"ARK_WALLET": "ARK Wallet",
 		"CREATE_PROFILE": "Create a profile",

@@ -42,7 +42,28 @@
 				</div>
 			</div>
 		</div>
+		<div class="absolute bottom-0 left-0 w-full ion-padding">
+			<span class="text-xs font-bold">Recipient list</span>
+			<div class="flex items-center justify-between">
+				<div>
+					<recipient-list-resume
+						class="cursor-pointer"
+						(click)="toggleBottomDrawer()"
+						[recipients]="recipients"
+					></recipient-list-resume>
+				</div>
+				<ion-button
+					class="font-semibold"
+					mode="ios"
+					color="primary-light"
+					[disabled]="!recipients.length"
+				>
+					Continue
+				</ion-button>
+			</div>
+		</div>
 	</div>
+
 	<bottom-drawer
 		[isOpen]="isRecipientListOpen"
 		[middleOffset]="500"
@@ -50,13 +71,22 @@
 		(buttonDrawerOnClose)="toggleBottomDrawer()"
 	>
 		<div class="ion-padding">
-			<div class="transaction-send__bottom-drawer--title">
-				<span class="font-bold text-xl" size="medium">
-					Recipient List
-				</span>
-				<span class="text-medium text-xl font-bold">{{
-					recipients.length
+			<div class="transaction-send__bottom-drawer--header flex flex-col">
+				<div>
+					<span class="font-bold text-xl" size="medium">
+						Recipient List
+					</span>
+					<span class="text-medium text-xl font-bold">{{
+						recipients.length
+					}}</span>
+				</div>
+				<span class="text-medium text-sm pb-10">{{
+					"RECIPIENT_LIST.DELETE_INSTRUCTIONS" | translate
 				}}</span>
+				<img
+					class="w-full w-16"
+					src="/assets/svg/swipe_to_delete_instructions.svg"
+				/>
 			</div>
 			<recipient-list
 				[recipients]="recipients"
@@ -64,24 +94,4 @@
 			></recipient-list>
 		</div>
 	</bottom-drawer>
-	<ion-footer class="ion-no-border ion-padding">
-		<span class="text-xs font-bold">Recipient list</span>
-		<div class="flex items-center justify-between">
-			<div>
-				<recipient-list-resume
-					class="cursor-pointer"
-					(click)="toggleBottomDrawer()"
-					[recipients]="recipients"
-				></recipient-list-resume>
-			</div>
-			<ion-button
-				fill="clear"
-				mode="ios"
-				size="small"
-				[disabled]="!recipients.length"
-			>
-				Continue
-			</ion-button>
-		</div>
-	</ion-footer>
 </ion-content>
