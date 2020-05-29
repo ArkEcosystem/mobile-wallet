@@ -1,5 +1,8 @@
 <ion-content>
-	<div class="transaction-send ion-padding h-full">
+	<div
+		class="transaction-send ion-padding h-full"
+		data-testid="transaction-send"
+	>
 		<div class="transaction-send__header flex flex-col">
 			<ion-title class="font-bold" size="large">Send ARK</ion-title>
 			<div
@@ -24,18 +27,19 @@
 				></input-address>
 			</div>
 			<div class="flex flex-col">
-				<ion-label class="text-medium font-semibold text-sm pb-2"
-					>{{ "TRANSACTIONS_PAGE.AMOUNT_INPUT_LABEL" | translate }}
-					ARK
+				<ion-label class="text-medium font-semibold text-sm pb-2">
+					{{ "TRANSACTIONS_PAGE.AMOUNT_INPUT_LABEL" | translate }} ARK
 				</ion-label>
 				<div class="flex justify-between">
 					<input-currency formControlName="amount"></input-currency>
 					<ion-button
+						data-testid="transaction-send__buttons--add"
 						class="ml-2 mr-0 mt-0 transaction-send__button--add"
 						color="primary-light"
 						mode="ios"
 						size="small"
 						(click)="addRecipient()"
+						[disabled]="transactionForm.invalid"
 					>
 						Add
 					</ion-button>
@@ -50,9 +54,11 @@
 						class="cursor-pointer"
 						(click)="toggleBottomDrawer()"
 						[recipients]="recipients"
+						data-testid="transaction-send__recipient-list-resume"
 					></recipient-list-resume>
 				</div>
 				<ion-button
+					data-testid="transaction-send__buttons--continue"
 					class="font-semibold"
 					mode="ios"
 					color="primary-light"
@@ -66,6 +72,7 @@
 	</div>
 
 	<bottom-drawer
+		data-testid="transaction-send__recipient-list--drawer"
 		[isOpen]="isRecipientListOpen"
 		[middleOffset]="500"
 		[backdrop]="isBackdropEnabled"
@@ -77,19 +84,20 @@
 					<span class="font-bold text-xl" size="medium">
 						Recipient List
 					</span>
-					<span class="text-medium text-xl font-bold">{{
-						recipients.length
-					}}</span>
+					<span class="text-medium text-xl font-bold">
+						{{ recipients.length }}
+					</span>
 				</div>
-				<span class="text-medium text-sm pb-10">{{
-					"RECIPIENT_LIST.DELETE_INSTRUCTIONS" | translate
-				}}</span>
+				<span class="text-medium text-sm pb-10">
+					{{ "RECIPIENT_LIST.DELETE_INSTRUCTIONS" | translate }}
+				</span>
 				<img
 					class="w-full w-16"
 					src="/assets/svg/swipe_to_delete_instructions.svg"
 				/>
 			</div>
 			<recipient-list
+				data-testid="transaction-send__recipient-list"
 				[recipients]="recipients"
 				(onDelete)="deleteRecipient($event)"
 			></recipient-list>
