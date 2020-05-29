@@ -1,8 +1,11 @@
 :host {
 	width: 100%;
-
-	.c-input-currency--relaxed {
-		--padding-top: 12px;
-		--padding-bottom: 12px;
+	.input-currency {
+		--padding-top: 8px;
+		--padding-bottom: 8px;
+		&.input-currency--relaxed {
+			--padding-top: 12px;
+			--padding-bottom: 12px;
+		}
 	}
 }

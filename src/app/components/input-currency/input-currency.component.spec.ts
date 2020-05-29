@@ -19,7 +19,7 @@ describe("Input Currency", () => {
 	it("should assign the placeholder if not specified", async () => {
 		spectator = createHost(`<input-currency></input-currency>`);
 		await sleep(100);
-		const root = spectator.query(byTestId("c-input-currency"));
+		const root = spectator.query(byTestId("input-currency"));
 		const input = root.querySelector("input");
 		expect(input.getAttribute("placeholder")).toBe("0.00000000");
 	});
@@ -29,7 +29,7 @@ describe("Input Currency", () => {
 			`<input-currency placeholder="2"></input-currency>`,
 		);
 		await sleep(100);
-		const root = spectator.query(byTestId("c-input-currency"));
+		const root = spectator.query(byTestId("input-currency"));
 		const input = root.querySelector("input");
 		expect(input.getAttribute("placeholder")).toBe("2");
 	});
@@ -37,7 +37,7 @@ describe("Input Currency", () => {
 	it("should not allow letters and symbols", async () => {
 		spectator = createHost(`<input-currency></input-currency>`);
 		await sleep(100);
-		const root = spectator.query(byTestId("c-input-currency"));
+		const root = spectator.query(byTestId("input-currency"));
 		const input = root.querySelector("input");
 		spectator.typeInElement("ab1c", input);
 		await sleep(100);
@@ -50,7 +50,7 @@ describe("Input Currency", () => {
 	it("should convert comma into dot separator", async () => {
 		spectator = createHost(`<input-currency></input-currency>`);
 		await sleep(100);
-		const root = spectator.query(byTestId("c-input-currency"));
+		const root = spectator.query(byTestId("input-currency"));
 		const input = root.querySelector("input");
 		spectator.typeInElement("0,01", input);
 		await sleep(100);
@@ -60,7 +60,7 @@ describe("Input Currency", () => {
 	it("should allow to start with a separator", async () => {
 		spectator = createHost(`<input-currency></input-currency>`);
 		await sleep(100);
-		const root = spectator.query(byTestId("c-input-currency"));
+		const root = spectator.query(byTestId("input-currency"));
 		const input = root.querySelector("input");
 		spectator.typeInElement(".01", input);
 		await sleep(100);
@@ -72,7 +72,7 @@ describe("Input Currency", () => {
 			`<input-currency [fractionDigits]="2"></input-currency>`,
 		);
 		await sleep(100);
-		const root = spectator.query(byTestId("c-input-currency"));
+		const root = spectator.query(byTestId("input-currency"));
 		const input = root.querySelector("input");
 		spectator.typeInElement("0.12345", input);
 		await sleep(100);
@@ -89,7 +89,7 @@ describe("Input Currency", () => {
 			},
 		);
 		await sleep(100);
-		const root = spectator.query(byTestId("c-input-currency"));
+		const root = spectator.query(byTestId("input-currency"));
 		const input = root.querySelector("input");
 		spectator.typeInElement("a0.12345", input);
 		await sleep(100);
@@ -109,7 +109,7 @@ describe("Input Currency", () => {
 			},
 		);
 		await sleep(100);
-		const root = spectator.query(byTestId("c-input-currency"));
+		const root = spectator.query(byTestId("input-currency"));
 		const input = root.querySelector("input");
 		// @ts-ignore
 		expect(input).toHaveValue("0.12");
@@ -120,7 +120,7 @@ describe("Input Currency", () => {
 			`<input-currency [isDisabled]="true"></input-currency>`,
 		);
 		await sleep(100);
-		const root = spectator.query(byTestId("c-input-currency"));
+		const root = spectator.query(byTestId("input-currency"));
 		const input = root.querySelector("input");
 		expect(input).toBeDisabled();
 	});
