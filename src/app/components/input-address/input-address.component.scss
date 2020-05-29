@@ -2,4 +2,19 @@
 	ion-item {
 		--padding-start: 0;
 	}
+
+	ion-label {
+		@apply text-medium text-lg font-semibold;
+	}
+
+	.input-address__button--contact {
+		height: 44px;
+	}
+
+	.input-address__button--qrcode {
+		height: 30px;
+		width: 30px;
+		background-size: cover;
+		background-image: url("/assets/svg/qr-code-border.svg");
+	}
 }
