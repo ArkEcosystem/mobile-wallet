@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from "@angular/core";
 })
 export class RecipientListResumeComponent implements OnInit {
 	@Input()
-	public recipients: [];
+	public recipients: [] = [];
 
 	@Input()
 	public recipientsCount: string;

@@ -1,3 +1,9 @@
+.recipient-list-resume__identicons--placeholder {
+	min-width: 2rem;
+	min-height: 2rem;
+	background-color: red;
+}
+
 .recipient-list-resume__identicons--item {
 	background-color: white;
 	padding: 0.5rem;
@@ -13,5 +19,8 @@
 		&::before {
 			content: "+";
 		}
+	}
+	&.recipient-list-resume__counter--empty {
+		color: var(--ion-color-medium);
 	}
 }
