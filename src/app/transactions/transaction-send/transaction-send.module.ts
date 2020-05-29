@@ -26,4 +26,4 @@ import { TransactionSendComponent } from "./transaction-send.component";
 	],
 	exports: [TransactionSendComponent],
 })
-export class TransactioSendModule {}
+export class TransactionSendModule {}
