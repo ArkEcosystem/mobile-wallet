@@ -3,7 +3,7 @@
 		class="transaction-send ion-padding h-full"
 		data-testid="transaction-send"
 	>
-		<div class="transaction-send__header flex flex-col">
+		<div class="transaction-send__header flex flex-col border-b">
 			<ion-title class="font-bold" size="large">Send ARK</ion-title>
 			<div
 				class="transaction-send__header__balance flex justify-between items-center"
@@ -17,9 +17,8 @@
 					Send all
 				</ion-button>
 			</div>
-			<span class="border-b2 ion-padding h-1 w-full"></span>
 		</div>
-		<div [formGroup]="transactionForm">
+		<div [formGroup]="transactionForm" class="mt-5">
 			<div class="mb-5">
 				<input-address
 					label="TRANSACTIONS_PAGE.ADDRESS_INPUT_LABEL"
