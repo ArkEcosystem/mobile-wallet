@@ -21,14 +21,10 @@ export class TransactionSendComponent {
 		});
 	}
 
-	public addRecipient(address: string, amount: string) {
-		this.recipients.push({ address, amount });
-	}
-
-	debugForm() {
+	addRecipient() {
 		const { address, amount } = this.transactionForm.value;
 
-		this.addRecipient(address, amount);
+		this.recipients.push({ address, amount });
 
 		console.log(this.transactionForm.value);
 	}
