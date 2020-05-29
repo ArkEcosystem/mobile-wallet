@@ -48,17 +48,18 @@ export class TransactionSendComponent {
 	createTransaction() {
 		const transaction = this.recipients.reduce(
 			(acc, item) => {
-				acc.totalAmout = acc.totalAmout += item.amount;
+				acc.totalAmount = acc.totalAmount += item.amount;
 				acc.recipients = [...acc.recipients, item.address];
 
 				return acc;
 			},
 			{
-				totalAmout: 0,
+				totalAmount: 0,
 				recipients: [],
 			},
 		);
 
 		console.log({ transaction });
+		return transaction;
 	}
 }
