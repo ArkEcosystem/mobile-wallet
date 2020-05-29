@@ -26,25 +26,27 @@
 			class="flex flex-col justify-between"
 			*ngFor="let slide of slides"
 		>
-			<img
-				data-testid="onboarding__slide__image"
-				class="onboarding__slide__image pointer-events-none flex-1 self-center p-3"
-				[src]="'/assets/svg/' + slide.image + '.svg'"
-			/>
-			<div class="mb-10 mt-3">
-				<h2
-					data-testid="onboarding__slide__title"
-					class="text-3xl xs:text-4xl md:text-5xl font-bold"
-				>
-					{{ slide.title | translate }}
-				</h2>
-				<p
-					data-testid="onboarding__slide__description"
-					class="leading-normal text-sm xs:text-base md:text-lg text-medium mt-2 px-4"
-				>
-					{{ slide.description | translate }}
-				</p>
-			</div>
+			<figure class="flex flex-col h-full">
+				<img
+					data-testid="onboarding__slide__image"
+					class="onboarding__slide__image object-contain mx-auto pointer-events-none flex-1 self-center p-4"
+					[src]="'/assets/svg/' + slide.image + '.svg'"
+				/>
+				<figcaption class="mb-8 flex-shrink-0">
+					<h2
+						data-testid="onboarding__slide__title"
+						class="text-3xl xs:text-4xl md:text-5xl font-bold"
+					>
+						{{ slide.title | translate }}
+					</h2>
+					<p
+						data-testid="onboarding__slide__description"
+						class="leading-normal text-sm xs:text-base md:text-lg text-medium mt-2 px-4"
+					>
+						{{ slide.description | translate }}
+					</p>
+				</figcaption>
+			</figure>
 		</ion-slide>
 	</ion-slides>
 </ion-content>

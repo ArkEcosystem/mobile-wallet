@@ -1,5 +1,11 @@
 :host {
 	.onboarding__slide__image {
-		@apply max-w-sm !important;
+		height: 50%;
+	}
+
+	@screen xs {
+		.onboarding__slide__image {
+			@apply max-w-xs h-full !important;
+		}
 	}
 }
