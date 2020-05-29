@@ -12,6 +12,9 @@ export class TransactionSendComponent {
 
 	public recipients: any = [];
 
+	public isRecipientListOpen: boolean = false;
+	public isBackdropEnabled: boolean = false;
+
 	transactionForm: FormGroup;
 
 	constructor() {
@@ -21,11 +24,24 @@ export class TransactionSendComponent {
 		});
 	}
 
+	toggleBottomDrawer() {
+		if (this.recipients.length) {
+			this.isRecipientListOpen = !this.isRecipientListOpen;
+			this.isBackdropEnabled = !this.isBackdropEnabled;
+		}
+	}
+
 	addRecipient() {
 		const { address, amount } = this.transactionForm.value;
 
 		this.recipients.push({ address, amount });
 
 		console.log(this.transactionForm.value);
+	}
+
+	deleteRecipient(recipientAddress) {
+		return (this.recipients = this.recipients.filter(
+			({ address }) => address !== recipientAddress,
+		));
 	}
 }

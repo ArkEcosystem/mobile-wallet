@@ -1,23 +1,18 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
 	selector: "recipient-list",
 	templateUrl: "recipient-list.component.html",
 	styleUrls: ["recipient-list.component.scss"],
 })
-export class RecipientListComponent implements OnInit {
+export class RecipientListComponent {
 	@Input()
 	recipients: Array<{ address: string; amount: string }> = [];
 
-	public recipientList: Array<{ address: string; amount: string }> = [];
-
-	ngOnInit(): void {
-		this.recipientList = this.recipients;
-	}
+	@Output()
+	public onDelete = new EventEmitter();
 
 	public removeRecipient(address: string) {
-		return (this.recipientList = this.recipientList.filter(
-			({ address: existentAddress }) => existentAddress !== address,
-		));
+		return this.onDelete.emit(address);
 	}
 }

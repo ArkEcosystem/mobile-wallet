@@ -43,11 +43,34 @@
 			</div>
 		</div>
 	</div>
+	<bottom-drawer
+		[isOpen]="isRecipientListOpen"
+		[middleOffset]="500"
+		[backdrop]="isBackdropEnabled"
+		(buttonDrawerOnClose)="toggleBottomDrawer()"
+	>
+		<div class="ion-padding">
+			<div class="transaction-send__bottom-drawer--title">
+				<span class="font-bold text-xl" size="medium">
+					Recipient List
+				</span>
+				<span class="text-medium text-xl font-bold">{{
+					recipients.length
+				}}</span>
+			</div>
+			<recipient-list
+				[recipients]="recipients"
+				(onDelete)="deleteRecipient($event)"
+			></recipient-list>
+		</div>
+	</bottom-drawer>
 	<ion-footer class="ion-no-border ion-padding">
 		<span class="text-xs font-bold">Recipient list</span>
 		<div class="flex items-center justify-between">
 			<div>
 				<recipient-list-resume
+					class="cursor-pointer"
+					(click)="toggleBottomDrawer()"
 					[recipients]="recipients"
 				></recipient-list-resume>
 			</div>

@@ -1,13 +1,13 @@
 <div class="recipient-list-resume" data-testid="recipient-list-resume">
 	<div class="recipient-list-resume__identicons flex items-center">
 		<div
-			*ngFor="let recipient of recipientList.slice(0, 3)"
+			*ngFor="let recipient of recipients.slice(0, 3)"
 			class="w-16 h-16 rounded-full recipient-list-resume__identicons--item"
 		>
 			<identicon value="recipient.address"></identicon>
 		</div>
 		<div
-			*ngIf="!recipientList.length"
+			*ngIf="!recipients.length"
 			class="w-12 h-12 border rounded-full border recipient-list-resume__counter"
 		></div>
 		<div
@@ -18,14 +18,14 @@
 				class="w-12 h-12 border rounded-full flex justify-center items-center recipient-list-resume__counter font-bold text-sm"
 				[ngClass]="{
 					'recipient-list-resume__counter--plus':
-						recipientList.length > 3,
-					'recipient-list-resume__counter--empty': !recipientList.length
+						recipients.length > 3,
+					'recipient-list-resume__counter--empty': !recipients.length
 				}"
 			>
 				{{
-					recipientList.length > 3
-						? recipientList.length - 3
-						: recipientList.length
+					recipients.length > 3
+						? recipients.length - 3
+						: recipients.length
 				}}
 			</div>
 		</div>
