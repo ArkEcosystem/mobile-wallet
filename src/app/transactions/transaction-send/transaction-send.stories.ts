@@ -1,5 +1,6 @@
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
+import { select, text, withKnobs } from "@storybook/addon-knobs";
 // import { TranslateModule } from "@ngx-translate/core";
 import { moduleMetadata } from "@storybook/angular";
 
@@ -17,6 +18,7 @@ import { TransactionSendComponent } from "./transaction-send.component";
 export default {
 	title: "Modules / Transaction Send",
 	decorators: [
+		withKnobs,
 		moduleMetadata({
 			declarations: [TransactionSendComponent],
 			imports: [
@@ -38,10 +40,14 @@ export default {
 
 export const TransactionSend = () => ({
 	component: TransactionSendComponent,
+	props: {
+		balance: text("Balance", "20000"),
+		currency: select("Coin", { ARK: "ARK", Bitcoin: "BTC" }, "ARK"),
+	},
 	template: `
 			<ion-app>
 				<ion-content class="ion-padding">
-					<transaction-send></transaction-send>
+					<transaction-send [balance]="balance" [currency]="currency"></transaction-send>
 				</ion-content>
 			</ion-app>
 		`,

@@ -5,7 +5,7 @@
 	>
 		<div class="transaction-send__header flex flex-col border-b">
 			<ion-title class="font-bold" size="large">
-				{{ "TRANSACTIONS_PAGE.SEND_TITLE" | translate }} ARK
+				{{ "TRANSACTIONS_PAGE.SEND_TITLE" | translate }} {{ currency }}
 			</ion-title>
 			<div
 				class="transaction-send__header__balance flex justify-between items-center"
@@ -36,7 +36,8 @@
 			</div>
 			<div class="flex flex-col">
 				<ion-label class="text-medium font-semibold text-sm pb-2">
-					{{ "TRANSACTIONS_PAGE.AMOUNT_INPUT_LABEL" | translate }} ARK
+					{{ "TRANSACTIONS_PAGE.AMOUNT_INPUT_LABEL" | translate }}
+					{{ currency }}
 				</ion-label>
 				<div class="flex justify-between">
 					<input-currency formControlName="amount"></input-currency>

@@ -13,6 +13,9 @@ export class TransactionSendComponent implements OnInit {
 	@Input()
 	public balance: string;
 
+	@Input()
+	public currency: string;
+
 	public recipients: any = [];
 
 	public isRecipientListOpen: boolean = false;
