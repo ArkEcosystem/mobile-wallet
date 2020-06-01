@@ -8,6 +8,7 @@ import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-d
 import { InputAddressComponentModule } from "@/components/input-address/input-address.module";
 import { InputCurrencyComponentModule } from "@/components/input-currency/input-currency.module";
 import { PipesModule } from "@/pipes/pipes.module";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { RecipientListResumeComponentModule } from "./recipient-list-resume/recipient-list-resume.component.module";
 import { RecipientListComponentModule } from "./recipient-list/recipient-list.component.module";
@@ -29,7 +30,7 @@ describe("Transaction Send", () => {
 			FormsModule,
 			ReactiveFormsModule,
 		],
-		providers: [TranslateService],
+		providers: [TranslateService, UserDataService],
 	});
 
 	it("should create", () => {
