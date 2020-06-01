@@ -3,10 +3,15 @@ import { IonicModule } from "@ionic/angular";
 // import { TranslateModule } from "@ngx-translate/core";
 import { moduleMetadata } from "@storybook/angular";
 
+import { AddressValidator } from "@/app/validators/address/address";
 import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-drawer.module";
 import { InputAddressComponentModule } from "@/components/input-address/input-address.module";
 import { InputCurrencyComponentModule } from "@/components/input-currency/input-currency.module";
+import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
+// import { QRCodeScheme } from "@/models/model";
 import { PipesModule } from "@/pipes/pipes.module";
+import { ToastProvider } from "@/services/toast/toast";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { RecipientListResumeComponentModule } from "./recipient-list-resume/recipient-list-resume.component.module";
 import { RecipientListComponentModule } from "./recipient-list/recipient-list.component.module";
@@ -28,6 +33,12 @@ export default {
 				BottomDrawerComponentModule,
 				FormsModule,
 				ReactiveFormsModule,
+			],
+			providers: [
+				ToastProvider,
+				AddressValidator,
+				UserDataService,
+				QRScannerComponent,
 			],
 		}),
 	],
