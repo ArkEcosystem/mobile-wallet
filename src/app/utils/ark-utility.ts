@@ -1,6 +1,6 @@
-import * as constants from "@/app/app.constants";
+import { BigNumber } from "@arkecosystem/platform-sdk-support";
 
-import { BigNumber } from "./bignumber";
+import * as constants from "@/app/app.constants";
 
 export class ArkUtility {
 	public static getRandomInt(min: number, max: number): number {
@@ -15,7 +15,9 @@ export class ArkUtility {
 
 		if (!returnRaw) {
 			result = Number(
-				new BigNumber(result.toString()).toFixed(constants.ARKTOSHI_DP),
+				BigNumber.make(result.toString()).toFixed(
+					constants.ARKTOSHI_DP,
+				),
 			);
 		}
 
@@ -30,8 +32,8 @@ export class ArkUtility {
 			return "";
 		}
 
-		let amount = new BigNumber(value.toString())
-			.dividedBy(constants.WALLET_UNIT_TO_SATOSHI)
+		let amount = BigNumber.make(value.toString())
+			.divide(constants.WALLET_UNIT_TO_SATOSHI)
 			.toString();
 
 		// Convert the fee to String to not use the exponential notation
@@ -50,8 +52,8 @@ export class ArkUtility {
 			return "";
 		}
 
-		return new BigNumber(value.toString())
-			.multipliedBy(constants.WALLET_UNIT_TO_SATOSHI)
+		return BigNumber.make(value.toString())
+			.times(constants.WALLET_UNIT_TO_SATOSHI)
 			.toString();
 	}
 }
