@@ -1,12 +1,21 @@
-import { Component, Input } from "@angular/core";
+import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+
+import { AddressValidator } from "@/app/validators/address/address";
+import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
+import { QRCodeScheme } from "@/models/model";
+import { ToastProvider } from "@/services/toast/toast";
 
 @Component({
 	selector: "transaction-send",
 	templateUrl: "transaction-send.component.html",
 	styleUrls: ["transaction-send.component.scss"],
+	providers: [AddressValidator],
 })
-export class TransactionSendComponent {
+export class TransactionSendComponent implements OnInit {
+	@ViewChild(QRScannerComponent)
+	qrScanner: QRScannerComponent;
+
 	@Input()
 	public balance: string;
 
@@ -17,10 +26,18 @@ export class TransactionSendComponent {
 
 	transactionForm: FormGroup;
 
-	constructor() {
+	constructor(
+		private toastProvider: ToastProvider,
+		private addressValidator: AddressValidator,
+	) {}
+
+	ngOnInit(): void {
 		this.transactionForm = new FormGroup({
-			address: new FormControl("", [Validators.required]),
 			amount: new FormControl("", [Validators.required]),
+			address: new FormControl("", [
+				Validators.required,
+				this.addressValidator.isValid.bind(this.addressValidator),
+			]),
 		});
 	}
 
@@ -61,5 +78,20 @@ export class TransactionSendComponent {
 
 		console.log({ transaction });
 		return transaction;
+	}
+
+	scanQRCode() {
+		this.qrScanner.open(true);
+	}
+
+	onScanQRCode(qrCode: QRCodeScheme) {
+		if (qrCode.address) {
+			this.transactionForm.get("address").setValue(qrCode.address);
+			if (qrCode.amount) {
+				this.transactionForm.get("amount").setValue(qrCode.amount);
+			}
+		} else {
+			this.toastProvider.error("QR_CODE.INVALID_QR_ERROR");
+		}
 	}
 }

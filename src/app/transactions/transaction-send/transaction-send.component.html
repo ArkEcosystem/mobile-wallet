@@ -23,7 +23,9 @@
 				<input-address
 					label="TRANSACTIONS_PAGE.ADDRESS_INPUT_LABEL"
 					formControlName="address"
-				></input-address>
+					(inputAddressQRCodeClick)="scanQRCode()"
+				>
+				</input-address>
 			</div>
 			<div class="flex flex-col">
 				<ion-label class="text-medium font-semibold text-sm pb-2">
