@@ -23,8 +23,6 @@
 				<input-address
 					label="TRANSACTIONS_PAGE.ADDRESS_INPUT_LABEL"
 					formControlName="address"
-					(inputAddressContactClick)="toggleWalletPickerModal()"
-					(inputAddressQRCodeClick)="scanQRCode()"
 				>
 				</input-address>
 			</div>
@@ -105,17 +103,4 @@
 			></recipient-list>
 		</div>
 	</bottom-drawer>
-
-	<bottom-drawer
-		[bottomOffset]="0"
-		[isOpen]="isWalletPickerModalOpen"
-		[buttonClose]="false"
-		(buttonDrawerOnClose)="closeWalletPickerModal()"
-		(buttonDrawerOnBackdropTap)="closeWalletPickerModal()"
-	>
-		<wallet-picker-modal
-			(walletPickerModalOnPick)="onPickWallet($event)"
-		></wallet-picker-modal>
-	</bottom-drawer>
-	<qr-scanner (success)="onScanQRCode($event)" #qrScanner></qr-scanner>
 </ion-content>
