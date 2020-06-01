@@ -7,8 +7,8 @@ import { AddressValidator } from "@/app/validators/address/address";
 import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-drawer.module";
 import { InputAddressComponentModule } from "@/components/input-address/input-address.module";
 import { InputCurrencyComponentModule } from "@/components/input-currency/input-currency.module";
-import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
-// import { QRCodeScheme } from "@/models/model";
+import { QRScannerComponentModule } from "@/components/qr-scanner/qr-scanner.module";
+import { WalletPickerModalModule } from "@/components/wallet-picker/wallet-picker.modal.module";
 import { PipesModule } from "@/pipes/pipes.module";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
@@ -33,13 +33,10 @@ export default {
 				BottomDrawerComponentModule,
 				FormsModule,
 				ReactiveFormsModule,
+				QRScannerComponentModule,
+				WalletPickerModalModule,
 			],
-			providers: [
-				ToastProvider,
-				AddressValidator,
-				UserDataService,
-				QRScannerComponent,
-			],
+			providers: [ToastProvider, AddressValidator, UserDataService],
 		}),
 	],
 };

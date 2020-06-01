@@ -13,6 +13,7 @@ import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-d
 import { InputAddressComponentModule } from "@/components/input-address/input-address.module";
 import { InputCurrencyComponentModule } from "@/components/input-currency/input-currency.module";
 import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
+import { QRScannerComponentModule } from "@/components/qr-scanner/qr-scanner.module";
 import { PipesModule } from "@/pipes/pipes.module";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 
@@ -35,6 +36,7 @@ fdescribe("Transaction Send", () => {
 			BottomDrawerComponentModule,
 			FormsModule,
 			ReactiveFormsModule,
+			QRScannerComponentModule,
 		],
 		providers: [
 			TranslateService,

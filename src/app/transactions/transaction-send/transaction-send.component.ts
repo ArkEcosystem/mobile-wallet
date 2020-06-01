@@ -1,9 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ModalController } from "@ionic/angular";
 
 import { AddressValidator } from "@/app/validators/address/address";
 import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
-import { QRCodeScheme } from "@/models/model";
+import { Contact, QRCodeScheme } from "@/models/model";
 import { ToastProvider } from "@/services/toast/toast";
 
 @Component({
@@ -13,7 +14,7 @@ import { ToastProvider } from "@/services/toast/toast";
 	providers: [AddressValidator],
 })
 export class TransactionSendComponent implements OnInit {
-	@ViewChild(QRScannerComponent)
+	@ViewChild("qrScanner", { read: QRScannerComponent, static: true })
 	qrScanner: QRScannerComponent;
 
 	@Input()
@@ -23,12 +24,14 @@ export class TransactionSendComponent implements OnInit {
 
 	public isRecipientListOpen: boolean = false;
 	public isBackdropEnabled: boolean = false;
+	public isWalletPickerModalOpen: boolean = false;
 
 	transactionForm: FormGroup;
 
 	constructor(
 		private toastProvider: ToastProvider,
 		private addressValidator: AddressValidator,
+		private modalCtrl: ModalController,
 	) {}
 
 	ngOnInit(): void {
@@ -88,10 +91,25 @@ export class TransactionSendComponent implements OnInit {
 		if (qrCode.address) {
 			this.transactionForm.get("address").setValue(qrCode.address);
 			if (qrCode.amount) {
-				this.transactionForm.get("amount").setValue(qrCode.amount);
+				this.transactionForm
+					.get("amount")
+					.setValue(Number(qrCode.amount));
 			}
 		} else {
 			this.toastProvider.error("QR_CODE.INVALID_QR_ERROR");
 		}
+	}
+
+	onPickWallet(wallet: Contact) {
+		this.transactionForm.get("address").setValue(wallet.address);
+		this.closeWalletPickerModal();
+	}
+
+	toggleWalletPickerModal() {
+		this.isWalletPickerModalOpen = !this.isWalletPickerModalOpen;
+	}
+
+	closeWalletPickerModal() {
+		this.isWalletPickerModalOpen = false;
 	}
 }
