@@ -3,7 +3,11 @@ ion-title.title-large {
 	padding-left: 0;
 }
 
-.transaction-send__button--add {
+.transaction-send__buttons--add {
 	height: 44px;
 	@apply font-semibold;
+}
+
+.transaction-send__buttons--send-all {
+	--padding-end: 0;
 }

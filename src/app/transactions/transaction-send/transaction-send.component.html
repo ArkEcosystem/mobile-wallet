@@ -4,16 +4,24 @@
 		data-testid="transaction-send"
 	>
 		<div class="transaction-send__header flex flex-col border-b">
-			<ion-title class="font-bold" size="large">Send ARK</ion-title>
+			<ion-title class="font-bold" size="large">
+				{{ "TRANSACTIONS_PAGE.SEND_TITLE" | translate }} ARK
+			</ion-title>
 			<div
 				class="transaction-send__header__balance flex justify-between items-center"
 			>
 				<span
 					class="transaction-send__header__balance--amount text-medium text-sm font-bold"
 				>
-					Balance: {{ 2343545783 | unitsSatoshi }}
+					{{ "WALLETS_PAGE.BALANCE" | translate }}:
+					{{ balance | unitsSatoshi }}
 				</span>
-				<ion-button fill="clear" mode="ios" size="small">
+				<ion-button
+					fill="clear"
+					mode="ios"
+					size="small"
+					class="transaction-send__buttons--send-all"
+				>
 					Send all
 				</ion-button>
 			</div>
@@ -34,20 +42,22 @@
 					<input-currency formControlName="amount"></input-currency>
 					<ion-button
 						data-testid="transaction-send__buttons--add"
-						class="ml-2 mr-0 mt-0 transaction-send__button--add"
+						class="ml-2 mr-0 mt-0 transaction-send__buttons--add"
 						color="primary-light"
 						mode="ios"
 						size="small"
 						(click)="addRecipient()"
 						[disabled]="transactionForm.invalid"
 					>
-						Add
+						{{ "TRANSACTIONS_PAGE.ADD_LABEL" | translate }}
 					</ion-button>
 				</div>
 			</div>
 		</div>
 		<div class="absolute bottom-0 left-0 w-full ion-padding">
-			<span class="text-xs font-bold">Recipient list</span>
+			<span class="text-xs font-bold">
+				{{ "TRANSACTIONS_PAGE.RECIPIENT_LIST_RESUME" | translate }}
+			</span>
 			<div class="flex items-center justify-between">
 				<div>
 					<recipient-list-resume
@@ -65,7 +75,7 @@
 					[disabled]="!recipients.length"
 					(click)="createTransaction()"
 				>
-					Continue
+					{{ "TRANSACTIONS_PAGE.CONTINUE" | translate }}
 				</ion-button>
 			</div>
 		</div>
@@ -82,7 +92,9 @@
 			<div class="transaction-send__bottom-drawer--header flex flex-col">
 				<div>
 					<span class="font-bold text-xl" size="medium">
-						Recipient List
+						{{
+							"TRANSACTIONS_PAGE.RECIPIENT_LIST_TITLE" | translate
+						}}
 					</span>
 					<span class="text-medium text-xl font-bold">
 						{{ recipients.length }}
