@@ -21,6 +21,7 @@
 			>
 				<ion-button
 					*ngIf="showQRButton"
+					data-testid="input-address__button--qrcode"
 					fill="clear"
 					color="primary"
 					(click)="emitQRCodeClick()"
@@ -33,6 +34,7 @@
 			class="ml-2 input-address__button--contact border rounded-md flex items-center justify-center"
 		>
 			<ion-button
+				data-testid="input-address__button--contact"
 				*ngIf="showContactButton"
 				fill="clear"
 				(click)="emitContactClick()"

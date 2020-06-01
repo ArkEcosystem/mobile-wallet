@@ -1,19 +1,26 @@
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { IonicModule } from "@ionic/angular";
-import { byTestId, createHostFactory, SpectatorHost } from "@ngneat/spectator";
+import {
+	byTestId,
+	createHostFactory,
+	mockProvider,
+	SpectatorHost,
+} from "@ngneat/spectator";
 import { TranslateModule, TranslateService } from "@ngx-translate/core";
 
 import { sleep } from "@@/test/helpers";
 import { BottomDrawerComponentModule } from "@/components/bottom-drawer/bottom-drawer.module";
 import { InputAddressComponentModule } from "@/components/input-address/input-address.module";
 import { InputCurrencyComponentModule } from "@/components/input-currency/input-currency.module";
+import { QRScannerComponent } from "@/components/qr-scanner/qr-scanner";
 import { PipesModule } from "@/pipes/pipes.module";
+import { UserDataService } from "@/services/user-data/user-data.interface";
 
 import { RecipientListResumeComponentModule } from "./recipient-list-resume/recipient-list-resume.component.module";
 import { RecipientListComponentModule } from "./recipient-list/recipient-list.component.module";
 import { TransactionSendComponent } from "./transaction-send.component";
 
-describe("Transaction Send", () => {
+fdescribe("Transaction Send", () => {
 	let spectator: SpectatorHost<TransactionSendComponent>;
 	const createHost = createHostFactory({
 		component: TransactionSendComponent,
@@ -29,7 +36,11 @@ describe("Transaction Send", () => {
 			FormsModule,
 			ReactiveFormsModule,
 		],
-		providers: [TranslateService],
+		providers: [
+			TranslateService,
+			UserDataService,
+			mockProvider(QRScannerComponent),
+		],
 	});
 
 	it("should create", () => {
@@ -138,5 +149,17 @@ describe("Transaction Send", () => {
 			totalAmount: "022",
 			recipients: ["A", "B"],
 		});
+	});
+
+	it("should call the qr code scanner", async () => {
+		const qrScanner = spectator.get(QRScannerComponent);
+		console.log({ qrScanner });
+		const qrCodeButton = spectator.query(
+			byTestId("input-address__button--qrcode"),
+		);
+		spectator.click(qrCodeButton);
+		sleep(500);
+
+		expect(qrScanner.open).toHaveBeenCalledWith(true);
 	});
 });
