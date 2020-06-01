@@ -11,9 +11,9 @@ import {
 	FormControl,
 	NG_VALUE_ACCESSOR,
 } from "@angular/forms";
+import { BigNumber } from "@arkecosystem/platform-sdk-support";
 
 import { ARKTOSHI_DP } from "@/app/app.constants";
-import { BigNumber } from "@/utils/bignumber";
 
 export interface InputCurrencyOutput {
 	display: string;
@@ -35,8 +35,6 @@ export interface InputCurrencyOutput {
 	],
 })
 export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
-	public formControl: FormControl;
-
 	@Output()
 	public inputCurrencyUpdate = new EventEmitter<InputCurrencyOutput>();
 
@@ -56,12 +54,13 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 	public isDisabled = false;
 	public input: (value: BigNumber) => void;
 
+	public formControl: FormControl;
 	constructor() {}
 
 	public onTouched = () => {};
 
 	writeValue(value: string | number | BigNumber): void {
-		if (BigNumber.isBigNumber(value)) {
+		if (value instanceof BigNumber) {
 			this.format(value.toString());
 		} else {
 			this.format(String(value));
@@ -135,7 +134,7 @@ export class InputCurrencyComponent implements OnInit, ControlValueAccessor {
 		const value = display ? BigNumber.make(display) : zero;
 
 		const satoshi = display
-			? value.multipliedBy(Math.pow(10, this.fractionDigits))
+			? value.times(Math.pow(10, this.fractionDigits))
 			: zero;
 
 		return { display, value, satoshi };

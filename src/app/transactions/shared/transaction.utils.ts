@@ -1,5 +1,6 @@
+import { BigNumber } from "@arkecosystem/platform-sdk-support";
+
 import { SatoshiAmount } from "@/app/shared/shared.types";
-import { BigNumber } from "@/utils/bignumber";
 
 import { Transaction, TransactionOperation } from "./transaction.types";
 

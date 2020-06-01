@@ -4,6 +4,7 @@ import {
 	FormControl,
 	FormGroupDirective,
 } from "@angular/forms";
+import { BigNumber } from "@arkecosystem/platform-sdk-support";
 import { Network } from "ark-ts/model";
 
 import * as constants from "@/app/app.constants";
@@ -11,7 +12,6 @@ import { MarketCurrency } from "@/models/model";
 import { MarketDataProvider } from "@/services/market-data/market-data";
 import { SettingsDataProvider } from "@/services/settings-data/settings-data";
 import { UserDataService } from "@/services/user-data/user-data.interface";
-import { BigNumber } from "@/utils/bignumber";
 
 @Component({
 	selector: "input-amount",
@@ -65,7 +65,7 @@ export class InputAmountComponent implements OnInit {
 	}
 
 	public onInputToken(currency: string | BigNumber) {
-		const fiatAmount = BigNumber.make(currency).multipliedBy(
+		const fiatAmount = BigNumber.make(currency).times(
 			this.marketCurrency.price,
 		);
 		this.parentForm.form.controls.amountEquivalent.setValue(fiatAmount, {
@@ -74,7 +74,7 @@ export class InputAmountComponent implements OnInit {
 	}
 
 	public onInputFiat(currency: string | BigNumber) {
-		const tokenAmount = BigNumber.make(currency).dividedBy(
+		const tokenAmount = BigNumber.make(currency).divide(
 			this.marketCurrency.price,
 		);
 		this.parentForm.form.controls.amount.setValue(tokenAmount, {
