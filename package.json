@@ -60,7 +60,6 @@
 		"ark-ts": "^0.4.1",
 		"bcryptjs": "^2.4.3",
 		"big-integer": "^1.6.48",
-		"bignumber.js": "^9.0.0",
 		"bip39": "^3.0.2",
 		"chart.js": "^2.9.3",
 		"cordova-android": "8.1.0",
