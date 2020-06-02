@@ -18,3 +18,18 @@
 		</div>
 	</div>
 </div>
+<div
+	*ngIf="!dates.length"
+	[ngClass]="{ 'mt-5': !expanded }"
+	class="flex h-full justify-center items-center ion-padding"
+	data-testid="transaction-list--empty"
+>
+	<div class="flex flex-col w-4/5 text-center">
+		<span class="font-semibold text-sm mb-3 w-3/4 self-center">
+			This will display the history of your transactions.
+		</span>
+		<span class="text-xs">
+			You don't have more than one transaction at the moment
+		</span>
+	</div>
+</div>
