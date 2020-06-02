@@ -4,6 +4,7 @@ import {
 	SpectatorHost,
 } from "@ngneat/spectator";
 
+import { newTransactions } from "@@/test/fixture/transactions.fixture";
 import { PipesModule } from "@/pipes/pipes.module";
 
 import { TransactionRowComponentModule } from "../transaction-row/transaction-row.component.module";
@@ -17,8 +18,21 @@ describe("Transaction List", () => {
 	});
 
 	it("should create", () => {
-		spectator = createHost(`<transaction-list></transaction-list>`);
+		spectator = createHost(
+			`<transaction-list [transactions]="transactions"></transaction-list>`,
+			{
+				hostProps: {
+					transactions: newTransactions,
+				},
+			},
+		);
 		const component = spectator.query(byTestId("transaction-list"));
+		expect(component).toBeTruthy();
+	});
+
+	it("should render empty list", () => {
+		spectator = createHost(`<transaction-list></transaction-list>`);
+		const component = spectator.query(byTestId("transaction-list--empty"));
 		expect(component).toBeTruthy();
 	});
 });
