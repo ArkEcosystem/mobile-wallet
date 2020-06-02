@@ -80,7 +80,12 @@
 			>
 				<div></div>
 			</div>
-			<transaction-list class="w-full"></transaction-list>
+			<transaction-list
+				class="w-full h-1/2"
+				[ngClass]="{ 'h-full': isTransactionsOpen }"
+				[transactions]="transactions"
+				[expanded]="isTransactionsOpen"
+			></transaction-list>
 		</div>
 	</div>
 </ion-content>
