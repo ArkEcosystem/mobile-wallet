@@ -1,8 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import dayjs from "dayjs";
 import { groupBy } from "lodash";
 
-import { newTransactions } from "@@/test/fixture/transactions.fixture";
 // import { Transaction } from "@/models/model";
 
 @Component({
@@ -11,8 +10,11 @@ import { newTransactions } from "@@/test/fixture/transactions.fixture";
 	styleUrls: ["transaction-list.component.scss"],
 })
 export class TransactionListComponent implements OnInit {
-	// @Input()
-	// transactions: Transaction[] = [];
+	@Input()
+	public transactions: [] = [];
+
+	@Input()
+	public expanded: boolean = false;
 
 	public dates: string[];
 	public transactionsList;
@@ -21,7 +23,7 @@ export class TransactionListComponent implements OnInit {
 
 	ngOnInit(): void {
 		const groupedByDateTransactions = groupBy(
-			newTransactions,
+			this.transactions,
 			(transaction) =>
 				dayjs(transaction["timestamp"]["unix"] * 1000).format(
 					"MM/DD/YYYY",
