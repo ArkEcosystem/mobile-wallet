@@ -1,0 +1,11 @@
+ion-button {
+	&.wallet-passphrase-check__words--suggestion {
+		color: var(--ion-text-color);
+		--border-color: var(--ion-color-medium);
+	}
+	&.wallet-passphrase-check__words__word--verified {
+		--border-color: transparent;
+		--background: rgba(var(--ion-color-success-rgb), 0.2);
+		color: var(--ion-color-success);
+	}
+}
