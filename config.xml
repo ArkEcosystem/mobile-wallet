@@ -127,6 +127,8 @@
     <plugin name="cordova-sqlite-storage" spec="3.4.0" />
     <plugin name="cordova-plugin-network-information" spec="^2.0.2" />
     <plugin name="cordova-plugin-screen-orientation" spec="^3.0.2" />
+    <plugin name="cordova-plugin-androidx" spec="^2.0.0" />
+    <plugin name="cordova-plugin-androidx-adapter" spec="^1.1.1" />
     <engine name="ios" spec="5.1.1" />
     <engine name="android" spec="8.1.0" />
 </widget>
