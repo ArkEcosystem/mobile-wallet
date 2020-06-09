@@ -1,0 +1,35 @@
+<div
+	*ngIf="dates?.length > 0"
+	class="transaction-list"
+	data-testid="transaction-list"
+>
+	<div *ngFor="let date of dates" class="transaction-list__items">
+		<div class="flex flex-row transaction_list__section--date p-5">
+			<span class="font-bold">{{ date | date: "dd MMMM" }}</span>
+			<span class="font-bold text-medium ml-2">{{
+				date | date: "EEEE"
+			}}</span>
+		</div>
+		<div
+			*ngFor="let transaction of transactionsList[date]"
+			class="transaction-list__section--items"
+		>
+			<transaction-row [transaction]="transaction"></transaction-row>
+		</div>
+	</div>
+</div>
+<div
+	*ngIf="!dates.length"
+	[ngClass]="{ 'mt-5': !expanded }"
+	class="flex h-full justify-center items-center ion-padding"
+	data-testid="transaction-list--empty"
+>
+	<div class="flex flex-col w-4/5 text-center">
+		<span class="font-semibold text-sm mb-3 w-3/4 self-center">
+			This will display the history of your transactions.
+		</span>
+		<span class="text-xs">
+			You don't have more than one transaction at the moment
+		</span>
+	</div>
+</div>

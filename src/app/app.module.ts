@@ -1,6 +1,11 @@
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { ErrorHandler, NgModule } from "@angular/core";
-import { BrowserModule, HammerModule } from "@angular/platform-browser";
+import { ErrorHandler, Injectable, NgModule } from "@angular/core";
+import {
+	BrowserModule,
+	HAMMER_GESTURE_CONFIG,
+	HammerGestureConfig,
+	HammerModule,
+} from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouteReuseStrategy } from "@angular/router";
 import { Keyboard } from "@ionic-native/keyboard/ngx";
@@ -17,6 +22,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 import { NgxsRouterPluginModule } from "@ngxs/router-plugin";
 import { NgxsModule } from "@ngxs/store";
+import * as Hammer from "hammerjs";
 import { ChartsModule } from "ng2-charts";
 
 import { PipesModule } from "@/pipes/pipes.module";
@@ -41,6 +47,13 @@ import { TransactionsModule } from "./transactions/transactions.module";
 
 export function createTranslateLoader(http: HttpClient) {
 	return new TranslateHttpLoader(http, "./assets/i18n/", ".json");
+}
+
+@Injectable()
+export class MyHammerConfig extends HammerGestureConfig {
+	overrides: any = {
+		swipe: { direction: Hammer.DIRECTION_ALL },
+	};
 }
 
 @NgModule({
@@ -97,6 +110,7 @@ export function createTranslateLoader(http: HttpClient) {
 		{ provide: ErrorHandler, useClass: GlobalErrorHandlerService },
 		// TODO: Remove mock
 		{ provide: DelegateService, useClass: DelegateServiceMock },
+		{ provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig },
 	],
 	bootstrap: [AppComponent],
 })

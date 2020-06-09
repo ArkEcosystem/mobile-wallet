@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import * as ArkCrypto from "@arkecosystem/crypto";
+import { BigNumber } from "@arkecosystem/platform-sdk-support";
 import * as arkts from "ark-ts";
 import arktsConfig from "ark-ts/config";
 import lodash from "lodash";
@@ -26,7 +27,6 @@ import { StorageProvider } from "@/services/storage/storage";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
 import { PeerDiscovery } from "@/utils/ark-peer-discovery";
-import { BigNumber } from "@/utils/bignumber";
 
 import ArkClient, { WalletResponse } from "../../utils/ark-client";
 import { ArkUtility } from "../../utils/ark-utility";
@@ -612,7 +612,7 @@ export class ArkApiProvider {
 			this._client.getWallet(address).subscribe(
 				(wallet: WalletResponse) => {
 					const nonce = wallet.nonce || 0;
-					const nextNonce = new BigNumber(nonce).plus(1).toString();
+					const nextNonce = BigNumber.make(nonce).plus(1).toString();
 					observer.next(nextNonce);
 				},
 				() => observer.next("1"),
