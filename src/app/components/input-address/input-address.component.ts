@@ -32,6 +32,9 @@ export class InputAddressComponent
 	public name = "address";
 
 	@Input()
+	public label = "WALLETS_PAGE.ADDRESS";
+
+	@Input()
 	public disabled = false;
 
 	@Input()

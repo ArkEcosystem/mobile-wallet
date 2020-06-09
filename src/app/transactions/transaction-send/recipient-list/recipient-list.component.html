@@ -1,11 +1,11 @@
 <ion-list class="recipient-list" data-testid="recipient-list">
 	<ion-item-sliding
-		*ngFor="let recipient of recipientList"
+		*ngFor="let recipient of recipients"
 		class="recipient-list__recipient"
 		data-testid="recipient-list__recipient"
 	>
 		<ion-item class="rounded-lg">
-			<div class="flex ion-padding recipient-list__recipient__info">
+			<div class="flex py-4 recipient-list__recipient__info">
 				<identicon
 					class="w-10 h-10 recipient-list__recipient__info--address"
 					value="recipient.address"
@@ -29,7 +29,7 @@
 				data-testid="recipient-list__action--delete"
 			>
 				<div
-					class="flex items-center justify-center px-5 ion-padding recipient-list__action--delete"
+					class="flex items-center justify-center px-3 recipient-list__action--delete"
 				>
 					<ion-icon
 						class="mr-2"

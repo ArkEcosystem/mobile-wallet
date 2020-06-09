@@ -2,7 +2,6 @@ import { IonicModule } from "@ionic/angular";
 import { byTestId, createHostFactory, SpectatorHost } from "@ngneat/spectator";
 import { TranslateModule } from "@ngx-translate/core";
 
-import { sleep } from "@@/test/helpers";
 import { IdenticonComponentModule } from "@/components/identicon/identicon.module";
 import { PipesModule } from "@/pipes/pipes.module";
 
@@ -72,13 +71,15 @@ describe("Recipient List", () => {
 			},
 		);
 
+		let output: any;
+		spectator
+			.output("onDelete")
+			.subscribe(() => (output = "AHJJ29sCdR5UNZjdz3BYeDpvvkZCGBjde9"));
+
 		const removeButton = spectator.query(
 			byTestId("recipient-list__action--delete"),
 		);
 		spectator.click(removeButton);
-		await sleep(300);
-		const recipients = spectator.queryAll(".recipient-list__recipient");
-
-		expect(recipients.length).toEqual(1);
+		expect(output).toEqual("AHJJ29sCdR5UNZjdz3BYeDpvvkZCGBjde9");
 	});
 });
