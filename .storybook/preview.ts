@@ -4,6 +4,13 @@ import {
 	addParameters,
 } from "@storybook/angular";
 import { IonicModule } from "@ionic/angular";
+import { Injectable } from "@angular/core";
+import {
+	HammerModule,
+	HAMMER_GESTURE_CONFIG,
+	HammerGestureConfig,
+} from "@angular/platform-browser";
+import * as Hammer from "hammerjs";
 import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { of } from "rxjs";
 import { NgxsModule } from "@ngxs/store";
@@ -16,6 +23,13 @@ class CustomLoader implements TranslateLoader {
 	getTranslation(lang: string) {
 		return of(enLocale);
 	}
+}
+
+@Injectable()
+class MyHammerConfig extends HammerGestureConfig {
+	overrides: any = {
+		swipe: { direction: Hammer.DIRECTION_ALL },
+	};
 }
 
 addParameters({
@@ -35,6 +49,10 @@ addDecorator(
 				loader: { provide: TranslateLoader, useClass: CustomLoader },
 				defaultLanguage: "en",
 			}),
+			HammerModule,
+		],
+		providers: [
+			{ provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig },
 		],
 	}),
 );
