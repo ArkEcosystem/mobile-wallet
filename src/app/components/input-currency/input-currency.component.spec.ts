@@ -1,7 +1,7 @@
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BigNumber } from "@arkecosystem/platform-sdk-support";
 import { IonicModule } from "@ionic/angular";
 import { byTestId, createHostFactory, SpectatorHost } from "@ngneat/spectator";
-import { BigNumber } from "bignumber.js";
 
 import { removeLogs, sleep } from "@@/test/helpers";
 
@@ -94,7 +94,8 @@ describe("Input Currency", () => {
 		spectator.typeInElement("a0.12345", input);
 		await sleep(100);
 		// @ts-ignore
-		expect(BigNumber.isBigNumber(spectator.hostComponent.value)).toBeTrue();
+
+		expect(spectator.hostComponent.value instanceof BigNumber).toBeTrue();
 		// @ts-ignore
 		expect(spectator.hostComponent.value.isEqualTo(0.12345)).toBeTrue();
 	});
@@ -104,7 +105,7 @@ describe("Input Currency", () => {
 			`<input-currency [(ngModel)]="value"></input-currency>`,
 			{
 				hostProps: {
-					value: new BigNumber(0.12),
+					value: BigNumber.make(0.12),
 				},
 			},
 		);

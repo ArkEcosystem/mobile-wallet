@@ -5,9 +5,9 @@ import {
 	FormGroup,
 	FormGroupDirective,
 } from "@angular/forms";
+import { BigNumber } from "@arkecosystem/platform-sdk-support";
 
 import { WALLET_UNIT_TO_SATOSHI } from "@/app/app.constants";
-import { BigNumber } from "@/utils/bignumber";
 
 import { InputCurrencyOutput } from "../input-currency/input-currency.component";
 
@@ -62,9 +62,7 @@ export class InputFeeComponent implements OnInit {
 		this.parent.addControl("fee", this.inputControl);
 		this.inputControl.valueChanges.subscribe((value: BigNumber) => {
 			// The range value should be in arktoshi
-			this.currentFee = value
-				.multipliedBy(WALLET_UNIT_TO_SATOSHI)
-				.toNumber();
+			this.currentFee = value.times(WALLET_UNIT_TO_SATOSHI).toNumber();
 			this.rangeControl.setValue(this.currentFee, {
 				emitEvent: false,
 			});
@@ -104,7 +102,7 @@ export class InputFeeComponent implements OnInit {
 
 	private setInputValue(value: number, emitEvent = true) {
 		// The input value should be in human
-		const satoshi = BigNumber.make(value).dividedBy(WALLET_UNIT_TO_SATOSHI);
+		const satoshi = BigNumber.make(value).divide(WALLET_UNIT_TO_SATOSHI);
 		this.inputControl.setValue(satoshi, {
 			emitEvent,
 		});
