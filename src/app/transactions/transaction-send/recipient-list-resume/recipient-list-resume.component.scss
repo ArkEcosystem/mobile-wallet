@@ -1,0 +1,26 @@
+.recipient-list-resume__identicons--placeholder {
+	min-width: 2rem;
+	min-height: 2rem;
+	background-color: red;
+}
+
+.recipient-list-resume__identicons--item {
+	background-color: white;
+	padding: 0.5rem;
+	&:not(:first-child) {
+		margin-left: -1.25rem;
+	}
+}
+
+.recipient-list-resume__counter {
+	border-color: rgba(var(--ion-text-color-rgb), 0.1);
+	color: var(--ion-color-primary);
+	&.recipient-list-resume__counter--plus {
+		&::before {
+			content: "+";
+		}
+	}
+	&.recipient-list-resume__counter--empty {
+		color: var(--ion-color-medium);
+	}
+}

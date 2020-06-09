@@ -1,0 +1,60 @@
+.wallet-details,
+ion-header {
+	background-color: var(--wallet-details-background-light) !important;
+	color: white;
+}
+
+ion-toolbar {
+	--background: transparent;
+	--ion-color-base: transparent !important;
+}
+
+.wallet-details__info {
+	flex-direction: column;
+	.wallet-details__header--balance {
+		@apply text-3xl;
+	}
+	.wallet-details__header--converted-balance {
+		@apply text-base;
+	}
+	&.collapsed {
+		flex-direction: row;
+		justify-content: space-between;
+		.wallet-details__header--balance {
+			@apply text-xl;
+		}
+		.wallet-details__header--converted-balance {
+			@apply text-sm;
+		}
+	}
+	.wallet-details__header--actions {
+		@apply mt-5;
+		&.collapsed {
+			margin-top: 0;
+		}
+	}
+}
+
+.wallet-details__transaction-list {
+	background-color: var(--ion-background-color);
+	color: var(--ion-text-color);
+	min-height: 40%;
+	border-top-left-radius: 30px;
+	border-top-right-radius: 30px;
+	transition: height 0.3s ease;
+	overflow: hidden;
+	&.expanded {
+		overflow: auto;
+		height: 75%;
+	}
+}
+
+.wallet-details__transaction-list--grip {
+	height: 30px;
+	cursor: pointer;
+	div {
+		width: 40px;
+		height: 2px;
+		background-color: var(--ion-color-medium) !important;
+	}
+}

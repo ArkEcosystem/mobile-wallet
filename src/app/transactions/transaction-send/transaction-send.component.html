@@ -1,0 +1,119 @@
+<ion-content>
+	<div
+		class="transaction-send ion-padding h-full"
+		data-testid="transaction-send"
+	>
+		<div class="transaction-send__header flex flex-col border-b">
+			<ion-title class="font-bold" size="large">
+				{{ "TRANSACTIONS_PAGE.SEND_TITLE" | translate }} {{ currency }}
+			</ion-title>
+			<div
+				class="transaction-send__header__balance flex justify-between items-center"
+			>
+				<span
+					class="transaction-send__header__balance--amount text-medium text-sm font-bold"
+				>
+					{{ "WALLETS_PAGE.BALANCE" | translate }}:
+					{{ balance | unitsSatoshi }}
+				</span>
+				<ion-button
+					fill="clear"
+					mode="ios"
+					size="small"
+					class="transaction-send__buttons--send-all"
+				>
+					Send all
+				</ion-button>
+			</div>
+		</div>
+		<div [formGroup]="transactionForm" class="mt-5">
+			<div class="mb-5">
+				<input-address
+					label="TRANSACTIONS_PAGE.ADDRESS_INPUT_LABEL"
+					formControlName="address"
+				>
+				</input-address>
+			</div>
+			<div class="flex flex-col">
+				<ion-label class="text-medium font-semibold text-sm pb-2">
+					{{ "TRANSACTIONS_PAGE.AMOUNT_INPUT_LABEL" | translate }}
+					{{ currency }}
+				</ion-label>
+				<div class="flex justify-between">
+					<input-currency formControlName="amount"></input-currency>
+					<ion-button
+						data-testid="transaction-send__buttons--add"
+						class="ml-2 mr-0 mt-0 transaction-send__buttons--add"
+						color="primary-light"
+						mode="ios"
+						size="small"
+						(click)="addRecipient()"
+						[disabled]="transactionForm.invalid"
+					>
+						{{ "TRANSACTIONS_PAGE.ADD_LABEL" | translate }}
+					</ion-button>
+				</div>
+			</div>
+		</div>
+		<div class="absolute bottom-0 left-0 w-full ion-padding">
+			<span class="text-xs font-bold">
+				{{ "TRANSACTIONS_PAGE.RECIPIENT_LIST_RESUME" | translate }}
+			</span>
+			<div class="flex items-center justify-between">
+				<div>
+					<recipient-list-resume
+						class="cursor-pointer"
+						(click)="toggleBottomDrawer()"
+						[recipients]="recipients"
+						data-testid="transaction-send__recipient-list-resume"
+					></recipient-list-resume>
+				</div>
+				<ion-button
+					data-testid="transaction-send__buttons--continue"
+					class="font-semibold"
+					mode="ios"
+					color="primary-light"
+					[disabled]="!recipients.length"
+					(click)="createTransaction()"
+				>
+					{{ "TRANSACTIONS_PAGE.CONTINUE" | translate }}
+				</ion-button>
+			</div>
+		</div>
+	</div>
+
+	<bottom-drawer
+		data-testid="transaction-send__recipient-list--drawer"
+		[isOpen]="isRecipientListOpen"
+		[middleOffset]="500"
+		[backdrop]="isBackdropEnabled"
+		(buttonDrawerOnClose)="toggleBottomDrawer()"
+	>
+		<div class="ion-padding">
+			<div class="transaction-send__bottom-drawer--header flex flex-col">
+				<div>
+					<span class="font-bold text-xl" size="medium">
+						{{
+							"TRANSACTIONS_PAGE.RECIPIENT_LIST_TITLE" | translate
+						}}
+					</span>
+					<span class="text-medium text-xl font-bold">
+						{{ recipients.length }}
+					</span>
+				</div>
+				<span class="text-medium text-sm pb-10">
+					{{ "RECIPIENT_LIST.DELETE_INSTRUCTIONS" | translate }}
+				</span>
+				<img
+					class="w-full w-16"
+					src="/assets/svg/swipe_to_delete_instructions.svg"
+				/>
+			</div>
+			<recipient-list
+				data-testid="transaction-send__recipient-list"
+				[recipients]="recipients"
+				(onDelete)="deleteRecipient($event)"
+			></recipient-list>
+		</div>
+	</bottom-drawer>
+</ion-content>

@@ -31,6 +31,11 @@
 		"TITLE": "Your password",
 		"SUBTITLE": "Save this password and don't show it to anyone. This is the only way to access your wallet."
 	},
+	"PASSPHRASE_CHECK": {
+		"TITLE": "Check password",
+		"SUBTITLE": "Confirm your password. Place the password under the number to confirm.",
+		"SELECT_WORD": "Select word"
+	},
 	"COPIED_CLIPBOARD": "Copied to clipboard",
 	"COPY": "Copy",
 	"COPY_CLIPBOARD_FAILED": "Copy to clipboard failed",
@@ -109,6 +114,9 @@
 		"TEXT_2": "All your sensitive data is securely stored using PBKDF2 algorithm and AES-256 encryption protected by your PIN Code",
 		"TEXT_3": "Swipe between profiles and wallets, check your balances, send and receive funds and much more",
 		"WELCOME": "Welcome Aboard"
+	},
+	"RECIPIENT_LIST": {
+		"DELETE_INSTRUCTIONS": "In order to delete the recipient, make swipe left"
 	},
 	"SIGN_IN_PAGE": {
 		"ARK_WALLET": "ARK Wallet",
@@ -230,8 +238,10 @@
 	"TRANSACTIONS_PAGE": {
 		"2ND_SIGNATURE_CREATION": "2nd Signature Creation",
 		"ADD_ADDRESS_TO_CONTACTS": "Add {{ address }} to contacts",
+		"ADD_LABEL": "Add",
 		"AMOUNT": "Amount",
 		"CONFIRMATIONS": "Confirmations",
+		"CONTINUE": "Continue",
 		"COPY_TXID": "Copy TXID",
 		"CREATE_TRANSACTION_ERROR": "Could not create transaction. Check internet connectivity",
 		"DELEGATE_REGISTRATION": "Delegate Registration",
@@ -257,6 +267,8 @@
 		"RECEIVED_FROM": "Received from",
 		"RECIPIENT": "Recipient",
 		"RECIPIENTS": "Recipients",
+		"RECIPIENT_LIST_RESUME": "Recipient list",
+		"RECIPIENT_LIST_TITLE": "Recipient list",
 		"SECOND_SIGNATURE_CREATION": "Second Signature Creation",
 		"SECOND_PASSPHRASE_NOT_ENTERED": "The second passphrase has not been entered",
 		"SEND": "Send",
@@ -267,6 +279,7 @@
 		"SEND_TRANSACTION": "Send Transaction",
 		"SENT_SUCCESS": "Transaction sent with success!",
 		"SMART_BRIDGE": "SmartBridge (optional)",
+		"SEND_TITLE": "Send",
 		"TO": "To",
 		"TRANSACTION": "Transaction",
 		"WARNING": {
@@ -289,7 +302,10 @@
 		"BRIDGECHAIN_RESIGNATION": "Bridgechain Resignation",
 		"BRIDGECHAIN_UPDATE": "Bridgechain Update",
 		"VENDOR_FIELD": "Vendor Field",
-		"TOTAL_AMOUNT": "Total Amount"
+		"TOTAL_AMOUNT": "Total Amount",
+		"ADDRESS_INPUT_LABEL": "Enter address:",
+		"AMOUNT_INPUT_LABEL": "Amount",
+		"BALANCE": "Balance"
 	},
 	"TYPE": "Type",
 	"VALIDATION": {

@@ -1,0 +1,44 @@
+<ion-list class="recipient-list" data-testid="recipient-list">
+	<ion-item-sliding
+		*ngFor="let recipient of recipients"
+		class="recipient-list__recipient"
+		data-testid="recipient-list__recipient"
+	>
+		<ion-item class="rounded-lg">
+			<div class="flex py-4 recipient-list__recipient__info">
+				<identicon
+					class="w-10 h-10 recipient-list__recipient__info--address"
+					value="recipient.address"
+				>
+				</identicon>
+				<div class="ml-5 flex flex-col">
+					<span class="text-sm">{{
+						recipient.address | truncateMiddle: 13
+					}}</span>
+					<span
+						class="font-bold recipient-list__recipient__info--amount"
+						>{{ recipient.amount | unitsSatoshi }} ARK</span
+					>
+				</div>
+			</div>
+		</ion-item>
+
+		<ion-item-options side="end">
+			<ion-item-option
+				(click)="removeRecipient(recipient.address)"
+				data-testid="recipient-list__action--delete"
+			>
+				<div
+					class="flex items-center justify-center px-3 recipient-list__action--delete"
+				>
+					<ion-icon
+						class="mr-2"
+						name="trash-outline"
+						slot="start"
+					></ion-icon>
+					<span class="capitalize font-bold">Delete</span>
+				</div>
+			</ion-item-option>
+		</ion-item-options>
+	</ion-item-sliding>
+</ion-list>

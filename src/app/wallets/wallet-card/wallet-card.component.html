@@ -32,7 +32,8 @@
 						class="font-bold text-base"
 						data-testid="wallet-card__balance"
 					>
-						{{ balance | unitsSatoshi }} {{ currency | uppercase }}
+						{{ balance | unitsSatoshi }}
+						{{ coinConfig[currency].symbol | uppercase }}
 					</p>
 				</div>
 			</div>

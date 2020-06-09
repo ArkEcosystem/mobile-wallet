@@ -1,0 +1,91 @@
+<ion-header mode="ios" class="ion-no-border ion-padding">
+	<ion-toolbar class="p-0">
+		<ion-buttons slot="start">
+			<!-- <ion-back-button></ion-back-button> -->
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen data-testid="wallet-details">
+	<div class="w-full h-full wallet-details">
+		<div class="wallet-details__header">
+			<div
+				class="flex ion-padding wallet-details__info items-center"
+				data-testid="wallet-details__info"
+				[ngClass]="{ collapsed: isTransactionsOpen }"
+			>
+				<div
+					class="flex flex-col"
+					[ngClass]="{ 'items-center': !isTransactionsOpen }"
+				>
+					<identicon
+						*ngIf="!isTransactionsOpen"
+						value="address"
+						class="w-24 h-24 mb-5"
+					></identicon>
+					<span *ngIf="!isTransactionsOpen">{{ address }}</span>
+					<p
+						class="wallet-details__header--balance font-bold"
+						data-testid="wallet-details-__header--balance"
+					>
+						{{ balance | unitsSatoshi }}
+						{{ coinConfig[currency].symbol | uppercase }}
+					</p>
+					<p
+						class="wallet-details__header--converted-balance"
+						data-testid="wallet-details__header--converted-balance"
+					>
+						{{ convertWalletBalance(balance) }} $
+					</p>
+				</div>
+				<div
+					class="wallet-details__header--actions"
+					[ngClass]="{ collapsed: isTransactionsOpen }"
+				>
+					<ion-button color="light">
+						<ion-icon
+							size="small"
+							slot="icon-only"
+							name="qr-code-outline"
+						></ion-icon>
+					</ion-button>
+					<ion-button color="light">
+						<ion-icon
+							size="small"
+							[slot]="isTransactionsOpen ? 'icon-only' : 'end'"
+							name="arrow-up-outline"
+						></ion-icon>
+						<span *ngIf="!isTransactionsOpen">Send ARK</span>
+					</ion-button>
+					<ion-button color="light" *ngIf="!isTransactionsOpen">
+						<ion-icon
+							size="small"
+							slot="icon-only"
+							name="checkbox-outline"
+						></ion-icon>
+					</ion-button>
+				</div>
+			</div>
+		</div>
+		<div
+			(swipeup)="handleTransactionListExpansion(true)"
+			(swipedown)="handleTransactionListExpansion(false)"
+			class="absolute bottom-0 w-full flex flex-col h-56 max-h-full wallet-details__transaction-list"
+			data-testid="wallet-details__transaction-list"
+			[ngClass]="{ 'expanded overflow-auto': isTransactionsOpen }"
+		>
+			<div
+				class="wallet-details__transaction-list--grip w-full flex justify-center ion-padding"
+				data-testid="wallet-details__transaction-list--grip"
+			>
+				<div></div>
+			</div>
+			<transaction-list
+				class="w-full h-1/2"
+				[ngClass]="{ 'h-full': isTransactionsOpen }"
+				[transactions]="transactions"
+				[expanded]="isTransactionsOpen"
+			></transaction-list>
+		</div>
+	</div>
+</ion-content>

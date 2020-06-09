@@ -1,39 +1,49 @@
-<ion-item data-testid="c-input-address">
-	<div
-		data-testid="c-input-address__buttons"
-		slot="end"
-		class="ml-3 self-end flex items-center"
-	>
-		<ion-button
-			*ngIf="showQRButton"
-			fill="clear"
-			color="medium"
-			(click)="emitQRCodeClick()"
-		>
-			<ion-icon name="qr-code"></ion-icon>
-		</ion-button>
-		<ion-button
-			*ngIf="showContactButton"
-			fill="clear"
-			color="medium"
-			(click)="emitContactClick()"
-		>
-			<ion-icon name="person"></ion-icon>
-		</ion-button>
-	</div>
-
-	<ion-label position="stacked">
-		{{ "WALLETS_PAGE.ADDRESS" | translate }}
+<ion-item data-testid="input-address">
+	<ion-label position="floating">
+		{{ label | translate }}
 	</ion-label>
+	<div class="flex flex-row items-center justify-center w-full">
+		<div class="w-full relative flex items-center">
+			<ion-input
+				class="border-2"
+				data-testid="input-address__input"
+				type="text"
+				[formControl]="ngControl.control"
+				[name]="name"
+				appPasteClipboardValue
+				(ionInput)="onInput($event)"
+				(ionBlur)="onTouched()"
+				[appValueMaskOnBlur]="displayAddress"
+			></ion-input>
 
-	<ion-input
-		data-testid="c-input-address__input"
-		type="text"
-		[formControl]="ngControl.control"
-		[name]="name"
-		appPasteClipboardValue
-		(ionInput)="onInput($event)"
-		(ionBlur)="onTouched()"
-		[appValueMaskOnBlur]="displayAddress"
-	></ion-input>
+			<div
+				class="input-address__button--qrcode absolute right-0 flex items-center justify-center mr-3 z-10"
+			>
+				<ion-button
+					*ngIf="showQRButton"
+					data-testid="input-address__button--qrcode"
+					fill="clear"
+					color="primary"
+					(click)="emitQRCodeClick()"
+				>
+					<ion-icon src="assets/svg/qrcode.svg"></ion-icon>
+				</ion-button>
+			</div>
+		</div>
+		<div
+			class="ml-2 input-address__button--contact border rounded-md flex items-center justify-center"
+		>
+			<ion-button
+				data-testid="input-address__button--contact"
+				*ngIf="showContactButton"
+				fill="clear"
+				(click)="emitContactClick()"
+			>
+				<ion-icon
+					src="assets/svg/person.svg"
+					color="primary"
+				></ion-icon>
+			</ion-button>
+		</div>
+	</div>
 </ion-item>
