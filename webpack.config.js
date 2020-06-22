@@ -2,13 +2,11 @@ const webpack = require("webpack");
 
 const bigIntPolyfill = [];
 
-if (process.env.PLATFORM === "ios") {
-	bigIntPolyfill.push(
-		new webpack.DefinePlugin({
-			BigInt: "bigInt",
-		}),
-	);
-}
+bigIntPolyfill.push(
+	new webpack.ProvidePlugin({
+		BigInt: "big-integer",
+	}),
+);
 
 module.exports = {
 	module: {
