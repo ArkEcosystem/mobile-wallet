@@ -6,7 +6,7 @@
 	min-height: 80px;
 	background: linear-gradient(
 		to top,
-		#{"rgba(var(--ion-background-color-rgb), 1)"},
-		#{"rgba(var(--ion-background-color-rgb), 0)"}
+		rgba(var(--ion-background-color-rgb), 1),
+		rgba(var(--ion-background-color-rgb), 0)
 	);
 }
