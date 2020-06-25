@@ -71,7 +71,7 @@
 		"cordova-plugin-androidx": "^2.0.0",
 		"cordova-plugin-androidx-adapter": "^1.1.1",
 		"cordova-plugin-device": "^2.0.3",
-		"cordova-plugin-inappbrowser": "^3.2.0",
+		"cordova-plugin-inappbrowser": "^4.0.0",
 		"cordova-plugin-ionic": "^5.4.6",
 		"cordova-plugin-ionic-keyboard": "^2.2.0",
 		"cordova-plugin-ionic-webview": "^5.0.0",
