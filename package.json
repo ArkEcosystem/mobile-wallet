@@ -52,7 +52,7 @@
 		"@ionic-native/vibration": "^5.24.0",
 		"@ionic/angular": "^5.1.0",
 		"@ionic/storage": "^2.2.0",
-		"@ngx-translate/core": "^12.1.2",
+		"@ngx-translate/core": "^13.0.0",
 		"@ngx-translate/http-loader": "^4.0.0",
 		"@ngxs/router-plugin": "^3.6.2",
 		"@ngxs/store": "^3.6.2",
