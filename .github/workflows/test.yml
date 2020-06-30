@@ -46,6 +46,6 @@ jobs:
       - name: Install
         run: npm install --ignore-scripts
       - name: Pre Test
-        run: npx webdriver-manager update --versions.chrome=80.0.3987.106
+        run: npx webdriver-manager update --versions.chrome=83.0.4103.39
       - name: Test
         run: npm run test:e2e -- --prod --webdriver-update false
