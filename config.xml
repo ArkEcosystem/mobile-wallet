@@ -16,7 +16,7 @@
     <preference name="fullscreen" value="false" />
     <preference name="UseSwiftLanguageVersion" value="5" />
     <preference name="android-minSdkVersion" value="19" />
-    <preference name="android-targetSdkVersion" value="28" />
+    <preference name="android-targetSdkVersion" value="29" />
     <preference name="BackupWebStorage" value="none" />
     <preference name="BackgroundColor" value="0xffedf2f5" />
     <preference name="SplashMaintainAspectRatio" value="true" />
