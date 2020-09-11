@@ -1,0 +1,29 @@
+{
+	"data": {
+		"id": "ac7a801353d57e80fe4cb43121c7faf8f6114a5a09335b63af0500295cba5d51",
+		"blockId": "2399cdbbc9a7e6daa0b4c9c5d37a2883b7827a935fd21c08a6a01633639be63a",
+		"version": 2,
+		"type": 6,
+		"typeGroup": 2,
+		"amount": "0",
+		"fee": "500000000",
+		"sender": "DLK7ts2DpkbeBjFamuFtHLoDAq5upDhCmf",
+		"senderPublicKey": "0208e6835a8f020cfad439c059b89addc1ce21f8cab0af6e6957e22d3720bff8a4",
+		"recipient": "D82V4VbutGafrTiQrjfGvTvv1TLSXgXAZ1",
+		"signature": "e21b2eb344ef768e30e59def6f9dbb4d5eb060a5282120969bc4b926f02f26799c84f3f76aea41e0c17bff1556bfec81fa522b69354fb2210c780d9445130272",
+		"asset": {
+			"type": 102,
+			"subType": 102,
+			"action": 2,
+			"registrationId": "b04cca2d94ca423dd05493e330edc4ea96e2de993ec245e7dc0dfb753d392c37",
+			"data": {}
+		},
+		"confirmations": 41540,
+		"timestamp": {
+			"epoch": 109395904,
+			"unix": 1599497104,
+			"human": "2020-09-07T16:45:04.000Z"
+		},
+		"nonce": "5"
+	}
+}

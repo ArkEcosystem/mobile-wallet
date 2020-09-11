@@ -237,84 +237,94 @@ export class Transaction extends TransactionModel {
 			return "TRANSACTIONS_PAGE.DELEGATE_ENTITY_UPDATE";
 		}
 
-		return "TRANSACTIONS_PAGE.TRANSACTION";
+		if (this.isUndefinedRegistration()) {
+			return "TRANSACTIONS_PAGE.UNDEFINED_REGISTRATION";
+		}
+		if (this.isUndefinedResignation()) {
+			return "TRANSACTIONS_PAGE.UNDEFINED_RESIGNATION";
+		}
+		if (this.isUndefinedUpdate()) {
+			return "TRANSACTIONS_PAGE.UNDEFINED_UPDATE";
+		}
+
+		return "TRANSACTIONS_PAGE.UNDEFINED";
 	}
 
 	getActivityLabel() {
 		return this.getTypeLabel();
 	}
 
-	isTransfer(): boolean {
+	isTransfer() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.TRANSFER &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
 		);
 	}
 
-	isSecondSignature(): boolean {
+	isSecondSignature() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.SECOND_SIGNATURE &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
 		);
 	}
 
-	isDelegateRegistration(): boolean {
+	isDelegateRegistration() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.DELEGATE_REGISTRATION &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
 		);
 	}
 
-	isVote(): boolean {
+	isVote() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.VOTE &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
 		);
 	}
 
-	isMultiSignature(): boolean {
+	isMultiSignature() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.MULTI_SIGNATURE &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
 		);
 	}
 
-	isIpfs(): boolean {
+	isIpfs() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.IPFS &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
 		);
 	}
 
-	isMultipayment(): boolean {
+	isMultipayment() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.MULTI_PAYMENT &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
 		);
 	}
 
-	isDelegateResignation(): boolean {
+	isDelegateResignation() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.DELEGATE_RESIGNATION &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
 		);
 	}
 
-	isTimelock(): boolean {
+	isTimelock() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.HTLC_LOCK &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
 		);
 	}
 
-	isTimelockClaim(): boolean {
+	isTimelockClaim() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.HTLC_CLAIM &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
 		);
 	}
 
-	isTimelockRefund(): boolean {
+	isTimelockRefund() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_1.HTLC_REFUND &&
 			this.typeGroup === TRANSACTION_GROUPS.STANDARD
@@ -475,57 +485,84 @@ export class Transaction extends TransactionModel {
 
 	// Magistrate 1.0
 
-	isLegacyBusinessRegistration(): boolean {
+	isLegacyBusinessRegistration() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_2.BUSINESS_REGISTRATION &&
 			this.typeGroup === TRANSACTION_GROUPS.MAGISTRATE
 		);
 	}
 
-	isLegacyBusinessResignation(): boolean {
+	isLegacyBusinessResignation() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_2.BUSINESS_RESIGNATION &&
 			this.typeGroup === TRANSACTION_GROUPS.MAGISTRATE
 		);
 	}
 
-	isLegacyBusinessUpdate(): boolean {
+	isLegacyBusinessUpdate() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_2.BUSINESS_UPDATE &&
 			this.typeGroup === TRANSACTION_GROUPS.MAGISTRATE
 		);
 	}
 
-	isLegacyBridgechainRegistration(): boolean {
+	isLegacyBridgechainRegistration() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_2.BRIDGECHAIN_REGISTRATION &&
 			this.typeGroup === TRANSACTION_GROUPS.MAGISTRATE
 		);
 	}
 
-	isLegacyBridgechainResignation(): boolean {
+	isLegacyBridgechainResignation() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_2.BRIDGECHAIN_RESIGNATION &&
 			this.typeGroup === TRANSACTION_GROUPS.MAGISTRATE
 		);
 	}
 
-	isLegacyBridgechainUpdate(): boolean {
+	isLegacyBridgechainUpdate() {
 		return (
 			this.type === TRANSACTION_TYPES.GROUP_2.BRIDGECHAIN_UPDATE &&
 			this.typeGroup === TRANSACTION_GROUPS.MAGISTRATE
 		);
 	}
 
-	isSender(): boolean {
+	isUndefinedRegistration() {
+		return (
+			this.isEntityRegistration() &&
+			!Object.values(TRANSACTION_TYPES_ENTITY.TYPE).includes(
+				this.asset.type,
+			)
+		);
+	}
+
+	isUndefinedResignation() {
+		return (
+			this.isEntityResignation() &&
+			!Object.values(TRANSACTION_TYPES_ENTITY.TYPE).includes(
+				this.asset.type,
+			)
+		);
+	}
+
+	isUndefinedUpdate() {
+		return (
+			this.isEntityUpdate() &&
+			!Object.values(TRANSACTION_TYPES_ENTITY.TYPE).includes(
+				this.asset.type,
+			)
+		);
+	}
+
+	isSender() {
 		return this.senderId === this.address;
 	}
 
-	isReceiver(): boolean {
+	isReceiver() {
 		return this.recipientId === this.address;
 	}
 
-	isUnvote(): boolean {
+	isUnvote() {
 		if (this.isVote() && this.asset && this.asset.votes) {
 			const vote = this.asset.votes[0];
 			return vote.startsWith("-");

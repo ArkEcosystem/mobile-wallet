@@ -2,6 +2,7 @@ import businessRegistrationFixture from "@@/test/fixture/transactions/business-r
 import legacyBusinessRegistrationFixture from "@@/test/fixture/transactions/legacy-business-registration.json";
 import secondSignatureFixture from "@@/test/fixture/transactions/second-signature.json";
 import transferFixture from "@@/test/fixture/transactions/transfer.json";
+import unknownRegistrationFixture from "@@/test/fixture/transactions/unknown-registration.json";
 
 import { Transaction } from "./transaction";
 
@@ -10,6 +11,7 @@ const fixtures = {
 	secondSignature: secondSignatureFixture,
 	legacyBusinessRegistration: legacyBusinessRegistrationFixture,
 	businessRegistration: businessRegistrationFixture,
+	unknownRegistration: unknownRegistrationFixture,
 };
 
 describe("Transaction Model", () => {
@@ -42,6 +44,13 @@ describe("Transaction Model", () => {
 			fixtures.businessRegistration.data,
 		);
 		expect(transaction.isBusinessEntityRegistration()).toBeTrue();
+	});
+
+	it("isUndefinedRegistration", () => {
+		const transaction = subject.deserialize(
+			fixtures.unknownRegistration.data,
+		);
+		expect(transaction.isUndefinedRegistration()).toBeTrue();
 	});
 
 	it("should get type label", () => {
