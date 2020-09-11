@@ -150,7 +150,7 @@ export class ArkApiProvider {
 		// Fallback if the fetchNodeConfiguration fail
 		this._network.activeDelegates = constants.NUM_ACTIVE_DELEGATES;
 
-		this.connectToRandomPeer()
+		this.connectToPeer()
 			.pipe(
 				catchError((e) => {
 					console.error(e);
@@ -162,6 +162,35 @@ export class ArkApiProvider {
 		this.userDataService.onUpdateNetwork$.next(this._network);
 
 		this.fetchFees().subscribe();
+	}
+
+	public connectToPeer(): Observable<void> {
+		return new Observable((observer) => {
+			const defaultNetworks = {
+				mainnet: {
+					ip: "wallets.ark.io",
+					port: "80",
+				},
+				devnet: {
+					ip: "dwallets.ark.io",
+					port: "80",
+				},
+			};
+
+			const isKnowNetwork = lodash.includes(
+				Object.keys(defaultNetworks),
+				this._network.name,
+			);
+
+			if (isKnowNetwork) {
+				this.updateNetwork(defaultNetworks[this._network.name]);
+				observer.next();
+				observer.complete();
+				return;
+			}
+
+			this.connectToRandomPeer().subscribe(observer);
+		});
 	}
 
 	public connectToRandomPeer(): Observable<void> {
