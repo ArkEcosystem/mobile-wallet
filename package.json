@@ -96,7 +96,7 @@
 		"moment-timezone": "^0.5.28",
 		"ng2-charts": "^2.3.0",
 		"ngx-filter-pipe": "^2.1.2",
-		"node-forge": "^0.9.1",
+		"node-forge": "^0.10.0",
 		"pino": "^6.2.1",
 		"pino-pretty": "^4.0.0",
 		"rxjs": "^6.5.5",
