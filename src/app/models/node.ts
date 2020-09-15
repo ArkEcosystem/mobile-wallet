@@ -13,6 +13,9 @@ export interface IFees {
 }
 
 export interface INodeConfiguration {
+	core: {
+		version: string;
+	};
 	nethash: string;
 	slip44: number;
 	wif: number;

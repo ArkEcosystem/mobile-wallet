@@ -83,12 +83,12 @@ export class NetworkStatusPage implements OnInit, OnDestroy {
 
 	private refreshData() {
 		this.arkApiProvider.client
-			.getPeerConfig(this.currentPeer.ip, this.currentNetwork.p2pPort)
+			.getNodeConfiguration(this.getPeerUrl())
 			.pipe(takeUntil(this.unsubscriber$))
 			.subscribe((response) => {
 				if (response) {
 					this.zone.run(() => {
-						this.currentPeer.version = response.data.version;
+						this.currentPeer.version = response.core.version;
 					});
 				}
 			});
