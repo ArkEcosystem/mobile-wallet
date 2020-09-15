@@ -22,7 +22,6 @@ export interface EditNetworkResult {
 })
 export class CustomNetworkEditModal {
 	public network: StoredNetwork;
-	public apiPort: number;
 	public networkId: string;
 	public isDefault: boolean;
 
@@ -41,17 +40,10 @@ export class CustomNetworkEditModal {
 		this.networkId = this.navParams.get("id");
 
 		this.isDefault = defaultNetworksNames.includes(this.network.name);
-		this.apiPort = this.network.isV2
-			? this.network.apiPort
-			: this.network.activePeer.port;
 	}
 
 	dismiss(result?: EditNetworkResult) {
 		this.modalCtrl.dismiss(result);
-	}
-
-	public updateApiPort() {
-		this.network.apiPort = this.apiPort;
 	}
 
 	public save(): void {

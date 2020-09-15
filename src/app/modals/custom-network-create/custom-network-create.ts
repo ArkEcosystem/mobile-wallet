@@ -63,6 +63,10 @@ export class CustomNetworkCreateModal {
 					this.network.activePeer = new Peer();
 					this.network.activePeer.ip = seedServerUrl.hostname;
 					this.network.activePeer.port = apiConfig;
+
+					if (seedServerUrl.protocol === "https:") {
+						this.network.activePeer.port = 443;
+					}
 					// @ts-ignore
 					this.network.activePeer.protocol = seedServerUrl.protocol;
 
