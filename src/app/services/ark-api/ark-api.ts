@@ -30,6 +30,7 @@ import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
 
 import ArkClient, { WalletResponse } from "../../utils/ark-client";
 import { ArkUtility } from "../../utils/ark-utility";
+import { LoggerService } from "../logger/logger.service";
 
 interface NodeFees {
 	type: number;
@@ -71,6 +72,7 @@ export class ArkApiProvider {
 		private userDataService: UserDataService,
 		private storageProvider: StorageProvider,
 		private toastProvider: ToastProvider,
+		private loggerService: LoggerService,
 	) {
 		this.loadData();
 
@@ -142,6 +144,7 @@ export class ArkApiProvider {
 		this._client = new ArkClient(
 			this.network.getPeerAPIUrl(),
 			this.httpClient,
+			this.loggerService,
 		);
 		this._peerDiscovery = new PeerDiscovery(this.httpClient);
 
@@ -169,11 +172,13 @@ export class ArkApiProvider {
 			const defaultNetworks = {
 				mainnet: {
 					ip: "wallets.ark.io",
-					port: "80",
+					port: "443",
+					protocol: "https",
 				},
 				devnet: {
 					ip: "dwallets.ark.io",
-					port: "80",
+					port: "443",
+					protocol: "https",
 				},
 			};
 
@@ -523,6 +528,7 @@ export class ArkApiProvider {
 		this._client = new ArkClient(
 			this._network.getPeerAPIUrl(),
 			this.httpClient,
+			this.loggerService,
 		);
 
 		this.fetchDelegates(this._network.activeDelegates * 2).subscribe(

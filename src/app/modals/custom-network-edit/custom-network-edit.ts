@@ -23,7 +23,6 @@ export interface EditNetworkResult {
 export class CustomNetworkEditModal {
 	public network: StoredNetwork;
 	public apiPort: number;
-	public p2pPort: number;
 	public networkId: string;
 	public isDefault: boolean;
 
@@ -45,9 +44,6 @@ export class CustomNetworkEditModal {
 		this.apiPort = this.network.isV2
 			? this.network.apiPort
 			: this.network.activePeer.port;
-		this.p2pPort = this.network.isV2
-			? this.network.p2pPort
-			: this.network.activePeer.port;
 	}
 
 	dismiss(result?: EditNetworkResult) {
@@ -56,13 +52,6 @@ export class CustomNetworkEditModal {
 
 	public updateApiPort() {
 		this.network.apiPort = this.apiPort;
-	}
-
-	public updateP2PPort() {
-		if (this.network.isV2) {
-			this.network.p2pPort = this.p2pPort;
-		}
-		this.network.activePeer.port = this.p2pPort;
 	}
 
 	public save(): void {

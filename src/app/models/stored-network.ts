@@ -24,4 +24,10 @@ export class StoredNetwork extends Network {
 	public activeDelegates: number;
 	public vendorFieldLength?: number;
 	public aip11: boolean;
+
+	getPeerAPIUrl() {
+		// @ts-ignore
+		const protocol = this.activePeer.protocol || "http";
+		return `${protocol}://${this.activePeer.ip}:${this.activePeer.port}`;
+	}
 }

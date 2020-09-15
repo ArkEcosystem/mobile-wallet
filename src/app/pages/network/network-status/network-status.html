@@ -17,7 +17,9 @@
 							<div class="item-title">
 								{{ 'NETWORKS_PAGE.PEER' | translate }}
 							</div>
-							<div class="item-content">{{ getPeerUrl() }}</div>
+							<div class="item-content">
+								{{ currentNetwork.getPeerAPIUrl() }}
+							</div>
 						</ion-label>
 					</ion-item>
 

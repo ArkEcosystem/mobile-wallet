@@ -5,6 +5,7 @@ import { Network, Peer } from "ark-ts";
 import lodash from "lodash";
 import { finalize } from "rxjs/operators";
 
+import { LoggerService } from "@/services/logger/logger.service";
 import { ToastProvider } from "@/services/toast/toast";
 import ArkClient from "@/utils/ark-client";
 
@@ -23,6 +24,7 @@ export class CustomNetworkCreateModal {
 		private toastProvider: ToastProvider,
 		private loadingCtrl: LoadingController,
 		private httpClient: HttpClient,
+		private loggerService: LoggerService,
 	) {}
 
 	public dismiss(network?: Network): void {
@@ -35,7 +37,7 @@ export class CustomNetworkCreateModal {
 
 		const seedServerUrl = this.getSeedServerUrl();
 
-		new ArkClient(this.seedServer, this.httpClient)
+		new ArkClient(this.seedServer, this.httpClient, this.loggerService)
 			.getNodeConfiguration()
 			.pipe(finalize(() => loading.dismiss()))
 			.subscribe(
@@ -61,6 +63,8 @@ export class CustomNetworkCreateModal {
 					this.network.activePeer = new Peer();
 					this.network.activePeer.ip = seedServerUrl.hostname;
 					this.network.activePeer.port = apiConfig;
+					// @ts-ignore
+					this.network.activePeer.protocol = seedServerUrl.protocol;
 
 					this.network.isV2 = true;
 					this.dismiss(this.network);

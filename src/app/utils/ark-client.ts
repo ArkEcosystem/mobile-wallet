@@ -12,10 +12,11 @@ import {
 	TransactionResponse,
 } from "ark-ts";
 import { Observable, of } from "rxjs";
-import { timeout } from "rxjs/operators";
+import { tap, timeout } from "rxjs/operators";
 
 import { TRANSACTION_GROUPS } from "@/app/app.constants";
 import { INodeConfiguration } from "@/models/node";
+import { LoggerService } from "@/services/logger/logger.service";
 
 export interface PeerApiResponse extends Peer {
 	latency?: number;
@@ -35,7 +36,11 @@ export default class ApiClient {
 	private host: string;
 	private httpClient: HttpClient;
 
-	constructor(host: string, httpClient: HttpClient) {
+	constructor(
+		host: string,
+		httpClient: HttpClient,
+		private loggerService: LoggerService,
+	) {
 		this.host = host;
 		this.httpClient = httpClient;
 	}
@@ -315,12 +320,16 @@ export default class ApiClient {
 		host: string = this.host,
 		timeoutMs: number = 5000,
 	) {
+		const url = `${host}/api/${path}`;
 		return this.httpClient
-			.request("GET", `${host}/api/${path}`, {
+			.request("GET", url, {
 				...options,
 				headers: this.defaultHeaders,
 			})
-			.pipe(timeout(timeoutMs));
+			.pipe(
+				timeout(timeoutMs),
+				tap(() => this.loggerService.info(`GET - ${url}`)),
+			);
 	}
 
 	private post(
