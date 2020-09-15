@@ -1,0 +1,28 @@
+{
+	"data": {
+		"id": "fe57a178b69620e90750f38af824331a105670c3a43478a22e28034cc1878be9",
+		"blockId": "2d06794a9b6da0fd71eedbc6c5074203d79ab0ae5690ecfbf8de1db0e11298ca",
+		"version": 2,
+		"type": 0,
+		"typeGroup": 2,
+		"amount": "0",
+		"fee": "5000000000",
+		"sender": "DLK7ts2DpkbeBjFamuFtHLoDAq5upDhCmf",
+		"senderPublicKey": "0208e6835a8f020cfad439c059b89addc1ce21f8cab0af6e6957e22d3720bff8a4",
+		"recipient": "DLK7ts2DpkbeBjFamuFtHLoDAq5upDhCmf",
+		"signature": "a85eea1f6146300bdc28265cce82c55b2d54bde91dec9357e2a9914cf3f879f4c3f3c957559ee983877dfcb516f08f55a9cc9c0f365e6cf4957c777c4dfaea3d",
+		"asset": {
+			"businessRegistration": {
+				"name": "Test",
+				"website": "https://www.test.com/"
+			}
+		},
+		"confirmations": 865317,
+		"timestamp": {
+			"epoch": 102289376,
+			"unix": 1592390576,
+			"human": "2020-06-17T10:42:56.000Z"
+		},
+		"nonce": "3"
+	}
+}
