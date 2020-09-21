@@ -209,14 +209,14 @@ export class Transaction extends TransactionModel {
 		if (this.isProductEntityUpdate()) {
 			return "TRANSACTIONS_PAGE.PRODUCT_ENTITY_UPDATE";
 		}
-		if (this.isDeveloperEntityRegistration()) {
-			return "TRANSACTIONS_PAGE.DEVELOPER_ENTITY_REGISTRATION";
+		if (this.isPluginEntityRegistration()) {
+			return "TRANSACTIONS_PAGE.PLUGIN_ENTITY_REGISTRATION";
 		}
-		if (this.isDeveloperEntityResignation()) {
-			return "TRANSACTIONS_PAGE.DEVELOPER_ENTITY_REGISTRATION";
+		if (this.isPluginEntityResignation()) {
+			return "TRANSACTIONS_PAGE.PLUGIN_ENTITY_REGISTRATION";
 		}
-		if (this.isDeveloperEntityUpdate()) {
-			return "TRANSACTIONS_PAGE.DEVELOPER_ENTITY_UPDATE";
+		if (this.isPluginEntityUpdate()) {
+			return "TRANSACTIONS_PAGE.PLUGIN_ENTITY_UPDATE";
 		}
 		if (this.isDelegateEntityRegistration()) {
 			return "TRANSACTIONS_PAGE.DELEGATE_ENTITY_REGISTRATION";
@@ -396,27 +396,24 @@ export class Transaction extends TransactionModel {
 		);
 	}
 
-	isDeveloperEntityRegistration() {
+	isPluginEntityRegistration() {
 		return (
 			this.isEntityRegistration() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DEVELOPER &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN
 		);
 	}
 
-	isDeveloperEntityResignation() {
+	isPluginEntityResignation() {
 		return (
 			this.isEntityResignation() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DEVELOPER &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN
 		);
 	}
 
-	isDeveloperEntityUpdate() {
+	isPluginEntityUpdate() {
 		return (
 			this.isEntityUpdate() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DEVELOPER &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN
 		);
 	}
 
