@@ -121,8 +121,7 @@
 							type="text"
 							required
 							name="apiPort"
-							[(ngModel)]="apiPort"
-							(ionChange)="updateApiPort()"
+							[(ngModel)]="network.activePeer.port"
 						>
 						</ion-input>
 					</ion-item>
