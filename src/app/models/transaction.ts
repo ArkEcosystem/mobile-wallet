@@ -363,24 +363,21 @@ export class Transaction extends TransactionModel {
 	isBusinessEntityRegistration() {
 		return (
 			this.isEntityRegistration() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS
 		);
 	}
 
 	isBusinessEntityResignation() {
 		return (
 			this.isEntityResignation() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS
 		);
 	}
 
 	isBusinessEntityUpdate() {
 		return (
 			this.isEntityUpdate() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS
 		);
 	}
 
@@ -450,24 +447,21 @@ export class Transaction extends TransactionModel {
 	isDelegateEntityRegistration() {
 		return (
 			this.isEntityRegistration() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE
 		);
 	}
 
 	isDelegateEntityResignation() {
 		return (
 			this.isEntityResignation() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE
 		);
 	}
 
 	isDelegateEntityUpdate() {
 		return (
 			this.isEntityUpdate() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE
 		);
 	}
 
