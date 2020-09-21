@@ -1,4 +1,5 @@
 import { Network } from "ark-ts";
+import URL from "url";
 
 import { PeerApiResponse } from "@/utils/ark-client";
 
@@ -24,4 +25,14 @@ export class StoredNetwork extends Network {
 	public activeDelegates: number;
 	public vendorFieldLength?: number;
 	public aip11: boolean;
+
+	getPeerAPIUrl() {
+		// @ts-ignore
+		const protocol = this.activePeer.protocol || "http";
+		return URL.format({
+			protocol,
+			hostname: this.activePeer.ip,
+			port: this.activePeer.port,
+		});
+	}
 }

@@ -30,6 +30,7 @@ import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
 
 import ArkClient, { WalletResponse } from "../../utils/ark-client";
 import { ArkUtility } from "../../utils/ark-utility";
+import { LoggerService } from "../logger/logger.service";
 
 interface NodeFees {
 	type: number;
@@ -71,6 +72,7 @@ export class ArkApiProvider {
 		private userDataService: UserDataService,
 		private storageProvider: StorageProvider,
 		private toastProvider: ToastProvider,
+		private loggerService: LoggerService,
 	) {
 		this.loadData();
 
@@ -142,6 +144,7 @@ export class ArkApiProvider {
 		this._client = new ArkClient(
 			this.network.getPeerAPIUrl(),
 			this.httpClient,
+			this.loggerService,
 		);
 		this._peerDiscovery = new PeerDiscovery(this.httpClient);
 
@@ -150,7 +153,7 @@ export class ArkApiProvider {
 		// Fallback if the fetchNodeConfiguration fail
 		this._network.activeDelegates = constants.NUM_ACTIVE_DELEGATES;
 
-		this.connectToRandomPeer()
+		this.connectToPeer()
 			.pipe(
 				catchError((e) => {
 					console.error(e);
@@ -162,6 +165,37 @@ export class ArkApiProvider {
 		this.userDataService.onUpdateNetwork$.next(this._network);
 
 		this.fetchFees().subscribe();
+	}
+
+	public connectToPeer(): Observable<void> {
+		return new Observable((observer) => {
+			const defaultNetworks = {
+				mainnet: {
+					ip: "wallets.ark.io",
+					port: "443",
+					protocol: "https",
+				},
+				devnet: {
+					ip: "dwallets.ark.io",
+					port: "443",
+					protocol: "https",
+				},
+			};
+
+			const isKnowNetwork = lodash.includes(
+				Object.keys(defaultNetworks),
+				this._network.name,
+			);
+
+			if (isKnowNetwork) {
+				this.updateNetwork(defaultNetworks[this._network.name]);
+				observer.next();
+				observer.complete();
+				return;
+			}
+
+			this.connectToRandomPeer().subscribe(observer);
+		});
 	}
 
 	public connectToRandomPeer(): Observable<void> {
@@ -494,6 +528,7 @@ export class ArkApiProvider {
 		this._client = new ArkClient(
 			this._network.getPeerAPIUrl(),
 			this.httpClient,
+			this.loggerService,
 		);
 
 		this.fetchDelegates(this._network.activeDelegates * 2).subscribe(

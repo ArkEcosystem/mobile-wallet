@@ -8,16 +8,15 @@ import {
 	LoaderStatusSync,
 	Peer,
 	PeerResponse,
-	PeerVersion2ConfigResponse,
 	TransactionPostResponse,
 	TransactionResponse,
 } from "ark-ts";
-import lodash from "lodash";
 import { Observable, of } from "rxjs";
-import { timeout } from "rxjs/operators";
+import { tap, timeout } from "rxjs/operators";
 
 import { TRANSACTION_GROUPS } from "@/app/app.constants";
 import { INodeConfiguration } from "@/models/node";
+import { LoggerService } from "@/services/logger/logger.service";
 
 export interface PeerApiResponse extends Peer {
 	latency?: number;
@@ -37,7 +36,11 @@ export default class ApiClient {
 	private host: string;
 	private httpClient: HttpClient;
 
-	constructor(host: string, httpClient: HttpClient) {
+	constructor(
+		host: string,
+		httpClient: HttpClient,
+		private loggerService: LoggerService,
+	) {
 		this.host = host;
 		this.httpClient = httpClient;
 	}
@@ -228,66 +231,6 @@ export default class ApiClient {
 		});
 	}
 
-	getPeerConfig(
-		ip: string,
-		port: number,
-		protocol: "http" | "https" = "http",
-	): Observable<PeerVersion2ConfigResponse> {
-		return new Observable((observer) => {
-			this.httpClient
-				.get(`${protocol}://${ip}:4040/config`)
-				.pipe(timeout(2000))
-				.subscribe(
-					(response: any) => {
-						observer.next(response);
-						observer.complete();
-					},
-					() => {
-						this.httpClient
-							.get(`${protocol}://${ip}:${port}/config`)
-							.pipe(timeout(2000))
-							.subscribe(
-								(response: any) => {
-									observer.next(response);
-									observer.complete();
-								},
-								() => {
-									this.getNodeConfiguration(
-										`${protocol}://${ip}:${port}`,
-									).subscribe(
-										(response) => {
-											const apiPort = lodash.find(
-												response.ports,
-												(_, key) =>
-													key
-														.split("/")
-														.reverse()[0] ===
-													"core-wallet-api",
-											);
-											const isApiEnabled =
-												apiPort && Number(apiPort) > 1;
-											if (isApiEnabled) {
-												this.getPeerConfig(
-													ip,
-													apiPort,
-													protocol,
-												).subscribe(
-													(r) => observer.next(r),
-													(e) => observer.error(e),
-												);
-											} else {
-												observer.error();
-											}
-										},
-										(error) => observer.error(error),
-									);
-								},
-							);
-					},
-				);
-		});
-	}
-
 	postTransaction(
 		transaction: any,
 		peer: Peer,
@@ -377,12 +320,16 @@ export default class ApiClient {
 		host: string = this.host,
 		timeoutMs: number = 5000,
 	) {
+		const url = `${host}/api/${path}`;
 		return this.httpClient
-			.request("GET", `${host}/api/${path}`, {
+			.request("GET", url, {
 				...options,
 				headers: this.defaultHeaders,
 			})
-			.pipe(timeout(timeoutMs));
+			.pipe(
+				timeout(timeoutMs),
+				tap(() => this.loggerService.info(`GET - ${url}`)),
+			);
 	}
 
 	private post(
