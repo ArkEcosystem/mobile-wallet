@@ -94,8 +94,6 @@ export const TRANSACTION_TYPES_ENTITY = {
 
 	SUBTYPE: {
 		NONE: 0,
-		PLUGIN_CORE: 1,
-		PLUGIN_DESKTOP: 2,
 	},
 
 	ACTION: {

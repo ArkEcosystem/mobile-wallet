@@ -209,24 +209,6 @@ export class Transaction extends TransactionModel {
 		if (this.isDeveloperEntityUpdate()) {
 			return "TRANSACTIONS_PAGE.DEVELOPER_ENTITY_UPDATE";
 		}
-		if (this.isCorePluginEntityRegistration()) {
-			return "TRANSACTIONS_PAGE.CORE_PLUGIN_ENTITY_REGISTRATION";
-		}
-		if (this.isCorePluginEntityResignation()) {
-			return "TRANSACTIONS_PAGE.CORE_PLUGIN_ENTITY_REGISTRATION";
-		}
-		if (this.isCorePluginEntityUpdate()) {
-			return "TRANSACTIONS_PAGE.CORE_PLUGIN_ENTITY_UPDATE";
-		}
-		if (this.isDesktopPluginEntityRegistration()) {
-			return "TRANSACTIONS_PAGE.DESKTOP_PLUGIN_ENTITY_REGISTRATION";
-		}
-		if (this.isDesktopPluginEntityResignation()) {
-			return "TRANSACTIONS_PAGE.DESKTOP_PLUGIN_ENTITY_REGISTRATION";
-		}
-		if (this.isDesktopPluginEntityUpdate()) {
-			return "TRANSACTIONS_PAGE.DESKTOP_PLUGIN_ENTITY_UPDATE";
-		}
 		if (this.isDelegateEntityRegistration()) {
 			return "TRANSACTIONS_PAGE.DELEGATE_ENTITY_REGISTRATION";
 		}
@@ -405,57 +387,6 @@ export class Transaction extends TransactionModel {
 			this.isEntityUpdate() &&
 			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DEVELOPER &&
 			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
-		);
-	}
-
-	isCorePluginEntityRegistration() {
-		return (
-			this.isEntityRegistration() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_CORE
-		);
-	}
-
-	isCorePluginEntityResignation() {
-		return (
-			this.isEntityResignation() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_CORE
-		);
-	}
-
-	isCorePluginEntityUpdate() {
-		return (
-			this.isEntityUpdate() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_CORE
-		);
-	}
-
-	isDesktopPluginEntityRegistration() {
-		return (
-			this.isEntityRegistration() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType ===
-				TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_DESKTOP
-		);
-	}
-
-	isDesktopPluginEntityResignation() {
-		return (
-			this.isEntityResignation() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType ===
-				TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_DESKTOP
-		);
-	}
-
-	isDesktopPluginEntityUpdate() {
-		return (
-			this.isEntityUpdate() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType ===
-				TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_DESKTOP
 		);
 	}
 
