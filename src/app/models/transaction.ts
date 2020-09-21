@@ -200,6 +200,15 @@ export class Transaction extends TransactionModel {
 		if (this.isBusinessEntityUpdate()) {
 			return "TRANSACTIONS_PAGE.BUSINESS_ENTITY_UPDATE";
 		}
+		if (this.isProductEntityRegistration()) {
+			return "TRANSACTIONS_PAGE.PRODUCT_ENTITY_REGISTRATION";
+		}
+		if (this.isProductEntityResignation()) {
+			return "TRANSACTIONS_PAGE.PRODUCT_ENTITY_REGISTRATION";
+		}
+		if (this.isProductEntityUpdate()) {
+			return "TRANSACTIONS_PAGE.PRODUCT_ENTITY_UPDATE";
+		}
 		if (this.isDeveloperEntityRegistration()) {
 			return "TRANSACTIONS_PAGE.DEVELOPER_ENTITY_REGISTRATION";
 		}
@@ -363,6 +372,27 @@ export class Transaction extends TransactionModel {
 			this.isEntityUpdate() &&
 			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS &&
 			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+		);
+	}
+
+	isProductEntityRegistration() {
+		return (
+			this.isEntityRegistration() &&
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PRODUCT
+		);
+	}
+
+	isProductEntityResignation() {
+		return (
+			this.isEntityResignation() &&
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PRODUCT
+		);
+	}
+
+	isProductEntityUpdate() {
+		return (
+			this.isEntityUpdate() &&
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PRODUCT
 		);
 	}
 

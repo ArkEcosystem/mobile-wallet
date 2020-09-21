@@ -86,7 +86,7 @@ export const TRANSACTION_TYPES = {
 export const TRANSACTION_TYPES_ENTITY = {
 	TYPE: {
 		BUSINESS: 0,
-		BRIDGECHAIN: 1, // not used anymore but type is kept
+		PRODUCT: 1,
 		DEVELOPER: 2,
 		PLUGIN: 3,
 		DELEGATE: 4,
