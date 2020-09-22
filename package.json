@@ -68,7 +68,7 @@
 		"cordova-custom-config": "^5.1.0",
 		"cordova-ios": "^6.0.0",
 		"cordova-plugin-add-swift-support": "^2.0.2",
-		"cordova-plugin-androidx": "^2.0.0",
+		"cordova-plugin-androidx": "^3.0.0",
 		"cordova-plugin-androidx-adapter": "^1.1.1",
 		"cordova-plugin-device": "^2.0.3",
 		"cordova-plugin-inappbrowser": "^4.0.0",
