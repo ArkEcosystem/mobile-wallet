@@ -200,32 +200,32 @@ export class Transaction extends TransactionModel {
 		if (this.isBusinessEntityUpdate()) {
 			return "TRANSACTIONS_PAGE.BUSINESS_ENTITY_UPDATE";
 		}
-		if (this.isDeveloperEntityRegistration()) {
-			return "TRANSACTIONS_PAGE.DEVELOPER_ENTITY_REGISTRATION";
+		if (this.isProductEntityRegistration()) {
+			return "TRANSACTIONS_PAGE.PRODUCT_ENTITY_REGISTRATION";
 		}
-		if (this.isDeveloperEntityResignation()) {
-			return "TRANSACTIONS_PAGE.DEVELOPER_ENTITY_REGISTRATION";
+		if (this.isProductEntityResignation()) {
+			return "TRANSACTIONS_PAGE.PRODUCT_ENTITY_REGISTRATION";
 		}
-		if (this.isDeveloperEntityUpdate()) {
-			return "TRANSACTIONS_PAGE.DEVELOPER_ENTITY_UPDATE";
+		if (this.isProductEntityUpdate()) {
+			return "TRANSACTIONS_PAGE.PRODUCT_ENTITY_UPDATE";
 		}
-		if (this.isCorePluginEntityRegistration()) {
-			return "TRANSACTIONS_PAGE.CORE_PLUGIN_ENTITY_REGISTRATION";
+		if (this.isPluginEntityRegistration()) {
+			return "TRANSACTIONS_PAGE.PLUGIN_ENTITY_REGISTRATION";
 		}
-		if (this.isCorePluginEntityResignation()) {
-			return "TRANSACTIONS_PAGE.CORE_PLUGIN_ENTITY_REGISTRATION";
+		if (this.isPluginEntityResignation()) {
+			return "TRANSACTIONS_PAGE.PLUGIN_ENTITY_REGISTRATION";
 		}
-		if (this.isCorePluginEntityUpdate()) {
-			return "TRANSACTIONS_PAGE.CORE_PLUGIN_ENTITY_UPDATE";
+		if (this.isPluginEntityUpdate()) {
+			return "TRANSACTIONS_PAGE.PLUGIN_ENTITY_UPDATE";
 		}
-		if (this.isDesktopPluginEntityRegistration()) {
-			return "TRANSACTIONS_PAGE.DESKTOP_PLUGIN_ENTITY_REGISTRATION";
+		if (this.isModuleEntityRegistration()) {
+			return "TRANSACTIONS_PAGE.MODULE_ENTITY_REGISTRATION";
 		}
-		if (this.isDesktopPluginEntityResignation()) {
-			return "TRANSACTIONS_PAGE.DESKTOP_PLUGIN_ENTITY_REGISTRATION";
+		if (this.isModuleEntityResignation()) {
+			return "TRANSACTIONS_PAGE.MODULE_ENTITY_REGISTRATION";
 		}
-		if (this.isDesktopPluginEntityUpdate()) {
-			return "TRANSACTIONS_PAGE.DESKTOP_PLUGIN_ENTITY_UPDATE";
+		if (this.isModuleEntityUpdate()) {
+			return "TRANSACTIONS_PAGE.MODULE_ENTITY_UPDATE";
 		}
 		if (this.isDelegateEntityRegistration()) {
 			return "TRANSACTIONS_PAGE.DELEGATE_ENTITY_REGISTRATION";
@@ -363,123 +363,105 @@ export class Transaction extends TransactionModel {
 	isBusinessEntityRegistration() {
 		return (
 			this.isEntityRegistration() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS
 		);
 	}
 
 	isBusinessEntityResignation() {
 		return (
 			this.isEntityResignation() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS
 		);
 	}
 
 	isBusinessEntityUpdate() {
 		return (
 			this.isEntityUpdate() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.BUSINESS
 		);
 	}
 
-	isDeveloperEntityRegistration() {
+	isProductEntityRegistration() {
 		return (
 			this.isEntityRegistration() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DEVELOPER &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PRODUCT
 		);
 	}
 
-	isDeveloperEntityResignation() {
+	isProductEntityResignation() {
 		return (
 			this.isEntityResignation() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DEVELOPER &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PRODUCT
 		);
 	}
 
-	isDeveloperEntityUpdate() {
+	isProductEntityUpdate() {
 		return (
 			this.isEntityUpdate() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DEVELOPER &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PRODUCT
 		);
 	}
 
-	isCorePluginEntityRegistration() {
+	isPluginEntityRegistration() {
 		return (
 			this.isEntityRegistration() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_CORE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN
 		);
 	}
 
-	isCorePluginEntityResignation() {
+	isPluginEntityResignation() {
 		return (
 			this.isEntityResignation() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_CORE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN
 		);
 	}
 
-	isCorePluginEntityUpdate() {
+	isPluginEntityUpdate() {
 		return (
 			this.isEntityUpdate() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_CORE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN
 		);
 	}
 
-	isDesktopPluginEntityRegistration() {
+	isModuleEntityRegistration() {
 		return (
 			this.isEntityRegistration() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType ===
-				TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_DESKTOP
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.MODULE
 		);
 	}
 
-	isDesktopPluginEntityResignation() {
+	isModuleEntityResignation() {
 		return (
 			this.isEntityResignation() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType ===
-				TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_DESKTOP
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.MODULE
 		);
 	}
 
-	isDesktopPluginEntityUpdate() {
+	isModuleEntityUpdate() {
 		return (
 			this.isEntityUpdate() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.PLUGIN &&
-			this.asset.subType ===
-				TRANSACTION_TYPES_ENTITY.SUBTYPE.PLUGIN_DESKTOP
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.MODULE
 		);
 	}
 
 	isDelegateEntityRegistration() {
 		return (
 			this.isEntityRegistration() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE
 		);
 	}
 
 	isDelegateEntityResignation() {
 		return (
 			this.isEntityResignation() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE
 		);
 	}
 
 	isDelegateEntityUpdate() {
 		return (
 			this.isEntityUpdate() &&
-			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE &&
-			this.asset.subType === TRANSACTION_TYPES_ENTITY.SUBTYPE.NONE
+			this.asset.type === TRANSACTION_TYPES_ENTITY.TYPE.DELEGATE
 		);
 	}
 
