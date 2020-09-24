@@ -1,6 +1,6 @@
 {
 	"name": "ark-mobile",
-	"version": "1.8.5",
+	"version": "1.8.6",
 	"author": "Ark Ecosystem <mobile@ark.io>",
 	"homepage": "https://github.com/ArkEcosystem/mobile-wallet#readme",
 	"scripts": {
