@@ -54,7 +54,7 @@ export class Transaction extends TransactionModel {
 			}
 		}
 		this.senderId = input.sender;
-		this.recipientId = input.recipient;
+		this.recipientId = input.recipient || input.recipientId;
 		this.date = new Date(this.timestamp * 1000);
 		this.amount = new BigNumber(input.amount).toNumber();
 		this.fee = new BigNumber(input.fee).toNumber();
