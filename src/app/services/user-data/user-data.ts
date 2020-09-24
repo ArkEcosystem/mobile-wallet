@@ -373,12 +373,13 @@ export class UserDataServiceImpl implements UserDataService {
 		}
 
 		if (
+			label &&
 			lodash.some(
 				this.currentProfile.wallets,
 				(w) =>
-					label &&
 					w.label &&
-					w.label.toLowerCase() === label.toLowerCase(),
+					w.label.toLowerCase() === label.toLowerCase() &&
+					w.address !== wallet.address,
 			)
 		) {
 			return throwError({
