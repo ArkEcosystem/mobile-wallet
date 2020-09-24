@@ -376,7 +376,10 @@ export class UserDataServiceImpl implements UserDataService {
 			label &&
 			lodash.some(
 				this.currentProfile.wallets,
-				(w) => w.label && w.label.toLowerCase() === label.toLowerCase(),
+				(w) =>
+					w.label &&
+					w.label.toLowerCase() === label.toLowerCase() &&
+					w.address !== wallet.address,
 			)
 		) {
 			return throwError({
