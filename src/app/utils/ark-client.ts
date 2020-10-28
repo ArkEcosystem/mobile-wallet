@@ -106,11 +106,7 @@ export default class ApiClient {
 
 	getTransactionList(address: string): Observable<TransactionResponse> {
 		return new Observable((observer) => {
-			this.get(`wallets/${address}/transactions`, {
-				params: {
-					orderBy: "timestamp:desc",
-				},
-			}).subscribe(
+			this.get(`wallets/${address}/transactions`).subscribe(
 				(response: any) => {
 					observer.next({
 						success: true,
@@ -253,7 +249,7 @@ export default class ApiClient {
 	}
 
 	getDelegateList(
-		options: any = { page: 1, limit: 100, orderBy: "rank:asc" },
+		options: any = { page: 1, limit: 100 },
 	): Observable<DelegateResponse> {
 		return new Observable((observer) => {
 			this.get("delegates", { params: options }).subscribe(
