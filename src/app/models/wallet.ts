@@ -65,7 +65,8 @@ export class Wallet extends Account {
 				self[prop] = input[prop];
 			}
 		}
-		return self;
+
+		return this.sanitizeAttributes(self);
 	}
 
 	reset() {
@@ -105,5 +106,16 @@ export class Wallet extends Account {
 		const price = currency ? currency.price : 0;
 
 		return balance * price;
+	}
+
+	private sanitizeAttributes(input: any) {
+		const wallet = { ...input };
+
+		if (wallet.attributes?.delegate) {
+			wallet.isDelegate = true;
+			wallet.username = input.attributes?.username;
+		}
+
+		return wallet;
 	}
 }
