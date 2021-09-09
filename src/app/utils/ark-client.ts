@@ -316,7 +316,7 @@ export default class ApiClient {
 		timeoutMs: number = 5000,
 	) {
 		return this.httpClient
-			.request("GET", `${host}/api/${path}`, {
+			.get(`${host}/api/${path}`, {
 				...options,
 				headers: this.defaultHeaders,
 			})
