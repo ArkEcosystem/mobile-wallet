@@ -145,7 +145,7 @@ describe("ARK API", () => {
 				method: HttpMethod.GET,
 			},
 			{
-				url: "http://127.0.0.1:4003/api/v2/node/fees?days=7",
+				url: "http://127.0.0.1:4003/api/node/fees?days=7",
 				method: HttpMethod.GET,
 			},
 		]);
