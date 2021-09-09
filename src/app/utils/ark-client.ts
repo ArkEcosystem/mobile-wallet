@@ -284,7 +284,23 @@ export default class ApiClient {
 					observer.next(this.__formatDelegateResponse(data));
 					observer.complete();
 				},
-				(error) => observer.error(error),
+				(error) => {
+					const response =
+						typeof error.error === "string"
+							? JSON.parse(error.error)
+							: error.error;
+					if (
+						response &&
+						error.status === 404 &&
+						response.message === "Delegate not found"
+					) {
+						observer.complete();
+
+						return;
+					}
+
+					observer.error(error);
+				},
 			);
 		});
 	}
