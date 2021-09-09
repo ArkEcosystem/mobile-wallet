@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { LoadingController, ModalController } from "@ionic/angular";
 import { Network, Peer } from "ark-ts";
@@ -7,6 +6,7 @@ import { finalize } from "rxjs/operators";
 
 import { ToastProvider } from "@/services/toast/toast";
 import ArkClient from "@/utils/ark-client";
+import { HttpClient } from "@/utils/ark-http-client";
 
 @Component({
 	selector: "customNetworkCreate",

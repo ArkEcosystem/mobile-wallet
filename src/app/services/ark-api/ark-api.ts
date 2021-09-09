@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import * as ArkCrypto from "@arkecosystem/crypto";
 import { BigNumber } from "@arkecosystem/platform-sdk-support";
@@ -26,10 +25,10 @@ import { FeeStatistic, StoredNetwork } from "@/models/stored-network";
 import { StorageProvider } from "@/services/storage/storage";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
+import ArkClient, { WalletResponse } from "@/utils/ark-client";
+import { HttpClient } from "@/utils/ark-http-client";
 import { PeerDiscovery } from "@/utils/ark-peer-discovery";
-
-import ArkClient, { WalletResponse } from "../../utils/ark-client";
-import { ArkUtility } from "../../utils/ark-utility";
+import { ArkUtility } from "@/utils/ark-utility";
 
 interface NodeFees {
 	type: number;
