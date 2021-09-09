@@ -289,6 +289,7 @@ export default class ApiClient {
 						error.status === 404 &&
 						response.message === "Delegate not found"
 					) {
+						observer.next(null);
 						observer.complete();
 
 						return;
