@@ -40,6 +40,7 @@
 		"@ionic-native/clipboard": "^5.24.0",
 		"@ionic-native/core": "^5.24.0",
 		"@ionic-native/fingerprint-aio": "^5.24.0",
+		"@ionic-native/http": "^5.36.0",
 		"@ionic-native/in-app-browser": "^5.24.0",
 		"@ionic-native/keyboard": "^5.24.0",
 		"@ionic-native/local-notifications": "^5.24.0",
@@ -68,6 +69,7 @@
 		"cordova-custom-config": "^5.1.0",
 		"cordova-ios": "^6.0.0",
 		"cordova-plugin-add-swift-support": "^2.0.2",
+		"cordova-plugin-advanced-http": "^3.2.0",
 		"cordova-plugin-androidx": "^2.0.0",
 		"cordova-plugin-androidx-adapter": "^1.1.1",
 		"cordova-plugin-device": "^2.0.3",
@@ -195,7 +197,10 @@
 				"PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app requires photo library access to function properly."
 			},
 			"cordova-plugin-androidx": {},
-			"cordova-plugin-androidx-adapter": {}
+			"cordova-plugin-androidx-adapter": {},
+			"cordova-plugin-advanced-http": {
+				"ANDROIDBLACKLISTSECURESOCKETPROTOCOLS": "SSLv3,TLSv1"
+			}
 		},
 		"platforms": [
 			"ios",
