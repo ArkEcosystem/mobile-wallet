@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import {
 	AccountResponse,
 	AccountVotesResponse,
@@ -17,6 +16,7 @@ import { tap, timeout } from "rxjs/operators";
 import { TRANSACTION_GROUPS } from "@/app/app.constants";
 import { INodeConfiguration } from "@/models/node";
 import { LoggerService } from "@/services/logger/logger.service";
+import { HttpClient } from "@/utils/ark-http-client";
 
 export interface PeerApiResponse extends Peer {
 	latency?: number;
