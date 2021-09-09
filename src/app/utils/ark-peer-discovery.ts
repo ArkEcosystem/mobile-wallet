@@ -99,15 +99,11 @@ export class PeerDiscovery {
 				];
 
 				this.httpClient
-					.request(
-						"GET",
-						`http://${seed.ip}:${seed.port}/api/peers`,
-						{
-							headers: {
-								"API-Version": "2",
-							},
+					.get(`http://${seed.ip}:${seed.port}/api/peers`, {
+						headers: {
+							"API-Version": "2",
 						},
-					)
+					})
 					.subscribe(
 						(body: any) => {
 							let peers = body.data;

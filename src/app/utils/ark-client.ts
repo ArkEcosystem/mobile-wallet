@@ -322,7 +322,7 @@ export default class ApiClient {
 	) {
 		const url = `${host}/api/${path}`;
 		return this.httpClient
-			.request("GET", url, {
+			.get(url, {
 				...options,
 				headers: this.defaultHeaders,
 			})
