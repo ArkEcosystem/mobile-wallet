@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { LoadingController, ModalController } from "@ionic/angular";
 import { Network, Peer } from "ark-ts";
-import lodash from "lodash";
 import { finalize } from "rxjs/operators";
 
 import { ToastProvider } from "@/services/toast/toast";
@@ -48,19 +47,15 @@ export class CustomNetworkCreateModal {
 					this.network.version = response.version;
 					this.network.type = null;
 
-					const apiConfig: any = lodash.find(
-						response.ports,
-						(_, key) => key.split("/").reverse()[0] === "core-api",
-					);
-					if (!response.ports || !apiConfig) {
+					if (!response.ports || !seedServerUrl.port) {
 						this.configureError();
 						return;
 					}
-					this.network.apiPort = apiConfig;
+					this.network.apiPort = parseInt(seedServerUrl.port);
 
 					this.network.activePeer = new Peer();
 					this.network.activePeer.ip = seedServerUrl.hostname;
-					this.network.activePeer.port = apiConfig;
+					this.network.activePeer.port = parseInt(seedServerUrl.port);
 
 					this.network.isV2 = true;
 					this.dismiss(this.network);
