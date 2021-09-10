@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HTTP } from "@ionic-native/http/ngx";
 import { from, Observable } from "rxjs";
-import { catchError, map } from "rxjs/operators";
+import { map } from "rxjs/operators";
 
 @Injectable({
 	providedIn: "root",
@@ -11,15 +11,17 @@ export class HttpClient {
 		"Content-Type": "application/json",
 	};
 
-	constructor(private http: HTTP) {
-		this.http.setDataSerializer("json");
-	}
+	constructor(private http: HTTP) {}
 
 	get<T>(url: string, options: any = {}): Observable<any> {
-		console.log("HttpClient#get", url);
+		this.http.setDataSerializer("json");
 
 		return from(
-			this.http.get(url, {}, options.headers ?? this.defaultHeaders),
+			this.http.get(
+				url,
+				{},
+				{ ...this.defaultHeaders, ...(options.headers || {}) },
+			),
 		).pipe(
 			map(function (result): any {
 				console.log(
@@ -30,19 +32,17 @@ export class HttpClient {
 
 				return JSON.parse(result.data);
 			}),
-			catchError(function (error): any {
-				console.log("HttpClient#get error", error);
-
-				throw error;
-			}),
 		);
 	}
 
 	post<T>(url: string, body: any = {}, options: any = {}): Observable<any> {
-		console.log("HttpClient#post", url, body);
+		this.http.setDataSerializer("json");
 
 		return from(
-			this.http.post(url, body, options.headers ?? this.defaultHeaders),
+			this.http.post(url, body, {
+				...this.defaultHeaders,
+				...(options.headers || {}),
+			}),
 		).pipe(
 			map(function (result): any {
 				console.log(
@@ -53,19 +53,17 @@ export class HttpClient {
 
 				return JSON.parse(result.data);
 			}),
-			catchError(function (error): any {
-				console.log("HttpClient#post error", error);
-
-				throw error;
-			}),
 		);
 	}
 
 	put<T>(url: string, body: any = {}, options: any = {}): Observable<any> {
-		console.log("HttpClient#put", url, body);
+		this.http.setDataSerializer("json");
 
 		return from(
-			this.http.put(url, body, options.headers ?? this.defaultHeaders),
+			this.http.put(url, body, {
+				...this.defaultHeaders,
+				...(options.headers || {}),
+			}),
 		).pipe(
 			map(function (result): any {
 				console.log(
@@ -75,11 +73,6 @@ export class HttpClient {
 				);
 
 				return JSON.parse(result.data);
-			}),
-			catchError(function (error): any {
-				console.log("HttpClient#put error", error);
-
-				throw error;
 			}),
 		);
 	}
