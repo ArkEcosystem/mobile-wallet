@@ -70,7 +70,8 @@ export default class ApiClient {
 					const data = response.data;
 
 					if (data.length) {
-						const lastVote = data[0].asset.votes[0];
+						const lastVote =
+							data[0].asset.votes[data[0].asset.votes.length - 1];
 
 						if (lastVote.charAt(0) === "-") {
 							observer.next({
@@ -80,9 +81,7 @@ export default class ApiClient {
 							observer.complete();
 						}
 
-						const delegatePublicKey = data[0].asset.votes[0].substring(
-							1,
-						);
+						const delegatePublicKey = lastVote.substring(1);
 						this.getDelegateByPublicKey(
 							delegatePublicKey,
 						).subscribe(
