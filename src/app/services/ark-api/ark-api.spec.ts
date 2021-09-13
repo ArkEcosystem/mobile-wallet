@@ -1,3 +1,4 @@
+import { HTTP } from "@ionic-native/http/ngx";
 import {
 	createHttpFactory,
 	HttpMethod,
@@ -42,6 +43,7 @@ describe("ARK API", () => {
 		mocks: [ToastProvider, TranslateService, ArkClient],
 		providers: [
 			mockProvider(NetworkProvider),
+			mockProvider(HTTP),
 			mockProvider(UserDataService, {
 				currentNetwork,
 				onUpdateNetwork$: new Subject(),

@@ -1,3 +1,4 @@
+import { HTTP } from "@ionic-native/http/ngx";
 import {
 	createHttpFactory,
 	HttpMethod,
@@ -24,7 +25,7 @@ describe("Neo API Service", () => {
 	const createNeoApiMock = createHttpFactory({
 		service: NeoApiProvider,
 		mocks: [NetworkProvider],
-		providers: [mockProvider(UserDataService, {})],
+		providers: [mockProvider(UserDataService, {}), mockProvider(HTTP)],
 	});
 
 	beforeEach(() => {
