@@ -24,12 +24,6 @@ export class HttpClient {
 			),
 		).pipe(
 			map(function (result): any {
-				console.log(
-					"HttpClient#get result",
-					result,
-					JSON.parse(result.data),
-				);
-
 				return JSON.parse(result.data);
 			}),
 		);
@@ -45,12 +39,6 @@ export class HttpClient {
 			}),
 		).pipe(
 			map(function (result): any {
-				console.log(
-					"HttpClient#post result",
-					result,
-					JSON.parse(result.data),
-				);
-
 				return JSON.parse(result.data);
 			}),
 		);
@@ -66,12 +54,6 @@ export class HttpClient {
 			}),
 		).pipe(
 			map(function (result): any {
-				console.log(
-					"HttpClient#put result",
-					result,
-					JSON.parse(result.data),
-				);
-
 				return JSON.parse(result.data);
 			}),
 		);
