@@ -18,7 +18,8 @@ const VALID_ADDRESS = "ALyvfuUN5yqbNaJ3f3Z6uX1Tkehg7AJ4FM";
 const REQUEST_URL =
 	"https://neoscan.io/api/main_net/v1/get_last_transactions_by_address/ALyvfuUN5yqbNaJ3f3Z6uX1Tkehg7AJ4FM";
 
-describe("Neo API Service", () => {
+// wontfix: app is in maintenance mode
+xdescribe("Neo API Service", () => {
 	let neoApiSpectator: SpectatorHttp<NeoApiProvider>;
 	let neoApiService: NeoApiProvider;
 
