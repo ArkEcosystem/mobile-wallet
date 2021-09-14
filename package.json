@@ -172,6 +172,9 @@
 			"cordova-plugin-ionic-webview": {
 				"ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
 			},
+			"cordova-plugin-advanced-http": {
+				"ANDROIDBLACKLISTSECURESOCKETPROTOCOLS": "SSLv3,TLSv1"
+			},
 			"cordova-plugin-ionic-keyboard": {},
 			"cordova-plugin-ionic": {
 				"APP_ID": "efb289f2",
