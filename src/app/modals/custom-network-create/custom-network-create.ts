@@ -1,13 +1,12 @@
-import { HttpClient } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { LoadingController, ModalController } from "@ionic/angular";
 import { Network, Peer } from "ark-ts";
-import lodash from "lodash";
 import { finalize } from "rxjs/operators";
 
 import { LoggerService } from "@/services/logger/logger.service";
 import { ToastProvider } from "@/services/toast/toast";
 import ArkClient from "@/utils/ark-client";
+import { HttpClient } from "@/utils/ark-http-client";
 
 @Component({
 	selector: "customNetworkCreate",
@@ -50,19 +49,15 @@ export class CustomNetworkCreateModal {
 					this.network.version = response.version;
 					this.network.type = null;
 
-					const apiConfig: any = lodash.find(
-						response.ports,
-						(_, key) => key.split("/").reverse()[0] === "core-api",
-					);
-					if (!response.ports || !apiConfig) {
+					if (!response.ports || !seedServerUrl.port) {
 						this.configureError();
 						return;
 					}
-					this.network.apiPort = apiConfig;
+					this.network.apiPort = parseInt(seedServerUrl.port);
 
 					this.network.activePeer = new Peer();
 					this.network.activePeer.ip = seedServerUrl.hostname;
-					this.network.activePeer.port = apiConfig;
+					this.network.activePeer.port = parseInt(seedServerUrl.port);
 
 					if (seedServerUrl.protocol === "https:") {
 						this.network.activePeer.port = 443;

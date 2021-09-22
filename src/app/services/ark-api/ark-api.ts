@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import * as ArkCrypto from "@arkecosystem/crypto";
 import * as arkts from "ark-ts";
@@ -25,11 +24,12 @@ import { FeeStatistic, StoredNetwork } from "@/models/stored-network";
 import { StorageProvider } from "@/services/storage/storage";
 import { ToastProvider } from "@/services/toast/toast";
 import { UserDataService } from "@/services/user-data/user-data.interface";
+import ArkClient, { WalletResponse } from "@/utils/ark-client";
+import { HttpClient } from "@/utils/ark-http-client";
 import { PeerDiscovery } from "@/utils/ark-peer-discovery";
+import { ArkUtility } from "@/utils/ark-utility";
 import { SafeBigNumber as BigNumber } from "@/utils/bignumber";
 
-import ArkClient, { WalletResponse } from "../../utils/ark-client";
-import { ArkUtility } from "../../utils/ark-utility";
 import { LoggerService } from "../logger/logger.service";
 
 interface NodeFees {
@@ -574,7 +574,7 @@ export class ArkApiProvider {
 
 		return new Observable((observer) => {
 			this.httpClient
-				.get(`${this._network.getPeerAPIUrl()}/api/v2/node/fees?days=7`)
+				.get(`${this._network.getPeerAPIUrl()}/api/node/fees?days=7`)
 				.subscribe(
 					(response: NodeFeesResponse) => {
 						const data = response.data;

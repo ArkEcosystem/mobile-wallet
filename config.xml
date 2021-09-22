@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ark.wallet.mobile" version="1.8.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ark.wallet.mobile" version="1.9.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Ark Mobile</name>
     <description>ARK</description>
     <author email="mobile@ark.io" href="http://ark.io/">Ark Ecosystem</author>
@@ -30,6 +30,8 @@
     <preference name="Orientation" value="portrait" />
     <preference name="target-device" value="handset" />
     <preference name="DisableDeploy" value="true" />
+    <preference name="WKWebViewOnly" value="true" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <platform name="android">
         <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
             <application android:networkSecurityConfig="@xml/network_security_config" />
@@ -114,6 +116,7 @@
         <splash height="2436" src="resources/ios/splash/Default-2436h.png" width="1125" />
         <splash height="2732" src="resources/ios/splash/Default@2x~universal~anyany.png" width="2732" />
     </platform>
+    <plugin name="cordova-plugin-advanced-http" spec="^3.2.0" />
     <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
     <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
     <plugin name="cordova-plugin-device" spec="2.0.2" />

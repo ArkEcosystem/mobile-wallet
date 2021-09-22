@@ -1,6 +1,6 @@
 {
 	"name": "ark-mobile",
-	"version": "1.8.6",
+	"version": "1.9.2",
 	"author": "Ark Ecosystem <mobile@ark.io>",
 	"homepage": "https://github.com/ArkEcosystem/mobile-wallet#readme",
 	"scripts": {
@@ -36,6 +36,7 @@
 		"@ionic-native/background-mode": "^5.22.0",
 		"@ionic-native/clipboard": "^5.22.0",
 		"@ionic-native/core": "^5.22.0",
+		"@ionic-native/http": "^5.36.0",
 		"@ionic-native/in-app-browser": "^5.22.0",
 		"@ionic-native/keyboard": "^5.22.0",
 		"@ionic-native/local-notifications": "^5.22.0",
@@ -63,6 +64,7 @@
 		"cordova-custom-config": "^5.1.0",
 		"cordova-ios": "5.1.1",
 		"cordova-plugin-add-swift-support": "^2.0.2",
+		"cordova-plugin-advanced-http": "^3.2.1",
 		"cordova-plugin-device": "^2.0.3",
 		"cordova-plugin-inappbrowser": "^3.2.0",
 		"cordova-plugin-ionic": "^5.4.6",
@@ -169,6 +171,9 @@
 			"cordova-plugin-splashscreen": {},
 			"cordova-plugin-ionic-webview": {
 				"ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+			},
+			"cordova-plugin-advanced-http": {
+				"ANDROIDBLACKLISTSECURESOCKETPROTOCOLS": "SSLv3,TLSv1"
 			},
 			"cordova-plugin-ionic-keyboard": {},
 			"cordova-plugin-ionic": {

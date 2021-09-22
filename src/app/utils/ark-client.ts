@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import {
 	AccountResponse,
 	AccountVotesResponse,
@@ -17,6 +16,7 @@ import { tap, timeout } from "rxjs/operators";
 import { TRANSACTION_GROUPS } from "@/app/app.constants";
 import { INodeConfiguration } from "@/models/node";
 import { LoggerService } from "@/services/logger/logger.service";
+import { HttpClient } from "@/utils/ark-http-client";
 
 export interface PeerApiResponse extends Peer {
 	latency?: number;
@@ -70,7 +70,8 @@ export default class ApiClient {
 					const data = response.data;
 
 					if (data.length) {
-						const lastVote = data[0].asset.votes[0];
+						const lastVote =
+							data[0].asset.votes[data[0].asset.votes.length - 1];
 
 						if (lastVote.charAt(0) === "-") {
 							observer.next({
@@ -80,9 +81,7 @@ export default class ApiClient {
 							observer.complete();
 						}
 
-						const delegatePublicKey = data[0].asset.votes[0].substring(
-							1,
-						);
+						const delegatePublicKey = lastVote.substring(1);
 						this.getDelegateByPublicKey(
 							delegatePublicKey,
 						).subscribe(
@@ -284,7 +283,24 @@ export default class ApiClient {
 					observer.next(this.__formatDelegateResponse(data));
 					observer.complete();
 				},
-				(error) => observer.error(error),
+				(error) => {
+					const response =
+						typeof error.error === "string"
+							? JSON.parse(error.error)
+							: error.error;
+					if (
+						response &&
+						error.status === 404 &&
+						response.message === "Delegate not found"
+					) {
+						observer.next(null);
+						observer.complete();
+
+						return;
+					}
+
+					observer.error(error);
+				},
 			);
 		});
 	}
@@ -322,7 +338,7 @@ export default class ApiClient {
 	) {
 		const url = `${host}/api/${path}`;
 		return this.httpClient
-			.request("GET", url, {
+			.get(url, {
 				...options,
 				headers: this.defaultHeaders,
 			})
