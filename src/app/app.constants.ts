@@ -50,6 +50,11 @@ export const URI_QRCODE_SCHEME_PREFIX = "ark:";
 export const NUM_ACTIVE_DELEGATES = 51;
 export const TOP_WALLETS_TO_FETCH = 50;
 
+export const URI_QRCODE_SCANNER_SCHEMES = [
+	"ark:",
+	"payvo:",
+];
+
 export const TRANSACTION_GROUPS = {
 	STANDARD: 1,
 	MAGISTRATE: 2,
