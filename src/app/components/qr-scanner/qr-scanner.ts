@@ -53,51 +53,45 @@ export class QRScannerComponent {
 
 		const scheme: QRCodeScheme = {};
 
-		let hasScheme = false;
+		if (bip39.validateMnemonic(qrCode)) {
+			scheme.passphrase = qrCode;
+
+			return scheme;
+		} else if (qrCode.match(/[0-9a-zA-Z]{34}/g)) {
+			scheme.address = qrCode;
+
+			return scheme;
+		}
+
 		for (const schemeToCheck of constants.URI_QRCODE_SCANNER_SCHEMES) {
 			const prefixUriRegex = new RegExp(`${schemeToCheck}([0-9a-zA-Z]{34})`, "g");
 
-			if (qrCode.match(prefixUriRegex)) {
-				scheme.address = prefixUriRegex.exec(qrCode)[1];
-				const paramsRegex = new RegExp(`(\\?|\\&)([^=]+)\\=([^&]+)`, "g");
-				let regexResult;
-				// tslint:disable-next-line: no-conditional-assignment
-				while ((regexResult = paramsRegex.exec(qrCode)) != null) {
-					switch (regexResult[2]) {
-						case "amount":
-							scheme.amount = regexResult[3];
-							break;
-						case "vendorField":
-							scheme.vendorField = regexResult[3];
-							break;
-						case "label":
-							scheme.label = regexResult[3];
-							break;
-					}
-				}
+			if (! qrCode.match(prefixUriRegex)) {
+				continue;
+			}
 
-				hasScheme = true;
-				break;
-			} else {
-				if (bip39.validateMnemonic(qrCode)) {
-					scheme.passphrase = qrCode;
-
-					hasScheme = true;
-					break;
-				} else if (qrCode.match(/[0-9a-zA-Z]{34}/g)) {
-					scheme.address = qrCode;
-
-					hasScheme = true;
-					break;
+			scheme.address = prefixUriRegex.exec(qrCode)[1];
+			const paramsRegex = new RegExp(`(\\?|\\&)([^=]+)\\=([^&]+)`, "g");
+			let regexResult;
+			// tslint:disable-next-line: no-conditional-assignment
+			while ((regexResult = paramsRegex.exec(qrCode)) != null) {
+				switch (regexResult[2]) {
+					case "amount":
+						scheme.amount = regexResult[3];
+						break;
+					case "vendorField":
+						scheme.vendorField = regexResult[3];
+						break;
+					case "label":
+						scheme.label = regexResult[3];
+						break;
 				}
 			}
 
-			// TODO: Format params
+			return scheme;
 		}
 
-		if (! hasScheme) {
-			this.wrong.emit();
-		}
+		this.wrong.emit();
 
 		return scheme;
 	}
