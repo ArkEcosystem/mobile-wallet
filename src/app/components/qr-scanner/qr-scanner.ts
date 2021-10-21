@@ -42,10 +42,6 @@ export class QRScannerComponent {
 		modal.present();
 	}
 
-	private parseQrCode(prefix: string) {
-
-	}
-
 	private formatScheme(qrCode: any): QRCodeScheme {
 		if (lodash.isObject(qrCode)) {
 			return this.formatOld(qrCode);
