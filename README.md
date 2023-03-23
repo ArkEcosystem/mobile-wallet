@@ -11,7 +11,8 @@
 [![Latest Version](https://badgen.now.sh/github/release/ArkEcosystem/mobile-wallet)](https://github.com/ArkEcosystem/mobile-wallet/releases/latest)
 [![License: MIT](https://badgen.now.sh/badge/license/MIT/green)](https://opensource.org/licenses/MIT)
 
-> Lead Maintainer: [Lúcio Rubens](https://github.com/luciorubeens)
+> **Warning**
+> The ARK Mobile Wallet is no longer supported. Please use the new ARKVault wallet instead: https://app.arkvault.io
 
 ARK’s mobile wallet is a hybrid application (using the same codebase for Android and iOS which helps with coordinated development).
 
